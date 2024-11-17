@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
 .App {
   text-align: center;
 }
@@ -316,4 +318,265 @@ h1.logo {
   color: #6c7c59;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* Nav Bar*/
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+  font-family: Montserrat;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50%;
+  padding-right: 30px;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+.logo img {
+  width: 150px;
+  height: 90px;
+  padding: 20px;
+}
+
+.logo span {
+  font-weight: 300;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 15px;
+  width: 50%;
+  font-family: Montserrat;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  background-color: #e0e0e0;
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0;
+  width: 100%;
+  font-family: Montserrat;
+}
+
+.category {
+  cursor: pointer;
+}
+
+/*Home Page*/
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-home-section {
+  position: relative;
+  width: 100%;
+  height: 700px; /* Adjust height based on your design */
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  filter: brightness(80%); /* Dim the image for better text visibility */
+}
+
+.hero-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* White text for contrast */
+  text-align: left;
+}
+
+.hero-text-overlay h1 {
+  font-size: 3rem; /* Adjust size as needed */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.hero-text-overlay p {
+  font-size: 1.2rem; /* Adjust size for the subtitle */
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-family: Montserrat;
+}
+.btn-hero-section {
+  border: 1px solid #6c7c59;
+  background-color: #6c7c59;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+.slick-dots li button:before {
+  color: #6c7c59; /* Change dots color */
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: #6c7c59; /* Active dot color */
+}
+.concept-section {
+  height: 100%;
+}
+.concept-title h2 {
+  text-align: right;
+}
+
+/*Category*/
+.shop-by-category {
+  padding: 20px;
+  width: 170vh;
+  text-align: center;
+}
+
+.shop-by-category h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  padding: 10px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 50px;
+}
+
+.category-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  transition: transform 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.card-content {
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+}
+
+.card-content h3 {
+  font-size: 15px;
+  margin: 0;
+  padding-top: 300px;
+  color: #2d2d2d;
+  text-align: left;
+}
+
+.shop-button {
+  background: white;
+  color: black;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.3s, color 0.3s;
+}
+
+.shop-button:hover {
+  background: black;
+  color: white;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
+  gap: 20px;
+}
+
+/* Individual card styling */
+.category-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  height: 500px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+/* Overlay content */
+.card-content {
+  color: white;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Title styling */
+.card-content h3 {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: horizon;
+  margin: 0;
+}
+
+/* Button styling */
+.shop-button {
+  background: #8ba36f; /* Green button color */
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Montserrat;
+  font-weight: 200;
+  width: 30%;
+  font-weight: bold;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.shop-button:hover {
+  background: #728d5c; /* Slightly darker green on hover */
 }
