@@ -57,7 +57,7 @@ body {
 
 .right-panel {
   flex: 1;
-  background-color: #6c7c59;
+  background: linear-gradient(to bottom, #6c7c59, #2d2d2d);
   color: white;
   padding: 2rem;
   overflow-y: auto;
