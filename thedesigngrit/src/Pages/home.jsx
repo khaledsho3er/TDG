@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../Components/navBar";
 import ShopByCategory from "../Components/Category";
+import ExploreConcepts from "../Components/concept";
 import { Box } from "@mui/material";
 function Home() {
   return (
@@ -25,7 +26,8 @@ function Home() {
       </div>
       <div className="concept-section">
         <Box className="concept-title">
-          <h2>Explore our new Concepts</h2>
+          <ExploreConcepts/>
+
         </Box>
         <Box>
           <ShopByCategory />
