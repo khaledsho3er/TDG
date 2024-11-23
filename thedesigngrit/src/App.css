@@ -1,5 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
 .App {
   text-align: center;
+  font-family:'Horizon','Montserrat' ;
+
 }
 
 .App-logo {
@@ -316,4 +320,624 @@ h1.logo {
   color: #6c7c59;
   text-decoration: none;
   font-weight: bold;
+}
+
+/* Nav Bar*/
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+  font-family: Montserrat;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50%;
+  padding-right: 30px;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+.logo img {
+  width: 150px;
+  height: 90px;
+  padding: 20px;
+}
+
+.logo span {
+  font-weight: 300;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 5px 15px;
+  width: 50%;
+  font-family: Montserrat;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  background-color: #e0e0e0;
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0;
+  width: 100%;
+  font-family: Montserrat;
+}
+
+.category {
+  cursor: pointer;
+}
+
+/*Home Page*/
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-home-section {
+  position: relative;
+  width: 100%;
+  height: 700px; /* Adjust height based on your design */
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  filter: brightness(80%); /* Dim the image for better text visibility */
+}
+
+.hero-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* White text for contrast */
+  text-align: left;
+}
+
+.hero-text-overlay h1 {
+  font-size: 3rem; /* Adjust size as needed */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.hero-text-overlay p {
+  font-size: 1.2rem; /* Adjust size for the subtitle */
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-family: Montserrat;
+}
+.btn-hero-section {
+  border: 1px solid #6c7c59;
+  background-color: #6c7c59;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+.slick-dots li button:before {
+  color: #6c7c59; /* Change dots color */
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: #6c7c59; /* Active dot color */
+}
+.concept-section {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+}
+.concept-title h2 {
+  text-align: right;
+}
+
+/*Category*/
+.shop-by-category {
+  padding: 20px;
+  width: 170vh;
+  text-align: center;
+}
+
+.shop-by-category h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  padding: 10px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 50px;
+}
+
+.category-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  transition: transform 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.card-content {
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+}
+
+.card-content h3 {
+  font-size: 15px;
+  margin: 0;
+  padding-top: 300px;
+  color: #2d2d2d;
+  text-align: left;
+}
+
+.shop-button {
+  background: white;
+  color: black;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.3s, color 0.3s;
+}
+
+.shop-button:hover {
+  background: black;
+  color: white;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards in a row */
+  gap: 20px;
+}
+
+/* Individual card styling */
+.category-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  height: 500px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+/* Overlay content */
+.card-content {
+  color: white;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Title styling */
+.card-content h3 {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: horizon;
+  margin: 0;
+}
+
+/* Button styling */
+.shop-button {
+  background: #8ba36f; /* Green button color */
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Montserrat;
+  font-weight: 200;
+  width: 30%;
+  font-weight: bold;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.shop-button:hover {
+  background: #728d5c; /* Slightly darker green on hover */
+}
+
+
+
+/*Conecpts Section*/
+.concept-explore-container {
+  padding: 20px 80px;
+  background-color: #fff;
+  position: relative;
+}
+
+.concept-title-container {
+  text-align: right;
+  padding-bottom: 50px;
+  padding-top: 50px;
+  margin: 20px auto;
+}
+
+.concept-title {
+  font-family: Horizon !important;
+  font-size: 28px !important;
+  font-weight: Bold !important;
+  text-transform: uppercase;
+}
+
+.concept-cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 120px;
+  margin: 40px 0;
+  padding-bottom: 20px;
+  
+}
+
+.concept-card {
+  position: relative;
+  border-radius: 20px !important;
+  transition: all 0.4s ease;
+  transform-origin: center;
+  opacity: 0.8;
+  overflow: hidden; /* Ensure the overlay doesn't spill out of the card */
+}
+.concept-card img{
+  width: 100%;
+  height: 100%;
+}
+.concept-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2); /* Slight dark overlay */
+  z-index: 1; /* Place it below content but above the image */
+}
+
+.concept-card-content {
+  position: absolute; /* Position within the card */
+  bottom: 10px; /* Align near the bottom */
+  left: 10px; /* Align near the left */
+  display: flex; /* Horizontal layout for icon and text */
+  align-items: center; /* Vertically align content */
+  gap: 10px; /* Add spacing between icon and text */
+  padding: 10px; /* Add padding for the content area */
+  border-radius: 8px; /* Rounded corners for overlay */
+  z-index: 2; /* Ensure it stays above the overlay */
+}
+
+.middle-card {
+  width: 400px;
+  height: 500px;
+  opacity: 1;
+  transform: scale(1.1);
+  z-index: 3;
+}
+
+
+.left-card {
+  width: 280px;
+  height: 350px;
+  transform: translateY(-34%) scale(0.9);
+  z-index: 2;
+}
+
+.right-card {
+  width: 280px;
+  height: 350px;
+  transform: translateY(33%) scale(0.9);
+  z-index: 2;
+}
+.concept-card-content {
+  position: absolute; /* Allow positioning within the parent */
+  bottom: 10px; /* Align content near the bottom of the card */
+  left: 10px; /* Align content near the left of the card */
+  display: flex; /* Enable horizontal layout */
+  align-items: center; /* Vertically align icon and text */
+  gap: 10px; /* Add spacing between the icon and text */
+  padding: 10px; /* Add padding around the content */
+  border-radius: 8px; /* Rounded corners for overlay */
+  z-index: 2; /* Ensure it stays above the image */
+}
+
+.concept-shopping-icon {
+  color: #2d2d2d !important; /* Icon color */
+  font-size: 24px; /* Adjust icon size */
+  border: 3px white !important;
+  background-color: #e5e4e2 !important;
+}
+
+.concept-card-text {
+  color: #eae3e4; /* Text color */
+  font-size: 20px; /* Adjust text size */
+  font-weight: bold !important; /* Slightly bold text */
+  font-family: Montserrat;
+}
+
+.concept-shopping-icon:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.concept-subtitle {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.concept-subtitle-title {
+  font-size: 26px;
+  font-family: 'Horizon'!important;
+  font-weight: bold !important;
+  line-height: 1.4;
+}
+
+.concept-subtitle-text {
+  font-family: 'Montserrat'!important;
+  font-size: 18px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.concept-controls {
+  display: flex;
+  justify-content: space-between; /* Space out the progress bar and arrows */
+  align-items: center; /* Vertically align all elements */
+  margin: 20px 0;
+}
+
+.concept-progress-container {
+  display: flex;
+  justify-content: center; /* Center the progress bar and labels */
+  align-items: center; /* Align items vertically */
+  gap: 10px;
+  flex-grow: 1; /* Let the progress bar area expand to fill space */
+  padding-left: 90px;
+}
+
+.concept-progress-bar {
+  width: 30%; /* Adjust the width as necessary */
+  height: 8px;
+  background: #e0e0e0;
+  overflow: hidden;
+  position: relative;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.concept-progress-fill {
+  width: 40%; /* Adjust the filled progress */
+  height: 100%;
+  background: green;
+}
+
+.concept-navigation {
+  display: flex;
+  justify-content: flex-end; /* Align navigation to the end */
+  gap: 20px;
+}
+
+
+
+/*HEro sections */
+.hero-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  height: 329px;
+  background-color: #6b7b58; /* Change background color as needed */
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 50%; /* Adjust as needed */
+  padding-left: 100px;
+  color: #abc48c;
+}
+
+.hero-title {
+  font-size: 2.5rem; /* Adjust as needed */
+  margin: 0;
+  
+}
+
+.hero-subtitle {
+  font-size: 15px; /* Adjust as needed */
+  margin: 10px 0 0;
+  font-family: Montserrat;
+}
+
+.hero-section-image {
+  flex: 1;
+  max-width: 50%;
+  object-fit: cover; /* Adjust as needed */
+  padding-right: 40px;
+}
+
+.hero-section-image img {
+  height: 309px; /* Maintain aspect ratio */
+  border-radius: 20px;
+  margin-left: 350px;
+  margin-right: 70px;
+  width: 338px;
+}
+.Caption-AboutUs{
+  text-align: justify;
+  padding:106px 140px 50px 140px;
+  font-size: 25px;
+  font-family:'Montserrat';
+  
+}
+.ourMission-Section {
+  display: flex; /* Use flexbox to align items in a row */
+  padding: 120px; /* Add padding to the section */
+  align-items: center; /* Center items vertically */
+
+}
+
+.ourMission-Section-image {
+  flex: 1; /* Allow the image section to take up space */
+}
+
+.ourMission-Section-image img {
+  width: 50%; /* Make the image responsive */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.ourMission-Section-typo {
+  flex: 1; /* Allow the text section to take up space */
+  padding-left: 200px; /* Add some space between image and text */
+  
+}
+
+.ourMission-Section-typo h2 {
+  font-size: 2rem; /* Adjust title size */
+  margin-bottom: 30px; /* Space below the title */
+  color: #6c7c59;
+
+}
+
+.ourMission-Section-typo p {
+  font-size: 1rem; /* Adjust paragraph size */
+  line-height: 1.5; /* Improve readability */
+  font-family: montserrat;
+}
+.ourStory-Section-typo {
+  flex: 1; /* Allow the text section to take up space */
+  padding-left: 120px; /* Add some space between image and text */
+  padding-right: 100px;
+  margin-bottom: 60px
+  
+}
+
+.ourStory-Section-typo h2 {
+  font-size: 2rem; /* Adjust title size */
+  margin-bottom: 30px; /* Space below the title */
+  color: #6c7c59;
+
+}
+
+.ourStory-Section-typo p {
+  font-size: 1rem; /* Adjust paragraph size */
+  line-height: 1.5; /* Improve readability */
+  font-family: montserrat;
+}
+.OurTeam-section{
+  padding: 50px;
+}
+.OurTeam-section h2{
+  text-align: center;
+  font-size: 2rem ;
+  color: #6c7c59;
+}
+.OurTeam-section p{
+  text-align: Justifiy;
+  font-family: Montserrat;
+  font-weight: 200;
+  padding: 10px 100px 10px 100px;
+
+}
+.meet-our-team {
+  text-align: center; /* Center align the section */
+  padding: 20px 20px; /* Add padding */
+}
+
+.team-members {
+  display: flex; /* Use flexbox to align team members */
+  justify-content: center; /* Center align team members */
+  gap: 20px; /* Space between team members */
+}
+
+.team-member {
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Padding inside each member box */
+  width: 406px; /* Fixed width for each member */
+  gap: 200px;
+}
+
+.team-member-image {
+  width: 150px; /* Set a fixed width for the image */
+  height: 162px; /* Set a fixed height for the image */
+  border-radius: 50%; /* Make the image circular */
+  overflow: hidden; /* Hide overflow */
+  margin: 0 auto; /* Center the image */
+}
+
+.team-member-image img {
+  width: 100%; /* Make image responsive */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.team-member-name {
+  font-size: 1.5rem; /* Adjust name size */
+  margin: 20px 0 5px; /* Spacing for name */
+}
+
+.team-member-title {
+  font-size: 1.2rem; /* Adjust title size */
+  margin: 5px 0; /* Spacing for title */
+
+
+}
+
+.team-member-subtitle {
+  font-size: 1rem; /* Adjust subtitle size */
+  margin: 10px 0 10px; /* Spacing for subtitle */
+}
+
+.linkedin-icon {
+  color: #0077b5; /* LinkedIn blue color */
+  font-size: 1.5rem; /* Adjust icon size */
+  text-decoration: none; /* Remove underline */
+
+}
+
+.linkedin-icon:hover {
+  color: #005582; /* Darken on hover */
 }
