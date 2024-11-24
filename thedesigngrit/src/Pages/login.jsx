@@ -1,7 +1,6 @@
 import ProductShowcase from "../Components/productShowcase";
 import SignInForm from "../Components/signInForm";
 import React from "react";
-import "../App.css";
 function LoginPage() {
   return (
     <div className="container">
