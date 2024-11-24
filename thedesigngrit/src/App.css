@@ -2,8 +2,7 @@
 
 .App {
   text-align: center;
-  font-family:'Horizon','Montserrat' ;
-
+  font-family: "Horizon", "Montserrat";
 }
 
 .App-logo {
@@ -327,7 +326,6 @@ h1.logo {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0;
   width: 100%;
   font-family: Montserrat;
 }
@@ -585,8 +583,6 @@ h1.logo {
   background: #728d5c; /* Slightly darker green on hover */
 }
 
-
-
 /*Conecpts Section*/
 .concept-explore-container {
   padding: 20px 80px;
@@ -615,7 +611,6 @@ h1.logo {
   gap: 120px;
   margin: 40px 0;
   padding-bottom: 20px;
-  
 }
 
 .concept-card {
@@ -626,12 +621,12 @@ h1.logo {
   opacity: 0.8;
   overflow: hidden; /* Ensure the overlay doesn't spill out of the card */
 }
-.concept-card img{
+.concept-card img {
   width: 100%;
   height: 100%;
 }
 .concept-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -660,7 +655,6 @@ h1.logo {
   transform: scale(1.1);
   z-index: 3;
 }
-
 
 .left-card {
   width: 280px;
@@ -712,13 +706,13 @@ h1.logo {
 
 .concept-subtitle-title {
   font-size: 26px;
-  font-family: 'Horizon'!important;
+  font-family: "Horizon" !important;
   font-weight: bold !important;
   line-height: 1.4;
 }
 
 .concept-subtitle-text {
-  font-family: 'Montserrat'!important;
+  font-family: "Montserrat" !important;
   font-size: 18px;
   color: #666;
   line-height: 1.5;
@@ -762,8 +756,6 @@ h1.logo {
   gap: 20px;
 }
 
-
-
 /*HEro sections */
 .hero-container {
   display: flex;
@@ -784,7 +776,6 @@ h1.logo {
 .hero-title {
   font-size: 2.5rem; /* Adjust as needed */
   margin: 0;
-  
 }
 
 .hero-subtitle {
@@ -807,18 +798,16 @@ h1.logo {
   margin-right: 70px;
   width: 338px;
 }
-.Caption-AboutUs{
+.Caption-AboutUs {
   text-align: justify;
-  padding:106px 140px 50px 140px;
+  padding: 106px 140px 50px 140px;
   font-size: 25px;
-  font-family:'Montserrat';
-  
+  font-family: "Montserrat";
 }
 .ourMission-Section {
   display: flex; /* Use flexbox to align items in a row */
   padding: 120px; /* Add padding to the section */
   align-items: center; /* Center items vertically */
-
 }
 
 .ourMission-Section-image {
@@ -833,14 +822,12 @@ h1.logo {
 .ourMission-Section-typo {
   flex: 1; /* Allow the text section to take up space */
   padding-left: 200px; /* Add some space between image and text */
-  
 }
 
 .ourMission-Section-typo h2 {
   font-size: 2rem; /* Adjust title size */
   margin-bottom: 30px; /* Space below the title */
   color: #6c7c59;
-
 }
 
 .ourMission-Section-typo p {
@@ -852,15 +839,13 @@ h1.logo {
   flex: 1; /* Allow the text section to take up space */
   padding-left: 120px; /* Add some space between image and text */
   padding-right: 100px;
-  margin-bottom: 60px
-  
+  margin-bottom: 60px;
 }
 
 .ourStory-Section-typo h2 {
   font-size: 2rem; /* Adjust title size */
   margin-bottom: 30px; /* Space below the title */
   color: #6c7c59;
-
 }
 
 .ourStory-Section-typo p {
@@ -868,20 +853,19 @@ h1.logo {
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
 }
-.OurTeam-section{
+.OurTeam-section {
   padding: 50px;
 }
-.OurTeam-section h2{
+.OurTeam-section h2 {
   text-align: center;
-  font-size: 2rem ;
+  font-size: 2rem;
   color: #6c7c59;
 }
-.OurTeam-section p{
+.OurTeam-section p {
   text-align: Justifiy;
   font-family: Montserrat;
   font-weight: 200;
   padding: 10px 100px 10px 100px;
-
 }
 .meet-our-team {
   text-align: center; /* Center align the section */
@@ -922,8 +906,6 @@ h1.logo {
 .team-member-title {
   font-size: 1.2rem; /* Adjust title size */
   margin: 5px 0; /* Spacing for title */
-
-
 }
 
 .team-member-subtitle {
@@ -935,9 +917,388 @@ h1.logo {
   color: #0077b5; /* LinkedIn blue color */
   font-size: 1.5rem; /* Adjust icon size */
   text-decoration: none; /* Remove underline */
-
 }
 
 .linkedin-icon:hover {
   color: #005582; /* Darken on hover */
+}
+
+/*SustainabilitySection */
+.sustainability-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  width: 204.7vh;
+  background-color: #ebe4e5;
+}
+
+.sustainability-image-container {
+  width: 70%;
+  height: 100%;
+  position: relative;
+}
+
+.sustainability-image {
+  width: 110% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.sustainability-content-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #ebe4e5;
+}
+
+.sustainability-content-wrapper {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.sustainability-label {
+  display: block;
+  color: #666;
+  font-size: 1.125rem;
+  font-family: Montserrat;
+}
+
+.sustainability-heading {
+  margin: auto;
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: #2d2d2d;
+  line-height: 1.2;
+  font-family: Montserrat;
+}
+
+.sustainability-description {
+  color: #4a4a4a;
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-family: Montserrat;
+}
+
+.sustainability-button {
+  background-color: #6c7c59;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sustainability-button:hover {
+  background-color: #6c7c59;
+}
+
+/* Media Queries for responsive design */
+@media (min-width: 768px) {
+  .sustainability-section {
+    flex-direction: row;
+  }
+
+  .sustainability-image-container {
+    width: 50%;
+    height: 100vh;
+  }
+
+  .sustainability-content-container {
+    width: 50%;
+    padding: 4rem;
+  }
+
+  .sustainability-heading {
+    font-size: 3.5rem;
+  }
+}
+
+/* For larger screens */
+@media (min-width: 1024px) {
+  .sustainability-content-container {
+    padding: 6rem;
+  }
+
+  .sustainability-heading {
+    font-size: 4rem;
+  }
+}
+/* Partner Section HomePage*/
+.partners-section {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.partners-content {
+  flex: 0 1 45%;
+  max-width: 600px;
+}
+
+.partners-heading {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+}
+
+.partners-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 2rem;
+  font-family: Montserrat;
+}
+
+.partners-button {
+  background-color: #6b7f5e;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.partners-button:hover {
+  background-color: #5a6b4f;
+}
+
+/* Logo grid section */
+.partners-logo-grid {
+  flex: 0 1 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.partner-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.partner-logo-link:hover {
+  transform: scale(1.05);
+}
+
+.partner-logo {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .partners-section {
+    gap: 2rem;
+  }
+
+  .partners-heading {
+    font-size: 2rem;
+  }
+
+  .partners-logo-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .partners-section {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .partners-content {
+    flex: 0 1 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .partners-logo-grid {
+    flex: 0 1 auto;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .partners-logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .partners-heading {
+    font-size: 1.75rem;
+  }
+}
+
+/* Optional: Add hover effect for logos */
+.partner-logo {
+  filter: grayscale(0);
+  transition: filter 0.3s ease;
+}
+
+.partner-logo:hover {
+  filter: grayscale(20%);
+}
+
+/*Best seller homePage*/
+.slider-container {
+  width: 95%;
+  padding: 2rem;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.slider-title {
+  max-width: 1440px;
+  margin: 0 auto;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-family: Horizon;
+}
+
+.slider-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.product-card {
+  min-width: 100%;
+  flex: 0 0 25%;
+  padding: 0 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-image {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  font-size: 12px;
+  color: #2d2d2d;
+  background-color: #ffffff; /* Background color for the rectangle */
+  border: 1px solid #2d2d2d; /* White border */
+  border-radius: 4px; /* Slightly rounded corners */
+  padding: 4px 8px; /* Padding around the text */
+  display: inline-block; /* Ensure the rectangle wraps around the text */
+  margin-bottom: 8px; /* Space below the badge */
+  text-transform: uppercase; /* Optional: make the badge text uppercase */
+  font-family: Montserrat;
+}
+
+.product-info {
+  padding: 0.5rem 0;
+}
+
+.product-metadata {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  font-family: Montserrat;
+}
+
+.product-title {
+  font-size: 1.125rem;
+  margin: 0.5rem 0;
+  font-family: Horizon;
+}
+
+.product-price {
+  color: #333;
+  font-weight: 500;
+  font-family: Montserrat;
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #333;
+}
+
+.arrows {
+  display: flex;
+  gap: 1rem;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.arrow:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .product-card {
+    min-width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-card {
+    min-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    min-width: 100%;
+  }
 }
