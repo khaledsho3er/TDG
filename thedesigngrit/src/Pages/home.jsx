@@ -1,12 +1,12 @@
 import React from "react";
-import NavBar from "../Components/navBar";
-import ShopByCategory from "../Components/Category";
-import ExploreConcepts from "../Components/concept";
+import Header from "../Components/navBar";
+import ShopByCategory from "../Components/home/Category";
+import ExploreConcepts from "../Components/home/concept";
 import { Box } from "@mui/material";
 function Home() {
   return (
     <div className="home">
-      <NavBar />
+      <Header />
       <div className="hero-home-section">
         <img
           className="hero-image"

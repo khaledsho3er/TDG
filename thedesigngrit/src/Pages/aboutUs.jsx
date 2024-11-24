@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../Components/navBar";
-import HeroAbout from "../Components/heroAbout";
-import MeetOurTeam from '../Components/ourTeam';
+import HeroAbout from "../Components/About/heroAbout";
+import MeetOurTeam from '../Components/About/ourTeam';
 import { Box} from "@mui/material";
 function AboutUsPage(){
     return(
