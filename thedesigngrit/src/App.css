@@ -922,3 +922,383 @@ h1.logo {
 .linkedin-icon:hover {
   color: #005582; /* Darken on hover */
 }
+
+/*SustainabilitySection */
+.sustainability-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  width: 204.7vh;
+  background-color: #ebe4e5;
+}
+
+.sustainability-image-container {
+  width: 70%;
+  height: 100%;
+  position: relative;
+}
+
+.sustainability-image {
+  width: 110% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.sustainability-content-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #ebe4e5;
+}
+
+.sustainability-content-wrapper {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.sustainability-label {
+  display: block;
+  color: #666;
+  font-size: 1.125rem;
+  font-family: Montserrat;
+}
+
+.sustainability-heading {
+  margin: auto;
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: #2d2d2d;
+  line-height: 1.2;
+  font-family: Montserrat;
+}
+
+.sustainability-description {
+  color: #4a4a4a;
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-family: Montserrat;
+}
+
+.sustainability-button {
+  background-color: #6c7c59;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sustainability-button:hover {
+  background-color: #6c7c59;
+}
+
+/* Media Queries for responsive design */
+@media (min-width: 768px) {
+  .sustainability-section {
+    flex-direction: row;
+  }
+
+  .sustainability-image-container {
+    width: 50%;
+    height: 100vh;
+  }
+
+  .sustainability-content-container {
+    width: 50%;
+    padding: 4rem;
+  }
+
+  .sustainability-heading {
+    font-size: 3.5rem;
+  }
+}
+
+/* For larger screens */
+@media (min-width: 1024px) {
+  .sustainability-content-container {
+    padding: 6rem;
+  }
+
+  .sustainability-heading {
+    font-size: 4rem;
+  }
+}
+/* Partner Section HomePage*/
+.partners-section {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.partners-content {
+  flex: 0 1 45%;
+  max-width: 600px;
+}
+
+.partners-heading {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+}
+
+.partners-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 2rem;
+  font-family: Montserrat;
+}
+
+.partners-button {
+  background-color: #6b7f5e;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.partners-button:hover {
+  background-color: #5a6b4f;
+}
+
+/* Logo grid section */
+.partners-logo-grid {
+  flex: 0 1 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.partner-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.partner-logo-link:hover {
+  transform: scale(1.05);
+}
+
+.partner-logo {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .partners-section {
+    gap: 2rem;
+  }
+
+  .partners-heading {
+    font-size: 2rem;
+  }
+
+  .partners-logo-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .partners-section {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .partners-content {
+    flex: 0 1 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .partners-logo-grid {
+    flex: 0 1 auto;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .partners-logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .partners-heading {
+    font-size: 1.75rem;
+  }
+}
+
+/* Optional: Add hover effect for logos */
+.partner-logo {
+  filter: grayscale(0);
+  transition: filter 0.3s ease;
+}
+
+.partner-logo:hover {
+  filter: grayscale(20%);
+}
+
+/*Best seller homePage*/
+.slider-container {
+  width: 95%;
+  padding: 2rem;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.slider-title {
+  max-width: 1440px;
+  margin: 0 auto;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-family: Horizon;
+}
+
+.slider-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.product-card {
+  min-width: 100%;
+  flex: 0 0 25%;
+  padding: 0 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-image {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  font-size: 12px;
+  color: #2d2d2d;
+  background-color: #ffffff; /* Background color for the rectangle */
+  border: 1px solid #2d2d2d; /* White border */
+  border-radius: 4px; /* Slightly rounded corners */
+  padding: 4px 8px; /* Padding around the text */
+  display: inline-block; /* Ensure the rectangle wraps around the text */
+  margin-bottom: 8px; /* Space below the badge */
+  text-transform: uppercase; /* Optional: make the badge text uppercase */
+  font-family: Montserrat;
+}
+
+.product-info {
+  padding: 0.5rem 0;
+}
+
+.product-metadata {
+  color: #666;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  font-family: Montserrat;
+}
+
+.product-title {
+  font-size: 1.125rem;
+  margin: 0.5rem 0;
+  font-family: Horizon;
+}
+
+.product-price {
+  color: #333;
+  font-weight: 500;
+  font-family: Montserrat;
+}
+
+.slider-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #333;
+}
+
+.arrows {
+  display: flex;
+  gap: 1rem;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.arrow:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .product-card {
+    min-width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  .product-card {
+    min-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    min-width: 100%;
+  }
+}
