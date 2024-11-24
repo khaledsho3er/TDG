@@ -4,6 +4,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FloatingButton from "./ChatButton";
+import Stickedbutton from "./MoodboardButton";
+
 function Header() {
   return (
     <Box
@@ -34,15 +36,15 @@ function Header() {
           {/* Icons */}
           <Box className="icon-container">
             <IconButton>
-              <FavoriteBorderIcon />
+              <FavoriteBorderIcon sx={{ fontSize: "17px" }} />
             </IconButton>
             <IconButton>
-              <ShoppingCartIcon />
+              <ShoppingCartIcon sx={{ fontSize: "17px" }} />
             </IconButton>
             <Box>
               <Typography
                 sx={{
-                  fontSize: "15px",
+                  fontSize: "10px",
                 }}
               >
                 Egypt / EN
@@ -70,6 +72,7 @@ function Header() {
         ))}
       </Box>
       <FloatingButton />
+      <Stickedbutton />
     </Box>
   );
 }
