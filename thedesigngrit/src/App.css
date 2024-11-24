@@ -1302,3 +1302,165 @@ h1.logo {
     min-width: 100%;
   }
 }
+
+/* Job Description Page*/
+.job-Page {
+  display: flex;
+  flex-direction: column;
+}
+.hero-job-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  height: 200px;
+  background-color: #6b7b58;
+}
+.Description {
+  padding: 50px;
+}
+.description-title {
+  text-align: center;
+}
+.description-title p {
+  font-family: Montserrat;
+}
+.description-content-1 {
+  font-family: Montserrat;
+  padding: 20px 40px 20px 40px;
+  margin: auto;
+}
+.description-content-1 h2 {
+  padding-left: 120px;
+
+  font-family: Horizon;
+}
+.description-content-1 p {
+  font-size: 17px;
+  padding-left: 120px;
+  padding-right: 150px;
+  line-height: 200%;
+}
+/*Job Form*/
+.job-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.job-form-card {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 24px 24px 24px rgba(0, 0, 0, 0.08);
+}
+
+.job-form-title {
+  font-family: "Horizon", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.job-form-field {
+  margin-bottom: 1.5rem;
+}
+
+.job-form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+
+.job-form-field input,
+.job-form-field textarea {
+  width: 90%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+.job-form-field input::placeholder,
+.job-form-field textarea::placeholder {
+  color: #999;
+}
+
+.job-form-field input:focus,
+.job-form-field textarea:focus {
+  outline: none;
+  border-color: #6b7b58;
+}
+
+.job-form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.job-form-row .form-field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.job-upload-button {
+  width: 95%;
+  padding: 0.75rem;
+  background: #2d2d2d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: "Montserrat", sans-serif;
+}
+
+.job-upload-button:hover {
+  background: #444;
+}
+
+.job-submit-button {
+  width: 95%;
+  padding: 0.75rem;
+  background: #2d2d2d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+  font-family: "Montserrat";
+}
+
+.job-submit-button:hover {
+  background: #454545;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+@media (max-width: 600px) {
+  .job-form-card {
+    padding: 1.5rem;
+  }
+
+  .job-form-row {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
