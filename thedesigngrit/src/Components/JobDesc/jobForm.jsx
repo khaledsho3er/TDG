@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoMdCloudUpload } from "react-icons/io";
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const ApplicationForm = () => {
       <div className="job-form-card">
         <h1 className="job-form-title">FILL THE FORM</h1>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="Job-form">
           <div className="job-form-field">
             <label>Full Name</label>
             <input
@@ -111,11 +112,10 @@ const ApplicationForm = () => {
             <button
               type="button"
               className="job-upload-button"
-              onClick={() =>
-                document.getElementById("job-resume-upload").click()
-              }
+              onClick={() => document.getElementById("resume-upload").click()}
             >
-              Upload
+              <IoMdCloudUpload size={20} className="upload-icon" />
+              Upload Resume
             </button>
             <input
               id="resume-upload"
@@ -124,6 +124,11 @@ const ApplicationForm = () => {
               onChange={handleFileUpload}
               style={{ display: "none" }}
             />
+            {formData.resume && (
+              <p style={{ marginTop: "8px", fontFamily: "Montserrat" }}>
+                Selected File: {formData.resume.name}
+              </p>
+            )}
           </div>
 
           <div className="job-form-field">

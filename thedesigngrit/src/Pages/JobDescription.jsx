@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../Components/navBar";
-import ApplicationForm from "../Components/jobForm";
+import ApplicationForm from "../Components/JobDesc/jobForm";
 import { Box } from "@mui/material";
 function JobDesc() {
   return (
