@@ -5,6 +5,7 @@ import Home from "./Pages/home";
 import LoginPage from "./Pages/login";
 import SignUpPage from "./Pages/signup";
 import AboutUsPage from "./Pages/aboutUs";
+import JobDesc from "./Pages/JobDescription";
 function App() {
   return (
     <Router>
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/login" Component={LoginPage} />
         <Route exact path="/signup" Component={SignUpPage} />
         <Route exact path="/AboutUs" Component={AboutUsPage} />
+        <Route exact path="/Job" Component={JobDesc} />
       </Routes>
     </Router>
   );
