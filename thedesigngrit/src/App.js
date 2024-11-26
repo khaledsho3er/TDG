@@ -8,6 +8,7 @@ import AboutUsPage from "./Pages/aboutUs";
 import JobDesc from "./Pages/JobDescription";
 import TermsOfService from "./Pages/Policy";
 import PartnersApplication from "./Pages/Partners";
+import ContactUs from "./Pages/ContactUs";
 function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/Job" Component={JobDesc} />
         <Route exact path="/policy" Component={TermsOfService} />
         <Route exact path="/partners" Component={PartnersApplication} />
+        <Route exact path="/contactus" Component={ContactUs} />
       </Routes>
     </Router>
   );
