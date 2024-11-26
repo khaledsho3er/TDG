@@ -1533,6 +1533,29 @@ textarea {
   resize: vertical;
   min-height: 100px;
 }
+.image-preview-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+  gap: 15px; /* Space between images */
+  margin-top: 15px;
+  font-family: Montserrat;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+  font-size: 10px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px;
+}
 
 @media (max-width: 600px) {
   .job-form-card {
@@ -1543,4 +1566,154 @@ textarea {
     flex-direction: column;
     gap: 2rem;
   }
+}
+
+/*Policies Page*/
+/* General Container */
+.policy-page {
+  display: flex;
+  flex-direction: column;
+}
+.terms-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  padding: 120px 0 120px 120px;
+}
+
+.sidebar-item {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 16px;
+  font-family: Horizon;
+  font-weight: bold;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 10px;
+  color: #a9a8a8;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-item.active {
+  font-weight: bold;
+  color: #2d2d2d;
+}
+/* Divider Line */
+.divider {
+  width: 1px; /* Line thickness */
+  background-color: #a9a8a8; /* Line color */
+  height: 90%; /* Ensure it takes the full height of the sidebar */
+}
+/* Content Section */
+.content {
+  width: 75%;
+  padding: 40px;
+  overflow-y: auto;
+  padding-right: 120px;
+  margin-top: 20px;
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.content h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: Horizon;
+}
+
+.content h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+}
+
+.content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+  font-family: Montserrat;
+}
+
+.content ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  font-family: Montserrat;
+}
+
+.content ul li {
+  margin-bottom: 8px;
+  font-family: Montserrat;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .terms-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .content {
+    width: 100%;
+    padding: 20px;
+  }
+}
+/* Custom Scrollbar */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #6b7b58;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #4e5b44;
+}
+
+/*Partners Appliaction Page*/
+.partner-page {
+  display: flex;
+  flex-direction: column;
+}
+.partner-Caption {
+  align-items: center;
+  padding: 120px;
+}
+.partner-Caption p {
+  font-size: 25px;
+  font-family: Montserrat;
+  font-weight: 200;
+  text-align: justify;
+}
+.partners-second-section {
+  align-items: center;
+  padding: 0 150px 80px 150px;
+}
+.partners-second-section h2 {
+  text-align: center;
+  padding: 30px;
+  font-size: 35px;
+}
+.partners-second-section ul li {
+  font-family: Montserrat;
+  font-size: 24px;
+  line-height: 200%;
+  margin-left: 30px;
 }
