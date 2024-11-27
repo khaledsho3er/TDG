@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
+import ApplicationSentPopup from "./JobDesc/applicationSentPopUp";
 
 const PartnerApplicationForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const PartnerApplicationForm = () => {
     notes: "",
     images: [],
   });
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // Control popup visibility
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +39,10 @@ const PartnerApplicationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    setIsPopupVisible(true); // Show popup on form submission
+  };
+  const closePopup = () => {
+    setIsPopupVisible(false); // Close the popup
   };
 
   return (
@@ -153,6 +159,7 @@ const PartnerApplicationForm = () => {
           </button>
         </form>
       </div>
+      <ApplicationSentPopup show={isPopupVisible} closePopup={closePopup} />
     </div>
   );
 };
