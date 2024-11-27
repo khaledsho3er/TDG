@@ -342,9 +342,11 @@ h1.logo {
 }
 
 .logo img {
+  position: relative;
   width: 120px;
   height: 60px;
   padding: 35px 30px 10px 20px;
+  z-index: 2;
 }
 
 .logo span {
