@@ -1844,3 +1844,65 @@ textarea {
 .contact-submit-btn:hover {
   background-color: #6b7b58;
 }
+/* Media Queries for Responsiveness */
+
+/* Tablet Screens */
+@media (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    padding: 20px 50px;
+  }
+
+  .Contant-caption {
+    margin: 20px 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .Contact-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  .Contact-Page {
+    position: relative;
+    width: 100%;
+    height: 150vh; /* Full viewport height */
+    background-image: url("/public/Assets/contactUs.png"); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 20px;
+  }
+
+  .Contant-caption h3 {
+    font-size: 1.5rem;
+  }
+
+  .Contant-caption p {
+    font-size: 1rem;
+  }
+
+  .Contact-form {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .contact-form-field input,
+  .contact-form-field textarea {
+    padding: 0.5rem;
+  }
+
+  .contact-submit-btn {
+    padding: 0.5rem;
+    font-size: 12px;
+  }
+}
