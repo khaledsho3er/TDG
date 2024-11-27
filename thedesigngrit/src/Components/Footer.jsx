@@ -5,14 +5,24 @@ import {
   TextField,
   Button,
   Checkbox,
+  FormControlLabel,
   Link,
   Grid,
 } from "@mui/material";
 import { Facebook, Instagram } from "@mui/icons-material";
+import LockIcon from "@mui/icons-material/Lock";
 
 function Footer() {
   return (
-    <Box sx={{ bgcolor: "#f7f2f2", py: 7, px: 10 }}>
+    <Box
+      sx={{
+        bgcolor: "#f7f2f2",
+        py: 0,
+        px: 10,
+        marginTop: 2,
+        paddingTop: 5,
+      }}
+    >
       <Grid container spacing={10}>
         {/* Logo and Newsletter Section */}
         <Grid item xs={3} md={5}>
@@ -78,6 +88,17 @@ function Footer() {
                 right: 0,
                 height: "1px",
                 backgroundColor: "rgba(0, 0, 0, 0.42)",
+              }}
+            />
+          </Box>
+          <Box sx={{ mt: 1 }}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label="I agree to receive newsletters and promotional emails."
+              sx={{
+                color: "#000",
+                fontFamily: "Montserrat, sans-serif",
+                fontSize: 2,
               }}
             />
           </Box>
@@ -185,7 +206,7 @@ function Footer() {
         </Grid>
       </Grid>
       {/* Footer Bottom */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box
           sx={{
             display: "flex",
@@ -194,7 +215,6 @@ function Footer() {
             alignItems: "center",
             borderTop: "1px solid black",
             width: "100%",
-            padding: 2,
           }}
         >
           <Box>
@@ -217,7 +237,7 @@ function Footer() {
               © 2024 TheDesignGrit. All rights reserved.
             </Typography>
           </Box>
-          <Box sx={{ alignItems: "center", paddingRight: 55, paddingTop: 5 }}>
+          <Box sx={{ alignItems: "center", paddingRight: 15, paddingTop: 4 }}>
             <Typography
               variant="body2"
               sx={{ fontFamily: "Montserrat, sans-serif" }}
@@ -226,7 +246,55 @@ function Footer() {
             </Typography>
           </Box>
 
-          <Box></Box>
+          <Box sx={{ paddingTop: 3 }}>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Typography>
+                <img src="Assets\icons\amex.png" alt="Logo" />
+              </Typography>
+              <Typography>
+                <img src="Assets\icons\mastercard.png" alt="Logo" />
+              </Typography>
+              <Typography>
+                <img src="Assets\icons\meeza.png" alt="Logo" />
+              </Typography>
+              <Typography>
+                <img src="Assets\icons\visa.png" alt="Logo" />
+              </Typography>
+              <Typography>
+                <img src="Assets\icons\mada 1.png" alt="Logo" />
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", paddingTop: 0.5 }}>
+              <LockIcon fontSize="small" />
+              <Typography
+                variant="body2"
+                sx={{
+                  fontFamily: "Montserrat, sans-serif",
+                  paddingTop: 0.5,
+                  fontSize: 12,
+                }}
+              >
+                Buy safe, Be secure
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", gap: 1, paddingTop: 1 }}>
+              <Typography
+                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
+              >
+                Cookie Policy
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
+              >
+                Privacy
+              </Typography>
+              <Typography
+                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
+              >
+                Terms & Conditions
+              </Typography>
+            </Box>
+          </Box>
         </Box>
       </Grid>
     </Box>
