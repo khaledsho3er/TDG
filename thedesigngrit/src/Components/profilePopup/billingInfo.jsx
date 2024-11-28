@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 const BillingInfoPopup = () => {
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [cvv, setCvv] = useState("");
-  const [expiryMonth, setExpiryMonth] = useState("");
-  const [expiryYear, setExpiryYear] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
 
   const handleSave = () => {
     // Add your save billing information logic here
@@ -52,24 +51,16 @@ const BillingInfoPopup = () => {
             onChange={(e) => setCvv(e.target.value)}
           />
         </div>
-        <div className="billing-form-field">
+
+        <div className="billing-expiry-date">
           <label>Expiry Date</label>
-          <div className="billing-expiry-date">
-            <input
-              type="text"
-              variant="outlined"
-              value={expiryMonth}
-              onChange={(e) => setExpiryMonth(e.target.value)}
-              placeholder="MM"
-            />
-            <input
-              type="text"
-              variant="outlined"
-              value={expiryYear}
-              onChange={(e) => setExpiryYear(e.target.value)}
-              placeholder="YY"
-            />
-          </div>
+          <input
+            type="text"
+            variant="outlined"
+            value={expiryDate}
+            onChange={(e) => setExpiryDate(e.target.value)}
+            placeholder="MM/YY"
+          />
         </div>
       </div>
 

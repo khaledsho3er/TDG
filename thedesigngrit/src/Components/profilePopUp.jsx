@@ -8,6 +8,8 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import EditProfile from "./profilePopup/EditProfile";
 import ResetPasswordPopup from "./profilePopup/resetPassowrd";
 import BillingInfoPopup from "./profilePopup/billingInfo";
+import ShippingInfoPopup from "./profilePopup/Shipping";
+import OrdersPopUp from "./profilePopup/ordersPopup";
 
 function ProfilePopup({ open, onClose }) {
   // State for selected tab
@@ -27,10 +29,10 @@ function ProfilePopup({ open, onClose }) {
       title: "Billing Information",
       content: <BillingInfoPopup />,
     },
-    { title: "Orders", content: <div>View your orders here...</div> },
+    { title: "Orders", content: <OrdersPopUp /> },
     {
       title: "Shipping Address",
-      content: <div>Update your shipping address here...</div>,
+      content: <ShippingInfoPopup />,
     },
   ];
 
