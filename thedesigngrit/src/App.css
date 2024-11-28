@@ -328,6 +328,7 @@ h1.logo {
   align-items: center;
   width: 100%;
   font-family: Montserrat;
+  background-color: #ffffff;
 }
 
 .header-top {
@@ -341,9 +342,11 @@ h1.logo {
 }
 
 .logo img {
+  position: relative;
   width: 120px;
   height: 60px;
   padding: 35px 30px 10px 20px;
+  z-index: 2;
 }
 
 .logo span {
@@ -378,6 +381,7 @@ h1.logo {
   width: 100%;
   font-family: Montserrat;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
 }
 
 .category {
@@ -1302,6 +1306,7 @@ h1.logo {
     min-width: 100%;
   }
 }
+
 /* footer css */
 .logo-Footer img {
   width: 400px;
@@ -1322,3 +1327,607 @@ h1.logo {
   background-color: #eae3e4;
   width: 100%;
 }
+
+
+/* Job Description Page */
+.job-Page {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-job-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  height: 200px;
+  background-color: #6b7b58;
+}
+
+.Description {
+  padding: 50px;
+}
+
+.description-title {
+  text-align: center;
+}
+
+.description-title p {
+  font-family: Montserrat;
+}
+
+.description-content-1 {
+  font-family: Montserrat;
+  padding: 20px 40px;
+  margin: auto;
+}
+
+.description-content-1 h2 {
+  padding-left: 120px;
+  font-family: Horizon;
+}
+
+.description-content-1 p {
+  font-size: 17px;
+  padding-left: 120px;
+  padding-right: 150px;
+  line-height: 200%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-job-container {
+    flex-direction: column;
+    height: auto;
+    padding: 30px;
+  }
+
+  .description-content-1 h2,
+  .description-content-1 p {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-job-container {
+    text-align: center;
+    gap: 20px;
+  }
+
+  .Description {
+    padding: 30px;
+  }
+
+  .description-content-1 h2 {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .description-content-1 p {
+    padding: 0 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-job-container {
+    padding: 20px;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .Description {
+    padding: 20px;
+  }
+
+  .description-content-1 {
+    padding: 10px;
+  }
+
+  .description-content-1 h2 {
+    text-align: center;
+    padding: 0;
+  }
+
+  .description-content-1 p {
+    padding: 0 10px;
+    font-size: 14px;
+    line-height: 180%;
+  }
+}
+
+/*Job Form*/
+.job-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.job-form-card {
+  background: white;
+  padding: 3rem 5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 24px 24px 24px rgba(0, 0, 0, 0.08);
+}
+
+.job-form-title {
+  font-family: "Horizon", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.job-form-field {
+  margin-bottom: 1.5rem;
+}
+
+.job-form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+
+.job-form-field input,
+.job-form-field textarea {
+  width: 90%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+.job-form-field input::placeholder,
+.job-form-field textarea::placeholder {
+  color: #999;
+}
+
+.job-form-field input:focus,
+.job-form-field textarea:focus {
+  outline: none;
+  border-color: #6b7b58;
+}
+
+.job-form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.job-form-row .form-field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.job-upload-button {
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Vertically align icon and text */
+  justify-content: center; /* Center both elements */
+  gap: 8px; /* Space between the icon and text */
+  width: 95%;
+  color: white;
+  background-color: #2d2d2d; /* Blue background for the button */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: "Montserrat";
+  transition: background-color 0.2s ease;
+}
+
+.job-upload-button:hover {
+  background-color: #2d2d2d; /* Darker blue on hover */
+}
+
+.upload-icon {
+  margin: 0; /* Remove any default margins */
+  vertical-align: middle; /* Align the icon with the text */
+}
+
+.job-submit-button {
+  width: 95%;
+  padding: 0.75rem;
+  background: #2d2d2d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+  font-family: "Montserrat";
+}
+
+.job-submit-button:hover {
+  background: #454545;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.image-preview-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+  gap: 15px; /* Space between images */
+  margin-top: 15px;
+  font-family: Montserrat;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100px;
+  font-size: 10px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+  .job-form-card {
+    padding: 1.5rem;
+  }
+
+  .job-form-row {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/*Policies Page*/
+/* General Container */
+.policy-page {
+  display: flex;
+  flex-direction: column;
+}
+.terms-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  padding: 120px 0 120px 120px;
+}
+
+.sidebar-item {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 16px;
+  font-family: Horizon;
+  font-weight: bold;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 10px;
+  color: #a9a8a8;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-item.active {
+  font-weight: bold;
+  color: #2d2d2d;
+}
+/* Divider Line */
+.divider {
+  width: 1px; /* Line thickness */
+  background-color: #a9a8a8; /* Line color */
+  height: 90%; /* Ensure it takes the full height of the sidebar */
+}
+/* Content Section */
+.content {
+  width: 75%;
+  padding: 40px;
+  overflow-y: auto;
+  padding-right: 120px;
+  margin-top: 20px;
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.content h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: Horizon;
+}
+
+.content h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+}
+
+.content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+  font-family: Montserrat;
+}
+
+.content ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  font-family: Montserrat;
+}
+
+.content ul li {
+  margin-bottom: 8px;
+  font-family: Montserrat;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .terms-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .content {
+    width: 100%;
+    padding: 20px;
+  }
+}
+/* Custom Scrollbar */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #6b7b58;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #4e5b44;
+}
+
+/*Partners Appliaction Page*/
+.partner-page {
+  display: flex;
+  flex-direction: column;
+}
+.partner-Caption {
+  align-items: center;
+  padding: 120px;
+}
+.partner-Caption p {
+  font-size: 25px;
+  font-family: Montserrat;
+  font-weight: 200;
+  text-align: justify;
+}
+.partners-second-section {
+  align-items: center;
+  padding: 0 150px 80px 150px;
+}
+.partners-second-section h2 {
+  text-align: center;
+  padding: 30px;
+  font-size: 35px;
+}
+.partners-second-section ul li {
+  font-family: Montserrat;
+  font-size: 24px;
+  line-height: 200%;
+  margin-left: 30px;
+}
+
+/*COntact Page*/
+.Contact-Page {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  background-image: url("/public/Assets/contactUs.png"); /* Replace with your image URL */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content container */
+.content-container {
+  display: flex;
+  flex: 1;
+  height: 100px;
+  flex-direction: row;
+  padding-right: 250px;
+  padding-left: 250px;
+  padding-top: 30px;
+  padding-bottom: 100px;
+  resize: both;
+
+  backdrop-filter: blur(15px);
+}
+.Contant-caption {
+  flex: 1; /* Let the caption section take equal space */
+  color: #000;
+  padding: 50px 0px 50px 0;
+  margin: 100px;
+}
+
+.Contant-caption h3 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.Contant-caption p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #333;
+  text-shadow: 2px;
+  font-family: Montserrat;
+}
+.Contact-form {
+  flex: 1;
+  background: rgba(217, 216, 216, 0.5); /* Slightly transparent white */
+  backdrop-filter: blur(15px); /* Stronger blur for the form background */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  width: 400px; /* Set the exact width of the form */
+  height: auto; /* Keep the height responsive or define it */
+  margin: auto; /* Center the form horizontally */
+  max-width: 350px; /* Adjust base size */
+  padding: 1.2rem; /* Add internal spacing */
+}
+
+/* Form Inside the Contact-form */
+.Contact-form-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Fields */
+.contact-form-field {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat";
+  font-weight: 400;
+}
+
+.contact-form-field input,
+.contact-form-field textarea {
+  width: 90%;
+  padding: 0.75rem;
+  height: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: white;
+  font-family: "Montserrat";
+}
+
+.contact-form-field input::placeholder,
+.contact-form-field textarea::placeholder {
+  color: #999;
+}
+
+.contact-form-field input:focus,
+.contact-form-field textarea:focus {
+  outline: none;
+  border-color: #6b7b58;
+}
+
+/* Submit Button */
+.contact-submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #2d2d2d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+  font-family: "Montserrat";
+}
+
+.contact-submit-btn:hover {
+  background-color: #6b7b58;
+}
+/* Media Queries for Responsiveness */
+
+/* Tablet Screens */
+@media (max-width: 1024px) {
+  .content-container {
+    flex-direction: column;
+    padding: 20px 50px;
+  }
+
+  .Contant-caption {
+    margin: 20px 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .Contact-form {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  .Contact-Page {
+    position: relative;
+    width: 100%;
+    height: 150vh; /* Full viewport height */
+    background-image: url("/public/Assets/contactUs.png"); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 20px;
+  }
+
+  .Contant-caption h3 {
+    font-size: 1.5rem;
+  }
+
+  .Contant-caption p {
+    font-size: 1rem;
+  }
+
+  .Contact-form {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .contact-form-field input,
+  .contact-form-field textarea {
+    padding: 0.5rem;
+  }
+
+  .contact-submit-btn {
+    padding: 0.5rem;
+    font-size: 12px;
+  }
+
+
