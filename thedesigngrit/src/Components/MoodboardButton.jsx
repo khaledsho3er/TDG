@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, IconButton } from "@mui/material";
-import MessageIcon from "@mui/icons-material/Message"; // You can replace this icon as needed.
 import { FaPaintBrush } from "react-icons/fa";
 
 function StickedButton() {

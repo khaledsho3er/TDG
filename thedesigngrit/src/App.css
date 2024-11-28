@@ -239,7 +239,7 @@ h1.logo {
   margin-top: 10px;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #2d2d2d;
 }
 /* Media Queries for Responsiveness */
 
@@ -569,7 +569,7 @@ h1.logo {
 
 /* Button styling */
 .shop-button {
-  background: #8ba36f; /* Green button color */
+  background: #6b7b58; /* Green button color */
   color: white;
   text-decoration: none;
   padding: 10px 20px;
@@ -584,7 +584,7 @@ h1.logo {
 }
 
 .shop-button:hover {
-  background: #728d5c; /* Slightly darker green on hover */
+  background: #6b7b58; /* Slightly darker green on hover */
 }
 
 /*Conecpts Section*/
@@ -751,7 +751,7 @@ h1.logo {
 .concept-progress-fill {
   width: 40%; /* Adjust the filled progress */
   height: 100%;
-  background: green;
+  background: #6b7b58;
 }
 
 .concept-navigation {
@@ -1241,7 +1241,7 @@ h1.logo {
 }
 
 .product-price {
-  color: #333;
+  color: #2d2d2d;
   font-weight: 500;
   font-family: Montserrat;
 }
@@ -1269,7 +1269,7 @@ h1.logo {
 }
 
 .dot.active {
-  background-color: #333;
+  background-color: #2d2d2d;
 }
 
 .arrows {
@@ -1786,7 +1786,7 @@ textarea {
 .Contant-caption p {
   font-size: 1.2rem;
   line-height: 1.6;
-  color: #333;
+  color: #2d2d2d;
   text-shadow: 2px;
   font-family: Montserrat;
 }
@@ -1929,5 +1929,744 @@ textarea {
     padding: 0.5rem;
     font-size: 12px;
   }
+}
+/*Job Sent Appliaction PopUp*/
+/* Popup overlay to cover the entire screen */
+.Job-sent-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(15px); /* Stronger blur for the form background */
+}
 
+/* Popup container styling */
+.Job-sent-popup-container {
+  background: #b2b9a3; /* Light greenish background */
+  border-radius: 10px;
+  width: 600px;
+  text-align: center;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: slide-down 0.3s ease;
+}
 
+/* Popup heading */
+.Job-sent-popup-container h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2d2d2d;
+  margin: 20px 0;
+}
+
+/* Popup paragraph */
+.Job-sent-popup-container p {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: #2d2d2d;
+  font-family: Montserrat;
+  padding: 0 40px 0 40px;
+}
+
+/* Button styling */
+.Job-sent-popup-button {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 20px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+.Job-sent-popup-close-icon {
+  position: absolute;
+  align-items: end;
+}
+.Job-sent-popup-button:hover {
+  background: #171717;
+}
+
+.animated-mail-icon {
+  font-size: 50px;
+  color: #4b4b4b;
+  animation: mailSend 2s ease-in-out;
+}
+
+/* Animation for sending the mail */
+@keyframes mailSend {
+  0% {
+    transform: scale(1) translateY(0) translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) translateY(-30px) translateX(50px);
+  }
+  100% {
+    transform: scale(0) translateY(-60px) translateX(120px);
+    opacity: 0;
+  }
+}
+
+/* Popup icon styling */
+.Job-sent-popup-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+/* Animation for the popup */
+@keyframes slide-down {
+  from {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/*Popup window*/
+/* Overlay to darken the background */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(15px); /* Optional: Adds a blur effect */
+}
+
+/* Popup container styling */
+.popup-container {
+  position: relative;
+  width: 70%;
+  max-width: 900px;
+  height: 80%;
+  background: #efebe843; /* Fully opaque background for the popup */
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Separate background layer for opacity */
+.popup-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(239, 235, 232, 0.7); /* Semi-transparent background */
+  z-index: -1; /* Place it behind the content */
+  border-radius: 12px; /* Match the container's border radius */
+}
+
+/* Close Button */
+.popup-close-button {
+  position: absolute;
+  right: 10px;
+  font-size: 30px !important;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #2d2d2d;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* Left Side: Profile Form */
+.popup-left {
+  flex: 2; /* Left section takes up 2 parts of available space */
+  padding: 30px;
+}
+.popup-header {
+  display: flex;
+  justify-content: space-between; /* Spread title and avatar to edges */
+  align-items: center; /* Vertically align items */
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.popup-title {
+  font-size: 24px !important;
+  font-weight: bold !important;
+  font-family: Horizon, sans-serif !important;
+  margin: 0;
+}
+
+.popup-avatar-section {
+  display: flex;
+  align-items: center; /* Align the avatar vertically with the title */
+  justify-content: flex-end;
+}
+
+.popup-avatar {
+  width: 70px !important;
+  height: 70px !important;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+}
+
+.popup-form {
+  display: grid;
+  gap: 20px;
+  padding: 10px 40px 20px 40px;
+}
+.profile-form-field {
+}
+
+.profile-form-field label {
+  padding-bottom: 12px;
+  display: block;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+.popup-form-firstrow {
+  display: flex;
+  gap: 40px; /* Add space between the input fields */
+  margin-bottom: 0px; /* Add space below the row */
+}
+
+.popup-form-firstrow input {
+  flex: 1; /* Ensure both inputs take up equal width */
+  padding: 10px;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.popup-form-firstrow input:focus {
+  border-color: #6b7b58; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(107, 123, 88, 0.5);
+}
+
+.popup-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #2d2d2d;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: white;
+  font-family: "Montserrat", sans-serif;
+}
+
+.popup-form-full-width {
+  grid-column: span 2;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 140px; /* Add space between the input fields */
+  margin-bottom: 0px; /* Add space below the row */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.profile-popUpForm-btn-save {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 10px 50px 10px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+.profile-popUpForm-btn-cancel {
+  color: #2d2d2d;
+  border: 2px solid black;
+  background-color: transparent;
+  padding: 10px 50px 10px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+/* Right Side: Navigation */
+.popup-right {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reduces space between elements for a tighter alignment */
+  margin: auto;
+  align-items: flex-start; /* Align content (title and buttons) to the left */
+}
+/* Style for the selected tab button */
+.popup-right-button.selected {
+  font-weight: bold;
+}
+
+/* Style for the selected tab title */
+.popup-title.selected {
+  font-weight: bold;
+}
+.popup-right-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d2d2d;
+  margin-bottom: 20px;
+  font-family: Horizon;
+  align-self: stretch; /* Makes the title span the full width */
+}
+
+.popup-right-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #666;
+  text-transform: none;
+  font-size: 16px;
+  font-weight: 400;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 12px; /* Slightly larger padding for better button feel */
+  border-radius: 8px;
+  width: 100%; /* Ensures all buttons align with the title */
+}
+
+.popup-right-button:hover {
+  background-color: #6b7b584a;
+}
+
+.popup-divider {
+  border-left: 1px solid #2d2d2d;
+  height: 70%;
+  margin: auto;
+}
+/*Reset Password pop-up*/
+.reset-popup-buttons {
+  display: flex;
+  gap: 140px; /* Add space between the input fields */
+  margin-bottom: 0px; /* Add space below the row */
+  padding-left: 0px;
+}
+.reset-popup-form {
+  display: grid;
+  gap: 20px;
+  padding: 10px 40px 20px 40px;
+}
+.reset-form-field {
+  width: 80%;
+  margin: auto;
+}
+
+.reset-form-field label {
+  padding-bottom: 12px;
+  padding-top: 10px;
+  display: block;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+.reset-popup-form-firstrow {
+  display: flex;
+  gap: 40px; /* Add space between the input fields */
+  margin-bottom: 0px; /* Add space below the row */
+}
+
+.reset-popup-form-firstrow input {
+  flex: 1; /* Ensure both inputs take up equal width */
+  padding: 10px;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.reset-popup-form-firstrow input:focus {
+  border-color: #6b7b58; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(107, 123, 88, 0.5);
+}
+
+.reset-popup-form input {
+  width: 80% !important;
+  padding: 0.75rem;
+  border: 1px solid #2d2d2d;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: rgb(216, 9, 9);
+  font-family: "Montserrat", sans-serif;
+}
+
+.reset-popup-form-full-width {
+  grid-column: span 2;
+}
+
+.reset-popup-buttons {
+  display: flex;
+  margin: auto;
+  padding-top: 40px;
+  margin-left: 20px;
+}
+.reset-popUpForm-btn-save {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 10px 50px 10px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+.reset-popUpForm-btn-cancel {
+  color: #2d2d2d;
+  border: 2px solid black;
+  background-color: transparent;
+  padding: 10px 50px 10px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+
+/*BIlling INfo popup*/
+
+.billing-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 50vh; /* Full viewport height for vertical centering */
+  padding: 20px; /* Add padding for better spacing */
+}
+
+.billing-form-field {
+  width: 80%;
+  margin: 16px 0; /* Add vertical spacing between fields */
+}
+
+.billing-form-field label {
+  padding-bottom: 8px;
+  display: block;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+
+.billing-form-field input {
+  width: 100%; /* Full width of the form field container */
+  padding: 0.75rem;
+  border: 1px solid #2d2d2d;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+.billing-form-field-row {
+  display: flex;
+  gap: 20px; /* Space between CVV and Expiry Date fields */
+  justify-content: space-between; /* Ensure fields are spaced out evenly */
+  width: 80%; /* Match the form width */
+  margin-top: 16px;
+}
+
+.billing-form-field-cvv,
+.billing-expiry-date {
+  width: 40%; /* Set width of CVV and Expiry Date fields */
+  display: flex;
+  flex-direction: column;
+}
+
+.billing-form-field-cvv label,
+.billing-expiry-date label {
+  margin-bottom: 8px; /* Space between label and input */
+  font-size: 14px;
+  font-family: Montserrat;
+}
+
+.billing-form-field-cvv input,
+.billing-expiry-date input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #2d2d2d;
+  border-radius: 4px;
+}
+
+/*Shipping popUp Window*/
+.shipping-info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 50vh; /* Full viewport height for vertical centering */
+  padding: 20px; /* Add padding for better spacing */
+}
+.form-field {
+  width: 80%;
+  font-family: "Montserrat";
+  margin: auto;
+  padding: 15px;
+}
+
+.form-field label {
+  padding-bottom: 8px;
+  display: block;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat";
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #2d2d2d;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+.form-field select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #2d2d2d;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat";
+}
+.shipping-form-field-row {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 16px;
+  margin: auto;
+}
+
+.Shipping-form-field-postal,
+.Shipping-city {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Shipping-form-field-postal label,
+.Shipping-city label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-family: Montserrat;
+}
+
+.Shipping-form-field-postal input,
+.Shipping-city input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #2d2d2d;
+  border-radius: 8px;
+  height: 26px;
+}
+
+.form-buttons {
+  text-align: center;
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+}
+
+.submit-btn {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 10px 50px 10px 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+/*Orders popup*/
+.orders-popup {
+  padding: 20px;
+  width: 100%;
+  max-height: 500px; /* Set the maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Custom Scrollbar */
+.orders-popup::-webkit-scrollbar {
+  width: 8px;
+}
+
+.orders-popup::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.orders-popup::-webkit-scrollbar-thumb {
+  background: #6b7b58;
+  border-radius: 10px;
+}
+
+.orders-popup::-webkit-scrollbar-thumb:hover {
+  background: #4e5b44;
+}
+.order-card {
+  border: 1px solid #e1e1e1;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #6c7c59;
+  position: relative; /* No absolute positioning required */
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #daded6;
+}
+
+.arrow-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #daded6;
+}
+
+.order-dropdown {
+  margin-top: 10px; /* Adds space between the dropdown and the header */
+  background: #e2dedd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  z-index: 1;
+}
+/* Order Info Section Style */
+.order-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Montserrat;
+  margin-bottom: 15px; /* Space between info and progress bar */
+}
+
+.order-info-headers {
+  font-size: 16px;
+  flex-grow: 1;
+}
+
+.order-info h3 {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.order-info p {
+  margin: 5px 0;
+  color: gray;
+}
+
+.order-info img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* Circular Image */
+  object-fit: cover; /* Ensures proper image scaling */
+}
+
+/* Progress Timeline Container */
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+  width: 100%;
+}
+
+/* Progress Step Styles */
+.progress-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33.3%; /* 3 steps, evenly spaced */
+  text-align: center;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #d7e3d2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b6b47;
+}
+
+.progress-step.completed .step-circle {
+  background-color: #4b6b47;
+  color: white;
+}
+
+.step-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #4b6b47;
+}
+
+.progress-container::before {
+  content: "";
+  position: absolute;
+  top: 20px; /* Align with the step circles */
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #d7e3d2;
+}
+
+.progress-step.completed ~ .progress-step::before {
+  background-color: #4b6b47;
+}
+
+.progress-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: -50%;
+  width: 100%;
+  height: 4px;
+  background-color: #d7e3d2;
+}
+
+.progress-step.completed:not(:last-child)::after {
+  background-color: #4b6b47;
+}

@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, InputBase, IconButton, Avatar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FloatingButton from "./ChatButton";
+import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
 
 function Header() {
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const handlePopupToggle = () => {
+    setPopupOpen(!popupOpen);
+  };
+
   return (
     <Box
       sx={{
@@ -50,7 +57,13 @@ function Header() {
                 Egypt / EN
               </Typography>
             </Box>
-            <Avatar className="avatar">K</Avatar>
+            <Avatar
+              className="avatar"
+              onClick={handlePopupToggle}
+              sx={{ cursor: "pointer" }}
+            >
+              K
+            </Avatar>
           </Box>
         </Box>
       </Box>
@@ -73,6 +86,7 @@ function Header() {
       </Box>
       <FloatingButton />
       <Stickedbutton />
+      <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
-
+import ApplicationSentPopup from "./applicationSentPopUp";
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -13,6 +13,7 @@ const ApplicationForm = () => {
     notes: "",
     resume: null,
   });
+  const [isPopupVisible, setIsPopupVisible] = useState(false); // Control popup visibility
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +33,10 @@ const ApplicationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    setIsPopupVisible(true); // Show popup on form submission
+  };
+  const closePopup = () => {
+    setIsPopupVisible(false); // Close the popup
   };
 
   return (
@@ -158,6 +163,7 @@ const ApplicationForm = () => {
           </button>
         </form>
       </div>
+      <ApplicationSentPopup show={isPopupVisible} closePopup={closePopup} />
     </div>
   );
 };
