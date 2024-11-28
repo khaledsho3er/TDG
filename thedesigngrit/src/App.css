@@ -1307,6 +1307,28 @@ h1.logo {
   }
 }
 
+/* footer css */
+.logo-Footer img {
+  width: 400px;
+  height: 200px;
+  margin-left: 30px;
+}
+.subscribe-contatiner {
+  margin-left: 50px;
+  margin-top: 30px;
+}
+
+.Textcontainer {
+  margin-left: 70px;
+  margin-top: 100px;
+}
+
+.footer-container {
+  background-color: #eae3e4;
+  width: 100%;
+}
+
+
 /* Job Description Page */
 .job-Page {
   display: flex;
@@ -1907,4 +1929,5 @@ textarea {
     padding: 0.5rem;
     font-size: 12px;
   }
-}
+
+
