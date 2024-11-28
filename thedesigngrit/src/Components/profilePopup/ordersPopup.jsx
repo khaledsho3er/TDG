@@ -57,11 +57,11 @@ const OrdersPopUp = () => {
     setExpandedOrder(expandedOrder === index ? null : index);
   };
 
-  const calculateProgress = (timeline) => {
-    const totalSteps = timeline.length;
-    const completedSteps = timeline.filter((step) => step.completed).length;
-    return (completedSteps / totalSteps) * 100;
-  };
+  // const calculateProgress = (timeline) => {
+  //   const totalSteps = timeline.length;
+  //   const completedSteps = timeline.filter((step) => step.completed).length;
+  //   return (completedSteps / totalSteps) * 100;
+  // };
 
   return (
     <div className="orders-popup">
