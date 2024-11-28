@@ -6,6 +6,7 @@ import SustainabilitySection from "../Components/home/Sustainability";
 import { Box } from "@mui/material";
 import PartnersSection from "../Components/home/partners";
 import ProductSlider from "../Components/home/bestSeller";
+import Footer from "../Components/Footer";
 function Home() {
   return (
     <div className="home">
@@ -51,6 +52,11 @@ function Home() {
       {/*Vendor section*/}
       <Box>
         <PartnersSection />
+      </Box>
+
+      {/*Footer*/}
+      <Box>
+        <Footer />
       </Box>
     </div>
   );
