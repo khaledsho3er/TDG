@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../Components/navBar";
 import ApplicationForm from "../Components/JobDesc/jobForm";
 import { Box } from "@mui/material";
+import Footer from "../Components/Footer";
 function JobDesc() {
   return (
     <Box className="job-Page">
@@ -127,6 +128,7 @@ function JobDesc() {
         </Box>
         <ApplicationForm />
       </Box>
+      <Footer />
     </Box>
   );
 }

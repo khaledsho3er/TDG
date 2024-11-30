@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box } from "@mui/material";
 import NavBar from "../Components/navBar";
 import HeroAbout from "../Components/About/heroAbout";
+import Footer from "../Components/Footer";
 function CustomerPolicy() {
   const [selectedSection, setSelectedSection] = useState(
     "Full Terms of Service Agreement"
@@ -110,6 +111,7 @@ function CustomerPolicy() {
         {/* Content Section */}
         <div className="content">{sections[selectedSection]}</div>
       </div>
+      <Footer />
     </Box>
   );
 }

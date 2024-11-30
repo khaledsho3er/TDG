@@ -6,7 +6,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Link,
   Grid,
 } from "@mui/material";
 import { Facebook, Instagram } from "@mui/icons-material";
