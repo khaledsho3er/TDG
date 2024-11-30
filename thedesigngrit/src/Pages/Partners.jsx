@@ -3,6 +3,7 @@ import NavBar from "../Components/navBar";
 import HeroAbout from "../Components/About/heroAbout";
 import PartnerApplicationForm from "../Components/partnerApplication";
 import { Box } from "@mui/material";
+import Footer from "../Components/Footer";
 function PartnersApplication() {
   return (
     <Box className="Partner-Page">
@@ -56,6 +57,7 @@ function PartnersApplication() {
         </ul>
       </Box>
       <PartnerApplicationForm />
+      <Footer />
     </Box>
   );
 }
