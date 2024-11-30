@@ -1328,7 +1328,6 @@ h1.logo {
   width: 100%;
 }
 
-
 /* Job Description Page */
 .job-Page {
   display: flex;
@@ -1929,5 +1928,4 @@ textarea {
     padding: 0.5rem;
     font-size: 12px;
   }
-
-
+}

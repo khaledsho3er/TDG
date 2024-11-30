@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "DUE ANCORE",
+    "description": "B\\STEAK - Stainless steel steak knife",
+    "price": 300,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 2,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product2.jpg"
+  },
+  {
+    "id": 3,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product2.jpg"
+  },
+  {
+    "id": 4,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product2.jpg"
+  }
+]
