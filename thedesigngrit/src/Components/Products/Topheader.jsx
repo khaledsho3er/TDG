@@ -33,7 +33,8 @@ function PageDicription() {
         flexDirection: "column",
         width: "100%",
         background: "#6B7B58",
-        padding: 5,
+        paddingTop: "20px",
+        paddingBottom: "20px",
       }}
     >
       <Typography
@@ -53,7 +54,7 @@ function PageDicription() {
           fontSize: "12px",
           color: "#EFEBE8",
           paddingLeft: 13,
-          paddingRight: 40,
+          paddingRight: 20,
           display: "flex",
           lineHeight: "1.5", // Adjust line height for better spacing
         }}

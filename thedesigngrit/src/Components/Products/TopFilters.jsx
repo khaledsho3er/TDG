@@ -27,7 +27,7 @@ const TopFilter = () => {
       }}
     >
       {/* Toggle Buttons */}
-      <Box sx={{ display: "flex", gap: 3, paddingRight: 30 }}>
+      <Box sx={{ display: "flex", gap: 3, paddingRight: 60 }}>
         <Button
           variant="outlined"
           sx={{
@@ -68,7 +68,7 @@ const TopFilter = () => {
         </Button>
       </Box>
 
-      <Typography
+      {/* <Typography
         sx={{
           fontFamily: "Montserrat, sans-serif",
           fontSize: "13px",
@@ -77,7 +77,7 @@ const TopFilter = () => {
         }}
       >
         Products: <strong>7,251</strong>
-      </Typography>
+      </Typography> */}
 
       {/* Sort By and Select */}
       <Box

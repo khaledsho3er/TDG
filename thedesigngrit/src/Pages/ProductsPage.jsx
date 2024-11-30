@@ -12,7 +12,7 @@ function ProductsPage() {
     <Box>
       <Header />
       <PageDicription />
-      <Box sx={{ display: "flex", justifyContent: "flex-end", padding: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter />
       </Box>
       <Box sx={{ display: "flex" }}>
