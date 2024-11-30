@@ -1328,7 +1328,6 @@ h1.logo {
   width: 100%;
 }
 
-
 /* Job Description Page */
 .job-Page {
   display: flex;
@@ -1930,6 +1929,7 @@ textarea {
     font-size: 12px;
   }
 }
+
 /*Job Sent Appliaction PopUp*/
 /* Popup overlay to cover the entire screen */
 .Job-sent-popup-overlay {
@@ -2670,3 +2670,4 @@ textarea {
 .progress-step.completed:not(:last-child)::after {
   background-color: #4b6b47;
 }
+
