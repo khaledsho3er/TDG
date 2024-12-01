@@ -39,7 +39,6 @@ function PageDescription() {
          We’re dedicated to being your trusted destination for premium furniture.....
       `,
     },
-    // Add more paths and descriptions as needed
   };
 
   useEffect(() => {
