@@ -10,6 +10,8 @@ import TermsOfService from "./Pages/Policy";
 import PartnersApplication from "./Pages/Partners";
 import ContactUs from "./Pages/ContactUs";
 import ProductsPage from "./Pages/ProductsPage";
+import Vendorspage from "./Pages/Vendorspage";
+import PageDescription from "./Components/Topheader";
 function App() {
   return (
     <Router>
@@ -24,6 +26,9 @@ function App() {
         <Route exact path="/partners" Component={PartnersApplication} />
         <Route exact path="/contactus" Component={ContactUs} />
         <Route exact path="/ProductsPage" Component={ProductsPage} />
+        <Route exact path="/Vendors" Component={Vendorspage} />
+        <Route path="/" element={<PageDescription />} />
+        <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
   );
