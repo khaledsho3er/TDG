@@ -19,37 +19,37 @@ const ShopByCategory = () => {
       title: "Furniture",
       image: "Assets/furniture.jpg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
     {
       title: "Bathroom",
       image: "Assets/bathroom.jpeg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
     {
       title: "Kitchen",
       image: "Assets/kitchen.jpg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
     {
       title: "Lighting",
       image: "Assets/lighting.jpg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
     {
       title: "Home Decor",
       image: "Assets/homedecor.jpg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
     {
       title: "Outdoor",
       image: "Assets/outdoor.jpg",
       buttonText: "Shop Products",
-      link: "#",
+      link: "/products",
     },
   ];
 

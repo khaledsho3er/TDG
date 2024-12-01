@@ -6,7 +6,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
-
+import { Link } from "react-router-dom";
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
 
@@ -27,9 +27,11 @@ function Header() {
       <Box className="header">
         <Box className="header-top">
           {/* Logo */}
-          <Typography className="logo" variant="h4">
-            <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
-          </Typography>
+          <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
+            <Typography className="logo" variant="h4">
+              <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
+            </Typography>
+          </Link>
 
           {/* Search */}
           <Box className="search-bar">
