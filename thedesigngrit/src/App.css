@@ -1929,6 +1929,7 @@ textarea {
     font-size: 12px;
   }
 }
+
 /*Job Sent Appliaction PopUp*/
 /* Popup overlay to cover the entire screen */
 .Job-sent-popup-overlay {
@@ -2671,6 +2672,7 @@ textarea {
 .progress-step.completed:not(:last-child)::after {
   background-color: #4b6b47;
 }
+
 /*My cart Page*/
 /* General styles */
 
@@ -2913,3 +2915,5 @@ textarea {
 .payment-icons img:hover {
   transform: scale(1.1);
 }
+
+

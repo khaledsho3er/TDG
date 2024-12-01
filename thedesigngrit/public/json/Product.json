@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "title": "DUE ANCORE",
+    "description": "B\\STEAK - Stainless steel steak knife",
+    "price": 300,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 2,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 3,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 5,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 6,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 7,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 8,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 9,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 10,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 11,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 12,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 13,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 14,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 14,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  },
+  {
+    "id": 14,
+    "title": "LUXURY CHAIR",
+    "description": "Modern wooden chair with cushion",
+    "price": 450,
+    "image": "/Assets/Products/product1.jpg"
+  }
+]
