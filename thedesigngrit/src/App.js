@@ -12,6 +12,7 @@ import ContactUs from "./Pages/ContactUs";
 import ProductsPage from "./Pages/ProductsPage";
 import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
+import VendorProfile from "./Pages/VendorProfile";
 function App() {
   return (
     <Router>
@@ -27,7 +28,7 @@ function App() {
         <Route exact path="/contactus" Component={ContactUs} />
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
-        <Route path="/" element={<PageDescription />} />
+        <Route exact path="/VendorProfile" Component={VendorProfile} />
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
