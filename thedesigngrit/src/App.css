@@ -2916,4 +2916,454 @@ textarea {
   transform: scale(1.1);
 }
 
+/*ProductPAge */
 
+/* Main Container */
+.product-page {
+  margin: 0 auto;
+}
+
+/* Grid Layout */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 120px;
+  padding: 120px 170px 120px 180px;
+}
+
+/* Product Image Section */
+.product-image-container {
+  position: relative;
+}
+
+.product-main-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.thumbnail-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.thumbnail-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+/* Product Details Section */
+.product-details {
+  flex-direction: column;
+}
+.product-brand {
+  font-size: 18px;
+  font-weight: normal;
+  font-family: Montserrat;
+  color: #777;
+}
+.product-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-rating {
+  color: #777;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+}
+
+.product-price {
+  font-size: 24px !important;
+  font-weight: bold;
+  color: #2d2d2d;
+  margin-bottom: 20px;
+}
+/* Color Selector Section */
+.color-selector {
+  align-items: center;
+}
+
+.color-selector-label {
+  font-size: 12px;
+  margin-right: 10px;
+  padding-bottom: 12px;
+  font-family: Montserrat;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+}
+
+.color-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  font-family: Montserrat;
+}
+
+.color-circle:hover {
+  border-color: #4b6b47;
+}
+
+.color-circle.selected {
+  border-color: #4b6b47;
+  font-family: Montserrat;
+}
+/* Size Selector Section */
+.size-selector {
+  display: flex; /* Flexbox for alignment */
+  justify-content: flex-start; /* Space between size buttons and BIMCAD button */
+  align-items: center; /* Vertically align buttons */
+  margin-bottom: 20px; /* Add space below the size selector */
+  padding-right: 120px;
+  flex-direction: row;
+}
+
+.size-selector-label {
+  font-size: 12px;
+  margin-right: 10px;
+  padding-bottom: 12px;
+  font-family: Montserrat;
+}
+.size-options {
+  display: flex;
+  gap: 10px;
+}
+
+.size-button {
+  padding: 10px 20px;
+  border: 2px solid #ffffff;
+  background-color: #2d2d2d;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  font-weight: normal;
+  color: #ffffff;
+  transition: all 0.3s;
+  font-family: Montserrat;
+}
+
+.size-button:hover {
+  border-color: #4b6b47;
+  background-color: #f9f9f9;
+  color: #2d2d2d;
+}
+
+.size-button.selected {
+  border-color: #4b6b47;
+  background-color: #6c7c59;
+  color: white;
+}
+.bimcad-button {
+  padding: 10px 20px;
+  background-color: transparent;
+  margin: 20px;
+  color: #2d2d2d;
+  border: 1px solid #2d2d2d;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.bimcad-button:hover {
+  background-color: #2d2d2d;
+  color: #eae3e4;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  justify-content: space-around;
+}
+
+.action-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-primary {
+  background-color: #2d2d2d;
+  color: white;
+  border: none;
+  width: 100%;
+}
+
+.button-secondary {
+  background-color: white;
+  color: #2d2d2d;
+  border: 1px solid #2d2d2d;
+  width: 100%;
+}
+
+/* Collapsible Section */
+/* Collapsible Sections Container */
+.collapsible-container {
+  display: flex;
+  flex-direction: column; /* Stack collapsible sections vertically */
+  align-items: flex-start; /* Align sections to the left */
+  margin-top: 20px; /* Add space between image and sections */
+  width: 60%; /* Occupy full container width */
+}
+
+/* Individual Collapsible Section */
+.collapsible-section {
+  margin-bottom: 15px; /* Add spacing between sections */
+  width: 70%; /* Allow sections to take full width */
+  border-top: 2px solid #eaeaea; /* Optional: Separator between sections */
+  font-family: Montserrat;
+  margin-left: 150px;
+  font-size: 30px !important;
+}
+
+.collapsible-header {
+  font-size: 14px;
+  font-weight: bold;
+  color: #2d2d2d;
+  cursor: pointer;
+  padding: 10px 0;
+  font-family: Horizon;
+}
+
+.collapsible-content {
+  font-size: 12px;
+  color: #4b4b4b;
+  line-height: 1.5;
+  padding: 5px 0;
+  display: none; /* Initially hidden */
+}
+
+.collapsible-section.open .collapsible-content {
+  display: block; /* Display content when the section is expanded */
+}
+.Product-overview-title {
+  font-family: Montserrat;
+  font-weight: bold;
+}
+.product-details p {
+  font-size: 14px;
+}
+
+.product-details .label {
+  margin-right: 5px; /* Space between the word before ':' and the text after */
+  font-weight: bold; /* Optional: makes the label bold */
+}
+.BIMCAD-Btn {
+  background-color: transparent;
+  border: 1px solid #2d2d2d;
+  color: #2d2d2d;
+  border-radius: 15px;
+  width: 40%;
+  text-align: center;
+}
+.span-container {
+  display: flex;
+  gap: 10px; /* Space between each span */
+  flex-wrap: wrap; /* Allow items to wrap if space is tight */
+}
+
+.span-container span {
+  padding: 5px 10px;
+  border: 2px solid #4b6b47; /* Border color */
+  border-radius: 20px; /* Round the corners */
+  text-decoration: underline; /* Underline the text */
+  font-size: 14px;
+  font-family: Montserrat, sans-serif; /* Optional: Apply a specific font */
+  color: #2d2d2d; /* Text color */
+  transition: all 0.3s; /* Smooth transition for hover effects */
+}
+
+.span-container span:hover {
+  background-color: #f9f9f9; /* Change background color on hover */
+  border-color: #6c7c59; /* Change border color on hover */
+  color: #4b6b47; /* Change text color on hover */
+}
+.page-container {
+  display: flex;
+  flex-direction: row; /* Arrange items in a row */
+  align-items: flex-start; /* Align items at the top */
+  justify-content: space-between; /* Space between collapsible sections and right-side div */
+  gap: 20px; /* Add space between the two sections */
+}
+
+.right-side-content {
+  width: 50%; /* Occupy 35% of the page */
+  padding: 20px;
+  font-family: Montserrat, sans-serif;
+  color: #2d2d2d;
+}
+.Products-Materials {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.Products-Materials h4 {
+  font-size: 24px;
+}
+.Products-Materials ul li {
+  font-size: 20px;
+  font-family: Montserrat;
+  color: #2d2d2d;
+  text-align: left;
+  font-weight: 400;
+}
+.Products-Materials span {
+  color: #777;
+  font-size: 12px;
+}
+.Product-info {
+  display: flex;
+  flex-direction: column;
+}
+.Product-info h4 {
+  font-size: 24px;
+}
+.Product-info span {
+  color: #777;
+  margin: -20px 0;
+  font-size: 12px;
+  padding-right: 120px;
+}
+
+/*Materail Section info*/
+/* Container for the entire collapsible section */
+.material-collapsible-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Title styling */
+.material-collapsible-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+/* Description styling */
+.material-collapsible-description {
+  font-size: 14px;
+  color: #6c6c6c;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Box containing all sections */
+.material-collapsible-box {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Individual section styling */
+.material-collapsible-section {
+  border-bottom: 1px solid #ddd;
+}
+
+.material-collapsible-section:last-child {
+  border-bottom: none;
+}
+
+/* Header of each section */
+.material-collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.material-collapsible-header:hover {
+  background-color: #f9f9f9;
+}
+
+/* Plus/Minus icon */
+.material-collapsible-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Hidden content styling */
+.material-collapsible-content {
+  padding: 15px 20px;
+  font-size: 14px;
+  color: #4b4b4b;
+  background-color: #f9f9f9;
+  line-height: 1.5;
+}
+
+/* Reviews Section */
+.reviews-section {
+  margin-top: 30px;
+}
+
+.review-card {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.review-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.review-rating {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.review-text {
+  color: #777;
+}
+
+/* Related Products Section */
+.related-products {
+  margin-top: 30px;
+}
+
+.related-product-card {
+  padding: 10px;
+  text-align: center;
+}
+
+.related-product-image {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.related-product-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.related-product-price {
+  color: #777;
+}

@@ -11,7 +11,7 @@ import PartnersApplication from "./Pages/Partners";
 import ContactUs from "./Pages/ContactUs";
 import ShoppingCart from "./Pages/ShoppingCart";
 import ProductsPage from "./Pages/ProductsPage";
-
+import ProductPage from "./Pages/ProductPage";
 function App() {
   return (
     <Router>
@@ -27,6 +27,7 @@ function App() {
         <Route exact path="/contactus" Component={ContactUs} />
         <Route exact path="/mycart" Component={ShoppingCart} />
         <Route exact path="/products" Component={ProductsPage} />
+        <Route exact path="/product" Component={ProductPage} />
       </Routes>
     </Router>
   );
