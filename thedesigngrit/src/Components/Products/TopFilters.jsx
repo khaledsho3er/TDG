@@ -6,7 +6,6 @@ import {
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";

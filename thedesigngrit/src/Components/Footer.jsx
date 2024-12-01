@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Facebook, Instagram } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 function Footer() {
   return (
@@ -25,9 +26,11 @@ function Footer() {
       <Grid container spacing={10}>
         {/* Logo and Newsletter Section */}
         <Grid item xs={3} md={5}>
-          <Typography className="logo-Footer" variant="h4" sx={{ mb: 2 }}>
-            <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
-          </Typography>
+          <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
+            <Typography className="logo-Footer" variant="h4" sx={{ mb: 2 }}>
+              <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
+            </Typography>
+          </Link>
 
           <Box
             className="subscribe-container"
@@ -120,10 +123,24 @@ function Footer() {
               >
                 COMPANY
               </Typography>
-              <Typography>About Us</Typography>
-              <Typography>Contact Us</Typography>
-              <Typography>Careers</Typography>
-
+              <Link
+                to="/aboutus"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>About Us</Typography>
+              </Link>
+              <Link
+                to="/contactus"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Contact Us</Typography>
+              </Link>
+              <Link
+                to="/careers"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Careers</Typography>
+              </Link>
               <Box sx={{ mt: 4 }}>
                 <Typography
                   variant="h6"
@@ -137,8 +154,18 @@ function Footer() {
                 >
                   PARTNERS
                 </Typography>
-                <Typography>Join Us</Typography>
-                <Typography>Support</Typography>
+                <Link
+                  to="/partners"
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Join Us</Typography>
+                </Link>
+                <Link
+                  to="/contactus"
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Support</Typography>
+                </Link>
               </Box>
             </Grid>
 
@@ -157,8 +184,18 @@ function Footer() {
                 CUSTOMER SERVICE
               </Typography>
               <Typography>FAQs</Typography>
-              <Typography>Return & Exchange / Policy</Typography>
-              <Typography>Shipping Information / Policy</Typography>
+              <Link
+                to="/policy"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Return & Exchange / Policy</Typography>
+              </Link>
+              <Link
+                to="/policy"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Shipping Information / Policy</Typography>
+              </Link>
               <Typography>Track Your Order</Typography>
 
               <Box sx={{ mt: 4 }}>
@@ -174,8 +211,18 @@ function Footer() {
                 >
                   POLICIES & TERMS
                 </Typography>
-                <Typography>Privacy Policy</Typography>
-                <Typography>Terms of Use</Typography>
+                <Link
+                  to="/policy"
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Privacy Policy</Typography>
+                </Link>
+                <Link
+                  to="/policy"
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Terms of Use</Typography>
+                </Link>
               </Box>
             </Grid>
 
