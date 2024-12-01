@@ -39,11 +39,18 @@ const ProductPage = () => {
   };
 
   return (
-    <Box sx={{ paddingTop: "20px", paddingLeft: "30px" }}>
+    <Box
+      sx={{
+        padding: { xs: "20px", sm: "30px", md: "50px 70px" }, // Responsive padding
+        maxWidth: "1200px", // Limit max width of the container
+        margin: "0 auto", // Center content horizontally
+        gap: 1,
+      }}
+    >
       {/* Grid Layout for Product Cards */}
       <Grid
         container
-        spacing={2} // You can adjust the spacing between cards here
+        spacing={{ xs: 2, sm: 3, md: 1 }} // Responsive spacing between items
         sx={{
           display: "flex",
           justifyContent: "flex-start",
@@ -65,8 +72,8 @@ const ProductPage = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            marginTop: 4,
-            marginBottom: 2,
+            marginTop: { xs: 2, sm: 4 }, // Responsive margin-top
+            marginBottom: { xs: 1, sm: 2 }, // Responsive margin-bottom
           }}
         >
           <Pagination

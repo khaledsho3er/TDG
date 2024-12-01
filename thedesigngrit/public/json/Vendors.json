@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "logo": "/Assets/Vendors/Kabani/kabany-logo.png",
+    "products": [
+      "/Assets/Vendors/Kabani/kabany-product1.png",
+      "/Assets/Vendors/Kabani/kabany-product2.png",
+      "/Assets/Vendors/Kabani/kabany-product3.png",
+      "/Assets/Vendors/Kabani/kabany-product4.png"
+    ],
+    "name": "Kabbani"
+  },
+  {
+    "id": 2,
+    "logo": "Assets/Vendors/Istkbal/istikbal-logo.png",
+    "products": [
+      "https://example.com/product5.jpg",
+      "https://example.com/product6.jpg",
+      "https://example.com/product7.jpg",
+      "https://example.com/product8.jpg"
+    ],
+    "name": "Istkbal"
+  },
+  {
+    "id": 2,
+    "logo": "Assets/Vendors/Istkbal/istikbal-logo.png",
+    "products": [
+      "https://example.com/product5.jpg",
+      "https://example.com/product6.jpg",
+      "https://example.com/product7.jpg",
+      "https://example.com/product8.jpg"
+    ],
+    "name": "Istkbal"
+  },
+  {
+    "id": 1,
+    "logo": "/Assets/Vendors/Kabani/kabany-logo.png",
+    "products": [
+      "/Assets/Vendors/Kabani/kabany-product1.png",
+      "/Assets/Vendors/Kabani/kabany-product2.png",
+      "/Assets/Vendors/Kabani/kabany-product3.png",
+      "/Assets/Vendors/Kabani/kabany-product4.png"
+    ],
+    "name": "Kabbani"
+  }
+]
