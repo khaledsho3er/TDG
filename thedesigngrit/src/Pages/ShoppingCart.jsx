@@ -1,35 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Components/navBar";
+import Footer from "../Components/Footer";
+import PaymentIcons from "../Components/paymentsIcons";
 import { Box, Typography, Button } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
-import Footer from "../Components/Footer";
-// Products Data
-const products = [
-  {
-    id: 1,
-    brand: "Assets/PartnersLogos/istikbal.png",
-    name: "2 FABRIC SOFA",
-    color: "Beige",
-    size: "36 x 34 x 32",
-    code: "1234544572KM",
-    image: "Assets/sofabrown.jpg",
-    unitPrice: 32000,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    brand: "Assets/PartnersLogos/istikbal.png",
-    name: "BATH TUB CERAMIC",
-    color: "Beige",
-    size: "36 x 34 x 32",
-    code: "1234544572KM",
-    image: "Assets/sofabrown.jpg",
-    unitPrice: 32000,
-    quantity: 1,
-  },
-];
 
 function ShoppingCart() {
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />;
+
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      brand: "Assets/PartnersLogos/istikbal.png",
+      name: "2 FABRIC SOFA",
+      color: "Beige",
+      size: "36 x 34 x 32",
+      code: "1234544572KM",
+      image: "Assets/sofabrown.jpg",
+      unitPrice: 32000,
+      quantity: 1,
+    },
+    {
+      id: 2,
+      brand: "Assets/PartnersLogos/istikbal.png",
+      name: "BATH TUB CERAMIC",
+      color: "Beige",
+      size: "36 x 34 x 32",
+      code: "1234544572KM",
+      image: "Assets/sofabrown.jpg",
+      unitPrice: 32000,
+      quantity: 1,
+    },
+  ]);
+
+  // Update quantity for a product
+  const handleQuantityChange = (id, increment) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id
+          ? {
+              ...product,
+              quantity: Math.max(1, product.quantity + increment), // Ensure quantity is at least 1
+            }
+          : product
+      )
+    );
+  };
+
+  // Delete product from the cart
+  const handleDeleteProduct = (id) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
+  };
+
   return (
     <div className="Shopping-cart">
       <Header />
@@ -77,19 +104,31 @@ function ShoppingCart() {
               <Typography className="unit-price">
                 {product.unitPrice.toLocaleString()} LE
               </Typography>
-              <div className="quantity">
-                <Button>-</Button>
-                <Typography>{product.quantity}</Typography>
-                <Button>+</Button>
-              </div>
+              <Box className="quantity">
+                <Button
+                  onClick={() => handleQuantityChange(product.id, -1)}
+                  className="quantity-button"
+                >
+                  -
+                </Button>
+                <Typography className="quantity">{product.quantity}</Typography>
+                <Button
+                  onClick={() => handleQuantityChange(product.id, 1)}
+                  className="quantity-button"
+                >
+                  +
+                </Button>
+              </Box>
               <Box className="price-container">
                 <Typography className="price">
                   {(product.unitPrice * product.quantity).toLocaleString()} LE
                 </Typography>
-                {/* Delete Icon Below the Price */}
               </Box>
               <Box className="delete-icon">
-                <FaRegTrashAlt />
+                <FaRegTrashAlt
+                  onClick={() => handleDeleteProduct(product.id)}
+                  style={{ cursor: "pointer" }}
+                />
               </Box>
             </Box>
           ))}
@@ -136,13 +175,7 @@ function ShoppingCart() {
               </Typography>
             </Box>
           </Box>
-          <Box className="payment-icons">
-            <img src="Assets/visa-logo.png" alt="Visa" />
-            <img src="Assets/mastercard-logo.png" alt="Vodafone" />
-            <img src="Assets/valu-logo.png" alt="MasterCard" />
-            <img src="Assets/saholoha-logo.png" alt="MasterCard" />
-            <img src="Assets/halan-logo.png" alt="MasterCard" />
-          </Box>
+          <PaymentIcons />
         </Box>
       </Box>
       <Footer />

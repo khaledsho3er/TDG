@@ -2694,7 +2694,7 @@ textarea {
 /* Left Side: Table */
 .Shopping-cart-table {
   flex: 1;
-  padding: 20px 84px 20px 114px;
+  padding: 20px 12px 20px 124px;
   border-radius: 12px;
 }
 
@@ -2704,7 +2704,7 @@ textarea {
   font-weight: bold;
   color: #555;
   border-bottom: 2px solid #eee;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   margin-bottom: 20px;
 }
 
@@ -2713,7 +2713,7 @@ textarea {
   grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;
   align-items: center;
   gap: 10px;
-  padding: 15px 0;
+  padding: 10px 0;
   border-bottom: 2px solid #eee;
 }
 
@@ -2749,7 +2749,7 @@ textarea {
 .unit-price,
 .quantity {
   text-align: center;
-  font-size: 16px;
+  font-size: 20px !important;
   color: #444;
   width: 70%;
 }
@@ -2758,20 +2758,22 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 2px;
 }
 
 .quantity button {
-  width: 10px; /* Set the desired width */
-  height: 18px; /* Set the desired height */
+  min-width: 1px;
+  width: 20px; /* Set the desired width */
+  height: 20px; /* Set the desired height */
   background-color: #6c7c59;
   cursor: pointer;
   border-radius: 3px;
   transition: all 0.3s ease;
   color: #2d2d2d; /* Hide text or icon */
-  font-size: 15px; /* Hide font text */
+  font-size: 14px; /* Hide font text */
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .quantity button:hover {
@@ -2889,6 +2891,7 @@ textarea {
   font-family: Horizon;
 }
 
+/*Payment Icons border*/
 .payment-icons {
   display: flex;
   justify-content: center;
