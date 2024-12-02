@@ -13,6 +13,7 @@ import ProductsPage from "./Pages/ProductsPage";
 import ProductPage from "./Pages/ProductPage";
 import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
+import ShoppingCart from "./Pages/ShoppingCart";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
         <Route exact path="/contactus" Component={ContactUs} />
         <Route exact path="/mycart" Component={ShoppingCart} />
         <Route exact path="/products" Component={ProductsPage} />
-        <Route exact path="/product" Component={ProductPage} />
+        <Route path="/product" Component={ProductPage} />
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
         <Route path="/vendors" element={<PageDescription />} />

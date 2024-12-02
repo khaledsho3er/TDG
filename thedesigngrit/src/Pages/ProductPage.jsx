@@ -4,8 +4,12 @@ import { AiOutlineFileSearch } from "react-icons/ai";
 import { FaFile } from "react-icons/fa";
 import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProductPage() {
+  const { id } = useParams(); // Retrieve the product ID from the URL
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [expandedSections, setExpandedSections] = React.useState({
@@ -48,6 +52,12 @@ function ProductPage() {
     "Composition & Details",
     "Recyclability",
   ];
+
+  const navigate = useNavigate();
+
+  const handleAddToCartClick = () => {
+    navigate("/mycart"); // Navigate to the "MyCart" page
+  };
   return (
     <div className="product-page">
       <Header />
@@ -58,7 +68,7 @@ function ProductPage() {
           {/* Product Image and Thumbnails */}
           <div className="product-image-container">
             <img
-              src="Assets/seatersofa.png"
+              src="Assets/sofabrown.jpg"
               alt="Seater Fabric Sofa"
               className="product-main-image"
             />
@@ -148,7 +158,10 @@ function ProductPage() {
               </p>
             )}
             <div className="action-buttons">
-              <button className="action-button button-primary">
+              <button
+                className="action-button button-primary"
+                onClick={handleAddToCartClick}
+              >
                 Add to Cart
               </button>
               <button className="action-button button-secondary">

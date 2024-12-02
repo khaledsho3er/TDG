@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Header from "../Components/navBar";
 import PageDicription from "../Components/Topheader";
 import ProductCard from "../Components/Products/productcard";
-import ProductPage from "../Components/Products/Productsgrid";
+import ProductCards from "../Components/Products/Productsgrid";
 import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
@@ -20,7 +20,7 @@ function ProductsPage() {
           <FilterSection />
         </Box>
         <Box>
-          <ProductPage />
+          <ProductCards />
         </Box>
       </Box>
       <Footer />
