@@ -3132,12 +3132,14 @@ textarea {
 }
 
 .collapsible-header {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
   color: #2d2d2d;
   cursor: pointer;
   padding: 10px 0;
   font-family: Horizon;
+  justify-content: space-between;
+  display: flex;
 }
 
 .collapsible-content {
@@ -3146,6 +3148,13 @@ textarea {
   line-height: 1.5;
   padding: 5px 0;
   display: none; /* Initially hidden */
+}
+.collapsible-icon {
+  transition: transform 0.3s ease; /* Smooth rotation */
+}
+
+.collapsible-icon.rotated {
+  transform: rotate(180deg); /* Rotate the arrow */
 }
 
 .collapsible-section.open .collapsible-content {

@@ -3,6 +3,7 @@ import Header from "../Components/navBar";
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { FaFile } from "react-icons/fa";
 import { Button } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 function ProductPage() {
   const [selectedColor, setSelectedColor] = useState(null);
@@ -170,21 +171,18 @@ function ProductPage() {
                 >
                   <div className="collapsible-header">
                     {section}
-                    <span
-                      className={`arrow ${
+                    <KeyboardArrowDownIcon
+                      className={`collapsible-icon ${
                         expandedSections[index] ? "rotated" : ""
                       }`}
-                    >
-                      &#x2193;
-                    </span>{" "}
-                    {/* Down arrow */}
+                    />
                   </div>
 
                   {/* Content for each section */}
                   <div className="collapsible-content">
                     {section === "Overview" && (
                       <div>
-                        <h5 style={{ fontSize: "32px" }}>
+                        <h5 style={{ fontSize: "25px" }}>
                           Manufacturer : Istikbal
                         </h5>
                         <div className="product-details">
@@ -331,7 +329,7 @@ function ProductPage() {
 
         <hr />
 
-        {/* Reviews Section */}
+        {/* Reviews Section
         <div className="reviews-section">
           <h2>Reviews</h2>
           {[1, 2, 3].map((review, index) => (
@@ -348,7 +346,7 @@ function ProductPage() {
 
         <hr />
 
-        {/* Related Products Section */}
+        {/* Related Products Section 
         <div className="related-products">
           <h2>Related Products</h2>
           <div className="grid-container">
@@ -364,7 +362,7 @@ function ProductPage() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
