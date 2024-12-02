@@ -21,76 +21,83 @@ const TopFilter = () => {
       sx={{
         display: "flex",
         alignItems: "center",
+        width: "100%",
         justifyContent: "space-between",
-        padding: 2,
+        padding: { xs: "15px", sm: "20px", md: "25px 70px" }, // Responsive padding
+        flexDirection: { xs: "column", sm: "row" }, // Stack items on smaller screens
+        gap: { xs: 2, sm: 3 },
       }}
     >
       {/* Toggle Buttons */}
-      <Box sx={{ display: "flex", gap: 3, paddingRight: 60 }}>
-        <Button
-          variant="outlined"
+      <Box sx={{ display: "flex" }}>
+        <Box
           sx={{
-            borderRadius: "10px",
-            borderColor: "black",
-            padding: "6px 10px",
             display: "flex",
-            alignItems: "center",
-            gap: 1,
-            color: "black",
-            fontFamily: "Montserrat, sans-serif",
-            fontSize: "10px",
+            gap: 2,
+            justifyContent: "flex-start",
+            paddingLeft: {
+              xs: "20px",
+              sm: "50px",
+              md: "100px",
+              lg: "300px",
+              xl: "200px",
+            },
           }}
-          onClick={() => setForSaleChecked(!forSaleChecked)}
         >
-          {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-          For Sale
-          <ShoppingCartIcon fontSize="small" />
-        </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              borderRadius: "10px",
+              borderColor: "black",
+              padding: "6px 10px",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "black",
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: { xs: "10px", sm: "12px" }, // Adjust font size for smaller screens
+            }}
+            onClick={() => setForSaleChecked(!forSaleChecked)}
+          >
+            {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+            For Sale
+            <ShoppingCartIcon fontSize="small" />
+          </Button>
 
-        <Button
-          variant="outlined"
-          sx={{
-            borderRadius: "10px",
-            borderColor: "black",
-            padding: "6px 10px",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            color: "black",
-            fontFamily: "Montserrat, sans-serif",
-            fontSize: "10px",
-          }}
-          onClick={() => setBimCadChecked(!bimCadChecked)}
-        >
-          {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-          BIM/CAD
-        </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              borderRadius: "10px",
+              borderColor: "black",
+              padding: "6px 10px",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "black",
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: { xs: "10px", sm: "12px" }, // Adjust font size for smaller screens
+            }}
+            onClick={() => setBimCadChecked(!bimCadChecked)}
+          >
+            {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+            BIM/CAD
+          </Button>
+        </Box>
       </Box>
-
-      {/* <Typography
-        sx={{
-          fontFamily: "Montserrat, sans-serif",
-          fontSize: "13px",
-          marginBottom: 5, // Add spacing between "Products" and "Sort By"
-          paddingLeft: 20,
-        }}
-      >
-        Products: <strong>7,251</strong>
-      </Typography> */}
-
       {/* Sort By and Select */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: 1,
-          flexDirection: "row",
+          gap: 2,
+          justifyContent: "flex-end",
+          flexDirection: { xs: "column", sm: "row" }, // Stack elements on smaller screens
         }}
       >
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
-            fontSize: "13px",
+            fontSize: { xs: "12px", sm: "13px" }, // Adjust font size for smaller screens
           }}
         >
           Sort By

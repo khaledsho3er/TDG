@@ -9,9 +9,11 @@ import JobDesc from "./Pages/JobDescription";
 import TermsOfService from "./Pages/Policy";
 import PartnersApplication from "./Pages/Partners";
 import ContactUs from "./Pages/ContactUs";
-import ShoppingCart from "./Pages/ShoppingCart";
 import ProductsPage from "./Pages/ProductsPage";
 import ProductPage from "./Pages/ProductPage";
+import Vendorspage from "./Pages/Vendorspage";
+import PageDescription from "./Components/Topheader";
+
 function App() {
   return (
     <Router>
@@ -20,7 +22,7 @@ function App() {
         <Route exact path="/home" Component={Home} />
         <Route exact path="/login" Component={LoginPage} />
         <Route exact path="/signup" Component={SignUpPage} />
-        <Route exact path="/aboutus" Component={AboutUsPage} />
+        <Route exact path="/AboutUs" Component={AboutUsPage} />
         <Route exact path="/Job" Component={JobDesc} />
         <Route exact path="/policy" Component={TermsOfService} />
         <Route exact path="/partners" Component={PartnersApplication} />
@@ -28,6 +30,9 @@ function App() {
         <Route exact path="/mycart" Component={ShoppingCart} />
         <Route exact path="/products" Component={ProductsPage} />
         <Route exact path="/product" Component={ProductPage} />
+        <Route exact path="/ProductsPage" Component={ProductsPage} />
+        <Route exact path="/Vendors" Component={Vendorspage} />
+        <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
   );

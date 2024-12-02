@@ -1,7 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
-import PageDicription from "../Components/Products/Topheader";
+import PageDicription from "../Components/Topheader";
+import ProductCard from "../Components/Products/productcard";
 import ProductPage from "../Components/Products/Productsgrid";
 import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
