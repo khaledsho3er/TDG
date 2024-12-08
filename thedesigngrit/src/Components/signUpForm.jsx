@@ -6,9 +6,9 @@ function SignUpForm() {
 
   return (
     <div>
-      <div className="signup-logo">
-        <img src="Assets/TDG_logo_Black.png" alt="Logo" />
-      </div>
+           <h1 className="logo">
+        Register
+      </h1>
       <div className="signup-form">
         <form>
           <input type="email" placeholder="E-mail" className="input-field" />
@@ -32,9 +32,9 @@ function SignUpForm() {
               {...label}
               defaultChecked
               sx={{
-                color: "#6c7c59",
+                color: "#efebe8",
                 "&.Mui-checked": {
-                  color: "#6c7c59",
+                  color: "#efebe8",
                 },
               }}
             />

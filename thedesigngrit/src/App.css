@@ -49,33 +49,80 @@ body {
   display: flex;
   height: 100vh;
 }
+.container-login {
+  display: flex; /* Enables flexbox */
+  flex-direction: column;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  text-align: center;
+  height: 100vh;
+  background-image: url("/public/Assets/signin.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensures the background image covers the entire container */
+  position: relative;
+  overflow: hidden;
+}
 
-.left-panel {
-  flex: 1.9;
-  background-color: #f2e9e4;
+.container-login::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px); /* Adds blur to the background */
+  background-color: rgba(0, 0, 0, 0.4); /* Adds a semi-transparent dark overlay */
+  z-index: 1;
+}
+
+.login-form {
+  position: relative;
+  z-index: 2; /* Keeps the form above the background and blur overlay */
+  background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
+  padding: 60px 20px 0px 20px;
+  width: 50%; /* Adjust the width of the form */
+  height: 60%;
+  max-width: 400px; /* Limits the width on larger screens */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #2d2d2d;
+  flex-direction: column; /* Stacks child elements vertically */
+  justify-content: center; /* Ensures elements are vertically aligned */
+  align-items: center; /* Centers child elements horizontally */
 }
-
-.right-panel {
-  flex: 1;
-  background: linear-gradient(to bottom, #6c7c59, #2d2d2d);
-  color: white;
-  padding: 2rem;
-  overflow-y: auto;
-  font-family: Montserrat;
-  font-weight: 400;
+.signup-form-container {
+  position: relative;
+  z-index: 2; /* Keeps the form above the background and blur overlay */
+  background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
+  padding: 80px 20px 0px 20px;
+  width: 50%; /* Adjust the width of the form */
+  height: 60%;
+  max-width: 400px; /* Limits the width on larger screens */
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  color: #2d2d2d;
+  flex-direction: column; /* Stacks child elements vertically */
+  justify-content: center; /* Ensures elements are vertically aligned */
+  align-items: center; /* Centers child elements horizontally */
 }
-
-h1.logo {
+.signinLogo{
+  position: relative;
+  z-index: 2;
+  
+}
+.logo {
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
+  padding-top: 150px;
 }
 .logo img {
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   padding-bottom: 50px;
   text-align: center;
 }
@@ -124,21 +171,20 @@ h1.logo {
   align-items: center;
   justify-content: center;
   margin: 20px 0;
-  color: #555;
+  color: #777; /* Text color */
   font-weight: bold;
   font-size: 1rem;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif; /* Ensure the font is properly applied */
 }
 
 .divider::before,
 .divider::after {
   content: "";
-  flex: 1;
-  height: 1px;
-  background-color: #ccc;
-  margin: 0 10px;
+  flex: 1; /* Makes the lines evenly stretch */
+  height: 1px; /* Adjust the line thickness */
+  background-color: #9d1212; /* Line color */
+  margin: 0 10px; /* Spacing around the "OR" */
 }
-
 .input-field {
   width: 93%;
   padding: 10px;
@@ -169,7 +215,7 @@ h1.logo {
 }
 
 .register-link a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
 }
 
@@ -314,9 +360,10 @@ h1.logo {
   font-family: Montserrat;
   font-weight: 400;
   text-align: center;
+  color: #2d2d2d;
 }
 .register-policy a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
   font-weight: bold;
 }

@@ -7,7 +7,7 @@ function SignInForm() {
   return (
     <div>
       <h1 className="logo">
-        <img src="Assets/TDG_logo_Black.png" alt="Logo" />
+        Login
       </h1>
       <div className="signin-form">
         <button className="btn social-btn google-btn">
