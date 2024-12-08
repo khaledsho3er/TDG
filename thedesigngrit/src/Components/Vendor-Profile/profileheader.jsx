@@ -83,11 +83,34 @@ function VendorProfileHeader() {
               justifyContent: { xs: "center", md: "flex-end" },
             }}
           >
-            <Button variant="outlined">Contact</Button>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="outlined"
+              sx={{
+                width: "8rem",
+                height: "25px",
+                borderRadius: "5px",
+                color: "white",
+                backgroundColor: "black",
+                fontSize: "0.6rem",
+                fontFamily: "montesrrat, san-sarif",
+              }}
+            >
+              Contact
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                width: "8rem",
+                height: "25px",
+                borderRadius: "5px",
+                color: "Black",
+                backgroundColor: "#E5E5E5",
+                fontSize: "0.6rem",
+                fontFamily: "montesrrat, san-sarif",
+              }}
+            >
               Vendor Website
             </Button>
-            <Button variant="outlined">Contact</Button>
           </Box>
         </Box>
 

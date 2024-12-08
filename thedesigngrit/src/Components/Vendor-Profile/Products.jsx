@@ -35,11 +35,11 @@ function VendorsProductsGrid({ vendorId }) {
             padding: "25px",
           }}
         >
-          Vendor's Products
+          Istikbal's Products
         </Typography>
         <Button variant="contained">View all</Button>
       </Box>
-      <Grid container spacing={3} className="vendorcategories-grid">
+      <Grid container spacing={3} className="vendorProducts-grid">
         {products.map((product) => (
           <Grid
             item
@@ -47,7 +47,7 @@ function VendorsProductsGrid({ vendorId }) {
             sm={6}
             md={2.4}
             key={product.id}
-            className="vendorcategories-grid-item"
+            className="vendorProducts-grid-item"
           >
             <VendorProductsCard
               title={product.title}

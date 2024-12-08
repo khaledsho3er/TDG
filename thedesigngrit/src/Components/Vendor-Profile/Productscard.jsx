@@ -2,16 +2,18 @@ import React from "react";
 
 const VendorProductsCard = ({ title, description, price, image }) => {
   return (
-    <div className="vendorprofile-card">
+    <div className="vendorprofile-products-card">
       {/* Image Section */}
       <img
         src={image}
         alt={`${title} Image`}
-        className="vendorprofile-card-media"
+        className="vendorprofile-products-card-media"
       />
       {/* Card Content Section */}
-      <div className="vendorprofile-card-content">
-        <p className="vendorprofile-card-title">{title}</p>
+      <div className="vendorprofile-products-card-content">
+        <p className="vendorprofile-products-card-title">{title}</p>
+        <p className="vendorprofile-products-card-description">{description}</p>
+        <p className="vendorprofile-products-card-Price">{price}</p>
       </div>
     </div>
   );

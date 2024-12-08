@@ -314,3 +314,80 @@ h1.logo {
   border-radius: 20px;
   border: 1px solid black;
 }
+
+/* Card container */
+.vendorprofile-products-card {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center content horizontally */
+  width: 15rem; /* Adjust width */
+  background-color: white; /* Card background */
+  border-radius: 10px; /* Slightly rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.vendorprofile-products-card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Product image */
+.vendorprofile-products-card-media {
+  width: 100%; /* Full width of the card */
+  height: 200px; /* Fixed height for uniformity */
+  object-fit: cover; /* Ensure image scales properly */
+  border-radius: 8px; /* Slightly round image corners */
+  margin-bottom: 1rem; /* Space below the image */
+}
+.vendorprofile-products-card-content {
+  text-align: left;
+  margin-left: -60px;
+  justify-content: space-around;
+}
+/* Product title */
+.vendorprofile-products-card-title {
+  font-size: 1rem; /* Title font size */
+  text-align: left;
+  font-weight: bold; /* Bold title */
+  text-align: left; /* Center-align title */
+  color: #333; /* Darker text color for title */
+  margin-bottom: 0.5rem; /* Space below title */
+  font-family: "Montserrat, sans-serif"; /* Consistent font */
+}
+
+/* Product description */
+.vendorprofile-products-card-description {
+  font-size: 0.5rem; /* Slightly smaller font */
+  color: gray; /* Neutral text color */
+  text-align: left; /* Center-align description */
+  font-family: "Montserrat, sans-serif"; /* Consistent font */
+}
+
+/* Product price */
+.vendorprofile-products-card-price {
+  font-size: 0.5rem; /* Price font size */
+  font-weight: bold; /* Emphasize price */
+  color: #000; /* Black text for price */
+  text-align: left; /* Center-align price */
+  font-family: "Montserrat"; /* Consistent font */
+}
+
+.vendorProducts-grid {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.vendorProducts-grid-item {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.Vendorprofile-contact-button {
+  width: 20%;
+  height: 30px;
+  border-radius: 30px;
+  color: white;
+  background-color: #000;
+}
