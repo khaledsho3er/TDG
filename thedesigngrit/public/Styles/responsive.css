@@ -1,0 +1,48 @@
+/* General Card Styles */
+.card-container {
+  position: relative;
+  height: fit-content;
+  max-width: 345px;
+  margin: 0 auto;
+  height: 300px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+}
+
+.card-media {
+  height: 200px;
+  object-fit: contain;
+}
+
+.card-content {
+  text-align: center;
+}
+
+/* Badge Styles */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  .card-container {
+    max-width: 300px;
+  }
+
+  .card-media {
+    height: 180px;
+  }
+}
