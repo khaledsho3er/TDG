@@ -19,20 +19,20 @@ const VendorCategoriesgrid = () => {
   }, []);
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Typography
-        sx={{
-          fontFamily: "Horizon",
-          fontWeight: "bold",
-          fontSize: "20px",
-          padding: "16px 0",
-        }}
-      >
-        Categories Istikbal
+    <Box className="vendorcategories-grid-container">
+      <Typography variant="h1" className="vendorcategories-title">
+        Istikbal's Categories
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={3} className="vendorcategories-grid">
         {categories.map((category) => (
-          <Grid item xs={12} sm={6} md={3} key={category.id}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={2.4}
+            key={category.id}
+            className="vendorcategories-grid-item"
+          >
             <VendorCategoryCard
               title={category.title}
               description={category.description}

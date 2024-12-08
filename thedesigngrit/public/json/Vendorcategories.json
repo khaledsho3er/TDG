@@ -26,12 +26,5 @@
     "description": "Queen-sized bed with storage",
     "price": "$1500",
     "image": "https://via.placeholder.com/250x200"
-  },
-  {
-    "id": 5,
-    "title": "OUTDOOR RETREAT",
-    "description": "Patio furniture set",
-    "price": "$800",
-    "image": "https://via.placeholder.com/250x200"
   }
 ]

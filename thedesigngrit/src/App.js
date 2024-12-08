@@ -28,7 +28,7 @@ function App() {
         <Route exact path="/contactus" Component={ContactUs} />
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
-        <Route exact path="/VendorProfile" Component={VendorProfile} />
+        <Route exact path="/Vendorprofile" Component={VendorProfile} />
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
