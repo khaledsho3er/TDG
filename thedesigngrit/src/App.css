@@ -2959,6 +2959,7 @@ textarea {
 /* Product Details Section */
 .product-details {
   flex-direction: column;
+  font-family: Montserrat;
 }
 .product-brand {
   font-size: 18px;
@@ -2987,6 +2988,7 @@ textarea {
 /* Color Selector Section */
 .color-selector {
   align-items: center;
+  font-family: Montserrat;
 }
 
 .color-selector-label {
@@ -3327,27 +3329,56 @@ textarea {
 /* Reviews Section */
 .reviews-section {
   margin-top: 30px;
+  margin: 0 auto;
+  width: 80%;
+  padding-left: 10rem;
+  
 }
 
 .review-card {
+  width: 80%;
   padding: 15px;
-  background-color: #f9f9f9;
+  background-color: #ebe4e5;
   border-radius: 8px;
   margin-bottom: 20px;
 }
+.review-subtitle{
+  display: flex;
+  justify-content: space-between;
+}
+.review-subtitle p{
+  font-family: Montserrat;
+  color: #2d2d2d;
+  font-size: smaller;
+  margin-bottom: 10px;
 
+}
+.review-Summary{
+  font-family: Montserrat;
+  color: #2d2d2d;
+  font-size: smaller;
+  margin-bottom: 2rem;
+}
 .review-title {
+  font-family: Horizon;
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
 .review-rating {
+  font-family: Montserrat;
   color: #666;
   margin-bottom: 10px;
 }
-
+.review-subtext {
+  font-family: Montserrat;
+  color: #2d2d2d;
+  margin-bottom: 10px;
+}
 .review-text {
+  font-size: 14px;
+  font-family: Montserrat;
   color: #777;
 }
 
