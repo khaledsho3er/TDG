@@ -6,7 +6,7 @@ function SignUpForm() {
 
   return (
     <div>
-           <h1 className="logo">
+           <h1 className="form-title-signup">
         Register
       </h1>
       <div className="signup-form">
@@ -26,9 +26,8 @@ function SignUpForm() {
             placeholder="Confirm Password"
             className="input-field"
           />
-
-          <p className="register-policy">
-            <Checkbox
+          <div className="register-policy-section">
+          <Checkbox
               {...label}
               defaultChecked
               sx={{
@@ -38,10 +37,13 @@ function SignUpForm() {
                 },
               }}
             />
-            I have read and accept the <a href="/policy">Term of use</a> and{" "}
+          <p className="register-policy">
+            
+            I have read and accept the <a href="/policy">Term of use</a> and 
             <a href="/policy">Privacy Policy</a>, and I consent to the
             processing of my data for marketing purposes by The Design Grit.
           </p>
+          </div>
           <button type="submit" className="btn signin-btn">
             Sign Up
           </button>
