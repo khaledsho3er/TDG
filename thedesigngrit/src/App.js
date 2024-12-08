@@ -13,6 +13,7 @@ import ProductsPage from "./Pages/ProductsPage";
 import ProductPage from "./Pages/ProductPage";
 import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
+import VendorProfile from "./Pages/VendorProfile";
 import ShoppingCart from "./Pages/ShoppingCart";
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
         <Route path="/product" Component={ProductPage} />
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
+        <Route exact path="/Vendorprofile" Component={VendorProfile} />
+
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
