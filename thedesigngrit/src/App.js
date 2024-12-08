@@ -15,6 +15,7 @@ import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
 import VendorProfile from "./Pages/VendorProfile";
 import ShoppingCart from "./Pages/ShoppingCart";
+import careersPage from "./Pages/careers";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route exact path="/login" Component={LoginPage} />
         <Route exact path="/signup" Component={SignUpPage} />
         <Route exact path="/AboutUs" Component={AboutUsPage} />
-        <Route exact path="/Job" Component={JobDesc} />
+        <Route exact path="/job" Component={JobDesc} />
         <Route exact path="/policy" Component={TermsOfService} />
         <Route exact path="/partners" Component={PartnersApplication} />
         <Route exact path="/contactus" Component={ContactUs} />
@@ -35,7 +36,7 @@ function App() {
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
         <Route exact path="/Vendorprofile" Component={VendorProfile} />
-
+        <Route exact path="/careers" Component={careersPage} />
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>

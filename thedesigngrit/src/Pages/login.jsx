@@ -1,4 +1,3 @@
-import ProductShowcase from "../Components/productShowcase";
 import SignInForm from "../Components/signInForm";
 import { Box } from "@mui/material";
 import React from "react";

@@ -65,14 +65,19 @@ body {
 }
 
 .container-login::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   backdrop-filter: blur(5px); /* Adds blur to the background */
-  background-color: rgba(0, 0, 0, 0.4); /* Adds a semi-transparent dark overlay */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.4
+  ); /* Adds a semi-transparent dark overlay */
   z-index: 1;
 }
 
@@ -108,7 +113,7 @@ body {
   justify-content: center; /* Ensures elements are vertically aligned */
   align-items: center; /* Centers child elements horizontally */
 }
-.signinLogo{
+.signinLogo {
   position: relative;
   z-index: 2;
 }
@@ -184,7 +189,7 @@ body {
   color: #eae3e4; /* Text color for "OR" */
   font-weight: bold;
   font-size: 1rem;
-  font-family: 'Montserrat', sans-serif; /* Ensure the font styling is applied */
+  font-family: "Montserrat", sans-serif; /* Ensure the font styling is applied */
   position: relative;
   text-transform: uppercase; /* Makes the text all caps for style consistency */
 }
@@ -221,8 +226,8 @@ body {
   cursor: pointer;
   border-radius: 8px;
 }
-.signin-btn:hover{
-  transform: translateY(-3px); 
+.signin-btn:hover {
+  transform: translateY(-3px);
   background-color: #eae3e4;
   color: #2d2d2d;
   border: 2px solid #2d2d2d;
@@ -268,7 +273,7 @@ body {
   text-align: justify;
   color: #2d2d2d;
 }
-.register-policy span{
+.register-policy span {
   font-size: 10px;
   font-family: Montserrat;
   text-align: center;
@@ -3292,7 +3297,6 @@ textarea {
   margin: 0 auto;
   width: 80%;
   padding-left: 10rem;
-  
 }
 
 .review-card {
@@ -3302,18 +3306,17 @@ textarea {
   border-radius: 8px;
   margin-bottom: 20px;
 }
-.review-subtitle{
+.review-subtitle {
   display: flex;
   justify-content: space-between;
 }
-.review-subtitle p{
+.review-subtitle p {
   font-family: Montserrat;
   color: #2d2d2d;
   font-size: smaller;
   margin-bottom: 10px;
-
 }
-.review-Summary{
+.review-Summary {
   font-family: Montserrat;
   color: #2d2d2d;
   font-size: smaller;
@@ -3366,4 +3369,256 @@ textarea {
 
 .related-product-price {
   color: #777;
+}
+
+/*careers page*/
+.careers-page {
+  font-family: Montserrat;
+}
+.ourCoreValues-section-box {
+  padding-bottom: 150px;
+}
+.ourCoreValues-section {
+  align-items: center;
+  text-align: center;
+  color: #6b7b58;
+  font-family: Horizon;
+  font-weight: bold;
+}
+/* General Grid Styles */
+.values-grid {
+  text-align: center;
+  margin: auto;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  width: 70%;
+}
+
+/* Individual Card Styles */
+.value-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 6px 6px 6px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.value-card-content {
+  margin: auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+/* Icon Styles */
+.value-card-icon {
+  font-size: 36px; /* Adjust based on actual icons used */
+  margin-bottom: 50px;
+  color: #333;
+}
+
+/* Title Styles */
+.value-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d2d2d;
+  margin-bottom: 10px;
+}
+
+/* Description Styles */
+.value-card-description {
+  font-family: Montserrat;
+  padding-left: 0px;
+  padding-right: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2d2d2d;
+  line-height: 1.5;
+}
+/* Container Styles */
+.career-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Montserrat;
+}
+
+/* Header Styles */
+.career-header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #2b2b2b;
+  background-color: red;
+  margin-bottom: 20px;
+}
+
+/* Tabs Container */
+.career-tabs {
+  border-bottom: 1px solid #ddd; /* Bottom border for alignment */
+  margin-bottom: 20px;
+}
+
+/* Individual Tab Styles */
+.tab {
+  display: inline-flex; /* Ensure each tab only takes as much space as its content */
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  color: #999;
+  border-radius: 8px 8px 0 0; /* Rounded corners on top */
+}
+
+.tab.active {
+  color: #000;
+  background-color: #f5f5f5; /* Add background color for active tab */
+  border-bottom: 2px solid #000; /* Highlight bottom border for active tab */
+}
+
+.tab:hover {
+  color: #555;
+  background-color: #eaeaea; /* Slight hover effect */
+}
+
+/* Job List Styles */
+.job-list {
+  margin-top: 20px;
+}
+
+.job-card {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.job-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2b2b2b;
+  font-family: Horizon;
+  margin: 0;
+}
+
+.job-tags {
+  margin: 10px 0;
+}
+
+.job-tag {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-right: 5px;
+  background-color: #f5f5f5;
+  color: #555;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.job-description {
+  font-size: 14px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.job-date {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+.Inside-TDG-section {
+  padding-bottom: 50px;
+}
+.Captions-Inside-TDG {
+  text-align: justify;
+  padding: 30px 140px 30px 140px;
+  font-size: 25px;
+  font-family: "Montserrat";
+}
+.insideTDG-content-benefits {
+  font-size: 18px;
+  display: flex;
+  gap: 150px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: left;
+  text-align: left;
+  padding-right: 200px;
+  padding-left: 200px;
+  padding-top: 100px;
+  margin: auto;
+}
+.insideTDG-benefits {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+}
+.insideTDG-benefits p {
+  font-size: 14px;
+  font-family: Montserrat;
+  padding-right: 7rem;
+  margin-right: 5rem;
+}
+.insideTDG-benefits-img {
+  width: 70%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.insideTDG-benefits-img img {
+  width: 100%;
+  height: 40vh;
+  border-radius: 10px;
+}
+
+.insideTDG-content-environment {
+  font-size: 18px;
+  display: flex;
+  gap: 250px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: left;
+  text-align: left;
+  padding-right: 200px;
+  padding-left: 200px;
+  padding-top: 100px;
+  margin: auto;
+}
+.insideTDG-environment {
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+}
+.insideTDG-environment p {
+  font-size: 14px;
+  font-family: Montserrat;
+  padding-right: 7rem;
+  margin-right: 5rem;
+}
+.insideTDG-environment-img {
+  width: 70%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+}
+.insideTDG-environment-img img {
+  width: 100%;
+  height: 40vh;
+  border-radius: 10px;
 }
