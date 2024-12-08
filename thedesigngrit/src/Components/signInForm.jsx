@@ -6,8 +6,8 @@ import { FcGoogle } from "react-icons/fc";
 function SignInForm() {
   return (
     <div>
-      <h1 className="logo">
-        <img src="Assets/TDG_logo_Black.png" alt="Logo" />
+      <h1 className="form-title-signin">
+        Login
       </h1>
       <div className="signin-form">
         <button className="btn social-btn google-btn">
@@ -18,7 +18,7 @@ function SignInForm() {
           <FaFacebook className="facebook-icon" />
           Continue with Facebook
         </button>
-        <div className="divider">OR</div>
+        <div className="divider-signIn"> OR</div>
         <form>
           <input type="email" placeholder="E-mail" className="input-field" />
           <input

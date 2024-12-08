@@ -49,33 +49,88 @@ body {
   display: flex;
   height: 100vh;
 }
+.container-login {
+  display: flex; /* Enables flexbox */
+  flex-direction: column;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  text-align: center;
+  height: 100vh;
+  background-image: url("/public/Assets/signin.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensures the background image covers the entire container */
+  position: relative;
+  overflow: hidden;
+}
 
-.left-panel {
-  flex: 1.9;
-  background-color: #f2e9e4;
+.container-login::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px); /* Adds blur to the background */
+  background-color: rgba(0, 0, 0, 0.4); /* Adds a semi-transparent dark overlay */
+  z-index: 1;
+}
+
+.login-form {
+  position: relative;
+  z-index: 2; /* Keeps the form above the background and blur overlay */
+  background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
+  padding: 60px 20px 0px 20px;
+  width: 50%; /* Adjust the width of the form */
+  height: 60%;
+  max-width: 400px; /* Limits the width on larger screens */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #2d2d2d;
+  flex-direction: column; /* Stacks child elements vertically */
+  justify-content: center; /* Ensures elements are vertically aligned */
+  align-items: center; /* Centers child elements horizontally */
 }
-
-.right-panel {
-  flex: 1;
-  background: linear-gradient(to bottom, #6c7c59, #2d2d2d);
-  color: white;
-  padding: 2rem;
-  overflow-y: auto;
-  font-family: Montserrat;
-  font-weight: 400;
+.signup-form-container {
+  position: relative;
+  z-index: 2; /* Keeps the form above the background and blur overlay */
+  background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
+  padding: 50px 0px 40px 0px;
+  width: 30%; /* Adjust the width of the form */
+  height: 60%;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  color: #2d2d2d;
+  flex-direction: column; /* Stacks child elements vertically */
+  justify-content: center; /* Ensures elements are vertically aligned */
+  align-items: center; /* Centers child elements horizontally */
 }
-
-h1.logo {
+.signinLogo{
+  position: relative;
+  z-index: 2;
+}
+.signinLogo img {
+  width: 200px;
+  height: 100px;
+}
+.form-title-signup {
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
+  padding-top: 100px;
+}
+.form-title-signin {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 70px;
 }
 .logo img {
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   padding-bottom: 50px;
   text-align: center;
 }
@@ -114,31 +169,36 @@ h1.logo {
   font-family: Montserrat;
   font-weight: 400;
 }
+
 .facebook-icon {
   color: blue;
   padding-right: 10px;
 }
 
-.divider {
+.divider-signIn {
+  width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  margin: 20px 0;
-  color: #555;
+  margin: 10px 0;
+  color: #eae3e4; /* Text color for "OR" */
   font-weight: bold;
   font-size: 1rem;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif; /* Ensure the font styling is applied */
+  position: relative;
+  text-transform: uppercase; /* Makes the text all caps for style consistency */
 }
 
-.divider::before,
-.divider::after {
+.divider-signIn::before,
+.divider-signIn::after {
+  width: 100%;
   content: "";
-  flex: 1;
-  height: 1px;
-  background-color: #ccc;
-  margin: 0 10px;
+  flex: 1; /* Makes the lines evenly stretch */
+  height: 1px; /* Line thickness */
+  background-color: #eae3e4; /* Line color */
+  margin-left: 5px;
+  margin-right: 5px;
 }
-
 .input-field {
   width: 93%;
   padding: 10px;
@@ -154,140 +214,30 @@ h1.logo {
 .signin-btn {
   width: 100%;
   padding: 10px;
-  background-color: #333;
-  color: white;
+  margin: 5px 0px 10px 0px;
+  background-color: #2d2d2d;
+  color: #eae3e4;
   border: none;
   cursor: pointer;
   border-radius: 8px;
 }
+.signin-btn:hover{
+  transform: translateY(-3px); 
+  background-color: #eae3e4;
+  color: #2d2d2d;
+  border: 2px solid #2d2d2d;
+}
 
 .register-link {
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 0.9rem;
   font-family: Montserrat;
   font-weight: 400;
 }
 
 .register-link a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
-}
-
-.product-showcase {
-  color: white;
-}
-
-.product-showcase h2 {
-  margin-bottom: 1rem;
-  font-family: horizon;
-  font-weight: bold;
-  text-align: center;
-  font-size: 30px;
-}
-
-.features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem;
-  font-family: horizon;
-  font-weight: bold;
-  color: #2d2d2d;
-  font-size: 10px;
-  padding-left: 5px;
-}
-
-.features li {
-  margin-bottom: 0.5rem;
-  margin-left: 2px;
-}
-.checkIcons {
-  color: white;
-  padding-right: 5px;
-}
-
-/* Cards.css */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  background-color: #f5f5f5; /* Optional, for better visuals */
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  text-align: center;
-  padding: 15px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-.card-image {
-  width: 100px;
-  height: auto;
-  object-fit: contain;
-}
-
-.card-name {
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #2d2d2d;
-}
-/* Media Queries for Responsiveness */
-
-/* For small screens (less than 768px) */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column; /* Stack panels vertically */
-  }
-
-  .left-panel,
-  .right-panel {
-    flex: 1 1 100%; /* Each takes 100% of the width */
-    padding: 10px;
-  }
-
-  .signin-form {
-    width: 90%;
-    max-width: 350px;
-  }
-
-  h1.logo {
-    font-size: 1.5rem;
-  }
-
-  .logo img {
-    width: 60%;
-  }
-
-  .input-field {
-    width: 100%;
-  }
-}
-
-/* For extra small screens (less than 480px) */
-@media (max-width: 480px) {
-  .signin-form {
-    width: 90%;
-    max-width: 300px;
-    text-align: center;
-  }
-
-  h1.logo {
-    font-size: 1.2rem;
-  }
-
-  .logo img {
-    width: 80%;
-  }
 }
 /*Signup form*/
 .signup-logo {
@@ -306,17 +256,27 @@ h1.logo {
 .signup-form {
   width: 300px;
   text-align: center;
-  padding-bottom: 130px;
+}
+.register-policy-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .register-policy {
-  margin-top: 8px;
-  font-size: 14px;
+  font-size: 10px;
   font-family: Montserrat;
-  font-weight: 400;
+  text-align: justify;
+  color: #2d2d2d;
+}
+.register-policy span{
+  font-size: 10px;
+  font-family: Montserrat;
   text-align: center;
+  color: #2d2d2d;
 }
 .register-policy a {
-  color: #6c7c59;
+  font-size: 10px;
+  color: #efebe8;
   text-decoration: none;
   font-weight: bold;
 }
