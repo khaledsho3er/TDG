@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, Box, Pagination } from "@mui/material";
 import ProductCard from "./productcard";
 
-const ProductPage = () => {
+const ProductCards = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12; // Limit to 12 products per page
@@ -104,4 +104,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default ProductCards;

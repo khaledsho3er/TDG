@@ -8,11 +8,17 @@ import {
   Box,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import { useNavigate } from "react-router-dom";
+import ProductPage from "../../Pages/ProductPage";
 // Card Component to Render Individual Product
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product`); // Navigate to a dynamic route using the product ID
+  };
   return (
-    <Box>
+    <Box onClick={handleCardClick} style={{ cursor: "pointer" }}>
       <Card
         sx={{
           width: 250,

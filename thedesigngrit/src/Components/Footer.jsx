@@ -136,7 +136,7 @@ function Footer() {
                 <Typography>Contact Us</Typography>
               </Link>
               <Link
-                to="/careers"
+                to="/job"
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
                 <Typography>Careers</Typography>
