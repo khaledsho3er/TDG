@@ -15,6 +15,7 @@ import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
 import VendorProfile from "./Pages/VendorProfile";
 import ShoppingCart from "./Pages/ShoppingCart";
+import CheckoutPage from "./Pages/Checkout";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
         <Route exact path="/Vendorprofile" Component={VendorProfile} />
-
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
