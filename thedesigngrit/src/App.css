@@ -1401,6 +1401,130 @@ body {
     line-height: 180%;
   }
 }
+/*FAQs page*/
+.hero-job-container-faq {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  text-align: center;
+  background-color: #6b7b58;
+  padding: 50px 0px;
+}
+
+.hero-text-faq {
+  max-width: 50%; /* Adjust width as needed */
+  padding: 20px; /* Optional: add some padding for spacing */
+  color: #abc48c;
+}
+
+.hero-title-faq {
+  font-size: 2.5rem; /* Adjust as needed */
+  margin: 0;
+  text-align: center;
+}
+
+.hero-subtitle-faq {
+  font-size: 15px; /* Adjust as needed */
+  margin: 10px 0 0;
+  text-align: center;
+  font-family: Montserrat;
+}
+/* FAQ.css */
+
+.faq-container {
+  width: 800px; /* Fixed width for consistency */
+  margin: 50px auto;
+  padding: 0;
+  font-family: Montserrat;
+  box-sizing: border-box; /* Prevents padding or borders from affecting width */
+}
+
+.faq-tabs {
+  display: flex;
+  background-color: #ffffff;
+  border-top: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  width: 40%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.faq-tab {
+  flex: 1;
+  padding: 10px 15px;
+  width: 30%;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  background-color: #ffffff;
+  border: none;
+  border-right: 0px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.faq-tab:last-child {
+  border-right: none;
+}
+
+.faq-tab.active {
+  background-color: #6a8452;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.faq-content {
+  border: 1px solid #ddd;
+  border-radius: 0 15px 15px 15px;
+  background-color: #ffffff;
+  padding: 10px 0;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+.faq-item {
+  padding: 15px 30px;
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item:hover {
+  background-color: #f1f1f1;
+}
+
+.faq-item.active {
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.faq-toggle-icon {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6a8452;
+}
+
+.faq-answer {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+}
 
 /*Job Form*/
 .job-form-container {
