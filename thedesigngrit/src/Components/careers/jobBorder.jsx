@@ -37,7 +37,12 @@ const CareerOpportunities = () => {
       </div>
       <div className="job-list">
         {jobs.map((job, index) => (
-          <Link to={`/job`} key={index} className="job-card">
+          <Link
+            to={`/job`}
+            key={index}
+            className="job-card"
+            style={{ textDecoration: "none" }}
+          >
             <div key={index} className="job-card">
               <h3 className="job-title">{job.title}</h3>
               <div className="job-tags">
