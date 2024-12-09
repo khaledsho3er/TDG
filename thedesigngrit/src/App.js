@@ -17,6 +17,7 @@ import VendorProfile from "./Pages/VendorProfile";
 import ShoppingCart from "./Pages/ShoppingCart";
 import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
+import TrackOrder from "./Pages/TrackOrder";
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
         <Route exact path="/Vendorprofile" Component={VendorProfile} />
         <Route exact path="/careers" Component={careersPage} />
         <Route path="/faqs" Component={FAQs} />
+        <Route path="/trackorder" Component={TrackOrder} />
+
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
