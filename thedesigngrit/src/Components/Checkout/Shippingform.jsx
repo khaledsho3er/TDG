@@ -102,9 +102,9 @@ function ShippingForm() {
 
       <Box className="shipping-form-container">
         <Box className="shipping-form">
-          <form onSubmit={handleSubmit} className="form-container">
+          <form onSubmit={handleSubmit} className="shippingform-form-container">
             {/* Row 1 */}
-            <div className="form-row">
+            <div className="shippingform-form-row">
               <div className="input-group">
                 <input
                   type="text"
@@ -130,7 +130,7 @@ function ShippingForm() {
             </div>
 
             {/* Row 2 */}
-            <div className="form-row">
+            <div className="shippingform-form-row">
               <div className="input-group">
                 <input
                   type="text"
@@ -156,7 +156,7 @@ function ShippingForm() {
             </div>
 
             {/* Row 3 */}
-            <div className="form-row">
+            <div className="shippingform-form-row">
               <div className="input-group">
                 <input
                   type="text"
@@ -182,7 +182,7 @@ function ShippingForm() {
             </div>
 
             {/* Row 4 */}
-            <div className="form-row">
+            <div className="shippingform-form-row">
               <div className="input-group">
                 <input
                   type="text"
@@ -208,7 +208,7 @@ function ShippingForm() {
             </div>
 
             {/* Row 5 */}
-            <div className="form-row">
+            <div className="shippingform-form-row-zip">
               <div className="input-group">
                 <input
                   type="text"

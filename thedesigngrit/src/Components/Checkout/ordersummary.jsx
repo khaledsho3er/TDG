@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import PaymentIcons from "../paymentsIcons";
 
 function SummaryForm() {
   const [product, setProduct] = useState(null);
@@ -117,7 +118,7 @@ function SummaryForm() {
             </Box>
           </Box>
           <Box className="Ordersummary-firstrow-secondcolumn-secondrow">
-            hena hayb2a feh el visa icons
+            <PaymentIcons />
           </Box>
         </Box>
       </Box>

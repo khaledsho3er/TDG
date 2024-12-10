@@ -474,23 +474,20 @@ h1.logo {
   border-radius: 5px;
 }
 
-.form-navigation {
+.form-navigation button {
   display: flex;
   justify-content: center;
+  align-items: center;
+  text-align: center;
   margin-top: 20px;
-}
-
-.next-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #2d2d2d;
-  color: white;
-  border-radius: 25px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 11rem;
+  width: 60%;
+  background-color: #434343;
+  border-radius: 15px;
 }
 
 .form-navigation button:hover {
-  background-color: #0056b3;
+  background-color: #000;
 }
 
 .checkout_img_container {
@@ -534,24 +531,25 @@ h1.logo {
 }
 
 .step-item.active .step-circle {
-  border-color: #007bff;
+  border-color: #000000;
   background-color: #fff;
-  box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .step-icon {
-  font-size: 24px;
+  font-size: 20px;
+  width: 30px;
 }
 
 .step-line {
-  width: 50px;
+  width: 150px;
   height: 2px;
   background-color: #ccc;
   margin: 0 10px;
 }
 
 .step-item.active ~ .step-line {
-  background-color: #007bff;
+  background-color: #000;
 }
 
 .Billinginfo_container {
@@ -690,6 +688,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 5rem;
 }
 
 .shipping-form-container {
@@ -701,16 +700,29 @@ button:hover {
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
 
-.form-container {
+.shippingform-form-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
+  justify-content: center;
+  align-items: center;
+  height: 20rem;
 }
 
-.form-row {
+.shippingform-form-row {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  align-items: center;
+  gap: 100px;
+  width: 80%;
+}
+
+.shippingform-form-row-zip {
+  width: 30%;
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: -26.5rem;
 }
 
 .input-group {
@@ -718,7 +730,7 @@ button:hover {
 }
 
 input {
-  width: 100%;
+  width: 80%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -882,4 +894,74 @@ input:focus {
   margin-left: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Ordersummary-firstrow-secondcolumn-secondrow {
+  width: 90%;
+  margin-left: 1rem;
+}
+
+.paymentmethod-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.paymentmethod-firstrow-firstcolumn {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Flex container for radio button and dropdown */
+.paymentmethod-radio-dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Align the dropdown to the right */
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Dropdown menu styling */
+.paymentmethod-dropdown select {
+  width: 120px;
+  height: 30px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Fonts */
+.horizon-font {
+  font-family: "Horizon", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.montserrat-font {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+}
+
+/* Card details layout */
+.paymentmethod-card-details {
+  margin-top: 10px;
+}
+
+.paymentmethod-card-details .MuiTextField-root {
+  margin-top: 10px;
+}
+
+.paymentmethod-card-details button {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #434343;
+  border-radius: 15px;
+}
+
+/* Separator between payment options */
+.paymentmethod-option {
+  position: relative;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc; /* Add the line below each payment option */
 }
