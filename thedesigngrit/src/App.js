@@ -15,10 +15,12 @@ import Vendorspage from "./Pages/Vendorspage";
 import PageDescription from "./Components/Topheader";
 import VendorProfile from "./Pages/VendorProfile";
 import ShoppingCart from "./Pages/ShoppingCart";
+import CheckoutPage from "./Pages/Checkout";
 import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import MyAccount from "./Pages/myAccount";
+
 
 function App() {
   return (
@@ -39,10 +41,12 @@ function App() {
         <Route exact path="/ProductsPage" Component={ProductsPage} />
         <Route exact path="/Vendors" Component={Vendorspage} />
         <Route exact path="/Vendorprofile" Component={VendorProfile} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route exact path="/careers" Component={careersPage} />
         <Route path="/faqs" Component={FAQs} />
         <Route path="/trackorder" Component={TrackOrder} />
         <Route path="/myaccount" Component={MyAccount} />
+
         <Route path="/vendors" element={<PageDescription />} />
       </Routes>
     </Router>
