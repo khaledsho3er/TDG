@@ -3955,3 +3955,90 @@ textarea {
 .star-rating span:hover {
   transform: scale(1.2); /* Enlarge on hover */
 }
+
+/*profile side account page*/
+.Profile-side {
+}
+
+.Profile-side h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+  font-family: Horizon;
+}
+
+.profile-info {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.profile-info-first p {
+  font-size: 16px;
+  color: #2d2d2d;
+  margin: 5px 0;
+  font-weight: bold;
+  line-height: 2.5;
+}
+
+.profile-info-first p:nth-child(odd) {
+  color: #777;
+}
+
+.popup-avatar-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.profile-info-second {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #ececec;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.profile-info-second-left,
+.profile-info-second-right {
+  width: 48%;
+}
+
+.profile-info-second-left p,
+.profile-info-second-right p {
+  font-size: 16px;
+  color: #2d2d2d;
+  margin: 5px 0;
+  font-weight: bold;
+  line-height: 2.5;
+}
+
+.profile-info-second-left p:nth-child(odd),
+.profile-info-second-right p:nth-child(odd) {
+  font-weight: normal;
+  color: #777;
+}
