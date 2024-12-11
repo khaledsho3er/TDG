@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import axios from "axios";
 import countryList from "react-select-country-list";
 
 const ShippingInfoPopup = ({ onClose }) => {
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
     address1: "",
     address2: "",
     city: "",
@@ -12,37 +13,59 @@ const ShippingInfoPopup = ({ onClose }) => {
   });
 
   const [countries] = useState(countryList().getData());
+  useEffect(() => {
+    // Fetch user data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/getUser", {
+          withCredentials: true,
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error.response || error);
+        alert("Failed to fetch user data.");
+      }
+    };
 
+    fetchData();
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleCountryChange = (selectedOption) => {
-    setFormData((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       country: selectedOption.label,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Shipping Info Submitted:", formData);
-    // Add logic to send form data to the backend or save it
-    onClose();
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/updateUser",
+        userData,
+        { withCredentials: true }
+      );
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating user data:", error.response || error);
+      alert("Failed to update user data.");
+    }
   };
   return (
     <div className="shipping-info-content">
-      <form className="shipping-form" onSubmit={handleSubmit}>
+      <form className="shipping-form">
         <div className="form-field">
           <label>Address 1</label>
           <input
             type="text"
             name="address1"
-            value={formData.address1}
+            value={userData.address1}
             onChange={handleInputChange}
             placeholder="Enter your primary address"
             required
@@ -53,7 +76,7 @@ const ShippingInfoPopup = ({ onClose }) => {
           <input
             type="text"
             name="address2"
-            value={formData.address2}
+            value={userData.address2}
             onChange={handleInputChange}
             placeholder="Enter additional address"
           />
@@ -64,7 +87,7 @@ const ShippingInfoPopup = ({ onClose }) => {
             <input
               type="text"
               name="city"
-              value={formData.city}
+              value={userData.city}
               onChange={handleInputChange}
               placeholder="city"
               required
@@ -76,7 +99,7 @@ const ShippingInfoPopup = ({ onClose }) => {
             <input
               type="text"
               name="postalCode"
-              value={formData.postalCode}
+              value={userData.postalCode}
               onChange={handleInputChange}
               placeholder="Postal code"
               required
@@ -145,7 +168,7 @@ const ShippingInfoPopup = ({ onClose }) => {
           />
         </div>
         <div className="form-buttons">
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" onClick={handleUpdate}>
             Save
           </button>
         </div>

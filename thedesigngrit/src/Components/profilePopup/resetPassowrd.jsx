@@ -1,29 +1,75 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
+import axios from "axios"; // For sending requests
 
 const ResetPasswordPopup = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(""); // To handle error messages
+  const [success, setSuccess] = useState(""); // To handle success messages
 
-  const handleReset = () => {
-    // Add your reset password logic here
-    console.log("Resetting password...");
+  const handleReset = async () => {
+    setError(""); // Clear previous errors
+
+    // Validate if passwords match
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Validate password length
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("authToken"); // Get the token from localStorage
+      const response = await axios.post(
+        "http://localhost:5000/api/changePassword",
+        { currentPassword, newPassword },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Add the token in the request header
+        }
+      );
+
+      if (response.data.message === "Password updated successfully") {
+        setSuccess("Password updated successfully.");
+      } else {
+        setError("Failed to update password.");
+      }
+    } catch (error) {
+      // Check for server response and log the error
+      console.error("Error updating password:", error.response?.data);
+      setError(error.response?.data?.message || "An error occurred.");
+    }
   };
 
   const handleCancel = () => {
-    // Add your cancel logic here
+    // Clear form and close popup (if needed)
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setError("");
+    setSuccess("");
     console.log("Canceling password reset...");
   };
 
   return (
     <Box className="reset-password-content">
+      {error && (
+        <p style={{ color: "red", fontFamily: "Montserrat" }}>{error}</p>
+      )}
+      {success && (
+        <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
+      )}
+
       <div className="reset-form-field">
-        <label>Current Passowrd</label>
+        <label>Current Password</label>
         <input
-          label="Current Passord"
+          label="Current Password"
           type="password"
-          variant="outlined"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           fullWidth
@@ -31,11 +77,11 @@ const ResetPasswordPopup = () => {
           className="reset-popup-form-full-width"
         />
       </div>
+
       <div className="reset-form-field">
-        <label>New Passowrd</label>
+        <label>New Password</label>
         <input
-          label="New Passord"
-          variant="outlined"
+          label="New Password"
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
@@ -45,12 +91,12 @@ const ResetPasswordPopup = () => {
           helperText="Min. Length: 8 characters. Character Types: Uppercase, lowercase, number, special character."
         />
       </div>
+
       <div className="reset-form-field">
-        <label>Re-type Passowrd</label>
+        <label>Re-type Password</label>
         <input
-          label="Retype Passord"
+          label="Re-type Password"
           type="password"
-          variant="outlined"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           fullWidth
