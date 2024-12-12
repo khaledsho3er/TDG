@@ -20,6 +20,7 @@ import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import { CartProvider } from "./Components/Popups/cartcontext";
+import VendorHome from "./Pages/vendorSide/VendorHome";
 
 function App() {
   return (
@@ -46,6 +47,9 @@ function App() {
           <Route path="/faqs" Component={FAQs} />
           <Route path="/trackorder" Component={TrackOrder} />
           <Route path="/vendors" element={<PageDescription />} />
+        </Routes>
+        <Routes>
+          <Route path="/vendorpanel" Component={VendorHome} />
         </Routes>
       </Router>
     </CartProvider>

@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "vendorId": 1,
     "name": "Seater Fabric Sofa",
     "brand": "Istikbal",
     "price": "32,000 E£",
@@ -50,6 +51,7 @@
 
   {
     "id": 2,
+    "vendorId": 1,
     "name": "Seater Fabric Sofa",
     "brand": "Istikbal",
     "price": "32,000 E£",
