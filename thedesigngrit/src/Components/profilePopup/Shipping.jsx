@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 import countryList from "react-select-country-list";
-
-const ShippingInfoPopup = ({ onClose }) => {
+import UpdateSentPopup from "../successMsgs/successUpdate";
+import { useNavigate } from "react-router-dom";
+const ShippingInfoPopup = () => {
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     address1: "",
     address2: "",
@@ -52,10 +55,15 @@ const ShippingInfoPopup = ({ onClose }) => {
         { withCredentials: true }
       );
       alert("Profile updated successfully!");
+      setIsPopupVisible(true); // Show popup on successful registration
     } catch (error) {
       console.error("Error updating user data:", error.response || error);
       alert("Failed to update user data.");
     }
+  };
+  const closePopup = () => {
+    setIsPopupVisible(false); // Close the popup
+    navigate("/"); // Navigate to login page after closing popup
   };
   return (
     <div className="shipping-info-content">
@@ -173,6 +181,7 @@ const ShippingInfoPopup = ({ onClose }) => {
           </button>
         </div>
       </form>
+      <UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />
     </div>
   );
 };

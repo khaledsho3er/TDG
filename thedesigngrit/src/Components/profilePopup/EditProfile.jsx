@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
+import UpdateSentPopup from "../successMsgs/successUpdate";
+import { useNavigate } from "react-router-dom";
+
 function EditProfile() {
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -40,12 +46,16 @@ function EditProfile() {
         { withCredentials: true }
       );
       alert("Profile updated successfully!");
+      setIsPopupVisible(true); // Show popup on successful registration
     } catch (error) {
       console.error("Error updating user data:", error.response || error);
       alert("Failed to update user data.");
     }
   };
-
+  const closePopup = () => {
+    setIsPopupVisible(false); // Close the popup
+    navigate("/"); // Navigate to login page after closing popup
+  };
   return (
     <div>
       {/* Profile Form */}
@@ -128,6 +138,7 @@ function EditProfile() {
         </button>
         <button className="profile-popUpForm-btn-cancel">Cancel</button>
       </div>
+      <UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />
     </div>
   );
 }

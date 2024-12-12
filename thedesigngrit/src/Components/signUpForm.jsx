@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AccountSentPopup from "./successfullyRegistered";
+import AccountSentPopup from "./successMsgs/successfullyRegistered";
 
 function SignUpForm() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -66,9 +66,7 @@ function SignUpForm() {
       );
 
       alert(response.data.message);
-      setIsPopupVisible(true);
-
-      navigate("/login");
+      setIsPopupVisible(true); // Show popup on successful registration
     } catch (error) {
       console.error("There was an error during sign-up:", error);
       alert(
@@ -78,7 +76,8 @@ function SignUpForm() {
   };
 
   const closePopup = () => {
-    setIsPopupVisible(false);
+    setIsPopupVisible(false); // Close the popup
+    navigate("/login"); // Navigate to login page after closing popup
   };
 
   return (
