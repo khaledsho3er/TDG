@@ -11,7 +11,7 @@ const ProductCards = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("/json/product.json"); // Replace with your API endpoint
+        const response = await fetch("/json/productData.json"); // Replace with your API endpoint
         const data = await response.json();
         setProducts(data);
       } catch (error) {

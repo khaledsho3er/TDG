@@ -9,14 +9,15 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
-import ProductPage from "../../Pages/ProductPage";
+
 // Card Component to Render Individual Product
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/product`); // Navigate to a dynamic route using the product ID
+    navigate(`/product/${product.id}`); // Navigate to a dynamic route using the product ID
   };
+
   return (
     <Box onClick={handleCardClick} style={{ cursor: "pointer" }}>
       <Card
@@ -26,15 +27,14 @@ const ProductCard = ({ product }) => {
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
           overflow: "hidden",
-          // margin: "16px",
         }}
       >
         {/* Product Image */}
         <CardMedia
           component="img"
           height="250"
-          image={product.image} // Dynamically display product image
-          alt={product.title}
+          image={product.imageUrl} // Updated to match JSON structure
+          alt={product.name} // Updated to use the name field
           sx={{
             objectFit: "cover",
             fontFamily: "horizon",
@@ -58,7 +58,7 @@ const ProductCard = ({ product }) => {
       </Card>
       {/* Product Information */}
       <CardContent sx={{ padding: "16px" }}>
-        {/* Title */}
+        {/* Name */}
         <Typography
           variant="h6"
           sx={{
@@ -68,7 +68,7 @@ const ProductCard = ({ product }) => {
             textTransform: "uppercase",
           }}
         >
-          {product.title}
+          {product.name}
         </Typography>
 
         {/* Description */}
@@ -95,7 +95,7 @@ const ProductCard = ({ product }) => {
             marginTop: "8px",
           }}
         >
-          {product.price}$
+          {product.price}
         </Typography>
       </CardContent>
     </Box>
