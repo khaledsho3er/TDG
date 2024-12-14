@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { TiDeleteOutline } from "react-icons/ti";
 import VendorPageLayout from "./VendorLayout";
 const UpdateProductForm = () => {
-  const navigate = useNavigate(); // useNavigate instead of useHistory
-
   const location = useLocation();
   const { product } = location.state || {};
 
