@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
 import {
@@ -11,6 +11,24 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const DashboardVendor = () => {
+  const [orders, setOrders] = useState([]);
+
+  // Fetch order data from JSON
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch("/json/OrderData.json");
+      const data = await response.json();
+      // Sort orders by date (latest to earliest)
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -32,7 +50,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Total Orders</h3>
-            <p>₹126,500</p>
+            <p>LE 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -42,7 +60,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders</h3>
-            <p>₹126,500</p>
+            <p>LE 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -52,7 +70,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
-            <p>₹126,500</p>
+            <p>LE 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -62,7 +80,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Return Orders</h3>
-            <p>₹126,500</p>
+            <p>LE 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -100,18 +118,18 @@ const DashboardVendor = () => {
           <hr></hr>
           <ul>
             <li>
-              <img src="Assets/sofabrown.jpg" />
-              Lorem Ipsum - ₹126,500 (999 sales)
+              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              Lorem Ipsum - LE 126,500 (999 sales)
             </li>
             <li>
               {" "}
-              <img src="Assets/sofabrown.jpg" />
-              Lorem Ipsum - ₹126,500 (999 sales)
+              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              Lorem Ipsum - LE 126,500 (999 sales)
             </li>
             <li>
               {" "}
-              <img src="Assets/sofabrown.jpg" />
-              Lorem Ipsum - ₹126,500 (999 sales)
+              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              Lorem Ipsum - LE 126,500 (999 sales)
             </li>
           </ul>
         </div>
@@ -143,46 +161,34 @@ const DashboardVendor = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Lorem Ipsum</td>
-                <td>#25426</td>
-                <td>Nov 8th, 2023</td>
-                <td>Kevin</td>
-                <td className="status-delivered">Delivered</td>
-                <td>₹200.00</td>
-              </tr>
-              <tr>
-                <td>Lorem Ipsum</td>
-                <td>#25425</td>
-                <td>Nov 7th, 2023</td>
-                <td>Komael</td>
-                <td className="status-cancelled">Cancelled</td>
-                <td>₹200.00</td>
-              </tr>
-              <tr>
-                <td>Lorem Ipsum</td>
-                <td>#25424</td>
-                <td>Nov 6th, 2023</td>
-                <td>Nikhil</td>
-                <td className="status-shipping">Shipping</td>
-                <td>₹200.00</td>
-              </tr>
-              <tr>
-                <td>Lorem Ipsum</td>
-                <td>#25423</td>
-                <td>Nov 5th, 2023</td>
-                <td>Shivam</td>
-                <td className="status-cancelled">Cancelled</td>
-                <td>₹200.00</td>
-              </tr>
-              <tr>
-                <td>Lorem Ipsum</td>
-                <td>#25422</td>
-                <td>Nov 4th, 2023</td>
-                <td>Shadab</td>
-                <td className="status-delivered">Delivered</td>
-                <td>₹200.00</td>
-              </tr>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td>{order.product}</td>
+                  <td>{order.orderId}</td>
+                  <td>{order.date}</td>
+                  <td>{order.customerName}</td>
+                  <td>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        marginTop: "4px",
+                        padding: "4px 12px",
+                        borderRadius: "5px",
+                        backgroundColor:
+                          order.status === "Delivered" ? "#d4edda" : "#f8d7da",
+                        color:
+                          order.status === "Delivered" ? "#155724" : "#721c24",
+                        fontWeight: "500",
+                        textAlign: "center",
+                        minWidth: "80px",
+                      }}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td>LE {order.amount}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

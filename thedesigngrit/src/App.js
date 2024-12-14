@@ -21,12 +21,15 @@ import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import { CartProvider } from "./Components/Popups/cartcontext";
 import VendorHome from "./Pages/vendorSide/VendorHome";
+import OrderDetails from "./Components/vendorSide/orderDetails";
+import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
 
 function App() {
   return (
     <CartProvider>
       <Router>
         <Routes>
+          {/* Public Routes */}
           <Route exact path="/" Component={Home} />
           <Route exact path="/home" Component={Home} />
           <Route exact path="/login" Component={LoginPage} />
@@ -47,9 +50,11 @@ function App() {
           <Route path="/faqs" Component={FAQs} />
           <Route path="/trackorder" Component={TrackOrder} />
           <Route path="/vendors" element={<PageDescription />} />
-        </Routes>
-        <Routes>
+
+          {/* Vendor Panel Routes */}
           <Route path="/vendorpanel" Component={VendorHome} />
+          <Route path="/orderDetail/:id" element={<OrderDetails />} />
+          <Route path="/update-product" element={<UpdateProductForm />} />
         </Routes>
       </Router>
     </CartProvider>

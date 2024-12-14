@@ -5,13 +5,13 @@ const NavbarVendor = () => {
   return (
     <nav className="navbar-vendor">
       <div className="navbar-logo-vendor">
-        <img src="Assets/PartnersLogos/ArtHouseLogo.png" alt="Vendor Logo" />
+        <img src="/Assets/PartnersLogos/ArtHouseLogo.png" alt="Vendor Logo" />
       </div>
       <div className="navbar-actions-vendor">
         <FaSearch className="icon-vendor-bar" />
         <FaBell className="icon-vendor-bar" />
         <select>
-          <option>Admin</option>
+          <option>Manager</option>
           <option>Settings</option>
           <option>Logout</option>
         </select>
