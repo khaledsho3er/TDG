@@ -1143,6 +1143,7 @@ body {
   font-weight: bold;
   margin-bottom: 2rem;
   font-family: Horizon;
+  text-align: left;
 }
 
 .slider-content {
@@ -2186,6 +2187,11 @@ textarea {
   background-color: transparent;
 }
 
+.popup-close-button:hover {
+  color: #333;
+  background-color: transparent;
+}
+
 /* Left Side: Profile Form */
 .popup-left {
   flex: 2; /* Left section takes up 2 parts of available space */
@@ -2607,7 +2613,7 @@ textarea {
 .orders-popup {
   padding: 20px;
   width: 100%;
-  max-height: 500px; /* Set the maximum height for the container */
+  max-height: 400px; /* Set the maximum height for the container */
   overflow-y: auto; /* Enable vertical scrolling */
   border-radius: 8px; /* Rounded corners */
 }
@@ -2644,7 +2650,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  color: #daded6;
+  color: #6c7c59;
 }
 
 .arrow-button {
@@ -2653,6 +2659,11 @@ textarea {
   font-size: 24px;
   cursor: pointer;
   color: #daded6;
+}
+
+.arrow-button:hover {
+  color: #4e5b44;
+  background: none;
 }
 
 .order-dropdown {
