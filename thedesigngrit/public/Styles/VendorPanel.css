@@ -930,3 +930,140 @@ textarea {
   color: #333;
   border: 1px solid #ccc;
 }
+/*Admin Requests partners*/
+.request-card-body {
+  padding: 15px 15px 15px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+.request-info-vendor {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  flex-grow: 1;
+}
+.request-info-vendor h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.request-info-vendor p {
+  font-size: 12px;
+  margin: 5px 0 0;
+  color: #666;
+}
+.request-image {
+  width: 30%;
+  height: auto;
+  object-fit: cover;
+}
+.request-summary {
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+}
+.verify-partners {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.partner-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+
+  align-items: center;
+}
+
+.partner-info {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  width: 80%;
+  margin-top: 50px;
+}
+
+.partner-info img {
+  align-items: center;
+  max-width: 150px;
+  border-radius: 8px;
+  margin-top: 50px;
+  margin: auto;
+}
+
+.partner-info div {
+  flex: 1;
+}
+
+.partner-info h3,
+.partner-info h4 {
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.partner-info p {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+li {
+  font-size: large;
+}
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.approve-btn,
+.reject-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.approve-btn {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.reject-btn {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.approve-btn:hover {
+  background-color: #155724;
+  color: #fff;
+}
+
+.reject-btn:hover {
+  background-color: #dc3545;
+  color: #fff;
+}

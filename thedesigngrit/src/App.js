@@ -23,7 +23,8 @@ import { CartProvider } from "./Components/Popups/cartcontext";
 import VendorHome from "./Pages/vendorSide/VendorHome";
 import OrderDetails from "./Components/vendorSide/orderDetails";
 import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
-
+import AdminHome from "./Pages/vendorSide/AdminHome";
+import VerifyPartners from "./Components/adminSide/VerifyPartners";
 function App() {
   return (
     <CartProvider>
@@ -55,6 +56,8 @@ function App() {
           <Route path="/vendorpanel" Component={VendorHome} />
           <Route path="/orderDetail/:id" element={<OrderDetails />} />
           <Route path="/update-product" element={<UpdateProductForm />} />
+          <Route path="/adminpanel" Component={AdminHome} />
+          <Route path="/verify-partner" element={<VerifyPartners />} />
         </Routes>
       </Router>
     </CartProvider>
