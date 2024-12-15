@@ -19,7 +19,7 @@ import CheckoutPage from "./Pages/Checkout";
 import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
-import { CartProvider } from "./Components/Popups/cartcontext";
+import { CartProvider } from "./Context/cartcontext";
 
 function App() {
   return (

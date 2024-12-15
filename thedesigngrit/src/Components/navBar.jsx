@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, InputBase, IconButton, Avatar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -7,10 +7,28 @@ import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
 import ShoppingCartOverlay from "./Popups/CartOverlay";
+import Menudrop from "./menuhover/Menudrop";
 import { Link } from "react-router-dom";
+
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [menuData, setMenuData] = useState({}); // State to hold JSON data
+  const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
+
+  useEffect(() => {
+    // Fetch JSON data from public/json/menuData.json
+    fetch("/json/menuData.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load menu data");
+        }
+        return response.json();
+      })
+      .then((data) => setMenuData(data))
+      .catch((error) => console.error("Error loading menu data:", error));
+  }, []);
 
   const handleCartToggle = () => {
     setCartOpen(!cartOpen);
@@ -18,6 +36,27 @@ function Header() {
 
   const handlePopupToggle = () => {
     setPopupOpen(!popupOpen);
+  };
+
+  const handleMouseEnterCategory = (category) => {
+    setHoveredCategory(category);
+  };
+
+  const handleMouseLeaveCategory = () => {
+    if (!isMenuHovered) {
+      setHoveredCategory(null); // Only hide the menu if not hovering over the menu itself
+    }
+  };
+
+  const handleMenuHover = () => {
+    setIsMenuHovered(true); // Set to true when hovering over the menu
+  };
+
+  const handleMenuLeave = () => {
+    setIsMenuHovered(false); // Set to false when not hovering over the menu
+    if (!hoveredCategory) {
+      setHoveredCategory(null); // Hide menu if not hovering over anything
+    }
   };
 
   return (
@@ -30,12 +69,13 @@ function Header() {
         width: "100%",
       }}
     >
+      {/* Top Header */}
       <Box className="header">
         <Box className="header-top">
           {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo" variant="h4">
-              <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
+              <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
             </Typography>
           </Link>
 
@@ -57,13 +97,7 @@ function Header() {
               <ShoppingCartIcon sx={{ fontSize: "17px" }} />
             </IconButton>
             <Box>
-              <Typography
-                sx={{
-                  fontSize: "10px",
-                }}
-              >
-                Egypt / EN
-              </Typography>
+              <Typography sx={{ fontSize: "10px" }}>Egypt / EN</Typography>
             </Box>
             <Avatar
               className="avatar"
@@ -77,21 +111,32 @@ function Header() {
       </Box>
 
       {/* Categories */}
-      <Box className="header-bottom">
-        {[
-          "Furniture",
-          "Kitchen & Dining",
-          "Bath",
-          "Lighting",
-          "Home Decor",
-          "Outdoor",
-          "Brand",
-        ].map((category) => (
-          <Typography key={category} className="category">
+      <Box
+        className="header-bottom"
+        onMouseLeave={handleMouseLeaveCategory} // Hide overlay when leaving categories
+      >
+        {Object.keys(menuData).map((category) => (
+          <Typography
+            key={category}
+            className="category"
+            onMouseEnter={() => handleMouseEnterCategory(category)} // Show overlay on hover
+          >
             {category}
           </Typography>
         ))}
       </Box>
+
+      {/* Overlay Menu */}
+      {hoveredCategory && (
+        <Menudrop
+          category={hoveredCategory}
+          details={menuData[hoveredCategory]}
+          onMouseEnter={handleMenuHover} // Keep the menu visible when hovering over it
+          onMouseLeave={handleMenuLeave} // Close the menu when not hovering over it
+        />
+      )}
+
+      {/* Additional Buttons */}
       <FloatingButton />
       <Stickedbutton />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />

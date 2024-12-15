@@ -364,46 +364,82 @@ body {
 .hero-home-section {
   position: relative;
   width: 100%;
-  height: 700px; /* Adjust height based on your design */
+  height: 600px; /* Adjust height based on your design */
   overflow: hidden;
+}
+
+.hero-slider {
+  display: flex;
+  width: 100%; /* Total width = 100% x number of slides */
+  transition: transform 1s ease-in-out; /* Smooth transition */
+}
+
+.hero-slide {
+  width: 100%;
+  flex-shrink: 0;
+  position: relative;
 }
 
 .hero-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  filter: brightness(80%); /* Dim the image for better text visibility */
+  height: 600px;
+  object-fit: cover;
+  filter: brightness(80%);
 }
 
 .hero-text-overlay {
   position: absolute;
   top: 50%;
-  left: 30%;
+  left: 40%;
   transform: translate(-50%, -50%);
-  color: #ffffff; /* White text for contrast */
+  color: #ffffff;
   text-align: left;
 }
 
 .hero-text-overlay h1 {
-  font-size: 3rem; /* Adjust size as needed */
+  font-size: 3rem;
   font-weight: bold;
   margin-bottom: 10px;
-  text-align: left;
 }
 
 .hero-text-overlay p {
-  font-size: 1.2rem; /* Adjust size for the subtitle */
+  font-size: 1.2rem;
   max-width: 600px;
-  margin: 0 auto;
   line-height: 1.5;
   font-family: Montserrat;
 }
+
 .btn-hero-section {
   border: 1px solid #6c7c59;
   background-color: #6c7c59;
   padding: 10px;
   border-radius: 10px;
   margin-top: 20px;
+  cursor: pointer;
+}
+
+.slider-navigation {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.slider-dot.active {
+  opacity: 1;
+  background-color: #6c7c59;
 }
 .slick-dots li button:before {
   color: #6c7c59; /* Change dots color */
@@ -2905,23 +2941,24 @@ textarea {
   margin-top: 40px;
 }
 
-.continue-button,
 .checkout-button {
   padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
+  font-size: 10px !important;
+  border-radius: 8px !important;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: "Montserrat";
 }
 
 .continue-button {
   background-color: #fff !important;
   color: #2d2d2d !important;
   border: 2px solid #2d2d2d !important;
+  border-radius: 8px !important;
   width: 20%;
   height: 36px;
-  font-size: 10px;
-  font-family: Montserrat;
+  font-size: 10px !important;
+  font-family: "Montserrat";
 }
 
 .continue-button:hover {

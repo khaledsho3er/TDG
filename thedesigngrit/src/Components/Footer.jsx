@@ -28,7 +28,7 @@ function Footer() {
         <Grid item xs={3} md={5}>
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo-Footer" variant="h4" sx={{ mb: 2 }}>
-              <img src="Assets/TDG_Logo_Black.png" alt="Logo" />
+              <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
             </Typography>
           </Link>
 
@@ -295,19 +295,19 @@ function Footer() {
           <Box sx={{ paddingTop: 3 }}>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Typography>
-                <img src="Assets\icons\amex.png" alt="Logo" />
+                <img src="/Assets\icons\amex.png" alt="Logo" />
               </Typography>
               <Typography>
-                <img src="Assets\icons\mastercard.png" alt="Logo" />
+                <img src="/Assets\icons\mastercard.png" alt="Logo" />
               </Typography>
               <Typography>
-                <img src="Assets\icons\meeza.png" alt="Logo" />
+                <img src="/Assets\icons\meeza.png" alt="Logo" />
               </Typography>
               <Typography>
-                <img src="Assets\icons\visa.png" alt="Logo" />
+                <img src="/Assets\icons\visa.png" alt="Logo" />
               </Typography>
               <Typography>
-                <img src="Assets\icons\mada 1.png" alt="Logo" />
+                <img src="/Assets\icons\mada 1.png" alt="Logo" />
               </Typography>
             </Box>
             <Box sx={{ display: "flex", paddingTop: 0.5 }}>
