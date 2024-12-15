@@ -19,6 +19,8 @@ import CheckoutPage from "./Pages/Checkout";
 import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
+import MyAccount from "./Pages/myAccount";
+
 import { CartProvider } from "./Components/Popups/cartcontext";
 import VendorHome from "./Pages/vendorSide/VendorHome";
 import OrderDetails from "./Components/vendorSide/orderDetails";
@@ -50,6 +52,7 @@ function App() {
           <Route exact path="/careers" Component={careersPage} />
           <Route path="/faqs" Component={FAQs} />
           <Route path="/trackorder" Component={TrackOrder} />
+          <Route path="/myaccount" Component={MyAccount} />
           <Route path="/vendors" element={<PageDescription />} />
 
           {/* Vendor Panel Routes */}

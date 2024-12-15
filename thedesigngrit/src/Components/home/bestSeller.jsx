@@ -47,7 +47,7 @@ const ProductSlider = () => {
   };
 
   return (
-    <div className="slider-container">
+    <div className="slider-container-home">
       <h1 className="slider-title">BEST SELLERS</h1>
 
       <div className="slider-content">
@@ -59,7 +59,7 @@ const ProductSlider = () => {
               transform: `translateX(-${currentSlide * 100}%)`,
             }}
           >
-            <div className="product-image">
+            <div className="product-image-home">
               <img src={product.image} alt={product.title} />
             </div>
 
@@ -77,7 +77,7 @@ const ProductSlider = () => {
         ))}
       </div>
 
-      <div className="slider-controls">
+      <div className="slider-controls-home">
         <div className="dots">
           {products.map((_, index) => (
             <button
@@ -88,11 +88,11 @@ const ProductSlider = () => {
           ))}
         </div>
 
-        <div className="arrows">
-          <button className="arrow prev" onClick={prevSlide}>
+        <div className="arrows-home">
+          <button className="arrow-home prev" onClick={prevSlide}>
             ←
           </button>
-          <button className="arrow next" onClick={nextSlide}>
+          <button className="arrow-home next" onClick={nextSlide}>
             →
           </button>
         </div>
