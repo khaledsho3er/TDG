@@ -116,14 +116,14 @@ const PartnerApplicationForm = () => {
           </div>
 
           <div className="job-form-field">
-            <label>Upload Products</label>
+            <label>Upload Document</label>
             <button
               type="button"
               className="job-upload-button"
               onClick={() => document.getElementById("image-upload").click()}
             >
               <IoMdCloudUpload size={20} className="upload-icon" />
-              Upload Products
+              Upload Document
             </button>
             <input
               id="image-upload"
@@ -142,7 +142,33 @@ const PartnerApplicationForm = () => {
               ))}
             </div>
           </div>
-
+          <div className="job-form-field">
+            <label>Upload Document</label>
+            <button
+              type="button"
+              className="job-upload-button"
+              onClick={() => document.getElementById("image-upload").click()}
+            >
+              <IoMdCloudUpload size={20} className="upload-icon" />
+              Upload Document
+            </button>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*" // Restrict to images only
+              multiple // Allow multiple uploads
+              onChange={handleFileUpload}
+              style={{ display: "none" }}
+            />
+            <div className="image-preview-container">
+              {formData.images.map((image, index) => (
+                <div key={index} className="image-preview">
+                  <img src={image.url} alt={image.name} />
+                  <p>{image.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="job-form-field">
             <label>Additional Notes</label>
             <textarea

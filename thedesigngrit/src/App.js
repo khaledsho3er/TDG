@@ -20,12 +20,19 @@ import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import { CartProvider } from "./Context/cartcontext";
-
+import MyAccount from "./Pages/myAccount";
+import { CartProvider } from "./Components/Popups/cartcontext";
+import VendorHome from "./Pages/vendorSide/VendorHome";
+import OrderDetails from "./Components/vendorSide/orderDetails";
+import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
+import AdminHome from "./Pages/vendorSide/AdminHome";
+import VerifyPartners from "./Components/adminSide/VerifyPartners";
 function App() {
   return (
     <CartProvider>
       <Router>
         <Routes>
+          {/* Public Routes */}
           <Route exact path="/" Component={Home} />
           <Route exact path="/home" Component={Home} />
           <Route exact path="/login" Component={LoginPage} />
@@ -45,7 +52,15 @@ function App() {
           <Route exact path="/careers" Component={careersPage} />
           <Route path="/faqs" Component={FAQs} />
           <Route path="/trackorder" Component={TrackOrder} />
+          <Route path="/myaccount" Component={MyAccount} />
           <Route path="/vendors" element={<PageDescription />} />
+
+          {/* Vendor Panel Routes */}
+          <Route path="/vendorpanel" Component={VendorHome} />
+          <Route path="/orderDetail/:id" element={<OrderDetails />} />
+          <Route path="/update-product" element={<UpdateProductForm />} />
+          <Route path="/adminpanel" Component={AdminHome} />
+          <Route path="/verify-partner" element={<VerifyPartners />} />
         </Routes>
       </Router>
     </CartProvider>

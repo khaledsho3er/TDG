@@ -1165,11 +1165,11 @@ body {
 }
 
 /*Best seller homePage*/
-.slider-container {
+.slider-container-home {
   width: 95%;
   padding: 2rem;
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 .slider-title {
@@ -1179,6 +1179,7 @@ body {
   font-weight: bold;
   margin-bottom: 2rem;
   font-family: Horizon;
+  text-align: left;
 }
 
 .slider-content {
@@ -1197,7 +1198,7 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
-.product-image {
+.product-image-home {
   position: relative;
   aspect-ratio: 1;
   border-radius: 8px;
@@ -1205,7 +1206,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.product-image img {
+.product-image-home img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1247,10 +1248,10 @@ body {
   font-family: Montserrat;
 }
 
-.slider-controls {
+.slider-controls-home {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   margin-top: 2rem;
 }
 
@@ -1273,21 +1274,25 @@ body {
   background-color: #2d2d2d;
 }
 
-.arrows {
+.arrows-home {
   display: flex;
   gap: 1rem;
+  align-items: flex-end;
 }
 
-.arrow {
+.arrow-home {
   background: none;
   border: none;
   font-size: 1.5rem;
+  color: #2d2d2d;
   cursor: pointer;
   padding: 0.5rem;
 }
 
-.arrow:hover {
+.arrow-home:hover {
   opacity: 0.7;
+  background-color: transparent;
+  color: #2d2d2d;
 }
 
 @media (min-width: 768px) {
@@ -2218,6 +2223,11 @@ textarea {
   background-color: transparent;
 }
 
+.popup-close-button:hover {
+  color: #333;
+  background-color: transparent;
+}
+
 /* Left Side: Profile Form */
 .popup-left {
   flex: 2; /* Left section takes up 2 parts of available space */
@@ -2639,7 +2649,7 @@ textarea {
 .orders-popup {
   padding: 20px;
   width: 100%;
-  max-height: 500px; /* Set the maximum height for the container */
+  max-height: 400px; /* Set the maximum height for the container */
   overflow-y: auto; /* Enable vertical scrolling */
   border-radius: 8px; /* Rounded corners */
 }
@@ -2676,7 +2686,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  color: #daded6;
+  color: #6c7c59;
 }
 
 .arrow-button {
@@ -2685,6 +2695,11 @@ textarea {
   font-size: 24px;
   cursor: pointer;
   color: #daded6;
+}
+
+.arrow-button:hover {
+  color: #4e5b44;
+  background: none;
 }
 
 .order-dropdown {
@@ -3991,4 +4006,91 @@ textarea {
 
 .star-rating span:hover {
   transform: scale(1.2); /* Enlarge on hover */
+}
+
+/*profile side account page*/
+.Profile-side {
+}
+
+.Profile-side h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: left;
+  font-family: Horizon;
+}
+
+.profile-info {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.profile-info-first p {
+  font-size: 16px;
+  color: #2d2d2d;
+  margin: 5px 0;
+  font-weight: bold;
+  line-height: 2.5;
+}
+
+.profile-info-first p:nth-child(odd) {
+  color: #777;
+}
+
+.popup-avatar-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.profile-info-second {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #ececec;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.profile-info-second-left,
+.profile-info-second-right {
+  width: 48%;
+}
+
+.profile-info-second-left p,
+.profile-info-second-right p {
+  font-size: 16px;
+  color: #2d2d2d;
+  margin: 5px 0;
+  font-weight: bold;
+  line-height: 2.5;
+}
+
+.profile-info-second-left p:nth-child(odd),
+.profile-info-second-right p:nth-child(odd) {
+  font-weight: normal;
+  color: #777;
 }
