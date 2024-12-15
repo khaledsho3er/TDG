@@ -1,54 +1,704 @@
 [
   {
-      "id": 1,
-      "name": "Seater Fabric Sofa",
-      "brand": "Istikbal",
-      "price": "32,000 E£",
-      "rating": 4,
-      "image": "Assets/sofabrown.jpg",
-      "images": "Assets/sofabrown.jpg",
-      "reviewsCount": 22,
-      "colors": [
-          {
-              "name": "Blue",
-              "hex": "#4c769d"
-          },
-          {
-              "name": "Grey",
-              "hex": "#a1a1a1"
-          },
-          {
-              "name": "Orange",
-              "hex": "#d94c23"
-          },
-          {
-              "name": "Sage",
-              "hex": "#6b8d62"
-          }
-      ],
-      "sizes": [
-          "1.5 M",
-          "2 M",
-          "3 M"
-      ],
-      "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
-      "manufacturerYear": 2024,
-      "collection": "Duefets",
-      "type": "2 Seater Fabric Sofa",
-      "imageUrl": "Assets/sofabrown.jpg",
-      "thumbnailUrls": [
-          "Assets/seatersofa.png",
-          "Assets/seatersofa.png",
-          "Assets/seatersofa.png",
-          "Assets/seatersofa.png"
-      ],
-      "tags":[
-        "sofa",
-        "fabric",
-        "2 seater",
-        "settee",
-        "roomy seat cushion",
-        "legs"
-      ]
+    "id": 1,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 2,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "Blue",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "/Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "/Assets/seatersofa.png",
+      "/Assets/seatersofa.png",
+      "/Assets/seatersofa.png",
+      "/Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+  {
+    "id": 3,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 4,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 5,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 6,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+  {
+    "id": 7,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 8,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 9,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 10,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 11,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 12,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 13,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
+  },
+
+  {
+    "id": 14,
+    "vendorId": 1,
+    "name": "Seater Fabric Sofa",
+    "brand": "Istikbal",
+    "price": "32,000 E£",
+    "rating": 4,
+    "image": "Assets/sofabrown.jpg",
+    "images": "Assets/sofabrown.jpg",
+    "reviewsCount": 22,
+    "colors": [
+      {
+        "name": "red",
+        "hex": "#4c769d"
+      },
+      {
+        "name": "Grey",
+        "hex": "#a1a1a1"
+      },
+      {
+        "name": "Orange",
+        "hex": "#d94c23"
+      },
+      {
+        "name": "Sage",
+        "hex": "#6b8d62"
+      }
+    ],
+    "sizes": ["1.5 M", "2 M", "3 M"],
+    "description": "Characterised by distinct stylistic references to the 1970s, Dudet transfers to a two-seat settee the versatile, sophisticated design of the chair in the same family designed by Patricia Urquiola. Available in one size only, the settee is defined by three upholstered elements: a roomy seat cushion and two sinuous tubular supports that, in one continuous line, create legs, armrests, and backrest.",
+    "manufacturerYear": 2024,
+    "collection": "Duefets",
+    "type": "2 Seater Fabric Sofa",
+    "imageUrl": "Assets/sofabrown.jpg",
+    "thumbnailUrls": [
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png",
+      "Assets/seatersofa.png"
+    ],
+    "tags": [
+      "sofa",
+      "fabric",
+      "2 seater",
+      "settee",
+      "roomy seat cushion",
+      "legs"
+    ]
   }
 ]

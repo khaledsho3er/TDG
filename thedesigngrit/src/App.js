@@ -21,35 +21,49 @@ import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import MyAccount from "./Pages/myAccount";
 
-
+import { CartProvider } from "./Components/Popups/cartcontext";
+import VendorHome from "./Pages/vendorSide/VendorHome";
+import OrderDetails from "./Components/vendorSide/orderDetails";
+import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
+import AdminHome from "./Pages/vendorSide/AdminHome";
+import VerifyPartners from "./Components/adminSide/VerifyPartners";
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" Component={Home} />
-        <Route exact path="/home" Component={Home} />
-        <Route exact path="/login" Component={LoginPage} />
-        <Route exact path="/signup" Component={SignUpPage} />
-        <Route exact path="/AboutUs" Component={AboutUsPage} />
-        <Route exact path="/job" Component={JobDesc} />
-        <Route exact path="/policy" Component={TermsOfService} />
-        <Route exact path="/partners" Component={PartnersApplication} />
-        <Route exact path="/contactus" Component={ContactUs} />
-        <Route exact path="/mycart" Component={ShoppingCart} />
-        <Route exact path="/products" Component={ProductsPage} />
-        <Route path="/product" Component={ProductPage} />
-        <Route exact path="/ProductsPage" Component={ProductsPage} />
-        <Route exact path="/Vendors" Component={Vendorspage} />
-        <Route exact path="/Vendorprofile" Component={VendorProfile} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route exact path="/careers" Component={careersPage} />
-        <Route path="/faqs" Component={FAQs} />
-        <Route path="/trackorder" Component={TrackOrder} />
-        <Route path="/myaccount" Component={MyAccount} />
+    <CartProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route exact path="/" Component={Home} />
+          <Route exact path="/home" Component={Home} />
+          <Route exact path="/login" Component={LoginPage} />
+          <Route exact path="/signup" Component={SignUpPage} />
+          <Route exact path="/AboutUs" Component={AboutUsPage} />
+          <Route exact path="/job" Component={JobDesc} />
+          <Route exact path="/policy" Component={TermsOfService} />
+          <Route exact path="/partners" Component={PartnersApplication} />
+          <Route exact path="/contactus" Component={ContactUs} />
+          <Route exact path="/mycart" Component={ShoppingCart} />
+          <Route exact path="/products" Component={ProductsPage} />
+          <Route path="/product/:id" element={<ProductPage />} />
+          <Route exact path="/ProductsPage" Component={ProductsPage} />
+          <Route exact path="/Vendors" Component={Vendorspage} />
+          <Route exact path="/Vendorprofile" Component={VendorProfile} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route exact path="/careers" Component={careersPage} />
+          <Route path="/faqs" Component={FAQs} />
+          <Route path="/trackorder" Component={TrackOrder} />
+          <Route path="/myaccount" Component={MyAccount} />
+          <Route path="/vendors" element={<PageDescription />} />
 
-        <Route path="/vendors" element={<PageDescription />} />
-      </Routes>
-    </Router>
+          {/* Vendor Panel Routes */}
+          <Route path="/vendorpanel" Component={VendorHome} />
+          <Route path="/orderDetail/:id" element={<OrderDetails />} />
+          <Route path="/update-product" element={<UpdateProductForm />} />
+          <Route path="/adminpanel" Component={AdminHome} />
+          <Route path="/verify-partner" element={<VerifyPartners />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
 }
 

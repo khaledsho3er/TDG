@@ -6,9 +6,15 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
+import ShoppingCartOverlay from "./Popups/CartOverlay";
 import { Link } from "react-router-dom";
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const handleCartToggle = () => {
+    setCartOpen(!cartOpen);
+  };
 
   const handlePopupToggle = () => {
     setPopupOpen(!popupOpen);
@@ -47,7 +53,7 @@ function Header() {
             <IconButton>
               <FavoriteBorderIcon sx={{ fontSize: "17px" }} />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handleCartToggle}>
               <ShoppingCartIcon sx={{ fontSize: "17px" }} />
             </IconButton>
             <Box>
@@ -89,6 +95,7 @@ function Header() {
       <FloatingButton />
       <Stickedbutton />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
+      <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
     </Box>
   );
 }
