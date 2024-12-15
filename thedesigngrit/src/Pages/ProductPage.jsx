@@ -61,6 +61,12 @@ function ProductPage() {
     }
   };
 
+  const handleSectionToggle = (index) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
   const handleAddToCart = (product) => {
     console.log(product); // Debugging the product object
     const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
@@ -165,6 +171,7 @@ function ProductPage() {
         </div>
 
         <div className="page-container">
+          {/* Collapsible Info Section */}
           <div className="collapsible-container">
             {["Overview", "Dimensions", "BIM/CAD", "Videos", "Tags"].map(
               (section, index) => (
@@ -173,7 +180,7 @@ function ProductPage() {
                   className={`collapsible-section ${
                     expandedSections[index] ? "open" : ""
                   }`}
-                  onClick={() => handleToggleSection(index)}
+                  onClick={() => handleSectionToggle(index)}
                 >
                   <div className="collapsible-header">
                     {section}
@@ -183,37 +190,148 @@ function ProductPage() {
                       }`}
                     />
                   </div>
-                  {expandedSections[index] && (
-                    <div className="collapsible-content">
-                      Content for {section}
-                    </div>
-                  )}
+
+                  {/* Content for each section */}
+                  <div className="collapsible-content">
+                    {section === "Overview" && (
+                      <div>
+                        <h5 style={{ fontSize: "25px" }}>
+                          Manufacturer : Istikbal
+                        </h5>
+                        <div className="product-details">
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Collection:</span> Duefets
+                          </p>
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Type:</span> 2 Seater Fabric
+                            Sofa
+                          </p>
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Manufacturer Year:</span>{" "}
+                            2024
+                          </p>
+                        </div>
+
+                        <p style={{ fontSize: "20px" }}>
+                          Characterised by distinct stylistic references to the
+                          1970s, Dudet transfers to a two-seat settee the
+                          versatile, sophisticated design of the chair in the
+                          same family designed by Patricia Urquiola. Available
+                          in one size only, the settee is defined by three
+                          upholstered elements: a roomy seat cushion and two
+                          sinuous tubular supports that, in one continuous line,
+                          create legs, armrests and backrest.
+                        </p>
+                      </div>
+                    )}
+                    {section === "Dimensions" && (
+                      <div>
+                        <img src="/Assets/productDemi.png" />
+                      </div>
+                    )}
+                    {section === "BIM/CAD" && (
+                      <Button
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2d2d2d",
+                          borderRadius: "10px",
+                          border: "1px solid #2d2d2d", // Correct way to set the border
+                          width: "40%",
+                          padding: "10px 20px",
+                          minWidth: "150px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          textTransform: "none",
+                          "&:hover": {
+                            backgroundColor: "#000",
+                            color: "#fff",
+                          },
+                        }}
+                      >
+                        {/* Left-aligned image */}
+                        <img
+                          src="/Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
+                          alt="AutoCAD Logo"
+                          style={{
+                            width: "24px",
+                            height: "24px",
+                            marginRight: "10px",
+                          }}
+                        />
+                        {/* Centered text */}
+                        <span>AutoCAD</span>{" "}
+                        <span>
+                          1 <FaFile sx={{ marginLeft: "10px" }} />
+                        </span>
+                        {/* Right-aligned file icon */}
+                      </Button>
+                    )}
+                    {section === "Videos" && (
+                      <div>
+                        <iframe
+                          width="560"
+                          height="315"
+                          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                          title="Product Video"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    )}
+                    {section === "Tags" && (
+                      <div className="span-container">
+                        <span>Sofa</span>
+                        <span>Istkbal</span>
+                        <span>Fabric</span>
+                        <span>2 Seater Sofa</span>
+                        <span>2024</span>
+                        <span>Decor</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )
             )}
           </div>
+          <div className="right-side-content">
+            <div className="Products-Materials">
+              <h4>NATURAL AND RECYCLED MATERIALS</h4>
+              <ul>
+                <li>R-LENO - Recycled Wool</li>
+                <span>Soft, comfortable, and lightweight</span>
+                <li>Designed to last a long time</li>
+                <span>Resistant materials that are easily washable</span>
+                <li>Waterproof to accompany you even in light rain </li>
+                <span>Flexible, lightweight, and cushioned</span>
+                <li>Inner Sole - Ortholite®</li>
+                <span>Removable and ergonomic</span>
+              </ul>
+            </div>
 
-          <div className="material-collapsible-container">
-            {["Delivery & Returns", "Care Instructions"].map(
-              (section, index) => (
-                <div key={index} className="material-collapsible-section">
-                  <div
-                    className="material-collapsible-header"
-                    onClick={() => handleToggleSection(index, "material")}
-                  >
-                    {section}
-                    <span className="material-collapsible-icon">
-                      {expandedMaterialSections[index] ? "-" : "+"}
-                    </span>
-                  </div>
-                  {expandedMaterialSections[index] && (
-                    <div className="material-collapsible-content">
-                      Content for {section}
+            <div className="material-collapsible-container">
+              {["Delivery & Returns", "Care Instructions"].map(
+                (section, index) => (
+                  <div key={index} className="material-collapsible-section">
+                    <div
+                      className="material-collapsible-header"
+                      onClick={() => handleToggleSection(index, "material")}
+                    >
+                      {section}
+                      <span className="material-collapsible-icon">
+                        {expandedMaterialSections[index] ? "-" : "+"}
+                      </span>
                     </div>
-                  )}
-                </div>
-              )
-            )}
+                    {expandedMaterialSections[index] && (
+                      <div className="material-collapsible-content">
+                        Content for {section}
+                      </div>
+                    )}
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
 
@@ -234,8 +352,6 @@ function ProductPage() {
           ))}
         </div>
       </div>
-
-      <RelatedProducts />
       <Footer />
     </div>
   );
