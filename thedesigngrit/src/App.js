@@ -19,6 +19,7 @@ import CheckoutPage from "./Pages/Checkout";
 import careersPage from "./Pages/careers";
 import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
+import { CartProvider } from "./Context/cartcontext";
 import MyAccount from "./Pages/myAccount";
 import { CartProvider } from "./Components/Popups/cartcontext";
 import VendorHome from "./Pages/vendorSide/VendorHome";

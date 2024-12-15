@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useCart } from "./cartcontext"; // Assuming the context is in the same directory
+import { useCart } from "../../Context/cartcontext";
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
   const { cart } = useCart(); // Access the cart from context

@@ -12,6 +12,7 @@ import {
 } from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
 import RelatedProducts from "../Components/relatedProduct";
+import { useCart } from "../Context/cartcontext";
 
 function ProductPage() {
   const [product, setProduct] = useState(null);
@@ -22,23 +23,30 @@ function ProductPage() {
   const [expandedSections, setExpandedSections] = useState({});
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   useEffect(() => {
+    // Fetch product data
     const getProductData = async () => {
       const data = await fetchProductData(id);
-      setProduct(data);
+      if (data) {
+        setProduct(data);
+      } else {
+        console.error("Product not found");
+      }
     };
+
+    // Fetch product reviews
+    const getProductReviews = async () => {
+      const reviewData = await fetchProductReview(id);
+      setReviews(reviewData);
+    };
+
     getProductData();
+    getProductReviews();
   }, [id]);
 
-  useEffect(() => {
-    const getReviewData = async () => {
-      const data = await fetchProductReview(id);
-      setReviews(data);
-    };
-    getReviewData();
-  }, [id]);
-
+  if (!product) return <div>Product not found</div>;
   const handleToggleSection = (index, type = "general") => {
     if (type === "general") {
       setExpandedSections((prev) => ({
@@ -53,11 +61,22 @@ function ProductPage() {
     }
   };
 
-  const handleAddToCartClick = () => {
+  const handleAddToCart = (product) => {
+    console.log(product); // Debugging the product object
+    const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
+    addToCart({
+      id: product.id,
+      name: product.name,
+      unitPrice: parsedPrice,
+      quantity: 1,
+      image: product.image,
+      brand: product.brand,
+      color: product.colors[0]?.name || "N/A",
+      size: product.sizes[0] || "N/A",
+      code: "N/A",
+    });
     navigate("/mycart");
   };
-
-  if (!product) return <div>Loading...</div>;
 
   return (
     <div className="product-page">
@@ -67,19 +86,23 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={product.imageUrl}
+              src={`/${product.imageUrl}`}
               alt={product.name}
               className="product-main-image"
             />
             <div className="thumbnail-container">
-              {product.thumbnailUrls.map((thumbnail, index) => (
-                <img
-                  key={index}
-                  src={thumbnail}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="thumbnail-image"
-                />
-              ))}
+              {product.thumbnailUrls?.length ? (
+                product.thumbnailUrls.map((thumbnail, index) => (
+                  <img
+                    key={index}
+                    src={`/${thumbnail}`}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="thumbnail-image"
+                  />
+                ))
+              ) : (
+                <p>No thumbnails available</p>
+              )}
             </div>
           </div>
 
@@ -98,11 +121,8 @@ function ProductPage() {
                 {product.colors.map((color, index) => (
                   <div
                     key={index}
-                    className={`color-circle ${
-                      selectedColor === color.name ? "selected" : ""
-                    }`}
+                    className="color-circle"
                     style={{ backgroundColor: color.hex }}
-                    onClick={() => setSelectedColor(color.name)}
                     title={color.name}
                   ></div>
                 ))}
@@ -133,7 +153,7 @@ function ProductPage() {
             <div className="action-buttons">
               <button
                 className="action-button button-primary"
-                onClick={handleAddToCartClick}
+                onClick={() => handleAddToCart(product)}
               >
                 Add to Cart
               </button>
