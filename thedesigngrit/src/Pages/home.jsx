@@ -20,14 +20,15 @@ function Home() {
     {
       id: 2,
       imgSrc: "/Assets/homehero/Herohome2.png",
-      title: "Unique Furniture Finds",
-      text: "Find unique and stylish furniture that fits your taste and lifestyle effortlessly.",
+      title: "Need to see it in person?",
+      text: "Plan your visit effortlessly with our View in Store option. Prepare your payment andaddress for a seamless experience, then see it up close.",
     },
     {
       id: 3,
       imgSrc: "/Assets/homehero/Herohome3.png",
-      title: "Tailored to You",
-      text: "Personalize your selections to create a home you’ll love for years to come.",
+      title: "Design your Vision",
+      text: "Use our moodboards to craft your aesthetic",
+      text2: "Explore products in stunning detail with downloadable 3D files",
     },
   ];
 
@@ -63,6 +64,7 @@ function Home() {
               <div className="hero-text-overlay">
                 <h1>{slide.title}</h1>
                 <p>{slide.text}</p>
+                <p>{slide.text2}</p>
                 <button className="btn-hero-section">Learn More</button>
               </div>
             </div>
