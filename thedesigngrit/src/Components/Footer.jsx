@@ -183,7 +183,12 @@ function Footer() {
               >
                 CUSTOMER SERVICE
               </Typography>
-              <Typography>FAQs</Typography>
+              <Link
+                to="/faqs"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>FAQs</Typography>
+              </Link>
               <Link
                 to="/policy"
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
@@ -196,8 +201,12 @@ function Footer() {
               >
                 <Typography>Shipping Information / Policy</Typography>
               </Link>
-              <Typography>Track Your Order</Typography>
-
+              <Link
+                to="/trackorder"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Track Your Order</Typography>
+              </Link>
               <Box sx={{ mt: 4 }}>
                 <Typography
                   variant="h6"
@@ -240,7 +249,9 @@ function Footer() {
               >
                 PAGES
               </Typography>
-              <Typography>Furniture</Typography>
+              <Link to="/products" style={{ textDecoration: "none" }}>
+                <Typography>Furniture</Typography>
+              </Link>
               <Typography>Kitchen & Dining</Typography>
               <Typography>Bath</Typography>
               <Typography>Lighting</Typography>

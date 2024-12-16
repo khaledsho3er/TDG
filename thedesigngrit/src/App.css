@@ -781,8 +781,10 @@ body {
 }
 
 .hero-title {
-  font-size: 2.5rem; /* Adjust as needed */
+  font-size: 3.5rem; /* Adjust as needed */
   margin: 0;
+  color: white;
+  text-align: left;
 }
 
 .hero-subtitle {
@@ -1464,6 +1466,7 @@ body {
   font-size: 2.5rem; /* Adjust as needed */
   margin: 0;
   text-align: center;
+  color: white;
 }
 
 .hero-subtitle-faq {

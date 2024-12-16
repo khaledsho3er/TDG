@@ -225,7 +225,7 @@ function ProductPage() {
                     )}
                     {section === "Dimensions" && (
                       <div>
-                        <img src="/Assets/productDemi.png" />
+                        <img src="/Assets/productDemi.png" alt="Dimensions" />
                       </div>
                     )}
                     {section === "BIM/CAD" && (

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   return (
@@ -12,7 +13,12 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
         <div className="menu-left">
           {details.map((detail, index) => (
             <div key={index} className="menu-item">
-              <h3>{detail.title}</h3>
+              <Link
+                to="/products"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <h3>{detail.title}</h3>
+              </Link>
             </div>
           ))}
         </div>
