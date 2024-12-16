@@ -11,7 +11,7 @@ const VendorCategoryCard = ({ title, description, price, image }) => {
       {/* Image Section */}
       <img
         src={image}
-        alt={`${title} Image`}
+        alt={`${title} ImageLogo`}
         className="vendorprofile-card-media"
       />
     </div>

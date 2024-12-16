@@ -6,7 +6,7 @@ const VendorProductsCard = ({ title, description, price, image }) => {
       {/* Image Section */}
       <img
         src={image}
-        alt={`${title} Image`}
+        alt={`${title} ImageProducts`}
         className="vendorprofile-products-card-media"
       />
       {/* Card Content Section */}

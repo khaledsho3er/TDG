@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { FaFile } from "react-icons/fa";
 import Header from "../Components/navBar";
-import { AiOutlineFileSearch } from "react-icons/ai";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
@@ -11,7 +10,7 @@ import {
   fetchProductReview,
 } from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
-import RelatedProducts from "../Components/relatedProduct";
+// import RelatedProducts from "../Components/relatedProduct";
 import { useCart } from "../Context/cartcontext";
 
 function ProductPage() {

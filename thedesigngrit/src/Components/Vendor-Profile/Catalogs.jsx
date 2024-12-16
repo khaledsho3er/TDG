@@ -58,7 +58,7 @@ function VendorCatalogs() {
         overflow="hidden"
         sx={{ padding: "10px 50px 50px" }}
       >
-        {/* Left Arrow
+        Left Arrow
         <IconButton
           onClick={handlePrev}
           disabled={currentIndex === 0}
@@ -74,8 +74,7 @@ function VendorCatalogs() {
           }}
         >
           <ArrowBackIosNewIcon />
-        </IconButton> */}
-
+        </IconButton>
         {/* Cards Grid */}
         <Grid container spacing={2}>
           {visibleItems.map((item) => (
@@ -90,8 +89,7 @@ function VendorCatalogs() {
             </Grid>
           ))}
         </Grid>
-
-        {/* Right Arrow
+        Right Arrow
         <IconButton
           onClick={handleNext}
           disabled={currentIndex + itemsPerPage >= catalogs.length}
@@ -107,7 +105,7 @@ function VendorCatalogs() {
           }}
         >
           <ArrowForwardIosIcon />
-        </IconButton> */}
+        </IconButton>
       </Box>
     </Box>
   );
