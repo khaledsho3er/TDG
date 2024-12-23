@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { Box, Typography, Card, CardMedia, CardContent, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  IconButton,
+} from "@mui/material";
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { FaArrowRight } from "react-icons/fa6";
-
 
 const ExploreConcepts = () => {
   const cards = [
@@ -51,18 +57,14 @@ const ExploreConcepts = () => {
           return (
             <Card key={card.id} className={className}>
               <CardMedia component="img" image={card.image} alt={card.title} />
-              
+
               <CardContent className="concept-card-content">
                 <IconButton className="concept-shopping-icon">
                   <ShoppingBagIcon />
                 </IconButton>
-                
-                <p className="concept-card-text">
-                  {card.title}
-                </p>
-                {position === 1 && (
-            <FaArrowRight color="#eae3e4" size="20px" />
-        )}
+
+                <p className="concept-card-text">{card.title}</p>
+                {position === 1 && <FaArrowRight color="#eae3e4" size="20px" />}
               </CardContent>
             </Card>
           );
@@ -72,33 +74,33 @@ const ExploreConcepts = () => {
       {/* Subtitle */}
       <Box className="concept-subtitle">
         <Typography variant="h4" className="concept-subtitle-title">
-          Furniture and <br/> Accessories<br/> for a Modern <br/>Interior
+          Like <br />
+          something <br></br>you see?
         </Typography>
         <Typography variant="body1" className="concept-subtitle-text">
-          Use our ideas to create <br/>an interior that suits you.
+          Click on it.
         </Typography>
       </Box>
 
       {/* Progress */}
       <Box className="concept-controls">
-  <Box className="concept-progress-container">
-    <Typography>02</Typography>
-    <Box className="concept-progress-bar">
-      <Box className="concept-progress-fill"></Box>
-    </Box>
-    <Typography>23</Typography>
-  </Box>
+        <Box className="concept-progress-container">
+          <Typography>02</Typography>
+          <Box className="concept-progress-bar">
+            <Box className="concept-progress-fill"></Box>
+          </Box>
+          <Typography>23</Typography>
+        </Box>
 
-  <Box className="concept-navigation">
-    <IconButton onClick={handlePrev}>
-      <BsArrowLeftCircle size={30} />
-    </IconButton>
-    <IconButton onClick={handleNext}>
-      <BsArrowRightCircle size={30} />
-    </IconButton>
-  </Box>
-</Box>
-
+        <Box className="concept-navigation">
+          <IconButton onClick={handlePrev}>
+            <BsArrowLeftCircle size={30} />
+          </IconButton>
+          <IconButton onClick={handleNext}>
+            <BsArrowRightCircle size={30} />
+          </IconButton>
+        </Box>
+      </Box>
     </Box>
   );
 };

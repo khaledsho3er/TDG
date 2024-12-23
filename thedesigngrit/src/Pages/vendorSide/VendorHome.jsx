@@ -5,6 +5,8 @@ import DashboardVendor from "../../Components/vendorSide/DashboardVendor";
 import ProductsPageVendor from "../../Components/vendorSide/productsPageVendor";
 import RecentPurchases from "../../Components/vendorSide/orderListVendor";
 import ProductForm from "../../Components/vendorSide/AddProduct";
+import BrandSignup from "../../Components/vendorSide/brandSignup";
+import BrandingPage from "../../Components/vendorSide/brandingPage";
 const VendorHome = () => {
   const [activePage, setActivePage] = useState("dashboard");
 
@@ -18,6 +20,10 @@ const VendorHome = () => {
         return <RecentPurchases />;
       case "ProductForm":
         return <ProductForm />;
+      case "BrandForm":
+        return <BrandSignup />;
+      case "BrandingPage":
+        return <BrandingPage />;
       default:
         return "DashboardVendor";
     }

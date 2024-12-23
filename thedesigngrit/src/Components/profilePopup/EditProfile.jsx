@@ -1,7 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
+import ConfirmationDialog from "../confirmationMsg";
 
 function EditProfile() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogAction, setDialogAction] = useState(""); // To track whether "Save" or "Cancel" is clicked
+
+  const handleSaveClick = () => {
+    setDialogAction("save");
+    setDialogOpen(true); // Open the confirmation dialog
+  };
+
+  const handleCancelClick = () => {
+    setDialogAction("cancel");
+    setDialogOpen(true); // Open the confirmation dialog
+  };
+
+  const handleConfirm = () => {
+    if (dialogAction === "save") {
+      // Handle save logic
+      console.log("Changes saved!");
+    } else if (dialogAction === "cancel") {
+      // Handle cancel logic
+      console.log("Changes discarded!");
+    }
+    setDialogOpen(false); // Close the dialog
+  };
+
+  const handleDialogCancel = () => {
+    setDialogOpen(false); // Close the dialog without taking action
+  };
   return (
     <div>
       {/* Profile Form */}
@@ -47,7 +75,7 @@ function EditProfile() {
           />
         </div>
 
-        {/* Address Field */}
+        {/* Address Field
         <div className="profile-form-field">
           <label>Address</label>
           <input
@@ -57,7 +85,7 @@ function EditProfile() {
             fullWidth
             className="popup-form-full-width"
           />
-        </div>
+        </div> */}
 
         {/* Phone Number Field */}
         <div className="profile-form-field">
@@ -73,9 +101,31 @@ function EditProfile() {
 
       {/* Save and Cancel Buttons */}
       <div className="popup-buttons">
-        <button className="profile-popUpForm-btn-save">Save</button>
-        <button className="profile-popUpForm-btn-cancel">Cancel</button>
+        <button
+          className="profile-popUpForm-btn-save"
+          onClick={handleSaveClick}
+        >
+          Save
+        </button>
+        <button
+          className="profile-popUpForm-btn-cancel"
+          onClick={handleCancelClick}
+        >
+          Cancel
+        </button>
       </div>
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={dialogOpen}
+        title={dialogAction === "save" ? "Confirm Changes" : "Confirm Cancel"}
+        content={
+          dialogAction === "save"
+            ? "Are you sure you want to save the changes?"
+            : "Are you sure you want to cancel and discard the changes?"
+        }
+        onConfirm={handleConfirm}
+        onCancel={handleDialogCancel}
+      />
     </div>
   );
 }

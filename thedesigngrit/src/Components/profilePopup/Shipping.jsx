@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import countryList from "react-select-country-list";
+import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
 
-const ShippingInfoPopup = ({ onClose }) => {
+const ShippingInfoPopup = () => {
   const [formData, setFormData] = useState({
     address1: "",
     address2: "",
@@ -12,6 +13,7 @@ const ShippingInfoPopup = ({ onClose }) => {
   });
 
   const [countries] = useState(countryList().getData());
+  const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,10 +32,18 @@ const ShippingInfoPopup = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Open the confirmation dialog before submitting
+    setDialogOpen(true);
+  };
+
+  const handleConfirm = () => {
     console.log("Shipping Info Submitted:", formData);
     // Add logic to send form data to the backend or save it
-    onClose();
+    setDialogOpen(false); // Close the confirmation dialog
   };
+
+  const handleDialogCancel = () => setDialogOpen(false);
+
   return (
     <div className="shipping-info-content">
       <form className="shipping-form" onSubmit={handleSubmit}>
@@ -146,10 +156,19 @@ const ShippingInfoPopup = ({ onClose }) => {
         </div>
         <div className="form-buttons">
           <button type="submit" className="submit-btn">
-            Save
+            Update
           </button>
+          <button className="addAddress-btn">Add Address</button>
         </div>
       </form>
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={dialogOpen}
+        title="Confirm Update"
+        content="Are you sure you want to update your shipping information?"
+        onConfirm={handleConfirm}
+        onCancel={handleDialogCancel}
+      />
     </div>
   );
 };

@@ -28,6 +28,18 @@ const SidebarVendor = ({ setActivePage }) => {
         >
           Add Product
         </li>
+        <li
+          onClick={() => setActivePage("BrandForm")}
+          className="sidebar-item-vendor"
+        >
+          Brand Form
+        </li>
+        <li
+          onClick={() => setActivePage("BrandingPage")}
+          className="sidebar-item-vendor"
+        >
+          Branding Page
+        </li>
       </ul>
     </aside>
   );
