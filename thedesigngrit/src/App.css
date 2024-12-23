@@ -2268,7 +2268,7 @@ textarea {
 
 .popup-form {
   display: grid;
-  gap: 20px;
+  gap: 10px;
   padding: 10px 40px 20px 40px;
 }
 .profile-form-field {
@@ -2291,7 +2291,7 @@ textarea {
   flex: 1; /* Ensure both inputs take up equal width */
   padding: 10px;
   width: 90%;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
@@ -2305,7 +2305,7 @@ textarea {
 .popup-form input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
   color: #2d2d2d;
@@ -2435,7 +2435,7 @@ textarea {
   flex: 1; /* Ensure both inputs take up equal width */
   padding: 10px;
   width: 90%;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 8px;
   font-size: 16px;
   outline: none;
@@ -2449,7 +2449,7 @@ textarea {
 .reset-popup-form input {
   width: 80% !important;
   padding: 0.75rem;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
   color: #2d2d2d;
@@ -2463,6 +2463,8 @@ textarea {
 
 .reset-popup-buttons {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: auto;
   padding-top: 40px;
   margin-left: 20px;
@@ -2518,7 +2520,7 @@ textarea {
 .billing-form-field input {
   width: 100%; /* Full width of the form field container */
   padding: 0.75rem;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
   color: #2d2d2d;
@@ -2550,7 +2552,7 @@ textarea {
 .billing-expiry-date input {
   padding: 8px;
   font-size: 16px;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 4px;
 }
 
@@ -2581,7 +2583,7 @@ textarea {
 .form-field input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 8px;
   font-size: 14px;
   color: #2d2d2d;
@@ -2622,7 +2624,7 @@ textarea {
 .Shipping-city input {
   padding: 8px;
   font-size: 16px;
-  border: 1px solid #2d2d2d;
+  border: none;
   border-radius: 8px;
   height: 26px;
 }
@@ -2630,6 +2632,9 @@ textarea {
 .form-buttons {
   text-align: center;
   align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin: auto;
   padding: 20px;
 }
@@ -2647,7 +2652,22 @@ textarea {
 }
 
 .submit-btn:hover {
-  background-color: #45a049;
+  background-color: #6c7c59;
+}
+.addAddress-btn {
+  background: #2d2d2d;
+  color: #fff;
+  border: none;
+  padding: 10px 40px 10px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+
+.addAddress-btn:hover {
+  background-color: #6c7c59;
 }
 
 /*Orders popup*/
@@ -2677,12 +2697,13 @@ textarea {
 .orders-popup::-webkit-scrollbar-thumb:hover {
   background: #4e5b44;
 }
-.order-card {
+.order-card-popup {
   border: 1px solid #e1e1e1;
+
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 8px;
-  background-color: #6c7c59;
+  background-color: #fff;
   position: relative; /* No absolute positioning required */
 }
 
@@ -3843,7 +3864,7 @@ textarea {
   padding: 20px 40px;
   border-radius: 10px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
 }
 
 .status {
@@ -4103,4 +4124,63 @@ textarea {
 .profile-info-second-right p:nth-child(odd) {
   font-weight: normal;
   color: #777;
+}
+.saved-cards {
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 10px 0;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 15px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saved-cards button {
+  background-color: #fff;
+  color: #6c7c59;
+  border-radius: 4px;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 12px;
+  width: 100%;
+  margin: auto;
+}
+.AddnewPayment Button {
+  background-color: #fff;
+  color: #6c7c59;
+  border-radius: 4px;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 12px;
+  width: 100%;
+  margin: auto;
+}
+.saved-cards p {
+  font-family: Montserrat;
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+}
+/* Custom Scrollbar */
+.saved-cards::-webkit-scrollbar {
+  width: 8px;
+}
+
+.saved-cards::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.saved-cards::-webkit-scrollbar-thumb {
+  background: #6b7b58;
+  border-radius: 10px;
+}
+
+.saved-cards::-webkit-scrollbar-thumb:hover {
+  background: #4e5b44;
 }
