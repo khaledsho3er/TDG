@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaTimes, FaHeart } from "react-icons/fa";
+import React from "react";
+import { FaTimes } from "react-icons/fa";
 const FavoritesOverlay = ({ open, onClose }) => {
   if (!open) return null; // Do not render if not open
 

@@ -59,7 +59,9 @@ function ProductPage() {
       }));
     }
   };
-
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+  };
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -129,6 +131,7 @@ function ProductPage() {
                     className="color-circle"
                     style={{ backgroundColor: color.hex }}
                     title={color.name}
+                    onClick={() => handleColorSelect(color.name)}
                   ></div>
                 ))}
               </div>
