@@ -20,7 +20,7 @@ const PartnersSection = () => {
     {
       name: "Bloom Paris",
       logo: "Assets/PartnersLogos/BloonLogo.png",
-      link: "https://bloom-paris.com",
+      link: "https://bloon-paris.com",
     },
     {
       name: "Istikbal",

@@ -13,11 +13,11 @@ import { FaArrowRight } from "react-icons/fa6";
 
 const ExploreConcepts = () => {
   const cards = [
-    { id: 1, title: "Bed Room", image: "Assets/concept2.png" },
-    { id: 2, title: "Living Room", image: "Assets/concept1.png" },
-    { id: 3, title: "Dining Room", image: "Assets/concept3.png" },
-    { id: 4, title: "Office Room", image: "Assets/concept5.jpg" },
-    { id: 5, title: "Kitchen", image: "Assets/concept4.jpg" },
+    { id: 1, title: "Bed Room", image: "/Assets/concept2.png" },
+    { id: 2, title: "Living Room", image: "/Assets/concept1.png" },
+    { id: 3, title: "Dining Room", image: "/Assets/concept3.png" },
+    { id: 4, title: "Office Room", image: "/Assets/concept5.jpg" },
+    { id: 5, title: "Kitchen", image: "/Assets/concept4.jpg" },
   ]; // Imagine this list comes from the backend
 
   const [visibleIndexes, setVisibleIndexes] = useState([0, 1, 2]); // Indices of the visible cards
