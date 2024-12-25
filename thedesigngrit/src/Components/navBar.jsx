@@ -7,12 +7,14 @@ import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
 import ShoppingCartOverlay from "./Popups/CartOverlay";
+import FavoritesOverlay from "./favoriteOverlay"; // Import the FavoritesOverlay component
 import Menudrop from "./menuhover/Menudrop";
 import { Link } from "react-router-dom";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [favoritesOpen, setFavoritesOpen] = useState(false); // State for FavoritesOverlay
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [menuData, setMenuData] = useState({}); // State to hold JSON data
   const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
@@ -32,6 +34,10 @@ function Header() {
 
   const handleCartToggle = () => {
     setCartOpen(!cartOpen);
+  };
+
+  const handleFavoritesToggle = () => {
+    setFavoritesOpen(!favoritesOpen); // Toggle FavoritesOverlay
   };
 
   const handlePopupToggle = () => {
@@ -90,7 +96,7 @@ function Header() {
 
           {/* Icons */}
           <Box className="icon-container">
-            <IconButton>
+            <IconButton onClick={handleFavoritesToggle}>
               <FavoriteBorderIcon sx={{ fontSize: "17px" }} />
             </IconButton>
             <IconButton onClick={handleCartToggle}>
@@ -109,7 +115,6 @@ function Header() {
           </Box>
         </Box>
       </Box>
-
       {/* Categories */}
       <Box
         className="header-bottom"
@@ -125,7 +130,6 @@ function Header() {
           </Typography>
         ))}
       </Box>
-
       {/* Overlay Menu */}
       {hoveredCategory && (
         <Menudrop
@@ -135,12 +139,13 @@ function Header() {
           onMouseLeave={handleMenuLeave} // Close the menu when not hovering over it
         />
       )}
-
       {/* Additional Buttons */}
       <FloatingButton />
       <Stickedbutton />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
       <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
+      <FavoritesOverlay open={favoritesOpen} onClose={handleFavoritesToggle} />
+      {/* Add FavoritesOverlay */}
     </Box>
   );
 }
