@@ -26,6 +26,7 @@ import OrderDetails from "./Components/vendorSide/orderDetails";
 import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
 import AdminHome from "./Pages/vendorSide/AdminHome";
 import VerifyPartners from "./Components/adminSide/VerifyPartners";
+import NotificationsPage from "./Components/vendorSide/notificationPage";
 function App() {
   return (
     <CartProvider>
@@ -42,7 +43,10 @@ function App() {
           <Route exact path="/partners" Component={PartnersApplication} />
           <Route exact path="/contactus" Component={ContactUs} />
           <Route exact path="/mycart" Component={ShoppingCart} />
-          <Route exact path="/products" Component={ProductsPage} />
+          <Route
+            path="/category/:categoryId/:categoryName"
+            element={<ProductsPage />}
+          />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route exact path="/ProductsPage" Component={ProductsPage} />
           <Route exact path="/Vendors" Component={Vendorspage} />
@@ -58,6 +62,7 @@ function App() {
           <Route path="/vendorpanel" Component={VendorHome} />
           <Route path="/orderDetail/:id" element={<OrderDetails />} />
           <Route path="/update-product" element={<UpdateProductForm />} />
+          <Route path="/notificationspage" element={<NotificationsPage />} />
           <Route path="/adminpanel" Component={AdminHome} />
           <Route path="/verify-partner" element={<VerifyPartners />} />
         </Routes>

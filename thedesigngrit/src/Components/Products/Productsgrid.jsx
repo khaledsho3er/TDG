@@ -5,6 +5,7 @@ import ProductCard from "./productcard";
 const ProductCards = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState([]);
   const productsPerPage = 12; // Limit to 12 products per page
 
   // Fetch products from the backend
@@ -22,6 +23,12 @@ const ProductCards = () => {
     fetchProducts();
   }, []);
 
+  // Fetch favorites from localStorage when the component mounts
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
   // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -36,6 +43,22 @@ const ProductCards = () => {
   const handlePageChange = (event, value) => {
     setCurrentPage(value); // Update current page when clicked
     window.scrollTo(0, 0); // Scroll to the top of the page
+  };
+
+  // Toggle favorite status for a product
+  const toggleFavorite = (product) => {
+    let updatedFavorites;
+    if (favorites.some((fav) => fav.id === product.id)) {
+      // If product is already in favorites, remove it
+      updatedFavorites = favorites.filter((fav) => fav.id !== product.id);
+    } else {
+      // Otherwise, add it to favorites
+      updatedFavorites = [...favorites, product];
+    }
+
+    // Update the state and store the updated list in localStorage
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   return (
@@ -60,8 +83,12 @@ const ProductCards = () => {
       >
         {currentProducts.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
-            {/* Each product will render the same way regardless of page */}
-            <ProductCard product={product} />
+            {/* Pass the toggleFavorite function to each ProductCard */}
+            <ProductCard
+              product={product}
+              onToggleFavorite={toggleFavorite}
+              isFavorite={favorites.some((fav) => fav.id === product.id)} // Check if the product is a favorite
+            />
           </Grid>
         ))}
       </Grid>

@@ -397,16 +397,25 @@
   border-top: 1px solid #ddd;
 }
 
-.mark-read-vendor,
 .view-all-vendor {
   border: none;
   background: #6a8452;
   color: #fff;
-  padding: 8px 16px;
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
 }
-.mark-read-vendor,
+.mark-read-vendor {
+  border: none;
+  background: #2d2d2d;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.mark-read-vendor:hover {
+  background: #6a8452;
+}
 .view-all-vendor:hover {
   background: #2d2d2d;
 }
@@ -1193,4 +1202,46 @@ input[type="radio"] {
   font-size: 14px;
   color: #2d2d2d;
   font-family: "Montserrat";
+}
+/*Notification popup overlay details*/
+.notifiy-overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.notifiy-overlay-content {
+  background: #6b7b58;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.notifiy-overlay-content h2 {
+  font-family: Horizon;
+}
+
+.notifiy-overlay-content p {
+  font-family: Montserrat;
+  font-weight: normal;
+  text-align: center;
+}
+.notifiy-overlay-content button {
+  background-color: #2d2d2d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.notifiy-overlay-content button:hover {
+  background-color: #555;
 }
