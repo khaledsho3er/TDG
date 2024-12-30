@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Use Link for React Router
+import { Link } from "react-router-dom";
 
 const CategoryCard = ({ title, image, buttonText, link }) => {
+  const fullImagePath = `http://localhost:5000/uploads/${image}`; // Full image path for rendering
   return (
-    <div className="category-card" style={{ backgroundImage: `url(${image})` }}>
+    <div
+      className="category-card"
+      style={{ backgroundImage: `url(${fullImagePath})` }}
+    >
       <div className="card-content">
         <h3>{title}</h3>
         <Link to={link} className="shop-button">
@@ -17,13 +21,15 @@ const CategoryCard = ({ title, image, buttonText, link }) => {
 const ShopByCategory = () => {
   const [categories, setCategories] = useState([]);
 
-  // Fetch categories when the component mounts
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/categories"); // Assuming your backend has a /api/categories route
+        const response = await fetch(
+          "http://localhost:5000/api/categories/categories"
+        );
         const data = await response.json();
-        setCategories(data); // Update state with fetched categories
+        setCategories(data); // Update categories state
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -40,7 +46,7 @@ const ShopByCategory = () => {
           <CategoryCard
             key={category._id}
             title={category.name}
-            image={category.image} // Assuming you have an image field for each category
+            image={category.image} // Assuming `image` contains the image path
             buttonText="Shop Products"
             link={`/category/${category._id}/${category.name}/products`}
           />
