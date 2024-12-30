@@ -89,7 +89,7 @@ function Header() {
           <Box className="search-bar">
             <SearchIcon sx={{ color: "#999" }} />
             <InputBase
-              placeholder="Search among Product, Category, Brands, Decor, new"
+              placeholder="Search by category, brand, product type or name"
               fullWidth
             />
           </Box>
@@ -123,7 +123,9 @@ function Header() {
         {Object.keys(menuData).map((category) => (
           <Typography
             key={category}
-            className="category"
+            className={`category ${
+              hoveredCategory === category ? "highlighted" : ""
+            }`}
             onMouseEnter={() => handleMouseEnterCategory(category)} // Show overlay on hover
           >
             {category}

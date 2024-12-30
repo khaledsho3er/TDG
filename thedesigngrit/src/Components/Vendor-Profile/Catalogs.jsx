@@ -58,14 +58,13 @@ function VendorCatalogs() {
         overflow="hidden"
         sx={{ padding: "10px 50px 50px" }}
       >
-        Left Arrow
         <IconButton
           onClick={handlePrev}
           disabled={currentIndex === 0}
           sx={{
             position: "absolute",
-            left: "-20px",
-            top: "50%",
+            left: "50px",
+            top: "95%",
             transform: "translateY(-50%)",
             zIndex: 1,
             backgroundColor: "rgba(255, 255, 255, 0.7)",
@@ -89,22 +88,23 @@ function VendorCatalogs() {
             </Grid>
           ))}
         </Grid>
-        Right Arrow
+
         <IconButton
           onClick={handleNext}
           disabled={currentIndex + itemsPerPage >= catalogs.length}
           sx={{
             position: "absolute",
-            right: "-20px",
-            top: "50%",
+            right: "50px",
+            top: "95%",
             transform: "translateY(-50%)",
+            justifyContent: "space-between",
             zIndex: 1,
             backgroundColor: "rgba(255, 255, 255, 0.7)",
             "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
             boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <ArrowForwardIosIcon />
+          <ArrowForwardIosIcon sx={{ backgroundColor: "none" }} />
         </IconButton>
       </Box>
     </Box>
