@@ -25,14 +25,7 @@ const VendorCategoriesgrid = () => {
       </Typography>
       <Grid container spacing={3} className="vendorcategories-grid">
         {categories.map((category) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={2.4}
-            key={category.id}
-            className="vendorcategories-grid-item"
-          >
+          <Grid item xs={12} sm={6} md={2.4} key={category.id}>
             <VendorCategoryCard
               title={category.title}
               description={category.description}

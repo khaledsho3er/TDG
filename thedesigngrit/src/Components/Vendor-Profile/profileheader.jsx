@@ -94,6 +94,7 @@ function VendorProfileHeader() {
                 fontSize: "0.6rem",
                 fontFamily: "montesrrat, san-sarif",
               }}
+              className="Vendorprofile-contact-button"
             >
               Contact
             </Button>
@@ -108,6 +109,7 @@ function VendorProfileHeader() {
                 fontSize: "0.6rem",
                 fontFamily: "montesrrat, san-sarif",
               }}
+              className="Vendorprofile-website-button"
             >
               Vendor Website
             </Button>

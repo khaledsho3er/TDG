@@ -2,18 +2,50 @@
   "Furniture": [
     {
       "title": "Living Room",
-      "subcategories": ["Sofas", "L-shaped Sofas", "Day Beds", "Footstools"],
+      "subcategories": [
+        "Sofas",
+        "ArmChairs",
+        "Coffee Tables",
+        "TV Stands",
+        "Side Tables",
+        "Ottomans & Benches",
+        "Bookshelves  "
+      ],
       "image": "/Assets/dropside.jpg",
       "Link": "/products"
     },
     {
       "title": "Dining Room",
-      "subcategories": ["Dining Tables", "Coffee Tables", "Side Tables"],
+      "subcategories": [
+        "Dining Tables",
+        "Dining Chairs",
+        "Dining Sets",
+        "Buffets & Sideboards",
+        "Bar Stools & Chairs"
+      ],
       "image": "/Assets/dropside.jpg"
     },
     {
-      "title": "Bedroom Office",
-      "subcategories": ["Dining Tables", "Coffee Tables", "Side Tables"],
+      "title": "Bedroom",
+      "subcategories": [
+        "Beds",
+        "Mattresses",
+        "Dressers",
+        "Nightstands",
+        "Wardrobes & Closets",
+        "Headboards"
+      ],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Office",
+      "subcategories": [
+        "Desks",
+        "Office Chairs",
+        "Bookcases & Shelving",
+        "Filing Cabinets",
+        "Desk Accessories"
+      ],
       "image": "/Assets/dropside.jpg"
     }
   ],
