@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { FaTimes, FaBell } from "react-icons/fa"; // React Icons
+import React from "react";
+import { FaTimes } from "react-icons/fa"; // React Icons
+import { useNavigate } from "react-router-dom";
 
-const NotificationOverlayVendor = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const NotificationOverlayVendor = ({ onClose }) => {
   const notifications = [
     {
       id: 1,
@@ -34,43 +33,43 @@ const NotificationOverlayVendor = () => {
       status: "Sold",
     },
   ];
+  const navigate = useNavigate();
 
-  const toggleOverlay = () => setIsOpen(!isOpen);
+  const handleOpenPage = () => {
+    navigate("/notificationsPage");
+  };
 
   return (
     <div className="notification-overlay-vendor">
-      <button className="notification-icon-vendor" onClick={toggleOverlay}>
-        <FaBell />
-      </button>
-      {isOpen && (
-        <div className="overlay-container-vendor">
-          <div className="overlay-header-vendor">
-            <h3>Notifications</h3>
-            <button className="close-button-vendor" onClick={toggleOverlay}>
-              <FaTimes />
-            </button>
-          </div>
-          <div className="overlay-body-vendor">
-            {notifications.map((notification) => (
-              <div key={notification.id} className="notification-item-vendor">
-                <div className="notification-image-vendor"></div>
-                <div className="notification-details-vendor">
-                  <h4>{notification.title}</h4>
-                  <p>{notification.price}</p>
-                  <span>{notification.date}</span>
-                </div>
-                <div className="notification-status-vendor">
-                  {notification.status}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="overlay-footer-vendor">
-            <button className="mark-read-vendor">MARK ALL AS READ</button>
-            <button className="view-all-vendor">VIEW ALL NOTIFICATIONS</button>
-          </div>
+      <div className="overlay-container-vendor">
+        <div className="overlay-header-vendor">
+          <h3>Notifications</h3>
+          <button className="close-button-vendor" onClick={onClose}>
+            <FaTimes />
+          </button>
         </div>
-      )}
+        <div className="overlay-body-vendor">
+          {notifications.map((notification) => (
+            <div key={notification.id} className="notification-item-vendor">
+              <div className="notification-image-vendor"></div>
+              <div className="notification-details-vendor">
+                <h4>{notification.title}</h4>
+                <p>{notification.price}</p>
+                <span>{notification.date}</span>
+              </div>
+              <div className="notification-status-vendor">
+                {notification.status}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="overlay-footer-vendor">
+          <button className="mark-read-vendor">MARK ALL AS READ</button>
+          <button className="view-all-vendor" onClick={handleOpenPage}>
+            VIEW ALL NOTIFICATIONS
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

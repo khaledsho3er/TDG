@@ -1,6 +1,7 @@
 import { Box, TextField, Button, InputLabel } from "@mui/material";
 import React, { useState } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
+import { Link } from "react-router-dom";
 
 const ProductForm = () => {
   const [tags, setTags] = useState(["Lorem", "Lorem", "Lorem"]); // Default tags
@@ -87,7 +88,9 @@ const ProductForm = () => {
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <h2>All Products</h2>
-          <p>Home &gt; All Products</p>
+          <p>
+            <Link to="/vendorpanel">Home</Link> &gt; All Products
+          </p>
         </div>
       </header>
       <form>

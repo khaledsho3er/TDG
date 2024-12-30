@@ -27,7 +27,9 @@ function ShoppingCart() {
 
     // Update the cart items in local state
     const updatedCartItems = cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
+      item.id === id
+        ? { ...item, quantity: newQuantity } // Correctly update only the relevant item
+        : item
     );
 
     // Set the updated cart items in state

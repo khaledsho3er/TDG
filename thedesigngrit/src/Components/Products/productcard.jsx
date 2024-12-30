@@ -9,17 +9,22 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
-// Card Component to Render Individual Product
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/product/${product.id}`); // Navigate to a dynamic route using the product ID
+    navigate(`/product/${product.id}`); // Navigate to the product details page
+  };
+
+  const toggleFavorite = (event) => {
+    event.stopPropagation(); // Prevent triggering card click
+    onToggleFavorite(product); // Pass the product to the parent handler
   };
 
   return (
-    <Box onClick={handleCardClick} style={{ cursor: "pointer" }}>
+    <Box style={{ cursor: "pointer" }}>
       <Card
         sx={{
           width: 250,
@@ -28,17 +33,16 @@ const ProductCard = ({ product }) => {
           position: "relative",
           overflow: "hidden",
         }}
+        onClick={handleCardClick}
       >
         {/* Product Image */}
         <CardMedia
           component="img"
           height="250"
-          image={product.imageUrl} // Updated to match JSON structure
-          alt={product.name} // Updated to use the name field
+          image={product.imageUrl}
+          alt={product.name}
           sx={{
             objectFit: "cover",
-            fontFamily: "horizon",
-            fontWeight: "Bold",
           }}
         />
 
@@ -52,13 +56,18 @@ const ProductCard = ({ product }) => {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
             "&:hover": { backgroundColor: "#f0f0f0" },
           }}
+          onClick={toggleFavorite}
         >
-          <FavoriteBorderIcon sx={{ color: "#000" }} />
+          {isFavorite ? (
+            <FavoriteIcon sx={{ color: "red" }} />
+          ) : (
+            <FavoriteBorderIcon sx={{ color: "#000" }} />
+          )}
         </IconButton>
       </Card>
+
       {/* Product Information */}
       <CardContent sx={{ padding: "16px" }}>
-        {/* Name */}
         <Typography
           variant="h6"
           sx={{
@@ -71,7 +80,6 @@ const ProductCard = ({ product }) => {
           {product.name}
         </Typography>
 
-        {/* Description */}
         <Typography
           variant="body2"
           sx={{
@@ -84,7 +92,6 @@ const ProductCard = ({ product }) => {
           {product.description}
         </Typography>
 
-        {/* Price */}
         <Typography
           variant="body1"
           sx={{

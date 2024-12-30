@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "type": "Order",
+    "description": "Confirm Order #1234",
+    "date": "2024-12-20",
+    "action": "Confirm Order",
+    "read": false
+  },
+  {
+    "id": 2,
+    "type": "Quote",
+    "description": "Respond to Quote Request #5678",
+    "date": "2024-12-19",
+    "action": "Respond",
+    "read": false
+  },
+  {
+    "id": 3,
+    "type": "Delivery",
+    "description": "Set Delivery Date for Order #4321",
+    "date": "2024-12-18",
+    "action": "Set Delivery Date",
+    "read": true
+  },
+  {
+    "id": 4,
+    "type": "Admin",
+    "description": "New Policy Update Notification",
+    "date": "2024-12-17",
+    "action": "Review",
+    "read": true
+  },
+  {
+    "id": 5,
+    "type": "Order",
+    "description": "Confirm Order #9876",
+    "date": "2024-12-16",
+    "action": "Confirm Order",
+    "read": true
+  },
+  {
+    "id": 6,
+    "type": "Quote",
+    "description": "Respond to Quote Request #5432",
+    "date": "2024-12-15",
+    "action": "Respond",
+    "read": true
+  },
+  {
+    "id": 7,
+    "type": "Delivery",
+    "description": "Set Delivery Date for Order #6789",
+    "date": "2024-12-14",
+    "action": "Set Delivery Date",
+    "read": true
+  },
+  {
+    "id": 8,
+    "type": "Admin",
+    "description": "System Maintenance Scheduled",
+    "date": "2024-12-13",
+    "action": "Acknowledge",
+    "read": true
+  },
+  {
+    "id": 9,
+    "type": "Order",
+    "description": "Confirm Order #3456",
+    "date": "2024-12-12",
+    "action": "Confirm Order",
+    "read": false
+  },
+  {
+    "id": 10,
+    "type": "Delivery",
+    "description": "Set Delivery Date for Order #1111",
+    "date": "2024-12-11",
+    "action": "Set Delivery Date",
+    "read": false
+  }
+]
