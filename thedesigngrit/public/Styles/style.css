@@ -1161,7 +1161,7 @@ input:focus {
 .menu-left-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50%;
   height: 100%;
   padding: 0.8rem;
   background-color: #ffffff;
@@ -1175,7 +1175,7 @@ input:focus {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0px;
   margin-bottom: 10px;
 }
 
@@ -1215,15 +1215,15 @@ input:focus {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   text-align: left;
 }
 
 .menu-right h2 {
   margin-bottom: 10px;
   font-size: 0.8rem;
-  margin-left: -40px;
-  margin-top: 30px;
+  margin-left: -20px;
+  margin-top: 26px;
 }
 
 .menu-right ul {
@@ -1232,6 +1232,11 @@ input:focus {
   margin-left: -20px;
   font-family: "montserrat,san-sarif";
   font-size: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+  align-items: flex-start;
 }
 
 .menu-right img {

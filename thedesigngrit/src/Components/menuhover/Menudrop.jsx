@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
 
-  // State to track the currently selected detail
-  const [selectedDetail, setSelectedDetail] = useState(details[0]);
+  const [selectedDetail, setSelectedDetail] = useState(
+    details.subCategories[0]
+  ); // Set initial subcategory
 
   const handleNavigation = () => {
     navigate(`/shop/${category}`);
@@ -16,6 +16,9 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   const handleTitleClick = (detail) => {
     setSelectedDetail(detail);
   };
+  const fullImagePath = selectedDetail
+    ? `http://localhost:5000/uploads/${selectedDetail.image}`
+    : ""; // Full image path for rendering
 
   return (
     <div
@@ -30,14 +33,14 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
           <div className="menu-item">
             <h3 onClick={handleNavigation}>Shop all {category}</h3>
           </div>
-          {details.map((detail, index) => (
+          {details.subCategories.map((subCategory, index) => (
             <div
               key={index}
               className="menu-item"
-              onClick={() => handleTitleClick(detail)}
+              onClick={() => handleTitleClick(subCategory)}
               style={{ cursor: "pointer" }}
             >
-              <h3>{detail.title}</h3>
+              <h3>{subCategory.name}</h3> {/* Display subcategory name */}
             </div>
           ))}
         </div>
@@ -48,10 +51,10 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
         <div className="menu-right">
           {selectedDetail && (
             <>
-              <h2 className="">{selectedDetail.title}</h2>
+              <h2>{selectedDetail.name}</h2>
               <ul>
-                {selectedDetail.subcategories.map((sub, idx) => (
-                  <li key={idx}>{sub}</li>
+                {selectedDetail.types.map((type, idx) => (
+                  <li key={idx}>{type.name}</li> // Display type names
                 ))}
               </ul>
             </>
@@ -59,8 +62,8 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
         </div>
         {selectedDetail && (
           <img
-            src={selectedDetail.image}
-            alt={selectedDetail.title}
+            src="/Assets/concept1.png" // Display category image
+            alt={category}
             style={{ maxWidth: "100%", height: "auto" }}
           />
         )}

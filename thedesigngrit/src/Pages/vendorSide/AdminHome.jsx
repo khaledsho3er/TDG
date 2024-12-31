@@ -5,7 +5,7 @@ import DashboardAdmin from "../../Components/adminSide/dashboardAdmin";
 import RecentPurchasesAdmin from "../../Components/adminSide/orderListAdmin";
 import ProductsPageAdmin from "../../Components/adminSide/ProductsAdmin";
 import RequestsPartners from "../../Components/adminSide/Requests";
-import CreateCategory from "../../Components/adminSide/createCategory";
+import CategoryForm from "../../Components/adminSide/createCategory";
 const AdminHome = () => {
   const [activePage, setActivePage] = useState("dashboard");
 
@@ -20,7 +20,7 @@ const AdminHome = () => {
       case "Requests":
         return <RequestsPartners />;
       case "createCategory":
-        return <CreateCategory />;
+        return <CategoryForm />;
       default:
         return "DashboardVendor";
     }

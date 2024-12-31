@@ -16,20 +16,27 @@ function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [favoritesOpen, setFavoritesOpen] = useState(false); // State for FavoritesOverlay
   const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [menuData, setMenuData] = useState({}); // State to hold JSON data
+  const [menuData, setMenuData] = useState([]); // State to hold categories data as an array
   const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
 
   useEffect(() => {
-    // Fetch JSON data from public/json/menuData.json
-    fetch("/json/menuData.json")
-      .then((response) => {
+    // Fetch the categories and their details once when the component loads
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/categories/categories"
+        ); // API that returns all categories
         if (!response.ok) {
-          throw new Error("Failed to load menu data");
+          throw new Error("Failed to load categories");
         }
-        return response.json();
-      })
-      .then((data) => setMenuData(data))
-      .catch((error) => console.error("Error loading menu data:", error));
+        const data = await response.json();
+        setMenuData(data); // Save the category data
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleCartToggle = () => {
@@ -115,39 +122,45 @@ function Header() {
           </Box>
         </Box>
       </Box>
+
       {/* Categories */}
       <Box
         className="header-bottom"
         onMouseLeave={handleMouseLeaveCategory} // Hide overlay when leaving categories
       >
-        {Object.keys(menuData).map((category) => (
-          <Typography
-            key={category}
-            className={`category ${
-              hoveredCategory === category ? "highlighted" : ""
-            }`}
-            onMouseEnter={() => handleMouseEnterCategory(category)} // Show overlay on hover
-          >
-            {category}
-          </Typography>
-        ))}
+        {menuData.length === 0 ? (
+          <Typography>No categories available</Typography> // Display if no data is available
+        ) : (
+          menuData.map((category) => (
+            <Typography
+              key={category._id} // Use the _id as a unique key
+              className={`category ${
+                hoveredCategory === category.name ? "highlighted" : ""
+              }`}
+              onMouseEnter={() => handleMouseEnterCategory(category.name)} // Show overlay on hover
+            >
+              {category.name} {/* Display the category name */}
+            </Typography>
+          ))
+        )}
       </Box>
+
       {/* Overlay Menu */}
       {hoveredCategory && (
         <Menudrop
           category={hoveredCategory}
-          details={menuData[hoveredCategory]}
+          details={menuData.find((item) => item.name === hoveredCategory)}
           onMouseEnter={handleMenuHover} // Keep the menu visible when hovering over it
           onMouseLeave={handleMenuLeave} // Close the menu when not hovering over it
         />
       )}
+
       {/* Additional Buttons */}
       <FloatingButton />
       <Stickedbutton />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
       <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
       <FavoritesOverlay open={favoritesOpen} onClose={handleFavoritesToggle} />
-      {/* Add FavoritesOverlay */}
     </Box>
   );
 }
