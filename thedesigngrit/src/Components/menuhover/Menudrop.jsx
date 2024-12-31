@@ -62,7 +62,7 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
         </div>
         {selectedDetail && (
           <img
-            src={fullImagePath} // Display category image
+            src="/Assets/concept1.png" // Display category image
             alt={category}
             style={{ maxWidth: "100%", height: "auto" }}
           />

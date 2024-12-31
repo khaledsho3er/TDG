@@ -350,17 +350,28 @@ body {
 }
 
 .category {
+  font-size: 15px !important;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease; /* Smooth transition for all changes */
+  padding: 6px 10px 3px 10px; /* Same padding as the default to prevent shifting */
 }
 
 .category.highlighted {
   background-color: #ffffff;
   color: #000000;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add box-shadow */
-  padding: 7px 7px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2); /* Add box-shadow */
+  padding: 6px 10px 3px 10px; /* Same padding as the default to prevent shifting */
 }
+
+/* .category:hover .category.highlighted:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  padding: 7px 7px;
+} */
 /*Home Page*/
 .home {
   display: flex;
