@@ -1,6 +1,6 @@
 import React from "react";
 
-const VendorCategoryCard = ({ title, description, price, image }) => {
+const VendorCategoryCard = ({ title, image }) => {
   return (
     <div className="vendorprofile-card">
       {/* Card Content Section */}

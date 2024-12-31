@@ -53,7 +53,7 @@ const RequestsPartners = () => {
 
       <div className="vendor-products-list-grid">
         {currentPartners.map((partner) => (
-          <div className="product-card" key={partner.id}>
+          <div className="product-card-request" key={partner.id}>
             <div className="product-card-header">
               <img
                 src={partner.brandLogo}

@@ -87,12 +87,12 @@ const ProductsPageAdmin = () => {
       </header>
       <div className="vendor-products-list-grid">
         {currentProducts.map((product) => (
-          <div className="product-card" key={product.id}>
+          <div className="all-product-card" key={product.id}>
             <div className="product-card-header">
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="product-image"
+                className="all-product-image"
               />
               <div className="product-info-vendor">
                 <h3>{product.name}</h3>
