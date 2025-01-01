@@ -3,21 +3,47 @@ import NavBar from "../Components/navBar";
 import ApplicationForm from "../Components/JobDesc/jobForm";
 import { Box } from "@mui/material";
 import Footer from "../Components/Footer";
-import { fetchJobDescriptionData } from "../utils/fetchJobsData"; // Ensure correct import path
+import { useParams } from "react-router-dom";
 
 function JobDesc() {
-  const [jobDetails, setJobDetails] = useState([]); // or use {} instead of null depending on your data structure
+  const [jobDetails, setJobDetails] = useState(null); // Initialize as null to show loading state
+  const { jobId } = useParams(); // Get jobId from the URL
 
   useEffect(() => {
     const getJobDetails = async () => {
-      const data = await fetchJobDescriptionData();
-      setJobDetails(data); // Assuming `data` is an object or array
-    };
-    getJobDetails();
-  }, []);
+      try {
+        console.log("Fetching job details for jobId:", jobId); // Debug log to see the jobId
+        const response = await fetch(
+          `http://localhost:5000/api/jobdesc/${jobId}`
+        );
 
-  if (!jobDetails) {
-    return <div>Loading...</div>; // Display loading state if data isn't available
+        if (!response.ok) {
+          // Handle non-OK responses (e.g., 404 or 500)
+          throw new Error("Failed to fetch job details");
+        }
+
+        const data = await response.json();
+        console.log("Fetched job details:", data); // Debug log to see the fetched data
+        setJobDetails(data); // Set job details to state
+      } catch (error) {
+        console.error("Error fetching job details:", error); // Log any errors
+        setJobDetails(null); // Set to null if there's an error
+      }
+    };
+
+    if (jobId) {
+      getJobDetails(); // Fetch job details only if jobId is available
+    }
+  }, [jobId]);
+
+  // Show loading message while job details are being fetched
+  if (jobDetails === null) {
+    return <div>Loading...</div>;
+  }
+
+  // Check if jobDetails is an empty object or has invalid properties
+  if (!jobDetails || Object.keys(jobDetails).length === 0) {
+    return <div>Error: Job not found</div>;
   }
 
   return (

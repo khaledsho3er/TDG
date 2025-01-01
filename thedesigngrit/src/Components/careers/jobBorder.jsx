@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { fetchJobsData } from "../../utils/fetchJobsData";
 import { Link } from "react-router-dom";
 
 const CareerOpportunities = () => {
@@ -8,8 +7,14 @@ const CareerOpportunities = () => {
 
   useEffect(() => {
     const getJobs = async () => {
-      const data = await fetchJobsData();
-      setJobs(data);
+      try {
+        const response = await fetch("http://localhost:5000/api/jobdesc"); // Update this URL as needed
+        const data = await response.json();
+        setJobs(data);
+      } catch (error) {
+        console.error("Error fetching job data:", error);
+        setJobs([]); // Ensure you handle errors and set jobs to an empty array on failure
+      }
     };
     getJobs();
   }, []);
@@ -35,25 +40,28 @@ const CareerOpportunities = () => {
           All Jobs
         </button>
       </div>
+
       <div className="job-list">
         {jobs.map((job, index) => (
           <Link
-            to={`/job`}
+            to={`/jobdesc/${job._id}`} // Use the job's _id for the URL to view the detailed job
             key={index}
             className="job-card"
             style={{ textDecoration: "none" }}
           >
-            <div key={index} className="job-card">
-              <h3 className="job-title">{job.title}</h3>
+            <div className="job-card">
+              <h3 className="job-title">{job.jobTitle}</h3>
               <div className="job-tags">
-                {job.tags.map((tag, tagIndex) => (
-                  <span key={tagIndex} className="job-tag">
-                    {tag}
-                  </span>
-                ))}
+                {/* Displaying tags based on department or type if needed */}
+                <span className="job-tag">{job.department}</span>
+                <span className="job-tag">{job.type}</span>
               </div>
               <p className="job-description">{job.description}</p>
-              <p className="job-date">{job.date}</p>
+              <p className="job-location">{job.location}</p>
+              <p className="job-date">
+                {new Date(job.createdAt).toLocaleDateString()}
+              </p>{" "}
+              {/* Display the job post date */}
             </div>
           </Link>
         ))}

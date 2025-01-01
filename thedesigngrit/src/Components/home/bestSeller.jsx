@@ -64,7 +64,8 @@ const ProductSlider = () => {
             </div>
 
             <div className="product-info">
-              <span className="badge">{product.badge}</span>
+              {/* <span className="badge">{product.badge}</span> */}
+              <div className="product-badge">{product.badge}</div>
               <div className="product-metadata">
                 Min. {product.minUnits} units · Delivery: {product.delivery}
               </div>
