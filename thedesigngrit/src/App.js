@@ -39,7 +39,10 @@ function App() {
           <Route exact path="/signup" Component={SignUpPage} />
           <Route exact path="/AboutUs" Component={AboutUsPage} />
           <Route exact path="/job" Component={JobDesc} />
-          <Route exact path="/policy" Component={TermsOfService} />
+          <Route path="/policy" element={<TermsOfService />} />
+          {/* Add individual routes for policy sections */}
+          {/* Example: */}
+          <Route path="/policy/:section" element={<TermsOfService />} />{" "}
           <Route exact path="/partners" Component={PartnersApplication} />
           <Route exact path="/contactus" Component={ContactUs} />
           <Route exact path="/mycart" Component={ShoppingCart} />
