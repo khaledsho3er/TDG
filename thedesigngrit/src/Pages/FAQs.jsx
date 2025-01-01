@@ -2,38 +2,34 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import NavBar from "../Components/navBar";
 import Footer from "../Components/Footer";
+
 function FAQs() {
   const [activeTab, setActiveTab] = useState("popular");
   const [activeIndex, setActiveIndex] = useState(null);
-  const [questions, setQuestions] = useState({
-    popularQuestions: [],
-    allQuestions: [],
-  });
+  const [questions, setQuestions] = useState([]);
 
   // Fetch questions data
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("/json/faqs.json"); // Path to your JSON file
+        const response = await fetch("http://localhost:5000/api/faqs/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch FAQs");
+        }
         const data = await response.json();
         setQuestions(data);
       } catch (error) {
-        console.error("Error fetching questions:", error);
+        console.error("Error fetching FAQs:", error);
       }
     };
 
     fetchQuestions();
   }, []);
 
-  // Determine which questions to show based on the active tab
-  const displayedQuestions =
-    activeTab === "popular"
-      ? questions.popularQuestions
-      : questions.allQuestions;
-
   const toggleAnswer = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
   };
+
   return (
     <Box className="job-Page">
       <NavBar />
@@ -47,7 +43,6 @@ function FAQs() {
         </Box>
       </Box>
       <div className="faq-container">
-        {/* Tabs */}
         <div className="faq-tabs">
           <button
             className={`faq-tab ${activeTab === "popular" ? "active" : ""}`}
@@ -65,7 +60,7 @@ function FAQs() {
 
         {/* Questions */}
         <div className="faq-content">
-          {displayedQuestions.map((item, index) => (
+          {questions.map((item, index) => (
             <div
               key={index}
               className={`faq-item ${activeIndex === index ? "active" : ""}`}
@@ -88,4 +83,5 @@ function FAQs() {
     </Box>
   );
 }
+
 export default FAQs;

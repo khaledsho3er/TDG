@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Typography, Button, CardMedia } from "@mui/material";
 
-function VendorProfileHeader() {
+function VendorProfileHeader({ vendor }) {
+  const fullImagePath = `http://localhost:5000/${vendor.digitalCopiesLogo}`; // Full image path for rendering
+
   return (
     <Box
       sx={{
@@ -36,7 +38,7 @@ function VendorProfileHeader() {
       >
         <CardMedia
           component="img"
-          src="/Assets/Vendors/Istkbal/istikbal-logo.png"
+          src={fullImagePath || "/Assets/Vendors/default-logo.png"} // Use dynamic logo or fallback
           alt="Logo"
           sx={{
             width: { xs: "80px", md: "100px" },
@@ -72,7 +74,7 @@ function VendorProfileHeader() {
               margin: 0,
             }}
           >
-            Istikbal
+            {vendor.name} {/* Vendor Name */}
           </Typography>
 
           <Box
@@ -92,9 +94,10 @@ function VendorProfileHeader() {
                 color: "white",
                 backgroundColor: "black",
                 fontSize: "0.6rem",
-                fontFamily: "montesrrat, san-sarif",
+                fontFamily: "montserrat, san-serif",
               }}
               className="Vendorprofile-contact-button"
+              onClick={() => (window.location.href = `mailto:${vendor.email}`)}
             >
               Contact
             </Button>
@@ -107,9 +110,10 @@ function VendorProfileHeader() {
                 color: "Black",
                 backgroundColor: "#E5E5E5",
                 fontSize: "0.6rem",
-                fontFamily: "montesrrat, san-sarif",
+                fontFamily: "montserrat, san-serif",
               }}
               className="Vendorprofile-website-button"
+              onClick={() => (window.location.href = vendor.websiteURL)}
             >
               Vendor Website
             </Button>
@@ -127,13 +131,7 @@ function VendorProfileHeader() {
             textAlign: { xs: "center", md: "left" }, // Centered for small screens
           }}
         >
-          Poltrona Frau is an international design brand rooted in the Italian
-          manufacturing tradition. Poltrona Frau armchairs are synonymous with
-          high-end interiors for both the home and the office. The company
-          produces fine furnishings thanks to the combination of a number of
-          factors that make it an essential reference point for the most
-          demanding customers. The craftsmanship of the production processes,
-          together with the choice of the best full-grain leathers.
+          {vendor.brandDescription} {/* Vendor Description */}
         </Typography>
       </Box>
     </Box>

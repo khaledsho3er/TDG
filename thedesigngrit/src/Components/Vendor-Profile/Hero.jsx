@@ -1,7 +1,12 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-function Vendorprofilehero() {
+function VendorProfileHero({ vendor }) {
+  const fullImagePath = `http://localhost:5000/${vendor.coverPhoto}`; // Full image path for rendering
+
+  // Log the image path for debugging
+  console.log("Full Image Path:", fullImagePath);
+
   return (
     <Box
       sx={{
@@ -13,7 +18,7 @@ function Vendorprofilehero() {
       }}
     >
       <img
-        src="/Assets/VendorProfile/vendor-hero.png"
+        src={fullImagePath} // Use dynamic photo or default if not available
         alt="Vendor Hero"
         style={{
           width: "100%", // Scale the image to fit the width of the screen
@@ -25,4 +30,4 @@ function Vendorprofilehero() {
   );
 }
 
-export default Vendorprofilehero;
+export default VendorProfileHero;

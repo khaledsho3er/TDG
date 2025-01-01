@@ -4,23 +4,32 @@ import VendorCatalogCard from "./CatalogCard"; // Card Component
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-function VendorCatalogs() {
+function VendorCatalogs({ vendorID }) {
   const [catalogs, setCatalogs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 5; // Updated to display 5 cards per row
 
-  // Fetch JSON data from public folder
+  // Fetch catalogs from the backend
   useEffect(() => {
-    fetch("/json/Vendorscatalog.json")
-      .then((response) => {
+    const fetchCatalogs = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/catalogues/vendor/${vendorID}`
+        );
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Failed to fetch catalogs");
         }
-        return response.json();
-      })
-      .then((data) => setCatalogs(data))
-      .catch((error) => console.error("Error fetching catalogs:", error));
-  }, []);
+        const data = await response.json();
+        setCatalogs(data);
+      } catch (error) {
+        console.error("Error fetching catalogs:", error);
+      }
+    };
+
+    if (vendorID) {
+      fetchCatalogs();
+    }
+  }, [vendorID]);
 
   // Determine which items to display
   const visibleItems = catalogs.slice(
@@ -51,7 +60,7 @@ function VendorCatalogs() {
           padding: "25px",
         }}
       >
-        Istikbal's Catalogs
+        Catalogs
       </Typography>
       <Box
         position="relative"
@@ -77,13 +86,14 @@ function VendorCatalogs() {
         {/* Cards Grid */}
         <Grid container spacing={2}>
           {visibleItems.map((item) => (
-            <Grid item xs={12} sm={6} md={2.4} key={item.id}>
-              {/* 5 cards per row means 20% width each (100/5 = 20%) */}
+            <Grid item xs={12} sm={6} md={2.4} key={item._id}>
+              {/* Pass data to the card component */}
               <VendorCatalogCard
-                title={item.title}
+                title={item.name}
                 year={item.year}
-                image={item.image}
+                image={`http://localhost:5000/uploads/${item.image}`}
                 type={item.type}
+                pdf={`http://localhost:5000/uploads/${item.pdf}`}
               />
             </Grid>
           ))}

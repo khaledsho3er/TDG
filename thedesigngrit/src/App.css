@@ -1518,17 +1518,20 @@ body {
 
 .faq-tab {
   flex: 1;
-  padding: 10px 15px;
+  padding: 15px 15px;
   width: 30%;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
   text-align: center;
   color: #333;
   background-color: #ffffff;
   border: none;
   border-right: 0px solid #ddd;
+  margin-top: 0px;
+  margin-bottom: 0px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 0px;
 }
 
 .faq-tab:last-child {
@@ -1538,7 +1541,11 @@ body {
 .faq-tab.active {
   background-color: #6a8452;
   color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.faq-tab:hover {
+  background-color: #8fab74;
+  color: #ffffff;
 }
 
 .faq-content {
@@ -1547,6 +1554,7 @@ body {
   background-color: #ffffff;
   padding: 10px 0;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+  transition: 0.3s ease;
 }
 
 .faq-item {
@@ -1555,7 +1563,7 @@ body {
   margin: 0 auto;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.3s ease;
 }
 
 .faq-item:last-child {
@@ -1563,10 +1571,12 @@ body {
 }
 
 .faq-item:hover {
-  background-color: #f1f1f1;
+  background-color: none;
 }
 
 .faq-item.active {
+  transition: max-height 0.3s ease;
+  max-height: 1000px; /* This is the expanded height; adjust based on content */
 }
 
 .faq-question {
@@ -1589,6 +1599,13 @@ body {
   font-size: 16px;
   color: #555;
   line-height: 1.5;
+  max-height: 0; /* Initially collapsed */
+  overflow: hidden; /* Prevents content from being displayed when collapsed */
+  transition: max-height 0.3s ease-out; /* Smooth transition for expanding/collapsing */
+}
+
+.faq-item.active .faq-answer {
+  max-height: 1000px; /* Set a sufficiently large max-height when expanded */
 }
 
 /*Job Form*/
@@ -1755,6 +1772,10 @@ textarea {
 }
 .terms-container {
   display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-right: 30px;
   height: 100vh; /* Full viewport height */
 }
 
@@ -1763,7 +1784,8 @@ textarea {
   width: 25%;
   display: flex;
   flex-direction: column;
-  padding: 120px 0 120px 120px;
+  padding: 0px 0 120px 50px;
+  text-align: left;
 }
 
 .sidebar-item {
@@ -1777,6 +1799,10 @@ textarea {
   cursor: pointer;
   padding: 10px;
   color: #a9a8a8;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   transition: background-color 0.3s ease;
 }
 
@@ -1784,11 +1810,21 @@ textarea {
   font-weight: bold;
   color: #2d2d2d;
 }
+.sidebar-item:hover {
+  background-color: #2d2d2d;
+  color: white;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  transition: 0.3s ease;
+  padding: 20px;
+}
 /* Divider Line */
 .divider {
   width: 1px; /* Line thickness */
   background-color: #a9a8a8; /* Line color */
-  height: 90%; /* Ensure it takes the full height of the sidebar */
+  height: 100%; /* Ensure it takes the full height of the sidebar */
 }
 /* Content Section */
 .content {

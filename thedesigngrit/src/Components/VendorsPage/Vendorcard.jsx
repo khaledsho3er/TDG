@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
 
-const VendorCard = ({ vendor }) => {
-  const { logo, products, name } = vendor;
+const VendorCard = ({ vendor, onClick }) => {
+  const { logo, products = [], name } = vendor; // Default to empty array if products is undefined
 
   return (
     <Card
@@ -21,7 +14,9 @@ const VendorCard = ({ vendor }) => {
         textAlign: "center",
         border: "1px solid #ddd",
         margin: 2,
+        cursor: "pointer", // Make the card visually clickable
       }}
+      onClick={onClick} // Handle the click on the entire card
     >
       {/* Vendor Logo */}
       <Box
@@ -37,42 +32,41 @@ const VendorCard = ({ vendor }) => {
           component="img"
           image={logo}
           alt={`${name} logo`}
-          sx={{
-            maxHeight: "80%",
-            maxWidth: "80%",
-            objectFit: "contain",
-          }}
+          sx={{ maxHeight: "80%", maxWidth: "80%", objectFit: "contain" }}
         />
       </Box>
 
       {/* Product Images */}
-      <Grid container spacing={0.1} sx={{ padding: 1 }}>
-        {products.slice(0, 4).map((product, index) => (
-          <Grid item xs={6} key={index}>
-            <CardMedia
-              component="img"
-              image={product}
-              alt={`Product ${index + 1}`}
-              sx={{
-                height: 80,
-                borderRadius: 2,
-                objectFit: "cover",
-                border: "1px solid #ddd",
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <Box sx={{ padding: 1 }}>
+        {Array.isArray(products) && products.length > 0 ? (
+          products
+            .slice(0, 4)
+            .map((product, index) => (
+              <CardMedia
+                component="img"
+                key={index}
+                image={product}
+                alt={`Product ${index + 1}`}
+                sx={{
+                  height: 80,
+                  borderRadius: 2,
+                  objectFit: "cover",
+                  border: "1px solid #ddd",
+                }}
+              />
+            ))
+        ) : (
+          <Typography variant="body2" sx={{ color: "gray" }}>
+            No products available
+          </Typography>
+        )}
+      </Box>
 
       {/* Vendor Name */}
       <CardContent>
         <Typography
           variant="h6"
-          sx={{
-            fontWeight: "bold",
-            fontFamily: "Horizon",
-            color: "#333",
-          }}
+          sx={{ fontWeight: "bold", fontFamily: "Horizon", color: "#333" }}
         >
           {name}
         </Typography>

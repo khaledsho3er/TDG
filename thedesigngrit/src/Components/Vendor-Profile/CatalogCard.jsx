@@ -1,7 +1,13 @@
 import React from "react";
 import { Card, CardMedia, Typography, Box } from "@mui/material";
 
-const VendorCatalogCard = ({ title, year, image, type }) => {
+const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
+  // Function to handle clicking on the card to open the PDF
+  const handleClick = () => {
+    const pdfUrl = `${pdf}`;
+    window.open(pdfUrl, "_blank"); // Opens the PDF in a new tab
+  };
+
   return (
     <Box
       sx={{
@@ -22,13 +28,15 @@ const VendorCatalogCard = ({ title, year, image, type }) => {
           overflow: "hidden",
           position: "relative",
           width: "100%",
+          cursor: "pointer", // Make the card clickable
         }}
+        onClick={handleClick} // Set the click event on the entire card
       >
         {/* Image Container */}
         <Box sx={{ position: "relative", flex: 1 }}>
           <CardMedia
             component="img"
-            image={image}
+            image={image} // Full image path
             alt={`${title} Cover`}
             sx={{
               width: "100%",

@@ -16,9 +16,9 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   const handleTitleClick = (detail) => {
     setSelectedDetail(detail);
   };
-  const fullImagePath = selectedDetail
-    ? `http://localhost:5000/uploads/${selectedDetail.image}`
-    : ""; // Full image path for rendering
+  // const fullImagePath = selectedDetail
+  //   ? `http://localhost:5000/uploads/${selectedDetail.image}`
+  //   : ""; // Full image path for rendering
 
   return (
     <div
