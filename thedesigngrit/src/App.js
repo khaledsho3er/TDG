@@ -37,8 +37,8 @@ function App() {
           <Route exact path="/home" Component={Home} />
           <Route exact path="/login" Component={LoginPage} />
           <Route exact path="/signup" Component={SignUpPage} />
-          <Route exact path="/AboutUs" Component={AboutUsPage} />
-          <Route exact path="/job" Component={JobDesc} />
+          <Route exact path="/about" Component={AboutUsPage} />
+          <Route path="/jobdesc/:jobId" element={<JobDesc />} />
           <Route path="/policy" element={<TermsOfService />} />
           {/* Add individual routes for policy sections */}
           {/* Example: */}

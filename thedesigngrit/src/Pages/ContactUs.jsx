@@ -5,12 +5,12 @@ import ApplicationSentPopup from "../Components/JobDesc/applicationSentPopUp";
 
 function ContactUs() {
   const [formData, setFormData] = useState({
-    name: "", // changed from fullName to name
+    name: "",
     email: "",
     subject: "",
     message: "",
   });
-  const [isPopupVisible, setIsPopupVisible] = useState(false); // Control popup visibility
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,10 +20,42 @@ function ContactUs() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setIsPopupVisible(true); // Show popup on form submission
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/contactus/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), // Convert form data to JSON
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Message sent successfully:", result);
+        setIsPopupVisible(true); // Show the popup if the message was sent successfully
+
+        // Reset the form data after successful submission
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        console.error("Error sending message:", result);
+        alert("There was an error sending your message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("There was an error sending your message. Please try again.");
+    }
   };
 
   const closePopup = () => {
@@ -50,9 +82,9 @@ function ContactUs() {
               <input
                 type="text"
                 id="name"
-                name="name" // this should match the formData key
+                name="name"
                 placeholder="John Doe"
-                value={formData.name} // use formData.name for value
+                value={formData.name}
                 onChange={handleInputChange}
               />
             </div>
@@ -62,9 +94,9 @@ function ContactUs() {
               <input
                 type="email"
                 id="email"
-                name="email" // this should match the formData key
+                name="email"
                 placeholder="jhondoe@gmail.com"
-                value={formData.email} // use formData.email for value
+                value={formData.email}
                 onChange={handleInputChange}
               />
             </div>
@@ -74,9 +106,9 @@ function ContactUs() {
               <input
                 type="text"
                 id="subject"
-                name="subject" // this should match the formData key
+                name="subject"
                 placeholder="Subject"
-                value={formData.subject} // use formData.subject for value
+                value={formData.subject}
                 onChange={handleInputChange}
               />
             </div>
@@ -85,9 +117,9 @@ function ContactUs() {
               <label htmlFor="message">Message:</label>
               <textarea
                 id="message"
-                name="message" // this should match the formData key
+                name="message"
                 placeholder="Type your message here..."
-                value={formData.message} // use formData.message for value
+                value={formData.message}
                 onChange={handleInputChange}
               />
             </div>

@@ -29,7 +29,7 @@ const ShopByCategory = () => {
           "http://localhost:5000/api/categories/categories"
         );
         const data = await response.json();
-        setCategories(data); // Update categories state
+        setCategories(data.slice(0, 6)); // Slice the first 6 categories
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
