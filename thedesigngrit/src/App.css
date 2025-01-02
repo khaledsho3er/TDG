@@ -3343,12 +3343,20 @@ textarea {
   border: none;
   width: 100%;
 }
+.button-primary:hover {
+  background-color: #6b8d62;
+  color: #eae3e4;
+}
 
 .button-secondary {
   background-color: white;
   color: #2d2d2d;
   border: 1px solid #2d2d2d;
   width: 100%;
+}
+.button-secondary:hover {
+  background-color: #6b8d62;
+  color: #eae3e4;
 }
 
 /* Collapsible Section */
