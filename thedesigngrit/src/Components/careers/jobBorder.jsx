@@ -31,14 +31,14 @@ const CareerOpportunities = () => {
           className={`tab ${activeTab === "Top Positions" ? "active" : ""}`}
           onClick={() => handleTabClick("Top Positions")}
         >
-          Top Positions
+          All Jobs
         </button>
-        <button
+        {/* <button
           className={`tab ${activeTab === "All Jobs" ? "active" : ""}`}
           onClick={() => handleTabClick("All Jobs")}
         >
           All Jobs
-        </button>
+        </button> */}
       </div>
 
       <div className="job-list">

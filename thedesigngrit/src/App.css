@@ -800,9 +800,9 @@ body {
 }
 
 .hero-title {
-  font-size: 3.5rem; /* Adjust as needed */
+  font-size: 2.5rem; /* Adjust as needed */
   margin: 0;
-  color: white;
+  color: #eae3e4;
   text-align: left;
 }
 
@@ -828,7 +828,13 @@ body {
 }
 .Caption-AboutUs {
   text-align: justify;
-  padding: 106px 140px 50px 140px;
+  padding: 0px 140px 0px 140px;
+  font-size: 25px;
+  font-family: "Montserrat";
+}
+.Caption-careers {
+  text-align: justify;
+  padding: 100px 140px 100px 140px;
   font-size: 25px;
   font-family: "Montserrat";
 }
@@ -890,9 +896,10 @@ body {
   color: #6c7c59;
 }
 .OurTeam-section p {
-  text-align: Justifiy;
   font-family: Montserrat;
   font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
   padding: 10px 100px 10px 100px;
 }
 .meet-our-team {
@@ -905,7 +912,13 @@ body {
   justify-content: center; /* Center align team members */
   gap: 20px; /* Space between team members */
 }
-
+.team-member p {
+  font-family: Montserrat;
+  font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
+  padding: 0px 0px 0px 0px;
+}
 .team-member {
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Padding inside each member box */

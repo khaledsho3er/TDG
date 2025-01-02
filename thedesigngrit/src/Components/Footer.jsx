@@ -124,7 +124,7 @@ function Footer() {
                 COMPANY
               </Typography>
               <Link
-                to="/aboutus"
+                to="/about"
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
                 <Typography>About Us</Typography>

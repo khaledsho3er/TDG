@@ -15,7 +15,7 @@ const SustainabilitySection = () => {
       {/* Content Container */}
       <div className="sustainability-content-container">
         <div className="sustainability-content-wrapper">
-          <span className="sustainability-label">Sustainability</span>
+          {/* <span className="sustainability-label">Sustainability</span> */}
 
           <h2 className="sustainability-heading">What is TDG ?</h2>
 
