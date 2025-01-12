@@ -64,7 +64,6 @@ const NotificationOverlayVendor = ({ onClose }) => {
           ))}
         </div>
         <div className="overlay-footer-vendor">
-          <button className="mark-read-vendor">MARK ALL AS READ</button>
           <button className="view-all-vendor" onClick={handleOpenPage}>
             VIEW ALL NOTIFICATIONS
           </button>
