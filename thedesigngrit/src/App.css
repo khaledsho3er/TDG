@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
-
+@font-face {
+  font-family: "Horizon";
+  src: url("../public/fonts/horizon/horizon.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 .App {
   text-align: center;
   font-family: "Horizon", "Montserrat";

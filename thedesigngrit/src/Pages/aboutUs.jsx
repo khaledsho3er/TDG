@@ -25,7 +25,7 @@ function AboutUsPage() {
       </p>
 
       <Box className="ourMission-Section">
-        <Box className="urMission-Section-image">
+        <Box className="ourMission-Section-image">
           <img src="Assets/aboutUsContent.png" alt="ImageAbout" />
         </Box>
         <Box className="ourMission-Section-typo">
@@ -56,13 +56,7 @@ function AboutUsPage() {
         </p>
       </Box>
       <Box className="ourStory-Section-typo">
-        <hr
-          style={{
-            border: "1px solid #ccc",
-            width: "100%",
-            margin: "60px auto",
-          }}
-        />
+        <hr className="line-between" />
       </Box>
       <Box className="OurTeam-section">
         <Box className="OurTeam-section-typo">

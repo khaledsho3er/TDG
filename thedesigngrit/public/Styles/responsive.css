@@ -1,12 +1,15 @@
 /* Responsive CSS */
-
+@font-face {
+  font-family: "Horizon";
+  src: url("../fonts/horizon/horizon.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 /* Mobile (up to 767px) */
 @media (max-width: 767px) {
   body {
     font-size: 14px;
   }
-
- 
 
   .container {
     flex-direction: column;
@@ -165,5 +168,713 @@
   .footer-container {
     text-align: left;
     padding: 60px;
+  }
+}
+/* General styles are unchanged from the original */
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  /* For tablets and smaller laptops */
+  .hero-container {
+    flex-direction: row;
+    padding: 20px;
+    height: auto;
+  }
+
+  .hero-text {
+    padding-left: 20px;
+    max-width: 100%;
+    text-align: left; /* Center text for smaller screens */
+    padding-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+  }
+
+  .hero-section-image img {
+    height: 209px; /* Maintain aspect ratio */
+    border-radius: 20px;
+    margin-left: 150px;
+    margin-right: 0px;
+    width: 238px;
+  }
+
+  .Caption-AboutUs {
+    padding: 50px 20px;
+    font-size: 18px;
+  }
+
+  .ourMission-Section {
+    flex-direction: row; /* Stack image and text */
+    padding: 40px;
+  }
+
+  .ourMission-Section-image img {
+    width: 50%;
+  }
+
+  .ourMission-Section-typo {
+    padding-left: 0;
+    margin-top: 20px;
+    padding: 10px;
+    text-align: justify; /* Center text for smaller screens */
+  }
+
+  .ourStory-Section-typo {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 40px;
+    text-align: justify;
+  }
+
+  .OurTeam-section p {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .team-members {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .team-member {
+    width: 90%; /* Reduce width for smaller screens */
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  /* For mobile devices */
+  .hero-container {
+    padding: 15px;
+    flex-direction: column;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 12px;
+  }
+  .hero-section-image {
+    flex: 1;
+    max-width: 100%;
+    object-fit: cover; /* Adjust as needed */
+    padding-right: 0px;
+  }
+  .hero-section-image img {
+    height: 209px; /* Maintain aspect ratio */
+    border-radius: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 238px;
+  }
+  .Caption-AboutUs {
+    font-size: 16px;
+  }
+
+  .ourMission-Section {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .ourMission-Section-image img {
+    width: 95%;
+  }
+
+  .ourMission-Section-typo {
+    padding-left: 0;
+    margin-top: 10px;
+  }
+  .line-between {
+    margin: 0 auto;
+  }
+  .OurTeam-section {
+    padding-top: 20px;
+  }
+  .OurTeam-section p {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .team-member {
+    width: 100%;
+    padding: 10px;
+  }
+  .team-members {
+    flex-direction: column;
+  }
+  .team-member-image {
+    width: 100px; /* Smaller image size for mobile */
+    height: 100px;
+  }
+
+  .team-member-name {
+    font-size: 1.2rem;
+  }
+
+  .team-member-title,
+  .team-member-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .linkedin-icon {
+    font-size: 1.2rem;
+  }
+}
+/*careers responsive*/
+/* General styles are unchanged from the original */
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) and (min-width: 768px) {
+  /* For tablets and small-screen laptops */
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns instead of three */
+    gap: 15px; /* Adjust spacing between grid items */
+    width: 100%; /* Reduce grid width */
+  }
+
+  .value-card {
+    flex-direction: row; /* Stack content vertically */
+    padding: 15px;
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  .value-card-icon {
+    margin-bottom: 20px;
+    font-size: 30px; /* Adjust icon size */
+  }
+
+  .value-card-title {
+    font-size: 16px;
+  }
+
+  .value-card-description {
+    font-size: 11px;
+    padding-right: 20px;
+  }
+  .ourCoreValues-section {
+    padding: 0 50px;
+  }
+  .career-container {
+    max-width: 90%; /* Reduce container width */
+    padding: 15px;
+  }
+
+  .career-header {
+    font-size: 22px;
+  }
+
+  .tab {
+    font-size: 12px; /* Reduce font size for tabs */
+    padding: 8px 15px; /* Adjust padding */
+  }
+
+  .job-card {
+    padding: 10px 15px; /* Reduce padding */
+  }
+
+  .job-title {
+    font-size: 16px;
+  }
+
+  .job-description {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 760px) and (min-width: 320px) {
+  /* For mobile devices */
+  .values-grid {
+    grid-template-columns: 1fr; /* One column layout */
+
+    gap: 15px;
+    width: 90%; /* Full width for mobile */
+    height: 150vh;
+  }
+
+  .value-card {
+    border: 2px solid #cecccc;
+    padding: 10px;
+    box-shadow: none; /* Remove shadow for simplicity */
+    flex-direction: row;
+    box-shadow: 3px 6px 6px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .value-card-icon {
+    font-size: 32px;
+    padding-right: 10px;
+  }
+
+  .value-card-title {
+    font-size: 20px;
+  }
+
+  .value-card-description {
+    font-size: 16px;
+    padding-right: 10px;
+  }
+  .ourCoreValues-section {
+    padding: 0px 30px;
+  }
+  .career-container {
+    padding: 10px;
+    width: 80%;
+  }
+
+  .career-header {
+    font-size: 20px;
+  }
+
+  .tab {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .job-card {
+    padding: 8px 10px;
+  }
+
+  .job-title {
+    font-size: 14px;
+  }
+
+  .job-description {
+    font-size: 12px;
+  }
+
+  .job-tag {
+    font-size: 10px; /* Reduce tag size for mobile */
+    padding: 3px 8px;
+  }
+}
+/*Job Description*/
+/* General styles are unchanged from the original */
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  /* For tablets and small-screen laptops */
+  /* .hero-job-container {
+    flex-direction: row; 
+    height: auto; 
+    padding: 30px;
+    text-align: center; 
+  }
+
+  .hero-text h1 {
+    font-size: 24px; 
+    text-align: left;
+  }
+
+  .hero-text p {
+    font-size: 16px;
+  } */
+
+  .Description {
+    padding: 30px;
+  }
+
+  .description-title h2 {
+    font-size: 22px; /* Adjust title size */
+  }
+
+  .description-title p {
+    font-size: 16px; /* Adjust subtitle size */
+  }
+
+  .description-content-1 {
+    padding: 15px 20px; /* Reduce padding */
+  }
+
+  .description-content-1 h2 {
+    padding-left: 0; /* Remove left padding */
+    font-size: 20px; /* Adjust heading size */
+  }
+
+  .description-content-1 p {
+    font-size: 15px; /* Adjust paragraph font size */
+    padding-left: 0; /* Remove left padding */
+    padding-right: 0; /* Remove right padding */
+  }
+
+  ul {
+    padding-left: 20px; /* Add some padding for list items */
+  }
+
+  li {
+    font-size: 15px; /* Adjust list item font size */
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 768px) {
+  /* For mobile screens */
+  /* .hero-job-container {
+    flex-direction: row; 
+    height: auto; 
+    padding: 30px;
+    text-align: center; 
+  }
+  .hero-text h1 {
+    font-size: 20px; 
+    text-align: left;
+  }
+
+  .hero-text p {
+    font-size: 14px;
+  } */
+
+  .Description {
+    padding: 20px;
+  }
+
+  .description-title h2 {
+    font-size: 22px; /* Smaller title size */
+  }
+
+  .description-title p {
+    font-size: 14px; /* Smaller subtitle size */
+  }
+
+  .description-content-1 {
+    padding: 10px 15px; /* Compact padding */
+  }
+
+  .description-content-1 h2 {
+    font-size: 18px; /* Smaller heading size */
+  }
+
+  .description-content-1 p {
+    font-size: 14px; /* Smaller paragraph font size */
+  }
+
+  ul {
+    padding-left: 15px; /* Adjust list padding */
+  }
+
+  li {
+    font-size: 14px; /* Smaller font size for list items */
+  }
+}
+
+@media (max-width: 480px) {
+  /* For very small screens */
+  /* .hero-job-container {
+    padding: 15px;
+  }
+
+  .hero-text h1 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .hero-text p {
+    font-size: 12px;
+  } */
+
+  .Description {
+    padding: 10px;
+  }
+
+  .description-title h2 {
+    font-size: 20px;
+  }
+
+  .description-title p {
+    font-size: 12px;
+  }
+
+  .description-content-1 {
+    padding: 8px 10px; /* Compact padding for very small screens */
+  }
+
+  .description-content-1 h2 {
+    text-align: left;
+    font-size: 16px; /* Smaller heading */
+  }
+
+  .description-content-1 p {
+    font-size: 12px; /* Smaller font size */
+  }
+
+  .description-content-1 ul {
+    padding-left: 10px; /* Minimal padding for lists */
+  }
+
+  .description-content-1 li {
+    font-size: 12px;
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .job-form-card {
+    padding: 2rem 3rem;
+    max-width: 90%;
+  }
+
+  .job-form-title {
+    font-size: 20px;
+  }
+
+  .job-form-field input,
+  .job-form-field textarea {
+    width: 90%;
+  }
+
+  .job-upload-button,
+  .job-submit-button {
+    width: 100%;
+  }
+
+  .job-form-row {
+    flex-direction: column;
+    gap: 0rem;
+  }
+
+  .image-preview-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 images per row */
+  }
+}
+
+@media (max-width: 480px) {
+  .job-form-card {
+    padding: 1.5rem;
+  }
+
+  .job-form-title {
+    font-size: 18px;
+  }
+
+  .job-form-field label {
+    font-size: 12px;
+  }
+
+  .job-form-field input,
+  .job-form-field textarea {
+    font-size: 12px;
+  }
+
+  .job-upload-button,
+  .job-submit-button {
+    font-size: 12px;
+    padding: 0.5rem;
+  }
+  .job-form-row {
+    flex-direction: column;
+    gap: 0rem;
+  }
+  .image-preview-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 image per row */
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faq-container {
+    padding: 0 1rem;
+    max-width: 100%;
+  }
+
+  .faq-tabs {
+    flex-direction: row; /* Stack tabs vertically */
+  }
+
+  .faq-tab {
+    font-size: 14px; /* Slightly larger text for better readability */
+    padding: 10px;
+  }
+
+  .faq-item {
+    padding: 10px 15px;
+    max-width: 100%;
+  }
+
+  .faq-question {
+    font-size: 16px;
+  }
+
+  .faq-answer {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .faq-tabs {
+    flex-direction: row; /* Stack tabs vertically for very small screens */
+  }
+
+  .faq-tab {
+    font-size: 10px;
+    padding: 8px;
+  }
+
+  .faq-question {
+    font-size: 14px;
+  }
+
+  .faq-answer {
+    font-size: 12px;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  /* Small laptop screens */
+  .partner-Caption {
+    padding: 60px;
+  }
+
+  .partner-Caption p {
+    font-size: 16px;
+  }
+
+  .partners-second-section {
+    padding: 0 40px 40px 40px;
+  }
+
+  .partners-second-section h2 {
+    font-size: 28px;
+  }
+
+  .partners-second-section ul li {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Tablet screens */
+  .partner-Caption {
+    padding: 40px;
+  }
+
+  .partner-Caption p {
+    font-size: 15px;
+  }
+
+  .partners-second-section {
+    padding: 0 20px 30px 20px;
+  }
+
+  .partners-second-section h2 {
+    font-size: 24px;
+  }
+
+  .partners-second-section ul li {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Mobile screens */
+  .partner-Caption {
+    padding: 20px;
+  }
+
+  .partner-Caption p {
+    font-size: 14px;
+  }
+
+  .partners-second-section {
+    padding: 0 15px 20px 15px;
+  }
+
+  .partners-second-section h2 {
+    font-size: 20px;
+  }
+
+  .partners-second-section ul li {
+    font-size: 14px;
+  }
+}
+/* For tablets and small laptops */
+/* For small laptops and tablets */
+@media screen and (max-width: 1024px) {
+  .terms-container {
+    flex-direction: row; /* Stack sidebar and content */
+    align-items: flex-start; /* Align items to the top */
+    height: 100vh; /* Full viewport height */
+  }
+
+  .sidebar {
+    width: 80%; /* Sidebar takes 80% of the container width */
+    padding: 10px;
+    text-align: center; /* Center align items */
+    height: 100%; /* Sidebar height takes full screen */
+  }
+
+  .sidebar-item {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .content {
+    width: 80%; /* Content takes 80% of the container width */
+    padding: 20px;
+    height: 100%; /* Content height should match sidebar height */
+    overflow-y: auto; /* Make the content scrollable if it's too long */
+    box-sizing: border-box; /* To include padding in the width/height calculation */
+  }
+
+  /* Ensure the sidebar and content align within the full height of the screen */
+  .terms-container {
+    display: flex;
+    justify-content: flex-start;
+    height: 100vh; /* Full height of the screen */
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 75%;
+    height: 100%; /* Makes the content take the full height */
+    overflow-y: auto; /* Allows scrolling if content exceeds height */
+  }
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+  .terms-container {
+    flex-direction: column;
+    height: auto;
+    margin: 20px 10px; /* Reduce margins */
+  }
+
+  .sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .sidebar-item {
+    font-size: 12px; /* Smaller font size */
+    margin-bottom: 5px;
+    padding: 5px 10px;
+  }
+
+  .content {
+    width: 80%; /* Full width */
+    padding: 25px;
+  }
+
+  .divider {
+    display: none; /* Hide the divider on small screens */
   }
 }
