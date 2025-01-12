@@ -10,6 +10,7 @@ import ShoppingCartOverlay from "./Popups/CartOverlay";
 import FavoritesOverlay from "./favoriteOverlay"; // Import the FavoritesOverlay component
 import Menudrop from "./menuhover/Menudrop";
 import { Link } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -18,6 +19,8 @@ function Header() {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [menuData, setMenuData] = useState([]); // State to hold categories data as an array
   const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile] = useState(window.innerWidth < 767);
 
   useEffect(() => {
     // Fetch the categories and their details once when the component loads
@@ -72,6 +75,10 @@ function Header() {
     }
   };
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <Box
       sx={{
@@ -91,6 +98,22 @@ function Header() {
               <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
             </Typography>
           </Link>
+
+          {isMobile && (
+            <IconButton onClick={toggleMenu}>
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          {/* Dropdown Menu */}
+          {menuOpen && (
+            <Box className="mobile-menu">
+              <Typography className="menu-item">Home</Typography>
+              <Typography className="menu-item">Shop</Typography>
+              <Typography className="menu-item">About</Typography>
+              <Typography className="menu-item">Contact</Typography>
+            </Box>
+          )}
 
           {/* Search */}
           <Box className="search-bar">
@@ -157,7 +180,7 @@ function Header() {
 
       {/* Additional Buttons */}
       <FloatingButton />
-      <Stickedbutton />
+      <Stickedbutton className="moodboard-btn" />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
       <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
       <FavoritesOverlay open={favoritesOpen} onClose={handleFavoritesToggle} />
