@@ -6,8 +6,6 @@
     font-size: 14px;
   }
 
- 
-
   .container {
     flex-direction: column;
     height: 100%;
@@ -26,45 +24,28 @@
     padding: 20px;
   }
 
-  .hero-home-section {
-    height: 300px;
+  .search-bar,
+  .icon-container,
+  .header-bottom,
+  .moodboard-btn {
+    display: none; /* Hide elements that are unnecessary on mobile */
   }
 
-  .hero-text-overlay h1 {
-    font-size: 1.5rem;
+  .hamburger {
+    display: block; /* Show hamburger on mobile */
+    width: 80px;
+    height: 30px;
+  }
+
+  .logo img {
+    width: 95px;
+    height: 45px;
+    z-index: 2;
   }
 
   .header-top {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .header-bottom {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .category-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .team-members {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .team-member {
-    width: 100%;
-  }
-
-  .shop-button {
-    width: 100%;
-  }
-
-  .footer-container {
-    padding: 20px;
-    text-align: center;
+    padding: 10px 15px;
+    margin-bottom: 1rem;
   }
 }
 

@@ -368,6 +368,38 @@ body {
   padding: 6px 10px 3px 10px; /* Same padding as the default to prevent shifting */
 }
 
+.hamburger {
+  display: none; /* Hide by default */
+}
+
+/* Dropdown Menu */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.menu-item {
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.hamburger {
+  display: none;
+}
 /* .category:hover .category.highlighted:hover {
   background-color: #ffffff;
   color: #000000;
