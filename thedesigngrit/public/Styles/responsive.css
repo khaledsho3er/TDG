@@ -1,48 +1,169 @@
-/* General Card Styles */
-.card-container {
-  position: relative;
-  height: fit-content;
-  max-width: 345px;
-  margin: 0 auto;
-  height: 300px;
-}
+/* Responsive CSS */
 
-.card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 200px;
-}
-
-.card-media {
-  height: 200px;
-  object-fit: contain;
-}
-
-.card-content {
-  text-align: center;
-}
-
-/* Badge Styles */
-.badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #4caf50;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-/* Responsive Styles */
-@media (max-width: 600px) {
-  .card-container {
-    max-width: 300px;
+/* Mobile (up to 767px) */
+@media (max-width: 767px) {
+  body {
+    font-size: 14px;
   }
 
-  .card-media {
-    height: 180px;
+ 
+
+  .container {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .container-login {
+    padding-left: 20px;
+    padding-right: 20px;
+    background-size: cover;
+  }
+
+  .login-form,
+  .signup-form-container {
+    width: 90%;
+    height: 80%;
+    padding: 20px;
+  }
+
+  .hero-home-section {
+    height: 300px;
+  }
+
+  .hero-text-overlay h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-top {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .header-bottom {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .team-members {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .team-member {
+    width: 100%;
+  }
+
+  .shop-button {
+    width: 100%;
+  }
+
+  .footer-container {
+    padding: 20px;
+    text-align: center;
+  }
+}
+
+/* Tablets (768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container-login {
+    flex-direction: row;
+    height: 90vh;
+    padding: 30px;
+  }
+
+  .login-form,
+  .signup-form-container {
+    width: 70%;
+    height: auto;
+    padding: 30px;
+  }
+
+  .hero-home-section {
+    height: 400px;
+  }
+
+  .hero-text-overlay h1 {
+    font-size: 2.5rem;
+  }
+
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .header-bottom {
+    gap: 20px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .team-member {
+    width: 48%;
+  }
+
+  .footer-container {
+    text-align: left;
+    padding: 40px;
+  }
+}
+
+/* Medium Laptops (1024px to 1366px) */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  body {
+    font-size: 18px;
+  }
+
+  .container-login {
+    height: 100vh;
+    padding: 40px;
+  }
+
+  .login-form,
+  .signup-form-container {
+    width: 60%;
+    height: auto;
+    padding: 40px;
+  }
+
+  .hero-home-section {
+    height: 500px;
+  }
+
+  .hero-text-overlay h1 {
+    font-size: 3rem;
+  }
+
+  .header-top {
+    justify-content: space-between;
+  }
+
+  .header-bottom {
+    gap: 30px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .team-member {
+    width: 30%;
+  }
+
+  .footer-container {
+    text-align: left;
+    padding: 60px;
   }
 }

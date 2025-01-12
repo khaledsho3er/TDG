@@ -47,7 +47,7 @@ function App() {
           <Route exact path="/contactus" Component={ContactUs} />
           <Route exact path="/mycart" Component={ShoppingCart} />
           <Route
-            path="/category/:categoryId/:categoryName"
+            path="/category/:categoryId/:categoryName/products"
             element={<ProductsPage />}
           />
           <Route path="/product/:id" element={<ProductPage />} />

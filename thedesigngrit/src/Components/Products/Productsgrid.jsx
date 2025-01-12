@@ -3,25 +3,25 @@ import { Grid, Box, Pagination } from "@mui/material";
 import ProductCard from "./productcard";
 
 const ProductCards = () => {
-  const [products, setProducts] = useState([]);
+  const [products] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [favorites, setFavorites] = useState([]);
   const productsPerPage = 12; // Limit to 12 products per page
 
-  // Fetch products from the backend
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("/json/productData.json"); // Replace with your API endpoint
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // Fetch products from the backendcd
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const response = await fetch("/json/productData.json"); // Replace with your API endpoint
+  //       const data = await response.json();
+  //       setProducts(data);
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
-    fetchProducts();
-  }, []);
+  //   fetchProducts();
+  // }, []);
 
   // Fetch favorites from localStorage when the component mounts
   useEffect(() => {

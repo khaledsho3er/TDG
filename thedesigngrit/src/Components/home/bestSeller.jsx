@@ -69,8 +69,8 @@ const ProductSlider = () => {
               <div className="product-metadata">
                 Min. {product.minUnits} units · Delivery: {product.delivery}
               </div>
-              <h3 className="product-title">{product.title}</h3>
-              <div className="product-price">
+              <h3 className="product-title-bestseller">{product.title}</h3>
+              <div className="product-price-bestseller">
                 from LE {product.price.toFixed(2)} per unit
               </div>
             </div>
