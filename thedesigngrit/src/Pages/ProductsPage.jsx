@@ -28,7 +28,7 @@ function ProductsPage() {
     };
 
     fetchProducts();
-  }, [categoryId]); // Re-fetch products if the categoryId changes
+  }, [categoryId, categoryName]); // Re-fetch products if the categoryId changes
 
   // Fetch favorites from localStorage (if any)
   useEffect(() => {
