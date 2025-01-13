@@ -77,6 +77,7 @@ function Home() {
     <div className="home">
       <div className="background-layer"></div>
       <Header />
+
       <div className="hero-home-section">
         <div className="hero-video">
           <video
@@ -97,36 +98,31 @@ function Home() {
           </div>
         </div>
       </div>
+      {/*Concept section*/}
       <div className="concept-section">
         <Box className="concept-title">
           <ExploreConcepts />
         </Box>
       </div>
-
       {/*Category section*/}
-      <Box>
+      <div className="concept-section">
         <ShopByCategory />
-      </Box>
-
+      </div>
       {/*best seller products section*/}
-      <Box>
+      <div className="concept-section">
         <ProductSlider />
-      </Box>
-
+      </div>
       {/*Sustainability section*/}
-      <Box>
+      <div className="concept-section">
         <SustainabilitySection />
-      </Box>
+      </div>
 
       {/*Vendor section*/}
-      <Box>
+      <div className="concept-section">
         <PartnersSection />
-      </Box>
-
+      </div>
       {/*Footer*/}
-      <Box>
-        <Footer />
-      </Box>
+      <Footer />
     </div>
   );
 }

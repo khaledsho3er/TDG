@@ -57,8 +57,8 @@ function JobDesc() {
       </div>
       <Box className="Description">
         <Box className="description-title">
-          <h2>{jobDetails.title || "Product Manager"}</h2>
-          <p>{jobDetails.department || "Business Development"}</p>
+          <h2>{jobDetails.jobTitle || "Software Engineer"}</h2>
+          <p>{jobDetails.department || "IT"}</p>
           <p>{jobDetails.location || "Cairo, EG"}</p>
         </Box>
         <Box className="description-content">

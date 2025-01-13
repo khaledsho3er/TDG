@@ -27,10 +27,12 @@ import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
 import AdminHome from "./Pages/vendorSide/AdminHome";
 import VerifyPartners from "./Components/adminSide/VerifyPartners";
 import NotificationsPage from "./Components/vendorSide/notificationPage";
+import ScrollToTop from "./Context/scrollToTop";
 function App() {
   return (
     <CartProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route exact path="/" Component={Home} />

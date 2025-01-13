@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { FaFile } from "react-icons/fa";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import Header from "../Components/navBar";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
+import ViewInStorePopup from "../Components/product/viewInStore";
+import RequestInfoPopup from "../Components/product/optionPopUp";
 import {
   fetchProductData,
   fetchProductReview,
@@ -12,9 +17,21 @@ import {
 import Footer from "../Components/Footer";
 // import RelatedProducts from "../Components/relatedProduct";
 import { useCart } from "../Context/cartcontext";
+import OptionPopUp from "../Components/product/optionPopUp";
 
 function ProductPage() {
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
+  const [showFirstPopup, setShowFirstPopup] = useState(false); // State for Request Quote popup
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
   const [product, setProduct] = useState(null);
+
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   const [selectedColor, setSelectedColor] = useState(null);
@@ -23,6 +40,16 @@ function ProductPage() {
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
+  // Handle opening the popup
+  const handlePopupOpen = () => {
+    setShowPopup(true);
+  };
+
+  // Handle closing the popup
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
 
   useEffect(() => {
     // Fetch product data
@@ -46,6 +73,41 @@ function ProductPage() {
   }, [id]);
 
   if (!product) return <div>Product not found</div>;
+
+  const handleOptionChange = (option) => {
+    if (option === "quote") {
+      setShowFirstPopup(true); // Show the 'Request Quote' popup
+    } else if (option === "viewInStore") {
+      setShowViewInStorePopup(true); // Show the 'View in Store' popup
+    }
+    setShowDropdown(false); // Close the dropdown after selection
+  };
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+    setIsTransitioning(true);
+    setTimeout(() => setIsModalOpen(true), 300);
+  };
+
+  const handleCloseModal = () => {
+    setIsTransitioning(false);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedImageIndex(null);
+    }, 300);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex(
+      (prev) =>
+        (prev - 1 + product.thumbnailUrls.length) % product.thumbnailUrls.length
+    );
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % product.thumbnailUrls.length);
+  };
+
   const handleToggleSection = (index, type = "general") => {
     if (type === "general") {
       setExpandedSections((prev) => ({
@@ -96,6 +158,7 @@ function ProductPage() {
               src={`/${product.imageUrl}`}
               alt={product.name}
               className="product-main-image"
+              onClick={() => handleImageClick(0)} // Main image click opens modal
             />
             <div className="thumbnail-container">
               {product.thumbnailUrls?.length ? (
@@ -105,6 +168,7 @@ function ProductPage() {
                     src={`/${thumbnail}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
+                    onClick={() => handleImageClick(index)}
                   />
                 ))
               ) : (
@@ -121,7 +185,6 @@ function ProductPage() {
             </p>
             <p className="product-price">{product.price}</p>
             <hr />
-
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
               <div className="color-options">
@@ -137,9 +200,7 @@ function ProductPage() {
               </div>
             </div>
             {selectedColor && <p>Selected Color: {selectedColor}</p>}
-
             <hr />
-
             <div className="size-selector">
               <span className="size-selector-label">Size:</span>
               <div className="size-options">
@@ -157,7 +218,6 @@ function ProductPage() {
               </div>
             </div>
             {selectedSize && <p>Selected Size: {selectedSize}</p>}
-
             <div className="action-buttons">
               <button
                 className="action-button button-primary"
@@ -165,10 +225,26 @@ function ProductPage() {
               >
                 Add to Cart
               </button>
-              <button className="action-button button-secondary">
+              <button
+                className="action-button button-secondary"
+                onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup
+              >
                 Request Info
               </button>
             </div>
+            {/* Dropdown with options */}
+            {/* Request Info Popup */}
+            <RequestInfoPopup
+              open={showRequestInfoPopup}
+              onClose={() => setShowRequestInfoPopup(false)}
+              onOptionSelect={handleOptionChange}
+            />
+
+            {/* Show the popup when 'View in Store' is selected */}
+            <ViewInStorePopup
+              open={showViewInStorePopup}
+              onClose={() => setShowViewInStorePopup(false)}
+            />
           </div>
         </div>
 
@@ -336,6 +412,27 @@ function ProductPage() {
             </div>
           </div>
         </div>
+
+        {(isModalOpen || isTransitioning) && (
+          <div className={`modal ${isTransitioning ? "opening" : "closing"}`}>
+            <div className="modal-content">
+              <button className="modal-close" onClick={handleCloseModal}>
+                <IoMdClose size={30} />
+              </button>
+              <button className="modal-prev" onClick={handlePrevImage}>
+                <IoIosArrowBack size={30} />
+              </button>
+              <img
+                src={`/${product.thumbnailUrls[selectedImageIndex]}`}
+                alt={`${selectedImageIndex + 1}`}
+                className="modal-image"
+              />
+              <button className="modal-next" onClick={handleNextImage}>
+                <IoIosArrowForward size={30} />
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="reviews-section">
           <h2>Reviews</h2>
