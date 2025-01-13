@@ -30,8 +30,6 @@ function ProductsPage() {
     fetchProducts();
   }, [categoryId, categoryName]); // Include categoryName in the dependency array
 
-
-
   // Fetch favorites from localStorage (if any)
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
