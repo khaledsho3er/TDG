@@ -21,6 +21,7 @@ function Header() {
   const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile] = useState(window.innerWidth < 767);
+  const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
     // Fetch the categories and their details once when the component loads
@@ -40,6 +41,19 @@ function Header() {
     };
 
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if the scroll position is greater than a threshold
+      setIsSticky(window.scrollY > 80);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleCartToggle = () => {
@@ -85,12 +99,12 @@ function Header() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        borderBottom: "1px solid #e0e0e0",
         width: "100%",
       }}
+      className={`header-container ${isSticky ? "sticky" : ""}`}
     >
       {/* Top Header */}
-      <Box className="header">
+      <Box className={`header ${isSticky ? "sticky" : ""}`}>
         <Box className="header-top">
           {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
@@ -132,9 +146,6 @@ function Header() {
             <IconButton onClick={handleCartToggle}>
               <ShoppingCartIcon sx={{ fontSize: "17px" }} />
             </IconButton>
-            <Box>
-              <Typography sx={{ fontSize: "10px" }}>Egypt / EN</Typography>
-            </Box>
             <Avatar
               className="avatar"
               onClick={handlePopupToggle}
