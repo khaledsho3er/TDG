@@ -44,9 +44,9 @@ const PartnersSection = () => {
         <p className="partners-description">
           Explore the heart of TheDesignGrit—our brands. They are the foundation
           of our mission, each bringing unique artistry and unmatched quality to
-          the platform. By showcasing these creators, we’re building a
-          collective that empowers local talent and delivers authentic Egyptian
-          craftsmanship to your home.
+          the platform.By showcasing the secreators, we’re building a collective
+          that empowers local talent and delivers authentic Egyptian crafts
+          manshipto your home.
         </p>
 
         <button className="partners-button">Shop all</button>

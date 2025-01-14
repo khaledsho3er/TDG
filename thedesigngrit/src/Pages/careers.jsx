@@ -10,14 +10,10 @@ function careersPage() {
     <Box className="careersPage">
       <Header />
       <Box>
-        <HeroAbout
-          title="Join Our Team Shape the Future."
-          subtitle="Explore thousands of jobs on TDG to reach the next step in your career. Online job vacancies that match your preference. Search, Save, Apply today."
-          image={"Assets/careers.jpg"}
-        />
+        <HeroAbout title="Join TDG" image={"Assets/careers.jpg"} />
       </Box>
       <Box>
-        <p className="Caption-AboutUs">
+        <p className="Caption-careers">
           At TheDesignGrit, we’re building more than a marketplace—we’re
           building a legacy. Join a passionate team dedicated to redefining
           Egyptian design on the global stage. Together, we combine tradition

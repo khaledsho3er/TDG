@@ -136,18 +136,7 @@ function Footer() {
             <Grid container spacing={10} sx={{ pl: { xs: 0, md: 4 } }}>
               {/* Company + Partners Section */}
               <Grid item xs={6} sm={3}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    color: "#6B7B58",
-                    mb: 2,
-                    fontSize: 12,
-                    fontFamily: "Horizon,Bold",
-                  }}
-                >
-                  COMPANY
-                </Typography>
+                <Typography>COMPANY</Typography>
                 <Link
                   to="/about"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
@@ -177,20 +166,52 @@ function Footer() {
                       fontFamily: "Horizon,Bold",
                     }}
                   >
-                    PARTNERS
+                    COMPANY
                   </Typography>
                   <Link
-                    to="/partners"
+                    to="/about"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}
                   >
-                    <Typography>Join Us</Typography>
+                    <Typography>About Us</Typography>
                   </Link>
                   <Link
                     to="/contactus"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}
                   >
-                    <Typography>Support</Typography>
+                    <Typography>Contact Us</Typography>
                   </Link>
+                  <Link
+                    to="/careers"
+                    style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  >
+                    <Typography>Careers</Typography>
+                  </Link>
+                  <Box sx={{ mt: 4 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                        color: "#6B7B58",
+                        mb: 2,
+                        fontSize: 12,
+                        fontFamily: "Horizon,Bold",
+                      }}
+                    >
+                      PARTNERS
+                    </Typography>
+                    <Link
+                      to="/partners"
+                      style={{ textDecoration: "none", color: "#2d2d2d" }}
+                    >
+                      <Typography>Join Us</Typography>
+                    </Link>
+                    <Link
+                      to="/contactus"
+                      style={{ textDecoration: "none", color: "#2d2d2d" }}
+                    >
+                      <Typography>Support</Typography>
+                    </Link>
+                  </Box>
                 </Box>
               </Grid>
 
