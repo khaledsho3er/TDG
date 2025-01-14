@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Button,
   Card,
   CardContent,
+  Box,
   Typography,
   Grid,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ViewInStorePopup = ({ open, onClose }) => {
   const [confirmationMessage, setConfirmationMessage] = useState(false);
@@ -17,8 +19,8 @@ const ViewInStorePopup = ({ open, onClose }) => {
   const productInfo = {
     code: "123456", // Replace with dynamic code generation
     userName: "John Doe",
-    productImage: "https://via.placeholder.com/150", // Replace with product image URL
-    vendorLogo: "https://via.placeholder.com/50", // Replace with vendor logo URL
+    productImage: "/Assets/sofabrown.jpg", // Replace with product image URL
+    vendorLogo: "/Assets/Vendors/Istkbal/istikbal-logo.png", // Replace with vendor logo URL
     vendorName: "Vendor Name",
   };
 
@@ -28,72 +30,145 @@ const ViewInStorePopup = ({ open, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} sx={{ zIndex: 1000 }}>
-      <DialogTitle
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      sx={{
+        zIndex: 1000,
+        "& .MuiPaper-root": {
+          width: "80%",
+          borderRadius: "20px",
+          padding: "20px",
+          position: "relative",
+          overflow: "visible",
+          backgroundColor: "#faf9f6",
+          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
+        },
+      }}
+    >
+      {/* Close Icon */}
+      <IconButton
+        onClick={onClose}
         sx={{
-          backgroundColor: "#6b7b58",
-          color: "white",
-          padding: "16px",
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          color: "#6b7b58",
         }}
       >
-        <Typography variant="h6">Confirm Your Details</Typography>
+        <CloseIcon />
+      </IconButton>
+
+      <DialogTitle
+        sx={{
+          textAlign: "center",
+          fontSize: "24px",
+          fontWeight: "bold",
+          color: "#2d2d2d",
+        }}
+      >
+        {confirmationMessage ? "Submission Successful" : "Confirm Your Details"}
       </DialogTitle>
+
       <DialogContent
         sx={{
-          backgroundColor: "#f5f5f5",
-          backdropFilter: "blur(5px)",
-          padding: "20px",
-          borderRadius: "16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "24px",
         }}
       >
         {confirmationMessage ? (
-          <Typography variant="h6" color="green">
+          <Typography
+            variant="h6"
+            sx={{
+              color: "green",
+              textAlign: "center",
+            }}
+          >
             Your information has been submitted successfully!
           </Typography>
         ) : (
           <Card
-            sx={{ maxWidth: 500, margin: "0 auto", backgroundColor: "#fefefe" }}
+            sx={{
+              width: "100%",
+              maxWidth: "500px",
+              borderRadius: "16px",
+              backgroundColor: "#fff",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            }}
           >
             <CardContent>
-              <Typography variant="h6" color="textPrimary" gutterBottom>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#2d2d2d",
+                  textAlign: "center",
+                  left: "16px",
+                  marginBottom: "16px",
+                }}
+                gutterBottom
+              >
                 Purchase Code: {productInfo.code}
               </Typography>
               <Grid container spacing={2} alignItems="center">
-                <Grid item>
+                <Grid item xs={4}>
                   <img
                     src={productInfo.productImage}
                     alt="Product"
                     style={{
-                      width: "100px",
-                      height: "100px",
+                      width: "100%",
+                      height: "auto",
                       borderRadius: "8px",
                     }}
                   />
                 </Grid>
-                <Grid item>
-                  <Typography variant="body1" color="textSecondary">
+                <Grid item xs={8}>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#2d2d2d", fontWeight: "bold" }}
+                  >
                     Product Name: Example Product
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    Vendor: {productInfo.vendorName}
-                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "start",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography variant="body2" sx={{ color: "#6b7b58" }}>
+                      Vendor: {productInfo.vendorName}
+                    </Typography>
+                    <img
+                      src={productInfo.vendorLogo}
+                      alt="Vendor Logo"
+                      style={{ width: "100px", height: "auto" }}
+                    />
+                  </Box>
                 </Grid>
               </Grid>
             </CardContent>
             <CardContent
               sx={{
-                backgroundColor: "#6b7b58",
                 textAlign: "center",
                 padding: "16px",
-                borderRadius: "8px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                borderRadius: "0 0 16px 16px",
               }}
             >
               <Button
                 onClick={handleSubmit}
                 variant="contained"
-                color="primary"
-                sx={{ color: "white" }}
+                sx={{
+                  backgroundColor: "#2d2d2d",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#6b7b58",
+                  },
+                }}
               >
                 Submit Information
               </Button>
@@ -101,16 +176,6 @@ const ViewInStorePopup = ({ open, onClose }) => {
           </Card>
         )}
       </DialogContent>
-      <DialogActions
-        sx={{
-          backgroundColor: "#6b7b58",
-          padding: "16px",
-        }}
-      >
-        <Button onClick={onClose} sx={{ color: "white" }}>
-          Close
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 };

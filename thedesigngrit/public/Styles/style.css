@@ -943,7 +943,13 @@ body {
 }
 .Caption-AboutUs {
   text-align: justify;
-  padding: 106px 140px 50px 140px;
+  padding: 0px 140px 0px 140px;
+  font-size: 25px;
+  font-family: "Montserrat";
+}
+.Caption-careers {
+  text-align: justify;
+  padding: 100px 140px 100px 140px;
   font-size: 25px;
   font-family: "Montserrat";
 }
@@ -996,7 +1002,6 @@ body {
   font-size: 1rem; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
-  padding: 10px;
 }
 .line-between {
   border: 1px solid #ccc;
@@ -1012,9 +1017,10 @@ body {
   color: #6c7c59;
 }
 .OurTeam-section p {
-  text-align: Justifiy;
   font-family: Montserrat;
   font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
   padding: 10px 100px 10px 100px;
 }
 .meet-our-team {
@@ -1027,7 +1033,13 @@ body {
   justify-content: center; /* Center align team members */
   gap: 20px; /* Space between team members */
 }
-
+.team-member p {
+  font-family: Montserrat;
+  font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
+  padding: 0px 0px 0px 0px;
+}
 .team-member {
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Padding inside each member box */
@@ -3278,11 +3290,38 @@ textarea {
 }
 /*Request Info Form popUp*/
 /* Overlay for background blur */
+.confirmation-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70%; /* Ensure it takes full height */
+  text-align: center;
+
+  padding: 20px;
+}
+.confirmation-message h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+  color: #2d2d2d;
+  padding: 0px 30px 0px 30px;
+}
+.confirmation-message button {
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-family: Montserrat;
+  color: #eae3e4;
+  background-color: #6c7c59;
+}
+.confirmation-message button:hover {
+  background-color: #2d2d2d;
+}
 .requestInfo-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
@@ -3294,9 +3333,10 @@ textarea {
 
 /* Popup container */
 .requestInfo-popup {
-  background: #fff;
+  background: #efeded;
   border-radius: 8px;
-  width: 400px;
+  width: 800px;
+  height: 600px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -3307,11 +3347,15 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  margin: 20px;
 }
 
 .requestInfo-popup-header h2 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 0;
+  font-family: "Horizon";
+  color: #2d2d2d;
 }
 
 .requestInfo-close-button {
@@ -3319,16 +3363,49 @@ textarea {
   border: none;
   font-size: 18px;
   cursor: pointer;
+  color: #2d2d2d;
 }
-
+.requestInfo-brand-user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+.requestInfo-brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  font-family: Montserrat;
+}
+.requestInfo-brand-name p {
+  margin: 0;
+  font-size: 13px;
+  font-family: montserrat;
+  margin-bottom: 8px;
+}
+.requestInfo-brand-name h2 {
+  margin: 0;
+  font-size: 20px;
+  font-family: "Horizon";
+}
 /* Brand info */
 .requestInfo-brand-info {
   text-align: center;
+  border: 1px solid #ddd;
   margin-bottom: 20px;
+  width: 100px;
+  border-radius: 8px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .requestInfo-brand-logo {
-  width: 50px;
+  width: 100%;
   height: auto;
 }
 
@@ -3353,12 +3430,20 @@ textarea {
 .requestInfo-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 
 .requestInfo-form-group {
   display: flex;
   flex-direction: column;
+}
+
+.requestInfo-form-group textarea {
+  padding: 10px;
+  width: 97%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #efeded;
 }
 
 .requestInfo-form-group label {
@@ -3371,17 +3456,27 @@ textarea {
   gap: 10px;
 }
 
-select,
-input,
+.requestInfo-input-group select,
 textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   flex: 1;
-}
+  background-color: #efeded;
 
+  width: 97%;
+}
+.requestInfo-input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+  background-color: #ffffff;
+}
 textarea {
   resize: none;
+  width: 97%;
+  height: 10px;
 }
 
 .requestInfo-submit-button {
@@ -3392,6 +3487,8 @@ textarea {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  width: 30%;
+  margin: auto;
 }
 
 .requestInfo-submit-button:hover {
@@ -5468,7 +5565,7 @@ input:focus {
 }
 
 /* Parent container for positioning */
-.progress-container {
+.progress-container-hero {
   position: absolute;
   bottom: 9px;
   left: 50%;
@@ -5485,7 +5582,6 @@ input:focus {
   ); /* Semi-transparent background to see the container */
   border: 1px solid rgb(0, 0, 0); /* Debugging border to ensure visibility */
 }
-
 /* Custom progress bar styling */
 .custom-progress-bar {
   height: 4px; /* Thin progress bar */

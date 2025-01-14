@@ -136,26 +136,7 @@ function Footer() {
             <Grid container spacing={10} sx={{ pl: { xs: 0, md: 4 } }}>
               {/* Company + Partners Section */}
               <Grid item xs={6} sm={3}>
-                <Typography>COMPANY</Typography>
-                <Link
-                  to="/about"
-                  style={{ textDecoration: "none", color: "#2d2d2d" }}
-                >
-                  <Typography>About Us</Typography>
-                </Link>
-                <Link
-                  to="/contactus"
-                  style={{ textDecoration: "none", color: "#2d2d2d" }}
-                >
-                  <Typography>Contact Us</Typography>
-                </Link>
-                <Link
-                  to="/careers"
-                  style={{ textDecoration: "none", color: "#2d2d2d" }}
-                >
-                  <Typography>Careers</Typography>
-                </Link>
-                <Box sx={{ mt: 4 }}>
+                <Box sx={{ mt: 0 }}>
                   <Typography
                     variant="h6"
                     sx={{
