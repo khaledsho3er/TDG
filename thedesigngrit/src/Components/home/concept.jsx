@@ -42,7 +42,9 @@ const ExploreConcepts = () => {
     <Box className="concept-explore-container">
       {/* Title */}
       <Box className="concept-title-container">
-        <Typography className="concept-title">Explore Our Concepts</Typography>
+        <Typography variant="h4" className="concept-title">
+          Explore Our Concepts
+        </Typography>
       </Box>
 
       {/* Cards */}

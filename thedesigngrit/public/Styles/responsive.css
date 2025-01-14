@@ -106,7 +106,7 @@
 }
 
 /* Medium Laptops (1024px to 1366px) */
-@media (min-width: 1024px) and (max-width: 1366px) {
+@media (min-width: 1024px) and (max-width: 1440px) {
   body {
     font-size: 18px;
   }
@@ -151,6 +151,36 @@
   .footer-container {
     text-align: left;
     padding: 60px;
+  }
+
+  .middle-card {
+    width: 300px;
+    height: 300px;
+  }
+
+  .left-card {
+    width: 235px;
+    height: 235px;
+  }
+
+  .right-card {
+    width: 235px;
+    height: 235px;
+  }
+
+  .concept-card {
+    margin-bottom: 60px;
+  }
+
+  .concept-subtitle h4 {
+    font-size: 20px;
+    margin-top: -80px;
+  }
+
+  .concept-title-container h4 {
+    font-size: 20px;
+    font-family: horrizon;
+    font-weight: bold;
   }
 }
 /* General styles are unchanged from the original */
@@ -228,6 +258,22 @@
   .team-member {
     width: 90%; /* Reduce width for smaller screens */
     margin: 0 auto;
+  }
+  .concept-title-container {
+    margin-top: 50px;
+  }
+
+  .concept-card {
+    width: 150vw;
+    height: 40vh;
+  }
+
+  .left-card {
+    height: 30vh;
+  }
+
+  .right-card {
+    height: 30vh;
   }
 }
 

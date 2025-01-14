@@ -17,14 +17,14 @@ import {
 import Footer from "../Components/Footer";
 // import RelatedProducts from "../Components/relatedProduct";
 import { useCart } from "../Context/cartcontext";
-import OptionPopUp from "../Components/product/optionPopUp";
+// import OptionPopUp from "../Components/product/optionPopUp";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const [setShowDropdown] = useState(false);
+  //const [showPopup, setShowPopup] = useState(false);
   const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
-  const [showFirstPopup, setShowFirstPopup] = useState(false); // State for Request Quote popup
+  const [setShowFirstPopup] = useState(false); // State for Request Quote popup
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,14 +42,14 @@ function ProductPage() {
   const { addToCart } = useCart();
 
   // Handle opening the popup
-  const handlePopupOpen = () => {
-    setShowPopup(true);
-  };
+  // const handlePopupOpen = () => {
+  //   setShowPopup(true);
+  // };
 
   // Handle closing the popup
-  const handlePopupClose = () => {
-    setShowPopup(false);
-  };
+  // const handlePopupClose = () => {
+  //   setShowPopup(false);
+  // };
 
   useEffect(() => {
     // Fetch product data
