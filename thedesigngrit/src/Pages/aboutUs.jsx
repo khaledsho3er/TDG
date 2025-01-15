@@ -23,8 +23,8 @@ function AboutUsPage() {
           flexDirection: "column",
           alignItems: "center",
           gap: "0px",
-          paddingLeft: "80px",
-          paddingRight: "80px",
+          paddingLeft: "20px",
+          paddingRight: "20px",
         }}
       >
         <p className="Caption-AboutUs">

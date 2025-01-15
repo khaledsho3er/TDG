@@ -70,7 +70,7 @@ body {
   background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
   padding: 50px 0px 40px 0px;
   width: 30%; /* Adjust the width of the form */
-  height: 60%;
+  height: 68%;
   border-radius: 10px;
   text-align: center;
   display: flex;
@@ -79,19 +79,22 @@ body {
   justify-content: center; /* Ensures elements are vertically aligned */
   align-items: center; /* Centers child elements horizontally */
 }
+
 .signinLogo {
   position: relative;
   z-index: 2;
 }
 .signinLogo img {
-  width: 200px;
-  height: 100px;
+  width: 180px;
+  height: 80px;
 }
 .form-title-signup {
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
-  padding-top: 100px;
+  font-family: "Horizon";
+  margin-top: 100px;
+  margin-bottom: 0px;
 }
 .form-title-signin {
   font-size: 2rem;
@@ -128,6 +131,10 @@ body {
   text-align: center;
   font-family: Montserrat;
   font-weight: 400;
+}
+.google-btn:hover,
+.facebook-btn:hover {
+  background-color: #e0e0e0;
 }
 .google-icon {
   padding-right: 30px;
@@ -198,7 +205,11 @@ body {
   color: #2d2d2d;
   border: 2px solid #2d2d2d;
 }
-
+.register-policy-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .register-link {
   margin-top: 10px;
   font-size: 0.9rem;
@@ -260,7 +271,7 @@ body {
 }
 
 .register-link a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
 }
 
@@ -981,7 +992,7 @@ body {
 }
 
 .ourMission-Section-typo p {
-  font-size: 1rem; /* Adjust paragraph size */
+  font-size: 20px; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
 }
@@ -999,7 +1010,7 @@ body {
 }
 
 .ourStory-Section-typo p {
-  font-size: 1rem; /* Adjust paragraph size */
+  font-size: 22px; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
 }
@@ -1022,6 +1033,7 @@ body {
   margin-top: 50px;
   text-align: justify;
   padding: 10px 100px 10px 100px;
+  font-size: 25px;
 }
 .meet-our-team {
   text-align: center; /* Center align the section */
@@ -1039,6 +1051,7 @@ body {
   margin-top: 50px;
   text-align: justify;
   padding: 0px 0px 0px 0px;
+  font-size: 20px;
 }
 .team-member {
   border-radius: 10px; /* Rounded corners */
@@ -1064,7 +1077,12 @@ body {
   font-size: 1.5rem; /* Adjust name size */
   margin: 20px 0 5px; /* Spacing for name */
 }
-
+.team-member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 .team-member-title {
   font-size: 1.2rem; /* Adjust title size */
   margin: 5px 0; /* Spacing for title */
@@ -1074,7 +1092,11 @@ body {
   font-size: 1rem; /* Adjust subtitle size */
   margin: 10px 0 10px; /* Spacing for subtitle */
 }
-
+.team-member-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
 .linkedin-icon {
   color: #0077b5; /* LinkedIn blue color */
   font-size: 1.5rem; /* Adjust icon size */
@@ -1083,6 +1105,14 @@ body {
 
 .linkedin-icon:hover {
   color: #005582; /* Darken on hover */
+}
+.instagram-icon {
+  color: #2d2d2d; /* LinkedIn blue color */
+  font-size: 1.5rem; /* Adjust icon size */
+  text-decoration: none; /* Remove underline */
+}
+.instagram-icon:hover {
+  color: #2d2d2d; /* Darken on hover */
 }
 
 /* Sustainability Section */
@@ -4533,7 +4563,7 @@ textarea {
   text-align: center;
 }
 .register-policy a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
   font-weight: bold;
 }
@@ -5592,4 +5622,68 @@ input:focus {
 
 .custom-progress-bar .MuiLinearProgress-bar {
   background-color: #6c6c6c; /* Darker grey for the progress */
+}
+/*Request Info Popup*/
+/* RequestInfoPopup.css */
+
+.request-popup-dialog {
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+.Request-Info-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: #2d2d2d;
+}
+.request-popup-paper {
+  width: 80%;
+  height: 80%;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  background-color: #faf9f6;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.request-popup-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: #2d2d2d;
+  text-align: right;
+}
+
+.request-popup-title h2 {
+  text-align: left;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Horizon";
+  color: #2d2d2d;
+}
+
+.request-popup-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.request-popup-button {
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #6b7b58;
+  color: #fbf7f5;
+  width: 30%;
+  height: 280px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.request-popup-button:hover {
+  background-color: #2d2d2d;
 }

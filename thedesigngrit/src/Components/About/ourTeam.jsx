@@ -1,22 +1,42 @@
 import React from "react";
+import { FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa"; // Import LinkedIn icon from react-icons
 
-const TeamMember = ({ image, name, title, subtitle, linkedinUrl }) => {
+const TeamMember = ({
+  image,
+  name,
+  title,
+  subtitle,
+  linkedinUrl,
+  InstagramUrl,
+}) => {
   return (
     <div className="team-member">
       <div className="team-member-image">
         <img src={image} alt={name} />
       </div>
-      <h3 className="team-member-name">{name}</h3>
+      <div className="team-member-info">
+        <h3 className="team-member-name">{name}</h3>
+        <div className="team-member-icons">
+          <a
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="linkedin-icon"
+          >
+            <FaLinkedin />
+          </a>
+          <a
+            href={InstagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="instagram-icon"
+          >
+            <FaInstagram />
+          </a>
+        </div>
+      </div>
       <p className="team-member-subtitle">{subtitle}</p>
-      <a
-        href={linkedinUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="linkedin-icon"
-      >
-        <FaLinkedin />
-      </a>
     </div>
   );
 };
@@ -35,6 +55,7 @@ const MeetOurTeam = () => {
  mastery on a grand stage worthy of its brilliance.
 "
           linkedinUrl="https://www.linkedin.com/in/johndoe"
+          InstagramUrl="https://www.instagram.com/johndoe"
         />
         <TeamMember
           image="Assets/founder.jpg" // Replace with your image paths
@@ -47,14 +68,8 @@ const MeetOurTeam = () => {
  for precision drive TheDesignGrit’s innovative platform, ensuring every process runs as
  smoothly as the designs it celebrates"
           linkedinUrl="https://www.linkedin.com/in/janesmith"
+          InstagramUrl="https://www.instagram.com/johndoe"
         />
-        {/* <TeamMember
-          image="Assets/founder.jpg" // Replace with your image paths
-          name="Alice Johnson"
-          title="Designer"
-          subtitle="Creative mind behind our designs"
-          linkedinUrl="https://www.linkedin.com/in/alicejohnson"
-        /> */}
       </div>
     </div>
   );

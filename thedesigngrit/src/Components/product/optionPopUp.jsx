@@ -10,13 +10,13 @@ import { IoIosClose } from "react-icons/io";
 import ViewInStorePopup from "./viewInStore"; // Import the ViewInStorePopup
 import RequestQuote from "./RequestInfo"; // Import the RequestQuote component
 
-const RequestInfoPopup = ({ open, onClose, onOptionSelect }) => {
+const RequestInfoPopup = ({ open, onClose }) => {
   const [isViewInStoreOpen, setIsViewInStoreOpen] = useState(false);
-  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false); // New state for RequestQuote visibility
+  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
 
   const handleViewInStoreClick = () => {
     setIsViewInStoreOpen(true);
-    onClose(); // Close the RequestInfoPopup when 'View in Store' is clicked
+    onClose();
   };
 
   const handleCloseViewInStore = () => {
@@ -24,12 +24,12 @@ const RequestInfoPopup = ({ open, onClose, onOptionSelect }) => {
   };
 
   const handleRequestQuoteClick = () => {
-    setIsRequestQuoteOpen(true); // Open RequestQuote component
-    onClose(); // Close the RequestInfoPopup
+    setIsRequestQuoteOpen(true);
+    onClose();
   };
 
   const handleCloseRequestQuote = () => {
-    setIsRequestQuoteOpen(false); // Close the RequestQuote component
+    setIsRequestQuoteOpen(false);
   };
 
   return (
@@ -39,19 +39,9 @@ const RequestInfoPopup = ({ open, onClose, onOptionSelect }) => {
         onClose={onClose}
         maxWidth="lg"
         fullWidth
-        sx={{
-          zIndex: 1000,
-          backdropFilter: "blur(4px)",
-          "& .MuiPaper-root": {
-            width: "80%",
-            height: "80%",
-            borderRadius: "20px",
-            padding: "20px",
-            position: "relative",
-            overflow: "hidden",
-            backgroundColor: "#faf9f6",
-            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
-          },
+        className="request-popup-dialog"
+        classes={{
+          paper: "request-popup-paper",
         }}
       >
         <IconButton
@@ -65,62 +55,22 @@ const RequestInfoPopup = ({ open, onClose, onOptionSelect }) => {
         >
           <IoIosClose size={50} />
         </IconButton>
-        <DialogTitle
-          sx={{
-            textAlign: "center",
-            fontSize: "30px",
-            fontWeight: "bold",
-            color: "#2d2d2d",
-          }}
-        >
-          Choose an Option
+        <DialogTitle className="request-popup-title">
+          <h2> Choose an Option</h2>
         </DialogTitle>
-        <DialogContent
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-            gap: "16px",
-            marginTop: "16px",
-          }}
-        >
-          <Button
-            onClick={handleRequestQuoteClick} // Open RequestQuote and close RequestInfoPopup
-            sx={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              backgroundColor: "#6b7b58",
-              color: "#fbf7f5",
-              width: "30%",
-              height: "280px",
-              borderRadius: "16px",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-              },
-            }}
+        <DialogContent className="request-popup-content">
+          <button
+            onClick={handleRequestQuoteClick}
+            className="request-popup-button"
           >
             Request Quote
-          </Button>
-          <Button
-            onClick={handleViewInStoreClick} // Open ViewInStorePopup and close RequestInfoPopup
-            sx={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              backgroundColor: "#6b7b58",
-              color: "#fbf7f5",
-              width: "30%",
-              height: "280px",
-              borderRadius: "16px",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-              },
-            }}
+          </button>
+          <button
+            onClick={handleViewInStoreClick}
+            className="request-popup-button"
           >
             View in Store
-          </Button>
+          </button>
         </DialogContent>
       </Dialog>
 
