@@ -40,7 +40,6 @@ function PageDescription() {
       `,
     },
   };
-
   useEffect(() => {
     const path = location.pathname;
     setDescription(descriptions[path] || descriptions["/"]);

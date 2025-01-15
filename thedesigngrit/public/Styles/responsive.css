@@ -106,7 +106,7 @@
 }
 
 /* Medium Laptops (1024px to 1366px) */
-@media (min-width: 1024px) and (max-width: 1366px) {
+@media (min-width: 1024px) and (max-width: 1440px) {
   body {
     font-size: 18px;
   }
@@ -151,6 +151,72 @@
   .footer-container {
     text-align: left;
     padding: 60px;
+  }
+
+  .middle-card {
+    width: 300px;
+    height: 300px;
+  }
+
+  .left-card {
+    width: 235px;
+    height: 235px;
+  }
+
+  .right-card {
+    width: 235px;
+    height: 235px;
+  }
+
+  .concept-card {
+    margin-bottom: 60px;
+  }
+
+  .concept-subtitle h4 {
+    font-size: 20px;
+    margin-top: -80px;
+  }
+
+  .concept-title-container h4 {
+    font-size: 20px;
+    font-family: horrizon;
+    font-weight: bold;
+  }
+
+  .signinLogo img {
+    width: 110px;
+    height: 70px;
+    z-index: 5;
+    margin-top: 30px;
+    justify-content: center;
+  }
+
+  .container-login {
+    padding-left: 20px;
+    padding-right: 20px;
+    background-size: cover;
+  }
+
+  .login-form {
+    width: 90%;
+    height: 95%;
+    margin-bottom: 10px;
+  }
+
+  .signup-form-container {
+    height: 100%;
+    width: 40%;
+    margin-bottom: 10px;
+  }
+
+  .form-title-signin {
+    font-size: 24px;
+    font-family: "horizon";
+    font-weight: bold;
+  }
+
+  .google-icon {
+    font-size: 30px;
   }
 }
 /* General styles are unchanged from the original */
@@ -228,6 +294,22 @@
   .team-member {
     width: 90%; /* Reduce width for smaller screens */
     margin: 0 auto;
+  }
+  .concept-title-container {
+    margin-top: 50px;
+  }
+
+  .concept-card {
+    width: 150vw;
+    height: 40vh;
+  }
+
+  .left-card {
+    height: 30vh;
+  }
+
+  .right-card {
+    height: 30vh;
   }
 }
 

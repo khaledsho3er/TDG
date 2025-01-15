@@ -21,9 +21,10 @@ function Footer() {
         paddingBottom: 1,
         marginTop: 2,
         paddingTop: 5,
-        width: "98.8vw", // Set width to full viewport width
+        width: "100%",
+        maxWidth: "100vw",
         boxSizing: "border-box", // Ensure padding is included in width
-        overflowX: "hidden", // Prevent horizontal overflow
+        overflow: "hidden", // Prevent horizontal overflow
       }}
     >
       <Box
@@ -37,7 +38,7 @@ function Footer() {
         <Box
           sx={{
             flex: 1,
-            minWidth: "300px", // Ensure it doesn't shrink too small
+            // minWidth: "300px", // Ensure it doesn't shrink too small
           }}
         >
           {/* Logo and Newsletter Section */}
@@ -133,7 +134,7 @@ function Footer() {
         >
           {/* Footer Links Section */}
           <Grid className="Textcontainer">
-            <Grid container spacing={10} sx={{ pl: { xs: 0, md: 4 } }}>
+            <Grid container spacing={4} sx={{ pl: { xs: 0, md: 4 } }}>
               {/* Company + Partners Section */}
               <Grid item xs={6} sm={3}>
                 <Box sx={{ mt: 0 }}>
@@ -299,7 +300,7 @@ function Footer() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            mt: 15,
+            mt: { xs: 6, md: 10 },
             alignItems: "end",
             borderTop: "1px solid black",
             width: "100%",
@@ -332,7 +333,7 @@ function Footer() {
               © 2024 TheDesignGrit. All rights reserved.
             </Typography>
           </Box>
-          <Box sx={{ alignItems: "center", paddingRight: 15, paddingTop: 4 }}>
+          <Box sx={{ alignItems: "center", pr: { xs: 2, md: 4 }, pt: 4 }}>
             <Typography
               variant="body2"
               sx={{ fontFamily: "Montserrat, sans-serif" }}
@@ -344,19 +345,39 @@ function Footer() {
           <Box sx={{ paddingTop: 3 }}>
             <Box sx={{ display: "flex", gap: 1 }}>
               <Typography>
-                <img src="/Assets\icons\amex.png" alt="Logo" />
+                <img
+                  src="/Assets\icons\amex.png"
+                  alt="Logo"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               </Typography>
               <Typography>
-                <img src="/Assets\icons\mastercard.png" alt="Logo" />
+                <img
+                  src="/Assets\icons\mastercard.png"
+                  alt="Logo"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               </Typography>
               <Typography>
-                <img src="/Assets\icons\meeza.png" alt="Logo" />
+                <img
+                  src="/Assets\icons\meeza.png"
+                  alt="Logo"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               </Typography>
               <Typography>
-                <img src="/Assets\icons\visa.png" alt="Logo" />
+                <img
+                  src="/Assets\icons\visa.png"
+                  alt="Logo"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               </Typography>
               <Typography>
-                <img src="/Assets\icons\mada 1.png" alt="Logo" />
+                <img
+                  src="/Assets\icons\mada 1.png"
+                  alt="Logo"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               </Typography>
             </Box>
             <Box sx={{ display: "flex", paddingTop: 0.5 }}>
