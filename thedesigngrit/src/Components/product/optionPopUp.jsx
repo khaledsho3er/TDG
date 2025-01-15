@@ -1,119 +1,88 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  Box,
   Button,
+  IconButton,
 } from "@mui/material";
+import { IoIosClose } from "react-icons/io";
+import ViewInStorePopup from "./viewInStore"; // Import the ViewInStorePopup
+import RequestQuote from "./RequestInfo"; // Import the RequestQuote component
 
-const RequestInfoPopup = ({ open, onClose, onOptionSelect }) => {
+const RequestInfoPopup = ({ open, onClose }) => {
+  const [isViewInStoreOpen, setIsViewInStoreOpen] = useState(false);
+  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
+
+  const handleViewInStoreClick = () => {
+    setIsViewInStoreOpen(true);
+    onClose();
+  };
+
+  const handleCloseViewInStore = () => {
+    setIsViewInStoreOpen(false);
+  };
+
+  const handleRequestQuoteClick = () => {
+    setIsRequestQuoteOpen(true);
+    onClose();
+  };
+
+  const handleCloseRequestQuote = () => {
+    setIsRequestQuoteOpen(false);
+  };
+
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      sx={{
-        zIndex: 1000,
-        position: "fixed",
-        backdropFilter: "blur(4px)",
-        "& .MuiPaper-root": {
-          borderRadius: "16px",
-          backdropFilter: "blur(5px)",
-          backgroundColor: "#efeded",
-        },
-      }}
-    >
-      <DialogTitle
-        style={{
-          fontWeight: "normal",
-          backgroundColor: "#efeded",
-          color: "#2d2d2d",
-          paddingLeft: "16px",
-          border: "none",
+    <>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="lg"
+        fullWidth
+        className="request-popup-dialog"
+        classes={{
+          paper: "request-popup-paper",
         }}
       >
-        Choose an Option
-      </DialogTitle>
-      <DialogContent
-        style={{
-          fontWeight: "bold",
-          backgroundColor: "#efeded",
-          color: "#2d2d2d",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          gap: "8px",
-        }}
-      >
-        <Box
-          sx={{
-            fontWeight: "bold",
-            backgroundColor: "#efeded",
-            color: "#2d2d2d",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            gap: "8px",
-          }}
-        >
-          <Button
-            onClick={() => onOptionSelect("quote")}
-            fullWidth
-            sx={{
-              backgroundColor: "#6b7b58",
-              color: "#f5f5f5",
-              width: "100%",
-              marginBottom: "8px",
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-                color: "#f5f5f5",
-              },
-            }}
-          >
-            Request Quote
-          </Button>
-          <Button
-            onClick={() => onOptionSelect("viewInStore")}
-            fullWidth
-            sx={{
-              backgroundColor: "#6b7b58",
-              color: "#f5f5f5",
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-                color: "#f5f5f5",
-              },
-            }}
-          >
-            View <br />
-            in Store
-          </Button>
-        </Box>
-      </DialogContent>
-      <DialogActions
-        style={{
-          fontWeight: "bold",
-          backgroundColor: "#efeded",
-        }}
-      >
-        <Button
+        <IconButton
           onClick={onClose}
           sx={{
+            position: "absolute",
+            top: "16px",
+            right: "16px",
             color: "#2d2d2d",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              border: "none",
-              color: "#f5f5f5",
-            },
           }}
         >
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <IoIosClose size={50} />
+        </IconButton>
+        <DialogTitle className="request-popup-title">
+          <h2> Choose an Option</h2>
+        </DialogTitle>
+        <DialogContent className="request-popup-content">
+          <button
+            onClick={handleRequestQuoteClick}
+            className="request-popup-button"
+          >
+            Request Quote
+          </button>
+          <button
+            onClick={handleViewInStoreClick}
+            className="request-popup-button"
+          >
+            View in Store
+          </button>
+        </DialogContent>
+      </Dialog>
+
+      {/* ViewInStorePopup */}
+      <ViewInStorePopup
+        open={isViewInStoreOpen}
+        onClose={handleCloseViewInStore}
+      />
+
+      {/* RequestQuote Popup */}
+      {isRequestQuoteOpen && <RequestQuote onClose={handleCloseRequestQuote} />}
+    </>
   );
 };
 

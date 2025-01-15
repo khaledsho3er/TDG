@@ -70,7 +70,7 @@ body {
   background-color: rgba(108, 124, 89, 0.8); /* Semi-transparent sage green */
   padding: 50px 0px 40px 0px;
   width: 30%; /* Adjust the width of the form */
-  height: 60%;
+  height: 68%;
   border-radius: 10px;
   text-align: center;
   display: flex;
@@ -79,19 +79,22 @@ body {
   justify-content: center; /* Ensures elements are vertically aligned */
   align-items: center; /* Centers child elements horizontally */
 }
+
 .signinLogo {
   position: relative;
   z-index: 2;
 }
 .signinLogo img {
-  width: 200px;
-  height: 100px;
+  width: 180px;
+  height: 80px;
 }
 .form-title-signup {
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
-  padding-top: 100px;
+  font-family: "Horizon";
+  margin-top: 100px;
+  margin-bottom: 0px;
 }
 .form-title-signin {
   font-size: 2rem;
@@ -128,6 +131,10 @@ body {
   text-align: center;
   font-family: Montserrat;
   font-weight: 400;
+}
+.google-btn:hover,
+.facebook-btn:hover {
+  background-color: #e0e0e0;
 }
 .google-icon {
   padding-right: 30px;
@@ -198,7 +205,11 @@ body {
   color: #2d2d2d;
   border: 2px solid #2d2d2d;
 }
-
+.register-policy-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .register-link {
   margin-top: 10px;
   font-size: 0.9rem;
@@ -260,7 +271,7 @@ body {
 }
 
 .register-link a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
 }
 
@@ -943,7 +954,13 @@ body {
 }
 .Caption-AboutUs {
   text-align: justify;
-  padding: 106px 140px 50px 140px;
+  padding: 0px 140px 0px 140px;
+  font-size: 25px;
+  font-family: "Montserrat";
+}
+.Caption-careers {
+  text-align: justify;
+  padding: 100px 140px 100px 140px;
   font-size: 25px;
   font-family: "Montserrat";
 }
@@ -975,7 +992,7 @@ body {
 }
 
 .ourMission-Section-typo p {
-  font-size: 1rem; /* Adjust paragraph size */
+  font-size: 20px; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
 }
@@ -993,10 +1010,9 @@ body {
 }
 
 .ourStory-Section-typo p {
-  font-size: 1rem; /* Adjust paragraph size */
+  font-size: 22px; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
-  padding: 10px;
 }
 .line-between {
   border: 1px solid #ccc;
@@ -1012,10 +1028,12 @@ body {
   color: #6c7c59;
 }
 .OurTeam-section p {
-  text-align: Justifiy;
   font-family: Montserrat;
   font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
   padding: 10px 100px 10px 100px;
+  font-size: 25px;
 }
 .meet-our-team {
   text-align: center; /* Center align the section */
@@ -1027,7 +1045,14 @@ body {
   justify-content: center; /* Center align team members */
   gap: 20px; /* Space between team members */
 }
-
+.team-member p {
+  font-family: Montserrat;
+  font-weight: 200;
+  margin-top: 50px;
+  text-align: justify;
+  padding: 0px 0px 0px 0px;
+  font-size: 20px;
+}
 .team-member {
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Padding inside each member box */
@@ -1052,7 +1077,12 @@ body {
   font-size: 1.5rem; /* Adjust name size */
   margin: 20px 0 5px; /* Spacing for name */
 }
-
+.team-member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
 .team-member-title {
   font-size: 1.2rem; /* Adjust title size */
   margin: 5px 0; /* Spacing for title */
@@ -1062,7 +1092,11 @@ body {
   font-size: 1rem; /* Adjust subtitle size */
   margin: 10px 0 10px; /* Spacing for subtitle */
 }
-
+.team-member-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
 .linkedin-icon {
   color: #0077b5; /* LinkedIn blue color */
   font-size: 1.5rem; /* Adjust icon size */
@@ -1071,6 +1105,14 @@ body {
 
 .linkedin-icon:hover {
   color: #005582; /* Darken on hover */
+}
+.instagram-icon {
+  color: #2d2d2d; /* LinkedIn blue color */
+  font-size: 1.5rem; /* Adjust icon size */
+  text-decoration: none; /* Remove underline */
+}
+.instagram-icon:hover {
+  color: #2d2d2d; /* Darken on hover */
 }
 
 /* Sustainability Section */
@@ -3278,11 +3320,38 @@ textarea {
 }
 /*Request Info Form popUp*/
 /* Overlay for background blur */
+.confirmation-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70%; /* Ensure it takes full height */
+  text-align: center;
+
+  padding: 20px;
+}
+.confirmation-message h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+  color: #2d2d2d;
+  padding: 0px 30px 0px 30px;
+}
+.confirmation-message button {
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-family: Montserrat;
+  color: #eae3e4;
+  background-color: #6c7c59;
+}
+.confirmation-message button:hover {
+  background-color: #2d2d2d;
+}
 .requestInfo-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
@@ -3294,9 +3363,10 @@ textarea {
 
 /* Popup container */
 .requestInfo-popup {
-  background: #fff;
+  background: #efeded;
   border-radius: 8px;
-  width: 400px;
+  width: 800px;
+  height: 600px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -3307,11 +3377,15 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  margin: 20px;
 }
 
 .requestInfo-popup-header h2 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 0;
+  font-family: "Horizon";
+  color: #2d2d2d;
 }
 
 .requestInfo-close-button {
@@ -3319,16 +3393,49 @@ textarea {
   border: none;
   font-size: 18px;
   cursor: pointer;
+  color: #2d2d2d;
 }
-
+.requestInfo-brand-user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+.requestInfo-brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  font-family: Montserrat;
+}
+.requestInfo-brand-name p {
+  margin: 0;
+  font-size: 13px;
+  font-family: montserrat;
+  margin-bottom: 8px;
+}
+.requestInfo-brand-name h2 {
+  margin: 0;
+  font-size: 20px;
+  font-family: "Horizon";
+}
 /* Brand info */
 .requestInfo-brand-info {
   text-align: center;
+  border: 1px solid #ddd;
   margin-bottom: 20px;
+  width: 100px;
+  border-radius: 8px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .requestInfo-brand-logo {
-  width: 50px;
+  width: 100%;
   height: auto;
 }
 
@@ -3353,12 +3460,20 @@ textarea {
 .requestInfo-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 
 .requestInfo-form-group {
   display: flex;
   flex-direction: column;
+}
+
+.requestInfo-form-group textarea {
+  padding: 10px;
+  width: 97%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #efeded;
 }
 
 .requestInfo-form-group label {
@@ -3371,17 +3486,27 @@ textarea {
   gap: 10px;
 }
 
-select,
-input,
+.requestInfo-input-group select,
 textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   flex: 1;
-}
+  background-color: #efeded;
 
+  width: 97%;
+}
+.requestInfo-input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+  background-color: #ffffff;
+}
 textarea {
   resize: none;
+  width: 97%;
+  height: 10px;
 }
 
 .requestInfo-submit-button {
@@ -3392,6 +3517,8 @@ textarea {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  width: 30%;
+  margin: auto;
 }
 
 .requestInfo-submit-button:hover {
@@ -4436,7 +4563,7 @@ textarea {
   text-align: center;
 }
 .register-policy a {
-  color: #6c7c59;
+  color: #efebe8;
   text-decoration: none;
   font-weight: bold;
 }
@@ -5468,7 +5595,7 @@ input:focus {
 }
 
 /* Parent container for positioning */
-.progress-container {
+.progress-container-hero {
   position: absolute;
   bottom: 9px;
   left: 50%;
@@ -5485,7 +5612,6 @@ input:focus {
   ); /* Semi-transparent background to see the container */
   border: 1px solid rgb(0, 0, 0); /* Debugging border to ensure visibility */
 }
-
 /* Custom progress bar styling */
 .custom-progress-bar {
   height: 4px; /* Thin progress bar */
@@ -5496,4 +5622,68 @@ input:focus {
 
 .custom-progress-bar .MuiLinearProgress-bar {
   background-color: #6c6c6c; /* Darker grey for the progress */
+}
+/*Request Info Popup*/
+/* RequestInfoPopup.css */
+
+.request-popup-dialog {
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+.Request-Info-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: #2d2d2d;
+}
+.request-popup-paper {
+  width: 80%;
+  height: 80%;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  background-color: #faf9f6;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.request-popup-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: #2d2d2d;
+  text-align: right;
+}
+
+.request-popup-title h2 {
+  text-align: left;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Horizon";
+  color: #2d2d2d;
+}
+
+.request-popup-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.request-popup-button {
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #6b7b58;
+  color: #fbf7f5;
+  width: 30%;
+  height: 280px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.request-popup-button:hover {
+  background-color: #2d2d2d;
 }

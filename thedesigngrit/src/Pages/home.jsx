@@ -89,7 +89,7 @@ function Home() {
             muted
             playsInline
           ></video>
-          <div className="progress-container">
+          <div className="progress-container-hero">
             <LinearProgress
               variant="determinate"
               value={progress}
