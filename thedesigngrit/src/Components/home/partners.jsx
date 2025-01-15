@@ -20,7 +20,7 @@ const PartnersSection = () => {
     {
       name: "Bloom Paris",
       logo: "Assets/PartnersLogos/BloonLogo.png",
-      link: "https://bloom-paris.com",
+      link: "https://bloon-paris.com",
     },
     {
       name: "Istikbal",
@@ -37,13 +37,16 @@ const PartnersSection = () => {
   return (
     <section className="partners-section">
       <div className="partners-content">
-        <h1 className="partners-heading">EXPERIENCE FURNITURE WITH PURPOSE.</h1>
+        <h1 className="partners-heading" style={{ textAlign: "left" }}>
+          All Brands
+        </h1>
 
         <p className="partners-description">
-          We partner with dedicated designers and brands who are as passionate
-          about quality and sustainability as we are. Together, we're
-          reimagining furniture with eco-friendly materials and responsible
-          craftsmanship to bring style and sustainability into every space."
+          Explore the heart of TheDesignGrit—our brands. They are the foundation
+          of our mission, each bringing unique artistry and unmatched quality to
+          the platform.By showcasing the secreators, we’re building a collective
+          that empowers local talent and delivers authentic Egyptian crafts
+          manshipto your home.
         </p>
 
         <button className="partners-button">Shop all</button>

@@ -3,9 +3,14 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import UpdateSentPopup from "../successMsgs/successUpdate";
 import { useNavigate } from "react-router-dom";
+import ConfirmationDialog from "../confirmationMsg";
+
 
 function EditProfile() {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+   const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogAction, setDialogAction] = useState(""); // To track whether "Save" or "Cancel" is clicked
+
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
@@ -47,6 +52,8 @@ function EditProfile() {
       );
       alert("Profile updated successfully!");
       setIsPopupVisible(true); // Show popup on successful registration
+       setDialogAction("save");
+    setDialogOpen(true); // Open the confirmation dialog
     } catch (error) {
       console.error("Error updating user data:", error.response || error);
       alert("Failed to update user data.");
@@ -55,6 +62,31 @@ function EditProfile() {
   const closePopup = () => {
     setIsPopupVisible(false); // Close the popup
     navigate("/"); // Navigate to login page after closing popup
+
+    {/* const handleSaveClick = () => {
+    setDialogAction("save");
+    setDialogOpen(true); // Open the confirmation dialog
+  };*/}
+
+  const handleCancelClick = () => {
+    setDialogAction("cancel");
+    setDialogOpen(true); // Open the confirmation dialog
+  };
+
+  const handleConfirm = () => {
+    if (dialogAction === "save") {
+      // Handle save logic
+      console.log("Changes saved!");
+    } else if (dialogAction === "cancel") {
+      // Handle cancel logic
+      console.log("Changes discarded!");
+    }
+    setDialogOpen(false); // Close the dialog
+  };
+
+  const handleDialogCancel = () => {
+    setDialogOpen(false); // Close the dialog without taking action
+
   };
   return (
     <div>
@@ -104,7 +136,7 @@ function EditProfile() {
           />
         </div>
 
-        {/* Address Field */}
+        {/* Address Field
         <div className="profile-form-field">
           <label>Address</label>
           <input
@@ -115,7 +147,7 @@ function EditProfile() {
             className="popup-form-full-width"
             fullWidth
           />
-        </div>
+        </div> */}
 
         {/* Phone Number Field */}
         <div className="profile-form-field">
@@ -133,12 +165,35 @@ function EditProfile() {
 
       {/* Save and Cancel Buttons */}
       <div className="popup-buttons">
-        <button onClick={handleUpdate} className="profile-popUpForm-btn-save">
+      
+       {/*<UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />*/}
+
+        <button
+          className="profile-popUpForm-btn-save"
+          onClick={handleUpdate}
+        >
           Save
         </button>
-        <button className="profile-popUpForm-btn-cancel">Cancel</button>
+        <button
+          className="profile-popUpForm-btn-cancel"
+          onClick={handleCancelClick}
+        >
+          Cancel
+        </button>
       </div>
-      <UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={dialogOpen}
+        title={dialogAction === "save" ? "Confirm Changes" : "Confirm Cancel"}
+        content={
+          dialogAction === "save"
+            ? "Are you sure you want to save the changes?"
+            : "Are you sure you want to cancel and discard the changes?"
+        }
+        onConfirm={handleConfirm}
+        onCancel={handleDialogCancel}
+      />
+
     </div>
   );
 }

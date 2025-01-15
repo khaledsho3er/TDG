@@ -1,227 +1,286 @@
 import React, { useState, useEffect } from "react";
-import {Box, Button}from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { FaFile } from "react-icons/fa";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import Header from "../Components/navBar";
-import { AiOutlineFileSearch } from "react-icons/ai";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
-import { fetchProductData  , fetchProductReview} from "../utils/fetchProductData";
+import RequestInfoPopup from "../Components/product/optionPopUp";
+import {
+  fetchProductData,
+  fetchProductReview,
+} from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
-import RelatedProducts from "../Components/relatedProduct";
+import { useCart } from "../Context/cartcontext";
 
 function ProductPage() {
-  const [products, setProducts] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
+  const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
 
-  useEffect(() => {
-    const getProductData = async () => {
-      const data = await fetchProductData();
-      setProducts(data);
-    };
-    getProductData();
-  }, []);
-  useEffect(() => {
-    const getReviewData = async () => {
-      const data = await fetchProductReview();
-      setReviews(data);
-    };
-    getReviewData();
-  }, []);
+  const handleCloseRequestInfo = () => {
+    setIsRequestInfoOpen(false);
+  };
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const [product, setProduct] = useState(null);
+
+  const [reviews, setReviews] = useState([]);
+  const { id } = useParams();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [expandedSections, setExpandedSections] = React.useState({
-    0: true, 
-    1: true,
-  });
+  const [expandedSections, setExpandedSections] = useState({});
+  const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
 
+  useEffect(() => {
+    // Fetch product data
+    const getProductData = async () => {
+      const data = await fetchProductData(id);
+      if (data) {
+        setProduct(data);
+      } else {
+        console.error("Product not found");
+      }
+    };
 
+    // Fetch product reviews
+    const getProductReviews = async () => {
+      const reviewData = await fetchProductReview(id);
+      setReviews(reviewData);
+    };
+
+    getProductData();
+    getProductReviews();
+  }, [id]);
+
+  if (!product) return <div>Product not found</div>;
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+    setIsTransitioning(true);
+    setTimeout(() => setIsModalOpen(true), 300);
+  };
+
+  const handleCloseModal = () => {
+    setIsTransitioning(false);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedImageIndex(null);
+    }, 300);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex(
+      (prev) =>
+        (prev - 1 + product.thumbnailUrls.length) % product.thumbnailUrls.length
+    );
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % product.thumbnailUrls.length);
+  };
+
+  const handleToggleSection = (index, type = "general") => {
+    if (type === "general") {
+      setExpandedSections((prev) => ({
+        ...prev,
+        [index]: !prev[index],
+      }));
+    } else {
+      setExpandedMaterialSections((prev) => ({
+        ...prev,
+        [index]: !prev[index],
+      }));
+    }
+  };
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-  };
-
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
       ...prev,
       [index]: !prev[index],
     }));
   };
-  const [expandedSectionsMaterial, setExpandedSectionsMaterial] = useState({});
-
-  const handleToggle = (index) => {
-    setExpandedSectionsMaterial((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+  const handleAddToCart = (product) => {
+    console.log(product); // Debugging the product object
+    const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
+    addToCart({
+      id: product.id,
+      name: product.name,
+      unitPrice: parsedPrice,
+      quantity: 1,
+      image: product.image,
+      brand: product.brand,
+      color: product.colors[0]?.name || "N/A",
+      size: product.sizes[0] || "N/A",
+      code: "N/A",
+    });
+    navigate("/mycart");
   };
 
-  const sectionsMaterial = [
-    "Delivery & Returns",
-    "Care Instructions",
-    "Composition & Details",
-    "Recyclability",
-  ];
-
-  const navigate = useNavigate();
-
-  const handleAddToCartClick = () => {
-    navigate("/mycart"); // Navigate to the "MyCart" page
-  };
   return (
     <div className="product-page">
       <Header />
-      {/* Main Content */}
-      {products.map((product) => (
-        <div key={product.id} className="product-container">
-          {/* Product Overview Section */}
-          <div className="grid-container">
-            {/* Product Image and Thumbnails */}
-            <div className="product-image-container">
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="product-main-image"
-              />
-              <div className="thumbnail-container">
-                {product.thumbnailUrls.map((thumbnail, index) => (
+
+      <div className="product-container">
+        <div className="grid-container">
+          <div className="product-image-container">
+            <img
+              src={`/${product.imageUrl}`}
+              alt={product.name}
+              className="product-main-image"
+              onClick={() => handleImageClick(0)} // Main image click opens modal
+            />
+            <div className="thumbnail-container">
+              {product.thumbnailUrls?.length ? (
+                product.thumbnailUrls.map((thumbnail, index) => (
                   <img
                     key={index}
-                    src={thumbnail}
+                    src={`/${thumbnail}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
+                    onClick={() => handleImageClick(index)}
                   />
-                ))}
-              </div>
-            </div>
-
-            {/* Product Details */}
-            <div className="product-details">
-              <h1 className="product-title">{product.name}</h1>
-              <p className="product-brand">{product.brand}</p>
-              <p className="product-rating">
-                {"★".repeat(product.rating)} ({product.reviewsCount} reviews)
-              </p>
-              <p className="product-price">{product.price}</p>
-              <hr />
-              <div className="color-selector">
-                <span className="color-selector-label">Color:</span>
-                <br />
-                <br />
-                <div className="color-options">
-                  {product.colors.map((color, index) => (
-                    <div
-                      key={index}
-                      className={`color-circle ${
-                        selectedColor === color.name ? "selected" : ""
-                      }`}
-                      style={{ backgroundColor: color.hex }}
-                      onClick={() => handleColorSelect(color.name)}
-                      title={color.name}
-                    ></div>
-                  ))}
-                </div>
-              </div>
-              {/* Display Selected Color */}
-              {selectedColor && (
-                <p className="selected-color">Selected Color: {selectedColor}</p>
+                ))
+              ) : (
+                <p>No thumbnails available</p>
               )}
-              <br />
-              <hr />
-              {/* Size Selector */}
-              <span className="size-selector-label">Size:</span>
-              <div className="size-selector">
-                <br />
-                <br />
-                <div className="size-options">
-                  {product.sizes.map((size, index) => (
-                    <button
-                      key={index}
-                      className={`size-button ${
-                        selectedSize === size ? "selected" : ""
-                      }`}
-                      onClick={() => handleSizeSelect(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-                <button className="bimcad-button">
-                  BIM/CAD <AiOutlineFileSearch />
-                </button>
-              </div>
-              {/* Display Selected Size */}
-              {selectedSize && (
-                <p className="selected-size">Selected Size: {selectedSize}</p>
-              )}
-              <div className="action-buttons">
-                <button
-                  className="action-button button-primary"
-                  onClick={handleAddToCartClick}
-                >
-                  Add to Cart
-                </button>
-                <button className="action-button button-secondary">
-                  Request Info
-                </button>
-              </div>
             </div>
           </div>
 
-          <div className="page-container">
-            {/* Collapsible Info Section */}
-            <div className="collapsible-container">
-              {["Overview", "Dimensions", "BIM/CAD", "Videos", "Tags"].map(
-                (section, index) => (
+          <div className="product-details">
+            <h1 className="product-title">{product.name}</h1>
+            <p className="product-brand">{product.brand}</p>
+            <p className="product-rating">
+              {"★".repeat(product.rating)} ({product.reviewsCount} reviews)
+            </p>
+            <p className="product-price">{product.price}</p>
+            <hr />
+            <div className="color-selector">
+              <span className="color-selector-label">Color:</span>
+              <div className="color-options">
+                {product.colors.map((color, index) => (
                   <div
                     key={index}
-                    className={`collapsible-section ${
-                      expandedSections[index] ? "open" : ""
+                    className="color-circle"
+                    style={{ backgroundColor: color.hex }}
+                    title={color.name}
+                    onClick={() => handleColorSelect(color.name)}
+                  ></div>
+                ))}
+              </div>
+            </div>
+            {selectedColor && <p>Selected Color: {selectedColor}</p>}
+            <hr />
+            <div className="size-selector">
+              <span className="size-selector-label">Size:</span>
+              <div className="size-options">
+                {product.sizes.map((size, index) => (
+                  <button
+                    key={index}
+                    className={`size-button ${
+                      selectedSize === size ? "selected" : ""
                     }`}
-                    onClick={() => handleSectionToggle(index)}
+                    onClick={() => setSelectedSize(size)}
                   >
-                    <div className="collapsible-header">
-                      {section}
-                      <KeyboardArrowDownIcon
-                        className={`collapsible-icon ${
-                          expandedSections[index] ? "rotated" : ""
-                        }`}
-                      />
-                    </div>
-                    <div className="collapsible-content">
-                      {section === "Overview" && (
-                         <div>
-                         <h5 style={{ fontSize: "25px" }}>
-                           Manufacturer : Istikbal
-                         </h5>
-                         <div className="product-details">
-                           <p style={{ fontSize: "20px" }}>
-                             <span className="label">Collection:</span> {product.collection}
-                           </p>
-                           <p style={{ fontSize: "20px" }}>
-                             <span className="label">Type:</span>{product.type}
-                           </p>
-                           <p style={{ fontSize: "20px" }}>
-                             <span className="label">Manufacturer Year:</span>{" "}
-                             {product.manufacturerYear}
-                           </p>
-                         </div>
- 
-                         <p style={{ fontSize: "20px" }}>
-                          {product.description}
-                         </p>
-                       </div>
-                      )}
-                      {section === "Dimensions" && (
-                        <img
-                          src="Assets/productDemi.png"
-                          alt="Product Dimensions"
-                        />
-                      )}
-                      {section === "BIM/CAD" && (
-                        <Button
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {selectedSize && <p>Selected Size: {selectedSize}</p>}
+            <div className="action-buttons">
+              <button
+                className="action-button button-primary"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add to Cart
+              </button>
+              <button
+                className="action-button button-secondary"
+                onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup
+              >
+                Request Info
+              </button>
+            </div>
+            {/* Request Info Popup */}
+            {isRequestInfoOpen && (
+              <RequestInfoPopup
+                open={showRequestInfoPopup} // Pass showRequestInfoPopup as open prop
+                onClose={() => setShowRequestInfoPopup(false)} // Handle close callback
+                onOptionSelect={handleCloseRequestInfo}
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="page-container">
+          {/* Collapsible Info Section */}
+          <div className="collapsible-container">
+            {["Overview", "Dimensions", "BIM/CAD", "Videos", "Tags"].map(
+              (section, index) => (
+                <div
+                  key={index}
+                  className={`collapsible-section ${
+                    expandedSections[index] ? "open" : ""
+                  }`}
+                  onClick={() => handleSectionToggle(index)}
+                >
+                  <div className="collapsible-header">
+                    {section}
+                    <KeyboardArrowDownIcon
+                      className={`collapsible-icon ${
+                        expandedSections[index] ? "rotated" : ""
+                      }`}
+                    />
+                  </div>
+
+                  {/* Content for each section */}
+                  <div className="collapsible-content">
+                    {section === "Overview" && (
+                      <div>
+                        <h5 style={{ fontSize: "25px" }}>
+                          Manufacturer : Istikbal
+                        </h5>
+                        <div className="product-details">
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Collection:</span> Duefets
+                          </p>
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Type:</span> 2 Seater Fabric
+                            Sofa
+                          </p>
+                          <p style={{ fontSize: "20px" }}>
+                            <span className="label">Manufacturer Year:</span>{" "}
+                            2024
+                          </p>
+                        </div>
+
+                        <p style={{ fontSize: "20px" }}>
+                          Characterised by distinct stylistic references to the
+                          1970s, Dudet transfers to a two-seat settee the
+                          versatile, sophisticated design of the chair in the
+                          same family designed by Patricia Urquiola. Available
+                          in one size only, the settee is defined by three
+                          upholstered elements: a roomy seat cushion and two
+                          sinuous tubular supports that, in one continuous line,
+                          create legs, armrests and backrest.
+                        </p>
+                      </div>
+                    )}
+                    {section === "Dimensions" && (
+                      <div>
+                        <img src="/Assets/productDemi.png" alt="Dimensions" />
+                      </div>
+                    )}
+                    {section === "BIM/CAD" && (
+                      <Button
                         sx={{
                           backgroundColor: "transparent",
                           color: "#2d2d2d",
@@ -242,7 +301,7 @@ function ProductPage() {
                       >
                         {/* Left-aligned image */}
                         <img
-                          src="Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
+                          src="/Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
                           alt="AutoCAD Logo"
                           style={{
                             width: "24px",
@@ -257,110 +316,115 @@ function ProductPage() {
                         </span>
                         {/* Right-aligned file icon */}
                       </Button>
-                      )}
-                      {section === "Videos" && (
+                    )}
+                    {section === "Videos" && (
+                      <div>
                         <iframe
                           width="560"
                           height="315"
                           src="https://www.youtube.com/embed/dQw4w9WgXcQ"
                           title="Product Video"
                           frameBorder="0"
+                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         ></iframe>
-                      )}
-                      {section === "Tags" && (
-                        <div className="span-container">
-                          {product.tags &&
-                            product.tags.map((tag, index) => (
-                              <span key={index}>{tag}</span>
-                            ))}
-                        </div>
-                      )}
+                      </div>
+                    )}
+                    {section === "Tags" && (
+                      <div className="span-container">
+                        <span>Sofa</span>
+                        <span>Istkbal</span>
+                        <span>Fabric</span>
+                        <span>2 Seater Sofa</span>
+                        <span>2024</span>
+                        <span>Decor</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+          <div className="right-side-content">
+            <div className="Products-Materials">
+              <h4>NATURAL AND RECYCLED MATERIALS</h4>
+              <ul>
+                <li>R-LENO - Recycled Wool</li>
+                <span>Soft, comfortable, and lightweight</span>
+                <li>Designed to last a long time</li>
+                <span>Resistant materials that are easily washable</span>
+                <li>Waterproof to accompany you even in light rain </li>
+                <span>Flexible, lightweight, and cushioned</span>
+                <li>Inner Sole - Ortholite®</li>
+                <span>Removable and ergonomic</span>
+              </ul>
+            </div>
+
+            <div className="material-collapsible-container">
+              {["Delivery & Returns", "Care Instructions"].map(
+                (section, index) => (
+                  <div key={index} className="material-collapsible-section">
+                    <div
+                      className="material-collapsible-header"
+                      onClick={() => handleToggleSection(index, "material")}
+                    >
+                      {section}
+                      <span className="material-collapsible-icon">
+                        {expandedMaterialSections[index] ? "-" : "+"}
+                      </span>
                     </div>
+                    {expandedMaterialSections[index] && (
+                      <div className="material-collapsible-content">
+                        Content for {section}
+                      </div>
+                    )}
                   </div>
                 )
               )}
             </div>
-
-            {/* Right-Side Content */}
-            <div className="right-side-content">
-              <div className="Products-Materials">
-                <h4>NATURAL AND RECYCLED MATERIALS</h4>
-                <ul>
-                  <li>R-LENO - Recycled Wool</li>
-                  <span>Soft, comfortable, and lightweight</span>
-                  <li>Designed to last a long time</li>
-                  <span>Resistant materials that are easily washable</span>
-                  <li>Waterproof to accompany you even in light rain</li>
-                  <span>Flexible, lightweight, and cushioned</span>
-                  <li>Inner Sole - Ortholite®</li>
-                  <span>Removable and ergonomic</span>
-                </ul>
-              </div>
-              <div className="material-collapsible-container">
-                <h1 className="material-collapsible-title">LOCALLY MADE</h1>
-                <p className="material-collapsible-description">
-                  France: Recycled wool, Portugal: External sole, laces,
-                  packaging, Spain: Inner sole, Handcrafted in Egypt.
-                </p>
-
-                <div className="material-collapsible-box">
-                  {sectionsMaterial.map(
-                    (section, index) => (
-                      <div
-                        key={index}
-                        className="material-collapsible-section"
-                      >
-                        <div
-                          className="material-collapsible-header"
-                          onClick={() => handleToggle(index)}
-                        >
-                          <span>{section}</span>
-                          <span className="material-collapsible-icon">
-                            {expandedSectionsMaterial[index] ? "-" : "+"}
-                          </span>
-                        </div>
-                        {expandedSectionsMaterial[index] && (
-                          <div className="material-collapsible-content">
-                            Content for {section} goes here...
-                          </div>
-                        )}
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      ))}
 
-        <hr style={{ marginTop: "20px" ,width: "90%", marginBottom:"30px"}}/>
+        {(isModalOpen || isTransitioning) && (
+          <div className={`modal ${isTransitioning ? "opening" : "closing"}`}>
+            <div className="modal-content">
+              <button className="modal-close" onClick={handleCloseModal}>
+                <IoMdClose size={30} />
+              </button>
+              <button className="modal-prev" onClick={handlePrevImage}>
+                <IoIosArrowBack size={30} />
+              </button>
+              <img
+                src={`/${product.thumbnailUrls[selectedImageIndex]}`}
+                alt={`${selectedImageIndex + 1}`}
+                className="modal-image"
+              />
+              <button className="modal-next" onClick={handleNextImage}>
+                <IoIosArrowForward size={30} />
+              </button>
+            </div>
+          </div>
+        )}
 
-         {/* Reviews Section */}
         <div className="reviews-section">
           <h2>Reviews</h2>
-          <Box className="review-Summary">
-            <ReviewBox/>
+          <Box className="review-summary">
+            <ReviewBox />
           </Box>
           {reviews.map((review, index) => (
-        <div key={index} className="review-card">
-          <Box className="review-subtitle">
-            <h3 className="review-title">{review.reviewerName}</h3>
-            <p className="review-date">{review.reviewDate}</p>
-          </Box>
-          <p className="review-rating">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</p>
-          <p className="review-subtext">{review.reviewTitle}</p>
-          <p className="review-text">{review.reviewText}</p>
+            <div key={index} className="review-card">
+              <Box className="review-subtitle">
+                <h3>{review.reviewerName}</h3>
+                <p>{review.reviewDate}</p>
+              </Box>
+              <p>{"★".repeat(review.rating)}</p>
+              <p>{review.reviewText}</p>
+            </div>
+          ))}
         </div>
-      ))}
-        </div> 
-
-        <hr style={{ marginTop: "20px" ,width: "90%", marginBottom:"30px"}}/>
-        <RelatedProducts/>
-      <Footer/>
       </div>
-    
+      <Footer />
+    </div>
   );
 }
 

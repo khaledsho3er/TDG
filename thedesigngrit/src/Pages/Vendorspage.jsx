@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Header from "../Components/navBar";
 import PageDescription from "../Components/Topheader";
 import FilterVSection from "../Components/VendorsPage/Filters";

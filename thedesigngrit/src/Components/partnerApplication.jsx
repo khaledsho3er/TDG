@@ -7,6 +7,8 @@ const PartnerApplicationForm = () => {
     CompanyName: "",
     email: "",
     phone: "",
+    taxNumber: "",
+    commercialRegisterNumber: "",
     RequestorName: "",
     country: "",
     city: "",
@@ -92,6 +94,26 @@ const PartnerApplicationForm = () => {
               onChange={handleInputChange}
             />
           </div>
+          <div className="job-form-field">
+            <label>Tax Number</label>
+            <input
+              type="tel"
+              name="taxNumber"
+              placeholder="XXX-XXX-XXX"
+              value={formData.taxNumber}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="job-form-field">
+            <label>Commercial Register Number</label>
+            <input
+              type="tel"
+              name="commercialRegisterNumber"
+              placeholder="XXX-XXX-XXX"
+              value={formData.commercialRegisterNumber}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="job-form-row">
             <div className="job-form-field">
               <label>Country</label>
@@ -114,16 +136,15 @@ const PartnerApplicationForm = () => {
               />
             </div>
           </div>
-
           <div className="job-form-field">
-            <label>Upload Products</label>
+            <label>Upload Document</label>
             <button
               type="button"
               className="job-upload-button"
               onClick={() => document.getElementById("image-upload").click()}
             >
               <IoMdCloudUpload size={20} className="upload-icon" />
-              Upload Products
+              Upload Document
             </button>
             <input
               id="image-upload"
@@ -142,7 +163,33 @@ const PartnerApplicationForm = () => {
               ))}
             </div>
           </div>
-
+          <div className="job-form-field">
+            <label>Upload Document</label>
+            <button
+              type="button"
+              className="job-upload-button"
+              onClick={() => document.getElementById("image-upload").click()}
+            >
+              <IoMdCloudUpload size={20} className="upload-icon" />
+              Upload Document
+            </button>
+            <input
+              id="image-upload"
+              type="file"
+              accept="image/*" // Restrict to images only
+              multiple // Allow multiple uploads
+              onChange={handleFileUpload}
+              style={{ display: "none" }}
+            />
+            <div className="image-preview-container">
+              {formData.images.map((image, index) => (
+                <div key={index} className="image-preview">
+                  <img src={image.url} alt={image.name} />
+                  <p>{image.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="job-form-field">
             <label>Additional Notes</label>
             <textarea

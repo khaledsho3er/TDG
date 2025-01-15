@@ -1,6 +1,6 @@
 import React from "react";
 
-const VendorCategoryCard = ({ title, description, price, image }) => {
+const VendorCategoryCard = ({ title, image }) => {
   return (
     <div className="vendorprofile-card">
       {/* Card Content Section */}
@@ -11,7 +11,7 @@ const VendorCategoryCard = ({ title, description, price, image }) => {
       {/* Image Section */}
       <img
         src={image}
-        alt={`${title} Image`}
+        alt={`${title} ImageLogo`}
         className="vendorprofile-card-media"
       />
     </div>

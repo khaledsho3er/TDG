@@ -22,7 +22,7 @@ function Checkout() {
         <Box className="checkout_image_container">
           <img
             src="/Assets/TDG_Icon_Black.png"
-            alt="image"
+            alt="imageLogo"
             className="checkout_logo_icon"
           />
         </Box>

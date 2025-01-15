@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 
-function HomeSlider() {
+function homehero() {
   const sliderSettings = {
     dots: true, // Enable dots for navigation
     infinite: true,
@@ -10,7 +10,7 @@ function HomeSlider() {
     slidesToScroll: 1,
     autoplay: true, // Auto-slide functionality
     autoplaySpeed: 5000, // Time between slides (ms)
-    arrows: false, // Hide next/prev buttons
+    arrows: true, // Hide next/prev buttons
   };
 
   const slides = [
@@ -54,4 +54,4 @@ function HomeSlider() {
   );
 }
 
-export default HomeSlider;
+export default homehero;

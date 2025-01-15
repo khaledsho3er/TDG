@@ -1,60 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../Components/navBar";
 import Footer from "../Components/Footer";
 import PaymentIcons from "../Components/paymentsIcons";
 import { Box, Typography, Button } from "@mui/material";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { useCart } from "../Context/cartcontext";
+import { useNavigate } from "react-router-dom";
 
 function ShoppingCart() {
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-  />;
+  const [cartItems, setCartItems] = useState([]); // Define cartItems state
+  const { cartItems: contextCartItems, removeFromCart } = useCart();
 
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      brand: "Assets/PartnersLogos/istikbal.png",
-      name: "2 FABRIC SOFA",
-      color: "Beige",
-      size: "36 x 34 x 32",
-      code: "1234544572KM",
-      image: "Assets/sofabrown.jpg",
-      unitPrice: 32000,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      brand: "Assets/PartnersLogos/istikbal.png",
-      name: "BATH TUB CERAMIC",
-      color: "Beige",
-      size: "36 x 34 x 32",
-      code: "1234544572KM",
-      image: "Assets/sofabrown.jpg",
-      unitPrice: 32000,
-      quantity: 1,
-    },
-  ]);
+  // Calculate Subtotal
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.unitPrice * item.quantity,
+    0
+  );
 
-  // Update quantity for a product
-  const handleQuantityChange = (id, increment) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id
-          ? {
-              ...product,
-              quantity: Math.max(1, product.quantity + increment), // Ensure quantity is at least 1
-            }
-          : product
-      )
+  // Use contextCartItems as default state
+  useEffect(() => {
+    setCartItems(contextCartItems);
+  }, [contextCartItems]);
+
+  const updateItemQuantity = (id, newQuantity) => {
+    if (newQuantity <= 0) return; // Avoid quantity less than 1
+
+    // Update the cart items in local state
+    const updatedCartItems = cartItems.map((item) =>
+      item.id === id
+        ? { ...item, quantity: newQuantity } // Correctly update only the relevant item
+        : item
     );
+
+    // Set the updated cart items in state
+    setCartItems(updatedCartItems);
+
+    // Sync with localStorage
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
-  // Delete product from the cart
-  const handleDeleteProduct = (id) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== id)
-    );
+  // Fixed Shipping Fee
+  const shippingFee = 600;
+
+  const navigate = useNavigate(); // Initialize navigate function
+
+  const handleCheckoutClick = () => {
+    navigate("/checkout"); // Navigate to /checkout when the button is clicked
+  };
+
+  const handleContinueClick = () => {
+    navigate("/products");
   };
 
   return (
@@ -75,45 +70,40 @@ function ShoppingCart() {
           </Box>
 
           {/* Table Rows (Dynamic) */}
-          {products.map((product) => (
-            <Box className="cart-item" key={product.id}>
+          {cartItems.map((item) => (
+            <Box className="cart-item" key={item.id}>
               <Box className="item-details">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="item-image"
-                />
+                <img src={item.image} alt={item.name} className="item-image" />
                 <Box>
-                  <img
-                    src={product.brand}
-                    alt={product.name}
-                    className="item-image-brand"
-                  />
-                  <Typography className="item-title">{product.name}</Typography>
+                  <Typography sx={{ fontFamily: "Montserrat" }}>
+                    {item.brand}
+                  </Typography>
+                  <Typography className="item-title">{item.name}</Typography>
                   <Typography className="item-info">
-                    Color: {product.color}
+                    Color: {item.color}
                   </Typography>
                   <Typography className="item-info">
-                    Size: {product.size}
+                    Size: {item.size}
                   </Typography>
                   <Typography className="item-info">
-                    Code: {product.code}
+                    Code: {item.code}
                   </Typography>
                 </Box>
               </Box>
               <Typography className="unit-price">
-                {product.unitPrice.toLocaleString()} LE
+                {item.unitPrice.toLocaleString()} LE
               </Typography>
               <Box className="quantity">
                 <Button
-                  onClick={() => handleQuantityChange(product.id, -1)}
+                  onClick={() => updateItemQuantity(item.id, item.quantity - 1)} // Decrease quantity
                   className="quantity-button"
+                  disabled={item.quantity <= 1} // Disable if quantity is less than or equal to 1
                 >
                   -
                 </Button>
-                <Typography className="quantity">{product.quantity}</Typography>
+                <Typography className="quantity">{item.quantity}</Typography>
                 <Button
-                  onClick={() => handleQuantityChange(product.id, 1)}
+                  onClick={() => updateItemQuantity(item.id, item.quantity + 1)} // Increase quantity
                   className="quantity-button"
                 >
                   +
@@ -121,12 +111,12 @@ function ShoppingCart() {
               </Box>
               <Box className="price-container">
                 <Typography className="price">
-                  {(product.unitPrice * product.quantity).toLocaleString()} LE
+                  {(item.unitPrice * item.quantity).toLocaleString()} LE
                 </Typography>
               </Box>
               <Box className="delete-icon">
                 <FaRegTrashAlt
-                  onClick={() => handleDeleteProduct(product.id)}
+                  onClick={() => removeFromCart(item.id)} // Remove item from cart
                   style={{ cursor: "pointer" }}
                 />
               </Box>
@@ -135,8 +125,12 @@ function ShoppingCart() {
 
           {/* Actions */}
           <Box className="cart-actions">
-            <Button className="continue-button">Continue Shopping</Button>
-            <Button className="checkout-button">Checkout</Button>
+            <Button className="continue-button" onClick={handleContinueClick}>
+              Continue Shopping
+            </Button>
+            <Button className="checkout-button" onClick={handleCheckoutClick}>
+              Checkout
+            </Button>
           </Box>
         </Box>
 
@@ -146,32 +140,16 @@ function ShoppingCart() {
             <Typography className="summary-title">YOUR CART</Typography>
             <Box className="summary-item">
               <Typography>Subtotal:</Typography>
-              <Typography>
-                {products
-                  .reduce(
-                    (total, product) =>
-                      total + product.unitPrice * product.quantity,
-                    0
-                  )
-                  .toLocaleString()}{" "}
-                LE
-              </Typography>
+              <Typography>{subtotal.toLocaleString()} LE</Typography>
             </Box>
             <Box className="summary-item">
               <Typography>Shipping:</Typography>
-              <Typography>600 LE</Typography>
+              <Typography>{shippingFee} LE</Typography>
             </Box>
             <Box className="summary-item total">
               <Typography>Total:</Typography>
               <Typography>
-                {(
-                  products.reduce(
-                    (total, product) =>
-                      total + product.unitPrice * product.quantity,
-                    0
-                  ) + 600
-                ).toLocaleString()}{" "}
-                LE
+                {(subtotal + shippingFee).toLocaleString()} LE
               </Typography>
             </Box>
           </Box>

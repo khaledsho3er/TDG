@@ -72,8 +72,11 @@ const FilterVSection = () => {
         paddingTop: "40px",
         paddingLeft: "50px",
         paddingRight: "16px", // Added padding to the right side
-        "@media (max-width: 600px)": { width: "100%", paddingLeft: "20px" }, // Adjust for small screens
-        "@media (max-width: 600px)": { paddingRight: "8px" }, // Adjust padding on small screens
+        "@media (max-width: 600px)": {
+          width: "100%",
+          paddingLeft: "20px",
+          paddingRight: "8px",
+        }, // Adjust for small screens
       }}
     >
       {/* Display selected filters */}

@@ -1,27 +1,32 @@
-// src/utils/fetchProductData.js
-export const fetchProductData = async () => {
-    try {
-      const response = await fetch("/json/productData.json"); // Path relative to `public` folder
-      if (!response.ok) {
-        throw new Error("Failed to fetch product data");
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-      return []; // Return an empty array in case of an error
+export async function fetchProductData(id) {
+  try {
+    const response = await fetch(`/json/productData.json`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch product data");
     }
-  };
-  export const fetchProductReview = async () => {
-    try {
-      const response = await fetch("/json/review.json"); // Path relative to `public` folder
-      if (!response.ok) {
-        throw new Error("Failed to fetch product data");
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-      return []; // Return an empty array in case of an error
+    const data = await response.json();
+    // Find product by ID (ensure id is a number)
+    const product = data.find((product) => product.id === Number(id));
+    return product || null; // Return null if no product is found
+  } catch (error) {
+    console.error("Error fetching product data:", error);
+    return null; // Return null in case of an error
+  }
+}
+
+export const fetchProductReview = async (productId) => {
+  try {
+    const response = await fetch(`/json/review.json`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch product reviews");
     }
-  };
+    const reviews = await response.json();
+    const productReviews = reviews.filter(
+      (review) => review.productId === Number(productId)
+    );
+    return productReviews || []; // Return empty array if no reviews found
+  } catch (error) {
+    console.error("Error fetching product reviews:", error);
+    return [];
+  }
+};

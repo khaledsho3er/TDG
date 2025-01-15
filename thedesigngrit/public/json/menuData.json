@@ -1,0 +1,129 @@
+{
+  "Furniture": [
+    {
+      "title": "Living Room",
+      "subcategories": [
+        "Sofas",
+        "ArmChairs",
+        "Coffee Tables",
+        "TV Stands",
+        "Side Tables",
+        "Ottomans & Benches",
+        "Bookshelves  "
+      ],
+      "image": "/Assets/dropside.jpg",
+      "Link": "/products"
+    },
+    {
+      "title": "Dining Room",
+      "subcategories": [
+        "Dining Tables",
+        "Dining Chairs",
+        "Dining Sets",
+        "Buffets & Sideboards",
+        "Bar Stools & Chairs"
+      ],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Bedroom",
+      "subcategories": [
+        "Beds",
+        "Mattresses",
+        "Dressers",
+        "Nightstands",
+        "Wardrobes & Closets",
+        "Headboards"
+      ],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Office",
+      "subcategories": [
+        "Desks",
+        "Office Chairs",
+        "Bookcases & Shelving",
+        "Filing Cabinets",
+        "Desk Accessories"
+      ],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Kitchen & Dining": [
+    {
+      "title": "Kitchen",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Dining",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Bath": [
+    {
+      "title": "Bathroom Fixtures",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Bathroom Accessories",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Lighting": [
+    {
+      "title": "Indoor Lightning",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Outdoor Lighting",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Home Decor": [
+    {
+      "title": "Bathroom Accessories",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Wall Decor",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Decorative Accents",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Rugs",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Outdoor": [
+    {
+      "title": "Patio Furniture",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    },
+    {
+      "title": "Dargden Decor",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ],
+  "Brand": [
+    {
+      "title": "Dining",
+      "subcategories": ["Pans", "Pots", "Utensils"],
+      "image": "/Assets/dropside.jpg"
+    }
+  ]
+}

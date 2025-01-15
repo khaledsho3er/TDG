@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import axios from "axios";
 import countryList from "react-select-country-list";
+import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
 import UpdateSentPopup from "../successMsgs/successUpdate";
 import { useNavigate } from "react-router-dom";
+
 const ShippingInfoPopup = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
+  const [formData, setFormData] = useState({
+
     address1: "",
     address2: "",
     city: "",
@@ -16,6 +20,7 @@ const ShippingInfoPopup = () => {
   });
 
   const [countries] = useState(countryList().getData());
+
   useEffect(() => {
     // Fetch user data
     const fetchData = async () => {
@@ -29,6 +34,8 @@ const ShippingInfoPopup = () => {
         alert("Failed to fetch user data.");
       }
     };
+
+  const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
 
     fetchData();
   }, []);
@@ -47,6 +54,7 @@ const ShippingInfoPopup = () => {
     }));
   };
 
+
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
@@ -55,7 +63,9 @@ const ShippingInfoPopup = () => {
         { withCredentials: true }
       );
       alert("Profile updated successfully!");
+      setDialogOpen(true);
       setIsPopupVisible(true); // Show popup on successful registration
+      console.log("Shipping Info Submitted:", formData);
     } catch (error) {
       console.error("Error updating user data:", error.response || error);
       alert("Failed to update user data.");
@@ -64,7 +74,22 @@ const ShippingInfoPopup = () => {
   const closePopup = () => {
     setIsPopupVisible(false); // Close the popup
     navigate("/"); // Navigate to login page after closing popup
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Open the confirmation dialog before submitting
+    setDialogOpen(true);
   };
+
+  const handleConfirm = () => {
+    console.log("Shipping Info Submitted:", formData);
+    // Add logic to send form data to the backend or save it
+    setDialogOpen(false); // Close the confirmation dialog
+
+  };
+
+  const handleDialogCancel = () => setDialogOpen(false);
+
   return (
     <div className="shipping-info-content">
       <form className="shipping-form">
@@ -176,12 +201,21 @@ const ShippingInfoPopup = () => {
           />
         </div>
         <div className="form-buttons">
-          <button type="submit" className="submit-btn" onClick={handleUpdate}>
-            Save
+          {/*<button type="submit" className="submit-btn" onClick={handleUpdate} Save*/}
+          <button type="submit" className="submit-btn">
+            Update
           </button>
+          <button className="addAddress-btn">Add Address</button>
         </div>
       </form>
-      <UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={dialogOpen}
+        title="Confirm Update"
+        content="Are you sure you want to update your shipping information?"
+        onConfirm={handleConfirm}
+        onCancel={handleDialogCancel}
+      />
     </div>
   );
 };

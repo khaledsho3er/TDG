@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import ApplicationSentPopup from "./applicationSentPopUp";
+
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -14,6 +15,7 @@ const ApplicationForm = () => {
     resume: null,
   });
   const [isPopupVisible, setIsPopupVisible] = useState(false); // Control popup visibility
+  const [error, setError] = useState(""); // Handle error messages
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,11 +32,55 @@ const ApplicationForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setIsPopupVisible(true); // Show popup on form submission
+    setError(""); // Clear previous errors
+
+    // Validate that a resume is uploaded
+    if (!formData.resume) {
+      setError("Please upload your resume.");
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("fullName", formData.fullName);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("address", formData.address);
+    formDataToSend.append("country", formData.country);
+    formDataToSend.append("city", formData.city);
+    formDataToSend.append("linkedIn", formData.linkedIn);
+    formDataToSend.append("notes", formData.notes);
+    formDataToSend.append("resume", formData.resume);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/jobforms", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit the form. Please try again.");
+      }
+
+      // Handle success
+      setIsPopupVisible(true);
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        country: "",
+        city: "",
+        linkedIn: "",
+        notes: "",
+        resume: null,
+      });
+    } catch (error) {
+      setError(error.message || "An unexpected error occurred.");
+    }
   };
+
   const closePopup = () => {
     setIsPopupVisible(false); // Close the popup
   };
@@ -43,6 +89,8 @@ const ApplicationForm = () => {
     <div className="job-form-container">
       <div className="job-form-card">
         <h1 className="job-form-title">FILL THE FORM</h1>
+
+        {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit} className="Job-form">
           <div className="job-form-field">
@@ -53,6 +101,7 @@ const ApplicationForm = () => {
               placeholder="Karim Ahmad"
               value={formData.fullName}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -64,6 +113,7 @@ const ApplicationForm = () => {
               placeholder="karim@gmail.com"
               value={formData.email}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -75,6 +125,7 @@ const ApplicationForm = () => {
               placeholder="01022161614"
               value={formData.phone}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -86,6 +137,7 @@ const ApplicationForm = () => {
               placeholder="New Cairo, Cairo, Egypt"
               value={formData.address}
               onChange={handleInputChange}
+              required
             />
           </div>
 
@@ -98,6 +150,7 @@ const ApplicationForm = () => {
                 placeholder="Egypt"
                 value={formData.country}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className="job-form-field">
@@ -108,6 +161,7 @@ const ApplicationForm = () => {
                 placeholder="Cairo"
                 value={formData.city}
                 onChange={handleInputChange}
+                required
               />
             </div>
           </div>
@@ -128,6 +182,7 @@ const ApplicationForm = () => {
               accept=".pdf,.doc,.docx"
               onChange={handleFileUpload}
               style={{ display: "none" }}
+              required
             />
             {formData.resume && (
               <p style={{ marginTop: "8px", fontFamily: "Montserrat" }}>

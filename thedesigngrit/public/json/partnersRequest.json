@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "brand": "Istikbal",
+    "requestorName": "Istikbal",
+    "email": "info@istikbal.com",
+    "phone": "+123456789",
+    "country": "Egypt",
+    "city": "Cairo",
+    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum.",
+    "documents": ["document1.pdf", "document2.pdf"],
+    "brandLogo": "/Assets/PartnersLogos/istikbal.png"
+  },
+  {
+    "id": 2,
+    "brand": "Bellona",
+    "requestorName": "Bellona Egypt",
+    "email": "contact@bellona.com",
+    "phone": "+987654321",
+    "country": "Turkey",
+    "city": "Istanbul",
+    "notes": "Bellona specializes in modern furniture solutions for your home.",
+    "documents": ["brochure.pdf", "catalogue.pdf"],
+    "brandLogo": "/Assets/PartnersLogos/BloonLogo.png"
+  }
+]

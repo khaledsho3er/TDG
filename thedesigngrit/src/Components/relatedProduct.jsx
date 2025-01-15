@@ -5,7 +5,7 @@ const RelatedProducts = () => {
 
   const products = [
     {
-      image: "Assets/bestseller/product1.png",
+      image: "/Assets/bestseller/product1.png",
       badge: "Badge",
       minUnits: 250,
       delivery: "2 weeks",
@@ -13,7 +13,7 @@ const RelatedProducts = () => {
       price: 49.0,
     },
     {
-      image: "Assets/bestseller/product2.png",
+      image: "/Assets/bestseller/product2.png",
       badge: "Badge",
       minUnits: 250,
       delivery: "2 weeks",
@@ -21,7 +21,7 @@ const RelatedProducts = () => {
       price: 49.0,
     },
     {
-      image: "Assets/bestseller/product3.png",
+      image: "/Assets/bestseller/product3.png",
       badge: "Badge",
       minUnits: 250,
       delivery: "2 weeks",
@@ -29,7 +29,7 @@ const RelatedProducts = () => {
       price: 49.0,
     },
     {
-      image: "Assets/bestseller/product4.png",
+      image: "/Assets/bestseller/product4.png",
       badge: "Badge",
       minUnits: 250,
       delivery: "2 weeks",

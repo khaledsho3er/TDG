@@ -15,18 +15,16 @@ const SustainabilitySection = () => {
       {/* Content Container */}
       <div className="sustainability-content-container">
         <div className="sustainability-content-wrapper">
-          <span className="sustainability-label">Sustainability</span>
+          {/* <span className="sustainability-label">Sustainability</span> */}
 
-          <h2 className="sustainability-heading">
-            Everything we make,
-            <br />
-            we can unmake.
-          </h2>
+          <h2 className="sustainability-heading">What is TDG ?</h2>
 
           <p className="sustainability-description">
-            Because we're committed to the circular economy. This means products
-            and materials keep circulating in supply chains, for as long as
-            possible.
+            TheDesignGrit is here to spotlight Egyptian design. We’re giving
+            local brands the platform they deserve, connecting their
+            craftsmanship with those who value it most. It’s about honoring
+            tradition, celebrating innovation, and helping you discover pieces
+            that make you feel most at home.
           </p>
 
           <button className="sustainability-button">Learn More</button>

@@ -1,24 +1,27 @@
 [
-    {
-      "reviewerName": "John Doe",
-      "reviewDate": "1/01/2022",
-      "rating": 4,
-      "reviewTitle": "Great Value",
-      "reviewText": "This is the review text. The product is great, and I would recommend it to anyone."
-    },
-    {
-      "reviewerName": "Jane Smith",
-      "reviewDate": "2/02/2022",
-      "rating": 5,
-      "reviewTitle": "Awesome Sofa",
-      "reviewText": "Absolutely love this sofa! Comfortable, stylish, and perfect for my living room."
-    },
-    {
-      "reviewerName": "Chris Johnson",
-      "reviewDate": "3/03/2022",
-      "rating": 3,
-      "reviewTitle": "Good, but could be improved",
-      "reviewText": "The sofa is decent, but the cushions could be a little firmer. Overall, happy with the purchase."
-    }
-  ]
-  
+  {
+    "productId": 1,
+    "reviewerName": "John Doe",
+    "reviewDate": "1/01/2022",
+    "rating": 4,
+    "reviewTitle": "Great Value",
+    "reviewText": "This is the review text. The product is great, and I would recommend it to anyone."
+  },
+  {
+    "productId": 2,
+    "reviewerName": "Jane Smith",
+    "reviewDate": "2/02/2022",
+    "rating": 5,
+    "reviewTitle": "Awesome Sofa",
+    "reviewText": "Absolutely love this sofa! Comfortable, stylish, and perfect for my living room."
+  },
+  {
+
+    "productId": 3,
+    "reviewerName": "Chris Johnson",
+    "reviewDate": "3/03/2022",
+    "rating": 3,
+    "reviewTitle": "Good, but could be improved",
+    "reviewText": "The sofa is decent, but the cushions could be a little firmer. Overall, happy with the purchase."
+  }
+]

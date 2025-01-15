@@ -64,12 +64,13 @@ const ProductSlider = () => {
             </div>
 
             <div className="product-info">
-              <span className="badge">{product.badge}</span>
+              {/* <span className="badge">{product.badge}</span> */}
+              <div className="product-badge">{product.badge}</div>
               <div className="product-metadata">
                 Min. {product.minUnits} units · Delivery: {product.delivery}
               </div>
-              <h3 className="product-title">{product.title}</h3>
-              <div className="product-price">
+              <h3 className="product-title-bestseller">{product.title}</h3>
+              <div className="product-price-bestseller">
                 from LE {product.price.toFixed(2)} per unit
               </div>
             </div>
