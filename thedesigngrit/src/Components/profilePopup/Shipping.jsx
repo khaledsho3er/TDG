@@ -3,21 +3,19 @@ import Select from "react-select";
 import axios from "axios";
 import countryList from "react-select-country-list";
 import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
-import UpdateSentPopup from "../successMsgs/successUpdate";
-import { useNavigate } from "react-router-dom";
+// import UpdateSentPopup from "../successMsgs/successUpdate";
 
 const ShippingInfoPopup = () => {
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState({
+  const [setIsPopupVisible] = useState(false);
+  const [userData, setUserData] = useState({});
   const [formData, setFormData] = useState({
-
     address1: "",
     address2: "",
     city: "",
     postalCode: "",
     country: "",
   });
+  const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
 
   const [countries] = useState(countryList().getData());
 
@@ -34,8 +32,6 @@ const ShippingInfoPopup = () => {
         alert("Failed to fetch user data.");
       }
     };
-
-  const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
 
     fetchData();
   }, []);
@@ -54,7 +50,6 @@ const ShippingInfoPopup = () => {
     }));
   };
 
-
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
@@ -62,6 +57,7 @@ const ShippingInfoPopup = () => {
         userData,
         { withCredentials: true }
       );
+      setFormData(response.data);
       alert("Profile updated successfully!");
       setDialogOpen(true);
       setIsPopupVisible(true); // Show popup on successful registration
@@ -71,21 +67,20 @@ const ShippingInfoPopup = () => {
       alert("Failed to update user data.");
     }
   };
-  const closePopup = () => {
-    setIsPopupVisible(false); // Close the popup
-    navigate("/"); // Navigate to login page after closing popup
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Open the confirmation dialog before submitting
-    setDialogOpen(true);
-  };
+  // const closePopup = () => {
+  //   setIsPopupVisible(false); // Close the popup
+  //   navigate("/"); // Navigate to login page after closing popup
+  // };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Open the confirmation dialog before submitting
+  //   setDialogOpen(true);
+  // };
 
   const handleConfirm = () => {
     console.log("Shipping Info Submitted:", formData);
     // Add logic to send form data to the backend or save it
     setDialogOpen(false); // Close the confirmation dialog
-
   };
 
   const handleDialogCancel = () => setDialogOpen(false);
@@ -202,7 +197,7 @@ const ShippingInfoPopup = () => {
         </div>
         <div className="form-buttons">
           {/*<button type="submit" className="submit-btn" onClick={handleUpdate} Save*/}
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" onClick={handleUpdate}>
             Update
           </button>
           <button className="addAddress-btn">Add Address</button>

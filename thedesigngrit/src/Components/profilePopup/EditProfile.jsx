@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
-import UpdateSentPopup from "../successMsgs/successUpdate";
-import { useNavigate } from "react-router-dom";
+// import UpdateSentPopup from "../successMsgs/successUpdate";
 import ConfirmationDialog from "../confirmationMsg";
 
-
 function EditProfile() {
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-   const [dialogOpen, setDialogOpen] = useState(false);
+  const [setIsPopupVisible] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState(""); // To track whether "Save" or "Cancel" is clicked
-
-  const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
     firstName: "",
@@ -44,37 +40,44 @@ function EditProfile() {
   };
 
   const handleUpdate = async () => {
-    try {
-      const response = await axios.put(
-        "http://localhost:5000/api/updateUser",
-        userData,
-        { withCredentials: true }
-      );
-      alert("Profile updated successfully!");
-      setIsPopupVisible(true); // Show popup on successful registration
-       setDialogAction("save");
-    setDialogOpen(true); // Open the confirmation dialog
-    } catch (error) {
-      console.error("Error updating user data:", error.response || error);
-      alert("Failed to update user data.");
-    }
-  };
-  const closePopup = () => {
-    setIsPopupVisible(false); // Close the popup
-    navigate("/"); // Navigate to login page after closing popup
+    // try {
+    //   const response = await axios.put(
+    //     "http://localhost:5000/api/updateUser",
+    //     userData,
+    //     { withCredentials: true }
+    //   );
 
-    {/* const handleSaveClick = () => {
+    // } catch (error) {
+    //   console.error("Error updating user data:", error.response || error);
+    //   alert("Failed to update user data.");
+    // }
+
+    setDialogOpen(true); // Open the confirmation dialog
+    setIsPopupVisible(true); // Show popup on successful registration
     setDialogAction("save");
-    setDialogOpen(true); // Open the confirmation dialog
-  };*/}
-
+  };
+  // const closePopup = () => {
+  //   setIsPopupVisible(false); // Close the popup
+  //   navigate("/"); // Navigate to login page after closing popup
+  // };
   const handleCancelClick = () => {
     setDialogAction("cancel");
     setDialogOpen(true); // Open the confirmation dialog
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (dialogAction === "save") {
+      try {
+        const response = await axios.put(
+          "http://localhost:5000/api/updateUser",
+          userData,
+          { withCredentials: true }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error updating user data:", error.response || error);
+        alert("Failed to update user data.");
+      }
       // Handle save logic
       console.log("Changes saved!");
     } else if (dialogAction === "cancel") {
@@ -86,7 +89,6 @@ function EditProfile() {
 
   const handleDialogCancel = () => {
     setDialogOpen(false); // Close the dialog without taking action
-
   };
   return (
     <div>
@@ -135,20 +137,6 @@ function EditProfile() {
             fullWidth
           />
         </div>
-
-        {/* Address Field
-        <div className="profile-form-field">
-          <label>Address</label>
-          <input
-            name="address1"
-            value={userData.address1}
-            onChange={handleChange}
-            placeholder="Address"
-            className="popup-form-full-width"
-            fullWidth
-          />
-        </div> */}
-
         {/* Phone Number Field */}
         <div className="profile-form-field">
           <label>Phone Number</label>
@@ -165,14 +153,10 @@ function EditProfile() {
 
       {/* Save and Cancel Buttons */}
       <div className="popup-buttons">
-      
-       {/*<UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />*/}
+        {/*<UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />*/}
 
-        <button
-          className="profile-popUpForm-btn-save"
-          onClick={handleUpdate}
-        >
-          Save
+        <button className="profile-popUpForm-btn-save" onClick={handleUpdate}>
+          Update
         </button>
         <button
           className="profile-popUpForm-btn-cancel"
@@ -193,7 +177,6 @@ function EditProfile() {
         onConfirm={handleConfirm}
         onCancel={handleDialogCancel}
       />
-
     </div>
   );
 }
