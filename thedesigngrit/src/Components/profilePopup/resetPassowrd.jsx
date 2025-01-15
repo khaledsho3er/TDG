@@ -12,12 +12,12 @@ const ResetPasswordForm = () => {
   const [strength, setStrength] = useState(0);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleReset = async () => {
     setError(""); // Clear previous errors
 
     // Validate if passwords match
-    if (newPassword !== confirmPassword) {
+    if (newPassword.trim() !== confirmPassword.trim()) {
       setError("Passwords do not match.");
       return;
     }
@@ -34,14 +34,23 @@ const ResetPasswordForm = () => {
         "http://localhost:5000/api/changePassword",
         { currentPassword, newPassword },
         {
-          headers: { Authorization: `Bearer ${token}` }, // Add the token in the request header
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         }
       );
 
-      if (response.data.message === "Password updated successfully") {
+      console.log("Backend response:", response); // Log the response for debugging
+
+      // Check for a success message
+      if (
+        response.status === 200 &&
+        response.data.message === "Password updated successfully"
+      ) {
         setSuccess("Password updated successfully.");
+        setSuccessDialogOpen(true); // Open success dialog
       } else {
-        setError("Failed to update password.");
+        // Fallback for unexpected success structure
+        setError(response.data.message || "Failed to update password.");
       }
     } catch (error) {
       // Check for server response and log the error
@@ -86,12 +95,11 @@ const ResetPasswordForm = () => {
     if (strength <= 50) return ["red", "gray", "gray", "gray"];
     if (strength <= 75) return ["orange", "orange", "gray", "gray"];
     return ["green", "green", "green", "green"];
-
   };
 
   return (
-    <Box className="reset-password-content">    
-    {/*
+    <Box className="reset-password-content">
+      {/*
       <div className="reset-form-field">
         <label>Current Password</label>
         <input
@@ -245,8 +253,8 @@ const ResetPasswordForm = () => {
             className="reset-popup-form-full-width"
             error={newPassword !== confirmPassword}
             helperText={
-            newPassword !== confirmPassword ? "Passwords do not match" : ""
-          }
+              newPassword !== confirmPassword ? "Passwords do not match" : ""
+            }
           />
           <span
             onClick={() => setShowConfirmPassword((prevState) => !prevState)}
