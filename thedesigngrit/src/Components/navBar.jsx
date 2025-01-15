@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, InputBase, IconButton, Avatar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  InputBase,
+  IconButton,
+  Avatar,
+  Button,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -11,6 +18,7 @@ import FavoritesOverlay from "./favoriteOverlay"; // Import the FavoritesOverlay
 import Menudrop from "./menuhover/Menudrop";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -22,6 +30,12 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile] = useState(window.innerWidth < 767);
   const [isSticky, setIsSticky] = useState(false);
+
+  // Add logged-in state and user data
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the categories and their details once when the component loads
@@ -56,6 +70,14 @@ function Header() {
     };
   }, []);
 
+  // Simulate login state (Replace with real authentication logic)
+  useEffect(() => {
+    const loggedIn = false; // Change to true to simulate logged-in state
+    const name = "John Doe"; // Replace with actual user name
+    setIsLoggedIn(loggedIn);
+    setUserName(name);
+  }, []);
+
   const handleCartToggle = () => {
     setCartOpen(!cartOpen);
   };
@@ -79,18 +101,20 @@ function Header() {
   };
 
   const handleMenuHover = () => {
-    setIsMenuHovered(true); // Set to true when hovering over the menu
+    setIsMenuHovered(true);
   };
 
   const handleMenuLeave = () => {
-    setIsMenuHovered(false); // Set to false when not hovering over the menu
+    setIsMenuHovered(false);
     if (!hoveredCategory) {
-      setHoveredCategory(null); // Hide menu if not hovering over anything
+      setHoveredCategory(null);
     }
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const handleSignUpClick = () => {
+    console.log("Sign up clicked!");
+    navigate("/login");
+    // Add your signup navigation logic here
   };
 
   return (
@@ -103,10 +127,8 @@ function Header() {
       }}
       className={`header-container ${isSticky ? "sticky" : ""}`}
     >
-      {/* Top Header */}
       <Box className={`header ${isSticky ? "sticky" : ""}`}>
         <Box className="header-top">
-          {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo" variant="h4">
               <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
@@ -114,12 +136,11 @@ function Header() {
           </Link>
 
           {isMobile && (
-            <IconButton onClick={toggleMenu}>
+            <IconButton onClick={() => setMenuOpen(!menuOpen)}>
               <MenuIcon />
             </IconButton>
           )}
 
-          {/* Dropdown Menu */}
           {menuOpen && (
             <Box className="mobile-menu">
               <Typography className="menu-item">Home</Typography>
@@ -129,7 +150,6 @@ function Header() {
             </Box>
           )}
 
-          {/* Search */}
           <Box className="search-bar">
             <SearchIcon sx={{ color: "#999" }} />
             <InputBase
@@ -138,7 +158,6 @@ function Header() {
             />
           </Box>
 
-          {/* Icons */}
           <Box className="icon-container">
             <IconButton onClick={handleFavoritesToggle}>
               <FavoriteBorderIcon sx={{ fontSize: "17px" }} />
@@ -146,50 +165,57 @@ function Header() {
             <IconButton onClick={handleCartToggle}>
               <ShoppingCartIcon sx={{ fontSize: "17px" }} />
             </IconButton>
-            <Avatar
-              className="avatar"
-              onClick={handlePopupToggle}
-              sx={{ cursor: "pointer" }}
-            >
-              K
-            </Avatar>
+
+            {isLoggedIn ? (
+              <Avatar
+                className="avatar"
+                onClick={handlePopupToggle}
+                sx={{ cursor: "pointer" }}
+              >
+                {userName.charAt(0).toUpperCase()}
+              </Avatar>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSignUpClick}
+                className="Signup-btn-navbar"
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
 
-      {/* Categories */}
-      <Box
-        className="header-bottom"
-        onMouseLeave={handleMouseLeaveCategory} // Hide overlay when leaving categories
-      >
+      {/* Categories Section */}
+      <Box className="header-bottom" onMouseLeave={handleMouseLeaveCategory}>
         {menuData.length === 0 ? (
-          <Typography>No categories available</Typography> // Display if no data is available
+          <Typography>No categories available</Typography>
         ) : (
           menuData.map((category) => (
             <Typography
-              key={category._id} // Use the _id as a unique key
+              key={category._id}
               className={`category ${
                 hoveredCategory === category.name ? "highlighted" : ""
               }`}
-              onMouseEnter={() => handleMouseEnterCategory(category.name)} // Show overlay on hover
+              onMouseEnter={() => handleMouseEnterCategory(category.name)}
             >
-              {category.name} {/* Display the category name */}
+              {category.name}
             </Typography>
           ))
         )}
       </Box>
 
-      {/* Overlay Menu */}
       {hoveredCategory && (
         <Menudrop
           category={hoveredCategory}
           details={menuData.find((item) => item.name === hoveredCategory)}
-          onMouseEnter={handleMenuHover} // Keep the menu visible when hovering over it
-          onMouseLeave={handleMenuLeave} // Close the menu when not hovering over it
+          onMouseEnter={handleMenuHover}
+          onMouseLeave={handleMenuLeave}
         />
       )}
 
-      {/* Additional Buttons */}
       <FloatingButton />
       <Stickedbutton className="moodboard-btn" />
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />

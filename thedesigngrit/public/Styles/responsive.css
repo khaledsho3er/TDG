@@ -182,6 +182,42 @@
     font-family: horrizon;
     font-weight: bold;
   }
+
+  .signinLogo img {
+    width: 110px;
+    height: 70px;
+    z-index: 5;
+    margin-top: 30px;
+    justify-content: center;
+  }
+
+  .container-login {
+    padding-left: 20px;
+    padding-right: 20px;
+    background-size: cover;
+  }
+
+  .login-form {
+    width: 90%;
+    height: 95%;
+    margin-bottom: 10px;
+  }
+
+  .signup-form-container {
+    height: 100%;
+    width: 40%;
+    margin-bottom: 10px;
+  }
+
+  .form-title-signin {
+    font-size: 24px;
+    font-family: "horizon";
+    font-weight: bold;
+  }
+
+  .google-icon {
+    font-size: 30px;
+  }
 }
 /* General styles are unchanged from the original */
 
