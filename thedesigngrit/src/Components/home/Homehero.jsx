@@ -10,7 +10,7 @@ function homehero() {
     slidesToScroll: 1,
     autoplay: true, // Auto-slide functionality
     autoplaySpeed: 5000, // Time between slides (ms)
-    arrows: false, // Hide next/prev buttons
+    arrows: true, // Hide next/prev buttons
   };
 
   const slides = [

@@ -129,7 +129,7 @@ const UpdateProductForm = () => {
               <div className="form-row">
                 <div className="form-group half-width">
                   <label>SKU</label>
-                  <input type="text" placeholder="Fox-3983" />
+                  <input type="text" placeholder="Fox-3983" value={sku} />
                 </div>
                 <div className="form-group half-width">
                   <label>Stock Quantity</label>

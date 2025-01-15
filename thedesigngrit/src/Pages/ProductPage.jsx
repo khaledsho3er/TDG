@@ -8,15 +8,14 @@ import Header from "../Components/navBar";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
-import ViewInStorePopup from "../Components/product/viewInStore";
 import RequestInfoPopup from "../Components/product/optionPopUp";
 import {
   fetchProductData,
   fetchProductReview,
 } from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
-// import RelatedProducts from "../Components/relatedProduct";
 import { useCart } from "../Context/cartcontext";
+
 // import OptionPopUp from "../Components/product/optionPopUp";
 
 function ProductPage() {
@@ -25,7 +24,13 @@ function ProductPage() {
   //const [showPopup, setShowPopup] = useState(false);
   const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
   const [setShowFirstPopup] = useState(false); // State for Request Quote popup
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
+  const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
 
+
+  const handleCloseRequestInfo = () => {
+    setIsRequestInfoOpen(false);
+  };
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -41,6 +46,7 @@ function ProductPage() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+
   // Handle opening the popup
   // const handlePopupOpen = () => {
   //   setShowPopup(true);
@@ -50,6 +56,7 @@ function ProductPage() {
   // const handlePopupClose = () => {
   //   setShowPopup(false);
   // };
+
 
   useEffect(() => {
     // Fetch product data
@@ -73,16 +80,6 @@ function ProductPage() {
   }, [id]);
 
   if (!product) return <div>Product not found</div>;
-
-  const handleOptionChange = (option) => {
-    if (option === "quote") {
-      setShowFirstPopup(true); // Show the 'Request Quote' popup
-    } else if (option === "viewInStore") {
-      setShowViewInStorePopup(true); // Show the 'View in Store' popup
-    }
-    setShowDropdown(false); // Close the dropdown after selection
-  };
-
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
     setIsTransitioning(true);
@@ -232,19 +229,14 @@ function ProductPage() {
                 Request Info
               </button>
             </div>
-            {/* Dropdown with options */}
             {/* Request Info Popup */}
-            <RequestInfoPopup
-              open={showRequestInfoPopup}
-              onClose={() => setShowRequestInfoPopup(false)}
-              onOptionSelect={handleOptionChange}
-            />
-
-            {/* Show the popup when 'View in Store' is selected */}
-            <ViewInStorePopup
-              open={showViewInStorePopup}
-              onClose={() => setShowViewInStorePopup(false)}
-            />
+            {isRequestInfoOpen && (
+              <RequestInfoPopup
+                open={showRequestInfoPopup} // Pass showRequestInfoPopup as open prop
+                onClose={() => setShowRequestInfoPopup(false)} // Handle close callback
+                onOptionSelect={handleCloseRequestInfo}
+              />
+            )}
           </div>
         </div>
 

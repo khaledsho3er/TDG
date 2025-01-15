@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import axios from "axios";
 import countryList from "react-select-country-list";
 import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
+// import UpdateSentPopup from "../successMsgs/successUpdate";
 
 const ShippingInfoPopup = () => {
+  const [setIsPopupVisible] = useState(false);
+  const [userData, setUserData] = useState({});
   const [formData, setFormData] = useState({
     address1: "",
     address2: "",
@@ -11,30 +15,67 @@ const ShippingInfoPopup = () => {
     postalCode: "",
     country: "",
   });
-
-  const [countries] = useState(countryList().getData());
   const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
 
+  const [countries] = useState(countryList().getData());
+
+  useEffect(() => {
+    // Fetch user data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/getUser", {
+          withCredentials: true,
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error.response || error);
+        alert("Failed to fetch user data.");
+      }
+    };
+
+    fetchData();
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleCountryChange = (selectedOption) => {
-    setFormData((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       country: selectedOption.label,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Open the confirmation dialog before submitting
-    setDialogOpen(true);
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/updateUser",
+        userData,
+        { withCredentials: true }
+      );
+      setFormData(response.data);
+      alert("Profile updated successfully!");
+      setDialogOpen(true);
+      setIsPopupVisible(true); // Show popup on successful registration
+      console.log("Shipping Info Submitted:", formData);
+    } catch (error) {
+      console.error("Error updating user data:", error.response || error);
+      alert("Failed to update user data.");
+    }
   };
+  // const closePopup = () => {
+  //   setIsPopupVisible(false); // Close the popup
+  //   navigate("/"); // Navigate to login page after closing popup
+  // };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Open the confirmation dialog before submitting
+  //   setDialogOpen(true);
+  // };
 
   const handleConfirm = () => {
     console.log("Shipping Info Submitted:", formData);
@@ -46,13 +87,13 @@ const ShippingInfoPopup = () => {
 
   return (
     <div className="shipping-info-content">
-      <form className="shipping-form" onSubmit={handleSubmit}>
+      <form className="shipping-form">
         <div className="form-field">
           <label>Address 1</label>
           <input
             type="text"
             name="address1"
-            value={formData.address1}
+            value={userData.address1}
             onChange={handleInputChange}
             placeholder="Enter your primary address"
             required
@@ -63,7 +104,7 @@ const ShippingInfoPopup = () => {
           <input
             type="text"
             name="address2"
-            value={formData.address2}
+            value={userData.address2}
             onChange={handleInputChange}
             placeholder="Enter additional address"
           />
@@ -74,7 +115,7 @@ const ShippingInfoPopup = () => {
             <input
               type="text"
               name="city"
-              value={formData.city}
+              value={userData.city}
               onChange={handleInputChange}
               placeholder="city"
               required
@@ -86,7 +127,7 @@ const ShippingInfoPopup = () => {
             <input
               type="text"
               name="postalCode"
-              value={formData.postalCode}
+              value={userData.postalCode}
               onChange={handleInputChange}
               placeholder="Postal code"
               required
@@ -155,7 +196,8 @@ const ShippingInfoPopup = () => {
           />
         </div>
         <div className="form-buttons">
-          <button type="submit" className="submit-btn">
+          {/*<button type="submit" className="submit-btn" onClick={handleUpdate} Save*/}
+          <button type="submit" className="submit-btn" onClick={handleUpdate}>
             Update
           </button>
           <button className="addAddress-btn">Add Address</button>

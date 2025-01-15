@@ -10,7 +10,6 @@ import ResetPasswordPopup from "./profilePopup/resetPassowrd";
 import BillingInfoPopup from "./profilePopup/billingInfo";
 import ShippingInfoPopup from "./profilePopup/Shipping";
 import OrdersPopUp from "./profilePopup/ordersPopup";
-
 function ProfilePopup({ open, onClose }) {
   // State for selected tab
   const [selectedTab, setSelectedTab] = useState(0);
@@ -20,7 +19,10 @@ function ProfilePopup({ open, onClose }) {
 
   // Tab content for different buttons
   const tabContent = [
-    { title: "Edit Profile", content: <EditProfile /> },
+    {
+      title: "Edit Profile",
+      content: <EditProfile />,
+    },
     {
       title: "Reset Password",
       content: <ResetPasswordPopup />,

@@ -7,6 +7,8 @@ const PartnerApplicationForm = () => {
     CompanyName: "",
     email: "",
     phone: "",
+    taxNumber: "",
+    commercialRegisterNumber: "",
     RequestorName: "",
     country: "",
     city: "",
@@ -92,6 +94,26 @@ const PartnerApplicationForm = () => {
               onChange={handleInputChange}
             />
           </div>
+          <div className="job-form-field">
+            <label>Tax Number</label>
+            <input
+              type="tel"
+              name="taxNumber"
+              placeholder="XXX-XXX-XXX"
+              value={formData.taxNumber}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="job-form-field">
+            <label>Commercial Register Number</label>
+            <input
+              type="tel"
+              name="commercialRegisterNumber"
+              placeholder="XXX-XXX-XXX"
+              value={formData.commercialRegisterNumber}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="job-form-row">
             <div className="job-form-field">
               <label>Country</label>
@@ -114,7 +136,6 @@ const PartnerApplicationForm = () => {
               />
             </div>
           </div>
-
           <div className="job-form-field">
             <label>Upload Document</label>
             <button

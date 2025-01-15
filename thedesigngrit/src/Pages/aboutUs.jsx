@@ -15,15 +15,52 @@ function AboutUsPage() {
           image={"Assets/AboutUs.jpg"}
         />
       </Box>
-      <p className="Caption-AboutUs">
-        Where artistry meets innovation. TheDesignGrit is a platform that
-        empowers local Egyptian brands in the home furnishing industry. We honor
-        Egypt’s legacy of craftsmanship while modernizing its global presence.
-        By unifying brands under one marketplace, we amplify their reach,
-        provide tools for success, and create seamless experiences for both
-        businesses and customers.
-      </p>
-
+      <Box
+        sx={{
+          marginTop: "100px",
+          marginBottom: "50px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "0px",
+          paddingLeft: "20px",
+          paddingRight: "20px",
+        }}
+      >
+        <p className="Caption-AboutUs">
+          At TheDesignGrit, we believe Egyptian craftsmanship deserves a stage
+          as bold and timeless as its heritage. Born from a deep respect for
+          tradition and a drive to inspire the future, we’re not just a
+          marketplace—we’re a movement.{" "}
+        </p>{" "}
+        <p className="Caption-AboutUs">
+          Our journey began with a realization: Egypt is brimming with unmatched
+          talent, yet many local brands lack the visibility and tools to thrive.
+          That’s where we step in. TheDesignGrit creates a platform where
+          exceptional design meets its audience. We connect skilled brands with
+          customers who appreciate quality and a story behind each piece.
+        </p>{" "}
+        <p className="Caption-AboutUs">
+          We don’t just sell furniture; we build connections. Our platform
+          celebrates the diversity of Egyptian design, giving every brand the
+          chance to tell its story and every customer the chance to own a piece
+          of it. With tools to streamline operations and insights to grow their
+          businesses, we empower brands to focus on what they do best—creating
+          timeless works of art.
+        </p>{" "}
+        <p className="Caption-AboutUs">
+          For our customers, we’ve curated a space where design inspiration
+          comes to life. Whether it’s finding the perfect statement piece or
+          exploring trends that resonate with your style, TheDesignGrit ensures
+          your shopping experience is as refined as the products we showcase.
+        </p>{" "}
+        <p className="Caption-AboutUs">
+          {" "}
+          TheDesignGrit isn’t just about furniture—it’s about crafting a legacy.
+          Together, we’re redefining what it means to celebrate Egyptian design,
+          one masterpiece at a time.
+        </p>
+      </Box>
       <Box className="ourMission-Section">
         <Box className="ourMission-Section-image">
           <img src="Assets/aboutUsContent.png" alt="ImageAbout" />
