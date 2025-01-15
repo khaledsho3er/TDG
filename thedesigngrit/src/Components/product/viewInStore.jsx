@@ -81,15 +81,30 @@ const ViewInStorePopup = ({ open, onClose }) => {
         }}
       >
         {confirmationMessage ? (
-          <Typography
-            variant="h6"
-            sx={{
-              color: "green",
-              textAlign: "center",
-            }}
-          >
-            Your information has been submitted successfully!
-          </Typography>
+          <div>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: "#2d2d2d",
+                textAlign: "center",
+                left: "16px",
+                marginBottom: "16px",
+              }}
+              gutterBottom
+            >
+              Your Purchase Code: {productInfo.code}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "green",
+                textAlign: "center",
+              }}
+            >
+              Your information has been submitted successfully!
+            </Typography>
+          </div>
         ) : (
           <Card
             sx={{
