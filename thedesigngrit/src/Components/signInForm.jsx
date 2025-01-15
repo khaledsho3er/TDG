@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { UserContext } from "../utils/userContext"; // Import the UserContext
 
 function SignInForm() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
-
-  // Define state for storing the form data
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const { setUserSession } = useContext(UserContext); // Access the context
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
@@ -24,27 +21,26 @@ function SignInForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send POST request to backend API for sign-in
     try {
       const response = await axios.post(
         "http://localhost:5000/api/signin",
-        formData
+        formData,
+        { withCredentials: true } // Include session cookies
       );
 
-      // On successful login, store the token (in localStorage or cookies)
-      localStorage.setItem("authToken", response.data.token);
+      // Save session data to context
+      setUserSession(response.data);
 
-      // Optionally, navigate to the home page or dashboard
+      console.log("Login successful!", response.data);
       alert("Login successful!");
-      navigate("/home");
+      navigate("/");
     } catch (error) {
-      console.error("Error during sign-in:", error);
+      console.error("Error during sign-in:", error.response || error);
       alert(
         error.response?.data?.message || "An error occurred during sign-in"
       );
     }
   };
-
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>

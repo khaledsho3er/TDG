@@ -21,6 +21,8 @@ import FAQs from "./Pages/FAQs";
 import TrackOrder from "./Pages/TrackOrder";
 import { CartProvider } from "./Context/cartcontext";
 import MyAccount from "./Pages/myAccount";
+import { UserProvider } from "./utils/userContext"; // Import UserProvider
+import UserProfile from "./Pages/userss";
 import VendorHome from "./Pages/vendorSide/VendorHome";
 import OrderDetails from "./Components/vendorSide/orderDetails";
 import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
@@ -30,6 +32,7 @@ import NotificationsPage from "./Components/vendorSide/notificationPage";
 import ScrollToTop from "./Context/scrollToTop";
 function App() {
   return (
+    <UserProvider>
     <CartProvider>
       <Router>
         <ScrollToTop />
@@ -39,6 +42,11 @@ function App() {
           <Route exact path="/home" Component={Home} />
           <Route exact path="/login" Component={LoginPage} />
           <Route exact path="/signup" Component={SignUpPage} />
+
+         
+         
+          <Route exact path="/Vendors" Component={Vendorspage} />
+
           <Route exact path="/about" Component={AboutUsPage} />
           <Route path="/jobdesc/:jobId" element={<JobDesc />} />
           <Route path="/policy" element={<TermsOfService />} />
@@ -55,12 +63,18 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route exact path="/ProductsPage" Component={ProductsPage} />
           {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}
+
           <Route exact path="/Vendorprofile" Component={VendorProfile} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route exact path="/careers" Component={careersPage} />
           <Route path="/faqs" Component={FAQs} />
           <Route path="/trackorder" Component={TrackOrder} />
           <Route path="/myaccount" Component={MyAccount} />
+             <Route path="/usersss" Component={UserProfile} />
+
+         
+
+
           {/* <Route path="/vendors" element={<Vendorspage />} /> */}
           <Route path="/vendor/:id" element={<VendorProfile />} />
           {/* Route for the vendors grid */}
@@ -75,6 +89,8 @@ function App() {
         </Routes>
       </Router>
     </CartProvider>
+    </UserProvider>
+
   );
 }
 

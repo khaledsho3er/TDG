@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // For sending requests
 import { Box, Typography } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
@@ -6,11 +7,58 @@ const ResetPasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(""); // To handle error messages
+  const [success, setSuccess] = useState(""); // To handle success messages
   const [strength, setStrength] = useState(0);
-
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  
+  const handleReset = async () => {
+    setError(""); // Clear previous errors
+
+    // Validate if passwords match
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Validate password length
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("authToken"); // Get the token from localStorage
+      const response = await axios.post(
+        "http://localhost:5000/api/changePassword",
+        { currentPassword, newPassword },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Add the token in the request header
+        }
+      );
+
+      if (response.data.message === "Password updated successfully") {
+        setSuccess("Password updated successfully.");
+      } else {
+        setError("Failed to update password.");
+      }
+    } catch (error) {
+      // Check for server response and log the error
+      console.error("Error updating password:", error.response?.data);
+      setError(error.response?.data?.message || "An error occurred.");
+    }
+  };
+
+  const handleCancel = () => {
+    // Clear form and close popup (if needed)
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setError("");
+    setSuccess("");
+    console.log("Canceling password reset...");
+  };
 
   // Calculate password strength
   const calculateStrength = (password) => {
@@ -38,10 +86,61 @@ const ResetPasswordForm = () => {
     if (strength <= 50) return ["red", "gray", "gray", "gray"];
     if (strength <= 75) return ["orange", "orange", "gray", "gray"];
     return ["green", "green", "green", "green"];
+
   };
 
   return (
-    <Box className="reset-password-content">
+    <Box className="reset-password-content">    
+    {/*
+      <div className="reset-form-field">
+        <label>Current Password</label>
+        <input
+          label="Current Password"
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+        />
+      </div>
+
+      <div className="reset-form-field">
+        <label>New Password</label>
+        <input
+          label="New Password"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+          helperText="Min. Length: 8 characters. Character Types: Uppercase, lowercase, number, special character."
+        />
+      </div>
+
+      <div className="reset-form-field">
+        <label>Re-type Password</label>
+        <input
+          label="Re-type Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+          error={newPassword !== confirmPassword}
+          helperText={
+            newPassword !== confirmPassword ? "Passwords do not match" : ""
+          }
+        />*/}
+
+      {error && (
+        <p style={{ color: "red", fontFamily: "Montserrat" }}>{error}</p>
+      )}
+      {success && (
+        <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
+      )}
       {/* Current Password Field */}
       <div className="reset-form-field" style={{ position: "relative" }}>
         <label>Current Password</label>
@@ -89,6 +188,7 @@ const ResetPasswordForm = () => {
             onChange={(e) => handleNewPasswordChange(e.target.value)}
             style={passwordFieldStyle(strength >= 50)}
             className="reset-popup-form-full-width"
+            helperText="Min. Length: 8 characters. Character Types: Uppercase, lowercase, number, special character."
           />
           <span
             onClick={() => setShowNewPassword((prevState) => !prevState)}
@@ -143,6 +243,10 @@ const ResetPasswordForm = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             style={passwordFieldStyle(confirmPassword === newPassword)}
             className="reset-popup-form-full-width"
+            error={newPassword !== confirmPassword}
+            helperText={
+            newPassword !== confirmPassword ? "Passwords do not match" : ""
+          }
           />
           <span
             onClick={() => setShowConfirmPassword((prevState) => !prevState)}

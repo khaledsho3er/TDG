@@ -1,15 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Box } from "@mui/material";
+import UpdateSentPopup from "../successMsgs/successUpdate";
+import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "../confirmationMsg";
 
+
 function EditProfile() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState(""); // To track whether "Save" or "Cancel" is clicked
 
-  const handleSaveClick = () => {
+  const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address1: "",
+    phoneNumber: "",
+  });
+
+  useEffect(() => {
+    // Fetch user data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/getUser", {
+          withCredentials: true,
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error.response || error);
+        alert("Failed to fetch user data.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/updateUser",
+        userData,
+        { withCredentials: true }
+      );
+      alert("Profile updated successfully!");
+      setIsPopupVisible(true); // Show popup on successful registration
+       setDialogAction("save");
+    setDialogOpen(true); // Open the confirmation dialog
+    } catch (error) {
+      console.error("Error updating user data:", error.response || error);
+      alert("Failed to update user data.");
+    }
+  };
+  const closePopup = () => {
+    setIsPopupVisible(false); // Close the popup
+    navigate("/"); // Navigate to login page after closing popup
+
+    {/* const handleSaveClick = () => {
     setDialogAction("save");
     setDialogOpen(true); // Open the confirmation dialog
-  };
+  };*/}
 
   const handleCancelClick = () => {
     setDialogAction("cancel");
@@ -29,6 +86,7 @@ function EditProfile() {
 
   const handleDialogCancel = () => {
     setDialogOpen(false); // Close the dialog without taking action
+
   };
   return (
     <div>
@@ -42,9 +100,10 @@ function EditProfile() {
           <div className="profile-form-field" style={{ width: "48%" }}>
             <label>First Name</label>
             <input
-              label="First Name"
-              placeholder="Karim"
-              variant="outlined"
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
+              placeholder="First Name"
               className="popup-form-full-width"
               fullWidth
             />
@@ -54,9 +113,10 @@ function EditProfile() {
           <div className="profile-form-field" style={{ width: "48%" }}>
             <label>Last Name</label>
             <input
-              label="Last Name"
-              placeholder="Wahba"
-              variant="outlined"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+              placeholder="Last Name"
               className="popup-form-full-width"
               fullWidth
             />
@@ -67,11 +127,12 @@ function EditProfile() {
         <div className="profile-form-field">
           <label>Email</label>
           <input
-            label="Email"
-            placeholder="Karim@gmail.com"
-            variant="outlined"
-            fullWidth
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+            placeholder="Email"
             className="popup-form-full-width"
+            fullWidth
           />
         </div>
 
@@ -79,11 +140,12 @@ function EditProfile() {
         <div className="profile-form-field">
           <label>Address</label>
           <input
-            label="Address"
-            placeholder="New Cairo, Egypt"
-            variant="outlined"
-            fullWidth
+            name="address1"
+            value={userData.address1}
+            onChange={handleChange}
+            placeholder="Address"
             className="popup-form-full-width"
+            fullWidth
           />
         </div> */}
 
@@ -91,19 +153,24 @@ function EditProfile() {
         <div className="profile-form-field">
           <label>Phone Number</label>
           <input
-            label="Phone Number"
-            placeholder="+20 1020180911"
-            fullWidth
+            name="phoneNumber"
+            value={userData.phoneNumber}
+            onChange={handleChange}
+            placeholder="Phone Number"
             className="popup-form-full-width"
+            fullWidth
           />
         </div>
       </div>
 
       {/* Save and Cancel Buttons */}
       <div className="popup-buttons">
+      
+       {/*<UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />*/}
+
         <button
           className="profile-popUpForm-btn-save"
-          onClick={handleSaveClick}
+          onClick={handleUpdate}
         >
           Save
         </button>
@@ -126,6 +193,7 @@ function EditProfile() {
         onConfirm={handleConfirm}
         onCancel={handleDialogCancel}
       />
+
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { Checkbox, Box, Typography } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AccountSentPopup from "./successfullyRegistered";
+import AccountSentPopup from "./successMsgs/successfullyRegistered";
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -60,8 +60,9 @@ const SignUpForm = () => {
         formData
       );
       alert(response.data.message);
-      setIsPopupVisible(true);
+      setIsPopupVisible(true); // Show popup on successful registration
       navigate("/login");
+
     } catch (error) {
       console.error("Sign-up error:", error);
       alert(
@@ -71,7 +72,8 @@ const SignUpForm = () => {
   };
 
   const closePopup = () => {
-    setIsPopupVisible(false);
+    setIsPopupVisible(false); // Close the popup
+    navigate("/login"); // Navigate to login page after closing popup
   };
 
   return (
