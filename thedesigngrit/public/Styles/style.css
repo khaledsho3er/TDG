@@ -9,6 +9,18 @@
 body {
   margin: 0;
   font-family: "Horizon", Montserrat;
+  overflow-y: scroll; /* Ensures the page scrolls vertically */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
@@ -99,6 +111,7 @@ body {
 .form-title-signin {
   font-size: 2rem;
   font-weight: bold;
+  font-family: "Horizon";
   text-align: center;
   padding-top: 70px;
   font-family: "Horizon";
@@ -132,6 +145,9 @@ body {
   text-align: center;
   font-family: Montserrat;
   font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .google-btn:hover,
 .facebook-btn:hover {
@@ -139,6 +155,7 @@ body {
 }
 .google-icon {
   padding-right: 30px;
+  font-size: 30px;
 }
 .facebook-btn {
   background-color: #ffffff;
@@ -147,10 +164,14 @@ body {
   text-align: center;
   font-family: Montserrat;
   font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .facebook-icon {
   color: blue;
+  font-size: 30px;
   padding-right: 10px;
 }
 
@@ -341,12 +362,13 @@ body {
   padding: 30px;
   box-sizing: border-box;
   z-index: 2;
+  overflow: hidden;
 }
 
 .logo img {
   position: relative;
-  width: 90px;
-  height: 40px;
+  width: 150px;
+  height: 90px;
   padding: 35px 30px 10px 20px;
   align-items: center;
   z-index: 2;
@@ -369,11 +391,15 @@ body {
 .icon-container {
   display: flex;
   align-items: center;
-  gap: 15x;
+  gap: 10x;
 }
 
 .avatar {
   background-color: #e0e0e0;
+}
+
+.Signup-btn-navbar {
+  background-color: rgb(21, 93, 21) !important;
 }
 
 .header-bottom {
@@ -384,7 +410,7 @@ body {
   width: 100%;
   font-family: Montserrat;
   background-color: #ffffff13;
-  padding: 10px 10px;
+  padding: 10px;
   z-index: 2;
 }
 
@@ -745,7 +771,7 @@ body {
 
 .concept-title-container {
   text-align: right;
-  padding-bottom: 50px;
+  padding-bottom: 25px;
   padding-top: 50px;
   margin: -20px;
 }
@@ -774,10 +800,12 @@ body {
   opacity: 0.8;
   overflow: hidden; /* Ensure the overlay doesn't spill out of the card */
 }
+
 .concept-card img {
   width: 100%;
   height: 100%;
 }
+
 .concept-card::before {
   content: "";
   position: absolute;
@@ -802,7 +830,7 @@ body {
 }
 
 .middle-card {
-  width: 300px;
+  width: 400px;
   height: 400px;
   opacity: 1;
   transform: scale(1.1);
@@ -810,21 +838,22 @@ body {
 }
 
 .left-card {
-  width: 235px;
-  height: 270px;
-  transform: translateY(-37%) scale(0.9);
+  width: 335px;
+  height: 335px;
+  transform: translateY(-20%) scale(0.9);
   z-index: 2;
 }
 
 .right-card {
-  width: 235px;
-  height: 270px;
+  width: 335px;
+  height: 335px;
   transform: translateY(37%) scale(0.9);
   z-index: 2;
 }
+
 .concept-card-content {
   position: absolute; /* Allow positioning within the parent */
-  bottom: 10px; /* Align content near the bottom of the card */
+  top: 180px; /* Align content near the bottom of the card */
   left: 10px; /* Align content near the left of the card */
   display: flex; /* Enable horizontal layout */
   align-items: center; /* Vertically align icon and text */
@@ -836,14 +865,14 @@ body {
 
 .concept-shopping-icon {
   color: #2d2d2d !important; /* Icon color */
-  font-size: 24px; /* Adjust icon size */
-  border: 3px white !important;
+  font-size: 15px; /* Adjust icon size */
+  border: 1px white !important;
   background-color: #e5e4e2 !important;
 }
 
 .concept-card-text {
   color: #eae3e4; /* Text color */
-  font-size: 20px; /* Adjust text size */
+  font-size: 15px; /* Adjust text size */
   font-weight: bold !important; /* Slightly bold text */
   font-family: Montserrat;
 }
@@ -852,12 +881,13 @@ body {
   background: rgba(0, 0, 0, 0.7);
 }
 
-.concept-subtitle {
+.concept-subtitle h4 {
+  font-size: 22px;
   text-align: left;
 }
 
 .concept-subtitle-title {
-  font-size: 26px;
+  font-size: 30px;
   font-family: "Horizon" !important;
   font-weight: bold !important;
   line-height: 1.4;
@@ -874,7 +904,7 @@ body {
   display: flex;
   justify-content: space-between; /* Space out the progress bar and arrows */
   align-items: center; /* Vertically align all elements */
-  margin-top: -40px;
+  margin-top: -80px;
 }
 
 .concept-progress-container {
@@ -5612,6 +5642,9 @@ input:focus {
     0.5
   ); /* Semi-transparent background to see the container */
   border: 1px solid rgb(0, 0, 0); /* Debugging border to ensure visibility */
+  height: 4px; /* Thin progress bar */
+  background-color: #363636; /* Grey background */
+  border-radius: 20px;
 }
 /* Custom progress bar styling */
 .custom-progress-bar {

@@ -38,7 +38,13 @@ const SidebarVendor = ({ setActivePage }) => {
           onClick={() => setActivePage("BrandingPage")}
           className="sidebar-item-vendor"
         >
-          Branding Page
+          Brand Profile
+        </li>
+        <li
+          onClick={() => setActivePage("BrandingPage")}
+          className="sidebar-item-vendor"
+        >
+          Accounting
         </li>
       </ul>
     </aside>

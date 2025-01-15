@@ -16,9 +16,17 @@ import {
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
 
+// import OptionPopUp from "../Components/product/optionPopUp";
+
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
+  const [setShowDropdown] = useState(false);
+  //const [showPopup, setShowPopup] = useState(false);
+  const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
+  const [setShowFirstPopup] = useState(false); // State for Request Quote popup
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
+
 
   const handleCloseRequestInfo = () => {
     setIsRequestInfoOpen(false);
@@ -37,6 +45,18 @@ function ProductPage() {
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
+
+  // Handle opening the popup
+  // const handlePopupOpen = () => {
+  //   setShowPopup(true);
+  // };
+
+  // Handle closing the popup
+  // const handlePopupClose = () => {
+  //   setShowPopup(false);
+  // };
+
 
   useEffect(() => {
     // Fetch product data
