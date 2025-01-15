@@ -124,7 +124,7 @@ const ResetPasswordForm = () => {
   return (
     <Box className="reset-password-content">
       {error && (
-        <p style={{ color: "red", fontFamily: "Montserrat" }}>{error}</p>
+        <p style={{ color: "pink", fontFamily: "Montserrat" }}>{error}</p>
       )}
       {success && (
         <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
