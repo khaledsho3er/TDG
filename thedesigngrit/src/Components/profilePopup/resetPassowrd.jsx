@@ -28,7 +28,7 @@ const ResetPasswordForm = () => {
     setLoading(true); // Show loading spinner
 
     // Validate if passwords match
-    if (newPassword.trim() !== confirmPassword.trim()) {
+    if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
       setLoading(false);
       return;
@@ -48,22 +48,14 @@ const ResetPasswordForm = () => {
         { currentPassword, newPassword },
         {
           headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
         }
       );
 
-      console.log("Backend response:", response); // Log the response for debugging
-
-      // Check for a success message
-      if (
-        response.status === 200 &&
-        response.data.message === "Password updated successfully"
-      ) {
+      if (response.data.message === "Password updated successfully") {
         setSuccess("Password updated successfully.");
-        setSuccessDialogOpen(true);
+        setSuccessDialogOpen(true); // Open success dialog
       } else {
-        // Fallback for unexpected success structure
-        setError(response.data.message || "Failed to update password.");
+        setError("Failed to update password.");
       }
     } catch (error) {
       console.error("Error updating password:", error.response?.data);
