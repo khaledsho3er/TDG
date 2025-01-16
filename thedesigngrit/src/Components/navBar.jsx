@@ -207,9 +207,8 @@ function Header() {
             ) : (
               <button
                 variant="contained"
-                onClick={handleSignUpClick}
+                onClick={handleLoginClick}
                 className="Signup-btn-navbar"
-
               >
                 Login
               </button>
