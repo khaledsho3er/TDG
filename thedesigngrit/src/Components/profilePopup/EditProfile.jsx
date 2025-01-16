@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
 
 function EditProfile() {
-  const [setIsPopupVisible] = useState(false);
+  const [IsPopupVisible, setIsPopupVisible] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState(""); // To track whether "Save" or "Cancel" is clicked
 

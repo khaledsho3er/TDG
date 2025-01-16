@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Typography,
@@ -14,41 +14,45 @@ import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 import Stickedbutton from "./MoodboardButton";
 import ShoppingCartOverlay from "./Popups/CartOverlay";
-import FavoritesOverlay from "./favoriteOverlay"; // Import the FavoritesOverlay component
+import FavoritesOverlay from "./favoriteOverlay";
 import Menudrop from "./menuhover/Menudrop";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useNavigate } from "react-router-dom";
+// Context for managing user session
+import { UserContext } from "../utils/userContext";
+import axios from "axios";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [favoritesOpen, setFavoritesOpen] = useState(false); // State for FavoritesOverlay
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [menuData, setMenuData] = useState([]); // State to hold categories data as an array
-  const [isMenuHovered, setIsMenuHovered] = useState(false); // Track if menu is hovered
+  const [menuData, setMenuData] = useState([]);
+  const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile] = useState(window.innerWidth < 767);
   const [isSticky, setIsSticky] = useState(false);
-
-  // Add logged-in state and user data
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
-
-  const navigate = useNavigate();
+  const { userSession } = useContext(UserContext); // Access user session from context
+  const navigate = useNavigate(); // Hook for navigation
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 767);
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address1: "",
+    phoneNumber: "",
+  });
 
   useEffect(() => {
-    // Fetch the categories and their details once when the component loads
     const fetchCategories = async () => {
       try {
         const response = await fetch(
           "http://localhost:5000/api/categories/categories"
-        ); // API that returns all categories
+        );
         if (!response.ok) {
           throw new Error("Failed to load categories");
         }
         const data = await response.json();
-        setMenuData(data); // Save the category data
+        setMenuData(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -59,7 +63,6 @@ function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if the scroll position is greater than a threshold
       setIsSticky(window.scrollY > 80);
     };
 
@@ -70,12 +73,32 @@ function Header() {
     };
   }, []);
 
-  // Simulate login state (Replace with real authentication logic)
   useEffect(() => {
-    const loggedIn = false; // Change to true to simulate logged-in state
-    const name = "John Doe"; // Replace with actual user name
-    setIsLoggedIn(loggedIn);
-    setUserName(name);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 767); // Update state on window resize
+    };
+
+    window.addEventListener("resize", handleResize); // Add resize event listener
+    return () => {
+      window.removeEventListener("resize", handleResize); // Cleanup on unmount
+    };
+  }, []);
+
+  useEffect(() => {
+    // Fetch user data
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/getUser", {
+          withCredentials: true,
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error.response || error);
+        alert("Failed to fetch user data.");
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleCartToggle = () => {
@@ -83,7 +106,7 @@ function Header() {
   };
 
   const handleFavoritesToggle = () => {
-    setFavoritesOpen(!favoritesOpen); // Toggle FavoritesOverlay
+    setFavoritesOpen(!favoritesOpen);
   };
 
   const handlePopupToggle = () => {
@@ -96,7 +119,7 @@ function Header() {
 
   const handleMouseLeaveCategory = () => {
     if (!isMenuHovered) {
-      setHoveredCategory(null); // Only hide the menu if not hovering over the menu itself
+      setHoveredCategory(null);
     }
   };
 
@@ -111,10 +134,12 @@ function Header() {
     }
   };
 
-  const handleSignUpClick = () => {
-    console.log("Sign up clicked!");
-    navigate("/login");
-    // Add your signup navigation logic here
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -127,8 +152,10 @@ function Header() {
       }}
       className={`header-container ${isSticky ? "sticky" : ""}`}
     >
+      {/* Top Header */}
       <Box className={`header ${isSticky ? "sticky" : ""}`}>
         <Box className="header-top">
+          {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo" variant="h4">
               <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
@@ -136,7 +163,7 @@ function Header() {
           </Link>
 
           {isMobile && (
-            <IconButton onClick={() => setMenuOpen(!menuOpen)}>
+            <IconButton onClick={toggleMenu}>
               <MenuIcon />
             </IconButton>
           )}
@@ -150,6 +177,7 @@ function Header() {
             </Box>
           )}
 
+          {/* Search */}
           <Box className="search-bar">
             <SearchIcon sx={{ color: "#999" }} />
             <InputBase
@@ -158,6 +186,7 @@ function Header() {
             />
           </Box>
 
+          {/* Icons */}
           <Box className="icon-container">
             <IconButton onClick={handleFavoritesToggle}>
               <FavoriteBorderIcon fontSize="20px" />
@@ -165,20 +194,22 @@ function Header() {
             <IconButton onClick={handleCartToggle}>
               <ShoppingCartIcon fontSize="20px" />
             </IconButton>
-
-            {isLoggedIn ? (
+            {userSession ? (
               <Avatar
                 className="avatar"
                 onClick={handlePopupToggle}
                 sx={{ cursor: "pointer" }}
               >
-                {userName.charAt(0).toUpperCase()}
+                {userData.firstName
+                  ? userData.firstName[0].toUpperCase()
+                  : "TDG"}
               </Avatar>
             ) : (
               <button
                 variant="contained"
                 onClick={handleSignUpClick}
                 className="Signup-btn-navbar"
+
               >
                 Login
               </button>
@@ -187,7 +218,7 @@ function Header() {
         </Box>
       </Box>
 
-      {/* Categories Section */}
+      {/* Categories */}
       <Box className="header-bottom" onMouseLeave={handleMouseLeaveCategory}>
         {menuData.length === 0 ? (
           <Typography>No categories available</Typography>
