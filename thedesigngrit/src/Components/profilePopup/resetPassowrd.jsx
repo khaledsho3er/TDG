@@ -28,7 +28,7 @@ const ResetPasswordForm = () => {
     setLoading(true); // Show loading spinner
 
     // Validate if passwords match
-    if (newPassword !== confirmPassword) {
+    if (newPassword.trim() !== confirmPassword.trim()) {
       setError("Passwords do not match.");
       setLoading(false);
       return;
@@ -48,14 +48,22 @@ const ResetPasswordForm = () => {
         { currentPassword, newPassword },
         {
           headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         }
       );
 
-      if (response.data.message === "Password updated successfully") {
+      console.log("Backend response:", response); // Log the response for debugging
+
+      // Check for a success message
+      if (
+        response.status === 200 &&
+        response.data.message === "Password updated successfully"
+      ) {
         setSuccess("Password updated successfully.");
         setSuccessDialogOpen(true); // Open success dialog
       } else {
-        setError("Failed to update password.");
+        // Fallback for unexpected success structure
+        setError(response.data.message || "Failed to update password.");
       }
     } catch (error) {
       console.error("Error updating password:", error.response?.data);
@@ -115,8 +123,52 @@ const ResetPasswordForm = () => {
 
   return (
     <Box className="reset-password-content">
+      {/*
+      <div className="reset-form-field">
+        <label>Current Password</label>
+        <input
+          label="Current Password"
+          type="password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+        />
+      </div>
+
+      <div className="reset-form-field">
+        <label>New Password</label>
+        <input
+          label="New Password"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+          helperText="Min. Length: 8 characters. Character Types: Uppercase, lowercase, number, special character."
+        />
+      </div>
+
+      <div className="reset-form-field">
+        <label>Re-type Password</label>
+        <input
+          label="Re-type Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          className="reset-popup-form-full-width"
+          error={newPassword !== confirmPassword}
+          helperText={
+            newPassword !== confirmPassword ? "Passwords do not match" : ""
+          }
+        />*/}
+
       {error && (
-        <p style={{ color: "red", fontFamily: "Montserrat" }}>{error}</p>
+        <p style={{ color: "pink", fontFamily: "Montserrat" }}>{error}</p>
       )}
       {success && (
         <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
