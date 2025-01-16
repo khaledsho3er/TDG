@@ -160,10 +160,10 @@ function Header() {
 
           <Box className="icon-container">
             <IconButton onClick={handleFavoritesToggle}>
-              <FavoriteBorderIcon sx={{ fontSize: "17px" }} />
+              <FavoriteBorderIcon fontSize="20px" />
             </IconButton>
             <IconButton onClick={handleCartToggle}>
-              <ShoppingCartIcon sx={{ fontSize: "17px" }} />
+              <ShoppingCartIcon fontSize="20px" />
             </IconButton>
 
             {isLoggedIn ? (
@@ -175,14 +175,13 @@ function Header() {
                 {userName.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
-              <Button
+              <button
                 variant="contained"
-                color="primary"
                 onClick={handleSignUpClick}
                 className="Signup-btn-navbar"
               >
                 Login
-              </Button>
+              </button>
             )}
           </Box>
         </Box>

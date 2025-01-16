@@ -389,9 +389,9 @@ body::-webkit-scrollbar {
 }
 
 .icon-container {
-  display: flex;
-  align-items: center;
-  gap: 10x;
+  display: inline;
+  flex-direction: row;
+  align-items: baseline;
 }
 
 .avatar {
@@ -399,7 +399,15 @@ body::-webkit-scrollbar {
 }
 
 .Signup-btn-navbar {
-  background-color: rgb(21, 93, 21) !important;
+  background-color: #2d2d2d !important;
+  color: #eae3e4 !important;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: Montserrat;
+  font-weight: 400;
+  font-size: 15px;
+  padding: 10px 20px;
 }
 
 .header-bottom {
@@ -2008,7 +2016,7 @@ textarea {
   position: relative;
   width: 100%;
   height: 100vh; /* Full viewport height */
-  background-image: url("/public/Assets/contactUs.png"); /* Replace with your image URL */
+  background-image: url("/Assets/contactUs.png"); /* Replace with your image URL */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -2026,7 +2034,7 @@ textarea {
   padding-top: 30px;
   padding-bottom: 100px;
   resize: both;
-
+  margin-top: -108px;
   backdrop-filter: blur(15px);
 }
 .Contant-caption {
@@ -2060,9 +2068,9 @@ textarea {
   padding-top: 20px;
   width: 400px; /* Set the exact width of the form */
   height: auto; /* Keep the height responsive or define it */
-  margin: auto; /* Center the form horizontally */
   max-width: 350px; /* Adjust base size */
   padding: 1.2rem; /* Add internal spacing */
+  margin-top: 108px;
 }
 
 /* Form Inside the Contact-form */
@@ -5570,6 +5578,7 @@ input:focus {
 }
 
 .menu-item h3 {
+  font-family: montserrat;
   margin-top: -5px;
   font-size: 0.6rem;
 }
@@ -5603,7 +5612,7 @@ input:focus {
   padding: 0;
   margin-left: -20px;
   margin-top: -5px;
-  font-family: "montserrat,san-sarif";
+  font-family: "montserrat";
   font-size: 0.6rem;
   display: flex;
   flex-direction: column;
@@ -5613,7 +5622,7 @@ input:focus {
 }
 
 .menu-right ul li {
-  font-family: "montserrat,san-sarif";
+  font-family: "montserrat";
 
   gap: 60px;
   font-size: 0.7rem;
