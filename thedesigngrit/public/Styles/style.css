@@ -389,9 +389,7 @@ body::-webkit-scrollbar {
 }
 
 .icon-container {
-  display: inline;
-  flex-direction: row;
-  align-items: baseline;
+  display: flex;
 }
 
 .avatar {
@@ -861,7 +859,6 @@ body::-webkit-scrollbar {
 
 .concept-card-content {
   position: absolute; /* Allow positioning within the parent */
-  top: 180px; /* Align content near the bottom of the card */
   left: 10px; /* Align content near the left of the card */
   display: flex; /* Enable horizontal layout */
   align-items: center; /* Vertically align icon and text */
@@ -929,15 +926,18 @@ body::-webkit-scrollbar {
   height: 8px;
   background: #e0e0e0;
   overflow: hidden;
-  position: relative;
   padding-left: 20px;
-  margin-left: 20px;
+  transition: width 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
 }
 
 .concept-progress-fill {
-  width: 40%; /* Adjust the filled progress */
+  width: 20%; /* Adjust the filled progress */
   height: 100%;
   background: #6b7b58;
+  position: absolute;
+  transition: width 0.3s ease-in-out;
 }
 
 .concept-navigation {
