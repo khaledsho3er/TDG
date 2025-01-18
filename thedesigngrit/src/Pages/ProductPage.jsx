@@ -16,13 +16,11 @@ import {
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
 
-// import OptionPopUp from "../Components/product/optionPopUp";
-
 function ProductPage() {
-  const [setShowDropdown] = useState(false);
-  //const [showPopup, setShowPopup] = useState(false);
-  const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
-  const [setShowFirstPopup] = useState(false); // State for Request Quote popup
+  // const [setShowDropdown] = useState(false);
+  // //const [showPopup, setShowPopup] = useState(false);
+  // const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
+  // const [setShowFirstPopup] = useState(false); // State for Request Quote popup
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
 

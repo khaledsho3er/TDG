@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { FaArrowRight } from "react-icons/fa6";
 
 const ExploreConcepts = () => {
   const cards = [
@@ -20,23 +19,18 @@ const ExploreConcepts = () => {
     { id: 5, title: "Kitchen", image: "/Assets/concept4.jpg" },
   ]; // Imagine this list comes from the backend
 
-  const [visibleIndexes, setVisibleIndexes] = useState([0, 1, 2]); // Indices of the visible cards
+  const [currentCard, setCurrentCard] = useState(0); // Track the current card index
 
   const handleNext = () => {
-    setVisibleIndexes((prevIndexes) => [
-      (prevIndexes[0] + 1) % cards.length,
-      (prevIndexes[1] + 1) % cards.length,
-      (prevIndexes[2] + 1) % cards.length,
-    ]);
+    setCurrentCard((prev) => (prev + 1) % cards.length);
   };
 
   const handlePrev = () => {
-    setVisibleIndexes((prevIndexes) => [
-      (prevIndexes[0] - 1 + cards.length) % cards.length,
-      (prevIndexes[1] - 1 + cards.length) % cards.length,
-      (prevIndexes[2] - 1 + cards.length) % cards.length,
-    ]);
+    setCurrentCard((prev) => (prev - 1 + cards.length) % cards.length);
   };
+
+  // Calculate left position for the progress fill
+  const progressLeft = (currentCard / (cards.length - 1)) * 100;
 
   return (
     <Box className="concept-explore-container">
@@ -49,7 +43,11 @@ const ExploreConcepts = () => {
 
       {/* Cards */}
       <Box className="concept-cards-container">
-        {visibleIndexes.map((index, position) => {
+        {[
+          currentCard,
+          (currentCard + 1) % cards.length,
+          (currentCard + 2) % cards.length,
+        ].map((index, position) => {
           const card = cards[index];
           let className = "concept-card";
           if (position === 1) className += " middle-card"; // Middle card
@@ -64,9 +62,6 @@ const ExploreConcepts = () => {
                 <IconButton className="concept-shopping-icon">
                   <ShoppingBagIcon />
                 </IconButton>
-
-                <p className="concept-card-text">{card.title}</p>
-                {position === 1 && <FaArrowRight color="#eae3e4" size="20px" />}
               </CardContent>
             </Card>
           );
@@ -87,11 +82,14 @@ const ExploreConcepts = () => {
       {/* Progress */}
       <Box className="concept-controls">
         <Box className="concept-progress-container">
-          <Typography>02</Typography>
+          <Typography>{currentCard + 1}</Typography>
           <Box className="concept-progress-bar">
-            <Box className="concept-progress-fill"></Box>
+            <Box
+              className="concept-progress-fill"
+              style={{ left: `${progressLeft}%` }}
+            ></Box>
           </Box>
-          <Typography>23</Typography>
+          <Typography>{cards.length}</Typography>
         </Box>
 
         <Box className="concept-navigation">

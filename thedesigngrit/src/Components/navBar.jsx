@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Box,
-  Typography,
-  InputBase,
-  IconButton,
-  Avatar,
-  Button,
-} from "@mui/material";
+import { Box, Typography, InputBase, IconButton, Avatar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -188,22 +181,24 @@ function Header() {
 
           {/* Icons */}
           <Box className="icon-container">
-            <IconButton onClick={handleFavoritesToggle}>
-              <FavoriteBorderIcon fontSize="20px" />
-            </IconButton>
-            <IconButton onClick={handleCartToggle}>
-              <ShoppingCartIcon fontSize="20px" />
-            </IconButton>
             {userSession ? (
-              <Avatar
-                className="avatar"
-                onClick={handlePopupToggle}
-                sx={{ cursor: "pointer" }}
-              >
-                {userData.firstName
-                  ? userData.firstName[0].toUpperCase()
-                  : "TDG"}
-              </Avatar>
+              <>
+                <IconButton onClick={handleFavoritesToggle}>
+                  <FavoriteBorderIcon fontSize="20px" />
+                </IconButton>
+                <IconButton onClick={handleCartToggle}>
+                  <ShoppingCartIcon fontSize="20px" />
+                </IconButton>
+                <Avatar
+                  className="avatar"
+                  onClick={handlePopupToggle}
+                  sx={{ cursor: "pointer" }}
+                >
+                  {userData.firstName
+                    ? userData.firstName[0].toUpperCase()
+                    : "TDG"}
+                </Avatar>
+              </>
             ) : (
               <button
                 variant="contained"
