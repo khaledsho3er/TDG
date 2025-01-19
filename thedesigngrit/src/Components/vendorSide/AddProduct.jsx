@@ -1,7 +1,8 @@
 import { Box, TextField, Button, InputLabel } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ProductForm = () => {
   const [tags, setTags] = useState(["Lorem", "Lorem", "Lorem"]); // Default tags
@@ -22,18 +23,132 @@ const ProductForm = () => {
     costBreakdown: "",
     leadTime: "",
   });
+  // State variables
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  // Handle checkbox changes
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setCustomization((prev) => ({
-      ...prev,
-      customizationTypes: checked
-        ? [...prev.customizationTypes, value]
-        : prev.customizationTypes.filter((type) => type !== value),
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    dimensions: { length: "", width: "", height: "", weight: "" },
+    category: "",
+    subCategory: "",
+    type: "",
+    manufacturer: "",
+    collection: "",
+    productType: "",
+    brandId: "",
+    brand: "",
+    leadTime: "",
+    sku: "",
+    stock: "",
+    salePrice: "",
+    tags: [],
+    bimCadFile: null,
+    customization: {
+      types: [],
+      additionalDetails: "",
+      additionalCosts: "",
+      Estimatedtimeleadforcustomization: "",
+    },
+    warranty: {
+      duration: "1 Year",
+      coverage: [],
+      claimProcess: "",
+    },
+    productCare: {
+      materialCareInstructions: "",
+      productSpecificRecommendations: "",
+    },
+    images: [],
+  });
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/categories/categories"
+        );
+        setCategories(response.data); // Assuming the response contains categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = async (e) => {
+    const selectedCategoryId = e.target.value;
+    setSelectedCategory(selectedCategoryId);
+    setSubCategories([]); // Reset subcategories
+    setSelectedSubCategory(""); // Reset subcategory
+
+    try {
+      // Fetch subcategories for the selected category
+      const response = await axios.get(
+        `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+      );
+      setSubCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+  // Fetch types when a subcategory is selected
+  const handleSubCategoryChange = async (e) => {
+    const selectedSubCategoryId = e.target.value;
+    setSelectedSubCategory(selectedSubCategoryId);
+    setTypes([]); // Reset types
+
+    try {
+      // Fetch types that are associated with the selected subcategory
+      const response = await axios.get(
+        `http://localhost:5000/api/subcategories/bySubcategory/${selectedSubCategoryId}`
+      );
+      setTypes(response.data); // Set types based on the fetched data
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+  // Handle input change for basic fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
     }));
   };
+  // Handle checkbox changes
+  // const handleCheckboxChange = (e) => {
+  //   const { value, checked } = e.target;
+  //   setCustomization((prev) => ({
+  //     ...prev,
+  //     customizationTypes: checked
+  //       ? [...prev.customizationTypes, value]
+  //       : prev.customizationTypes.filter((type) => type !== value),
+  //   }));
+  // };
+  // Handle checkbox changes (for customization options)
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedCustomizationTypes = checked
+        ? [...prevData.customization.types, value]
+        : prevData.customization.types.filter((type) => type !== value);
 
+      return {
+        ...prevData,
+        customization: {
+          ...prevData.customization,
+          types: updatedCustomizationTypes,
+        },
+      };
+    });
+  };
   // Handle input changes for customization fields
   const handleCustomizationChange = (e) => {
     const { name, value } = e.target;
@@ -83,6 +198,89 @@ const ProductForm = () => {
   const handleSetMainImage = (index) => {
     setMainImage(images[index]);
   };
+  // Handle BIM/CAD file change
+  const handleBimCadFileUpload = (e) => {
+    const file = e.target.files[0];
+    setBimCadFileName(file ? file.name : "");
+  };
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = new FormData();
+
+    // Append basic fields
+    payload.append("name", formData.name);
+    payload.append("description", formData.description);
+    payload.append("category", selectedCategory);
+    payload.append("subcategory", selectedSubCategory);
+    payload.append("type", formData.type);
+    payload.append("brandName", formData.brand);
+    payload.append("leadTime", formData.leadTime);
+    payload.append("sku", formData.sku);
+    payload.append("stock", formData.stockQuantity);
+    payload.append("price", formData.regularPrice);
+    payload.append("salePrice", formData.salePrice || 0);
+
+    // Append nested fields
+    payload.append("technicalDimensions[length]", formData.dimensions.length);
+    payload.append("technicalDimensions[width]", formData.dimensions.width);
+    payload.append("technicalDimensions[height]", formData.dimensions.height);
+    payload.append("technicalDimensions[weight]", formData.dimensions.weight);
+
+    payload.append("Customizationoptions", formData.customization.types);
+    payload.append("Additionaldetails", customization.additionalDetails);
+    payload.append("Additionalcosts", customization.additionalCosts);
+
+    payload.append(
+      "warrantyInfo[warrantyYears]",
+      parseInt(warrantyDuration, 10)
+    );
+    payload.append(
+      "warrantyInfo[warrantyCoverage][]",
+      formData.warranty.coverage
+    );
+
+    payload.append("materialCareInstructions", materialCareInstructions);
+    payload.append(
+      "productSpecificRecommendations",
+      productSpecificRecommendations
+    );
+    payload.append("claimProcess", claimProcess);
+
+    // Append tags
+    tags.forEach((tag) => payload.append("tags[]", tag));
+
+    // Append images
+    images.forEach((image, index) => {
+      const file = new File([image], `image_${index}.png`, {
+        type: "image/png",
+      });
+      payload.append("images", file);
+    });
+
+    if (mainImage) {
+      const mainImageFile = new File([mainImage], "main_image.png", {
+        type: "image/png",
+      });
+      payload.append("mainImage", mainImageFile);
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/products/addproduct",
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Product added successfully:", response.data);
+    } catch (error) {
+      console.error("Error adding product:", error.response || error);
+    }
+  };
+
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
       <header className="dashboard-header-vendor">
@@ -93,18 +291,24 @@ const ProductForm = () => {
           </p>
         </div>
       </header>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="product-form">
           <div className="form-left">
             <div className="form-group">
               <label>Product Name</label>
-              <input type="text" placeholder="Type name here" required />
+              <input
+                type="text"
+                placeholder="Type name here"
+                required
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
               <label>Description</label>
               <textarea
                 placeholder="Provide a detailed product description of 20-50 words. Include unique selling points, features, and benefits."
                 required
+                onChange={handleChange}
               ></textarea>
             </div>
             <div className="form-group">
@@ -117,24 +321,69 @@ const ProductForm = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <input type="text" placeholder="Length (cm)" required />
-                <input type="text" placeholder="Width (cm)" required />
-                <input type="text" placeholder="Height (cm)" required />
+                <input
+                  type="text"
+                  placeholder="Length (cm)"
+                  required
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  placeholder="Width (cm)"
+                  required
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  placeholder="Height (cm)"
+                  required
+                  onChange={handleChange}
+                />
                 <input type="text" placeholder="Weight (cm)" required />
               </Box>
             </div>
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                required
+              >
+                <option value="" disabled>
+                  Select Category
+                </option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="form-row">
               <div className="form-group half-width">
-                <label>Category</label>
-                <input type="text" placeholder="Type Category here" required />
+                <label>Sub Category</label>
+                <select
+                  value={selectedSubCategory}
+                  onChange={handleSubCategoryChange}
+                >
+                  <option value="">Select Subcategory</option>
+                  {subCategories.map((subCategory) => (
+                    <option key={subCategory._id} value={subCategory._id}>
+                      {subCategory.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group half-width">
-                <label>Sub Category</label>
-                <input
-                  type="text"
-                  placeholder="Type Sub-Category here"
-                  required
-                />
+                <label>Select Type: </label>
+                <select>
+                  <option value="">Select Type</option>
+                  {types.map((type) => (
+                    <option key={type._id} value={type._id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="form-group">
@@ -176,7 +425,6 @@ const ProductForm = () => {
                 placeholder="Add tag and press Enter"
                 onKeyDown={handleAddTag}
                 className="tag-input"
-                required
               />
               <br />
               <div className="tags">
@@ -222,6 +470,7 @@ const ProductForm = () => {
                       borderRadius: "5px",
                       transition: "background-color 0.3s ease",
                     }}
+                    onClick={handleBimCadFileUpload}
                   >
                     Upload File
                   </Button>
@@ -586,12 +835,14 @@ const ProductForm = () => {
                 ))}
               </div>
             </div>
-            <div className="form-actions">
-              <button className="btn update">ADD</button>
-              <button className="btn delete">DELETE</button>
-              <button className="btn cancel">CANCEL</button>
-            </div>
           </div>
+        </div>
+        <div className="form-actions">
+          <button className="btn update" type="submit">
+            ADD
+          </button>
+          <button className="btn delete">DELETE</button>
+          <button className="btn cancel">CANCEL</button>
         </div>
       </form>
     </div>
