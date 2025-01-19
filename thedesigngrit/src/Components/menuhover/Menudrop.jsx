@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
 
-  const [selectedDetail, setSelectedDetail] = useState(
-    details.subCategories[0]
-  ); // Set initial subcategory
-
+  // const [selectedDetail, setSelectedDetail] = useState(
+  //   details.subCategories[0]
+  // ); // Set initial subcategory
+  const [selectedDetail, setSelectedDetail] = useState(null);
+  useEffect(() => {
+    if (details?.subCategories?.length > 0) {
+      setSelectedDetail(details.subCategories[0]); // Automatically select the first subcategory
+    } else {
+      setSelectedDetail(null); // Reset if no subcategories
+    }
+  }, [details]);
   const handleNavigation = () => {
     navigate(`/shop/${category}`);
   };
@@ -49,7 +56,7 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
       {/* Right Section */}
       <div className="menu-right-container">
         <div className="menu-right">
-          {selectedDetail && (
+          {selectedDetail ? (
             <>
               <h2>{selectedDetail.name}</h2>
               <ul>
@@ -58,7 +65,7 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
                 ))}
               </ul>
             </>
-          )}
+          ) : null}
         </div>
         {selectedDetail && (
           <img
