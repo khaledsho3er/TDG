@@ -194,9 +194,10 @@ function Header() {
                   onClick={handlePopupToggle}
                   sx={{ cursor: "pointer" }}
                 >
-                  {userData.firstName
+                  {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
+                  {/* {userData.firstName
                     ? userData.firstName[0].toUpperCase()
-                    : "TDG"}
+                    : "TDG"} */}
                 </Avatar>
               </>
             ) : (

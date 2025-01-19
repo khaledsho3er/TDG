@@ -24,7 +24,7 @@ function ProfilePopup({ open, onClose }) {
   const handleLogout = () => {
     setUserSession(null); // Clear user session from context
     localStorage.removeItem("userSession"); // Remove session from localStorage
-    navigate("/login"); // Redirect to the sign-in page
+    navigate("/home"); // Redirect to the sign-in page
     onClose(); // Close the popup
   };
 
