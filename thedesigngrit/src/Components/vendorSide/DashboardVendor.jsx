@@ -9,10 +9,11 @@ import {
   FaChartLine,
 } from "react-icons/fa"; // React Icons
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const DashboardVendor = () => {
   const [orders, setOrders] = useState([]);
-
+  const navigate = useNavigate();
   // Fetch order data from JSON
   const fetchOrders = async () => {
     try {
@@ -113,7 +114,6 @@ const DashboardVendor = () => {
             }}
           >
             <h3>Best Sellers</h3>
-            <BsThreeDotsVertical />
           </Box>
           <hr></hr>
           <ul>
@@ -162,7 +162,11 @@ const DashboardVendor = () => {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order.id}>
+                <tr
+                  key={order.id}
+                  onClick={() => navigate(`/orderDetail/${order.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
                   <td>{order.product}</td>
                   <td>{order.orderId}</td>
                   <td>{order.date}</td>
