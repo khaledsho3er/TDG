@@ -1,20 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
+import { MenuItem, Select } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
+
 const ProductsPageVendor = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const productsPerPage = 12; // Products per page
-
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
   const [menuOpen, setMenuOpen] = useState(null); // State to track which menu is open
+
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for the promotion
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/json/productData.json");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/categories/categories"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = async (e) => {
+    const selectedCategoryId = e.target.value;
+    setSelectedCategory(selectedCategoryId);
+    setSubCategories([]);
+    setSelectedSubCategory("");
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+      );
+      setSubCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+
+  const handleSubCategoryChange = (e) => {
+    setSelectedSubCategory(e.target.value);
+  };
+
+  const filteredProducts = products.filter((product) => {
+    if (selectedSubCategory) {
+      return product.subCategoryId === selectedSubCategory;
+    }
+    if (selectedCategory) {
+      return product.categoryId === selectedCategory;
+    }
+    return true;
+  });
 
   const toggleMenu = (productId) => {
     setMenuOpen(menuOpen === productId ? null : productId); // Toggle menu
   };
-
   const handleEdit = (product) => {
     navigate("/update-product", { state: { product } }); // Navigate with product data
     console.log("Edit", product);
@@ -27,38 +90,26 @@ const ProductsPageVendor = () => {
   };
 
   const handleInsights = (product) => {
-    console.log("Insights", product);
-    // Add your insights functionality here
-  };
-  // Function to fetch JSON data
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch("/json/productData.json"); // Replace with the actual path
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    setSelectedProduct(product); // Set the selected product
+    setPromotionModalOpen(true); // Open the modal
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []); // Fetch data on component mount
-  // Pagination Logic
+  const handleSavePromotion = (promotionDetails) => {
+    console.log("Promotion Details:", promotionDetails);
+    // Save promotion details (e.g., send to API or update state)
+    setPromotionModalOpen(false); // Close the modal after saving
+  };
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  const totalPages = Math.ceil(products.length / productsPerPage);
-
-  // Function to handle page change
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="product-list-page-vendor">
       <header className="dashboard-header-vendor">
@@ -85,6 +136,52 @@ const ProductsPageVendor = () => {
           </button>
         </div>
       </header>
+
+      {/* Filters */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          marginBottom: "20px",
+        }}
+      >
+        <Select
+          sx={{
+            width: "200px",
+            color: "#2d2d2d",
+            backgroundColor: "#fff",
+          }}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+        >
+          <MenuItem value="">Select Category</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category.id} value={category.id}>
+              {category.name}
+            </MenuItem>
+          ))}
+        </Select>
+
+        {subCategories.length > 0 && (
+          <Select
+            sx={{
+              width: "200px",
+              marginLeft: "20px",
+            }}
+            value={selectedSubCategory}
+            onChange={handleSubCategoryChange}
+          >
+            <option value="">Select Subcategory</option>
+            {subCategories.map((subCategory) => (
+              <option key={subCategory.id} value={subCategory.id}>
+                {subCategory.name}
+              </option>
+            ))}
+          </Select>
+        )}
+      </div>
+
       <div className="vendor-products-list-grid">
         {currentProducts.map((product) => (
           <div className="all-product-card" key={product.id}>
@@ -111,7 +208,7 @@ const ProductsPageVendor = () => {
                       Delete
                     </button>
                     <button onClick={() => handleInsights(product)}>
-                      Insights
+                      Promotion
                     </button>
                   </div>
                 )}
@@ -149,10 +246,7 @@ const ProductsPageVendor = () => {
       </div>
 
       {/* Pagination */}
-      <div
-        className="pagination"
-        style={{ textAlign: "left", margin: "120px 0" }}
-      >
+      <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
@@ -163,39 +257,24 @@ const ProductsPageVendor = () => {
               backgroundColor:
                 currentPage === index + 1 ? "#2d2d2d" : "#efebe8",
               color: currentPage === index + 1 ? "#fff" : "#2d2d2d",
-              border:
-                currentPage === index + 1
-                  ? "1px solid #2d2d2d"
-                  : "1px solid #2d2d2d",
               borderRadius: "5px",
               cursor: "pointer",
-              fontWeight: currentPage === index + 1 ? "bold" : "normal",
             }}
           >
             {index + 1}
           </button>
         ))}
-        {currentPage < totalPages && (
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            style={{
-              margin: "5px",
-              padding: "8px 12px",
-              backgroundColor: "#efebe8",
-              border: "1px solid #2d2d2d",
-              borderRadius: "5px",
-              cursor: "pointer",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            NEXT{" "}
-            <IoIosArrowForward
-              style={{ color: "#2d2d2d", marginBottom: "-2px" }}
-            />
-          </button>
-        )}
       </div>
+
+      {/* Promotion Modal */}
+      {promotionModalOpen && (
+        <PromotionModal
+          open={promotionModalOpen}
+          onClose={() => setPromotionModalOpen(false)}
+          onSave={handleSavePromotion}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };

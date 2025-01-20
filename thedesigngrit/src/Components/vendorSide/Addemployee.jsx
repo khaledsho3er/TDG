@@ -85,10 +85,15 @@ const EmployeeSignup = () => {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
-      <Typography variant="h4" gutterBottom>
+    <div style={{ padding: "110px", fontFamily: "Montserrat" }}>
+      <Typography
+        variant="h4"
+        sx={{ fontWeight: "bold", fontFamily: "Horizon" }}
+        gutterBottom
+      >
         Add New Employee
       </Typography>
+      <br></br>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>

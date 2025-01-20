@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SlCalender } from "react-icons/sl";
-import { Box, Select, MenuItem, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import VendorPageLayout from "./VendorLayout";
 import { IoMdPrint } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
@@ -11,7 +11,7 @@ import { FiPackage } from "react-icons/fi";
 const OrderDetails = () => {
   const { id } = useParams(); // Get order ID from the URL
   const [order, setOrder] = useState(null);
-  const [status, setStatus] = useState(""); // State to track the status change
+  // const [status, setStatus] = useState(""); // State to track the status change
 
   // Fetch the specific order data
   useEffect(() => {
@@ -24,9 +24,9 @@ const OrderDetails = () => {
       .catch((error) => console.error("Error fetching order details:", error));
   }, [id]);
   // Handle the status change
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value); // Update the status when the user selects a new one
-  };
+  // const handleStatusChange = (event) => {
+  //   setStatus(event.target.value); // Update the status when the user selects a new one
+  // };
 
   if (!order) return <p>Loading...</p>;
 
@@ -114,7 +114,7 @@ const OrderDetails = () => {
                 flexDirection: "row",
               }}
             >
-              <Select
+              {/* <Select
                 sx={{
                   width: "200px",
                   backgroundColor: "#ddd",
@@ -126,12 +126,12 @@ const OrderDetails = () => {
                 onChange={handleStatusChange} // Handle the change
               >
                 <MenuItem value="">Change Status</MenuItem>{" "}
-                {/* Always show "Change Status" */}
+                
                 <MenuItem value="Delivered">Delivered</MenuItem>
                 <MenuItem value="Canceled">Canceled</MenuItem>
                 <MenuItem value="Pending">Pending</MenuItem>{" "}
-                {/* Added another status option */}
-              </Select>
+              
+              </Select>*/}
               <Button
                 sx={{
                   marginTop: "10px",

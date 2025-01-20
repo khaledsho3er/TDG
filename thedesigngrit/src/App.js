@@ -32,6 +32,7 @@ import NotificationsPage from "./Components/vendorSide/notificationPage";
 import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
+import EmployeeHome from "./Components/vendorSide/employeeDashboard";
 
 function App() {
   return (
@@ -78,6 +79,10 @@ function App() {
             <Route
               path="/vendor-dashboard/:vendorId"
               element={<VendorHome />}
+            />
+            <Route
+              path="/employee-dashboard/:vendorId"
+              element={<EmployeeHome />}
             />
             <Route path="/vendorpanel" Component={VendorHome} />
             <Route path="/edit-employee/:id" component={EditEmployee} />
