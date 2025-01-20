@@ -23,7 +23,7 @@ const SidebarVendor = ({ setActivePage }) => {
           Order List
         </li>
         <li
-          onClick={() => setActivePage("ProductForm")}
+          onClick={() => setActivePage("AddProduct")}
           className="sidebar-item-vendor"
         >
           Add Product
