@@ -30,6 +30,10 @@ import AdminHome from "./Pages/vendorSide/AdminHome";
 import VerifyPartners from "./Components/adminSide/VerifyPartners";
 import NotificationsPage from "./Components/vendorSide/notificationPage";
 import ScrollToTop from "./Context/scrollToTop";
+import SigninVendor from "./Components/vendorSide/signinVendor";
+import EditEmployee from "./Components/vendorSide/editEmployee";
+import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+
 function App() {
   return (
     <UserProvider>
@@ -71,7 +75,19 @@ function App() {
             {/* Route for the vendors grid */}
             <Route path="/vendors" element={<Vendorspage />} />
             {/* Vendor Panel Routes */}
+
+            <Route path="/signin-vendor" element={<SigninVendor />} />
+            <Route
+              path="/vendor-dashboard/:vendorId"
+              element={<VendorHome />}
+            />
+            <Route
+              path="/employee-dashboard/:vendorId"
+              element={<EmployeeHome />}
+            />
             <Route path="/vendorpanel" Component={VendorHome} />
+            <Route path="/edit-employee/:id" component={EditEmployee} />
+
             <Route path="/orderDetail/:id" element={<OrderDetails />} />
             <Route path="/update-product" element={<UpdateProductForm />} />
             <Route path="/notificationspage" element={<NotificationsPage />} />

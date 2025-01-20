@@ -1,7 +1,8 @@
 import { Box, TextField, Button, InputLabel } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ProductForm = () => {
   const [tags, setTags] = useState(["Lorem", "Lorem", "Lorem"]); // Default tags
@@ -22,18 +23,137 @@ const ProductForm = () => {
     costBreakdown: "",
     leadTime: "",
   });
+  // State variables
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  // Handle checkbox changes
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setCustomization((prev) => ({
-      ...prev,
-      customizationTypes: checked
-        ? [...prev.customizationTypes, value]
-        : prev.customizationTypes.filter((type) => type !== value),
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    salePrice: "",
+    category: "",
+    subcategory: "",
+    manufacturer: "",
+    collection: "",
+    type: "",
+    manufactureYear: "",
+    tags: [],
+    reviews: [],
+    colors: [],
+    sizes: [],
+    images: [],
+    mainImage: "",
+    description: "",
+    technicalDimensions: {
+      length: "",
+      width: "",
+      height: "",
+      weight: "",
+    },
+    brandId: "",
+    brandName: "",
+    leadTime: "",
+    stock: "",
+    sku: "",
+    warrantyInfo: {
+      warrantyYears: "",
+      warrantyCoverage: [],
+    },
+    materialCareInstructions: "",
+    productSpecificRecommendations: "",
+    Estimatedtimeleadforcustomization: "",
+    Customizationoptions: [],
+    Additionaldetails: "",
+    Additionalcosts: "",
+    claimProcess: "",
+  });
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/categories/categories"
+        );
+        setCategories(response.data); // Assuming the response contains categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCategoryChange = async (e) => {
+    const selectedCategoryId = e.target.value;
+    setSelectedCategory(selectedCategoryId);
+    setSubCategories([]); // Reset subcategories
+    setSelectedSubCategory(""); // Reset subcategory
+
+    try {
+      // Fetch subcategories for the selected category
+      const response = await axios.get(
+        `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+      );
+      setSubCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+  // Fetch types when a subcategory is selected
+  const handleSubCategoryChange = async (e) => {
+    const selectedSubCategoryId = e.target.value;
+    setSelectedSubCategory(selectedSubCategoryId);
+    setTypes([]); // Reset types
+
+    try {
+      // Fetch types that are associated with the selected subcategory
+      const response = await axios.get(
+        `http://localhost:5000/api/subcategories/bySubcategory/${selectedSubCategoryId}`
+      );
+      setTypes(response.data); // Set types based on the fetched data
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+  // Handle input change for basic fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
     }));
   };
 
+  const handleNestedChange = (e, parentField) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [parentField]: {
+        ...formData[parentField],
+        [name]: value,
+      },
+    });
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedCustomizationTypes = checked
+        ? [...prevData.customization.types, value]
+        : prevData.customization.types.filter((type) => type !== value);
+
+      return {
+        ...prevData,
+        customization: {
+          ...prevData.customization,
+          types: updatedCustomizationTypes,
+        },
+      };
+    });
+  };
   // Handle input changes for customization fields
   const handleCustomizationChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +174,13 @@ const ProductForm = () => {
   const handleRemoveTag = (index) => {
     const newTags = tags.filter((_, i) => i !== index);
     setTags(newTags);
+  };
+  const handleArrayChange = (e, field) => {
+    const { value } = e.target;
+    setFormData({
+      ...formData,
+      [field]: value.split(","),
+    });
   };
 
   // Handle image upload
@@ -83,6 +210,25 @@ const ProductForm = () => {
   const handleSetMainImage = (index) => {
     setMainImage(images[index]);
   };
+  // Handle BIM/CAD file change
+  const handleBimCadFileUpload = (e) => {
+    const file = e.target.files[0];
+    setBimCadFileName(file ? file.name : "");
+  };
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/products/addproduct",
+        formData
+      );
+      console.log("Product created successfully:", response.data);
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
+  };
+
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
       <header className="dashboard-header-vendor">
@@ -93,18 +239,28 @@ const ProductForm = () => {
           </p>
         </div>
       </header>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="product-form">
           <div className="form-left">
             <div className="form-group">
               <label>Product Name</label>
-              <input type="text" placeholder="Type name here" required />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                placeholder="Type name here"
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-group">
               <label>Description</label>
               <textarea
+                name="description"
+                value={formData.description}
                 placeholder="Provide a detailed product description of 20-50 words. Include unique selling points, features, and benefits."
                 required
+                onChange={handleChange}
               ></textarea>
             </div>
             <div className="form-group">
@@ -117,34 +273,143 @@ const ProductForm = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <input type="text" placeholder="Length (cm)" required />
-                <input type="text" placeholder="Width (cm)" required />
-                <input type="text" placeholder="Height (cm)" required />
-                <input type="text" placeholder="Weight (cm)" required />
+                <input
+                  type="number"
+                  name="length"
+                  value={formData.technicalDimensions.length}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
+                />
+                <input
+                  type="number"
+                  name="width"
+                  value={formData.technicalDimensions.width}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
+                />
+                <input
+                  type="number"
+                  name="height"
+                  value={formData.technicalDimensions.height}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
+                />
+                <input
+                  type="number"
+                  name="weight"
+                  value={formData.technicalDimensions.weight}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
+                />{" "}
               </Box>
+            </div>
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                required
+              >
+                <option value="" disabled>
+                  Select Category
+                </option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-row">
               <div className="form-group half-width">
-                <label>Category</label>
-                <input type="text" placeholder="Type Category here" required />
+                <label>Sub Category</label>
+                <select
+                  value={selectedSubCategory}
+                  onChange={handleSubCategoryChange}
+                >
+                  <option value="">Select Subcategory</option>
+                  {subCategories.map((subCategory) => (
+                    <option key={subCategory._id} value={subCategory._id}>
+                      {subCategory.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group half-width">
-                <label>Sub Category</label>
-                <input
-                  type="text"
-                  placeholder="Type Sub-Category here"
-                  required
-                />
+                <label>Select Type: </label>
+                <select>
+                  <option value="">Select Type</option>
+                  {types.map((type) => (
+                    <option key={type._id} value={type._id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="form-group">
+              <label>Manufacturer</label>
+              <input
+                type="text"
+                name="manufacturer"
+                value={formData.manufacturer}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Collection</label>
+              <input
+                type="text"
+                name="collection"
+                value={formData.collection}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Manufacturer Year</label>
+              <input
+                type="text"
+                name="manufacturerYear"
+                value={formData.manufacturerYear}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Colors</label>
+              <input
+                type="text"
+                name="colors"
+                value={formData.colors.join(",")}
+                onChange={(e) => handleArrayChange(e, "colors")}
+              />
+            </div>
+            <div className="form-group">
+              <label>Sizes (comma separated):</label>
+              <input
+                type="text"
+                name="sizes"
+                value={formData.sizes.join(",")}
+                onChange={(e) => handleArrayChange(e, "sizes")}
+              />
+            </div>
+            <div className="form-group">
               <label>Brand Name</label>
-              <input type="text" placeholder="Type brand name here" required />
+              <input
+                type="text"
+                name="brandName"
+                value={formData.brandName}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
               <label>Lead Time</label>
               <input
                 type="text"
+                name="leadTime"
+                value={formData.leadTime}
+                onChange={handleChange}
                 placeholder="Guaranteed lead time for delivery in days or weeks from the time of order placement."
                 required
               />
@@ -152,31 +417,60 @@ const ProductForm = () => {
             <div className="form-row">
               <div className="form-group half-width">
                 <label>SKU</label>
-                <input type="text" placeholder="Fox-3983" required />
+                <input
+                  type="text"
+                  name="sku"
+                  value={formData.sku}
+                  onChange={handleChange}
+                  placeholder="Fox-3983"
+                  required
+                />
               </div>
               <div className="form-group half-width">
                 <label>Stock Quantity</label>
-                <input type="number" placeholder="1258" required />
+                <input
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  type="number"
+                  placeholder="1258"
+                  required
+                />
               </div>
             </div>
             <div className="form-row">
               <div className="form-group half-width">
                 <label>Regular Price</label>
-                <input type="text" placeholder="LE 1000" required />
+                <input
+                  type="text"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="LE 1000"
+                  required
+                />
               </div>
               <div className="form-group half-width">
                 <label>Sale Price</label>
-                <input type="text" placeholder="LE 450" required />
+                <input
+                  type="text"
+                  name="salePrice"
+                  value={formData.salePrice}
+                  onChange={handleChange}
+                  placeholder="LE 450"
+                  required
+                />
               </div>
             </div>
             <div className="form-group">
               <label>Tag</label>
               <input
                 type="text"
+                name="tags"
+                value={formData.tags}
                 placeholder="Add tag and press Enter"
                 onKeyDown={handleAddTag}
                 className="tag-input"
-                required
               />
               <br />
               <div className="tags">
@@ -222,6 +516,7 @@ const ProductForm = () => {
                       borderRadius: "5px",
                       transition: "background-color 0.3s ease",
                     }}
+                    onClick={handleBimCadFileUpload}
                   >
                     Upload File
                   </Button>
@@ -586,12 +881,14 @@ const ProductForm = () => {
                 ))}
               </div>
             </div>
-            <div className="form-actions">
-              <button className="btn update">ADD</button>
-              <button className="btn delete">DELETE</button>
-              <button className="btn cancel">CANCEL</button>
-            </div>
           </div>
+        </div>
+        <div className="form-actions">
+          <button className="btn update" type="submit">
+            ADD
+          </button>
+          <button className="btn delete">DELETE</button>
+          <button className="btn cancel">CANCEL</button>
         </div>
       </form>
     </div>

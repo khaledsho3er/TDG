@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import NavbarVendor from "../../Components/vendorSide/navbarVendor";
-import SidebarVendor from "../../Components/vendorSide/sideBarVendor";
 import DashboardVendor from "../../Components/vendorSide/DashboardVendor";
+import SidebarEmployee from "./sidebarEmplyee";
 import ProductsPageVendor from "../../Components/vendorSide/productsPageVendor";
 import RecentPurchases from "../../Components/vendorSide/orderListVendor";
 // import ProductForm from "../../Components/vendorSide/AddProduct";
@@ -15,7 +15,7 @@ import AccountingPage from "../../Components/vendorSide/Accounting";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
 
-const VendorHome = () => {
+const EmployeeHome = () => {
   const { user } = useContext(UserContext); // Access user data from context
 
   const [activePage, setActivePage] = useState("dashboard");
@@ -62,7 +62,7 @@ const VendorHome = () => {
     <div className="app-container-vendor">
       <NavbarVendor />
       <div className="main-content-vendor">
-        <SidebarVendor
+        <SidebarEmployee
           setActivePage={setActivePage}
           activePage={activePage}
           user={user} // The user object should contain role and tier information
@@ -73,4 +73,4 @@ const VendorHome = () => {
   );
 };
 
-export default VendorHome;
+export default EmployeeHome;

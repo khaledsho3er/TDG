@@ -5012,7 +5012,8 @@ textarea {
   flex: 1;
 }
 
-.input-group input {
+.input-group input,
+select {
   padding: 8px;
   border: 1px solid #000;
   border-radius: 8px;

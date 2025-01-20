@@ -1,51 +1,97 @@
 import React from "react";
 
-const SidebarVendor = ({ setActivePage }) => {
+const SidebarVendor = ({ setActivePage, activePage, user }) => {
+  // Function to handle active page highlighting
+  const getActiveClass = (page) => {
+    return activePage === page
+      ? "sidebar-item-vendor active"
+      : "sidebar-item-vendor";
+  };
+
+  // Check if the user is an employee and their tier level
+  const isEmployee = user?.role === "Employee";
+  const tier = user?.tier;
+
   return (
     <aside className="sidebar-vendor">
       <ul className="sidebar-menu-vendor">
         <li
           onClick={() => setActivePage("dashboard")}
-          className="sidebar-item-vendor"
+          className={getActiveClass("dashboard")}
         >
           Dashboard
         </li>
         <li
           onClick={() => setActivePage("allProducts")}
-          className="sidebar-item-vendor"
+          className={getActiveClass("allProducts")}
         >
           All Products
         </li>
         <li
           onClick={() => setActivePage("orderList")}
-          className="sidebar-item-vendor"
+          className={getActiveClass("orderList")}
         >
           Order List
         </li>
-        <li
-          onClick={() => setActivePage("ProductForm")}
-          className="sidebar-item-vendor"
-        >
-          Add Product
-        </li>
-        <li
-          onClick={() => setActivePage("BrandForm")}
-          className="sidebar-item-vendor"
-        >
-          Brand Form
-        </li>
-        <li
-          onClick={() => setActivePage("BrandingPage")}
-          className="sidebar-item-vendor"
-        >
-          Brand Profile
-        </li>
-        <li
-          onClick={() => setActivePage("BrandingPage")}
-          className="sidebar-item-vendor"
-        >
-          Accounting
-        </li>
+
+        {/* Hide Add Product for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("AddProduct")}
+            className={getActiveClass("AddProduct")}
+          >
+            Add Product
+          </li>
+        ) : null}
+
+        {/* Hide Brand Form for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("BrandForm")}
+            className={getActiveClass("BrandForm")}
+          >
+            Brand Form
+          </li>
+        ) : null}
+        {/* Hide Brand Form for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("BrandForm")}
+            className={getActiveClass("BrandForm")}
+          >
+            Brand Form
+          </li>
+        ) : null}
+
+        {/* Hide Accounting for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("Accounting")}
+            className={getActiveClass("Accounting")}
+          >
+            Accounting
+          </li>
+        ) : null}
+
+        {/* Hide Add Employee for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("EmployeeSignup")}
+            className={getActiveClass("EmployeeSignup")}
+          >
+            Add Employee
+          </li>
+        ) : null}
+
+        {/* Hide Employee Page for Tier 1 and 2 employees */}
+        {!isEmployee || tier > 2 ? (
+          <li
+            onClick={() => setActivePage("EmployeePage")}
+            className={getActiveClass("EmployeePage")}
+          >
+            EmployeePage
+          </li>
+        ) : null}
       </ul>
     </aside>
   );
