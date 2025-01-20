@@ -33,38 +33,42 @@ const ProductForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    description: "",
-    dimensions: { length: "", width: "", height: "", weight: "" },
+    salePrice: "",
     category: "",
-    subCategory: "",
-    type: "",
+    subcategory: "",
     manufacturer: "",
     collection: "",
-    productType: "",
-    brandId: "",
-    brand: "",
-    leadTime: "",
-    sku: "",
-    stock: "",
-    salePrice: "",
+    type: "",
+    manufactureYear: "",
     tags: [],
-    bimCadFile: null,
-    customization: {
-      types: [],
-      additionalDetails: "",
-      additionalCosts: "",
-      Estimatedtimeleadforcustomization: "",
-    },
-    warranty: {
-      duration: "1 Year",
-      coverage: [],
-      claimProcess: "",
-    },
-    productCare: {
-      materialCareInstructions: "",
-      productSpecificRecommendations: "",
-    },
+    reviews: [],
+    colors: [],
+    sizes: [],
     images: [],
+    mainImage: "",
+    description: "",
+    technicalDimensions: {
+      length: "",
+      width: "",
+      height: "",
+      weight: "",
+    },
+    brandId: "",
+    brandName: "",
+    leadTime: "",
+    stock: "",
+    sku: "",
+    warrantyInfo: {
+      warrantyYears: "",
+      warrantyCoverage: [],
+    },
+    materialCareInstructions: "",
+    productSpecificRecommendations: "",
+    Estimatedtimeleadforcustomization: "",
+    Customizationoptions: [],
+    Additionaldetails: "",
+    Additionalcosts: "",
+    claimProcess: "",
   });
   // Fetch categories on mount
   useEffect(() => {
@@ -122,17 +126,18 @@ const ProductForm = () => {
       [name]: value,
     }));
   };
-  // Handle checkbox changes
-  // const handleCheckboxChange = (e) => {
-  //   const { value, checked } = e.target;
-  //   setCustomization((prev) => ({
-  //     ...prev,
-  //     customizationTypes: checked
-  //       ? [...prev.customizationTypes, value]
-  //       : prev.customizationTypes.filter((type) => type !== value),
-  //   }));
-  // };
-  // Handle checkbox changes (for customization options)
+
+  const handleNestedChange = (e, parentField) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [parentField]: {
+        ...formData[parentField],
+        [name]: value,
+      },
+    });
+  };
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prevData) => {
@@ -170,6 +175,13 @@ const ProductForm = () => {
     const newTags = tags.filter((_, i) => i !== index);
     setTags(newTags);
   };
+  const handleArrayChange = (e, field) => {
+    const { value } = e.target;
+    setFormData({
+      ...formData,
+      [field]: value.split(","),
+    });
+  };
 
   // Handle image upload
   const handleImageUpload = (e) => {
@@ -206,78 +218,14 @@ const ProductForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = new FormData();
-
-    // Append basic fields
-    payload.append("name", formData.name);
-    payload.append("description", formData.description);
-    payload.append("category", selectedCategory);
-    payload.append("subcategory", selectedSubCategory);
-    payload.append("type", formData.type);
-    payload.append("brandName", formData.brand);
-    payload.append("leadTime", formData.leadTime);
-    payload.append("sku", formData.sku);
-    payload.append("stock", formData.stockQuantity);
-    payload.append("price", formData.regularPrice);
-    payload.append("salePrice", formData.salePrice || 0);
-
-    // Append nested fields
-    payload.append("technicalDimensions[length]", formData.dimensions.length);
-    payload.append("technicalDimensions[width]", formData.dimensions.width);
-    payload.append("technicalDimensions[height]", formData.dimensions.height);
-    payload.append("technicalDimensions[weight]", formData.dimensions.weight);
-
-    payload.append("Customizationoptions", formData.customization.types);
-    payload.append("Additionaldetails", customization.additionalDetails);
-    payload.append("Additionalcosts", customization.additionalCosts);
-
-    payload.append(
-      "warrantyInfo[warrantyYears]",
-      parseInt(warrantyDuration, 10)
-    );
-    payload.append(
-      "warrantyInfo[warrantyCoverage][]",
-      formData.warranty.coverage
-    );
-
-    payload.append("materialCareInstructions", materialCareInstructions);
-    payload.append(
-      "productSpecificRecommendations",
-      productSpecificRecommendations
-    );
-    payload.append("claimProcess", claimProcess);
-
-    // Append tags
-    tags.forEach((tag) => payload.append("tags[]", tag));
-
-    // Append images
-    images.forEach((image, index) => {
-      const file = new File([image], `image_${index}.png`, {
-        type: "image/png",
-      });
-      payload.append("images", file);
-    });
-
-    if (mainImage) {
-      const mainImageFile = new File([mainImage], "main_image.png", {
-        type: "image/png",
-      });
-      payload.append("mainImage", mainImageFile);
-    }
-
     try {
       const response = await axios.post(
         "http://localhost:5000/api/products/addproduct",
-        payload,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formData
       );
-      console.log("Product added successfully:", response.data);
+      console.log("Product created successfully:", response.data);
     } catch (error) {
-      console.error("Error adding product:", error.response || error);
+      console.error("Error creating product:", error);
     }
   };
 
@@ -298,14 +246,18 @@ const ProductForm = () => {
               <label>Product Name</label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
                 placeholder="Type name here"
-                required
                 onChange={handleChange}
+                required
               />
             </div>
             <div className="form-group">
               <label>Description</label>
               <textarea
+                name="description"
+                value={formData.description}
                 placeholder="Provide a detailed product description of 20-50 words. Include unique selling points, features, and benefits."
                 required
                 onChange={handleChange}
@@ -322,24 +274,29 @@ const ProductForm = () => {
                 }}
               >
                 <input
-                  type="text"
-                  placeholder="Length (cm)"
-                  required
-                  onChange={handleChange}
+                  type="number"
+                  name="length"
+                  value={formData.technicalDimensions.length}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
                 />
                 <input
-                  type="text"
-                  placeholder="Width (cm)"
-                  required
-                  onChange={handleChange}
+                  type="number"
+                  name="width"
+                  value={formData.technicalDimensions.width}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
                 />
                 <input
-                  type="text"
-                  placeholder="Height (cm)"
-                  required
-                  onChange={handleChange}
+                  type="number"
+                  name="height"
+                  value={formData.technicalDimensions.height}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
                 />
-                <input type="text" placeholder="Weight (cm)" required />
+                <input
+                  type="number"
+                  name="weight"
+                  value={formData.technicalDimensions.weight}
+                  onChange={(e) => handleNestedChange(e, "technicalDimensions")}
+                />{" "}
               </Box>
             </div>
             <div className="form-group">
@@ -387,13 +344,72 @@ const ProductForm = () => {
               </div>
             </div>
             <div className="form-group">
+              <label>Manufacturer</label>
+              <input
+                type="text"
+                name="manufacturer"
+                value={formData.manufacturer}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Collection</label>
+              <input
+                type="text"
+                name="collection"
+                value={formData.collection}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Manufacturer Year</label>
+              <input
+                type="text"
+                name="manufacturerYear"
+                value={formData.manufacturerYear}
+                onChange={handleChange}
+                placeholder="Type Manufacturer name here"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Colors</label>
+              <input
+                type="text"
+                name="colors"
+                value={formData.colors.join(",")}
+                onChange={(e) => handleArrayChange(e, "colors")}
+              />
+            </div>
+            <div className="form-group">
+              <label>Sizes (comma separated):</label>
+              <input
+                type="text"
+                name="sizes"
+                value={formData.sizes.join(",")}
+                onChange={(e) => handleArrayChange(e, "sizes")}
+              />
+            </div>
+            <div className="form-group">
               <label>Brand Name</label>
-              <input type="text" placeholder="Type brand name here" required />
+              <input
+                type="text"
+                name="brandName"
+                value={formData.brandName}
+                onChange={handleChange}
+              />
             </div>
             <div className="form-group">
               <label>Lead Time</label>
               <input
                 type="text"
+                name="leadTime"
+                value={formData.leadTime}
+                onChange={handleChange}
                 placeholder="Guaranteed lead time for delivery in days or weeks from the time of order placement."
                 required
               />
@@ -401,27 +417,57 @@ const ProductForm = () => {
             <div className="form-row">
               <div className="form-group half-width">
                 <label>SKU</label>
-                <input type="text" placeholder="Fox-3983" required />
+                <input
+                  type="text"
+                  name="sku"
+                  value={formData.sku}
+                  onChange={handleChange}
+                  placeholder="Fox-3983"
+                  required
+                />
               </div>
               <div className="form-group half-width">
                 <label>Stock Quantity</label>
-                <input type="number" placeholder="1258" required />
+                <input
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  type="number"
+                  placeholder="1258"
+                  required
+                />
               </div>
             </div>
             <div className="form-row">
               <div className="form-group half-width">
                 <label>Regular Price</label>
-                <input type="text" placeholder="LE 1000" required />
+                <input
+                  type="text"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="LE 1000"
+                  required
+                />
               </div>
               <div className="form-group half-width">
                 <label>Sale Price</label>
-                <input type="text" placeholder="LE 450" required />
+                <input
+                  type="text"
+                  name="salePrice"
+                  value={formData.salePrice}
+                  onChange={handleChange}
+                  placeholder="LE 450"
+                  required
+                />
               </div>
             </div>
             <div className="form-group">
               <label>Tag</label>
               <input
                 type="text"
+                name="tags"
+                value={formData.tags}
                 placeholder="Add tag and press Enter"
                 onKeyDown={handleAddTag}
                 className="tag-input"
