@@ -33,64 +33,54 @@ import ScrollToTop from "./Context/scrollToTop";
 function App() {
   return (
     <UserProvider>
-    <CartProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          {/* Public Routes */}
-          <Route exact path="/" Component={Home} />
-          <Route exact path="/home" Component={Home} />
-          <Route exact path="/login" Component={LoginPage} />
-          <Route exact path="/signup" Component={SignUpPage} />
-
-         
-         
-          <Route exact path="/Vendors" Component={Vendorspage} />
-
-          <Route exact path="/about" Component={AboutUsPage} />
-          <Route path="/jobdesc/:jobId" element={<JobDesc />} />
-          <Route path="/policy" element={<TermsOfService />} />
-          {/* Add individual routes for policy sections */}
-          {/* Example: */}
-          <Route path="/policy/:section" element={<TermsOfService />} />{" "}
-          <Route exact path="/partners" Component={PartnersApplication} />
-          <Route exact path="/contactus" Component={ContactUs} />
-          <Route exact path="/mycart" Component={ShoppingCart} />
-          <Route
-            path="/category/:categoryId/:categoryName/products"
-            element={<ProductsPage />}
-          />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route exact path="/ProductsPage" Component={ProductsPage} />
-          {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}
-
-          <Route exact path="/Vendorprofile" Component={VendorProfile} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route exact path="/careers" Component={careersPage} />
-          <Route path="/faqs" Component={FAQs} />
-          <Route path="/trackorder" Component={TrackOrder} />
-          <Route path="/myaccount" Component={MyAccount} />
-             <Route path="/usersss" Component={UserProfile} />
-
-         
-
-
-          {/* <Route path="/vendors" element={<Vendorspage />} /> */}
-          <Route path="/vendor/:id" element={<VendorProfile />} />
-          {/* Route for the vendors grid */}
-          <Route path="/vendors" element={<Vendorspage />} />
-          {/* Vendor Panel Routes */}
-          <Route path="/vendorpanel" Component={VendorHome} />
-          <Route path="/orderDetail/:id" element={<OrderDetails />} />
-          <Route path="/update-product" element={<UpdateProductForm />} />
-          <Route path="/notificationspage" element={<NotificationsPage />} />
-          <Route path="/adminpanel" Component={AdminHome} />
-          <Route path="/verify-partner" element={<VerifyPartners />} />
-        </Routes>
-      </Router>
-    </CartProvider>
+      <CartProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            {/* Public Routes */}
+            <Route exact path="/" Component={Home} />
+            <Route exact path="/home" Component={Home} />
+            <Route exact path="/login" Component={LoginPage} />
+            <Route exact path="/signup" Component={SignUpPage} />
+            <Route exact path="/Vendors" Component={Vendorspage} />
+            <Route exact path="/about" Component={AboutUsPage} />
+            <Route path="/jobdesc/:jobId" element={<JobDesc />} />
+            <Route path="/policy" element={<TermsOfService />} />
+            {/* Add individual routes for policy sections */}
+            {/* Example: */}
+            <Route path="/policy/:section" element={<TermsOfService />} />{" "}
+            <Route exact path="/partners" Component={PartnersApplication} />
+            <Route exact path="/contactus" Component={ContactUs} />
+            <Route exact path="/mycart" Component={ShoppingCart} />
+            <Route
+              path="/category/:categoryId/:categoryName"
+              element={<ProductsPage />}
+            />
+            <Route path="/product/:id" element={<ProductPage />} />
+            <Route exact path="/ProductsPage" Component={ProductsPage} />
+            {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}
+            <Route exact path="/Vendorprofile" Component={VendorProfile} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route exact path="/careers" Component={careersPage} />
+            <Route path="/faqs" Component={FAQs} />
+            <Route path="/trackorder" Component={TrackOrder} />
+            <Route path="/myaccount" Component={MyAccount} />
+            <Route path="/usersss" Component={UserProfile} />
+            {/* <Route path="/vendors" element={<Vendorspage />} /> */}
+            <Route path="/vendor/:id" element={<VendorProfile />} />
+            {/* Route for the vendors grid */}
+            <Route path="/vendors" element={<Vendorspage />} />
+            {/* Vendor Panel Routes */}
+            <Route path="/vendorpanel" Component={VendorHome} />
+            <Route path="/orderDetail/:id" element={<OrderDetails />} />
+            <Route path="/update-product" element={<UpdateProductForm />} />
+            <Route path="/notificationspage" element={<NotificationsPage />} />
+            <Route path="/adminpanel" Component={AdminHome} />
+            <Route path="/verify-partner" element={<VerifyPartners />} />
+          </Routes>
+        </Router>
+      </CartProvider>
     </UserProvider>
-
   );
 }
 

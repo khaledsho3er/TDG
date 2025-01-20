@@ -84,10 +84,10 @@ function Header() {
         const response = await axios.get("http://localhost:5000/api/getUser", {
           withCredentials: true,
         });
+        console.log("userSession in Header:", userSession);
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
-        alert("Failed to fetch user data.");
       }
     };
 
@@ -222,7 +222,7 @@ function Header() {
             <Typography
               key={category._id}
               className={`category ${
-                hoveredCategory === category.name ? "highlighted" : ""
+                hoveredCategory === category._id ? "highlighted" : ""
               }`}
               onMouseEnter={() => handleMouseEnterCategory(category.name)}
             >

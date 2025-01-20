@@ -1,6 +1,8 @@
 export async function fetchProductData(id) {
   try {
-    const response = await fetch(`/json/productData.json`);
+    const response = await fetch(
+      `http://localhost:5000/api/products/getsingle/${id}`
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch product data");
     }

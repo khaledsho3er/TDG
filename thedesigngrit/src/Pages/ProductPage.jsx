@@ -15,6 +15,7 @@ import {
 } from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 function ProductPage() {
   // const [setShowDropdown] = useState(false);
@@ -41,6 +42,8 @@ function ProductPage() {
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [loading, setLoading] = useState(true); // Loading state for when the product is being fetched
+  const [error, setError] = useState(null); // State for handling errors
 
   // Handle opening the popup
   // const handlePopupOpen = () => {
@@ -51,27 +54,28 @@ function ProductPage() {
   // const handlePopupClose = () => {
   //   setShowPopup(false);
   // };
-
+  // Fetch product details by ID
   useEffect(() => {
-    // Fetch product data
-    const getProductData = async () => {
-      const data = await fetchProductData(id);
-      if (data) {
-        setProduct(data);
-      } else {
-        console.error("Product not found");
+    const fetchProduct = async () => {
+      try {
+        setLoading(true); // Start loading
+        const response = await fetch(
+          `http://localhost:5000/api/products/getsingle/${id}`
+        ); // Make an API call to fetch the product by ID
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+        const data = await response.json();
+        setProduct(data); // Set the fetched product to state
+      } catch (error) {
+        setError(error.message); // Set error if something goes wrong
+      } finally {
+        setLoading(false); // Stop loading once the fetch is complete
       }
     };
 
-    // Fetch product reviews
-    const getProductReviews = async () => {
-      const reviewData = await fetchProductReview(id);
-      setReviews(reviewData);
-    };
-
-    getProductData();
-    getProductReviews();
-  }, [id]);
+    fetchProduct(); // Fetch product on component mount
+  }, [id]); // Refetch if the ID in the URL changes
 
   if (!product) return <div>Product not found</div>;
   const handleImageClick = (index) => {
@@ -122,12 +126,11 @@ function ProductPage() {
     }));
   };
   const handleAddToCart = (product) => {
-    console.log(product); // Debugging the product object
-    const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
+    // const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
     addToCart({
       id: product.id,
       name: product.name,
-      unitPrice: parsedPrice,
+      unitPrice: product.price,
       quantity: 1,
       image: product.image,
       brand: product.brand,
@@ -146,7 +149,7 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`/${product.imageUrl}`}
+              src={`http://localhost:5000${product.mainImage}`}
               alt={product.name}
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
@@ -260,37 +263,38 @@ function ProductPage() {
                     {section === "Overview" && (
                       <div>
                         <h5 style={{ fontSize: "25px" }}>
-                          Manufacturer : Istikbal
+                          Manufacturer :{product.brandName}
                         </h5>
                         <div className="product-details">
                           <p style={{ fontSize: "20px" }}>
-                            <span className="label">Collection:</span> Duefets
+                            <span className="label">Collection:</span>{" "}
+                            {product.collection}
                           </p>
-                          <p style={{ fontSize: "20px" }}>
+                          {/* <p style={{ fontSize: "20px" }}>
                             <span className="label">Type:</span> 2 Seater Fabric
                             Sofa
-                          </p>
+                          </p> */}
                           <p style={{ fontSize: "20px" }}>
                             <span className="label">Manufacturer Year:</span>{" "}
-                            2024
+                            {product.manufactureYear}
                           </p>
                         </div>
 
                         <p style={{ fontSize: "20px" }}>
-                          Characterised by distinct stylistic references to the
-                          1970s, Dudet transfers to a two-seat settee the
-                          versatile, sophisticated design of the chair in the
-                          same family designed by Patricia Urquiola. Available
-                          in one size only, the settee is defined by three
-                          upholstered elements: a roomy seat cushion and two
-                          sinuous tubular supports that, in one continuous line,
-                          create legs, armrests and backrest.
+                          {product.description}
                         </p>
                       </div>
                     )}
                     {section === "Dimensions" && (
                       <div>
                         <img src="/Assets/productDemi.png" alt="Dimensions" />
+                        <p>Width X Length X Height</p>
+                        <p>
+                          {product.technicalDimensions.width} x{"  "}
+                          {product.technicalDimensions.length} X{"  "}
+                          {product.technicalDimensions.height}
+                        </p>
+                        <p>Weight:{product.technicalDimensions.weight}</p>
                       </div>
                     )}
                     {section === "BIM/CAD" && (

@@ -12,13 +12,34 @@ function ProductsPage() {
   const { categoryId, categoryName } = useParams(); // Get categoryId and categoryName from URL
   const [favorites, setFavorites] = useState([]);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Fetch categories to find the matching category for description
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/categories/categories"
+        );
+        const data = await response.json();
+        setCategories(data.slice(0, 6)); // Slice the first 6 categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Find the category by ID
+  const category = categories.find((cat) => cat._id === categoryId);
 
   // Fetch products for the selected category when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/category/${categoryId}/${categoryName}/products`
+          `http://localhost:5000/api/products/category/${categoryId}/${categoryName}`
         );
         const data = await response.json();
         setProducts(data); // Set the products of the selected category
@@ -55,8 +76,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
-      <PageDicription />
-      <h2>Products in {categoryName}</h2> {/* Display the category name */}
+      {category && <PageDicription category={category} />}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter />
       </Box>

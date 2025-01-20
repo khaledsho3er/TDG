@@ -15,7 +15,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    navigate(`/product/${product.id}`); // Navigate to the product details page
+    navigate(`/product/${product._id}`); // Navigate to the product details page using _id
   };
 
   const toggleFavorite = (event) => {
@@ -39,7 +39,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
         <CardMedia
           component="img"
           height="250"
-          image={product.imageUrl}
+          image={`http://localhost:5000${product.mainImage}`}
           alt={product.name}
           sx={{
             objectFit: "cover",
@@ -67,7 +67,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
       </Card>
 
       {/* Product Information */}
-      <CardContent sx={{ padding: "16px" }}>
+      <CardContent sx={{ padding: "10px" }}>
         <Typography
           variant="h6"
           sx={{
@@ -75,6 +75,8 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
             fontWeight: 700,
             fontFamily: "Montserrat, sans-serif",
             textTransform: "uppercase",
+            width: "100%",
+            maxWidth: "80%",
           }}
         >
           {product.name}

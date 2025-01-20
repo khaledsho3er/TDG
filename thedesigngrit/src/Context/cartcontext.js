@@ -20,7 +20,23 @@ export const CartProvider = ({ children }) => {
     }
   }, [cartItems]);
 
+  const formatPrice = (price) => {
+    // Ensure price is a string before applying replace
+    if (typeof price === "string") {
+      return parseFloat(price.replace(",", ""));
+    }
+    // If price is already a number, return it as-is
+    if (typeof price === "number") {
+      return price;
+    }
+    // Fallback for unexpected types
+    console.warn("Invalid price type:", price);
+    return 0; // Default fallback value
+  };
+
   const addToCart = (product) => {
+    const formattedPrice = formatPrice(product.price);
+
     setCartItems((prev) => {
       const existingProduct = prev.find((item) => item.id === product.id);
       if (existingProduct) {
@@ -30,7 +46,7 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        return [...prev, { ...product, quantity: 1 }];
+        return [...prev, { ...product, price: formattedPrice, quantity: 1 }];
       }
     });
   };

@@ -218,6 +218,21 @@
   .google-icon {
     font-size: 30px;
   }
+
+  .popup-left {
+    margin-top: -20px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .popup-right {
+    padding: 8px;
+    gap: 5px;
+  }
+
+  .reset-popup-form {
+    gap: 5px;
+    padding: 10px;
+  }
 }
 /* General styles are unchanged from the original */
 

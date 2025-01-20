@@ -19,18 +19,18 @@ function Checkout() {
   return (
     <div className="checkout-container">
       <div className="checkout-form">
-        <Box className="checkout_image_container">
+        {/* <Box className="checkout_image_container">
           <img
             src="/Assets/TDG_Icon_Black.png"
             alt="imageLogo"
             className="checkout_logo_icon"
           />
-        </Box>
+        </Box> */}
         {/* Pass setCurrentStep to StepTracker */}
-        <StepTracker
+        {/* <StepTracker
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
-        />
+        /> */}
         <h2>{steps[currentStep - 1].label}</h2>
         {steps[currentStep - 1].content}
         <div className="form-navigation">
