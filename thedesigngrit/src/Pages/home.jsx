@@ -93,7 +93,7 @@ function Home() {
             <LinearProgress
               variant="determinate"
               value={progress}
-              className="custom-progress-bar"
+              className="custom-progress-bar-hero"
             />
           </div>
         </div>

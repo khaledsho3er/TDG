@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
+  console.log("Category in Menudrop:", category);
 
   // const [selectedDetail, setSelectedDetail] = useState(
   //   details.subCategories[0]
@@ -16,7 +17,11 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
     }
   }, [details]);
   const handleNavigation = () => {
-    navigate(`/shop/${category}`);
+    if (category?._id && category?.name) {
+      navigate(`/category/${category._id}/${category.name}`);
+    } else {
+      console.error("Invalid category data:", category);
+    }
   };
 
   // Handle clicking a title to update the selected detail
