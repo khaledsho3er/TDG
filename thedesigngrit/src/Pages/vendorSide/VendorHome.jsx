@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NavbarVendor from "../../Components/vendorSide/navbarVendor";
 import SidebarVendor from "../../Components/vendorSide/sideBarVendor";
 import DashboardVendor from "../../Components/vendorSide/DashboardVendor";
@@ -8,33 +8,64 @@ import RecentPurchases from "../../Components/vendorSide/orderListVendor";
 import BrandSignup from "../../Components/vendorSide/brandSignup";
 import AddProduct from "../../Components/vendorSide/postProduct";
 import BrandingPage from "../../Components/vendorSide/brandingPage";
-const VendorHome = () => {
-  const [activePage, setActivePage] = useState("dashboard");
+import EmployeeSignup from "../../Components/vendorSide/Addemployee";
+import EmployeePage from "../../Components/vendorSide/employeePage";
+import { UserContext } from "../../utils/userContext"; // Assuming you have UserContext to manage user data
 
+// import { useParams } from "react-router-dom";
+// import axios from "axios";
+
+const VendorHome = () => {
+  const { user } = useContext(UserContext); // Access user data from context
+
+  const [activePage, setActivePage] = useState("dashboard");
+  // const { vendorId } = useParams(); // Get vendor ID from URL
+  // const [vendor, setVendor] = useState(null);
+
+  // // Fetch vendor details using vendorId from the URL
+  // useEffect(() => {
+  //   const fetchVendorDetails = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:5000/api/vendor/${vendorId}`
+  //       );
+  //       setVendor(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching vendor details:", error);
+  //     }
+  //   };
+
+  //   fetchVendorDetails();
+  // }, [vendorId]);
+
+  // if (!vendor) return <div className="loader">Loading vendor details...</div>;
+
+  // Object for rendering content based on active page
+  const pageComponents = {
+    dashboard: <DashboardVendor />,
+    allProducts: <ProductsPageVendor />,
+    orderList: <RecentPurchases />,
+    AddProduct: <AddProduct />,
+    BrandForm: <BrandSignup />,
+    BrandingPage: <BrandingPage />,
+    EmployeeSignup: <EmployeeSignup />,
+    EmployeePage: <EmployeePage />,
+  };
+
+  // Function to render content based on active page
   const renderContent = () => {
-    switch (activePage) {
-      case "dashboard":
-        return <DashboardVendor />;
-      case "allProducts":
-        return <ProductsPageVendor />;
-      case "orderList":
-        return <RecentPurchases />;
-      case "AddProduct":
-        return <AddProduct />;
-      case "BrandForm":
-        return <BrandSignup />;
-      case "BrandingPage":
-        return <BrandingPage />;
-      default:
-        return "DashboardVendor";
-    }
+    return pageComponents[activePage] || <DashboardVendor />;
   };
 
   return (
     <div className="app-container-vendor">
       <NavbarVendor />
       <div className="main-content-vendor">
-        <SidebarVendor setActivePage={setActivePage} />
+        <SidebarVendor
+          setActivePage={setActivePage}
+          activePage={activePage}
+          user={user} // The user object should contain role and tier information
+        />
         <div className="content-vendor">{renderContent()}</div>
       </div>
     </div>
