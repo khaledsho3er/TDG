@@ -122,7 +122,10 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <Box className="reset-password-content">
+    <Box
+      className="profile-info"
+      sx={{ width: "100%", flexDirection: "column", alignItems: "center" }}
+    >
       {/*
       <div className="reset-form-field">
         <label>Current Password</label>

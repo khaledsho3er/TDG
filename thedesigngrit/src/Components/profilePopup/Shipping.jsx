@@ -86,9 +86,18 @@ const ShippingInfoPopup = () => {
   const handleDialogCancel = () => setDialogOpen(false);
 
   return (
-    <div className="shipping-info-content">
+    <div
+      className="profile-info"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "20px",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+      }}
+    >
       <form className="shipping-form">
-        <div className="form-field">
+        <div className="shipping-form-field">
           <label>Address 1</label>
           <input
             type="text"
@@ -99,7 +108,7 @@ const ShippingInfoPopup = () => {
             required
           />
         </div>
-        <div className="form-field">
+        <div className="shipping-form-field">
           <label>Address 2 (Optional)</label>
           <input
             type="text"
@@ -156,7 +165,7 @@ const ShippingInfoPopup = () => {
                 padding: "5px",
                 fontSize: "14px",
                 fontFamily: "Montserrat, sans-serif",
-                width: "340px",
+                width: "300px",
               }),
               placeholder: (base) => ({
                 ...base,

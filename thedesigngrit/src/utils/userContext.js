@@ -17,9 +17,13 @@ export const UserProvider = ({ children }) => {
       localStorage.removeItem("userSession");
     }
   }, [userSession]);
-
+  // Add a logout function to clear the session
+  const logout = () => {
+    setUserSession(null); // Clear session in context
+    localStorage.removeItem("userSession"); // Remove from localStorage
+  };
   return (
-    <UserContext.Provider value={{ userSession, setUserSession }}>
+    <UserContext.Provider value={{ userSession, setUserSession, logout }}>
       {children}
     </UserContext.Provider>
   );

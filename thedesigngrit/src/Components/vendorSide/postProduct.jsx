@@ -85,7 +85,7 @@ const AddProduct = () => {
 
     setSubCategories([]); // Reset subcategories
     setSelectedSubCategory(""); // Reset subcategory
-
+    console.log(selectedCategory);
     try {
       // Fetch subcategories for the selected category
       const response = await axios.get(
@@ -101,11 +101,12 @@ const AddProduct = () => {
   const handleSubCategoryChange = async (e) => {
     const selectedSubCategoryId = e.target.value;
     setSelectedSubCategory(selectedSubCategoryId);
+
     setFormData({
       ...formData,
       subcategory: selectedSubCategoryId, // Update formData.subcategory
     });
-
+    console.log(selectedSubCategory);
     setTypes([]); // Reset types
 
     try {

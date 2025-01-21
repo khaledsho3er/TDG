@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
 import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
 import PaymentForm from "./Paymentmethod.jsx";
-import StepTracker from "./stepTracker.jsx";
+//import StepTracker from "./stepTracker.jsx";
 
 function Checkout() {
   const [currentStep, setCurrentStep] = useState(1);

@@ -56,10 +56,10 @@ const SidebarVendor = ({ setActivePage, activePage, user }) => {
         {/* Hide Brand Form for Tier 1 and 2 employees */}
         {!isEmployee || tier > 2 ? (
           <li
-            onClick={() => setActivePage("BrandForm")}
-            className={getActiveClass("BrandForm")}
+            onClick={() => setActivePage("BrandingPage")}
+            className={getActiveClass("BrandingPage")}
           >
-            Brand Form
+            Brand Profile
           </li>
         ) : null}
 

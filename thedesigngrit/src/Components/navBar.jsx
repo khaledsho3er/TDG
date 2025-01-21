@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Typography, InputBase, IconButton, Avatar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  InputBase,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -24,7 +32,9 @@ function Header() {
   const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const { userSession } = useContext(UserContext); // Access user session from context
+  const [anchorEl, setAnchorEl] = useState(null); // State for the avatar menu
+
+  const { userSession, logout } = useContext(UserContext); // Access both userSession and setUserSession
   const navigate = useNavigate(); // Hook for navigation
   const [isMobile, setIsMobile] = useState(window.innerWidth < 767);
   const [userData, setUserData] = useState({
@@ -92,7 +102,7 @@ function Header() {
     };
 
     fetchData();
-  }, []);
+  }, [userSession]);
 
   const handleCartToggle = () => {
     setCartOpen(!cartOpen);
@@ -115,7 +125,6 @@ function Header() {
       setHoveredCategory(null);
     }
   };
-
   const handleMenuHover = () => {
     setIsMenuHovered(true);
   };
@@ -134,7 +143,24 @@ function Header() {
   const handleLoginClick = () => {
     navigate("/login"); // Redirect to login page
   };
+  // Menu Toggle Handler
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout(); // Call logout from context
+    navigate("/home"); // Redirect to home or login page
+  };
+
+  const handleMyAccount = () => {
+    navigate("/myaccount"); // Navigate to MyAccount page
+    handleMenuClose(); // Close the menu after clicking
+  };
   return (
     <Box
       sx={{
@@ -191,14 +217,29 @@ function Header() {
                 </IconButton>
                 <Avatar
                   className="avatar"
-                  onClick={handlePopupToggle}
+                  onClick={handleAvatarClick}
                   sx={{ cursor: "pointer" }}
                 >
                   {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
-                  {/* {userData.firstName
-                    ? userData.firstName[0].toUpperCase()
-                    : "TDG"} */}
                 </Avatar>
+
+                {/* Avatar Menu */}
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
               </>
             ) : (
               <button
