@@ -20,6 +20,8 @@ import Menudrop from "./menuhover/Menudrop";
 import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 // Context for managing user session
+import { IoLogOutOutline } from "react-icons/io5";
+
 import { UserContext } from "../utils/userContext";
 import axios from "axios";
 
@@ -238,7 +240,10 @@ function Header() {
                   }}
                 >
                   <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    {" "}
+                    <IoLogOutOutline style={{ marginRight: "10px" }} /> Logout
+                  </MenuItem>
                 </Menu>
               </>
             ) : (

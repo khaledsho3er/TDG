@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, Avatar, TextField, Button } from "@mui/material";
-import ProfilePopup from "../profilePopUp";
+import { Box, Avatar, TextField } from "@mui/material";
 import { format } from "date-fns";
 import axios from "axios";
 import ConfirmationDialog from "../confirmationMsg";
 
 function Profile({ userData }) {
-  const [popupOpen, setPopupOpen] = useState(false);
+  // const [popupOpen, setPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // Toggle between text and form
   const [formData, setFormData] = useState({});
 
@@ -28,9 +27,9 @@ function Profile({ userData }) {
     }
   }, [userData, isEditing]);
 
-  const handlePopupToggle = () => {
-    setPopupOpen(!popupOpen);
-  };
+  // const handlePopupToggle = () => {
+  //   setPopupOpen(!popupOpen);
+  // };
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);

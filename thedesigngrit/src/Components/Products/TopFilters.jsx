@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -11,10 +11,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
-const TopFilter = () => {
-  const [forSaleChecked, setForSaleChecked] = useState(false);
-  const [bimCadChecked, setBimCadChecked] = useState(false);
-  const [sortOption, setSortOption] = useState("Newest");
+const TopFilter = ({ sortOption, setSortOption }) => {
+  const [forSaleChecked, setForSaleChecked] = React.useState(false);
+  const [bimCadChecked, setBimCadChecked] = React.useState(false);
 
   return (
     <Box
@@ -23,8 +22,8 @@ const TopFilter = () => {
         alignItems: "center",
         width: "100%",
         justifyContent: "space-between",
-        padding: { xs: "15px", sm: "20px", md: "25px 70px" }, // Responsive padding
-        flexDirection: { xs: "column", sm: "row" }, // Stack items on smaller screens
+        padding: { xs: "15px", sm: "20px", md: "25px 70px" },
+        flexDirection: { xs: "column", sm: "row" },
         gap: { xs: 2, sm: 3 },
       }}
     >
@@ -55,7 +54,7 @@ const TopFilter = () => {
               gap: 1,
               color: "black",
               fontFamily: "Montserrat, sans-serif",
-              fontSize: { xs: "10px", sm: "12px" }, // Adjust font size for smaller screens
+              fontSize: { xs: "10px", sm: "12px" },
             }}
             onClick={() => setForSaleChecked(!forSaleChecked)}
           >
@@ -75,7 +74,7 @@ const TopFilter = () => {
               gap: 1,
               color: "black",
               fontFamily: "Montserrat, sans-serif",
-              fontSize: { xs: "10px", sm: "12px" }, // Adjust font size for smaller screens
+              fontSize: { xs: "10px", sm: "12px" },
             }}
             onClick={() => setBimCadChecked(!bimCadChecked)}
           >
@@ -91,13 +90,13 @@ const TopFilter = () => {
           alignItems: "center",
           gap: 2,
           justifyContent: "flex-end",
-          flexDirection: { xs: "column", sm: "row" }, // Stack elements on smaller screens
+          flexDirection: { xs: "column", sm: "row" },
         }}
       >
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
-            fontSize: { xs: "12px", sm: "13px" }, // Adjust font size for smaller screens
+            fontSize: { xs: "12px", sm: "13px" },
           }}
         >
           Sort By
@@ -105,33 +104,24 @@ const TopFilter = () => {
         <FormControl
           size="small"
           sx={{
-            minWidth: "auto", // Adjust to fit content
-            border: "none", // Remove borders
+            minWidth: "auto",
             "& .MuiOutlinedInput-root": {
-              padding: 0, // Adjust padding to make the Select smaller
-              fontSize: "13px", // Set font size smaller
-              "& fieldset": {
-                border: "none", // Remove fieldset border
-              },
+              fontSize: "13px",
+              "& fieldset": { border: "none" },
             },
           }}
         >
           <Select
-            labelId="sort-by-label"
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
             displayEmpty
-            sx={{
-              fontSize: "0.875rem", // Smaller font size
-              color: "black",
-              "& .MuiSelect-select": {
-                padding: 0, // Adjust padding for inline appearance
-              },
-            }}
+            sx={{ fontSize: "0.875rem", color: "black" }}
           >
             <MenuItem value="Newest">Newest</MenuItem>
             <MenuItem value="Price: Low to High">Price: Low to High</MenuItem>
             <MenuItem value="Price: High to Low">Price: High to Low</MenuItem>
+            <MenuItem value="Alphabetical: A-Z">Alphabetical: A-Z</MenuItem>
+            <MenuItem value="Alphabetical: Z-A">Alphabetical: Z-A</MenuItem>
           </Select>
         </FormControl>
       </Box>

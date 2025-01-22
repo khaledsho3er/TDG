@@ -7,9 +7,8 @@ import { UserContext } from "../utils/userContext";
 import { useNavigate } from "react-router-dom";
 import OrdersPopUp from "../Components/profilePopup/ordersPopup";
 import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
-import BillingInfoPopup from "../Components/profilePopup/BillingInfoPop";
 import ShippingInfoPopup from "../Components/profilePopup/Shipping";
-import BillingInfo from "../Components/profilePopup/billingInfo";
+// import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
   const [selectedSection, setSelectedSection] = useState("profile");
   const { userSession, logout } = useContext(UserContext); // Access user session and logout function from context
@@ -55,7 +54,7 @@ const MyAccount = () => {
     profile: <Profile userData={userData} />, // Pass userData as a prop
     orders: <OrdersPopUp />,
     Password: <ResetPasswordForm />,
-    Billing: <BillingInfo />,
+    // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,
     wishlist: "wishlist",
     // Render logout as a clickable word that performs the logout directly

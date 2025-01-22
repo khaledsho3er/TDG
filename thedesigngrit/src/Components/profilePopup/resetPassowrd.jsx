@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; // For sending requests
+import axios from "axios";
 import { Box, Typography } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import ForgotPasswordDialog from "../forgetPassword";
@@ -9,8 +9,8 @@ const ResetPasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(""); // To handle error messages
-  const [success, setSuccess] = useState(""); // To handle success messages
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [strength, setStrength] = useState(0);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -21,13 +21,12 @@ const ResetPasswordForm = () => {
     useState(false);
   const [forgotPasswordSuccessDialogOpen, setForgotPasswordSuccessDialogOpen] =
     useState(false);
-  const [loading, setLoading] = useState(false); // Loading state for the button
+  const [loading, setLoading] = useState(false);
 
   const handleReset = async () => {
-    setError(""); // Clear previous errors
-    setLoading(true); // Show loading spinner
+    setError("");
+    setLoading(true);
 
-    // Validate if passwords match
     if (newPassword.trim() !== confirmPassword.trim()) {
       setError("Passwords do not match.");
       setLoading(false);
@@ -52,28 +51,22 @@ const ResetPasswordForm = () => {
         }
       );
 
-      console.log("Backend response:", response); // Log the response for debugging
-
-      // Check for a success message
       if (
         response.status === 200 &&
         response.data.message === "Password updated successfully"
       ) {
         setSuccess("Password updated successfully.");
-        setSuccessDialogOpen(true); // Open success dialog
+        setSuccessDialogOpen(true);
       } else {
-        // Fallback for unexpected success structure
         setError(response.data.message || "Failed to update password.");
       }
     } catch (error) {
-      console.error("Error updating password:", error.response?.data);
       setError(error.response?.data?.message || "An error occurred.");
     } finally {
-      setLoading(false); // Hide loading spinner
+      setLoading(false);
     }
   };
 
-  // Calculate password strength
   const calculateStrength = (password) => {
     let strengthScore = 0;
     if (password.length >= 8) strengthScore += 25;
@@ -83,7 +76,6 @@ const ResetPasswordForm = () => {
     return strengthScore;
   };
 
-  // Password validation requirements
   const [requirements, setRequirements] = useState({
     minLength: false,
     hasLowerCase: false,
@@ -115,6 +107,17 @@ const ResetPasswordForm = () => {
     position: "relative",
   });
 
+  // const validateConfirmPassword = () => {
+  //   setRequirements((prevRequirements) => ({
+  //     ...prevRequirements,
+  //     passwordsMatch: newPassword === confirmPassword,
+  //   }));
+  // };
+
+  // const handleConfirmPasswordChange = (value) => {
+  //   setConfirmPassword(value);
+  //   validateConfirmPassword();
+  // };
   const getBarColors = () => {
     if (strength <= 50) return ["red", "gray", "gray", "gray"];
     if (strength <= 75) return ["orange", "orange", "gray", "gray"];
@@ -122,54 +125,7 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <Box
-      className="profile-info"
-      sx={{ width: "100%", flexDirection: "column", alignItems: "center" }}
-    >
-      {/*
-      <div className="reset-form-field">
-        <label>Current Password</label>
-        <input
-          label="Current Password"
-          type="password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          fullWidth
-          margin="normal"
-          className="reset-popup-form-full-width"
-        />
-      </div>
-
-      <div className="reset-form-field">
-        <label>New Password</label>
-        <input
-          label="New Password"
-          type="password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          fullWidth
-          margin="normal"
-          className="reset-popup-form-full-width"
-          helperText="Min. Length: 8 characters. Character Types: Uppercase, lowercase, number, special character."
-        />
-      </div>
-
-      <div className="reset-form-field">
-        <label>Re-type Password</label>
-        <input
-          label="Re-type Password"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          fullWidth
-          margin="normal"
-          className="reset-popup-form-full-width"
-          error={newPassword !== confirmPassword}
-          helperText={
-            newPassword !== confirmPassword ? "Passwords do not match" : ""
-          }
-        />*/}
-
+    <Box sx={{ width: "100%", flexDirection: "column", alignItems: "center" }}>
       {error && (
         <p style={{ color: "pink", fontFamily: "Montserrat" }}>{error}</p>
       )}
@@ -177,66 +133,48 @@ const ResetPasswordForm = () => {
         <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
       )}
 
-      {/* Current Password Field */}
       <div className="reset-form-field" style={{ position: "relative" }}>
         <label>Current Password</label>
-        <div
+        <input
+          type={showCurrentPassword ? "text" : "password"}
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          style={passwordFieldStyle(true)}
+          className="reset-popup-form-full-width"
+        />
+        <span
+          onClick={() => setShowCurrentPassword((prevState) => !prevState)}
           style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
+            position: "absolute",
+            right: "10px",
+            cursor: "pointer",
+            color: "#6b7b58",
           }}
         >
-          <input
-            type={showCurrentPassword ? "text" : "password"}
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            style={passwordFieldStyle(true)} // Always valid for current password
-            className="reset-popup-form-full-width"
-          />
-          <span
-            onClick={() => setShowCurrentPassword((prevState) => !prevState)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              cursor: "pointer",
-              color: "#6b7b58",
-            }}
-          >
-            {showCurrentPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-          </span>
-        </div>
+          {showCurrentPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+        </span>
       </div>
 
-      {/* New Password Field */}
       <div className="reset-form-field" style={{ position: "relative" }}>
         <label>New Password</label>
-        <div
+        <input
+          type={showNewPassword ? "text" : "password"}
+          value={newPassword}
+          onChange={(e) => handleNewPasswordChange(e.target.value)}
+          style={passwordFieldStyle(strength >= 50 && requirements.minLength)}
+          className="reset-popup-form-full-width"
+        />
+        <span
+          onClick={() => setShowNewPassword((prevState) => !prevState)}
           style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
+            position: "absolute",
+            right: "10px",
+            cursor: "pointer",
+            color: "#6b7b58",
           }}
         >
-          <input
-            type={showNewPassword ? "text" : "password"}
-            value={newPassword}
-            onChange={(e) => handleNewPasswordChange(e.target.value)}
-            style={passwordFieldStyle(strength >= 50 && requirements.minLength)}
-            className="reset-popup-form-full-width"
-          />
-          <span
-            onClick={() => setShowNewPassword((prevState) => !prevState)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              cursor: "pointer",
-              color: "#6b7b58",
-            }}
-          >
-            {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-          </span>
-        </div>
+          {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+        </span>
 
         <div style={{ display: "flex", gap: "4px", marginTop: "8px" }}>
           {getBarColors().map((color, index) => (
@@ -259,42 +197,51 @@ const ResetPasswordForm = () => {
         </Typography>
       </div>
 
-      {/* Re-type Password Field */}
       <div className="reset-form-field" style={{ position: "relative" }}>
         <label>Re-type Password</label>
-        <div
+        <input
+          type={showConfirmPassword ? "text" : "password"}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          style={passwordFieldStyle(confirmPassword === newPassword)}
+          className="reset-popup-form-full-width"
+        />
+        <span
+          onClick={() => setShowConfirmPassword((prevState) => !prevState)}
           style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
+            position: "absolute",
+            right: "10px",
+            cursor: "pointer",
+            color: "#6b7b58",
           }}
         >
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            style={passwordFieldStyle(confirmPassword === newPassword)}
-            className="reset-popup-form-full-width"
-            error={newPassword !== confirmPassword}
-            helperText={
-              newPassword !== confirmPassword ? "Passwords do not match" : ""
-            }
-          />
-          <span
-            onClick={() => setShowConfirmPassword((prevState) => !prevState)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              cursor: "pointer",
-              color: "#6b7b58",
-            }}
-          >
-            {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-          </span>
-        </div>
+          {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+        </span>
       </div>
 
-      {/* Buttons */}
+      <div style={{ marginTop: "20px" }}>
+        <Typography variant="body2">Password Requirements:</Typography>
+        <ul>
+          <li style={{ color: requirements.minLength ? "green" : "red" }}>
+            Minimum length: 8 characters
+          </li>
+          <li style={{ color: requirements.hasLowerCase ? "green" : "red" }}>
+            Contains lowercase letter
+          </li>
+          <li style={{ color: requirements.hasUpperCase ? "green" : "red" }}>
+            Contains uppercase letter
+          </li>
+          <li
+            style={{ color: requirements.hasNumberOrSpecial ? "green" : "red" }}
+          >
+            Contains number or special character
+          </li>
+          {/* <li style={{ color: requirements.passwordsMatch ? "green" : "red" }}>
+            Passwords match
+          </li> */}
+        </ul>
+      </div>
+
       <div className="reset-popup-buttons">
         <button
           className="reset-popUpForm-btn-save"
@@ -305,14 +252,12 @@ const ResetPasswordForm = () => {
         </button>
       </div>
 
-      {/* Forgot Password Dialog */}
       <ForgotPasswordDialog
         open={forgotPasswordDialogOpen}
         onClose={() => setForgotPasswordDialogOpen(false)}
         onSend={() => setForgotPasswordSuccessDialogOpen(true)}
       />
 
-      {/* Confirmation Dialog */}
       <ConfirmationDialog
         open={dialogOpen}
         title="Confirm Password Update"
@@ -324,16 +269,14 @@ const ResetPasswordForm = () => {
         onCancel={() => setDialogOpen(false)}
       />
 
-      {/* Success Confirmation Dialog */}
       <ConfirmationDialog
         open={successDialogOpen}
         title="Password Updated"
-        content="Your password has been successfully updated. A confirmation email has been sent to your email address."
+        content="Your password has been successfully updated."
         onConfirm={() => setSuccessDialogOpen(false)}
         onCancel={() => setSuccessDialogOpen(false)}
       />
 
-      {/* Forgot Password Success Dialog */}
       <ConfirmationDialog
         open={forgotPasswordSuccessDialogOpen}
         title="Reset Link Sent"
