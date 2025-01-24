@@ -77,6 +77,7 @@ function TrackOrder() {
                         fontWeight: "bold",
                         fontSize: "26px",
                         fontFamily: "Horizon",
+                        textAlign: "left",
                       }}
                     >
                       Order :{selectedOrder.name}
@@ -98,8 +99,9 @@ function TrackOrder() {
                       color: "black",
                       padding: "0px 15px",
                       fontSize: "18px",
-                      height: "30px",
+                      height: "40px",
                       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                      width: "30%",
                     }}
                     value={selectedSubOrder.title}
                     onChange={(e) =>
@@ -125,7 +127,7 @@ function TrackOrder() {
                   >
                     <Box>
                       <h2>Order Summary</h2>
-                      <p style={{ fontSize: "20px" }}>
+                      <p style={{ fontSize: "20px", marginTop: "-10px" }}>
                         Order: {selectedSubOrder.title}
                       </p>
                       <span className="status paid">
@@ -229,6 +231,8 @@ function TrackOrder() {
                           fontSize: "14px",
                           fontWeight: "normal",
                           color: "#777",
+                          marginBottom: "10px",
+                          marginTop: "10px",
                         }}
                       >
                         Order: {selectedSubOrder.title}
