@@ -1,16 +1,18 @@
-import React, { useContext } from "react";
-import { EmployeeContext } from "../../utils/empContext"; // Import EmployeeContext
+import React from "react";
 
-const SidebarEmployee = ({ setActivePage, activePage }) => {
-  const { employeeSession } = useContext(EmployeeContext); // Access employee session from context
-  const tier = employeeSession?.tier || 0; // Default to 0 if tier is missing
-
+const SidebarEmployee = ({ setActivePage, activePage, user }) => {
   // Function to handle active page highlighting
   const getActiveClass = (page) => {
     return activePage === page
       ? "sidebar-item-vendor active"
       : "sidebar-item-vendor";
   };
+
+  // Extract tier and role from the user object
+  const tier = user?.tier ? parseInt(user?.tier) : 0; // Default to 0 if tier is null or undefined
+
+  // Log the tier for debugging purposes
+  console.log("tier", tier);
 
   return (
     <aside className="sidebar-vendor">

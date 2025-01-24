@@ -13,6 +13,7 @@ function ProductsPage() {
   const [favorites, setFavorites] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [sortOption, setSortOption] = useState("Newest");
 
   // Fetch categories to find the matching category for description
   useEffect(() => {
@@ -72,13 +73,37 @@ function ProductsPage() {
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
-
+  useEffect(() => {
+    let sortedProducts = [...products];
+    switch (sortOption) {
+      case "Newest":
+        sortedProducts.sort(
+          (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
+        );
+        break;
+      case "Price: Low to High":
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case "Price: High to Low":
+        sortedProducts.sort((a, b) => b.price - a.price);
+        break;
+      case "Alphabetical: A-Z":
+        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "Alphabetical: Z-A":
+        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+    setProducts(sortedProducts);
+  }, [sortOption, products]);
   return (
     <Box>
       <Header />
       {category && <PageDicription category={category} />}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <TopFilter />
+        <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
       <Box sx={{ display: "flex" }}>
         <Box>

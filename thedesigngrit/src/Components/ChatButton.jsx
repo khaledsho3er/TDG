@@ -1,31 +1,50 @@
-import React from "react";
-import { Box, IconButton } from "@mui/material";
-import MessageIcon from "@mui/icons-material/Message"; // You can replace this icon as needed.
+import React, { useState } from "react";
+import MessageIcon from "@mui/icons-material/Message";
+import CloseIcon from "@mui/icons-material/Close";
 
 function FloatingButton() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
+
   return (
-    <Box
-      sx={{
-        position: "fixed", // Fixes the button in place
-        bottom: 16, // Distance from the bottom of the viewport
-        right: 16, // Distance from the left of the viewport
-        zIndex: 1000, // Ensures it stays above most content
-      }}
-    >
-      <IconButton
-        size="large"
-        sx={{
-          backgroundColor: "#5F7C5F", // Green color
-          color: "#ffffff", // White icon color
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Adds a subtle shadow
-          ":hover": {
-            backgroundColor: "#4E644E", // Darker green on hover
-          },
-        }}
-      >
+    <>
+      {/* Floating Button */}
+      <div className="floating-button" onClick={toggleChat}>
         <MessageIcon />
-      </IconButton>
-    </Box>
+      </div>
+
+      {/* Chat Popup */}
+      {isChatOpen && (
+        <div className="chat-popup">
+          {/* Chat Header */}
+          <div className="chat-header">
+            <span>Customer Support</span>
+            <CloseIcon className="close-icon" onClick={toggleChat} />
+          </div>
+
+          {/* Chat Body */}
+          <div className="chat-body">
+            <div className="message received">Hello! How can I assist you?</div>
+            <div className="message sent">
+              I have a question about my order.
+            </div>
+          </div>
+
+          {/* Chat Footer */}
+          <div className="chat-footer">
+            <input
+              type="text"
+              placeholder="Type a message..."
+              className="message-input"
+            />
+            <button className="send-button">Send</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

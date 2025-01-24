@@ -82,14 +82,25 @@ const BillingInfo = () => {
 
   return (
     <Box
+      // sx={{
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   justifyContent: "center",
+      //   margin: "auto",
+      //   width: "100%",
+      //   alignItems: "center",
+      //   fontFamily: "Montserrat",
+      //   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+      //   border: "1px solid #6c7c59",
+      //   borderRadius: "5px",
+      //   padding: "20px",
+      // }}
+      className="profile-info"
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        margin: "auto",
-        width: "100%",
         alignItems: "center",
-        fontFamily: "Montserrat",
       }}
     >
       <div
@@ -116,21 +127,47 @@ const BillingInfo = () => {
               justifyContent: "space-between",
               alignItems: "center",
               margin: "10px",
-              width: "80%",
-              padding: "10px",
-              border: "1px solid #6c7c59",
-              backgroundColor: "#6c7c59",
+              width: "60%",
+              padding: "15px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+              color: "#2d2d2d",
               borderRadius: "5px",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
             }}
           >
-            <p>**** **** **** {card.cardNumber.slice(-4)}</p>
-            <p>{card.type}</p>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "Column",
+                justifyContent: "space-between",
+                alignItems: "start",
+              }}
+            >
+              <p style={{ color: "#2d2d2d" }}>
+                **** **** **** {card.cardNumber.slice(-4)}
+              </p>
+              <p style={{ color: "#2d2d2d" }}>{card.type}</p>
+            </Box>
             <Box sx={{ display: "flex", gap: "5px", flexDirection: "Column" }}>
-              <button onClick={() => handleSetDefault(card.id)}>
+              <button
+                onClick={() => handleSetDefault(card.id)}
+                style={{
+                  backgroundColor: "#6c7c59",
+                  color: "#fff",
+                }}
+              >
                 {card.isDefault ? "Default" : "Set as Default"}
               </button>
-              <button onClick={() => handleEditCard(card)}>Edit</button>
+              <button
+                onClick={() => handleEditCard(card)}
+                style={{
+                  backgroundColor: "#6c7c59",
+                  color: "#fff",
+                }}
+              >
+                Edit
+              </button>
             </Box>
           </Box>
         ))}

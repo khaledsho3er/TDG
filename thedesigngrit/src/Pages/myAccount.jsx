@@ -1,39 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
+import axios from "axios";
 import Profile from "../Components/account/profile";
+import { UserContext } from "../utils/userContext";
+import { useNavigate } from "react-router-dom";
+import OrdersPopUp from "../Components/profilePopup/ordersPopup";
+import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
+import ShippingInfoPopup from "../Components/profilePopup/Shipping";
+// import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
   const [selectedSection, setSelectedSection] = useState("profile");
-  const sections = {
-    profile: <Profile />,
-    orders: "orders",
-    wishlist: "wishlist",
-    settings: "settings",
-    logout: "Logout",
+  const { userSession, logout } = useContext(UserContext); // Access user session and logout function from context
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    address1: "",
+    phoneNumber: "",
+    gender: "",
+  });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to login if user is not logged in
+    if (!userSession) {
+      navigate("/login"); // Redirect to login page if no session
+      return;
+    }
+
+    // Fetch user data if logged in
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/getUser", {
+          withCredentials: true,
+        });
+        console.log("userSession in MyAccount:", userSession);
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error.response || error);
+      }
+    };
+
+    fetchData();
+  }, [userSession, navigate]); // Add `navigate` to the dependencies
+
+  const handleLogout = () => {
+    logout(); // Call logout from context
+    navigate("/home"); // Redirect to home or login page
   };
+
+  const sections = {
+    profile: <Profile userData={userData} />, // Pass userData as a prop
+    orders: <OrdersPopUp />,
+    Password: <ResetPasswordForm />,
+    // Billing: <BillingInfo />,
+    shipping: <ShippingInfoPopup />,
+    wishlist: "wishlist",
+    // Render logout as a clickable word that performs the logout directly
+    logout: (
+      <span
+        style={{ cursor: "pointer" }}
+        onClick={handleLogout} // Trigger logout directly without interfering with section logic
+      >
+        Logout
+      </span>
+    ),
+  };
+
   return (
     <Box>
       <Header />
       <Box>
         <div className="hero-job-container">
           <div className="hero-text">
-            <h1 className="hero-title">Hey, Karim wahba</h1>
+            <h1 className="hero-title">Hey, {userData.firstName}</h1>
           </div>
         </div>
         <div className="terms-container">
           {/* Sidebar */}
           <div className="sidebar">
-            {Object.keys(sections).map((section) => (
-              <button
-                key={section}
-                className={`sidebar-item ${
-                  selectedSection === section ? "active" : ""
-                }`}
-                onClick={() => setSelectedSection(section)}
-              >
-                {section}
-              </button>
-            ))}
+            {Object.keys(sections).map((section) =>
+              section !== "logout" ? (
+                <button
+                  key={section}
+                  className={`sidebar-item ${
+                    selectedSection === section ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedSection(section)}
+                >
+                  {section}
+                </button>
+              ) : (
+                <div key={section} className="sidebar-item">
+                  {sections[section]}
+                </div>
+              )
+            )}
           </div>
           <div className="divider"></div>
 

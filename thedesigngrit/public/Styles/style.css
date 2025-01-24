@@ -334,7 +334,7 @@ body::-webkit-scrollbar {
 .header-container {
   position: sticky;
   top: 0;
-  z-index: 5000;
+  z-index: 1000;
   background-color: rgba(255, 255, 255, 0); /* Ensure background is solid */
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -417,7 +417,7 @@ body::-webkit-scrollbar {
   font-family: Montserrat;
   background-color: #ffffff13;
   padding: 10px;
-  z-index: 2;
+  z-index: 0;
 }
 
 .category {
@@ -1537,6 +1537,7 @@ body::-webkit-scrollbar {
 .description-content-1 h2 {
   padding-left: 120px;
   font-family: Horizon;
+  text-align: left;
 }
 
 .description-content-1 p {
@@ -1866,6 +1867,7 @@ textarea {
   font-family: Horizon;
   font-weight: bold;
   margin-bottom: 15px;
+  margin-top: 15px;
   cursor: pointer;
   padding: 10px;
   color: #a9a8a8;
@@ -1910,6 +1912,7 @@ textarea {
   font-size: 20px;
   margin-bottom: 10px;
   font-family: Horizon;
+  text-align: left;
 }
 
 .content h3 {
@@ -2305,8 +2308,8 @@ textarea {
 
 .popup-form {
   display: grid;
-  gap: 10px;
-  padding: 10px 40px 20px 40px;
+  gap: 7px;
+  padding: 0px 0px 0px 40px;
 }
 .profile-form-field {
 }
@@ -2339,7 +2342,8 @@ textarea {
   box-shadow: 0 0 5px rgba(107, 123, 88, 0.5);
 }
 
-.popup-form input {
+.popup-form input,
+select {
   width: 100%;
   padding: 0.75rem;
   border: none;
@@ -2352,6 +2356,14 @@ textarea {
 
 .popup-form-full-width {
   grid-column: span 2;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  background: white;
+  font-family: "Montserrat", sans-serif;
 }
 
 .popup-buttons {
@@ -2372,6 +2384,11 @@ textarea {
   margin-top: 20px;
   font-family: Montserrat;
 }
+
+.profile-popUpForm-btn-save:hover {
+  background-color: #6c7c59;
+}
+
 .profile-popUpForm-btn-cancel {
   color: #2d2d2d;
   border: 2px solid black;
@@ -2384,6 +2401,13 @@ textarea {
   margin-top: 20px;
   font-family: Montserrat;
 }
+
+.profile-popUpForm-btn-cancel:hover {
+  background-color: #6c7c59;
+  border-color: #6c7c59;
+  color: #eae3e4;
+}
+
 /* Right Side: Navigation */
 .popup-right {
   flex: 1;
@@ -2498,18 +2522,19 @@ textarea {
   grid-column: span 2;
 }
 
-.reset-popup-buttons {
+/* .reset-popup-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: auto;
   padding-top: 40px;
   margin-left: 20px;
-}
+} */
 .reset-popUpForm-btn-save {
   background: #2d2d2d;
   color: #fff;
   border: none;
+  margin: auto;
   padding: 10px 50px 10px 50px;
   border-radius: 5px;
   cursor: pointer;
@@ -2602,6 +2627,7 @@ textarea {
   height: 50vh; /* Full viewport height for vertical centering */
   padding: 20px; /* Add padding for better spacing */
 }
+
 .form-field {
   width: 80%;
   font-family: "Montserrat";
@@ -2635,10 +2661,43 @@ textarea {
   color: #2d2d2d;
   font-family: "Montserrat";
 }
+.shipping-form-field {
+  width: 80%;
+  font-family: "Montserrat";
+  margin: auto;
+  padding: 15px;
+}
+
+.shipping-form-field label {
+  padding-bottom: 8px;
+  display: block;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat";
+}
+
+.shipping-form-field input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat", sans-serif;
+}
+.shipping-form-field select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2d2d2d;
+  font-family: "Montserrat";
+}
 .shipping-form-field-row {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 74%;
   margin-top: 16px;
   margin: auto;
 }
@@ -2661,9 +2720,10 @@ textarea {
 .Shipping-city input {
   padding: 8px;
   font-size: 16px;
-  border: none;
+
+  border: 1px solid #ccc;
   border-radius: 8px;
-  height: 26px;
+  height: 40px;
 }
 
 .form-buttons {
@@ -2886,13 +2946,14 @@ textarea {
   padding-top: 20px;
   margin-left: 100px;
   color: #2d2d2d;
+  text-align: left;
 }
 
 /* Flex container for cart body */
 .Shopping-cart-body {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 40px;
   justify-content: space-between;
 }
 
@@ -3060,7 +3121,7 @@ textarea {
 /* Right Side: Summary */
 .Shopping-cart-bill-section {
   flex: 1;
-  max-width: 300px;
+  max-width: 385px;
   height: 500px !important;
   padding: 50px;
 }
@@ -3186,6 +3247,7 @@ textarea {
   font-weight: bold;
   margin-bottom: 10px;
   text-align: left;
+  font-family: Horizon;
 }
 
 .product-rating {
@@ -3204,6 +3266,7 @@ textarea {
 .color-selector {
   align-items: center;
   font-family: Montserrat;
+  padding-bottom: 13px;
 }
 
 .color-selector-label {
@@ -3216,6 +3279,7 @@ textarea {
 .color-options {
   display: flex;
   gap: 10px;
+  padding-top: 15px;
 }
 
 .color-circle {
@@ -3238,12 +3302,9 @@ textarea {
 }
 /* Size Selector Section */
 .size-selector {
-  display: flex; /* Flexbox for alignment */
-  justify-content: flex-start; /* Space between size buttons and BIMCAD button */
-  align-items: center; /* Vertically align buttons */
-  margin-bottom: 20px; /* Add space below the size selector */
-  padding-right: 120px;
-  flex-direction: row;
+  align-items: center;
+  font-family: Montserrat;
+  padding-bottom: 13px;
 }
 
 .size-selector-label {
@@ -3861,6 +3922,7 @@ textarea {
   max-width: 600px;
   margin: 0 auto;
   box-sizing: border-box;
+  margin-left: -26px;
 }
 
 /* Title styling */
@@ -3931,13 +3993,20 @@ textarea {
 .reviews-section {
   margin-top: 10rem;
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   padding-left: 10rem;
   display: flex;
   flex-direction: column;
   gap: 50px;
 }
-
+.reviews-section h2 {
+  font-family: Horizon;
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  color: #2d2d2d;
+}
 .review-card {
   width: 80%;
   padding: 15px;
@@ -4427,7 +4496,13 @@ textarea {
   font-weight: bold;
   line-height: 2.5;
 }
-
+.billing-label {
+  font-size: 16px;
+  color: #2d2d2d;
+  margin: 5px 0;
+  font-weight: bold;
+  line-height: 2.5;
+}
 .profile-info-first p:nth-child(odd) {
   color: #777;
 }
@@ -4852,6 +4927,7 @@ textarea {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   z-index: 2000;
   text-align: center;
+  z-index: 1;
   margin-top: 0.2rem;
 }
 
@@ -4962,9 +5038,11 @@ textarea {
   justify-content: space-between;
   flex-direction: column;
   gap: 24px;
+  align-items: center;
 }
 
 .Billinginfo_checkbox {
+  width: 85%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -4977,6 +5055,7 @@ textarea {
 .billinginfo-form-container {
   display: flex;
   flex-direction: row;
+  width: 85%;
   justify-content: space-between;
   margin-left: 2rem;
   border-radius: 20px;
@@ -5055,13 +5134,14 @@ button:hover {
 }
 
 .Billinginfo-total {
-  background: linear-gradient(45deg, #6c7c59, #2e2e2d);
+  background: #6c7c59;
   border-radius: 8px;
   padding: 16px;
   color: #fff;
   text-align: left;
   height: 10rem;
   margin-top: 1.5rem;
+  width: 25%;
   margin-right: 1.5rem;
 }
 
@@ -5070,6 +5150,7 @@ button:hover {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;
+  color: whitesmoke;
 }
 
 .cart-summary-row {
@@ -5549,6 +5630,7 @@ input:focus {
   font-family: Horizon;
   font-weight: bold;
   font-size: 0.9rem;
+  text-align: left;
 }
 
 .menu-left {
@@ -5607,8 +5689,9 @@ input:focus {
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 0.8rem;
-  margin-left: -20px;
-  margin-top: 26px;
+  margin-left: -21px;
+  margin-top: 17px;
+  text-align: left;
 }
 
 .menu-right ul {
@@ -5696,8 +5779,8 @@ input:focus {
 /* RequestInfoPopup.css */
 
 .request-popup-dialog {
-  z-index: 1000;
-  backdrop-filter: blur(4px);
+  z-index: 50000;
+  backdrop-filter: blur(14px);
 }
 .Request-Info-close-icon {
   position: absolute;
@@ -5755,4 +5838,120 @@ input:focus {
 
 .request-popup-button:hover {
   background-color: #2d2d2d;
+}
+/* Floating button */
+.floating-button {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background-color: #5f7c5f;
+  color: white;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.floating-button:hover {
+  background-color: #4e644e;
+}
+
+/* Chat Popup */
+.chat-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Chat Header */
+.chat-header {
+  background-color: #5f7c5f;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+/* Chat Body */
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  background-color: #f5f5f5;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Received Message */
+.message.received {
+  background-color: #e0e0e0;
+  align-self: flex-start;
+}
+
+/* Sent Message */
+.message.sent {
+  background-color: #5f7c5f;
+  color: white;
+  align-self: flex-end;
+}
+
+/* Chat Footer */
+.chat-footer {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  gap: 8px;
+}
+
+.message-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.send-button {
+  padding: 8px 16px;
+  background-color: #5f7c5f;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+  background-color: #4e644e;
 }

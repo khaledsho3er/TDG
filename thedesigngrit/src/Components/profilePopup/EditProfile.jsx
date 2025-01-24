@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
-// import UpdateSentPopup from "../successMsgs/successUpdate";
 import ConfirmationDialog from "../confirmationMsg";
 
 function EditProfile() {
@@ -15,6 +14,8 @@ function EditProfile() {
     email: "",
     address1: "",
     phoneNumber: "",
+    gender: "", // Add gender
+    dateOfBirth: "", // Add date of birth
   });
 
   useEffect(() => {
@@ -40,26 +41,12 @@ function EditProfile() {
   };
 
   const handleUpdate = async () => {
-    // try {
-    //   const response = await axios.put(
-    //     "http://localhost:5000/api/updateUser",
-    //     userData,
-    //     { withCredentials: true }
-    //   );
-
-    // } catch (error) {
-    //   console.error("Error updating user data:", error.response || error);
-    //   alert("Failed to update user data.");
-    // }
-
+    console.log(IsPopupVisible);
     setDialogOpen(true); // Open the confirmation dialog
     setIsPopupVisible(true); // Show popup on successful registration
     setDialogAction("save");
   };
-  // const closePopup = () => {
-  //   setIsPopupVisible(false); // Close the popup
-  //   navigate("/"); // Navigate to login page after closing popup
-  // };
+
   const handleCancelClick = () => {
     setDialogAction("cancel");
     setDialogOpen(true); // Open the confirmation dialog
@@ -78,10 +65,8 @@ function EditProfile() {
         console.error("Error updating user data:", error.response || error);
         alert("Failed to update user data.");
       }
-      // Handle save logic
       console.log("Changes saved!");
     } else if (dialogAction === "cancel") {
-      // Handle cancel logic
       console.log("Changes discarded!");
     }
     setDialogOpen(false); // Close the dialog
@@ -90,6 +75,7 @@ function EditProfile() {
   const handleDialogCancel = () => {
     setDialogOpen(false); // Close the dialog without taking action
   };
+
   return (
     <div>
       {/* Profile Form */}
@@ -137,6 +123,7 @@ function EditProfile() {
             fullWidth
           />
         </div>
+
         {/* Phone Number Field */}
         <div className="profile-form-field">
           <label>Phone Number</label>
@@ -149,12 +136,48 @@ function EditProfile() {
             fullWidth
           />
         </div>
+
+        {/* Gender and Date of Birth in a Row */}
+        <Box
+          className="popup-form-gender-dob"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: "10px",
+          }}
+        >
+          {/* Gender Field */}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Gender</label>
+            <select
+              name="gender"
+              value={userData.gender}
+              onChange={handleChange}
+              className="popup-form-full-width"
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          {/* Date of Birth Field */}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Date of Birth</label>
+            <input
+              type="date"
+              name="dateOfBirth"
+              value={userData.dateOfBirth}
+              onChange={handleChange}
+              className="popup-form-full-width"
+            />
+          </div>
+        </Box>
       </div>
 
       {/* Save and Cancel Buttons */}
       <div className="popup-buttons">
-        {/*<UpdateSentPopup show={isPopupVisible} closePopup={closePopup} />*/}
-
         <button className="profile-popUpForm-btn-save" onClick={handleUpdate}>
           Update
         </button>
@@ -165,6 +188,7 @@ function EditProfile() {
           Cancel
         </button>
       </div>
+
       {/* Confirmation Dialog */}
       <ConfirmationDialog
         open={dialogOpen}
@@ -177,7 +201,6 @@ function EditProfile() {
         onConfirm={handleConfirm}
         onCancel={handleDialogCancel}
       />
-      <></>
     </div>
   );
 }

@@ -28,7 +28,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
   ];
 
   return (
-    <div className="overlay-container-vendor">
+    <div className="overlay-container-vendor" style={{ right: "50px" }}>
       {/* Header */}
       <div className="overlay-header-vendor">
         <h3>Favorites</h3>

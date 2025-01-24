@@ -9,13 +9,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
 import RequestInfoPopup from "../Components/product/optionPopUp";
-import {
-  fetchProductData,
-  fetchProductReview,
-} from "../utils/fetchProductData";
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
-import { ConstructionOutlined } from "@mui/icons-material";
 
 function ProductPage() {
   // const [setShowDropdown] = useState(false);
@@ -67,6 +62,8 @@ function ProductPage() {
         }
         const data = await response.json();
         setProduct(data); // Set the fetched product to state
+        setReviews(data.reviews); // Set the fetched reviews to state
+        console.log(error);
       } catch (error) {
         setError(error.message); // Set error if something goes wrong
       } finally {
@@ -75,7 +72,7 @@ function ProductPage() {
     };
 
     fetchProduct(); // Fetch product on component mount
-  }, [id]); // Refetch if the ID in the URL changes
+  }, [id, error, loading]); // Refetch if the ID in the URL changes
 
   if (!product) return <div>Product not found</div>;
   const handleImageClick = (index) => {
@@ -94,13 +91,12 @@ function ProductPage() {
 
   const handlePrevImage = () => {
     setSelectedImageIndex(
-      (prev) =>
-        (prev - 1 + product.thumbnailUrls.length) % product.thumbnailUrls.length
+      (prev) => (prev - 1 + product.images.length) % product.images.length
     );
   };
 
   const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev + 1) % product.thumbnailUrls.length);
+    setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
   };
 
   const handleToggleSection = (index, type = "general") => {
@@ -149,17 +145,17 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`http://localhost:5000${product.mainImage}`}
+              src={`http://localhost:5000/uploads/${product.mainImage}`}
               alt={product.name}
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
             />
             <div className="thumbnail-container">
-              {product.thumbnailUrls?.length ? (
-                product.thumbnailUrls.map((thumbnail, index) => (
+              {product.images?.length ? (
+                product.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`/${thumbnail}`}
+                    src={`http://localhost:5000/uploads/${image}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -173,11 +169,23 @@ function ProductPage() {
 
           <div className="product-details">
             <h1 className="product-title">{product.name}</h1>
-            <p className="product-brand">{product.brand}</p>
+            <p className="product-brand">{product.brandName}</p>
+            <br />
             <p className="product-rating">
-              {"★".repeat(product.rating)} ({product.reviewsCount} reviews)
+              {product.reviewsCount > 0 ? (
+                <>
+                  {"★".repeat(product.rating)} ({product.reviewsCount} reviews)
+                </>
+              ) : (
+                <span>No reviews yet</span>
+              )}
             </p>
-            <p className="product-price">{product.price}</p>
+            <p className="product-price">
+              {product.price > 1000
+                ? new Intl.NumberFormat("en-US").format(product.price)
+                : product.price}
+              .00 E£
+            </p>
             <hr />
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
@@ -186,7 +194,7 @@ function ProductPage() {
                   <div
                     key={index}
                     className="color-circle"
-                    style={{ backgroundColor: color.hex }}
+                    style={{ backgroundColor: color }}
                     title={color.name}
                     onClick={() => handleColorSelect(color.name)}
                   ></div>
@@ -348,14 +356,15 @@ function ProductPage() {
                         ></iframe>
                       </div>
                     )}
-                    {section === "Tags" && (
+                    {section === "Tags" && product.tags && (
                       <div className="span-container">
-                        <span>Sofa</span>
-                        <span>Istkbal</span>
-                        <span>Fabric</span>
-                        <span>2 Seater Sofa</span>
-                        <span>2024</span>
-                        <span>Decor</span>
+                        {product.tags.length > 0 ? (
+                          product.tags.map((tag, index) => (
+                            <span key={index}>{tag}</span>
+                          ))
+                        ) : (
+                          <p>No tags available.</p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -413,7 +422,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} />
               </button>
               <img
-                src={`/${product.thumbnailUrls[selectedImageIndex]}`}
+                src={`http://localhost:5000/uploads/${product.images[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />
@@ -423,7 +432,14 @@ function ProductPage() {
             </div>
           </div>
         )}
-
+        <hr
+          style={{
+            width: "90%",
+            textAlign: "center",
+            margin: "auto",
+            marginBottom: "20px",
+          }}
+        ></hr>
         <div className="reviews-section">
           <h2>Reviews</h2>
           <Box className="review-summary">

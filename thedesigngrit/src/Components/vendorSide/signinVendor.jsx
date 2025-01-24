@@ -58,8 +58,9 @@ const Signin = () => {
       <h1 className="signinLogo">
         <img src="Assets/TDG_logo_Black.png" alt="Logo" />
       </h1>
-      <Box className="login-form">
+      <Box className="login-form" sx={{ height: "50%" }}>
         <h1>Sign In</h1>
+        <h1>Vendor Portal</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
