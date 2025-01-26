@@ -4,7 +4,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 /* Login.css */
 body {
   margin: 0;
@@ -5055,6 +5054,7 @@ textarea {
 .billinginfo-form-container {
   display: flex;
   flex-direction: row;
+  padding: 10px;
   width: 85%;
   justify-content: space-between;
   margin-left: 2rem;
@@ -5327,6 +5327,7 @@ input:focus {
 
 .ordersummary-cart-title {
   font-family: "horizon";
+  color: #eae3e4;
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;

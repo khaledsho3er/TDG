@@ -122,18 +122,23 @@ function ProductPage() {
     }));
   };
   const handleAddToCart = (product) => {
-    // const parsedPrice = parseInt(product.price.replace(/,| E£/g, ""), 10); // Original code
+    const compositeKey = `${product.id}-${selectedColor || "default"}-${
+      selectedSize || "default"
+    }`;
+    console.log("Composite Key:", compositeKey); // Debug log
+
     addToCart({
-      id: product.id,
+      id: compositeKey, // Use composite key as the unique identifier
       name: product.name,
       unitPrice: product.price,
       quantity: 1,
       image: product.image,
       brand: product.brand,
-      color: product.colors[0]?.name || "N/A",
-      size: product.sizes[0] || "N/A",
+      color: selectedColor || "default",
+      size: selectedSize || "default",
       code: "N/A",
     });
+
     navigate("/mycart");
   };
 

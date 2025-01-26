@@ -73,9 +73,10 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           sx={{
             fontSize: "16px",
             fontWeight: 700,
-            fontFamily: "Montserrat, sans-serif",
+            fontFamily: "Montserrat",
             textTransform: "uppercase",
             width: "100%",
+            color: "#2d2d2d",
             maxWidth: "80%",
           }}
         >
@@ -86,7 +87,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           variant="body2"
           sx={{
             fontSize: "12px",
-            fontFamily: "Montserrat, sans-serif",
+            fontFamily: "Montserrat  ",
             color: "#757575",
             marginTop: "4px",
           }}
@@ -99,8 +100,8 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           sx={{
             fontSize: "14px",
             fontWeight: 500,
-            fontFamily: "Montserrat, sans-serif",
-            color: "#000",
+            fontFamily: "Montserrat  ",
+            color: "#2d2d2d",
             marginTop: "8px",
           }}
         >

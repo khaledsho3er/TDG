@@ -2,7 +2,8 @@ import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
-
+import BillSummary from "./billingSummary";
+import { useCart } from "../../Context/cartcontext";
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   padding: 0,
@@ -60,31 +61,28 @@ function BillingForm({ onSubmit }) {
     // Call the parent onSubmit function to move to the next step
     onSubmit(formData); // Send form data to parent
   };
+  const { cartItems } = useCart(); // Get cart items from context
 
-  const [subtotal, setSubtotal] = useState(0);
-  const [shipping, setShipping] = useState(0);
-  const [total, setTotal] = useState(0);
+  // useEffect(() => {
+  //   // Fetch data from product.json
+  //   const fetchCartDetails = async () => {
+  //     try {
+  //       const response = await fetch("/json/product.json");
+  //       const data = await response.json();
 
-  useEffect(() => {
-    // Fetch data from product.json
-    const fetchCartDetails = async () => {
-      try {
-        const response = await fetch("/json/product.json");
-        const data = await response.json();
+  //       const fetchedSubtotal = data.subtotal || 0;
+  //       const fetchedShipping = data.shipping || 0;
 
-        const fetchedSubtotal = data.subtotal || 0;
-        const fetchedShipping = data.shipping || 0;
+  //       setSubtotal(fetchedSubtotal);
+  //       setShipping(fetchedShipping);
+  //       setTotal(fetchedSubtotal + fetchedShipping);
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart details:", error);
+  //     }
+  //   };
 
-        setSubtotal(fetchedSubtotal);
-        setShipping(fetchedShipping);
-        setTotal(fetchedSubtotal + fetchedShipping);
-      } catch (error) {
-        console.error("Failed to fetch cart details:", error);
-      }
-    };
-
-    fetchCartDetails();
-  }, []);
+  //   fetchCartDetails();
+  // }, []);
 
   return (
     <Box className="Billinginfo_container">
@@ -252,21 +250,7 @@ function BillingForm({ onSubmit }) {
           </form>
         </Box>
         {/* Cart Summary */}
-        <Box className="Billinginfo-total">
-          <h1 className="cart-title">Your Cart</h1>
-          <div className="cart-summary-row">
-            <span>Subtotal:</span>
-            <span>${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="cart-summary-row">
-            <span>Shipping:</span>
-            <span>${shipping.toFixed(2)}</span>
-          </div>
-          <div className="cart-summary-total">
-            <span>Total:</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-        </Box>
+        <BillSummary cartItems={cartItems} />
       </Box>
     </Box>
   );

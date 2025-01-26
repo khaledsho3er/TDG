@@ -10,12 +10,10 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import PaymentIcons from "../paymentsIcons";
+import BillSummary from "./billingSummary";
+import { useCart } from "../../Context/cartcontext";
 
-function PaymentForm() {
-  const [subtotal, setSubtotal] = useState(0);
-  const [shipping, setShipping] = useState(0);
-  const [total, setTotal] = useState(0);
+function PaymentForm({ billData }) {
   const [cardOptions, setCardOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState("");
   const [cardDetails, setCardDetails] = useState({
@@ -40,26 +38,8 @@ function PaymentForm() {
     fetchCardOptions();
   }, []);
 
-  useEffect(() => {
-    // Fetch data from product.json
-    const fetchCartDetails = async () => {
-      try {
-        const response = await fetch("/json/product.json");
-        const data = await response.json();
-
-        const fetchedSubtotal = data.subtotal || 0;
-        const fetchedShipping = data.shipping || 0;
-
-        setSubtotal(fetchedSubtotal);
-        setShipping(fetchedShipping);
-        setTotal(fetchedSubtotal + fetchedShipping);
-      } catch (error) {
-        console.error("Failed to fetch cart details:", error);
-      }
-    };
-
-    fetchCartDetails();
-  }, []);
+  const { cartItems } = useCart(); // Get cart items from context
+  const { subtotal, shippingFee, total } = billData; // Destructure the billData
 
   return (
     <Box className="paymentmethod-container">
@@ -168,30 +148,12 @@ function PaymentForm() {
           </RadioGroup>
         </FormControl>
       </Box>
-      <Box className="Ordersummary-firstrow-secondcolumn">
-        {/* 2 boxes in a column */}
-        <Box className="Ordersummary-firstrow-secondcolumn-firstrow">
-          {/* Cart Summary */}
-          <Box className="ordersummary-total">
-            <h1 className="ordersummary-cart-title">Your Cart</h1>
-            <div className="ordersummary-cart-summary-row">
-              <span>Subtotal:</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="ordersummary-cart-summary-row">
-              <span>Shipping:</span>
-              <span>${shipping.toFixed(2)}</span>
-            </div>
-            <div className="ordersummary-cart-summary-total">
-              <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-          </Box>
-        </Box>
-        <Box className="Ordersummary-firstrow-secondcolumn-secondrow">
-          <PaymentIcons />
-        </Box>
-      </Box>
+      <BillSummary
+        cartItems={cartItems}
+        subtotal={subtotal}
+        shippingFee={shippingFee}
+        total={total}
+      />
     </Box>
   );
 }
