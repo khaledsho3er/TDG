@@ -111,6 +111,12 @@
     font-size: 18px;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   .container-login {
     height: 100vh;
     padding: 40px;
@@ -232,6 +238,14 @@
   .reset-popup-form {
     gap: 5px;
     padding: 10px;
+  }
+
+  .hero-container {
+    padding: 20px;
+  }
+
+  .hero-section-image img {
+    margin-left: 150px;
   }
 }
 /* General styles are unchanged from the original */
