@@ -33,6 +33,7 @@ import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
 import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+import Subcategories from "./Pages/subcategories";
 
 function App() {
   return (
@@ -57,7 +58,7 @@ function App() {
             <Route exact path="/contactus" Component={ContactUs} />
             <Route exact path="/mycart" Component={ShoppingCart} />
             <Route
-              path="/category/:categoryId/:categoryName"
+              path="/products/:subcategoryId/:subcategoryName"
               element={<ProductsPage />}
             />
             <Route path="/product/:id" element={<ProductPage />} />
@@ -75,7 +76,6 @@ function App() {
             {/* Route for the vendors grid */}
             <Route path="/vendors" element={<Vendorspage />} />
             {/* Vendor Panel Routes */}
-
             <Route path="/signin-vendor" element={<SigninVendor />} />
             <Route
               path="/vendor-dashboard/:vendorId"
@@ -87,7 +87,10 @@ function App() {
             />
             <Route path="/vendorpanel" Component={VendorHome} />
             <Route path="/edit-employee/:id" component={EditEmployee} />
-
+            <Route
+              path="/category/:categoryId/subcategories"
+              element={<Subcategories />}
+            />
             <Route path="/orderDetail/:id" element={<OrderDetails />} />
             <Route path="/update-product" element={<UpdateProductForm />} />
             <Route path="/notificationspage" element={<NotificationsPage />} />

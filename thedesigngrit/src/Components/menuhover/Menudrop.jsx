@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
+const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
   console.log("Category in Menudrop:", category);
 
   // const [selectedDetail, setSelectedDetail] = useState(
-  //   details.subCategories[0]
+  //   category.subCategories[0]
   // ); // Set initial subcategory
   const [selectedDetail, setSelectedDetail] = useState(null);
   useEffect(() => {
-    if (details?.subCategories?.length > 0) {
-      setSelectedDetail(details.subCategories[0]); // Automatically select the first subcategory
+    if (category?.subCategories?.length > 0) {
+      setSelectedDetail(category.subCategories[0]); // Automatically select the first subcategory
     } else {
       setSelectedDetail(null); // Reset if no subcategories
     }
-  }, [details]);
+  }, [category]);
   const handleNavigation = () => {
     if (category?._id && category?.name) {
-      navigate(`/category/${category._id}/${category.name}`);
+      navigate(`/category/${category._id}/subcategories`);
     } else {
       console.error("Invalid category data:", category);
     }
@@ -40,16 +40,18 @@ const Menudrop = ({ category, details, onMouseEnter, onMouseLeave }) => {
     >
       {/* Left Section */}
       <div className="menu-left-container">
-        <h2 className="topcategory-title">{category}</h2>
+        <h2 className="topcategory-title">{category.name}</h2>
         <div className="menu-left">
           <div className="menu-item">
-            <h3 onClick={handleNavigation}>Shop all {category}</h3>
+            <h3 onClick={handleNavigation}>Shop all {category.name}</h3>
           </div>
-          {details.subCategories.map((subCategory, index) => (
+          {category.subCategories.map((subCategory, index) => (
             <div
               key={index}
               className="menu-item"
-              onClick={() => handleTitleClick(subCategory)}
+              onClick={() =>
+                navigate(`/products/${subCategory._id}/${subCategory.name}`)
+              }
               style={{ cursor: "pointer" }}
             >
               <h3>{subCategory.name}</h3> {/* Display subcategory name */}
