@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 import BillSummary from "./billingSummary";
@@ -35,31 +35,18 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function BillingForm({ onSubmit }) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    phoneNumber: "",
-    countryCode: "+1",
-    country: "",
-    city: "",
-    zipCode: "",
-  });
-
+function BillingForm({ billingData, onChange, billData }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const updatedData = { ...billingData, [name]: value };
+    onChange(updatedData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the parent onSubmit function to move to the next step
-    onSubmit(formData); // Send form data to parent
+    console.log("Billing Data:", billingData);
+    // Call the parent onChange function to update the billing data
+    onChange(billingData);
   };
   const { cartItems } = useCart(); // Get cart items from context
 
@@ -140,7 +127,7 @@ function BillingForm({ onSubmit }) {
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
-                  value={formData.firstName}
+                  value={billingData.firstName}
                   onChange={handleChange}
                   required
                 />
@@ -151,7 +138,7 @@ function BillingForm({ onSubmit }) {
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
-                  value={formData.lastName}
+                  value={billingData.lastName}
                   onChange={handleChange}
                   required
                 />
@@ -164,7 +151,7 @@ function BillingForm({ onSubmit }) {
                 id="email"
                 name="email"
                 placeholder="Email"
-                value={formData.email}
+                value={billingData.email}
                 onChange={handleChange}
                 required
               />
@@ -176,7 +163,7 @@ function BillingForm({ onSubmit }) {
                 id="address"
                 name="address"
                 placeholder="Address"
-                value={formData.address}
+                value={billingData.address}
                 onChange={handleChange}
                 required
               />
@@ -187,7 +174,7 @@ function BillingForm({ onSubmit }) {
                 <select
                   id="countryCode"
                   name="countryCode"
-                  value={formData.countryCode}
+                  value={billingData.countryCode}
                   onChange={handleChange}
                   required
                 >
@@ -201,7 +188,7 @@ function BillingForm({ onSubmit }) {
                   id="phoneNumber"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  value={formData.phoneNumber}
+                  value={billingData.phoneNumber}
                   onChange={handleChange}
                   required
                 />
@@ -215,7 +202,7 @@ function BillingForm({ onSubmit }) {
                   id="country"
                   name="country"
                   placeholder="Country"
-                  value={formData.country}
+                  value={billingData.country}
                   onChange={handleChange}
                   required
                 />
@@ -226,7 +213,7 @@ function BillingForm({ onSubmit }) {
                   id="city"
                   name="city"
                   placeholder="City"
-                  value={formData.city}
+                  value={billingData.city}
                   onChange={handleChange}
                   required
                 />
@@ -239,7 +226,7 @@ function BillingForm({ onSubmit }) {
                 id="zipCode"
                 name="zipCode"
                 placeholder="Zip Code"
-                value={formData.zipCode}
+                value={billingData.zipCode}
                 onChange={handleChange}
                 required
               />

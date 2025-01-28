@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { TiDeleteOutline } from "react-icons/ti"; // Import the delete icon
-
+import { useVendor } from "../../utils/vendorContext";
 const AddProduct = () => {
+  const { vendor } = useVendor(); // Access vendor data from context
+
   // State variables
+  const [brandName, setBrandName] = useState(""); // Store fetched brand name
   const [categories, setCategories] = useState([]); // Categories from API
   const [subCategories, setSubCategories] = useState([]); // Subcategories from API
   const [types, setTypes] = useState([]); // Types from API
@@ -72,9 +75,36 @@ const AddProduct = () => {
 
     fetchCategories();
   }, []);
-
-  // Handle category change
-  // Handle category change
+  // Fetch brand details using brandId from the vendor session
+  useEffect(() => {
+    if (vendor?.brandId) {
+      const fetchBrandName = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/brand/${vendor.brandId}`
+          );
+          setBrandName(response.data.brandName); // Set the brand name in state
+          setFormData((prevData) => ({
+            ...prevData,
+            brandName: response.data.brandName, // Update formData with brand name
+          }));
+        } catch (error) {
+          console.error("Error fetching brand name:", error);
+        }
+      };
+      fetchBrandName();
+    }
+  }, [vendor?.brandId]);
+  // Set brandId from vendor context
+  useEffect(() => {
+    if (vendor) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        brandId: vendor.brandId || "", // Ensure the brandId exists in the vendor data
+      }));
+    }
+  }, [vendor]);
+  console.log("Brand Name:", brandName); // Handle category change
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
     setSelectedCategory(selectedCategoryId);
@@ -661,7 +691,7 @@ const AddProduct = () => {
         type="text"
         name="brandId"
         value={formData.brandId}
-        onChange={handleChange}
+        readOnly // Make it read-only since it's fetched from vendor
       />
 
       <label>Brand Name:</label>
@@ -670,6 +700,7 @@ const AddProduct = () => {
         name="brandName"
         value={formData.brandName}
         onChange={handleChange}
+        readOnly
       />
 
       {/* Stock and SKU */}

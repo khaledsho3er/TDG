@@ -1,73 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
+import { useVendor } from "../../utils/vendorContext";
 
 const EmployeePage = () => {
-  const [employees, setEmployees] = useState([]);
+  const { vendor } = useVendor(); // Get vendor data, including brandId
+  const [vendors, setVendors] = useState([]);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
-  const [currentEmployee, setCurrentEmployee] = useState(null);
+  const [currentVendor, setCurrentVendor] = useState(null);
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
+  // Define fetchVendors function and memoize it
+  const fetchVendors = useCallback(async () => {
+    try {
+      if (vendor?.brandId) {
         const response = await axios.get(
-          "http://localhost:5000/api/employee/getAll"
+          `http://localhost:5000/api/vendors/vendors/byBrand/${vendor.brandId}`
         );
-        setEmployees(response.data);
-      } catch (error) {
-        console.error("Error fetching employees", error);
+        setVendors(response.data);
+      } else {
+        console.error("BrandId not found in session");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching vendors", error);
+    }
+  }, [vendor?.brandId]); // Add vendor.brandId as a dependency
 
-    fetchEmployees();
-  }, []);
+  // Fetch vendors when the component mounts or vendor changes
+  useEffect(() => {
+    fetchVendors();
+  }, [fetchVendors]); // Include fetchVendors in dependency array
 
-  const handleEditClick = (employee) => {
-    setCurrentEmployee(employee);
+  const handleEditClick = (vendor) => {
+    setCurrentVendor(vendor);
     setEditPopupVisible(true);
   };
 
   const handleEditClose = () => {
     setEditPopupVisible(false);
-    setCurrentEmployee(null);
+    setCurrentVendor(null);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:5000/api/employee/employee/${currentEmployee._id}`,
-        currentEmployee
+        `http://localhost:5000/api/vendors/${currentVendor._id}`,
+        currentVendor
       );
       setEditPopupVisible(false);
-      fetchEmployees(); // Fetch updated employee list
+      fetchVendors();
     } catch (error) {
-      console.error("Error updating employee", error);
+      console.error("Error updating vendor", error);
     }
   };
 
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/employee/employee/${currentEmployee._id}`
+        `http://localhost:5000/api/vendors/${currentVendor._id}`
       );
       setEditPopupVisible(false);
-      fetchEmployees(); // Fetch updated employee list
+      fetchVendors();
     } catch (error) {
-      console.error("Error deleting employee", error);
-    }
-  };
-
-  const fetchEmployees = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/employee/getAll"
-      );
-      setEmployees(response.data);
-    } catch (error) {
-      console.error("Error fetching employees", error);
+      console.error("Error deleting vendor", error);
     }
   };
 
@@ -83,30 +80,36 @@ const EmployeePage = () => {
               alignItems: "center",
             }}
           >
-            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>
-              Employee List
-            </h2>
+            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>Vendor List</h2>
             <table>
               <thead style={{ backgroundColor: "#f2f2f2", color: "#2d2d2d" }}>
-                <tr style={{ backgroundColor: "#f2f2f2", color: "#2d2d2d" }}>
-                  <th>Name</th>
-                  <th>Employee Number</th>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Email</th>
+                  <th>Employee Number</th>
                   <th>Phone Number</th>
                   <th>Tier</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {employees.map((employee) => (
-                  <tr key={employee._id}>
-                    <td>{employee.name}</td>
-                    <td>{employee.employeeNumber}</td>
-                    <td>{employee.email}</td>
-                    <td>{employee.phoneNumber}</td>
-                    <td>{employee.tier}</td>
+                {vendors.map((vendor) => (
+                  <tr key={vendor._id}>
+                    <td>{vendor.firstName}</td>
+                    <td>{vendor.lastName}</td>
+                    <td>{vendor.email}</td>
+                    <td>{vendor.employeeNumber}</td>
+                    <td>{vendor.phoneNumber}</td>
+                    <td>{vendor.tier}</td>
                     <td>
-                      <button onClick={() => handleEditClick(employee)}>
+                      <button
+                        onClick={() => handleEditClick(vendor)}
+                        style={{
+                          color: "#e3e3e3",
+                          backgroundColor: "#6a8452",
+                        }}
+                      >
                         Edit
                       </button>
                     </td>
@@ -117,12 +120,11 @@ const EmployeePage = () => {
           </Box>
         </div>
 
-        {/* Edit Popup */}
-        {editPopupVisible && currentEmployee && (
+        {editPopupVisible && currentVendor && (
           <div className="requestInfo-popup-overlay">
             <div className="requestInfo-popup">
               <div className="requestInfo-popup-header">
-                <h2>Edit Employee</h2>
+                <h2>Edit Vendor</h2>
                 <IconButton
                   onClick={handleEditClose}
                   sx={{
@@ -135,29 +137,29 @@ const EmployeePage = () => {
                   <IoIosClose size={30} />
                 </IconButton>
               </div>
-              <form onSubmit={handleFormSubmit} className="requestInfo-form">
+              <form onSubmit={handleFormSubmit}>
                 <div className="requestInfo-form-group">
-                  <label>Name</label>
+                  <label>First Name</label>
                   <input
                     type="text"
-                    value={currentEmployee.name}
+                    value={currentVendor.firstName}
                     onChange={(e) =>
-                      setCurrentEmployee({
-                        ...currentEmployee,
-                        name: e.target.value,
+                      setCurrentVendor({
+                        ...currentVendor,
+                        firstName: e.target.value,
                       })
                     }
                   />
                 </div>
                 <div className="requestInfo-form-group">
-                  <label>Employee Number</label>
+                  <label>Last Name</label>
                   <input
                     type="text"
-                    value={currentEmployee.employeeNumber}
+                    value={currentVendor.lastName}
                     onChange={(e) =>
-                      setCurrentEmployee({
-                        ...currentEmployee,
-                        employeeNumber: e.target.value,
+                      setCurrentVendor({
+                        ...currentVendor,
+                        lastName: e.target.value,
                       })
                     }
                   />
@@ -166,11 +168,24 @@ const EmployeePage = () => {
                   <label>Email</label>
                   <input
                     type="email"
-                    value={currentEmployee.email}
+                    value={currentVendor.email}
                     onChange={(e) =>
-                      setCurrentEmployee({
-                        ...currentEmployee,
+                      setCurrentVendor({
+                        ...currentVendor,
                         email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Employee Number</label>
+                  <input
+                    type="text"
+                    value={currentVendor.employeeNumber}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        employeeNumber: e.target.value,
                       })
                     }
                   />
@@ -179,10 +194,10 @@ const EmployeePage = () => {
                   <label>Phone Number</label>
                   <input
                     type="text"
-                    value={currentEmployee.phoneNumber}
+                    value={currentVendor.phoneNumber}
                     onChange={(e) =>
-                      setCurrentEmployee({
-                        ...currentEmployee,
+                      setCurrentVendor({
+                        ...currentVendor,
                         phoneNumber: e.target.value,
                       })
                     }
@@ -192,26 +207,39 @@ const EmployeePage = () => {
                   <label>Tier</label>
                   <input
                     type="text"
-                    value={currentEmployee.tier}
+                    value={currentVendor.tier}
                     onChange={(e) =>
-                      setCurrentEmployee({
-                        ...currentEmployee,
+                      setCurrentVendor({
+                        ...currentVendor,
                         tier: e.target.value,
                       })
                     }
                   />
                 </div>
-                <button type="submit" className="requestInfo-submit-button">
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  className="requestInfo-submit-button"
-                  style={{ backgroundColor: "red" }}
-                  onClick={handleDelete}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: "auto",
+                  }}
                 >
-                  Delete Employee
-                </button>
+                  <button
+                    type="submit"
+                    className="requestInfo-submit-button"
+                    style={{ width: "15%" }}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="requestInfo-submit-button"
+                    style={{ backgroundColor: "#DC143C", width: "15%" }}
+                  >
+                    Delete Vendor
+                  </button>
+                </div>
               </form>
             </div>
           </div>
