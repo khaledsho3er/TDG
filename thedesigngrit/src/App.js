@@ -33,6 +33,7 @@ import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
 import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+import Signupvendor from "./Components/vendorSide/signupvendor";
 
 function App() {
   return (
@@ -75,8 +76,8 @@ function App() {
             {/* Route for the vendors grid */}
             <Route path="/vendors" element={<Vendorspage />} />
             {/* Vendor Panel Routes */}
-
             <Route path="/signin-vendor" element={<SigninVendor />} />
+            <Route path="/signupvendor" element={<Signupvendor />} />
             <Route
               path="/vendor-dashboard/:vendorId"
               element={<VendorHome />}
@@ -87,7 +88,6 @@ function App() {
             />
             <Route path="/vendorpanel" Component={VendorHome} />
             <Route path="/edit-employee/:id" component={EditEmployee} />
-
             <Route path="/orderDetail/:id" element={<OrderDetails />} />
             <Route path="/update-product" element={<UpdateProductForm />} />
             <Route path="/notificationspage" element={<NotificationsPage />} />
