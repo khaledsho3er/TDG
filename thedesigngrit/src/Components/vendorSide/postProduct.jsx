@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { TiDeleteOutline } from "react-icons/ti"; // Import the delete icon
 import { useVendor } from "../../utils/vendorContext";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
