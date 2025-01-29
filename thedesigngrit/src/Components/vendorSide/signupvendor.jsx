@@ -13,11 +13,13 @@ import axios from "axios";
 
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
+  const [vendorId, setVendorId] = useState(null);
+  const [brandId, setBrandId] = useState(null);
   const [vendorData, setVendorData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    employeeNumber: "567",
+    employeeNumber: "005",
     password: "",
     phoneNumber: "",
     tier: "3",
@@ -80,6 +82,7 @@ function Signupvendor() {
 
         if (response.status === 201) {
           console.log("Vendor data submitted successfully");
+          setVendorId(response._id);
           setCurrentPhase(2);
         } else {
           console.log("Failed to submit vendor data");
@@ -93,15 +96,34 @@ function Signupvendor() {
     } else if (currentPhase === 2) {
       setCurrentPhase(3);
     } else if (currentPhase === 3) {
+      const formData = new FormData();
+
+      Object.keys(brandData).forEach((key) => {
+        if (Array.isArray(brandData[key])) {
+          // Handle arrays (e.g., catalogues, documents)
+          brandData[key].forEach((item, index) => {
+            formData.append(`${key}[${index}]`, item);
+          });
+        } else {
+          formData.append(key, brandData[key]);
+        }
+      });
+
       try {
         const response = await axios.post(
           "http://localhost:5000/api/brand/brand",
-          brandData,
-          { headers: { "Content-Type": "application/json" } } // Set Content-Type explicitly
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
         );
+
         if (response.status === 201) {
           console.log("Brand data submitted successfully");
+          setBrandId(response._id);
+          await axios.put(`http://localhost:5000/api/vendors/${vendorId}`, {
+            brandId: response._id,
+          });
           alert("Signup completed!");
+          // Reset brand data to default state
           setCurrentPhase(1);
           setVendorData({
             firstName: "",
@@ -112,7 +134,30 @@ function Signupvendor() {
             phoneNumber: "",
             tier: "3",
           });
-          setBrandData({});
+          setBrandData({
+            brandName: "",
+            commercialRegisterNo: "",
+            taxNumber: "",
+            companyAddress: "",
+            phoneNumber: "",
+            email: "",
+            bankAccountNumber: "",
+            websiteURL: "",
+            instagramURL: "",
+            facebookURL: "",
+            tiktokURL: "",
+            linkedinURL: "",
+            shippingPolicy: "",
+            brandlogo: "",
+            digitalCopiesLogo: [],
+            coverPhoto: "",
+            catalogues: [],
+            brandDescription: "",
+            status: "pending",
+            documents: [],
+            fees: 0,
+            createdAt: "",
+          });
         } else {
           console.error("Failed to submit brand data");
         }
@@ -143,6 +188,7 @@ function Signupvendor() {
 
   const handleFileChange = (event, phase) => {
     const { name, files } = event.target;
+
     if (phase === 2) {
       if (name === "brandlogo") {
         setBrandData((prevState) => ({
@@ -155,9 +201,12 @@ function Signupvendor() {
           [name]: files[0], // Only takes the first cover photo file
         }));
       } else if (name === "catalogues") {
+        const pdfFiles = Array.from(files).filter(
+          (file) => file.type === "application/pdf"
+        );
         setBrandData((prevState) => ({
           ...prevState,
-          [name]: Array.from(files), // Takes multiple files (catalogues)
+          [name]: pdfFiles, // Only accepts PDF files
         }));
       } else if (name === "documents") {
         setBrandData((prevState) => ({
