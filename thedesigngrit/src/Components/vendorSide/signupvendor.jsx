@@ -19,7 +19,7 @@ function Signupvendor() {
     firstName: "",
     lastName: "",
     email: "",
-    employeeNumber: "005",
+    employeeNumber: "99509",
     password: "",
     phoneNumber: "",
     tier: "3",
@@ -82,7 +82,7 @@ function Signupvendor() {
 
         if (response.status === 201) {
           console.log("Vendor data submitted successfully");
-          setVendorId(response._id);
+          console.log("Vendor ID:", response.data._id);
           setCurrentPhase(2);
         } else {
           console.log("Failed to submit vendor data");
@@ -118,7 +118,7 @@ function Signupvendor() {
 
         if (response.status === 201) {
           console.log("Brand data submitted successfully");
-          setBrandId(response._id);
+          console.log("Brand ID:", response.data._id);
           await axios.put(`http://localhost:5000/api/vendors/${vendorId}`, {
             brandId: response._id,
           });
