@@ -107,7 +107,7 @@ function App() {
           <Routes>
             <Route path="/signin-vendor" element={<SigninVendor />} />
             <Route path="/signupvendor" element={<Signupvendor />} />
-            <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} 
+            <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} />
           </Routes>
         </Router>
       </VendorProvider>

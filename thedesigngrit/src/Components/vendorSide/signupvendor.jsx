@@ -19,7 +19,7 @@ function Signupvendor() {
     firstName: "",
     lastName: "",
     email: "",
-    employeeNumber: "121",
+    employeeNumber: "10021",
     password: "",
     phoneNumber: "",
     tier: "3",
