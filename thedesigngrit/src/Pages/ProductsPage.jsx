@@ -9,7 +9,7 @@ import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 
 function ProductsPage() {
-  const { categoryId, categoryName } = useParams(); // Get categoryId and categoryName from URL
+  const { subcategoryId, subcategoryName } = useParams(); // Get categoryId and categoryName from URL
   const [favorites, setFavorites] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -33,14 +33,14 @@ function ProductsPage() {
   }, []);
 
   // Find the category by ID
-  const category = categories.find((cat) => cat._id === categoryId);
+  // const category = categories.find((cat) => cat._id === categoryId);
 
   // Fetch products for the selected category when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/category/${categoryId}/${categoryName}`
+          `http://localhost:5000/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
         const data = await response.json();
         setProducts(data); // Set the products of the selected category
@@ -50,7 +50,7 @@ function ProductsPage() {
     };
 
     fetchProducts();
-  }, [categoryId, categoryName]); // Include categoryName in the dependency array
+  }, [subcategoryId, subcategoryName]); // Include categoryName in the dependency array
 
   // Fetch favorites from localStorage (if any)
   useEffect(() => {
@@ -101,7 +101,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
-      {category && <PageDicription category={category} />}
+      {/* {category && <PageDicription category={category} />} */}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>

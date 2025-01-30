@@ -35,6 +35,8 @@ import EditEmployee from "./Components/vendorSide/editEmployee";
 import EmployeeHome from "./Components/vendorSide/employeeDashboard";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
+import Subcategories from "./Pages/subcategories";
+
 
 function App() {
   return (
@@ -66,6 +68,10 @@ function App() {
                 path="/category/:categoryId/:categoryName"
                 element={<ProductsPage />}
               />
+                   <Route
+              path="/products/:subcategoryId/:subcategoryName"
+              element={<ProductsPage />}
+            />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route exact path="/ProductsPage" Component={ProductsPage} />
               {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}
@@ -81,13 +87,13 @@ function App() {
               {/* Route for the vendors grid */}
               <Route path="/vendors" element={<Vendorspage />} />
               {/* Vendor Panel Routes */}
-              <Route
-                path="/employee-dashboard/:vendorId"
-                element={<EmployeeHome />}
-              />
+//               <Route
+//                 path="/employee-dashboard/:vendorId"
+//                 element={<EmployeeHome />}
+//               />
               {/* <Route path="/vendorpanel" Component={VendorHome} /> */}
               <Route path="/addbrand" Component={BrandForm} />
-              <Route path="/edit-employee/:id" component={EditEmployee} />
+               <Route path="/edit-employee/:id" component={EditEmployee} />
               <Route path="/orderDetail/:id" element={<OrderDetails />} />
               <Route path="/update-product" element={<UpdateProductForm />} />
               <Route
@@ -107,8 +113,7 @@ function App() {
             <Route path="/signin-vendor" element={<SigninVendor />} />
             <Route
               path="/vendor-dashboard/:vendorId"
-              element={<VendorHome />}
-            />
+              element={<VendorHome />} />
           </Routes>
         </Router>
       </VendorProvider>
