@@ -9,57 +9,38 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import PaymentIcons from "../paymentsIcons";
+import React, { useState } from "react";
+import BillSummary from "./billingSummary";
+// import { useCart } from "../../Context/cartcontext";
 
-function PaymentForm() {
-  const [subtotal, setSubtotal] = useState(0);
-  const [shipping, setShipping] = useState(0);
-  const [total, setTotal] = useState(0);
+function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
   const [cardOptions, setCardOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState("");
   const [cardDetails, setCardDetails] = useState({
-    number: "",
-    expiry: "",
-    cvv: "",
+    number: paymentData.cardNumber,
+    expiry: paymentData.expiry,
+    cvv: paymentData.cvv,
   });
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
 
-  // Fetch card options from the database
-  useEffect(() => {
-    const fetchCardOptions = async () => {
-      try {
-        const response = await fetch("/api/card-options"); // Adjust the endpoint
-        const data = await response.json();
-        setCardOptions(data);
-      } catch (error) {
-        console.error("Failed to fetch card options:", error);
-      }
-    };
+  const handleCardDetailsChange = (e) => {
+    const { name, value } = e.target;
+    const updatedCardDetails = { ...cardDetails, [name]: value };
 
-    fetchCardOptions();
-  }, []);
+    setCardDetails(updatedCardDetails);
+    onChange({ ...paymentData, ...updatedCardDetails, paymentMethod });
+  };
 
-  useEffect(() => {
-    // Fetch data from product.json
-    const fetchCartDetails = async () => {
-      try {
-        const response = await fetch("/json/product.json");
-        const data = await response.json();
+  const handlePaymentMethodChange = (e) => {
+    const method = e.target.value;
+    setCardOptions(["card", "fawry", "valu", "cod"]);
+    setPaymentMethod(method);
+    onChange({ ...paymentData, paymentMethod: method });
+  };
 
-        const fetchedSubtotal = data.subtotal || 0;
-        const fetchedShipping = data.shipping || 0;
-
-        setSubtotal(fetchedSubtotal);
-        setShipping(fetchedShipping);
-        setTotal(fetchedSubtotal + fetchedShipping);
-      } catch (error) {
-        console.error("Failed to fetch cart details:", error);
-      }
-    };
-
-    fetchCartDetails();
-  }, []);
+  const handlePayNow = () => {
+    onSubmit(); // Trigger the submission in the parent component
+  };
 
   return (
     <Box className="paymentmethod-container">
@@ -67,7 +48,7 @@ function PaymentForm() {
         <FormControl fullWidth>
           <RadioGroup
             value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
+            onChange={handlePaymentMethodChange}
           >
             {/* Card Payment Option */}
             <Box className="paymentmethod-radio-dropdown">
@@ -103,42 +84,40 @@ function PaymentForm() {
                   fullWidth
                   margin="normal"
                   label="Card Number"
+                  name="number"
                   InputLabelProps={{ className: "montserrat-font" }}
                   className="montserrat-font"
                   value={cardDetails.number}
-                  onChange={(e) =>
-                    setCardDetails({ ...cardDetails, number: e.target.value })
-                  }
+                  onChange={handleCardDetailsChange}
                 />
                 <Box display="flex" gap={2}>
                   <TextField
                     fullWidth
                     margin="normal"
                     label="MM/YY"
+                    name="expiry"
                     InputLabelProps={{ className: "montserrat-font" }}
                     className="montserrat-font"
                     value={cardDetails.expiry}
-                    onChange={(e) =>
-                      setCardDetails({ ...cardDetails, expiry: e.target.value })
-                    }
+                    onChange={handleCardDetailsChange}
                   />
                   <TextField
                     fullWidth
                     margin="normal"
                     label="CVV"
+                    name="cvv"
                     type="password"
                     InputLabelProps={{ className: "montserrat-font" }}
                     className="montserrat-font"
                     value={cardDetails.cvv}
-                    onChange={(e) =>
-                      setCardDetails({ ...cardDetails, cvv: e.target.value })
-                    }
+                    onChange={handleCardDetailsChange}
                   />
                 </Box>
                 <Button
                   variant="contained"
                   color="primary"
                   className="montserrat-font"
+                  onClick={handlePayNow}
                 >
                   Pay Now
                 </Button>
@@ -168,30 +147,12 @@ function PaymentForm() {
           </RadioGroup>
         </FormControl>
       </Box>
-      <Box className="Ordersummary-firstrow-secondcolumn">
-        {/* 2 boxes in a column */}
-        <Box className="Ordersummary-firstrow-secondcolumn-firstrow">
-          {/* Cart Summary */}
-          <Box className="ordersummary-total">
-            <h1 className="ordersummary-cart-title">Your Cart</h1>
-            <div className="ordersummary-cart-summary-row">
-              <span>Subtotal:</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="ordersummary-cart-summary-row">
-              <span>Shipping:</span>
-              <span>${shipping.toFixed(2)}</span>
-            </div>
-            <div className="ordersummary-cart-summary-total">
-              <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-          </Box>
-        </Box>
-        <Box className="Ordersummary-firstrow-secondcolumn-secondrow">
-          <PaymentIcons />
-        </Box>
-      </Box>
+      <BillSummary
+        cartItems={billData.cartItems}
+        subtotal={billData.subtotal}
+        shippingFee={billData.shippingFee}
+        total={billData.total}
+      />
     </Box>
   );
 }

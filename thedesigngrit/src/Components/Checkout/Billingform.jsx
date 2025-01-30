@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
-
+import BillSummary from "./billingSummary";
+import { useCart } from "../../Context/cartcontext";
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   padding: 0,
@@ -34,57 +35,41 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function BillingForm({ onSubmit }) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    phoneNumber: "",
-    countryCode: "+1",
-    country: "",
-    city: "",
-    zipCode: "",
-  });
-
+function BillingForm({ billingData, onChange, billData }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const updatedData = { ...billingData, [name]: value };
+    onChange(updatedData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the parent onSubmit function to move to the next step
-    onSubmit(formData); // Send form data to parent
+    console.log("Billing Data:", billingData);
+    // Call the parent onChange function to update the billing data
+    onChange(billingData);
   };
+  const { cartItems } = useCart(); // Get cart items from context
 
-  const [subtotal, setSubtotal] = useState(0);
-  const [shipping, setShipping] = useState(0);
-  const [total, setTotal] = useState(0);
+  // useEffect(() => {
+  //   // Fetch data from product.json
+  //   const fetchCartDetails = async () => {
+  //     try {
+  //       const response = await fetch("/json/product.json");
+  //       const data = await response.json();
 
-  useEffect(() => {
-    // Fetch data from product.json
-    const fetchCartDetails = async () => {
-      try {
-        const response = await fetch("/json/product.json");
-        const data = await response.json();
+  //       const fetchedSubtotal = data.subtotal || 0;
+  //       const fetchedShipping = data.shipping || 0;
 
-        const fetchedSubtotal = data.subtotal || 0;
-        const fetchedShipping = data.shipping || 0;
+  //       setSubtotal(fetchedSubtotal);
+  //       setShipping(fetchedShipping);
+  //       setTotal(fetchedSubtotal + fetchedShipping);
+  //     } catch (error) {
+  //       console.error("Failed to fetch cart details:", error);
+  //     }
+  //   };
 
-        setSubtotal(fetchedSubtotal);
-        setShipping(fetchedShipping);
-        setTotal(fetchedSubtotal + fetchedShipping);
-      } catch (error) {
-        console.error("Failed to fetch cart details:", error);
-      }
-    };
-
-    fetchCartDetails();
-  }, []);
+  //   fetchCartDetails();
+  // }, []);
 
   return (
     <Box className="Billinginfo_container">
@@ -142,7 +127,7 @@ function BillingForm({ onSubmit }) {
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
-                  value={formData.firstName}
+                  value={billingData.firstName}
                   onChange={handleChange}
                   required
                 />
@@ -153,7 +138,7 @@ function BillingForm({ onSubmit }) {
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
-                  value={formData.lastName}
+                  value={billingData.lastName}
                   onChange={handleChange}
                   required
                 />
@@ -166,7 +151,7 @@ function BillingForm({ onSubmit }) {
                 id="email"
                 name="email"
                 placeholder="Email"
-                value={formData.email}
+                value={billingData.email}
                 onChange={handleChange}
                 required
               />
@@ -178,7 +163,7 @@ function BillingForm({ onSubmit }) {
                 id="address"
                 name="address"
                 placeholder="Address"
-                value={formData.address}
+                value={billingData.address}
                 onChange={handleChange}
                 required
               />
@@ -189,7 +174,7 @@ function BillingForm({ onSubmit }) {
                 <select
                   id="countryCode"
                   name="countryCode"
-                  value={formData.countryCode}
+                  value={billingData.countryCode}
                   onChange={handleChange}
                   required
                 >
@@ -203,7 +188,7 @@ function BillingForm({ onSubmit }) {
                   id="phoneNumber"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  value={formData.phoneNumber}
+                  value={billingData.phoneNumber}
                   onChange={handleChange}
                   required
                 />
@@ -217,7 +202,7 @@ function BillingForm({ onSubmit }) {
                   id="country"
                   name="country"
                   placeholder="Country"
-                  value={formData.country}
+                  value={billingData.country}
                   onChange={handleChange}
                   required
                 />
@@ -228,7 +213,7 @@ function BillingForm({ onSubmit }) {
                   id="city"
                   name="city"
                   placeholder="City"
-                  value={formData.city}
+                  value={billingData.city}
                   onChange={handleChange}
                   required
                 />
@@ -241,7 +226,7 @@ function BillingForm({ onSubmit }) {
                 id="zipCode"
                 name="zipCode"
                 placeholder="Zip Code"
-                value={formData.zipCode}
+                value={billingData.zipCode}
                 onChange={handleChange}
                 required
               />
@@ -252,21 +237,7 @@ function BillingForm({ onSubmit }) {
           </form>
         </Box>
         {/* Cart Summary */}
-        <Box className="Billinginfo-total">
-          <h1 className="cart-title">Your Cart</h1>
-          <div className="cart-summary-row">
-            <span>Subtotal:</span>
-            <span>${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="cart-summary-row">
-            <span>Shipping:</span>
-            <span>${shipping.toFixed(2)}</span>
-          </div>
-          <div className="cart-summary-total">
-            <span>Total:</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-        </Box>
+        <BillSummary cartItems={cartItems} />
       </Box>
     </Box>
   );

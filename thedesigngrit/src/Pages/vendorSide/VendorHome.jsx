@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import NavbarVendor from "../../Components/vendorSide/navbarVendor";
 import SidebarVendor from "../../Components/vendorSide/sideBarVendor";
 import DashboardVendor from "../../Components/vendorSide/DashboardVendor";
@@ -10,14 +10,14 @@ import AddProduct from "../../Components/vendorSide/postProduct";
 import BrandingPage from "../../Components/vendorSide/brandingPage";
 import EmployeeSignup from "../../Components/vendorSide/Addemployee";
 import EmployeePage from "../../Components/vendorSide/employeePage";
-import { UserContext } from "../../utils/userContext"; // Assuming you have UserContext to manage user data
 import AccountingPage from "../../Components/vendorSide/Accounting";
+import { useVendor } from "../../utils/vendorContext";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
 
 const VendorHome = () => {
-  const { user } = useContext(UserContext); // Access user data from context
-
+  const { vendor } = useVendor(); // Access vendor data from context
+  console.log("vendor in VendorHome:", vendor);
   const [activePage, setActivePage] = useState("dashboard");
   // const { vendorId } = useParams(); // Get vendor ID from URL
   // const [vendor, setVendor] = useState(null);
@@ -65,7 +65,7 @@ const VendorHome = () => {
         <SidebarVendor
           setActivePage={setActivePage}
           activePage={activePage}
-          user={user} // The user object should contain role and tier information
+          user={vendor} // The user object should contain role and tier information
         />
         <div className="content-vendor">{renderContent()}</div>
       </div>
