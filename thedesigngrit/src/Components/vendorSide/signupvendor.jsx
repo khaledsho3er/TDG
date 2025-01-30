@@ -83,7 +83,7 @@ function Signupvendor() {
         if (response.status === 201) {
           console.log("Vendor data submitted successfully");
           console.log("Vendor ID:", response.data._id);
-          setVendorId(response.data._id)
+          setVendorId(response.data._id);
           setCurrentPhase(2);
         } else {
           console.log("Failed to submit vendor data");
