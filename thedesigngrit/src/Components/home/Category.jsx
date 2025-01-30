@@ -48,7 +48,7 @@ const ShopByCategory = () => {
             title={category.name}
             image={category.image} // Assuming `image` contains the image path
             buttonText="Shop Products"
-            link={`/category/${category._id}/${category.name}`} // URL-encode category name
+            link={`/category/${category._id}/subcategories`} // URL-encode category name
           />
         ))}
       </div>

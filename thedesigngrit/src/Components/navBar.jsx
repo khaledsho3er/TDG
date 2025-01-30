@@ -119,7 +119,7 @@ function Header() {
   };
 
   const handleMouseEnterCategory = (category) => {
-    setHoveredCategory(category);
+    setHoveredCategory(category._id);
   };
 
   const handleMouseLeaveCategory = () => {
@@ -270,7 +270,7 @@ function Header() {
               className={`category ${
                 hoveredCategory === category._id ? "highlighted" : ""
               }`}
-              onMouseEnter={() => handleMouseEnterCategory(category.name)}
+              onMouseEnter={() => handleMouseEnterCategory(category)}
             >
               {category.name}
             </Typography>
@@ -280,8 +280,7 @@ function Header() {
 
       {hoveredCategory && (
         <Menudrop
-          category={hoveredCategory}
-          details={menuData.find((item) => item.name === hoveredCategory)}
+          category={menuData.find((item) => item._id === hoveredCategory)}
           onMouseEnter={handleMenuHover}
           onMouseLeave={handleMenuLeave}
         />
