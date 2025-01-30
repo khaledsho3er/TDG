@@ -36,8 +36,7 @@ import EmployeeHome from "./Components/vendorSide/employeeDashboard";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";
-// import Signupvendor from "./Components/vendorSide/SignupVendor";
-
+import Signupvendor from "./Components/vendorSide/SignupVendor";
 function App() {
   return (
     <>
@@ -109,7 +108,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/signin-vendor" element={<SigninVendor />} />
-            {/* <Route path="/signupvendor" element={<Signupvendor />} /> */}
+            <Route path="/signupvendor" element={<Signupvendor />} />
             <Route
               path="/vendor-dashboard/:vendorId"
               element={<VendorHome />}
