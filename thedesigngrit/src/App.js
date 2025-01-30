@@ -33,10 +33,10 @@ import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
 import EmployeeHome from "./Components/vendorSide/employeeDashboard";
-import Signupvendor from "./Components/vendorSide/signupvendor";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";
+import Signupvendor from "./Components/vendorSide/signupvendor";
 
 function App() {
   return (
@@ -97,6 +97,10 @@ function App() {
               />
               <Route path="/adminpanel" Component={AdminHome} />
               <Route path="/verify-partner" element={<VerifyPartners />} />
+              <Route
+              path="/category/:categoryId/subcategories"
+              element={<Subcategories />}
+            />
             </Routes>
           </Router>
         </CartProvider>
