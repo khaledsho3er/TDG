@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
 import PaymentForm from "./Paymentmethod.jsx";
 import { useLocation } from "react-router-dom";
+import { CartContext } from "../../Context/cartcontext.js";
+import { UserContext, useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 
 function Checkout() {
+  const { userSession, setUserSession, logout } = useUser();
   const [currentStep, setCurrentStep] = useState(1);
   const [billingData, setBillingData] = useState({
     firstName: "",
@@ -52,43 +55,67 @@ function Checkout() {
   };
 
   const handlePaymentSubmit = async () => {
-    // Extract vendorId from the first product in the cart (or handle multiple vendors if needed)
-    const vendorId = cartItems.length > 0 ? cartItems[0].vendorId : null;
-
-    if (!vendorId) {
-      console.error("Vendor ID is missing in the cart items.");
+    if (!cartItems || cartItems.length === 0) {
+      console.error("Cart is empty.");
       return;
     }
-
-    // Combine all data for the API request
-    const orderData = {
-      billing: billingData,
-      shipping: shippingData,
-      payment: paymentData,
-      cartItems: cartItems,
-      subtotal: subtotal,
-      shippingFee: shippingFee,
-      total: total,
-      vendorId: vendorId, // Include the vendorId in the order data
-    };
-
+  
+    const groupedOrders = cartItems.reduce((acc, item) => {
+      const brandId = item.brandId; // Change brandId to brandId
+      if (!acc[brandId]) {
+        acc[brandId] = [];
+      }
+      acc[brandId].push({
+        productId: item.productId,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity
+        // ✅ Do NOT manually add brandId (backend will handle it)
+      });
+      return acc;
+    }, {});
+  
+    // Parent order reference (for tracking user purchases)
+    const parentOrderId = `ORDER-${Date.now()}`;
+  
     try {
-      // Make a POST request to the API endpoint
-      const response = await axios.post(
-        "http://localhost:5000/api/orders/create",
-        orderData
-      );
-      console.log("Order created successfully:", response.data);
-      // Handle success (e.g., show a success message or redirect to a confirmation page)
+      // Loop through each vendor's order and send a request
+      const orderRequests = Object.keys(groupedOrders).map(async (brandId) => {
+        const orderData = {
+          parentOrderId, // Single order ID for user tracking
+          customerId: userSession.id, // Ensure this is taken from the authenticated use
+          billingDetails: billingData,
+          shippingDetails: shippingData,
+          paymentDetails: paymentData,
+          cartItems: groupedOrders[brandId], // Only this vendor's items
+          subtotal: groupedOrders[brandId].reduce((sum, item) => sum + item.totalPrice, 0),
+          shippingFee, // Modify if each vendor has different shipping fees
+          total: groupedOrders[brandId].reduce((sum, item) => sum + item.totalPrice, 0) + shippingFee,
+          orderStatus: "Pending"
+        };
+        console.log("Creating order:", orderData);
+  
+        return axios.post("http://localhost:5000/api/orders/", orderData);
+      });
+  
+      // Wait for all orders to be sent
+      const responses = await Promise.all(orderRequests);
+      console.log("Orders created successfully:", responses.map((res) => res.data));
+  
+      // Reset the cart after successful order placement
+      resetCart();
+      // Redirect or show confirmation
+  
     } catch (error) {
-      console.error("Failed to create order:", error);
-      // Handle error (e.g., show an error message to the user)
+      console.error("Failed to create orders:", error);
     }
   };
+  
 
   // Get the bill data passed from ShoppingCart
   const location = useLocation();
-  const { cartItems, subtotal, shippingFee, total } = location.state || {};
+  const { cartItems, subtotal, shippingFee, total , resetCart} = location.state || {};
 
   const steps = [
     {

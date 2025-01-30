@@ -121,19 +121,21 @@ function ProductPage() {
       [index]: !prev[index],
     }));
   };
+
+
   const handleAddToCart = (product) => {
-    const compositeKey = `${product.id}-${selectedColor || "default"}-${
-      selectedSize || "default"
-    }`;
-    console.log("Composite Key:", compositeKey); // Debug log
+    // const compositeKey = `${product.id} -  ${selectedColor || "default"}-${
+    //   selectedSize || "default"
+    // }`;
+    // console.log("Composite Key:", compositeKey); // Debug log
 
     addToCart({
-      id: compositeKey, // Use composite key as the unique identifier
+      id: product._id, // Use composite key as the unique identifier
       name: product.name,
       unitPrice: product.price,
       quantity: 1,
       image: product.image,
-      brand: product.brand,
+      brandId: product.brandId,
       color: selectedColor || "default",
       size: selectedSize || "default",
       code: "N/A",
