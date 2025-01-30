@@ -9,7 +9,13 @@ import { useNavigate } from "react-router-dom";
 
 function ShoppingCart() {
   const [cartItems, setCartItems] = useState([]);
-  const { cartItems: contextCartItems, removeFromCart } = useCart();
+  const { cartItems: contextCartItems, removeFromCart, updateCart } = useCart();
+  const navigate = useNavigate();
+
+  // Load contextCartItems when component mounts
+  useEffect(() => {
+    setCartItems(contextCartItems);
+  }, [contextCartItems]);
 
   // Calculate Subtotal
   const subtotal = cartItems.reduce(
@@ -17,35 +23,33 @@ function ShoppingCart() {
     0
   );
 
-  // Use contextCartItems as default state
-  useEffect(() => {
-    setCartItems(contextCartItems);
-  }, [contextCartItems]);
-
-  const updateItemQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) return; // Avoid quantity less than 1
-
-    // Update the cart items in local state
-    const updatedCartItems = cartItems.map((item) =>
-      item.id === id
-        ? { ...item, quantity: newQuantity } // Correctly update only the relevant item
-        : item
-    );
-
-    // Set the updated cart items in state
-    setCartItems(updatedCartItems);
-
-    // Sync with localStorage
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
-
   // Fixed Shipping Fee
   const shippingFee = 600;
 
-  const navigate = useNavigate();
+  const updateItemQuantity = (id, newQuantity) => {
+    if (newQuantity <= 0) return;
+
+    const updatedCartItems = cartItems.map((item) =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
+    );
+
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+  };
 
   const handleCheckoutClick = () => {
-    // Pass the bill data to the Checkout page
+    // Save cart data to context before navigating
+    updateCart(cartItems);
+
+    // Log cart data before navigating
+    console.log("Cart Data on Checkout:", {
+      cartItems,
+      subtotal,
+      shippingFee,
+      total: subtotal + shippingFee,
+    });
+
+    // Navigate to Checkout page with cart data
     navigate("/checkout", {
       state: {
         cartItems,
@@ -68,7 +72,6 @@ function ShoppingCart() {
       </Box>
       <Box className="Shopping-cart-body">
         <Box className="Shopping-cart-table">
-          {/* Table Header */}
           <Box className="cart-header">
             <Typography>Items</Typography>
             <Typography>Unit Price</Typography>
@@ -76,7 +79,6 @@ function ShoppingCart() {
             <Typography>Price</Typography>
           </Box>
 
-          {/* Table Rows (Dynamic) */}
           {cartItems.map((item) => (
             <Box className="cart-item" key={item.id}>
               <Box className="item-details">
@@ -102,15 +104,15 @@ function ShoppingCart() {
               </Typography>
               <Box className="quantity">
                 <Button
-                  onClick={() => updateItemQuantity(item.id, item.quantity - 1)} // Decrease quantity
+                  onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
                   className="quantity-button"
-                  disabled={item.quantity <= 1} // Disable if quantity is less than or equal to 1
+                  disabled={item.quantity <= 1}
                 >
                   -
                 </Button>
                 <Typography className="quantity">{item.quantity}</Typography>
                 <Button
-                  onClick={() => updateItemQuantity(item.id, item.quantity + 1)} // Increase quantity
+                  onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
                   className="quantity-button"
                 >
                   +
@@ -123,14 +125,13 @@ function ShoppingCart() {
               </Box>
               <Box className="delete-icon">
                 <FaRegTrashAlt
-                  onClick={() => removeFromCart(item.id)} // Remove item from cart
+                  onClick={() => removeFromCart(item.id)}
                   style={{ cursor: "pointer" }}
                 />
               </Box>
             </Box>
           ))}
 
-          {/* Actions */}
           <Box className="cart-actions">
             <Button className="continue-button" onClick={handleContinueClick}>
               Continue Shopping
@@ -141,7 +142,6 @@ function ShoppingCart() {
           </Box>
         </Box>
 
-        {/* Right Side: Summary */}
         <Box className="Shopping-cart-bill-section">
           <Box className="cart-summary">
             <Typography className="summary-title">YOUR CART</Typography>
