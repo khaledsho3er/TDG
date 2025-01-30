@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 
@@ -34,27 +34,18 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function ShippingForm() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    address: "",
-    label: "",
-    apartment: "",
-    floor: "",
-    country: "",
-    city: "",
-    zipCode: "",
-  });
-
+function ShippingForm({ shippingData, onChange }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const updatedData = { ...shippingData, [name]: value };
+    onChange(updatedData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    // Call the parent onChange function to update the shipping data
+    console.log("Shipping Data:", shippingData);
+    onChange(shippingData);
   };
 
   return (
@@ -111,7 +102,7 @@ function ShippingForm() {
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
-                  value={formData.firstName}
+                  value={shippingData.firstName}
                   onChange={handleChange}
                   required
                 />
@@ -122,7 +113,7 @@ function ShippingForm() {
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
-                  value={formData.lastName}
+                  value={shippingData.lastName}
                   onChange={handleChange}
                   required
                 />
@@ -137,7 +128,7 @@ function ShippingForm() {
                   id="address"
                   name="address"
                   placeholder="Address"
-                  value={formData.address}
+                  value={shippingData.address}
                   onChange={handleChange}
                   required
                 />
@@ -148,7 +139,7 @@ function ShippingForm() {
                   id="label"
                   name="label"
                   placeholder="Label"
-                  value={formData.label}
+                  value={shippingData.label}
                   onChange={handleChange}
                   required
                 />
@@ -163,7 +154,7 @@ function ShippingForm() {
                   id="apartment"
                   name="apartment"
                   placeholder="Apartment"
-                  value={formData.apartment}
+                  value={shippingData.apartment}
                   onChange={handleChange}
                   required
                 />
@@ -174,7 +165,7 @@ function ShippingForm() {
                   id="floor"
                   name="floor"
                   placeholder="Floor"
-                  value={formData.floor}
+                  value={shippingData.floor}
                   onChange={handleChange}
                   required
                 />
@@ -189,7 +180,7 @@ function ShippingForm() {
                   id="country"
                   name="country"
                   placeholder="Country"
-                  value={formData.country}
+                  value={shippingData.country}
                   onChange={handleChange}
                   required
                 />
@@ -200,7 +191,7 @@ function ShippingForm() {
                   id="city"
                   name="city"
                   placeholder="City"
-                  value={formData.city}
+                  value={shippingData.city}
                   onChange={handleChange}
                   required
                 />
@@ -215,7 +206,7 @@ function ShippingForm() {
                   id="zipCode"
                   name="zipCode"
                   placeholder="Zip Code"
-                  value={formData.zipCode}
+                  value={shippingData.zipCode}
                   onChange={handleChange}
                   required
                 />

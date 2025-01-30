@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 const CartContext = createContext();
 
@@ -15,38 +15,27 @@ export const CartProvider = ({ children }) => {
 
   // Update localStorage whenever cartItems change
   useEffect(() => {
-    if (cartItems.length > 0) {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    }
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const formatPrice = (price) => {
-    // Ensure price is a string before applying replace
-    if (typeof price === "string") {
-      return parseFloat(price.replace(",", ""));
-    }
-    // If price is already a number, return it as-is
-    if (typeof price === "number") {
-      return price;
-    }
-    // Fallback for unexpected types
-    console.warn("Invalid price type:", price);
-    return 0; // Default fallback value
-  };
-
   const addToCart = (product) => {
-    const formattedPrice = formatPrice(product.price);
+    console.log("Adding product to cart:", product); // Debug log
 
     setCartItems((prev) => {
+      // Check if the product already exists in the cart
       const existingProduct = prev.find((item) => item.id === product.id);
+      console.log("Existing product in cart:", existingProduct); // Debug log
+
       if (existingProduct) {
+        // If the product exists, update its quantity
         return prev.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        return [...prev, { ...product, price: formattedPrice, quantity: 1 }];
+        // If the product doesn't exist, add it as a new item
+        return [...prev, { ...product, quantity: 1 }];
       }
     });
   };

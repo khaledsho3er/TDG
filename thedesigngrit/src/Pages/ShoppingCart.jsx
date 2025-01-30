@@ -8,7 +8,7 @@ import { useCart } from "../Context/cartcontext";
 import { useNavigate } from "react-router-dom";
 
 function ShoppingCart() {
-  const [cartItems, setCartItems] = useState([]); // Define cartItems state
+  const [cartItems, setCartItems] = useState([]);
   const { cartItems: contextCartItems, removeFromCart } = useCart();
 
   // Calculate Subtotal
@@ -42,10 +42,18 @@ function ShoppingCart() {
   // Fixed Shipping Fee
   const shippingFee = 600;
 
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const handleCheckoutClick = () => {
-    navigate("/checkout"); // Navigate to /checkout when the button is clicked
+    // Pass the bill data to the Checkout page
+    navigate("/checkout", {
+      state: {
+        cartItems,
+        subtotal,
+        shippingFee,
+        total: subtotal + shippingFee,
+      },
+    });
   };
 
   const handleContinueClick = () => {
@@ -59,7 +67,6 @@ function ShoppingCart() {
         <h2>My Cart</h2>
       </Box>
       <Box className="Shopping-cart-body">
-        {/* Left Side: Table */}
         <Box className="Shopping-cart-table">
           {/* Table Header */}
           <Box className="cart-header">

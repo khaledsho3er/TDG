@@ -1,18 +1,11 @@
 import { Box, FormControlLabel, Checkbox } from "@mui/material";
 import React from "react";
 import { useCart } from "../../Context/cartcontext"; // Import CartContext
-import PaymentIcons from "../paymentsIcons";
+import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
 
-function SummaryForm() {
+function SummaryForm({ billData }) {
   const { cartItems } = useCart(); // Get cart items from context
-
-  // Calculate subtotal, shipping, and total
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.unitPrice * item.quantity,
-    0
-  );
-  const shipping = 600; // Example fixed shipping cost
-  const total = subtotal + shipping;
+  const { subtotal, shippingFee, total } = billData;
 
   return (
     <Box className="Ordersummary-bigcontainer">
@@ -38,7 +31,6 @@ function SummaryForm() {
                       alt={product.name}
                       className="product-image"
                     />
-
                     <p>Color: {product.color}</p>
                     <p>Size: {product.size}</p>
                   </Box>
@@ -66,26 +58,12 @@ function SummaryForm() {
         </Box>
 
         {/* Cart Summary */}
-        <Box className="Ordersummary-firstrow-secondcolumn">
-          <Box className="ordersummary-total">
-            <h1 className="ordersummary-cart-title">Your Cart</h1>
-            <div className="ordersummary-cart-summary-row">
-              <span>Subtotal:</span>
-              <span>{subtotal.toLocaleString()} LE</span>
-            </div>
-            <div className="ordersummary-cart-summary-row">
-              <span>Shipping:</span>
-              <span>{shipping.toLocaleString()} LE</span>
-            </div>
-            <div className="ordersummary-cart-summary-total">
-              <span>Total:</span>
-              <span>{total.toLocaleString()} LE</span>
-            </div>
-          </Box>
-          <Box className="Ordersummary-firstrow-secondcolumn-secondrow">
-            <PaymentIcons />
-          </Box>
-        </Box>
+        <BillSummary
+          cartItems={cartItems}
+          subtotal={subtotal}
+          shippingFee={shippingFee}
+          total={total}
+        />
       </Box>
 
       {/* Terms and Conditions */}

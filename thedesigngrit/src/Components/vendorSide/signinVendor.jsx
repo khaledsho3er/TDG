@@ -1,55 +1,42 @@
-import React, { useContext, useState } from "react";
-import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
-import { UserContext } from "../../utils/userContext";
-
-const Signin = () => {
-  const { setUserSession } = useContext(UserContext);
-  const navigate = useNavigate();
+import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
+import { useVendor } from "../../utils/vendorContext";
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Employee"); // Default role
+  const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useVendor(); // Access the login function from the context
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/signin-emp/signin-emp", // Ensure correct API path
-        { email, password, role }
+        "http://localhost:5000/api/vendors/login",
+        {
+          email,
+          password,
+        }
       );
 
-      const user = response.data.user;
+      console.log("Login successful", response.data);
 
-      if (!user) {
-        throw new Error("User data not received.");
-      }
+      const vendorData = response.data.vendor;
 
-      // Debugging: Check if tier exists in response
-      console.log("User Data:", user);
+      // Login via context
+      login(vendorData); // Set vendor data in the context
 
-      const sessionData = {
-        _id: user._id,
-        email: user.email,
-        role: user.role,
-        tier: user.tier || "Unknown", // Instead of "N/A", use "Unknown" for better clarity
-      };
+      // Optionally store vendor data in localStorage for persistence
+      localStorage.setItem("vendor", JSON.stringify(vendorData));
 
-      setUserSession(sessionData);
-      localStorage.setItem("userSession", JSON.stringify(sessionData));
-
-      // Show welcome alert with tier information
-      if (user.role === "Employee") {
-        alert(`Welcome Employee Tier ${user.tier || "N/A"}`);
-        navigate(`/employee-dashboard/${user._id}`);
-      } else if (user.role === "Vendor") {
-        alert("Welcome Vendor");
-        navigate(`/vendor-dashboard/${user._id}`);
-      }
+      // Redirect user to the dashboard
+      navigate(`/vendor-dashboard/${vendorData.brandId}`);
     } catch (error) {
-      console.error("Error during sign-in:", error.response || error);
-      alert("Sign-in failed. Please check your credentials.");
+      setErrorMessage("Invalid email or password.");
     }
   };
 
@@ -78,17 +65,14 @@ const Signin = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="Employee">Employee</option>
-            <option value="Vendor">Vendor</option>
-          </select>
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>
         </form>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </Box>
     </div>
   );
 };
 
-export default Signin;
+export default SignIn;

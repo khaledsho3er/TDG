@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   TextField,
@@ -10,19 +10,42 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-
-const EmployeeSignup = () => {
+import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
+import AccountSentPopup from "../successMsgs/successfullyRegistered";
+const VendorSignup = () => {
+  const { vendor } = useVendor(); // Get vendor data (including brandId)
   const [formData, setFormData] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
     employeeNumber: "",
     email: "",
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    tier: "", // new field for authority level
+    tier: "", // new field for authority level (tier)
   });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [brandName, setBrandName] = useState(""); // State to store the brand name
+  const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
+
+  // Fetch brand details using brandId from the vendor session
+  useEffect(() => {
+    if (vendor?.brandId) {
+      const fetchBrandName = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/brand/${vendor.brandId}`
+          );
+          setBrandName(response.data.brandName); // Set the brand name in the state
+        } catch (error) {
+          console.error("Error fetching brand name:", error);
+          setError("Failed to fetch brand details.");
+        }
+      };
+      fetchBrandName();
+    }
+  }, [vendor?.brandId]); // Only run this effect when vendor.brandId changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +57,8 @@ const EmployeeSignup = () => {
 
   const validateForm = () => {
     if (
-      !formData.name ||
+      !formData.firstname ||
+      !formData.lastname ||
       !formData.employeeNumber ||
       !formData.email ||
       !formData.phoneNumber ||
@@ -58,16 +82,37 @@ const EmployeeSignup = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+
+    const dataToSend = {
+      firstName: formData.firstname,
+      lastName: formData.lastname,
+      email: formData.email,
+      password: formData.password,
+      employeeNumber: formData.employeeNumber,
+      phoneNumber: formData.phoneNumber,
+      brandId: vendor.brandId,
+      tier: formData.tier,
+    };
+
+    console.log("Sending data to API:", dataToSend); // Log the data to be sent
+
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/employee/signup-employee",
-        formData
+        "http://localhost:5000/api/vendors/signup",
+        dataToSend
       );
+
+      // Log the API response for debugging
+      console.log("API Response:", response);
+
       if (response.status === 200) {
-        alert("Employee added successfully. Email notification sent.");
+        // Show the success popup if the vendor is added successfully
+        setShowPopup(true);
+        console.log("Employee added successfully."); // Log the success message
         // Reset form
         setFormData({
-          name: "",
+          firstname: "",
+          lastname: "",
           employeeNumber: "",
           email: "",
           phoneNumber: "",
@@ -83,7 +128,10 @@ const EmployeeSignup = () => {
       setIsSubmitting(false);
     }
   };
-
+  // Function to close the success popup
+  const closePopup = () => {
+    setShowPopup(false);
+  };
   return (
     <div style={{ padding: "110px", fontFamily: "Montserrat" }}>
       <Typography
@@ -91,18 +139,31 @@ const EmployeeSignup = () => {
         sx={{ fontWeight: "bold", fontFamily: "Horizon" }}
         gutterBottom
       >
-        Add New Employee
+        Add New Vendor
+        {/* Display brand name */}
       </Typography>
+      <p>Brand: {brandName || "Loading..."} </p>
       <br></br>
+
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Name"
+              label="First Name"
               variant="outlined"
               fullWidth
-              name="name"
-              value={formData.name}
+              name="firstname"
+              value={formData.firstname}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Last Name"
+              variant="outlined"
+              fullWidth
+              name="lastname"
+              value={formData.lastname}
               onChange={handleChange}
             />
           </Grid>
@@ -185,11 +246,12 @@ const EmployeeSignup = () => {
           disabled={isSubmitting}
           style={{ marginTop: "20px" }}
         >
-          {isSubmitting ? "Adding Employee..." : "Add Employee"}
+          {isSubmitting ? "Adding Vendor..." : "Add Vendor"}
         </Button>
       </form>
+      <AccountSentPopup show={showPopup} closePopup={closePopup} />
     </div>
   );
 };
 
-export default EmployeeSignup;
+export default VendorSignup;

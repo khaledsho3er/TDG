@@ -52,7 +52,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             {currentProducts.map((product) => {
               console.log(product._id); // Debugging: Check if product._id is available
               return (
-                <Grid item xs={12} sm={6} md={3} key={product._id}>
+                <Grid item xs={12} sm={6} md={4} key={product._id}>
                   {/* Wrap each ProductCard in a Link to navigate to the product page */}
                   <Link
                     to={`/product/${product._id}`} // Use _id here for URL
