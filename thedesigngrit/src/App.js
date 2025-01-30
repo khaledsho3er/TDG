@@ -33,10 +33,10 @@ import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
 import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+import Signupvendor from "./Components/vendorSide/signupvendor";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";
-
 
 function App() {
   return (
@@ -72,6 +72,7 @@ function App() {
               path="/products/:subcategoryId/:subcategoryName"
               element={<ProductsPage />}
             />
+
               <Route path="/product/:id" element={<ProductPage />} />
               <Route exact path="/ProductsPage" Component={ProductsPage} />
               {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}
@@ -86,12 +87,6 @@ function App() {
               <Route path="/vendor/:id" element={<VendorProfile />} />
               {/* Route for the vendors grid */}
               <Route path="/vendors" element={<Vendorspage />} />
-              {/* Vendor Panel Routes */}
-//               <Route
-//                 path="/employee-dashboard/:vendorId"
-//                 element={<EmployeeHome />}
-//               />
-              {/* <Route path="/vendorpanel" Component={VendorHome} /> */}
               <Route path="/addbrand" Component={BrandForm} />
                <Route path="/edit-employee/:id" component={EditEmployee} />
               <Route path="/orderDetail/:id" element={<OrderDetails />} />
@@ -111,9 +106,8 @@ function App() {
         <Router>
           <Routes>
             <Route path="/signin-vendor" element={<SigninVendor />} />
-            <Route
-              path="/vendor-dashboard/:vendorId"
-              element={<VendorHome />} />
+            <Route path="/signupvendor" element={<Signupvendor />} />
+            <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} 
           </Routes>
         </Router>
       </VendorProvider>
