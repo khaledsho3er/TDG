@@ -4,12 +4,13 @@ import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
 import PaymentForm from "./Paymentmethod.jsx";
 import { useLocation } from "react-router-dom";
-import { CartContext } from "../../Context/cartcontext.js";
+import { useCart } from "../../Context/cartcontext.js";
 import { UserContext, useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 
 function Checkout() {
   const { userSession, setUserSession, logout } = useUser();
+  const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
   const [billingData, setBillingData] = useState({
     firstName: "",
@@ -42,6 +43,8 @@ function Checkout() {
     paymentMethod: "card",
   });
 
+  const shippingFee = 200;
+
   const handleBillingChange = (data) => {
     setBillingData(data);
   };
@@ -59,26 +62,25 @@ function Checkout() {
       console.error("Cart is empty.");
       return;
     }
-  
+
+    // ✅ Group items by brand ID
     const groupedOrders = cartItems.reduce((acc, item) => {
-      const brandId = item.brandId; // Change brandId to brandId
+      const brandId = item.brandId;
       if (!acc[brandId]) {
         acc[brandId] = [];
       }
       acc[brandId].push({
-        productId: item.productId,
+        productId: item.id,
         name: item.name,
         price: item.price,
         quantity: item.quantity,
-        totalPrice: item.price * item.quantity
-        // ✅ Do NOT manually add brandId (backend will handle it)
+        totalPrice: item.price * item.quantity,
       });
       return acc;
     }, {});
-  
     // Parent order reference (for tracking user purchases)
     const parentOrderId = `ORDER-${Date.now()}`;
-  
+
     try {
       // Loop through each vendor's order and send a request
       const orderRequests = Object.keys(groupedOrders).map(async (brandId) => {
@@ -89,33 +91,51 @@ function Checkout() {
           shippingDetails: shippingData,
           paymentDetails: paymentData,
           cartItems: groupedOrders[brandId], // Only this vendor's items
-          subtotal: groupedOrders[brandId].reduce((sum, item) => sum + item.totalPrice, 0),
+          subtotal: groupedOrders[brandId].reduce(
+            (sum, item) => sum + item.totalPrice,
+            0
+          ),
           shippingFee, // Modify if each vendor has different shipping fees
-          total: groupedOrders[brandId].reduce((sum, item) => sum + item.totalPrice, 0) + shippingFee,
-          orderStatus: "Pending"
+          total:
+            groupedOrders[brandId].reduce(
+              (sum, item) => sum + item.totalPrice,
+              0
+            ) + shippingFee,
+          orderStatus: "Pending",
         };
         console.log("Creating order:", orderData);
-  
+
         return axios.post("http://localhost:5000/api/orders/", orderData);
       });
-  
+
       // Wait for all orders to be sent
       const responses = await Promise.all(orderRequests);
-      console.log("Orders created successfully:", responses.map((res) => res.data));
-  
+      console.log(
+        "Orders created successfully:",
+        responses.map((res) => res.data)
+      );
+
       // Reset the cart after successful order placement
       resetCart();
       // Redirect or show confirmation
-  
     } catch (error) {
       console.error("Failed to create orders:", error);
     }
   };
-  
 
   // Get the bill data passed from ShoppingCart
-  const location = useLocation();
-  const { cartItems, subtotal, shippingFee, total , resetCart} = location.state || {};
+  // const location = useLocation();
+  // const { cartItems, subtotal, shippingFee, total, resetCart } =
+  //   location.state || {};
+
+  const subtotal = cartItems?.length
+    ? cartItems.reduce(
+        (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
+        0
+      )
+    : 0;
+
+  const total = subtotal + (shippingFee || 0);
 
   const steps = [
     {
