@@ -4,12 +4,13 @@ import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { UserContext } from "../utils/userContext"; // Import the UserContext
+import { UserContext, useUser } from "../utils/userContext"; // Import the UserContext
 
 function SignInForm() {
-  const { setUserSession } = useContext(UserContext); // Access the context
+  const { setUserSession } = useUser(); // Access the context
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
+
 
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
@@ -29,9 +30,10 @@ function SignInForm() {
       );
 
       // Save session data to context
-      setUserSession(response.data);
+      setUserSession(response.data.user); // Set user data in the context
 
-      console.log("Login successful!", response.data);
+
+      console.log("Login successful!", response.data.user);
       alert("Login successful!");
       navigate("/");
     } catch (error) {

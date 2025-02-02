@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { use } from "react";
 
 export const UserContext = createContext();
 
@@ -12,7 +13,9 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     // Save session to LocalStorage whenever it changes
     if (userSession) {
+
       localStorage.setItem("userSession", JSON.stringify(userSession));
+      console.log("userSession:", userSession);
     } else {
       localStorage.removeItem("userSession");
     }
@@ -28,3 +31,8 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export const useUser = () => {
+  return useContext(UserContext);
+};
+

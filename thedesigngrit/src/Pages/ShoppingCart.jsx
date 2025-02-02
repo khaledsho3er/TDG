@@ -11,33 +11,17 @@ function ShoppingCart() {
   const [cartItems, setCartItems] = useState([]);
   const { cartItems: contextCartItems, removeFromCart } = useCart();
 
-  // Calculate Subtotal
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.unitPrice * item.quantity,
-    0
-  );
-
   // Use contextCartItems as default state
   useEffect(() => {
     setCartItems(contextCartItems);
   }, [contextCartItems]);
 
-  const updateItemQuantity = (id, newQuantity) => {
-    if (newQuantity <= 0) return; // Avoid quantity less than 1
-
-    // Update the cart items in local state
-    const updatedCartItems = cartItems.map((item) =>
-      item.id === id
-        ? { ...item, quantity: newQuantity } // Correctly update only the relevant item
-        : item
-    );
-
-    // Set the updated cart items in state
-    setCartItems(updatedCartItems);
-
-    // Sync with localStorage
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
+  // Calculate Subtotal Safely
+  const subtotal = cartItems.reduce(
+    (total, item) =>
+      total + (item.unitPrice || item.price || 0) * (item.quantity || 1),
+    0
+  );
 
   // Fixed Shipping Fee
   const shippingFee = 600;
@@ -45,7 +29,6 @@ function ShoppingCart() {
   const navigate = useNavigate();
 
   const handleCheckoutClick = () => {
-    // Pass the bill data to the Checkout page
     navigate("/checkout", {
       state: {
         cartItems,
@@ -98,19 +81,35 @@ function ShoppingCart() {
                 </Box>
               </Box>
               <Typography className="unit-price">
-                {item.unitPrice.toLocaleString()} LE
+                {(item.unitPrice || item.price || 0).toLocaleString()} LE
               </Typography>
               <Box className="quantity">
                 <Button
-                  onClick={() => updateItemQuantity(item.id, item.quantity - 1)} // Decrease quantity
+                  onClick={() =>
+                    setCartItems((prev) =>
+                      prev.map((i) =>
+                        i.id === item.id && i.quantity > 1
+                          ? { ...i, quantity: i.quantity - 1 }
+                          : i
+                      )
+                    )
+                  }
                   className="quantity-button"
-                  disabled={item.quantity <= 1} // Disable if quantity is less than or equal to 1
+                  disabled={item.quantity <= 1}
                 >
                   -
                 </Button>
                 <Typography className="quantity">{item.quantity}</Typography>
                 <Button
-                  onClick={() => updateItemQuantity(item.id, item.quantity + 1)} // Increase quantity
+                  onClick={() =>
+                    setCartItems((prev) =>
+                      prev.map((i) =>
+                        i.id === item.id
+                          ? { ...i, quantity: i.quantity + 1 }
+                          : i
+                      )
+                    )
+                  }
                   className="quantity-button"
                 >
                   +
@@ -118,12 +117,15 @@ function ShoppingCart() {
               </Box>
               <Box className="price-container">
                 <Typography className="price">
-                  {(item.unitPrice * item.quantity).toLocaleString()} LE
+                  {(
+                    (item.unitPrice || item.price || 0) * (item.quantity || 1)
+                  ).toLocaleString()}{" "}
+                  LE
                 </Typography>
               </Box>
               <Box className="delete-icon">
                 <FaRegTrashAlt
-                  onClick={() => removeFromCart(item.id)} // Remove item from cart
+                  onClick={() => removeFromCart(item.id)}
                   style={{ cursor: "pointer" }}
                 />
               </Box>
