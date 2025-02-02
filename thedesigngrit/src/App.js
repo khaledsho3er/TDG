@@ -87,12 +87,7 @@ function App() {
               <Route path="/vendors" element={<Vendorspage />} />
               <Route path="/addbrand" Component={BrandForm} />
               <Route path="/edit-employee/:id" component={EditEmployee} />
-              <Route path="/orderDetail/:id" element={<OrderDetails />} />
               <Route path="/update-product" element={<UpdateProductForm />} />
-              <Route
-                path="/notificationspage"
-                element={<NotificationsPage />}
-              />
               <Route path="/adminpanel" Component={AdminHome} />
               <Route path="/verify-partner" element={<VerifyPartners />} />
               <Route
@@ -113,6 +108,8 @@ function App() {
               path="/vendor-dashboard/:vendorId"
               element={<VendorHome />}
             />
+            <Route path="/orderDetail/:id" element={<OrderDetails />} />
+            <Route path="/notificationspage" element={<NotificationsPage />} />
           </Routes>
         </Router>
       </VendorProvider>

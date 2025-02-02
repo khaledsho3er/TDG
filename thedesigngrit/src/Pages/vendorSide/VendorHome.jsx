@@ -19,26 +19,6 @@ const VendorHome = () => {
   const { vendor } = useVendor(); // Access vendor data from context
   console.log("vendor in VendorHome:", vendor);
   const [activePage, setActivePage] = useState("dashboard");
-  // const { vendorId } = useParams(); // Get vendor ID from URL
-  // const [vendor, setVendor] = useState(null);
-
-  // // Fetch vendor details using vendorId from the URL
-  // useEffect(() => {
-  //   const fetchVendorDetails = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:5000/api/vendor/${vendorId}`
-  //       );
-  //       setVendor(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching vendor details:", error);
-  //     }
-  //   };
-
-  //   fetchVendorDetails();
-  // }, [vendorId]);
-
-  // if (!vendor) return <div className="loader">Loading vendor details...</div>;
 
   // Object for rendering content based on active page
   const pageComponents = {

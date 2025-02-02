@@ -1,19 +1,29 @@
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5"; // For status dots
 import { Link } from "react-router-dom";
 import VendorPageLayout from "./VendorLayout";
+import { useVendor } from "../../utils/vendorContext"; // Import your vendor context
 
 const NotificationsPage = () => {
+  const { vendor } = useVendor(); // Access vendor data from context
   const [notifications, setNotifications] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedNotification, setSelectedNotification] = useState(null); // For overlay
+
+  const [currentPage, setCurrentPage] = useState(1);
   const notificationsPerPage = 8;
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch("/json/NotificationsData.json");
+      if (!vendor || !vendor.brandId) {
+        console.error("Brand ID not found in vendor session");
+        return;
+      }
+      const brandId = vendor.brandId; // Get brandId from vendor session
+      const response = await fetch(
+        `http://localhost:5000/api/notifications/notifications?brandId=${brandId}`
+      );
       const data = await response.json();
       setNotifications(data);
     } catch (error) {
@@ -23,26 +33,41 @@ const NotificationsPage = () => {
 
   useEffect(() => {
     fetchNotifications();
-  }, []);
+  }, [vendor]); // Re-fetch notifications if vendor data changes
 
-  // Mark a notification as read
-  const markAsRead = (id) => {
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification
-      )
-    );
+  // Function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short", // 'Mon'
+      year: "numeric", // '2025'
+      month: "short", // 'Feb'
+      day: "numeric", // '2'
+    });
   };
 
-  // Open the overlay popup with notification details
-  const openNotificationDetails = (notification) => {
-    setSelectedNotification(notification);
-    markAsRead(notification.id); // Mark it as read when opened
-  };
+  // Mark a notification as read (Frontend and Backend update)
+  const markAsRead = async (id) => {
+    try {
+      // Update the read status locally
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) =>
+          notification._id === id
+            ? { ...notification, read: true }
+            : notification
+        )
+      );
 
-  // Close the overlay
-  const closeOverlay = () => {
-    setSelectedNotification(null);
+      // Send request to the backend to persist the change
+      await fetch(
+        `http://localhost:5000/api/notifications/${id}/mark-as-read`,
+        {
+          method: "PATCH",
+        }
+      );
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
   };
 
   // Pagination Logic
@@ -53,8 +78,18 @@ const NotificationsPage = () => {
     indexOfFirstNotification,
     indexOfLastNotification
   );
-
   const totalPages = Math.ceil(notifications.length / notificationsPerPage);
+
+  // Open the overlay popup with notification details
+  const openNotificationDetails = (notification) => {
+    setSelectedNotification(notification);
+    markAsRead(notification._id); // Mark it as read when opened
+  };
+
+  // Close the overlay
+  const closeOverlay = () => {
+    setSelectedNotification(null);
+  };
 
   return (
     <VendorPageLayout>
@@ -93,7 +128,7 @@ const NotificationsPage = () => {
             <tbody>
               {currentNotifications.map((notification) => (
                 <tr
-                  key={notification.id}
+                  key={notification._id}
                   onClick={() => openNotificationDetails(notification)}
                   style={{ cursor: "pointer" }}
                 >
@@ -109,7 +144,8 @@ const NotificationsPage = () => {
                   </td>
                   <td>{notification.type}</td>
                   <td>{notification.description}</td>
-                  <td>{notification.date}</td>
+                  <td>{formatDate(notification.date)}</td>{" "}
+                  {/* Formatted date */}
                   <td>
                     <button
                       style={{
@@ -121,8 +157,8 @@ const NotificationsPage = () => {
                         cursor: "pointer",
                       }}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent opening overlay
-                        markAsRead(notification.id);
+                        e.stopPropagation();
+                        markAsRead(notification._id);
                       }}
                     >
                       Mark as Read
@@ -134,7 +170,6 @@ const NotificationsPage = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -147,14 +182,13 @@ const NotificationsPage = () => {
           ))}
         </div>
 
-        {/* Overlay Popup */}
         {selectedNotification && (
           <div className="notifiy-overlay-popup">
             <div className="notifiy-overlay-content">
               <h2>{selectedNotification.type}</h2>
               <p>{selectedNotification.description}</p>
-              <p>Date: {selectedNotification.date}</p>
-              <p>Action Required: {selectedNotification.action}</p>
+              <p>Date: {formatDate(selectedNotification.date)}</p>{" "}
+              {/* Formatted date */}
               <button onClick={closeOverlay}>Close</button>
             </div>
           </div>
