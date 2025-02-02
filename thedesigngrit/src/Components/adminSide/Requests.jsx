@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 const RequestsPartners = () => {
   const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
+  const[status,setStatus]=useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const partnersPerPage = 12; // Number of partners per page
 
   // Fetch data from JSON or API
   const fetchPartners = async () => {
     try {
-      const response = await fetch("/json/partnersRequest.json"); // Update the path if needed
+      const response = await fetch(`http://localhost:5000/api/brand/status/${status}`); // Update the path if needed
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -53,23 +54,23 @@ const RequestsPartners = () => {
 
       <div className="vendor-products-list-grid">
         {currentPartners.map((partner) => (
-          <div className="product-card-request" key={partner.id}>
+          <div className="product-card-request" key={partner._id}>
             <div className="product-card-header">
               <img
-                src={partner.brandLogo}
-                alt={`${partner.brand} Logo`}
+                src={`http://localhost:5000/uploads/${partner.brandlogo}`}
+                alt={`Logo`}
                 className="request-image"
               />
               <div className="request-info-vendor">
-                <h3>{partner.brand}</h3>
+                <h3>{partner.brandName}</h3>
                 <p>
-                  <strong>Requestor:</strong> {partner.requestorName}
+                  <strong>Requestor:</strong> {partner.brandName}
                 </p>
                 <p>
                   <strong>Email:</strong> {partner.email}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {partner.phone}
+                  <strong>Phone:</strong> {partner.phoneNumber}
                 </p>
                 <p>
                   <strong>Location:</strong> {partner.city}, {partner.country}
@@ -78,7 +79,8 @@ const RequestsPartners = () => {
             </div>
             <div className="request-card-body">
               <p className="requests-summary">
-                {partner.notes.substring(0, 100)}...
+                {partner.
+brandDescription.substring(0, 100)}...
               </p>
               <button
                 onClick={() => handleMoreDetails(partner)}

@@ -17,16 +17,41 @@ const VerifyPartners = () => {
     );
   }
 
+  const updateStatus = async (newStatus) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/brand/partners/${partner._id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`Partner status updated to: ${newStatus}`);
+        navigate(-1); // Go back after updating
+      } else {
+        alert(`Error updating status: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error updating partner status:", error);
+      alert("Failed to update status.");
+    }
+  };
+
+
   return (
     <AdminPageLayout>
       <div className="verify-partners">
         <h2>Request Partnership</h2>
         <div className="partner-card">
           <div className="partner-info">
-            <img src={partner.brandLogo} alt={`${partner.brand} Logo`} />
+            <img src={`http://localhost:5000/uploads/${partner.brandlogo}`} alt={`${partner.brand} Logo`} />
             <div>
               <h3>Brand:</h3>
-              <p>{partner.brand}</p>
+              <p>{partner.brandName}</p>
             </div>
             <div
               style={{
@@ -37,7 +62,7 @@ const VerifyPartners = () => {
             >
               <div>
                 <h4>Requestor Name:</h4>
-                <p>{partner.requestorName}</p>
+                <p>{partner.brandName}</p>
               </div>
               <div>
                 <h4>Email:</h4>
@@ -46,7 +71,7 @@ const VerifyPartners = () => {
             </div>
             <div>
               <h4>Phone Number:</h4>
-              <p>{partner.phone}</p>
+              <p>{partner.phoneNumber}</p>
             </div>
             <div
               style={{
@@ -66,7 +91,8 @@ const VerifyPartners = () => {
             </div>
             <div>
               <h4>Notes:</h4>
-              <p>{partner.notes}</p>
+              <p>{partner.
+brandDescription}</p>
             </div>
             <div>
               <h4>Documents:</h4>
@@ -80,8 +106,12 @@ const VerifyPartners = () => {
             </div>
           </div>
           <div className="action-buttons">
-            <button className="approve-btn">Approve</button>
-            <button className="reject-btn">Reject</button>
+      <button className="approve-btn" onClick={() => updateStatus("active")}>
+              Approve
+            </button>
+            <button className="reject-btn" onClick={() => updateStatus("rejected")}>
+              Reject
+            </button>
           </div>
         </div>
       </div>
