@@ -11,24 +11,37 @@ import { FiPackage } from "react-icons/fi";
 const OrderDetails = () => {
   const { id } = useParams(); // Get order ID from the URL
   const [order, setOrder] = useState(null);
+  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true); // Loading state
+
   // const [status, setStatus] = useState(""); // State to track the status change
 
-  // Fetch the specific order data
+  // Fetch order details from the API when the component mounts
   useEffect(() => {
-    fetch("/json/OrderData.json") // Replace with your path
-      .then((response) => response.json())
-      .then((data) => {
-        const selectedOrder = data.find((order) => order.id.toString() === id);
-        setOrder(selectedOrder);
-      })
-      .catch((error) => console.error("Error fetching order details:", error));
-  }, [id]);
+    const fetchOrderData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/orders/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch order");
+        }
+        const data = await response.json();
+        setOrder(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
+      }
+    };
+
+    fetchOrderData();
+  }, [id]); // Run this effect only when the order ID changes
   // Handle the status change
   // const handleStatusChange = (event) => {
   //   setStatus(event.target.value); // Update the status when the user selects a new one
   // };
 
-  if (!order) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>; // Show loading text while fetching
+  if (error) return <p>Error: {error}</p>; // Show error message if any
 
   return (
     <VendorPageLayout>
@@ -76,7 +89,7 @@ const OrderDetails = () => {
                   fontFamily: "Montserrat, sans-serif",
                 }}
               >
-                <h4>Order ID: #{order.orderId}</h4>
+                <h4>Order ID: #{order._id}</h4>
                 <span
                   style={{
                     display: "inline-block",
@@ -91,7 +104,7 @@ const OrderDetails = () => {
                     minWidth: "80px",
                   }}
                 >
-                  {order.status}
+                  {order.orderStatus}
                 </span>
               </Box>
               <div className="dashboard-date-vendor">
@@ -202,12 +215,43 @@ const OrderDetails = () => {
                 <div
                   style={{
                     fontFamily: "Montserrat",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
                   <h4>Customer</h4>
-                  <p>Full Name: {order.customer}</p>
-                  <p>Email: {order.email}</p>
-                  <p>Phone: {order.phone}</p>
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "start",
+                        gap: "5px",
+                      }}
+                    >
+                      <p>Full Name:</p>
+                      <p>Email:</p>
+                      <p>Phone:</p>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "end",
+                        gap: "5px",
+                      }}
+                    >
+                      <span> {order.customerId.firstName}</span>
+                      <span> {order.customerId.email}</span>
+                      <span> {order.customerId.phoneNumber}</span>
+                    </div>
+                  </div>
                 </div>
               </Box>
               <Box
@@ -277,10 +321,10 @@ const OrderDetails = () => {
                     fontFamily: "Montserrat",
                   }}
                 >
-                  <h4>Order Info</h4>
-                  <p>Shipping: {order.shipping}</p>
-                  <p>Payment: {order.paymentMethod}</p>
-                  <p>Status: {order.status}</p>
+                  <h4>Billing Info</h4>
+                  <p>Address: {order.billingDetails.address}</p>
+                  <p>Country: {order.billingDetails.country}</p>
+                  <p>zip Code: {order.billingDetails.zipCode}</p>
                 </div>
               </Box>
               <Box
@@ -338,7 +382,7 @@ const OrderDetails = () => {
                     justifyContent: "center",
                     backgroundColor: "#6c7c59",
                     borderRadius: "5px",
-                    width: "40px",
+                    width: "45px",
                     height: "40px",
                   }}
                 >
@@ -353,10 +397,46 @@ const OrderDetails = () => {
                 <div
                   style={{
                     fontFamily: "Montserrat",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
                   <h4>Delivery</h4>
-                  <p>Address: {order.address}</p>
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "start",
+                        gap: "5px",
+                      }}
+                    >
+                      <p>Address: </p>
+                      <p>Label:</p>
+                      <p>Apartment:</p>
+                      <p>Floor:</p>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        gap: "5px",
+                      }}
+                    >
+                      <span> {order.shippingDetails.address} </span>
+                      <span> {order.shippingDetails.label} </span>
+                      <span> {order.shippingDetails.apartment} </span>
+                      <span> {order.shippingDetails.floor} </span>
+                    </div>
+                  </div>
                 </div>
               </Box>
               <Box
@@ -422,9 +502,15 @@ const OrderDetails = () => {
                 <h4>Payment Info</h4>
                 <img src="/Assets/icons/visa.png" alt="Visa" />
               </Box>
-              <p>Payment Method: {order.paymentMethod}</p>
-              <p>Transaction ID: {order.transactionId}</p>
-              <p>Payment Status: {order.paymentStatus}</p>
+              <p>Payment Method: {order.paymentDetails.paymentMethod}</p>
+              <p>
+                Transaction ID:{" "}
+                {order.paymentDetails.transactionId || "120002554"}
+              </p>
+              <p>
+                Payment Status:{" "}
+                {order.paymentDetails.paymentStatus || "Pending"}
+              </p>
             </Box>
             {/* Note Box */}
             <Box
@@ -464,10 +550,10 @@ const OrderDetails = () => {
               </tr>
             </thead>
             <tbody>
-              {order.products.map((product, index) => (
+              {order.cartItems.map((product, index) => (
                 <tr key={index}>
                   <td>{product.name}</td>
-                  <td>{product.orderId}</td>
+                  <td>{product._id}</td>
                   <td>{product.quantity}</td>
                   <td>
                     {" "}
@@ -485,10 +571,10 @@ const OrderDetails = () => {
                         minWidth: "80px",
                       }}
                     >
-                      {product.status}
+                      {order.orderStatus}
                     </span>
                   </td>
-                  <td>LE {product.total}</td>
+                  <td>LE {product.totalPrice}</td>
                 </tr>
               ))}
             </tbody>
@@ -514,9 +600,9 @@ const OrderDetails = () => {
             </Box>
             <Box>
               <p>LE {order.subtotal}</p>
-              <p> LE {order.tax}</p>
-              <p> LE {order.discount}</p>
-              <p> LE {order.shippingRate}</p>
+              <p> {order.tax || 20}%</p>
+              <p> LE {order.discount || 0}</p>
+              <p> LE {order.shippingFee}</p>
               <h4> LE {order.total}</h4>
             </Box>
           </div>
