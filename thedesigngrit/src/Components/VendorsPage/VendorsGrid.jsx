@@ -12,9 +12,7 @@ const VendorsGrid = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/vendors/vendor"
-        );
+        const response = await fetch("http://localhost:5000/api/brand/");
         const data = await response.json();
         setVendors(data);
       } catch (error) {

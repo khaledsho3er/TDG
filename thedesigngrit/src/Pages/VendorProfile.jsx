@@ -16,9 +16,7 @@ function VendorProfile() {
   useEffect(() => {
     const fetchVendor = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/vendors/vendor/${id}`
-        );
+        const response = await fetch(`http://localhost:5000/api/brand/${id}`);
         const data = await response.json();
         console.log(data); // Log the data to check if it's correct
         setVendor(data);

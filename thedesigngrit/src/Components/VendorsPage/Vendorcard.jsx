@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
 
 const VendorCard = ({ vendor, onClick }) => {
-  const { logo, products = [], name } = vendor; // Default to empty array if products is undefined
+  const { brandlogo, products = [], brandName } = vendor; // Default to empty array if products is undefined
 
   return (
     <Card
@@ -30,8 +30,8 @@ const VendorCard = ({ vendor, onClick }) => {
       >
         <CardMedia
           component="img"
-          image={logo}
-          alt={`${name} logo`}
+          image={`http://localhost:5000/uploads/${brandlogo}`}
+          alt={`${brandName} logo`}
           sx={{ maxHeight: "80%", maxWidth: "80%", objectFit: "contain" }}
         />
       </Box>
@@ -39,22 +39,20 @@ const VendorCard = ({ vendor, onClick }) => {
       {/* Product Images */}
       <Box sx={{ padding: 1 }}>
         {Array.isArray(products) && products.length > 0 ? (
-          products
-            .slice(0, 4)
-            .map((product, index) => (
-              <CardMedia
-                component="img"
-                key={index}
-                image={product}
-                alt={`Product ${index + 1}`}
-                sx={{
-                  height: 80,
-                  borderRadius: 2,
-                  objectFit: "cover",
-                  border: "1px solid #ddd",
-                }}
-              />
-            ))
+          products.slice(0, 4).map((product, index) => (
+            <CardMedia
+              component="img"
+              key={index}
+              image={product}
+              alt={`Product ${index + 1}`}
+              sx={{
+                height: 80,
+                borderRadius: 2,
+                objectFit: "cover",
+                border: "1px solid #ddd",
+              }}
+            />
+          ))
         ) : (
           <Typography variant="body2" sx={{ color: "gray" }}>
             No products available
@@ -68,7 +66,7 @@ const VendorCard = ({ vendor, onClick }) => {
           variant="h6"
           sx={{ fontWeight: "bold", fontFamily: "Horizon", color: "#333" }}
         >
-          {name}
+          {brandName}
         </Typography>
       </CardContent>
     </Card>

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Button, CardMedia } from "@mui/material";
 
 function VendorProfileHeader({ vendor }) {
-  const fullImagePath = `http://localhost:5000/${vendor.digitalCopiesLogo}`; // Full image path for rendering
+  const fullImagePath = `http://localhost:5000/uploads/${vendor.brandlogo}`; // Full image path for rendering
 
   return (
     <Box
@@ -74,7 +74,7 @@ function VendorProfileHeader({ vendor }) {
               margin: 0,
             }}
           >
-            {vendor.name} {/* Vendor Name */}
+            {vendor.brandName} {/* Vendor Name */}
           </Typography>
 
           <Box

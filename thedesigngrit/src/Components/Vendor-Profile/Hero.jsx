@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 function VendorProfileHero({ vendor }) {
-  const fullImagePath = `http://localhost:5000/${vendor.coverPhoto}`; // Full image path for rendering
+  const fullImagePath = `http://localhost:5000/uploads/${vendor.coverPhoto}`; // Full image path for rendering
 
   // Log the image path for debugging
   console.log("Full Image Path:", fullImagePath);
