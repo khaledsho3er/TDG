@@ -34,6 +34,7 @@ export const CartProvider = ({ children }) => {
           ...prev,
           {
             ...product,
+            brandId: product.brandId || 1,
             quantity: 1,
             unitPrice: product.unitPrice || product.price || 0,
           },

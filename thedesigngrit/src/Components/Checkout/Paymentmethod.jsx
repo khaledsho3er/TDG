@@ -17,7 +17,7 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
   const [cardOptions, setCardOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState("");
   const [cardDetails, setCardDetails] = useState({
-    number: paymentData.cardNumber,
+    cardNumber: paymentData.cardNumber,
     expiry: paymentData.expiry,
     cvv: paymentData.cvv,
   });
@@ -84,10 +84,10 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
                   fullWidth
                   margin="normal"
                   label="Card Number"
-                  name="number"
+                  name="cardNumber"
                   InputLabelProps={{ className: "montserrat-font" }}
                   className="montserrat-font"
-                  value={cardDetails.number}
+                  value={cardDetails.cardNumber}
                   onChange={handleCardDetailsChange}
                 />
                 <Box display="flex" gap={2}>

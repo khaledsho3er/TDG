@@ -72,9 +72,9 @@ function Checkout() {
       acc[brandId].push({
         productId: item.id,
         name: item.name,
-        price: item.price,
+        price: item.unitPrice,
         quantity: item.quantity,
-        totalPrice: item.price * item.quantity,
+        totalPrice: item.unitPrice * item.quantity,
       });
       return acc;
     }, {});
@@ -130,7 +130,7 @@ function Checkout() {
 
   const subtotal = cartItems?.length
     ? cartItems.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.quantity || 1),
+        (sum, item) => sum + (item.unitPrice || 0) * (item.quantity || 1),
         0
       )
     : 0;
