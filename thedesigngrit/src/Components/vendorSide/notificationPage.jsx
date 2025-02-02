@@ -83,7 +83,9 @@ const NotificationsPage = () => {
   // Open the overlay popup with notification details
   const openNotificationDetails = (notification) => {
     setSelectedNotification(notification);
-    markAsRead(notification._id); // Mark it as read when opened
+    if (!notification.read) {
+      markAsRead(notification._id); // Mark it as read when opened, but only if not read
+    }
   };
 
   // Close the overlay
@@ -147,22 +149,38 @@ const NotificationsPage = () => {
                   <td>{formatDate(notification.date)}</td>{" "}
                   {/* Formatted date */}
                   <td>
-                    <button
-                      style={{
-                        backgroundColor: "#2d2d2d",
-                        color: "white",
-                        border: "none",
-                        padding: "15px 10px",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        markAsRead(notification._id);
-                      }}
-                    >
-                      Mark as Read
-                    </button>
+                    {!notification.read ? (
+                      <button
+                        style={{
+                          backgroundColor: "#2d2d2d",
+                          color: "white",
+                          border: "none",
+                          padding: "15px 10px",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markAsRead(notification._id);
+                        }}
+                      >
+                        Mark as Read
+                      </button>
+                    ) : (
+                      <button
+                        style={{
+                          backgroundColor: "grey",
+                          color: "white",
+                          border: "none",
+                          padding: "15px 10px",
+                          borderRadius: "5px",
+                          cursor: "not-allowed",
+                        }}
+                        disabled
+                      >
+                        Read
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -189,7 +207,12 @@ const NotificationsPage = () => {
               <p>{selectedNotification.description}</p>
               <p>Date: {formatDate(selectedNotification.date)}</p>{" "}
               {/* Formatted date */}
-              <button onClick={closeOverlay}>Close</button>
+              <div className="notifiy-overlay-buttons">
+                <Link to={`/orderDetail/${selectedNotification.orderId}`}>
+                  <button>View Order Details</button>
+                </Link>
+                <button onClick={closeOverlay}>Close</button>
+              </div>
             </div>
           </div>
         )}
