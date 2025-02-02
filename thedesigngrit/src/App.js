@@ -32,7 +32,7 @@ import NotificationsPage from "./Components/vendorSide/notificationPage";
 import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
-import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+// import EmployeeHome from "./Components/vendorSide/employeeDashboard";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";

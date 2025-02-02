@@ -262,7 +262,7 @@ const OrderDetails = () => {
                   padding: "10px",
                 }}
               >
-                <Button
+                {/* <Button
                   sx={{
                     width: "80%",
                     marginTop: "10px",
@@ -278,7 +278,7 @@ const OrderDetails = () => {
                   }}
                 >
                   View Profile
-                </Button>
+                </Button> */}
               </Box>
             </Box>
 
@@ -335,7 +335,7 @@ const OrderDetails = () => {
                   padding: "10px",
                 }}
               >
-                <Button
+                {/* <Button
                   sx={{
                     width: "80%",
                     marginTop: "10px",
@@ -351,7 +351,7 @@ const OrderDetails = () => {
                   }}
                 >
                   Download File{" "}
-                </Button>
+                </Button> */}
               </Box>
             </Box>
 
@@ -448,7 +448,7 @@ const OrderDetails = () => {
                   padding: "10px",
                 }}
               >
-                <Button
+                {/* <Button
                   sx={{
                     width: "80%",
                     marginTop: "10px",
@@ -464,7 +464,7 @@ const OrderDetails = () => {
                   }}
                 >
                   View Profile
-                </Button>
+                </Button> */}
               </Box>
             </Box>
           </Box>
@@ -554,7 +554,7 @@ const OrderDetails = () => {
                 <tr key={index}>
                   <td>{product.name}</td>
                   <td>{product._id}</td>
-                  <td>{product.quantity}</td>
+                  <td>{product.quantity} Item</td>
                   <td>
                     {" "}
                     <span
@@ -574,7 +574,7 @@ const OrderDetails = () => {
                       {order.orderStatus}
                     </span>
                   </td>
-                  <td>LE {product.totalPrice}</td>
+                  <td>{product.totalPrice} LE</td>
                 </tr>
               ))}
             </tbody>
