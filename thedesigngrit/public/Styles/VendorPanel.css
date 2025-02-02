@@ -1248,12 +1248,19 @@ input[type="radio"] {
 }
 .notifiy-overlay-content h2 {
   font-family: Horizon;
+  color: white;
 }
 
 .notifiy-overlay-content p {
   font-family: Montserrat;
   font-weight: normal;
   text-align: center;
+  color: white;
+}
+.notifiy-overlay-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 .notifiy-overlay-content button {
   background-color: #2d2d2d;
