@@ -9,11 +9,12 @@ import {
   MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FloatingButton from "./ChatButton";
+// import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
-import Stickedbutton from "./MoodboardButton";
+// import Stickedbutton from "./MoodboardButton";
 import ShoppingCartOverlay from "./Popups/CartOverlay";
 import FavoritesOverlay from "./favoriteOverlay";
 import Menudrop from "./menuhover/Menudrop";
@@ -30,12 +31,13 @@ function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [favoritesOpen, setFavoritesOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [categoriesVisible, setCategoriesVisible] = useState(false); // State to toggle categories visibility
   const [menuData, setMenuData] = useState([]);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null); // State for the avatar menu
-
+  const [anchorEls, setAnchorEls] = useState(null); // State for the avatar menu
   const { userSession, logout } = useContext(UserContext); // Access both userSession and setUserSession
   const navigate = useNavigate(); // Hook for navigation
   const [isMobile, setIsMobile] = useState(window.innerWidth < 767);
@@ -163,6 +165,24 @@ function Header() {
     navigate("/myaccount"); // Navigate to MyAccount page
     handleMenuClose(); // Close the menu after clicking
   };
+
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 767);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const handleShopClick = () => {
+    setCategoriesVisible(!categoriesVisible); // Toggle visibility of categories
+  };
+
+  const handleShopClose = () => {
+    setAnchorEls(null);
+  };
   return (
     <Box
       sx={{
@@ -173,6 +193,29 @@ function Header() {
       }}
       className={`header-container ${isSticky ? "sticky" : ""}`}
     >
+      {isMobile && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <Link to="/home">
+            <img
+              src="/Assets/TDG_Logo_Black.png"
+              alt="Logo"
+              className="menu-logo"
+              style={{ width: "69px", padding: "12px" }}
+            />
+          </Link>
+
+          <IconButton onClick={toggleMenu}>
+            <MenuIcon />
+          </IconButton>
+        </Box>
+      )}
       {/* Top Header */}
       <Box className={`header ${isSticky ? "sticky" : ""}`}>
         <Box className="header-top">
@@ -183,21 +226,166 @@ function Header() {
             </Typography>
           </Link>
 
-          {isMobile && (
-            <IconButton onClick={toggleMenu}>
-              <MenuIcon />
-            </IconButton>
-          )}
-
+          {/* Full-Screen Mobile Menu */}
+          {/* Full-Screen Mobile Menu */}
           {menuOpen && (
-            <Box className="mobile-menu">
-              <Typography className="menu-item">Home</Typography>
-              <Typography className="menu-item">Shop</Typography>
-              <Typography className="menu-item">About</Typography>
-              <Typography className="menu-item">Contact</Typography>
-            </Box>
+            <>
+              {/* Backdrop */}
+              <Box
+                className={`backdrop ${menuOpen ? "open" : ""}`}
+                onClick={toggleMenu}
+              />
+              <Box
+                className={`full-page-menu ${menuOpen ? "open" : ""}`}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  fontFamily: "Montserrat",
+                  "& .menu-content": {
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "1rem",
+                    padding: "1rem",
+                  },
+                  "& .menu-categories": {
+                    display: categoriesVisible ? "flex" : "none", // Show or hide categories based on state
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    marginTop: "1rem",
+                    "@media (max-width: 767px)": {
+                      alignItems: "center",
+                    },
+                  },
+                }}
+              >
+                <Box className="menu-header">
+                  <Link to="/home">
+                    <img
+                      src="/Assets/TDG_Logo_Black.png"
+                      alt="Logo"
+                      className="menu-logo"
+                      style={{ width: "69px", padding: "12px" }}
+                    />
+                  </Link>
+                  <IconButton onClick={toggleMenu} className="close-button">
+                    <CloseIcon fontSize="large" />
+                  </IconButton>
+                </Box>
+
+                <Box className="menu-content">
+                  <Typography
+                    onClick={() => navigate("/home")}
+                    className="menu-item"
+                  >
+                    Home
+                  </Typography>
+                  <Typography
+                    className="menu-item"
+                    aria-controls={anchorEls ? "shop-menu" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleShopClick} // Toggle categories visibility on click
+                  >
+                    Shop
+                  </Typography>
+
+                  {/* Categories */}
+                  <Box
+                    className={`menu-categories ${
+                      categoriesVisible ? "open" : ""
+                    }`}
+                  >
+                    {menuData.length > 0 ? (
+                      menuData.map((category) => (
+                        <Typography
+                          key={category._id}
+                          className="menu-category-item"
+                          onClick={() => {
+                            navigate(`/category/${category._id}/subcategories`);
+                            handleShopClose();
+                          }}
+                        >
+                          {category.name}
+                        </Typography>
+                      ))
+                    ) : (
+                      <Typography>No Categories Available</Typography>
+                    )}
+                  </Box>
+
+                  <Typography
+                    onClick={() => navigate("/about")}
+                    className="menu-item"
+                  >
+                    About
+                  </Typography>
+                  <Typography
+                    onClick={() => navigate("/contactus")}
+                    className="menu-item"
+                  >
+                    Contact
+                  </Typography>
+                  {userSession ? (
+                    <Typography
+                      onClick={() => navigate("/myaccount")}
+                      className="menu-item"
+                    >
+                      Account
+                    </Typography>
+                  ) : (
+                    <></>
+                  )}
+
+                  {userSession ? (
+                    <Typography onClick={handleLogout} className="menu-item">
+                      Logout
+                    </Typography>
+                  ) : (
+                    <Typography
+                      onClick={handleLoginClick}
+                      className="menu-item"
+                    >
+                      Login
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            </>
           )}
 
+          {/* Dropdown Menu for Shop */}
+          <Menu
+            id="shop-menu"
+            anchorEls={anchorEls}
+            open={Boolean(anchorEls)}
+            onClose={handleShopClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            {menuData.length > 0 ? (
+              menuData.map((category) => (
+                <MenuItem
+                  key={category._id}
+                  onClick={() => {
+                    navigate(`/shop/${category.slug}`);
+                    handleShopClose();
+                  }}
+                >
+                  {category.name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>No Categories Available</MenuItem>
+            )}
+          </Menu>
           {/* Search */}
           <Box className="search-bar">
             <SearchIcon sx={{ color: "#999" }} />
@@ -286,8 +474,8 @@ function Header() {
         />
       )}
 
-      <FloatingButton />
-      <Stickedbutton className="moodboard-btn" />
+      {/* <FloatingButton />
+      <Stickedbutton className="moodboard-btn" /> */}
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
       <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
       <FavoritesOverlay open={favoritesOpen} onClose={handleFavoritesToggle} />

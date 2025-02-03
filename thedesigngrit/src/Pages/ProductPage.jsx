@@ -122,7 +122,6 @@ function ProductPage() {
     }));
   };
 
-
   const handleAddToCart = (product) => {
     // const compositeKey = `${product.id} -  ${selectedColor || "default"}-${
     //   selectedSize || "default"
@@ -276,8 +275,8 @@ function ProductPage() {
                   {/* Content for each section */}
                   <div className="collapsible-content">
                     {section === "Overview" && (
-                      <div>
-                        <h5 style={{ fontSize: "25px" }}>
+                      <div className="product-contents">
+                        <h5 style={{ fontSize: "25px", marginLeft: "0px" }}>
                           Manufacturer :{product.brandName}
                         </h5>
                         <div className="product-details">
@@ -301,7 +300,7 @@ function ProductPage() {
                       </div>
                     )}
                     {section === "Dimensions" && (
-                      <div>
+                      <div className="product-contents">
                         <img src="/Assets/productDemi.png" alt="Dimensions" />
                         <p>Width X Length X Height</p>
                         <p>
@@ -313,45 +312,47 @@ function ProductPage() {
                       </div>
                     )}
                     {section === "BIM/CAD" && (
-                      <Button
-                        sx={{
-                          backgroundColor: "transparent",
-                          color: "#2d2d2d",
-                          borderRadius: "10px",
-                          border: "1px solid #2d2d2d", // Correct way to set the border
-                          width: "40%",
-                          padding: "10px 20px",
-                          minWidth: "150px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          textTransform: "none",
-                          "&:hover": {
-                            backgroundColor: "#000",
-                            color: "#fff",
-                          },
-                        }}
-                      >
-                        {/* Left-aligned image */}
-                        <img
-                          src="/Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
-                          alt="AutoCAD Logo"
-                          style={{
-                            width: "24px",
-                            height: "24px",
-                            marginRight: "10px",
+                      <div className="product-contents">
+                        <Button
+                          sx={{
+                            backgroundColor: "transparent",
+                            color: "#2d2d2d",
+                            borderRadius: "10px",
+                            border: "1px solid #2d2d2d", // Correct way to set the border
+                            width: "40%",
+                            padding: "10px 20px",
+                            minWidth: "150px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            textTransform: "none",
+                            "&:hover": {
+                              backgroundColor: "#000",
+                              color: "#fff",
+                            },
                           }}
-                        />
-                        {/* Centered text */}
-                        <span>AutoCAD</span>{" "}
-                        <span>
-                          1 <FaFile sx={{ marginLeft: "10px" }} />
-                        </span>
-                        {/* Right-aligned file icon */}
-                      </Button>
+                        >
+                          {/* Left-aligned image */}
+                          <img
+                            src="/Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
+                            alt="AutoCAD Logo"
+                            style={{
+                              width: "24px",
+                              height: "24px",
+                              marginRight: "10px",
+                            }}
+                          />
+                          {/* Centered text */}
+                          <span>AutoCAD</span>{" "}
+                          <span>
+                            1 <FaFile sx={{ marginLeft: "10px" }} />
+                          </span>
+                          {/* Right-aligned file icon */}
+                        </Button>
+                      </div>
                     )}
                     {section === "Videos" && (
-                      <div>
+                      <div className="product-contents">
                         <iframe
                           width="560"
                           height="315"

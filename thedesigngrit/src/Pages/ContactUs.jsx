@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../Components/navBar";
 import { Box } from "@mui/material";
 import ApplicationSentPopup from "../Components/JobDesc/applicationSentPopUp";
-
+import Footer from "../Components/Footer";
 function ContactUs() {
   const [formData, setFormData] = useState({
     name: "",
@@ -136,6 +136,7 @@ function ContactUs() {
         </Box>
       </div>
       <ApplicationSentPopup show={isPopupVisible} closePopup={closePopup} />
+      <Footer />
     </Box>
   );
 }

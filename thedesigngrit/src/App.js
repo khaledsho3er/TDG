@@ -60,17 +60,13 @@ function App() {
                 path="/policy/:section"
                 element={<TermsOfService />}
               />{" "}
-              <Route exact path="/partners" Component={PartnersApplication} />
-              <Route exact path="/contactus" Component={ContactUs} />
-              <Route exact path="/mycart" Component={ShoppingCart} />
-              <Route
-                path="/category/:categoryId/:categoryName"
-                element={<ProductsPage />}
-              />
               <Route
                 path="/products/:subcategoryId/:subcategoryName"
                 element={<ProductsPage />}
               />
+              <Route exact path="/partners" Component={PartnersApplication} />
+              <Route exact path="/contactus" Component={ContactUs} />
+              <Route exact path="/mycart" Component={ShoppingCart} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route exact path="/ProductsPage" Component={ProductsPage} />
               {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}

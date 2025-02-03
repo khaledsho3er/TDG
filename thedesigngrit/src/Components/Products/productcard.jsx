@@ -39,7 +39,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
         <CardMedia
           component="img"
           height="250"
-          image={`http://localhost:5000${product.mainImage}`}
+          image={`http://localhost:5000/uploads/${product.mainImage}`}
           alt={product.name}
           sx={{
             objectFit: "cover",
