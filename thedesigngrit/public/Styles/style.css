@@ -1741,7 +1741,7 @@ body::-webkit-scrollbar {
 
 .job-form-field input,
 .job-form-field textarea {
-  width: 90%;
+  width: 100%;
   padding: 0.75rem;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -6273,5 +6273,9 @@ input:focus {
 
 .footer-text {
   font-family: "Montserrat";
+  font-size: 12px;
+}
+.error-message {
+  color: red;
   font-size: 12px;
 }

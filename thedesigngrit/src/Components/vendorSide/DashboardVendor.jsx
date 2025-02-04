@@ -9,27 +9,43 @@ import {
   FaChartLine,
 } from "react-icons/fa"; // React Icons
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useVendor } from "../../utils/vendorContext";
+import OrderDetails from "./orderDetails"; // Import OrderDetails component
 
 const DashboardVendor = () => {
+  const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
-  const navigate = useNavigate();
-  // Fetch order data from JSON
-  const fetchOrders = async () => {
-    try {
-      const response = await fetch("/json/OrderData.json");
-      const data = await response.json();
-      // Sort orders by date (latest to earliest)
-      data.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setOrders(data);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
-  };
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
 
+  // Fetch order data from JSON
   useEffect(() => {
+    const fetchOrders = async () => {
+      if (!vendor?.brandId) return;
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/orders/orders/brand/${vendor.brandId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
     fetchOrders();
-  }, []);
+  }, [vendor]);
+  if (selectedOrder) {
+    return (
+      <OrderDetails
+        order={selectedOrder}
+        onBack={() => setSelectedOrder(null)}
+      />
+    );
+  }
+
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -163,14 +179,17 @@ const DashboardVendor = () => {
             <tbody>
               {orders.map((order) => (
                 <tr
-                  key={order.id}
-                  onClick={() => navigate(`/orderDetail/${order.id}`)}
+                  key={order._id}
+                  onClick={() => setSelectedOrder(order)}
                   style={{ cursor: "pointer" }}
                 >
-                  <td>{order.product}</td>
-                  <td>{order.orderId}</td>
-                  <td>{order.date}</td>
-                  <td>{order.customerName}</td>
+                  <td>{order.cartItems[0]?.name || "N/A"}</td>
+                  <td>{order._id}</td>
+                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                  <td>
+                    {order.customerId.firstName} {""}
+                    {order.customerId.lastName}
+                  </td>
                   <td>
                     <span
                       style={{
@@ -187,10 +206,10 @@ const DashboardVendor = () => {
                         minWidth: "80px",
                       }}
                     >
-                      {order.status}
+                      {order.orderStatus}
                     </span>
                   </td>
-                  <td>LE {order.amount}</td>
+                  <td>LE {order.total}</td>
                 </tr>
               ))}
             </tbody>

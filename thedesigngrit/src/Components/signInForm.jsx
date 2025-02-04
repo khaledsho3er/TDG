@@ -3,34 +3,45 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useUser } from "../utils/userContext"; // Import the UserContext
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../utils/userContext";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 function SignInForm() {
-  const { setUserSession } = useUser(); // Access the context
+  const { setUserSession } = useUser();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/signin",
-        formData,
-        { withCredentials: true } // Include session cookies
+        data,
+        { withCredentials: true }
       );
 
-      // Save session data to context
-      setUserSession(response.data.user); // Set user data in the context
-
+      setUserSession(response.data.user);
       console.log("Login successful!", response.data.user);
       alert("Login successful!");
       navigate("/");
@@ -41,6 +52,7 @@ function SignInForm() {
       );
     }
   };
+
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
@@ -56,25 +68,26 @@ function SignInForm() {
           </button>
         </div>
         <div className="divider-signIn"> OR</div>
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <input
             type="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
+            {...register("email")}
             placeholder="E-mail"
             className="input-field"
-            required
           />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
+
           <div style={{ position: "relative" }}>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+              {...register("password")}
               placeholder="Password"
               className="input-field"
-              required
             />
             <span
               onClick={() => setShowPassword((prevState) => !prevState)}
@@ -90,10 +103,15 @@ function SignInForm() {
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
           </div>
+          {errors.password && (
+            <p className="error-message">{errors.password.message}</p>
+          )}
+
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>
         </form>
+
         <p className="register-link">
           If you don’t have an account? <a href="/signup">Register</a>
         </p>

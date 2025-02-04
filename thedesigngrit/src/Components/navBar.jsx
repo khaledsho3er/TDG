@@ -59,7 +59,7 @@ function Header() {
           throw new Error("Failed to load categories");
         }
         const data = await response.json();
-        setMenuData(data);
+        setMenuData(data.slice(0, 6)); // Slice the first 6 categories
       } catch (error) {
         console.error("Error fetching categories:", error);
       }

@@ -1,24 +1,125 @@
 import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
+import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-const ProductsPageAdmin = () => {
+import axios from "axios";
+import PromotionModal from "../vendorSide/promotionProduct"; // Import the PromotionModal component
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+
+const ProductPageAdmin = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const productsPerPage = 12; // Products per page
+  const [categories, setCategories] = useState([]);
+  const [setSubCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
+  const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
 
-  const [menuOpen, setMenuOpen] = useState(null); // State to track which menu is open
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for the promotion
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/products/getproducts",
+          {
+            params: {
+              category: selectedCategory, // Still allowing category filtering if needed
+            },
+          }
+        );
+
+        const fetchedProducts = response.data;
+
+        // Map products and fetch type name by type ID
+        const productsWithTypeNames = await Promise.all(
+          fetchedProducts.map(async (product) => {
+            if (product.type) {
+              try {
+                const typeResponse = await axios.get(
+                  `http://localhost:5000/api/types/types/${product.type}`
+                );
+                product.typeName = typeResponse.data.name || "Unknown"; // Set type name
+              } catch (error) {
+                console.error("Error fetching type:", error);
+                product.typeName = "Unknown"; // Fallback in case of error
+              }
+            } else {
+              product.typeName = "Unknown"; // Handle products with no type
+            }
+            return product;
+          })
+        );
+
+        setProducts(productsWithTypeNames); // Set the products with type names
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts(); // Fetch products
+
+    // Fetch categories as well
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/categories/categories"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [selectedCategory]); // Runs when category selection changes
+
+  const handleCategoryChange = async (e) => {
+    const selectedCategoryId = e.target.value;
+    setSelectedCategory(selectedCategoryId); // Save the selected category ID
+    setSubCategories([]); // Reset subcategories
+    setSelectedSubCategory(""); // Reset selected subcategory
+
+    // Fetch subcategories if needed
+    if (selectedCategoryId) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+        );
+        setSubCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching subcategories:", error);
+      }
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    if (selectedSubCategory) {
+      return product.subCategoryId === selectedSubCategory;
+    }
+    if (selectedCategory) {
+      return product.category === selectedCategory; // Match product.category with selectedCategory ID
+    }
+    return true; // No filter applied
+  });
 
   const toggleMenu = (productId) => {
-    setMenuOpen(menuOpen === productId ? null : productId); // Toggle menu
+    setMenuOpen((prevState) => ({
+      ...prevState,
+      [productId]: !prevState[productId], // Toggle specific menu state
+    }));
+  };
+
+  const closeAllMenus = () => {
+    setMenuOpen({}); // Close all menus
   };
 
   const handleEdit = (product) => {
     navigate("/update-product", { state: { product } }); // Navigate with product data
-    console.log("Edit", product);
-    // Add your edit functionality here
   };
 
   const handleDelete = (product) => {
@@ -27,38 +128,37 @@ const ProductsPageAdmin = () => {
   };
 
   const handleInsights = (product) => {
-    console.log("Insights", product);
-    // Add your insights functionality here
-  };
-  // Function to fetch JSON data
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch("/json/productData.json"); // Replace with the actual path
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    setSelectedProduct(product); // Set the selected product
+    setPromotionModalOpen(true); // Open the modal
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []); // Fetch data on component mount
-  // Pagination Logic
+  const handleSavePromotion = (promotionDetails) => {
+    console.log("Promotion Details:", promotionDetails);
+    // Save promotion details (e.g., send to API or update state)
+    setPromotionModalOpen(false); // Close the modal after saving
+  };
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  const totalPages = Math.ceil(products.length / productsPerPage);
-
-  // Function to handle page change
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Close all menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => closeAllMenus(); // Close all menus on outside click
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside); // Cleanup
+    };
+  }, []);
+
   return (
     <div className="product-list-page-vendor">
       <header className="dashboard-header-vendor">
@@ -85,85 +185,131 @@ const ProductsPageAdmin = () => {
           </button>
         </div>
       </header>
-      <div className="vendor-products-list-grid">
-        {currentProducts.map((product) => (
-          <div className="all-product-card" key={product.id}>
-            <div className="product-card-header">
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="all-product-image"
-              />
-              <div className="product-info-vendor">
-                <h3>{product.name}</h3>
-                <p>{product.type}</p>
-                <p>{product.price}</p>
-                <p>{product.category}</p>
 
-                <img
-                  src={product.brandLogo}
-                  alt="Logo"
-                  style={{
-                    width: "70px",
-                    height: "30px",
-                    PaddingTop: "10px",
-                  }}
-                />
-              </div>
-              <div className="menu-container">
-                <BsThreeDotsVertical
-                  onClick={() => toggleMenu(product.id)}
-                  className="three-dots-icon"
-                />
-                {menuOpen === product.id && (
-                  <div className="menu-dropdown">
-                    <button onClick={() => handleEdit(product)}>Edit</button>
-                    <button onClick={() => handleDelete(product)}>
-                      Delete
-                    </button>
-                    <button onClick={() => handleInsights(product)}>
-                      Insights
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="product-card-body">
-              <h5>Summary</h5>
-              <p className="product-summary">
-                {product.description.substring(0, 100)}...
-              </p>
-              <div className="product-stats">
-                <div className="product-sales">
-                  <span>Sales</span>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                  >
-                    <span className="sales-value">{product.rating}</span>
-                  </div>
-                </div>
-                <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                <div className="product-remaining">
-                  <span>Remaining Products</span>
-                  <span className="remaining-value">
-                    {product.reviewsCount}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      {/* Filters */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          marginBottom: "20px",
+        }}
+      >
+        <FormControl sx={{ m: 1 }}>
+          <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
+          <Select
+            sx={{
+              width: "200px",
+              color: "#2d2d2d",
+              backgroundColor: "#fff",
+            }}
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            <MenuItem value="">Select Category</MenuItem>
+            {categories.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
 
+      {/* Product List or No Products Message */}
+      {filteredProducts.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "50px",
+            gap: "10px",
+          }}
+        >
+          <ProductionQuantityLimitsIcon
+            style={{ fontSize: "48px", color: "#666" }}
+          />
+          <p style={{ fontSize: "18px", color: "#666" }}>
+            No products found in this category.
+          </p>
+        </div>
+      ) : (
+        <div className="vendor-products-list-grid">
+          {currentProducts.map((product) => (
+            <div className="all-product-card" key={product.id}>
+              <div className="product-card-header">
+                <img
+                  src={`http://localhost:5000${
+                    product.mainImage.startsWith("/")
+                      ? product.mainImage
+                      : "/" + product.mainImage
+                  }`}
+                  alt={product.name}
+                  className="all-product-image"
+                />
+
+                <div className="product-info-vendor">
+                  <h3>{product.name}</h3>
+                  <p>{product.typeName}</p>
+                  <p>{product.price}</p>
+                </div>
+                <div className="menu-container">
+                  <BsThreeDotsVertical
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the click from triggering the document listener
+                      toggleMenu(product.id);
+                    }}
+                    className="three-dots-icon"
+                  />
+                  {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
+                    <div className="menu-dropdown">
+                      <button onClick={() => handleEdit(product)}>Edit</button>
+                      <button onClick={() => handleDelete(product)}>
+                        Delete
+                      </button>
+                      <button onClick={() => handleInsights(product)}>
+                        Promotion
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="product-card-body">
+                <h5>Summary</h5>
+                <p className="product-summary">
+                  {product.description.substring(0, 100)}...
+                </p>
+                <div className="product-stats">
+                  <div className="product-sales">
+                    <span>Sales</span>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <span className="sales-value">{product.rating}</span>
+                    </div>
+                  </div>
+                  <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                  <div className="product-remaining">
+                    <span>Remaining Products</span>
+                    <span className="remaining-value">
+                      {product.reviewsCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Pagination */}
-      <div
-        className="pagination"
-        style={{ textAlign: "left", margin: "120px 0" }}
-      >
+      <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
@@ -174,41 +320,26 @@ const ProductsPageAdmin = () => {
               backgroundColor:
                 currentPage === index + 1 ? "#2d2d2d" : "#efebe8",
               color: currentPage === index + 1 ? "#fff" : "#2d2d2d",
-              border:
-                currentPage === index + 1
-                  ? "1px solid #2d2d2d"
-                  : "1px solid #2d2d2d",
               borderRadius: "5px",
               cursor: "pointer",
-              fontWeight: currentPage === index + 1 ? "bold" : "normal",
             }}
           >
             {index + 1}
           </button>
         ))}
-        {currentPage < totalPages && (
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            style={{
-              margin: "5px",
-              padding: "8px 12px",
-              backgroundColor: "#efebe8",
-              border: "1px solid #2d2d2d",
-              borderRadius: "5px",
-              cursor: "pointer",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            NEXT{" "}
-            <IoIosArrowForward
-              style={{ color: "#2d2d2d", marginBottom: "-2px" }}
-            />
-          </button>
-        )}
       </div>
+
+      {/* Promotion Modal */}
+      {promotionModalOpen && (
+        <PromotionModal
+          open={promotionModalOpen}
+          onClose={() => setPromotionModalOpen(false)}
+          onSave={handleSavePromotion}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };
 
-export default ProductsPageAdmin;
+export default ProductPageAdmin;

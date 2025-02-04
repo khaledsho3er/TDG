@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
 import AccountSentPopup from "../successMsgs/successfullyRegistered";
+import * as Yup from "yup"; // Import Yup
+
 const VendorSignup = () => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
   const [formData, setFormData] = useState({
@@ -24,10 +26,26 @@ const VendorSignup = () => {
     confirmPassword: "",
     tier: "", // new field for authority level (tier)
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({}); // State to hold error messages
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [brandName, setBrandName] = useState(""); // State to store the brand name
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
+
+  // Define the validation schema
+  const validationSchema = Yup.object().shape({
+    firstname: Yup.string().required("First name is required"),
+    lastname: Yup.string().required("Last name is required"),
+    employeeNumber: Yup.string().required("Employee number is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    phoneNumber: Yup.string().required("Phone number is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm password is required"),
+    tier: Yup.string().required("Authority level is required"),
+  });
 
   // Fetch brand details using brandId from the vendor session
   useEffect(() => {
@@ -40,7 +58,10 @@ const VendorSignup = () => {
           setBrandName(response.data.brandName); // Set the brand name in the state
         } catch (error) {
           console.error("Error fetching brand name:", error);
-          setError("Failed to fetch brand details.");
+          setErrors((prev) => ({
+            ...prev,
+            brand: "Failed to fetch brand details.",
+          }));
         }
       };
       fetchBrandName();
@@ -55,31 +76,22 @@ const VendorSignup = () => {
     }));
   };
 
-  const validateForm = () => {
-    if (
-      !formData.firstname ||
-      !formData.lastname ||
-      !formData.employeeNumber ||
-      !formData.email ||
-      !formData.phoneNumber ||
-      !formData.password ||
-      !formData.confirmPassword ||
-      !formData.tier
-    ) {
-      setError("All fields are required.");
-      return false;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-    if (!validateForm()) return;
+    setErrors({}); // Clear previous errors
+
+    // Validate the form data
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+    } catch (err) {
+      // If validation fails, set the error messages
+      const newErrors = {};
+      err.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
+      });
+      setErrors(newErrors);
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -123,15 +135,20 @@ const VendorSignup = () => {
       }
     } catch (err) {
       console.error("Error:", err);
-      setError("Failed to add employee. Please try again.");
+      setErrors((prev) => ({
+        ...prev,
+        api: "Failed to add employee. Please try again.",
+      }));
     } finally {
       setIsSubmitting(false);
     }
   };
+
   // Function to close the success popup
   const closePopup = () => {
     setShowPopup(false);
   };
+
   return (
     <div style={{ padding: "110px", fontFamily: "Montserrat" }}>
       <Typography
@@ -155,6 +172,8 @@ const VendorSignup = () => {
               name="firstname"
               value={formData.firstname}
               onChange={handleChange}
+              error={!!errors.firstname} // Show error state
+              helperText={errors.firstname} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -165,6 +184,8 @@ const VendorSignup = () => {
               name="lastname"
               value={formData.lastname}
               onChange={handleChange}
+              error={!!errors.lastname} // Show error state
+              helperText={errors.lastname} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -175,6 +196,8 @@ const VendorSignup = () => {
               name="employeeNumber"
               value={formData.employeeNumber}
               onChange={handleChange}
+              error={!!errors.employeeNumber} // Show error state
+              helperText={errors.employeeNumber} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -185,6 +208,8 @@ const VendorSignup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              error={!!errors.email} // Show error state
+              helperText={errors.email} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -195,6 +220,8 @@ const VendorSignup = () => {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
+              error={!!errors.phoneNumber} // Show error state
+              helperText={errors.phoneNumber} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -206,6 +233,8 @@ const VendorSignup = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              error={!!errors.password} // Show error state
+              helperText={errors.password} // Display error message
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -217,11 +246,15 @@ const VendorSignup = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              error={!!errors.confirmPassword} // Show error state
+              helperText={errors.confirmPassword} // Display error message
             />
           </Grid>
           {/* Dropdown for tier selection */}
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors.tier}>
+              {" "}
+              {/* Show error state */}
               <InputLabel>Authority Level (Tier)</InputLabel>
               <Select
                 label="Authority Level (Tier)"
@@ -233,12 +266,13 @@ const VendorSignup = () => {
                 <MenuItem value="2">Tier 2</MenuItem>
                 <MenuItem value="3">Tier 3</MenuItem>
               </Select>
+              {errors.tier && <p style={{ color: "red" }}>{errors.tier}</p>}{" "}
+              {/* Display error message */}
             </FormControl>
           </Grid>
         </Grid>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
+        {errors.api && <p style={{ color: "red" }}>{errors.api}</p>}{" "}
+        {/* Display API error message */}
         <Button
           type="submit"
           variant="contained"

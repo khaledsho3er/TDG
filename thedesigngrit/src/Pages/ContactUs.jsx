@@ -3,6 +3,8 @@ import Header from "../Components/navBar";
 import { Box } from "@mui/material";
 import ApplicationSentPopup from "../Components/JobDesc/applicationSentPopUp";
 import Footer from "../Components/Footer";
+import * as Yup from "yup"; // Import Yup for validation
+
 function ContactUs() {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,7 +12,19 @@ function ContactUs() {
     subject: "",
     message: "",
   });
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [errors, setErrors] = useState({}); // Store error messages
+
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required."),
+    email: Yup.string()
+      .email("Invalid email address.")
+      .required("Email is required."),
+    subject: Yup.string().required("Subject is required."),
+    message: Yup.string().required("Message is required."),
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +34,25 @@ function ContactUs() {
     }));
   };
 
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      return true; // Validation passed
+    } catch (error) {
+      const newErrors = {};
+      error.inner.forEach((err) => {
+        newErrors[err.path] = err.message;
+      });
+      setErrors(newErrors); // Set error messages
+      return false; // Validation failed
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const isValid = await validateForm(); // Validate the form
+    if (!isValid) return; // Stop submission if validation fails
 
     try {
       const response = await fetch(
@@ -87,6 +118,8 @@ function ContactUs() {
                 value={formData.name}
                 onChange={handleInputChange}
               />
+              {errors.name && <p className="error-message">{errors.name}</p>}{" "}
+              {/* Display error */}
             </div>
 
             <div className="contact-form-field">
@@ -99,6 +132,8 @@ function ContactUs() {
                 value={formData.email}
                 onChange={handleInputChange}
               />
+              {errors.email && <p className="error-message">{errors.email}</p>}{" "}
+              {/* Display error */}
             </div>
 
             <div className="contact-form-field">
@@ -111,6 +146,10 @@ function ContactUs() {
                 value={formData.subject}
                 onChange={handleInputChange}
               />
+              {errors.subject && (
+                <p className="error-message">{errors.subject}</p>
+              )}{" "}
+              {/* Display error */}
             </div>
 
             <div className="contact-form-field">
@@ -122,6 +161,10 @@ function ContactUs() {
                 value={formData.message}
                 onChange={handleInputChange}
               />
+              {errors.message && (
+                <p className="error-message">{errors.message}</p>
+              )}{" "}
+              {/* Display error */}
             </div>
 
             <button

@@ -776,6 +776,9 @@
   li {
     font-size: 14px; /* Smaller font size for list items */
   }
+  .shop-button {
+    width: 43%;
+  }
 }
 
 @media (max-width: 480px) {

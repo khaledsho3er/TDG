@@ -7,11 +7,16 @@ const CategoryForm = () => {
   const [categoryImage, setCategoryImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
-  const [newSubCategory, setNewSubCategory] = useState("");
+  const [newSubCategory, setNewSubCategory] = useState({
+    name: "",
+    description: "",
+    image: null,
+    imagePreview: null,
+  });
   const [newType, setNewType] = useState("");
   const [currentSubCategoryIndex, setCurrentSubCategoryIndex] = useState(null);
 
-  // Handle image upload
+  // Handle main category image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -20,11 +25,28 @@ const CategoryForm = () => {
     }
   };
 
+  // Handle subcategory image upload
+  const handleSubCategoryImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewSubCategory((prev) => ({
+        ...prev,
+        image: file,
+        imagePreview: URL.createObjectURL(file),
+      }));
+    }
+  };
+
   // Add subcategory
   const handleAddSubCategory = () => {
-    if (newSubCategory.trim()) {
-      setSubCategories([...subCategories, { name: newSubCategory, types: [] }]);
-      setNewSubCategory("");
+    if (newSubCategory.name.trim()) {
+      setSubCategories([...subCategories, { ...newSubCategory, types: [] }]);
+      setNewSubCategory({
+        name: "",
+        description: "",
+        image: null,
+        imagePreview: null,
+      });
     }
   };
 
@@ -64,7 +86,17 @@ const CategoryForm = () => {
     formData.append("name", categoryName);
     formData.append("description", categoryDescription);
     formData.append("image", categoryImage);
-    formData.append("subCategories", JSON.stringify(subCategories));
+
+    const formattedSubCategories = subCategories.map((subCategory, index) => {
+      formData.append(`subCategoryImages`, subCategory.image || ""); // Match multer field name
+      return {
+        name: subCategory.name,
+        description: subCategory.description || "",
+        types: subCategory.types,
+      };
+    });
+
+    formData.append("subCategories", JSON.stringify(formattedSubCategories));
 
     try {
       const response = await fetch(
@@ -75,12 +107,11 @@ const CategoryForm = () => {
         }
       );
 
-      const text = await response.text(); // Get the raw text
+      const text = await response.text();
       console.log("Response Text:", text);
 
       try {
-        const data = JSON.parse(text); // Manually parse the text as JSON
-
+        const data = JSON.parse(text);
         if (response.ok) {
           alert("Category created successfully!");
           setCategoryName("");
@@ -150,6 +181,14 @@ const CategoryForm = () => {
               >
                 ×
               </button>
+              <p>{subCategory.description}</p>
+              {subCategory.imagePreview && (
+                <img
+                  src={subCategory.imagePreview}
+                  alt="Subcategory Preview"
+                  width="100"
+                />
+              )}
               <ul>
                 {subCategory.types.map((type, typeIndex) => (
                   <li key={typeIndex}>
@@ -181,12 +220,33 @@ const CategoryForm = () => {
               </button>
             </div>
           ))}
+
           <input
             type="text"
-            placeholder="Add subcategory"
-            value={newSubCategory}
-            onChange={(e) => setNewSubCategory(e.target.value)}
+            placeholder="Subcategory Name"
+            value={newSubCategory.name}
+            onChange={(e) =>
+              setNewSubCategory({ ...newSubCategory, name: e.target.value })
+            }
           />
+          <textarea
+            placeholder="Subcategory Description"
+            value={newSubCategory.description}
+            onChange={(e) =>
+              setNewSubCategory({
+                ...newSubCategory,
+                description: e.target.value,
+              })
+            }
+          ></textarea>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleSubCategoryImageUpload}
+          />
+          {newSubCategory.imagePreview && (
+            <img src={newSubCategory.imagePreview} alt="Preview" width="100" />
+          )}
           <button type="button" onClick={handleAddSubCategory}>
             Add Subcategory
           </button>
