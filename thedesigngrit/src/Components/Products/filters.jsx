@@ -71,7 +71,17 @@ const FilterSection = () => {
             />
           ))}
         </Box>
-        <Button onClick={clearFilters} size="small" color="error">
+        <Button
+          onClick={clearFilters}
+          size="small"
+          color="error"
+          sx={{
+            border: "1px solid #2d2d2d",
+            "&:hover": {
+              backgroundColor: "#2d2d2d",
+            },
+          }}
+        >
           Clear All
         </Button>
       </Box>

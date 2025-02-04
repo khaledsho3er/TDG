@@ -45,14 +45,16 @@ function SignInForm() {
     <div>
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
-        <button className="btn social-btn google-btn">
-          <FcGoogle className="google-icon" />
-          Continue with Google
-        </button>
-        <button className="btn social-btn facebook-btn">
-          <FaFacebook className="facebook-icon" />
-          Continue with Facebook
-        </button>
+        <div className="social-btns-section">
+          <button className="btn social-btn google-btn">
+            <FcGoogle className="google-icon" />
+            Continue with Google
+          </button>
+          <button className="btn social-btn facebook-btn">
+            <FaFacebook className="facebook-icon" />
+            Continue with Facebook
+          </button>
+        </div>
         <div className="divider-signIn"> OR</div>
         <form onSubmit={handleSubmit}>
           <input
@@ -78,8 +80,8 @@ function SignInForm() {
               onClick={() => setShowPassword((prevState) => !prevState)}
               style={{
                 position: "absolute",
-                right: "10px",
-                top: "50%",
+                right: "18px",
+                top: "53%",
                 transform: "translateY(-50%)",
                 cursor: "pointer",
                 color: "#6b7b58",

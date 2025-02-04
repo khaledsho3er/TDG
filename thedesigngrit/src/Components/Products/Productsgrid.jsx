@@ -47,7 +47,11 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           <Grid
             container
             spacing={2}
-            sx={{ display: "flex", justifyContent: "flex-start", gap: "80px" }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              flexWrap: "wrap",
+            }}
           >
             {currentProducts.map((product) => {
               console.log(product._id); // Debugging: Check if product._id is available
