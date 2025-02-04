@@ -105,11 +105,11 @@ function ProductsPage() {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box>
           <FilterSection />
         </Box>
-        <Box>
+        <Box >
           {/* Pass products and favorite toggle function to ProductCards */}
           <ProductCards products={products} onToggleFavorite={toggleFavorite} />
         </Box>

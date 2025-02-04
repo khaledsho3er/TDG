@@ -5956,3 +5956,85 @@ input:focus {
 .send-button:hover {
   background-color: #4e644e;
 }
+
+
+/* subcategories page */
+.subcategory-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+ 
+}
+
+.subcategory-box {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease-in-out;
+}
+
+/* .subcategory-box:hover {
+  transform: scale(1.02);
+} */
+
+.subcategory-box.reverse {
+  flex-direction: row-reverse;
+}
+
+.subcategory-image {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.subcategory-content {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+/* Apply reverse layout to every other box */
+.subcategory-box.reverse {
+  flex-direction: row-reverse;
+}
+
+
+.subcategory-content h3{
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-family: "Horizon";
+}
+
+.subcategory-content h2{
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  font-family: "Montserrat,san_sarif";
+}
+
+.subcategory-button {
+  justify-content: center;
+  background: black;
+  color: white;
+  padding: 12px 18px;
+  text-decoration: none;
+  text-align: center;
+  width: 160px;
+  border-radius: 6px;
+  transition: 0.3s;
+  align-self: center;
+}
+
+.subcategory-button:hover {
+  background: #333;
+  transform: scale(1.02);
+}
+
+
+

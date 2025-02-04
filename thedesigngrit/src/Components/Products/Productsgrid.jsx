@@ -30,10 +30,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   return (
     <Box
       sx={{
-        padding: { xs: "20px", sm: "30px", md: "30px 70px" },
-        maxWidth: "1200px",
-        margin: "0 auto",
-        gap: "60px",
+        padding: { xs: "20px", sm: "30px", md: "40px 10px" },
       }}
     >
       {/* If there are no products, display a message */}
@@ -46,8 +43,8 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           {/* Grid Layout for Product Cards */}
           <Grid
             container
-            spacing={2}
-            sx={{ display: "flex", justifyContent: "flex-start", gap: "80px" }}
+            spacing={1}
+            sx={{ display: "flex", justifyContent: "flex-start" }}
           >
             {currentProducts.map((product) => {
               console.log(product._id); // Debugging: Check if product._id is available

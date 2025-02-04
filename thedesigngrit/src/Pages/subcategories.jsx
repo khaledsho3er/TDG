@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Header from "../Components/navBar";
 import { Link, useParams } from "react-router-dom";
 import PageDicription from "../Components/Topheader";
 
+
 function Subcategories() {
   const [subCategories, setSubCategories] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { categoryId } = useParams();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchSubCategories = async () => {
       try {
-        setLoading(true); // Start loading
+        setLoading(true);
         const response = await fetch(
           `http://localhost:5000/api/subcategories/categories/${categoryId}/subcategories`
         );
@@ -31,9 +25,9 @@ function Subcategories() {
         const data = await response.json();
         setSubCategories(data);
       } catch (error) {
-        setError(error.message); // Set error message
+        setError(error.message);
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     };
 
@@ -47,7 +41,7 @@ function Subcategories() {
           "http://localhost:5000/api/categories/categories"
         );
         const data = await response.json();
-        setCategories(data.slice(0, 6)); // Slice the first 6 categories
+        setCategories(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -59,11 +53,11 @@ function Subcategories() {
   const category = categories.find((cat) => cat._id === categoryId);
 
   if (loading) {
-    return <Box>Loading...</Box>; // Show loading message
+    return <Box>Loading...</Box>;
   }
 
   if (error) {
-    return <Box>Error: {error}</Box>; // Show error message
+    return <Box>Error: {error}</Box>;
   }
 
   return (
@@ -71,29 +65,30 @@ function Subcategories() {
       <Header />
       {category && <PageDicription category={category} />}
       {subCategories.length > 0 ? (
-        <Box>
-          <Grid container spacing={2}>
-            {subCategories.map((subCategory) => (
-              <Grid item xs={12} sm={6} md={4} key={subCategory._id}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">{subCategory.name}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {subCategory.description}
-                    </Typography>
-                    <Link
-                      to={`/products/${subCategory._id}/${subCategory.name}`}
-                    >
-                      <Button variant="contained" color="primary" fullWidth>
-                        Shop
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <Box className="subcategory-container">
+
+  {subCategories.map((subCategory, index) => (
+    <Box key={subCategory._id} className={`subcategory-box ${index % 2 !== 0 ? "reverse" : ""}`}>
+      <img
+        src={`http://localhost:5000/uploads/${subCategory.image}`}
+        alt={subCategory.name}
+        className="subcategory-image"
+      />
+      <Box className="subcategory-content">
+        <Typography variant="h3" className="subcategory-title">{subCategory.name}</Typography>
+        <Typography variant="h2" className="subcategory-description">
+          {subCategory.description}
+        </Typography>
+        <Link
+          to={`/products/${subCategory._id}/${subCategory.name}`}
+          className="subcategory-button"
+        >
+          Shop Now
+        </Link>
+      </Box>
+    </Box>
+  ))}
+</Box>
       ) : (
         <Box>No subcategories found</Box>
       )}
