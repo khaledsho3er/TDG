@@ -122,7 +122,6 @@ function ProductPage() {
     }));
   };
 
-
   const handleAddToCart = (product) => {
     // const compositeKey = `${product.id} -  ${selectedColor || "default"}-${
     //   selectedSize || "default"
@@ -134,14 +133,12 @@ function ProductPage() {
       name: product.name,
       unitPrice: product.price,
       quantity: 1,
-      image: product.image,
+      image: product.mainImage,
       brandId: product.brandId,
       color: selectedColor || "default",
       size: selectedSize || "default",
       code: "N/A",
     });
-
-    navigate("/mycart");
   };
 
   return (
