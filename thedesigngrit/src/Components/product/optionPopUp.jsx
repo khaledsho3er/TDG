@@ -1,9 +1,12 @@
+// RequestInfoPopup.js
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
-import ViewInStorePopup from "./viewInStore"; // Import the ViewInStorePopup
-import RequestQuote from "./RequestInfo"; // Import the RequestQuote component
-const RequestInfoPopup = ({ open, onClose }) => {
+import ViewInStorePopup from "./viewInStore";
+import RequestQuote from "./RequestInfo";
+
+const RequestInfoPopup = ({ open, onClose, productId }) => {
+  // Add productId here
   const [isViewInStoreOpen, setIsViewInStoreOpen] = useState(false);
   const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
 
@@ -74,7 +77,9 @@ const RequestInfoPopup = ({ open, onClose }) => {
       />
 
       {/* RequestQuote Popup */}
-      {isRequestQuoteOpen && <RequestQuote onClose={handleCloseRequestQuote} />}
+      {isRequestQuoteOpen && (
+        <RequestQuote onClose={handleCloseRequestQuote} productId={productId} />
+      )}
     </>
   );
 };

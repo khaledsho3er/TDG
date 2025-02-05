@@ -37,6 +37,7 @@ import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";
 import Signupvendor from "./Components/vendorSide/SignupVendor";
+import LoadingScreen from "./Pages/loadingScreen";
 function App() {
   return (
     <>
@@ -54,6 +55,7 @@ function App() {
               <Route exact path="/about" Component={AboutUsPage} />
               <Route path="/jobdesc/:jobId" element={<JobDesc />} />
               <Route path="/policy" element={<TermsOfService />} />
+              <Route path="/loading" element={<LoadingScreen />} />
               {/* Add individual routes for policy sections */}
               {/* Example: */}
               <Route

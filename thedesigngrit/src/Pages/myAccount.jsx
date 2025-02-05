@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import OrdersPopUp from "../Components/profilePopup/ordersPopup";
 import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
 import ShippingInfoPopup from "../Components/profilePopup/Shipping";
+import WishlistPage from "../Components/account/wishlist";
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
   const [selectedSection, setSelectedSection] = useState("profile");
@@ -31,6 +32,7 @@ const MyAccount = () => {
 
     // Fetch user data if logged in
     const fetchData = async () => {
+      console.log("id in MyAccount:", userSession.id);
       try {
         const response = await axios.get("http://localhost:5000/api/getUser", {
           withCredentials: true,
@@ -56,7 +58,7 @@ const MyAccount = () => {
     Password: <ResetPasswordForm />,
     // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,
-    wishlist: "wishlist",
+    wishlist: <WishlistPage />,
     // Render logout as a clickable word that performs the logout directly
     logout: (
       <span
