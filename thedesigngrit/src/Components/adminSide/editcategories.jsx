@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
 
 const UpdateCategory = ({ categoryId, onBack }) => {

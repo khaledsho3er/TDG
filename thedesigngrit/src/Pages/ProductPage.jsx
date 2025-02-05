@@ -20,9 +20,9 @@ function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
 
-  const handleCloseRequestInfo = () => {
-    setIsRequestInfoOpen(false);
-  };
+  // const handleCloseRequestInfo = () => {
+  //   setIsRequestInfoOpen(false);
+  // };
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
