@@ -55,6 +55,10 @@ const TopFilter = ({ sortOption, setSortOption }) => {
               color: "black",
               fontFamily: "Montserrat, sans-serif",
               fontSize: { xs: "10px", sm: "12px" },
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                color: "white",
+              },
             }}
             onClick={() => setForSaleChecked(!forSaleChecked)}
           >
@@ -75,6 +79,10 @@ const TopFilter = ({ sortOption, setSortOption }) => {
               color: "black",
               fontFamily: "Montserrat, sans-serif",
               fontSize: { xs: "10px", sm: "12px" },
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                color: "white",
+              },
             }}
             onClick={() => setBimCadChecked(!bimCadChecked)}
           >

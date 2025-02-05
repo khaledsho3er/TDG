@@ -12,6 +12,8 @@ import EmployeeSignup from "../../Components/vendorSide/Addemployee";
 import EmployeePage from "../../Components/vendorSide/employeePage";
 import AccountingPage from "../../Components/vendorSide/Accounting";
 import { useVendor } from "../../utils/vendorContext";
+import OrderDetails from "../../Components/vendorSide/orderDetails";
+import QuotationsPage from "../../Components/vendorSide/quotationsList";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
 
@@ -25,6 +27,8 @@ const VendorHome = () => {
     dashboard: <DashboardVendor />,
     allProducts: <ProductsPageVendor />,
     orderList: <RecentPurchases />,
+    quotationsList: <QuotationsPage />,
+    OrderDetails: <OrderDetails />,
     AddProduct: <AddProduct />,
     BrandForm: <BrandSignup />,
     BrandingPage: <BrandingPage />,

@@ -32,11 +32,12 @@ import NotificationsPage from "./Components/vendorSide/notificationPage";
 import ScrollToTop from "./Context/scrollToTop";
 import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
-import EmployeeHome from "./Components/vendorSide/employeeDashboard";
+// import EmployeeHome from "./Components/vendorSide/employeeDashboard";
 import BrandForm from "./Components/vendorSide/addbrand";
 import { VendorProvider } from "./utils/vendorContext";
 import Subcategories from "./Pages/subcategories";
 import Signupvendor from "./Components/vendorSide/SignupVendor";
+import LoadingScreen from "./Pages/loadingScreen";
 function App() {
   return (
     <>
@@ -54,23 +55,20 @@ function App() {
               <Route exact path="/about" Component={AboutUsPage} />
               <Route path="/jobdesc/:jobId" element={<JobDesc />} />
               <Route path="/policy" element={<TermsOfService />} />
+              <Route path="/loading" element={<LoadingScreen />} />
               {/* Add individual routes for policy sections */}
               {/* Example: */}
               <Route
                 path="/policy/:section"
                 element={<TermsOfService />}
               />{" "}
-              <Route exact path="/partners" Component={PartnersApplication} />
-              <Route exact path="/contactus" Component={ContactUs} />
-              <Route exact path="/mycart" Component={ShoppingCart} />
-              <Route
-                path="/category/:categoryId/:categoryName"
-                element={<ProductsPage />}
-              />
               <Route
                 path="/products/:subcategoryId/:subcategoryName"
                 element={<ProductsPage />}
               />
+              <Route exact path="/partners" Component={PartnersApplication} />
+              <Route exact path="/contactus" Component={ContactUs} />
+              <Route exact path="/mycart" Component={ShoppingCart} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route exact path="/ProductsPage" Component={ProductsPage} />
               {/* <Route exact path="/Vendors" Component={Vendorspage} /> */}

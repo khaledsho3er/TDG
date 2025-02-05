@@ -10,195 +10,108 @@ import {
 } from "@mui/material";
 import { Facebook, Instagram } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
     <Box
       sx={{
         bgcolor: "#f7f2f2",
-        padding: 5,
+        padding: { xs: 2, md: 5 }, // Adjust padding for mobile and desktop
         paddingBottom: 1,
         marginTop: 2,
-        paddingTop: 5,
+        paddingTop: { xs: 3, md: 5 },
         width: "100%",
         maxWidth: "100vw",
-        boxSizing: "border-box", // Ensure padding is included in width
-        overflow: "hidden", // Prevent horizontal overflow
+        boxSizing: "border-box",
+        overflow: "hidden",
       }}
     >
+      {/* Main Footer Content */}
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", md: "row" }, // Stack on mobile, row on desktop
           justifyContent: "space-between",
-          flexDirection: { xs: "column", md: "row" }, // Stack on small screens
-          gap: 2, // Add spacing between sections
+          gap: { xs: 4, md: 2 }, // Add spacing between sections
+          alignItems: { xs: "flex-start", md: "center" }, // Align left on mobile
         }}
       >
-        <Box
-          sx={{
-            flex: 1,
-            // minWidth: "300px", // Ensure it doesn't shrink too small
-          }}
-        >
-          {/* Logo and Newsletter Section */}
-          <Grid item xs={3} md={5}>
-            <Link
-              to="/home"
-              style={{ textDecoration: "none", color: "#2d2d2d" }}
-            >
-              <Typography className="logo-Footer" variant="h4" sx={{ mb: 2 }}>
-                <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
-              </Typography>
-            </Link>
+        {/* Newsletter Section */}
+        <Box sx={{ flex: 1, minWidth: { xs: "100%", md: "300px" } }}>
+          <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
+            <Typography variant="h4" sx={{ mb: 2 }}>
+              <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
+            </Typography>
+          </Link>
 
+          <Box sx={{ position: "relative", width: "100%" }}>
             <Box
-              className="subscribe-container"
               sx={{
-                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
                 width: "100%",
               }}
             >
-              {/* Email Input and Subscribe Button */}
-              <Box
+              <TextField
+                placeholder="Enter Your Email..."
+                variant="standard"
+                size="small"
+                fullWidth
+                InputProps={{ disableUnderline: true }}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  width: "100%",
+                  "& input::placeholder": {
+                    fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  textTransform: "none",
+                  fontSize: "14px",
+                  width: 120,
+                  height: 30,
+                  marginBottom: 1,
+                  bgcolor: "#2D2D2D",
+                  "&:hover": { bgcolor: "#2D2D2D" },
                 }}
               >
-                <TextField
-                  placeholder="Enter Your Email..."
-                  variant="standard"
-                  size="small"
-                  fullWidth
-                  InputProps={{
-                    disableUnderline: true,
-                  }}
-                  sx={{
-                    "& input::placeholder": {
-                      fontSize: "20px",
-                    },
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "14px",
-                    width: 120,
-                    height: 30,
-                    marginBottom: 1,
-                    bgcolor: "#2D2D2D",
-                    "&:hover": {
-                      bgcolor: "#2D2D2D",
-                    },
-                  }}
-                >
-                  Subscribe
-                </Button>
-              </Box>
-
-              {/* Line Underneath */}
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: "1px",
-                  backgroundColor: "rgba(0, 0, 0, 0.42)",
-                }}
-              />
+                Subscribe
+              </Button>
             </Box>
-            <Box sx={{ mt: 1 }}>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="I agree to receive newsletters and promotional emails."
-                sx={{
-                  color: "#000",
-                  fontFamily: "Montserrat, sans-serif",
-                  fontSize: 2,
-                }}
-              />
-            </Box>
-          </Grid>
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "1px",
+                backgroundColor: "rgba(0, 0, 0, 0.42)",
+              }}
+            />
+          </Box>
+          <Box sx={{ mt: 1 }}>
+            <FormControlLabel
+              control={<Checkbox />}
+              label="I agree to receive newsletters and promotional emails."
+              sx={{
+                color: "#000",
+                fontFamily: "Montserrat, sans-serif",
+                fontSize: { xs: "12px", md: "14px" }, // Adjust font size for mobile
+              }}
+            />
+          </Box>
         </Box>
-        <Box
-          sx={{
-            flex: 2,
-            minWidth: "300px",
-          }}
-        >
-          {/* Footer Links Section */}
-          <Grid className="Textcontainer">
-            <Grid container spacing={4} sx={{ pl: { xs: 0, md: 4 } }}>
-              {/* Company + Partners Section */}
-              <Grid item xs={6} sm={3}>
-                <Box sx={{ mt: 0 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      fontWeight: "bold",
-                      color: "#6B7B58",
-                      mb: 2,
-                      fontSize: 12,
-                      fontFamily: "Horizon,Bold",
-                    }}
-                  >
-                    COMPANY
-                  </Typography>
-                  <Link
-                    to="/about"
-                    style={{ textDecoration: "none", color: "#2d2d2d" }}
-                  >
-                    <Typography>About Us</Typography>
-                  </Link>
-                  <Link
-                    to="/contactus"
-                    style={{ textDecoration: "none", color: "#2d2d2d" }}
-                  >
-                    <Typography>Contact Us</Typography>
-                  </Link>
-                  <Link
-                    to="/careers"
-                    style={{ textDecoration: "none", color: "#2d2d2d" }}
-                  >
-                    <Typography>Careers</Typography>
-                  </Link>
-                  <Box sx={{ mt: 4 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: "bold",
-                        color: "#6B7B58",
-                        mb: 2,
-                        fontSize: 12,
-                        fontFamily: "Horizon,Bold",
-                      }}
-                    >
-                      PARTNERS
-                    </Typography>
-                    <Link
-                      to="/partners"
-                      style={{ textDecoration: "none", color: "#2d2d2d" }}
-                    >
-                      <Typography>Join Us</Typography>
-                    </Link>
-                    <Link
-                      to="/contactus"
-                      style={{ textDecoration: "none", color: "#2d2d2d" }}
-                    >
-                      <Typography>Support</Typography>
-                    </Link>
-                  </Box>
-                </Box>
-              </Grid>
 
-              {/* Customer Service + Policies Section */}
-              <Grid item xs={8} sm={5}>
+        {/* Footer Links Section */}
+        <Box sx={{ flex: 2, minWidth: { xs: "100%", md: "300px" } }}>
+          <Grid container spacing={4} sx={{ pl: { xs: 0, md: 4 } }}>
+            {/* Company + Partners Section */}
+            <Grid item xs={6} sm={3}>
+              <Box>
                 <Typography
                   variant="h6"
                   sx={{
@@ -206,34 +119,28 @@ function Footer() {
                     color: "#6B7B58",
                     mb: 2,
                     fontSize: 12,
-                    fontFamily: "Horizon,Bold",
+                    fontFamily: "Horizon, Bold",
                   }}
                 >
-                  CUSTOMER SERVICE
+                  COMPANY
                 </Typography>
                 <Link
-                  to="/faqs"
+                  to="/about"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>FAQs</Typography>
+                  <Typography>About Us</Typography>
                 </Link>
                 <Link
-                  to="/policy"
+                  to="/contactus"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Return & Exchange / Policy</Typography>
+                  <Typography>Contact Us</Typography>
                 </Link>
                 <Link
-                  to="/policy"
+                  to="/careers"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Shipping Information / Policy</Typography>
-                </Link>
-                <Link
-                  to="/trackorder"
-                  style={{ textDecoration: "none", color: "#2d2d2d" }}
-                >
-                  <Typography>Track Your Order</Typography>
+                  <Typography>Careers</Typography>
                 </Link>
                 <Box sx={{ mt: 4 }}>
                   <Typography
@@ -243,28 +150,66 @@ function Footer() {
                       color: "#6B7B58",
                       mb: 2,
                       fontSize: 12,
-                      fontFamily: "Horizon,Bold",
+                      fontFamily: "Horizon, Bold",
                     }}
                   >
-                    POLICIES & TERMS
+                    PARTNERS
                   </Typography>
                   <Link
-                    to="/policy"
+                    to="/partners"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}
                   >
-                    <Typography>Privacy Policy</Typography>
+                    <Typography>Join Us</Typography>
                   </Link>
                   <Link
-                    to="/policy"
+                    to="/contactus"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}
                   >
-                    <Typography>Terms of Use</Typography>
+                    <Typography>Support</Typography>
                   </Link>
                 </Box>
-              </Grid>
+              </Box>
+            </Grid>
 
-              {/* Pages Section */}
-              <Grid item xs={6} sm={4}>
+            {/* Customer Service + Policies Section */}
+            <Grid item xs={6} sm={5}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#6B7B58",
+                  mb: 2,
+                  fontSize: 12,
+                  fontFamily: "Horizon, Bold",
+                }}
+              >
+                CUSTOMER SERVICE
+              </Typography>
+              <Link
+                to="/faqs"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>FAQs</Typography>
+              </Link>
+              <Link
+                to="/policy"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Return & Exchange / Policy</Typography>
+              </Link>
+              <Link
+                to="/policy"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Shipping Information / Policy</Typography>
+              </Link>
+              <Link
+                to="/trackorder"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Track Your Order</Typography>
+              </Link>
+              <Box sx={{ mt: 4 }}>
                 <Typography
                   variant="h6"
                   sx={{
@@ -272,147 +217,151 @@ function Footer() {
                     color: "#6B7B58",
                     mb: 2,
                     fontSize: 12,
-                    fontFamily: "Horizon,Bold",
+                    fontFamily: "Horizon, Bold",
                   }}
                 >
-                  PAGES
+                  POLICIES & TERMS
                 </Typography>
                 <Link
-                  to="/products"
+                  to="/policy"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Furniture</Typography>
+                  <Typography>Privacy Policy</Typography>
                 </Link>
-                <Typography>Kitchen & Dining</Typography>
-                <Typography>Bath</Typography>
-                <Typography>Lighting</Typography>
-                <Typography>Home Decor</Typography>
-                <Typography>Outdoor</Typography>
-                <Typography>Brand</Typography>
-              </Grid>
+                <Link
+                  to="/policy"
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Terms of Use</Typography>
+                </Link>
+              </Box>
+            </Grid>
+
+            {/* Pages Section */}
+            <Grid item xs={6} sm={4}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#6B7B58",
+                  mb: 2,
+                  fontSize: 12,
+                  fontFamily: "Horizon, Bold",
+                }}
+              >
+                PAGES
+              </Typography>
+              <Link
+                to="/products"
+                style={{ textDecoration: "none", color: "#2d2d2d" }}
+              >
+                <Typography>Furniture</Typography>
+              </Link>
+              <Typography>Kitchen & Dining</Typography>
+              <Typography>Bath</Typography>
+              <Typography>Lighting</Typography>
+              <Typography>Home Decor</Typography>
+              <Typography>Outdoor</Typography>
+              <Typography>Brand</Typography>
             </Grid>
           </Grid>
         </Box>
       </Box>
+
       {/* Footer Bottom */}
-      <Grid item xs={10}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            mt: { xs: 6, md: 10 },
-            alignItems: "end",
-            borderTop: "1px solid black",
-            width: "100%",
-          }}
-        >
-          <Box
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" }, // Stack on mobile, row on desktop
+          justifyContent: "space-between",
+          mt: { xs: 4, md: 6 },
+          alignItems: { xs: "flex-start", md: "center" }, // Align left on mobile
+          borderTop: "1px solid black",
+          width: "100%",
+          pt: 2,
+          gap: { xs: 3, md: 0 }, // Add spacing between components on mobile
+        }}
+      >
+        {/* Social Media + Location */}
+        <Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Facebook fontSize="small" />
+            <Instagram fontSize="small" />
+            <Typography
+              variant="body2"
+              sx={{
+                fontFamily: "Montserrat, sans-serif",
+                fontSize: { xs: "12px", md: "14px" },
+              }}
+            >
+              Cairo, Egypt
+            </Typography>
+          </Box>
+          <Typography
+            variant="body2"
             sx={{
-              display: "flex",
-              flexDirection: "column",
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: { xs: "12px", md: "14px" },
+              mt: 1,
             }}
           >
-            <Box>
-              <Facebook fontSize="small" />
-              <Instagram fontSize="small" sx={{ ml: 1 }} />
-              <Typography
-                variant="body2"
-                sx={{
-                  display: "inline",
-                  ml: 1,
-                  fontFamily: "Montserrat, sans-serif", // Montserrat Medium font
-                }}
-              >
-                Cairo, Egypt
-              </Typography>
-            </Box>
-            <Typography
-              variant="body2"
-              sx={{ fontFamily: "Montserrat, sans-serif" }}
-            >
-              © 2024 TheDesignGrit. All rights reserved.
-            </Typography>
-          </Box>
-          <Box sx={{ alignItems: "center", pr: { xs: 2, md: 4 }, pt: 4 }}>
-            <Typography
-              variant="body2"
-              sx={{ fontFamily: "Montserrat, sans-serif" }}
-            >
-              Info@TheDesignGrit.com
-            </Typography>
-          </Box>
+            © 2024 TheDesignGrit. All rights reserved.
+          </Typography>
+        </Box>
 
-          <Box sx={{ paddingTop: 3 }}>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Typography>
-                <img
-                  src="/Assets\icons\amex.png"
-                  alt="Logo"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </Typography>
-              <Typography>
-                <img
-                  src="/Assets\icons\mastercard.png"
-                  alt="Logo"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </Typography>
-              <Typography>
-                <img
-                  src="/Assets\icons\meeza.png"
-                  alt="Logo"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </Typography>
-              <Typography>
-                <img
-                  src="/Assets\icons\visa.png"
-                  alt="Logo"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </Typography>
-              <Typography>
-                <img
-                  src="/Assets\icons\mada 1.png"
-                  alt="Logo"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", paddingTop: 0.5 }}>
-              <LockIcon fontSize="small" />
+        {/* Email */}
+        <Box>
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: { xs: "12px", md: "14px" },
+            }}
+          >
+            Info@TheDesignGrit.com
+          </Typography>
+        </Box>
+
+        {/* Payment Icons + Security */}
+        <Box>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            {["amex", "mastercard", "meeza", "visa", "mada"].map((icon) => (
+              <img
+                key={icon}
+                src={`/Assets/icons/${icon}.png`}
+                alt={icon}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            ))}
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+            <LockIcon fontSize="small" />
+            <Typography
+              variant="body2"
+              sx={{
+                fontFamily: "Montserrat, sans-serif",
+                fontSize: { xs: "12px", md: "14px" },
+                ml: 1,
+              }}
+            >
+              Buy safe, Be secure
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+            {["Cookie Policy", "Privacy", "Terms & Conditions"].map((text) => (
               <Typography
-                variant="body2"
+                key={text}
                 sx={{
                   fontFamily: "Montserrat, sans-serif",
-                  paddingTop: 0.5,
-                  fontSize: 12,
+                  fontSize: { xs: "10px", md: "12px" },
                 }}
               >
-                Buy safe, Be secure
+                {text}
               </Typography>
-            </Box>
-            <Box sx={{ display: "flex", gap: 1, paddingTop: 1 }}>
-              <Typography
-                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
-              >
-                Cookie Policy
-              </Typography>
-              <Typography
-                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
-              >
-                Privacy
-              </Typography>
-              <Typography
-                sx={{ fontFamily: "Montserrat, sans-serif", fontSize: 10 }}
-              >
-                Terms & Conditions
-              </Typography>
-            </Box>
+            ))}
           </Box>
         </Box>
-      </Grid>
+      </Box>
     </Box>
   );
 }

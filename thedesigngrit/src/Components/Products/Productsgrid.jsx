@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Grid, Box, Pagination } from "@mui/material";
 import ProductCard from "./productcard"; // Import the ProductCard component
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const ProductCards = ({ products = [], onToggleFavorite }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,26 +42,23 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           {/* Grid Layout for Product Cards */}
           <Grid
             container
-            spacing={1}
-            sx={{ display: "flex", justifyContent: "flex-start" }}
+            spacing={2}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              flexWrap: "wrap",
+            }}
           >
             {currentProducts.map((product) => {
-              console.log(product._id); // Debugging: Check if product._id is available
               return (
                 <Grid item xs={12} sm={6} md={4} key={product._id}>
-                  {/* Wrap each ProductCard in a Link to navigate to the product page */}
-                  <Link
-                    to={`/product/${product._id}`} // Use _id here for URL
-                    style={{ textDecoration: "none" }}
-                  >
-                    <ProductCard
-                      product={product}
-                      onToggleFavorite={onToggleFavorite}
-                      isFavorite={favorites.some(
-                        (fav) => fav._id === product._id // Use _id for favorite check
-                      )}
-                    />
-                  </Link>
+                  <ProductCard
+                    product={product}
+                    onToggleFavorite={onToggleFavorite}
+                    isFavorite={favorites.some(
+                      (fav) => fav._id === product._id // Use _id for favorite check
+                    )}
+                  />
                 </Grid>
               );
             })}

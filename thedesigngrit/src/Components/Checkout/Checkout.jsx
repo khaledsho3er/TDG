@@ -1,15 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
 import PaymentForm from "./Paymentmethod.jsx";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { useCart } from "../../Context/cartcontext.js";
-import { UserContext, useUser } from "../../utils/userContext";
+import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 
 function Checkout() {
-  const { userSession, setUserSession, logout } = useUser();
+  const { userSession } = useUser();
   const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
   const [billingData, setBillingData] = useState({

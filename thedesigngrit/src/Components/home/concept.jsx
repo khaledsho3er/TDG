@@ -74,9 +74,7 @@ const ExploreConcepts = () => {
           Like <br />
           something <br></br>you see?
         </Typography>
-        <Typography variant="body1" className="concept-subtitle-text">
-          Click on it.
-        </Typography>
+        <p className="concept-subtitle-text">Click on it.</p>
       </Box>
 
       {/* Progress */}

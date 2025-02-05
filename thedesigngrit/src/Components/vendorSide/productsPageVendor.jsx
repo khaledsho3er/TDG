@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
 
 const ProductsPageVendor = () => {
-  const navigate = useNavigate();
   const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -19,15 +18,14 @@ const ProductsPageVendor = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
   const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
 
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
-  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for the promotion
 
   useEffect(() => {
     if (vendor) {
-      console.log("Brand ID:", vendor.brandId);
       const { brandId } = vendor; // Destructure brandId from the vendor object
-      console.log(subCategories);
 
       const fetchProducts = async () => {
         try {
@@ -123,12 +121,24 @@ const ProductsPageVendor = () => {
   };
 
   const handleEdit = (product) => {
-    navigate("/update-product", { state: { product } }); // Navigate with product data
+    setSelectedProduct(product);
+    setShowUpdate(true);
   };
 
-  const handleDelete = (product) => {
-    console.log("Delete", product);
-    // Add your delete functionality here
+  const handleDelete = async (product) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:5000/api/products/${product._id}`); // Use the correct endpoint
+        setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
+        alert("Product deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Failed to delete product. Please try again.");
+      }
+    }
   };
 
   const handleInsights = (product) => {
@@ -162,6 +172,15 @@ const ProductsPageVendor = () => {
       document.removeEventListener("click", handleClickOutside); // Cleanup
     };
   }, []);
+
+  if (showUpdate) {
+    return (
+      <UpdateProduct
+        existingProduct={selectedProduct} // Pass the selected product data
+        onBack={() => setShowUpdate(false)} // Function to go back to the product list
+      />
+    );
+  }
 
   return (
     <div className="product-list-page-vendor">

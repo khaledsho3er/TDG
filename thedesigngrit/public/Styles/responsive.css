@@ -47,10 +47,28 @@
     height: 45px;
     z-index: 2;
   }
+  .content-container {
+    padding: 5% 5%;
+  }
 
+  .Contant-caption h3 {
+    font-size: 1.8rem;
+  }
+
+  .Contant-caption p {
+    font-size: 1rem;
+  }
+
+  .contact-form-field input,
+  .contact-form-field textarea {
+    font-size: 13px;
+  }
   .header-top {
     padding: 10px 15px;
-    margin-bottom: 1rem;
+    margin-bottom: -3rem;
+  }
+  .header-bottom {
+    display: none;
   }
 }
 
@@ -102,6 +120,17 @@
   .footer-container {
     text-align: left;
     padding: 40px;
+  }
+  .content-container {
+    padding: 5% 5%;
+  }
+
+  .Contant-caption h3 {
+    font-size: 1.8rem;
+  }
+
+  .Contant-caption p {
+    font-size: 1rem;
   }
 }
 
@@ -246,6 +275,22 @@
 
   .hero-section-image img {
     margin-left: 150px;
+  }
+  .content-container {
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    padding: 5% 8%;
+  }
+  .contact-form-field label {
+    text-align: left;
+  }
+  .Contant-caption {
+    max-width: 100%;
+  }
+
+  .Contact-form {
+    max-width: 100%;
   }
 }
 /* General styles are unchanged from the original */
@@ -421,6 +466,26 @@
   .linkedin-icon {
     font-size: 1.2rem;
   }
+  .grid-container {
+    padding: 120px 20px 120px 20px;
+    gap: 110px;
+  }
+  .page-container {
+    flex-direction: column;
+  }
+  .collapsible-container {
+    width: 100%;
+    margin-left: -100px;
+  }
+  .right-side-content {
+    width: 100%;
+    margin-left: 10px;
+  }
+
+  .reviews-section {
+    width: 100%;
+    padding-left: 1rem;
+  }
 }
 /*careers responsive*/
 /* General styles are unchanged from the original */
@@ -482,9 +547,48 @@
   .job-description {
     font-size: 13px;
   }
+  .grid-container {
+    padding: 120px 20px 120px 20px;
+    gap: 110px;
+  }
+  .page-container {
+    flex-direction: row;
+  }
+  .collapsible-container {
+    width: 100%;
+    margin-left: -100px;
+  }
+  .right-side-content {
+    width: 100%;
+    margin-left: 10px;
+  }
+
+  .reviews-section {
+    width: 100%;
+    padding-left: 1rem;
+  }
 }
 
 @media (max-width: 760px) and (min-width: 320px) {
+  .grid-container {
+    padding: 120px 20px 120px 20px;
+    gap: 110px;
+  }
+  .page-container {
+    flex-direction: column;
+  }
+  .collapsible-container {
+    width: 100%;
+    margin-left: -100px;
+  }
+  .right-side-content {
+    width: 100%;
+    margin-left: 10px;
+  }
+  .reviews-section {
+    width: 100%;
+    padding-left: 1rem;
+  }
   /* For mobile devices */
   .values-grid {
     grid-template-columns: 1fr; /* One column layout */
@@ -548,6 +652,21 @@
   .job-tag {
     font-size: 10px; /* Reduce tag size for mobile */
     padding: 3px 8px;
+  }
+  .grid-container {
+    padding: 120px 20px 120px 20px;
+    gap: 110px;
+  }
+  .page-container {
+    flex-direction: column;
+  }
+  .collapsible-container {
+    width: 100%;
+    margin-left: -100px;
+  }
+  .right-side-content {
+    width: 100%;
+    margin-left: 10px;
   }
 }
 /*Job Description*/
@@ -657,6 +776,9 @@
   li {
     font-size: 14px; /* Smaller font size for list items */
   }
+  .shop-button {
+    width: 43%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -705,6 +827,61 @@
 
   .description-content-1 li {
     font-size: 12px;
+  }
+  .grid-container {
+    padding: 120px 20px 120px 20px;
+    gap: 110px;
+  }
+  .page-container {
+    flex-direction: column;
+  }
+  .collapsible-container {
+    width: 100%;
+    margin-left: -100px;
+  }
+  .right-side-content {
+    width: 100%;
+    margin-left: 10px;
+  }
+  .reviews-section {
+    width: 100%;
+    padding-left: 1rem;
+  }
+  .Shopping-cart-title h2 {
+    font-size: 20px;
+    margin-left: 10px;
+  }
+
+  .item-image {
+    width: 60px; /* Smaller image size */
+    height: 60px;
+  }
+
+  .item-title {
+    font-size: 14px; /* Smaller title font size */
+  }
+
+  .item-info {
+    font-size: 10px; /* Smaller info font size */
+  }
+
+  .unit-price,
+  .quantity {
+    font-size: 14px; /* Smaller price font size */
+  }
+
+  .quantity button {
+    width: 30px; /* Adjust button size */
+    height: 30px;
+  }
+
+  .price {
+    font-size: 14px; /* Smaller price font size */
+  }
+
+  .delete-icon {
+    font-size: 16px; /* Smaller delete icon */
+    margin-top: 60px; /* Adjust margin */
   }
 }
 /* Responsive Design */
@@ -796,6 +973,39 @@
 
   .faq-answer {
     font-size: 14px;
+  }
+  .concept-cards-container {
+    font-family: Horizon;
+    gap: 0; /* Remove spacing */
+  }
+
+  .concept-card {
+    display: none; /* Hide all cards by default */
+  }
+
+  .middle-card {
+    display: block; /* Show only the middle card */
+    width: 300px;
+    height: 300px;
+    transform: scale(1);
+  }
+  .concept-subtitle h4,
+  h5 {
+    font-size: 14px;
+    text-align: left;
+    margin-left: -50px;
+  }
+  .concept-subtitle-text {
+    margin: 0;
+    margin: auto;
+    margin-left: -50px;
+  }
+  .concept-progress-container {
+    padding-left: 120px;
+  }
+  .left-card,
+  .right-card {
+    display: none !important; /* Ensure they are hidden */
   }
 }
 

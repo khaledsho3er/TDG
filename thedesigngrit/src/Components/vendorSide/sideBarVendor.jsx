@@ -33,7 +33,12 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         >
           Order List
         </li>
-
+        <li
+          onClick={() => setActivePage("quotationsList")}
+          className={getActiveClass("quotationsList")}
+        >
+          Quotation List
+        </li>
         {/* Render "Add Product" only if vendor tier is 3 or higher */}
         {vendor.tier >= 3 && (
           <li

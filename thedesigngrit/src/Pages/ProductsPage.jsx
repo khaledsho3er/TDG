@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // To get the category details from URL
-import { Box } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Box, Grid } from "@mui/material";
 import Header from "../Components/navBar";
 import PageDicription from "../Components/Topheader";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -9,13 +9,12 @@ import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 
 function ProductsPage() {
-  const { subcategoryId, subcategoryName } = useParams(); // Get categoryId and categoryName from URL
+  const { subcategoryId, subcategoryName } = useParams();
   const [favorites, setFavorites] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
 
-  // Fetch categories to find the matching category for description
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -23,7 +22,7 @@ function ProductsPage() {
           "http://localhost:5000/api/categories/categories"
         );
         const data = await response.json();
-        setCategories(data.slice(0, 6)); // Slice the first 6 categories
+        setCategories(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -32,10 +31,6 @@ function ProductsPage() {
     fetchCategories();
   }, []);
 
-  // Find the category by ID
-  // const category = categories.find((cat) => cat._id === categoryId);
-
-  // Fetch products for the selected category when the component mounts
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -43,36 +38,32 @@ function ProductsPage() {
           `http://localhost:5000/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
         const data = await response.json();
-        setProducts(data); // Set the products of the selected category
+        setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
     fetchProducts();
-  }, [subcategoryId, subcategoryName]); // Include categoryName in the dependency array
+  }, [subcategoryId, subcategoryName]);
 
-  // Fetch favorites from localStorage (if any)
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
   }, []);
 
-  // Toggle favorite status
   const toggleFavorite = (product) => {
     let updatedFavorites;
     if (favorites.some((fav) => fav.id === product.id)) {
-      // If product is already in favorites, remove it
       updatedFavorites = favorites.filter((fav) => fav.id !== product.id);
     } else {
-      // Otherwise, add it to favorites
       updatedFavorites = [...favorites, product];
     }
 
-    // Update the state and store the updated list in localStorage
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
+
   useEffect(() => {
     let sortedProducts = [...products];
     switch (sortOption) {
@@ -98,22 +89,27 @@ function ProductsPage() {
     }
     setProducts(sortedProducts);
   }, [sortOption, products]);
+
   return (
     <Box>
       <Header />
-      {/* {category && <PageDicription category={category} />} */}
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box>
+
+      <Grid container spacing={2} sx={{ padding: 2 }}>
+        {/* Filter section */}
+        <Grid item xs={12} sm={4} md={3}>
           <FilterSection />
-        </Box>
-        <Box >
-          {/* Pass products and favorite toggle function to ProductCards */}
+        </Grid>
+
+        {/* Product cards */}
+        <Grid item xs={12} sm={8} md={9}>
+
           <ProductCards products={products} onToggleFavorite={toggleFavorite} />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
+
       <Footer />
     </Box>
   );
