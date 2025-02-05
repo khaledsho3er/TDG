@@ -101,9 +101,7 @@ function Header() {
     setSearchQuery(suggestion.name); // Set search input to selected suggestion
     setSuggestions([]); // Hide suggestions
     navigate(
-      `/search?query=${suggestion.name}&category=${
-        suggestion.category?.name || ""
-      }`
+      `/product/${suggestion._id}` // Navigate to product page
     );
   };
 
@@ -244,39 +242,54 @@ function Header() {
           <Box className="search-bar">
             <SearchIcon
               sx={{ color: "#999", cursor: "pointer" }}
-              onClick={() => navigate(`/search?query=${searchQuery}`)}
             />
             <InputBase
               placeholder="Search by category, brand, product type, or name"
               fullWidth
               value={searchQuery}
               onChange={handleSearchChange}
-              onKeyDown={(e) =>
-                e.key === "Enter" && navigate(`/search?query=${searchQuery}`)
-              }
+              // onKeyDown={(e) =>
+              //   e.key === "Enter" && navigate(`/search?query=${searchQuery}`)
+              // }
             />
 
             {/* Suggestion Dropdown */}
             {Array.isArray(suggestions) && suggestions.length > 0 && (
-              <Box className="suggestions-box">
-                {suggestions.map((suggestion) => (
-                  <Typography
-                    key={suggestion._id} // Use _id instead of index for better performance
-                    className="suggestion-item"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion.name}{" "}
-                    {suggestion.category || suggestion.brand || suggestion.type
-                      ? `(${
-                          suggestion.category ||
-                          suggestion.brand ||
-                          suggestion.type
-                        })`
-                      : ""}
-                  </Typography>
-                ))}
-              </Box>
-            )}
+  <Box className="suggestions-dropdown">
+    {suggestions.map((suggestion) => (
+      <Box 
+        key={suggestion._id} 
+        className="suggestion-item" 
+        onClick={() => handleSuggestionClick(suggestion)}
+      >
+        {/* Product Image */}
+        {suggestion.mainImage && (
+          <img
+            src={`http://localhost:5000/uploads/${suggestion.mainImage}`} 
+            alt={suggestion.name} 
+            className="suggestion-image"
+          />
+        )}
+
+        {/* Name & Category */}
+        <Box className="suggestion-text">
+          <Typography className="suggestion-name">
+            {suggestion.name}
+          </Typography>
+          {suggestion.category && (
+            <Typography className="suggestion-category">
+              {suggestion.category.name}
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    ))}
+  </Box>
+)}
+
+
+
+
           </Box>
 
           {/* Icons */}
