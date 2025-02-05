@@ -25,6 +25,8 @@ import { IoLogOutOutline } from "react-icons/io5";
 
 import { UserContext } from "../utils/userContext";
 import axios from "axios";
+import { useCart } from "../Context/cartcontext";
+import Badge from "@mui/material/Badge";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -37,6 +39,7 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null); // State for the avatar menu
+  const { cartItems } = useCart();
   const [anchorEls, setAnchorEls] = useState(null); // State for the avatar menu
   const { userSession, logout } = useContext(UserContext); // Access both userSession and setUserSession
   const navigate = useNavigate(); // Hook for navigation
@@ -48,6 +51,13 @@ function Header() {
     address1: "",
     phoneNumber: "",
   });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  const totalCartItems = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -67,6 +77,36 @@ function Header() {
 
     fetchCategories();
   }, []);
+
+  const fetchSuggestions = async (query) => {
+    if (!query) {
+      setSuggestions([]); // Clear suggestions if input is empty
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/products/search-suggestions?query=${query}`
+      );
+      setSuggestions(response.data);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchQuery(value);
+    fetchSuggestions(value);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion.name); // Set search input to selected suggestion
+    setSuggestions([]); // Hide suggestions
+    navigate(
+      `/product/${suggestion._id}` // Navigate to product page
+    );
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -166,6 +206,7 @@ function Header() {
     handleMenuClose(); // Close the menu after clicking
   };
 
+
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
   };
@@ -183,6 +224,7 @@ function Header() {
   const handleShopClose = () => {
     setAnchorEls(null);
   };
+  
   return (
     <Box
       sx={{
@@ -388,11 +430,56 @@ function Header() {
           </Menu>
           {/* Search */}
           <Box className="search-bar">
-            <SearchIcon sx={{ color: "#999" }} />
-            <InputBase
-              placeholder="Search by category, brand, product type or name"
-              fullWidth
+            <SearchIcon
+              sx={{ color: "#999", cursor: "pointer" }}
             />
+            <InputBase
+              placeholder="Search by category, brand, product type, or name"
+              fullWidth
+              value={searchQuery}
+              onChange={handleSearchChange}
+              // onKeyDown={(e) =>
+              //   e.key === "Enter" && navigate(`/search?query=${searchQuery}`)
+              // }
+            />
+
+            {/* Suggestion Dropdown */}
+            {Array.isArray(suggestions) && suggestions.length > 0 && (
+  <Box className="suggestions-dropdown">
+    {suggestions.map((suggestion) => (
+      <Box 
+        key={suggestion._id} 
+        className="suggestion-item" 
+        onClick={() => handleSuggestionClick(suggestion)}
+      >
+        {/* Product Image */}
+        {suggestion.mainImage && (
+          <img
+            src={`http://localhost:5000/uploads/${suggestion.mainImage}`} 
+            alt={suggestion.name} 
+            className="suggestion-image"
+          />
+        )}
+
+        {/* Name & Category */}
+        <Box className="suggestion-text">
+          <Typography className="suggestion-name">
+            {suggestion.name}
+          </Typography>
+          {suggestion.category && (
+            <Typography className="suggestion-category">
+              {suggestion.category.name}
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    ))}
+  </Box>
+)}
+
+
+
+
           </Box>
 
           {/* Icons */}
@@ -403,7 +490,9 @@ function Header() {
                   <FavoriteBorderIcon fontSize="20px" />
                 </IconButton>
                 <IconButton onClick={handleCartToggle}>
-                  <ShoppingCartIcon fontSize="20px" />
+                  <Badge badgeContent={totalCartItems} color="error">
+                    <ShoppingCartIcon fontSize="20px" />
+                  </Badge>
                 </IconButton>
                 <Avatar
                   className="avatar"

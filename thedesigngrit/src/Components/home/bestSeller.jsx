@@ -1,42 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ProductSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchBestSellers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/orders/bestsellers"
+        );
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching bestsellers:", error);
+      }
+    };
 
-  const products = [
-    {
-      image: "Assets/bestseller/product1.png",
-      badge: "Badge",
-      minUnits: 250,
-      delivery: "2 weeks",
-      title: "Product title",
-      price: 49.0,
-    },
-    {
-      image: "Assets/bestseller/product2.png",
-      badge: "Badge",
-      minUnits: 250,
-      delivery: "2 weeks",
-      title: "Product title",
-      price: 49.0,
-    },
-    {
-      image: "Assets/bestseller/product3.png",
-      badge: "Badge",
-      minUnits: 250,
-      delivery: "2 weeks",
-      title: "Product title",
-      price: 49.0,
-    },
-    {
-      image: "Assets/bestseller/product4.png",
-      badge: "Badge",
-      minUnits: 250,
-      delivery: "2 weeks",
-      title: "Product title",
-      price: 49.0,
-    },
-  ];
+    fetchBestSellers();
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1));
@@ -53,26 +36,26 @@ const ProductSlider = () => {
       <div className="slider-content">
         {products.map((product, index) => (
           <div
-            key={index}
+            key={product._id}
             className="product-card"
             style={{
               transform: `translateX(-${currentSlide * 100}%)`,
+              cursor: "pointer",
             }}
+            onClick={() => navigate(`/product/${product._id}`)} // Navigate on click
           >
             <div className="product-image-home">
-              <img src={product.image} alt={product.title} />
+              <img
+                src={`http://localhost:5000/uploads/${product.image}`}
+                alt={product.name}
+              />
             </div>
 
             <div className="product-info">
-              {/* <span className="badge">{product.badge}</span> */}
-              <div className="product-badge">{product.badge}</div>
-              {/* <div className="product-metadata">
-                Min. {product.minUnits} units · Delivery: {product.delivery}
-              </div> */}
-              <h3 className="product-title-bestseller">{product.title}</h3>
-              {/* <div className="product-price-bestseller">
-                from LE {product.price.toFixed(2)} per unit
-              </div> */}
+              <h3 className="product-title-bestseller">{product.name}</h3>
+              <div className="product-price-bestseller">
+                ${product.price.toFixed(2)}
+              </div>
             </div>
           </div>
         ))}

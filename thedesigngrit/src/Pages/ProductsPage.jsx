@@ -105,6 +105,7 @@ function ProductsPage() {
 
         {/* Product cards */}
         <Grid item xs={12} sm={8} md={9}>
+
           <ProductCards products={products} onToggleFavorite={toggleFavorite} />
         </Grid>
       </Grid>

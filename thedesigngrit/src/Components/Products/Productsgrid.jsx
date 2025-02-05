@@ -29,10 +29,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   return (
     <Box
       sx={{
-        padding: { xs: "20px", sm: "30px", md: "30px 70px" },
-        maxWidth: "1200px",
-        margin: "0 auto",
-        gap: "60px",
+        padding: { xs: "20px", sm: "30px", md: "40px 10px" },
       }}
     >
       {/* If there are no products, display a message */}
