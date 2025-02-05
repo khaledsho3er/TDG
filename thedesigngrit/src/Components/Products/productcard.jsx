@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
   CardMedia,
@@ -8,19 +8,69 @@ import {
   Box,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../utils/userContext";
 
-const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
+const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { userSession } = useContext(UserContext); // Access user session and logout function from context
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  const handleCardClick = () => {
-    navigate(`/product/${product._id}`); // Navigate to the product details page using _id
+  // Fetch the user's favorite products on component mount
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!userSession) return; // Make sure userSession is available
+
+      const response = await fetch(
+        `http://localhost:5000/api/favorites/${userSession.id}`
+      );
+      if (response.ok) {
+        const favoritesData = await response.json();
+        const favoriteIds = favoritesData.map((prod) => prod._id);
+        setIsFavorite(favoriteIds.includes(product._id));
+      }
+    };
+    fetchFavorites();
+  }, [userSession, product._id]);
+
+  // Toggle the favorite status
+  const toggleFavorite = async (event) => {
+    event.stopPropagation(); // Prevent triggering card click
+
+    if (!userSession) return; // If there's no user session, prevent posting
+
+    const endpoint = isFavorite ? "/remove" : "/add";
+    const requestPayload = {
+      userSession,
+      productId: product._id,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/favorites${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestPayload),
+        }
+      );
+
+      if (response.ok) {
+        setIsFavorite(!isFavorite); // Toggle the favorite status if successful
+      } else {
+        console.error("Error: Unable to update favorite status.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-  const toggleFavorite = (event) => {
-    event.stopPropagation(); // Prevent triggering card click
-    onToggleFavorite(product); // Pass the product to the parent handler
+  // Navigate to product details page
+  const handleCardClick = () => {
+    navigate(`/product/${product._id}`);
   };
 
   return (
@@ -33,7 +83,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           position: "relative",
           overflow: "hidden",
         }}
-        onClick={handleCardClick}
+        onClick={handleCardClick} // Card click for navigation
       >
         {/* Product Image */}
         <CardMedia
@@ -56,7 +106,10 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
             "&:hover": { backgroundColor: "#f0f0f0" },
           }}
-          onClick={toggleFavorite}
+          onClick={(event) => {
+            event.stopPropagation(); // Prevent triggering card click when clicking favorite button
+            toggleFavorite(event);
+          }}
         >
           {isFavorite ? (
             <FavoriteIcon sx={{ color: "red" }} />
@@ -87,7 +140,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           variant="body2"
           sx={{
             fontSize: "12px",
-            fontFamily: "Montserrat  ",
+            fontFamily: "Montserrat",
             color: "#757575",
             marginTop: "4px",
           }}
@@ -100,7 +153,7 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           sx={{
             fontSize: "14px",
             fontWeight: 500,
-            fontFamily: "Montserrat  ",
+            fontFamily: "Montserrat",
             color: "#2d2d2d",
             marginTop: "8px",
           }}

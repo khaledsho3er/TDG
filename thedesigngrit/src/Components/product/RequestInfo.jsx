@@ -1,23 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
 import ConfirmationDialog from "../confirmationMsg"; // Import ConfirmationDialog
+import { UserContext } from "../../utils/userContext"; // Assuming you have UserContext
+import axios from "axios"; // Import axios for API calls
 
-const RequestQuote = ({ onClose }) => {
+const RequestQuote = ({ onClose, productId }) => {
+  const { userSession } = useContext(UserContext); // Get user data from context
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State for the confirmation dialog
   const [isConfirmed, setIsConfirmed] = useState(false); // State for confirmation status
+  const [material, setMaterial] = useState("");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+  const [customization, setCustomization] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State for loading spinner
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
     setIsDialogOpen(true); // Open the confirmation dialog
   };
 
   // Handle confirmation
-  const handleConfirm = () => {
-    setIsConfirmed(true); // Mark as confirmed
-    setIsDialogOpen(false); // Close the confirmation dialog
-    // You can place the logic for form submission here, like calling an API
+  const handleConfirm = async () => {
+    setIsLoading(true); // Start loading spinner
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/quotation/create",
+        {
+          userId: userSession.id, // Assuming userSession contains the logged-in user's data
+          brandId: productId.brandId._id, // Assuming product contains the brandId
+          productId: productId._id, // Assuming product contains the product ID
+          material: material,
+          size: size,
+          color: color,
+          customization: customization,
+        }
+      );
+
+      console.log("Quotation sent successfully:", response.data);
+      setIsConfirmed(true); // Set confirmation state after success
+      setIsDialogOpen(false); // Open the confirmation dialog
+    } catch (error) {
+      console.error("Error submitting quotation:", error);
+      alert("There was an error submitting your quotation.");
+    } finally {
+      setIsLoading(false); // Stop loading spinner
+    }
   };
 
   // Handle cancel
@@ -43,7 +73,7 @@ const RequestQuote = ({ onClose }) => {
           </IconButton>
         </div>
 
-        {/* Show confirmation dialog if confirmed */}
+        {/* Show confirmation message if confirmed */}
         {isConfirmed ? (
           <div className="confirmation-message">
             <h3>
@@ -64,52 +94,94 @@ const RequestQuote = ({ onClose }) => {
                 </div>
                 <div className="requestInfo-brand-name">
                   <p>Get In Touch</p>
-                  <h2>ISTIKBAL</h2>
+                  <h2>{productId.brandId.brandName}</h2>
+                  {/* Display brand name dynamically */}
                 </div>
               </div>
               <div className="requestInfo-user-info">
-                <p>Karim Wahba</p>
-                <p>Karimwahba@gmail.com</p>
-                <p>Date: 12/12/2022</p>
+                <p>{userSession.firstName}</p>
+                <p>{userSession.email}</p>
+                <p>Date: {new Date().toLocaleDateString()}</p>{" "}
+                {/* Display current date */}
               </div>
             </div>
             <form className="requestInfo-form" onSubmit={handleSubmit}>
               <div className="requestInfo-form-group">
                 <label>Material</label>
                 <div className="requestInfo-input-group">
-                  <select>
+                  <select
+                    value={material}
+                    onChange={(e) => setMaterial(e.target.value)}
+                  >
                     <option>Wool Fabric</option>
+                    <option>Cotton Fabric</option>
+                    <option>Leather</option>
+                    <option>Denim</option>
                     {/* Add more options here */}
                   </select>
-                  <input type="text" placeholder="Others..." />
+                  <input
+                    type="text"
+                    placeholder="Others..."
+                    value={material}
+                    onChange={(e) => setMaterial(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="requestInfo-form-group">
                 <label>Size</label>
                 <div className="requestInfo-input-group">
-                  <select>
+                  <select
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                  >
                     <option>4080 x 1000</option>
+                    <option>4080 x 1200</option>
+                    <option>4080 x 1400</option>
                     {/* Add more options here */}
                   </select>
-                  <input type="text" placeholder="Others..." />
+                  <input
+                    type="text"
+                    placeholder="Others..."
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="requestInfo-form-group">
                 <label>Colour</label>
                 <div className="requestInfo-input-group">
-                  <select>
+                  <select
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                  >
                     <option>White Grey</option>
+                    <option>White</option>
+                    <option>Black</option>
+                    <option>Grey</option>
                     {/* Add more options here */}
                   </select>
-                  <input type="text" placeholder="Others..." />
+                  <input
+                    type="text"
+                    placeholder="Others..."
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="requestInfo-form-group">
                 <label>Customization</label>
-                <textarea placeholder="Add a note..."></textarea>
+                <textarea
+                  placeholder="Add a note..."
+                  value={customization}
+                  onChange={(e) => setCustomization(e.target.value)}
+                ></textarea>
               </div>
-              <button type="submit" className="requestInfo-submit-button">
-                SEND
+              <button
+                type="submit"
+                className="requestInfo-submit-button"
+                disabled={isLoading} // Disable button when loading
+              >
+                {isLoading ? "Sending..." : "SEND"} {/* Show loading state */}
               </button>
             </form>
           </div>

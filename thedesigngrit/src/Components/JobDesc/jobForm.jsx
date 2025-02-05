@@ -1,6 +1,18 @@
 import React, { useState } from "react";
+import * as Yup from "yup";
 import { IoMdCloudUpload } from "react-icons/io";
 import ApplicationSentPopup from "./applicationSentPopUp";
+
+const validationSchema = Yup.object({
+  fullName: Yup.string().required("Full name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  phone: Yup.string().required("Phone number is required"),
+  address: Yup.string().required("Address is required"),
+  country: Yup.string().required("Country is required"),
+  city: Yup.string().required("City is required"),
+  linkedIn: Yup.string().url("Invalid LinkedIn URL"),
+  resume: Yup.mixed().required("Resume is required"),
+});
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
@@ -14,8 +26,9 @@ const ApplicationForm = () => {
     notes: "",
     resume: null,
   });
-  const [isPopupVisible, setIsPopupVisible] = useState(false); // Control popup visibility
-  const [error, setError] = useState(""); // Handle error messages
+
+  const [errors, setErrors] = useState({});
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,26 +45,30 @@ const ApplicationForm = () => {
     }));
   };
 
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (validationErrors) {
+      const formattedErrors = {};
+      validationErrors.inner.forEach((error) => {
+        formattedErrors[error.path] = error.message;
+      });
+      setErrors(formattedErrors);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-
-    // Validate that a resume is uploaded
-    if (!formData.resume) {
-      setError("Please upload your resume.");
-      return;
-    }
+    const isValid = await validateForm();
+    if (!isValid) return;
 
     const formDataToSend = new FormData();
-    formDataToSend.append("fullName", formData.fullName);
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("phone", formData.phone);
-    formDataToSend.append("address", formData.address);
-    formDataToSend.append("country", formData.country);
-    formDataToSend.append("city", formData.city);
-    formDataToSend.append("linkedIn", formData.linkedIn);
-    formDataToSend.append("notes", formData.notes);
-    formDataToSend.append("resume", formData.resume);
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value);
+    });
 
     try {
       const response = await fetch("http://localhost:5000/api/jobforms", {
@@ -59,11 +76,8 @@ const ApplicationForm = () => {
         body: formDataToSend,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit the form. Please try again.");
-      }
+      if (!response.ok) throw new Error("Failed to submit the form.");
 
-      // Handle success
       setIsPopupVisible(true);
       setFormData({
         fullName: "",
@@ -76,21 +90,16 @@ const ApplicationForm = () => {
         notes: "",
         resume: null,
       });
+      setErrors({});
     } catch (error) {
-      setError(error.message || "An unexpected error occurred.");
+      console.error(error.message);
     }
-  };
-
-  const closePopup = () => {
-    setIsPopupVisible(false); // Close the popup
   };
 
   return (
     <div className="job-form-container">
       <div className="job-form-card">
         <h1 className="job-form-title">FILL THE FORM</h1>
-
-        {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit} className="Job-form">
           <div className="job-form-field">
@@ -101,8 +110,10 @@ const ApplicationForm = () => {
               placeholder="Karim Ahmad"
               value={formData.fullName}
               onChange={handleInputChange}
-              required
             />
+            {errors.fullName && (
+              <span className="error-message">{errors.fullName}</span>
+            )}
           </div>
 
           <div className="job-form-field">
@@ -113,8 +124,10 @@ const ApplicationForm = () => {
               placeholder="karim@gmail.com"
               value={formData.email}
               onChange={handleInputChange}
-              required
             />
+            {errors.email && (
+              <span className="error-message">{errors.email}</span>
+            )}
           </div>
 
           <div className="job-form-field">
@@ -125,8 +138,10 @@ const ApplicationForm = () => {
               placeholder="01022161614"
               value={formData.phone}
               onChange={handleInputChange}
-              required
             />
+            {errors.phone && (
+              <span className="error-message">{errors.phone}</span>
+            )}
           </div>
 
           <div className="job-form-field">
@@ -137,8 +152,10 @@ const ApplicationForm = () => {
               placeholder="New Cairo, Cairo, Egypt"
               value={formData.address}
               onChange={handleInputChange}
-              required
             />
+            {errors.address && (
+              <span className="error-message">{errors.address}</span>
+            )}
           </div>
 
           <div className="job-form-row">
@@ -150,8 +167,10 @@ const ApplicationForm = () => {
                 placeholder="Egypt"
                 value={formData.country}
                 onChange={handleInputChange}
-                required
               />
+              {errors.country && (
+                <span className="error-message">{errors.country}</span>
+              )}
             </div>
             <div className="job-form-field">
               <label>City</label>
@@ -161,8 +180,10 @@ const ApplicationForm = () => {
                 placeholder="Cairo"
                 value={formData.city}
                 onChange={handleInputChange}
-                required
               />
+              {errors.city && (
+                <span className="error-message">{errors.city}</span>
+              )}
             </div>
           </div>
 
@@ -173,8 +194,8 @@ const ApplicationForm = () => {
               className="job-upload-button"
               onClick={() => document.getElementById("resume-upload").click()}
             >
-              <IoMdCloudUpload size={20} className="upload-icon" />
-              Upload Resume
+              <IoMdCloudUpload size={20} className="upload-icon" /> Upload
+              Resume
             </button>
             <input
               id="resume-upload"
@@ -182,12 +203,10 @@ const ApplicationForm = () => {
               accept=".pdf,.doc,.docx"
               onChange={handleFileUpload}
               style={{ display: "none" }}
-              required
             />
-            {formData.resume && (
-              <p style={{ marginTop: "8px", fontFamily: "Montserrat" }}>
-                Selected File: {formData.resume.name}
-              </p>
+            {formData.resume && <p>Selected File: {formData.resume.name}</p>}
+            {errors.resume && (
+              <span className="error-message">{errors.resume}</span>
             )}
           </div>
 
@@ -200,6 +219,9 @@ const ApplicationForm = () => {
               value={formData.linkedIn}
               onChange={handleInputChange}
             />
+            {errors.linkedIn && (
+              <span className="error-message">{errors.linkedIn}</span>
+            )}
           </div>
 
           <div className="job-form-field">
@@ -218,7 +240,10 @@ const ApplicationForm = () => {
           </button>
         </form>
       </div>
-      <ApplicationSentPopup show={isPopupVisible} closePopup={closePopup} />
+      <ApplicationSentPopup
+        show={isPopupVisible}
+        closePopup={() => setIsPopupVisible(false)}
+      />
     </div>
   );
 };

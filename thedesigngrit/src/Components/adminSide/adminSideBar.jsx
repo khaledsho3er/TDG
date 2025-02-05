@@ -34,6 +34,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Categories
         </li>
+        <li
+          onClick={() => setActivePage("categoriesList")}
+          className="sidebar-item-vendor"
+        >
+          Categories List
+        </li>
       </ul>
     </aside>
   );

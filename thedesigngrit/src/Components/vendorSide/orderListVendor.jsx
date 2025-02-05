@@ -2,24 +2,24 @@ import { Box, Select, MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
-import { useNavigate } from "react-router-dom";
-import { useVendor } from "../../utils/vendorContext"; // Import Vendor Context
+import { useVendor } from "../../utils/vendorContext";
+import OrderDetails from "./orderDetails"; // Import OrderDetails component
 
 const RecentPurchases = () => {
-  const { vendor } = useVendor(); // Access vendor data from context
+  const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
-  const [sortDirection, setSortDirection] = useState("asc");
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [sortDirection] = useState("asc");
+  const [dateRange] = useState([null, null]);
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+
   const ordersPerPage = 8;
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!vendor?.brandId) return; // Ensure vendor has a brand ID
-
+      if (!vendor?.brandId) return;
       try {
         const response = await fetch(
           `http://localhost:5000/api/orders/orders/brand/${vendor.brandId}`
@@ -37,7 +37,7 @@ const RecentPurchases = () => {
     fetchOrders();
   }, [vendor]);
 
-  // Filtered Orders Based on Status
+  // Filter Orders
   const filteredOrders =
     filterStatus === "All"
       ? orders
@@ -80,6 +80,16 @@ const RecentPurchases = () => {
 
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
 
+  // If an order is selected, show OrderDetails instead of the table
+  if (selectedOrder) {
+    return (
+      <OrderDetails
+        order={selectedOrder}
+        onBack={() => setSelectedOrder(null)}
+      />
+    );
+  }
+
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -96,6 +106,7 @@ const RecentPurchases = () => {
           </span>
         </div>
       </header>
+
       <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
         <Select
           sx={{ width: "200px", borderRadius: "5px", color: "#2d2d2d" }}
@@ -125,6 +136,7 @@ const RecentPurchases = () => {
           <MenuItem value="Price Descending">Price: Descending</MenuItem>
         </Select>
       </Box>
+
       <div className="recent-purchases">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <h2>Recent Purchases</h2>
@@ -137,7 +149,6 @@ const RecentPurchases = () => {
               <th>Product</th>
               <th>Order ID</th>
               <th>Date</th>
-              {/* <th>Customer Name</th> */}
               <th>Status</th>
               <th>Amount</th>
             </tr>
@@ -146,15 +157,12 @@ const RecentPurchases = () => {
             {currentOrders.map((order) => (
               <tr
                 key={order._id}
-                onClick={() => navigate(`/orderDetail/${order._id}`)}
+                onClick={() => setSelectedOrder(order)}
                 style={{ cursor: "pointer" }}
               >
                 <td>{order.cartItems[0]?.name || "N/A"}</td>
                 <td>{order._id}</td>
                 <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                {/* <td>
-                  {order.customerId.firstName} {order.customerId.lastName}
-                </td> */}
                 <td>
                   <span
                     style={{
@@ -183,6 +191,7 @@ const RecentPurchases = () => {
           </tbody>
         </table>
       </div>
+
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button

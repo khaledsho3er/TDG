@@ -20,9 +20,9 @@ function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
 
-  const handleCloseRequestInfo = () => {
-    setIsRequestInfoOpen(false);
-  };
+  // const handleCloseRequestInfo = () => {
+  //   setIsRequestInfoOpen(false);
+  // };
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -63,8 +63,9 @@ function ProductPage() {
         const data = await response.json();
         setProduct(data); // Set the fetched product to state
         setReviews(data.reviews); // Set the fetched reviews to state
-        console.log(error);
       } catch (error) {
+        console.log(error);
+
         setError(error.message); // Set error if something goes wrong
       } finally {
         setLoading(false); // Stop loading once the fetch is complete
@@ -243,9 +244,9 @@ function ProductPage() {
             {/* Request Info Popup */}
             {isRequestInfoOpen && (
               <RequestInfoPopup
-                open={showRequestInfoPopup} // Pass showRequestInfoPopup as open prop
-                onClose={() => setShowRequestInfoPopup(false)} // Handle close callback
-                onOptionSelect={handleCloseRequestInfo}
+                open={showRequestInfoPopup}
+                onClose={() => setShowRequestInfoPopup(false)}
+                productId={product} // Pass productId here
               />
             )}
           </div>

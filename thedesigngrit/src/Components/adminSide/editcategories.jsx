@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const CategoryForm = () => {
+const UpdateCategory = ({ categoryId, onBack }) => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState(null);
@@ -14,7 +14,28 @@ const CategoryForm = () => {
     imagePreview: null,
   });
   const [newType, setNewType] = useState("");
-  const [currentSubCategoryIndex, setCurrentSubCategoryIndex] = useState(null);
+
+  // Fetch the category data on mount
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/categories/categories/${categoryId}`
+        );
+        const fetchedCategory = response.data;
+        setCategoryName(fetchedCategory.name);
+        setCategoryDescription(fetchedCategory.description);
+        setImagePreview(
+          `http://localhost:5000/uploads/${fetchedCategory.image}`
+        );
+        setSubCategories(fetchedCategory.subCategories || []);
+      } catch (error) {
+        console.error("Error fetching category:", error);
+      }
+    };
+
+    fetchCategory();
+  }, [categoryId]);
 
   // Handle main category image upload
   const handleImageUpload = (e) => {
@@ -49,12 +70,11 @@ const CategoryForm = () => {
       });
     }
   };
-
-  // Add type to a specific subcategory
-  const handleAddType = () => {
-    if (newType.trim() && currentSubCategoryIndex !== null) {
+  // Add type to a specific subcategory  // Add type to a specific subcategory
+  const handleAddType = (subCategoryIndex) => {
+    if (newType.trim() && subCategoryIndex !== null) {
       const updatedSubCategories = [...subCategories];
-      updatedSubCategories[currentSubCategoryIndex].types.push(newType);
+      updatedSubCategories[subCategoryIndex].types.push(newType);
       setSubCategories(updatedSubCategories);
       setNewType("");
     }
@@ -77,7 +97,7 @@ const CategoryForm = () => {
   // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!categoryName || !categoryDescription || !categoryImage) {
+    if (!categoryName || !categoryDescription) {
       alert("Please fill all required fields!");
       return;
     }
@@ -85,10 +105,11 @@ const CategoryForm = () => {
     const formData = new FormData();
     formData.append("name", categoryName);
     formData.append("description", categoryDescription);
-    formData.append("image", categoryImage);
+    if (categoryImage) {
+      formData.append("image", categoryImage);
+    }
 
-    const formattedSubCategories = subCategories.map((subCategory, index) => {
-      formData.append(`subCategoryImages`, subCategory.image || ""); // Match multer field name
+    const formattedSubCategories = subCategories.map((subCategory) => {
       return {
         name: subCategory.name,
         description: subCategory.description || "",
@@ -100,9 +121,9 @@ const CategoryForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/categories/categories",
+        `http://localhost:5000/api/categories/categories/${categoryId}`,
         {
-          method: "POST",
+          method: "PUT",
           body: formData,
         }
       );
@@ -113,12 +134,8 @@ const CategoryForm = () => {
       try {
         const data = JSON.parse(text);
         if (response.ok) {
-          alert("Category created successfully!");
-          setCategoryName("");
-          setCategoryDescription("");
-          setCategoryImage(null);
-          setImagePreview(null);
-          setSubCategories([]);
+          alert("Category updated successfully!");
+          onBack(); // Call the onBack function to return to the category list
         } else {
           alert(data.message);
         }
@@ -126,17 +143,15 @@ const CategoryForm = () => {
         alert("Error parsing response: " + error.message);
       }
     } catch (error) {
-      alert("Error submitting category: " + error.message);
+      alert("Error updating category: " + error.message);
     }
   };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
       <header className="dashboard-header-vendor">
-        <h2>Create Category</h2>
-        <p>
-          <Link to="/adminpanel">Home</Link> &gt; Create Category
-        </p>
+        <h2>Update Category</h2>
+        <button onClick={onBack}>Back to Categories</button>
       </header>
       <form onSubmit={handleFormSubmit}>
         <div className="form-group">
@@ -160,12 +175,7 @@ const CategoryForm = () => {
         </div>
         <div className="form-group">
           <label>Category Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            required
-          />
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
           {imagePreview && <img src={imagePreview} alt="Preview" width="200" />}
         </div>
 
@@ -175,20 +185,7 @@ const CategoryForm = () => {
           {subCategories.map((subCategory, subIndex) => (
             <div key={subIndex} style={{ marginBottom: "10px" }}>
               <strong>{subCategory.name}</strong>
-              <button
-                type="button"
-                onClick={() => handleRemoveSubCategory(subIndex)}
-              >
-                ×
-              </button>
               <p>{subCategory.description}</p>
-              {subCategory.imagePreview && (
-                <img
-                  src={subCategory.imagePreview}
-                  alt="Subcategory Preview"
-                  width="100"
-                />
-              )}
               <ul>
                 {subCategory.types.map((type, typeIndex) => (
                   <li key={typeIndex}>
@@ -197,67 +194,80 @@ const CategoryForm = () => {
                       type="button"
                       onClick={() => handleRemoveType(subIndex, typeIndex)}
                     >
-                      ×
+                      Remove
                     </button>
                   </li>
                 ))}
               </ul>
-              <input
-                type="text"
-                placeholder="Add type"
-                value={currentSubCategoryIndex === subIndex ? newType : ""}
-                onChange={(e) => {
-                  setCurrentSubCategoryIndex(subIndex);
-                  setNewType(e.target.value);
-                }}
-              />
               <button
                 type="button"
-                onClick={handleAddType}
-                disabled={currentSubCategoryIndex !== subIndex}
+                onClick={() => handleRemoveSubCategory(subIndex)}
               >
-                Add Type
+                Remove Subcategory
               </button>
             </div>
           ))}
+          <div>
+            <h4>Add New Subcategory</h4>
+            <input
+              type="text"
+              value={newSubCategory.name}
+              onChange={(e) =>
+                setNewSubCategory({ ...newSubCategory, name: e.target.value })
+              }
+              placeholder="Subcategory Name"
+            />
+            <textarea
+              value={newSubCategory.description}
+              onChange={(e) =>
+                setNewSubCategory({
+                  ...newSubCategory,
+                  description: e.target.value,
+                })
+              }
+              placeholder="Subcategory Description"
+            ></textarea>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleSubCategoryImageUpload}
+            />
+            {newSubCategory.imagePreview && (
+              <img
+                src={newSubCategory.imagePreview}
+                alt="Preview"
+                width="100"
+              />
+            )}
+            <button type="button" onClick={handleAddSubCategory}>
+              Add Subcategory
+            </button>
+          </div>
+        </div>
 
+        {/* Types Section */}
+        <div className="form-group">
+          <label>Add Type to Subcategory</label>
           <input
             type="text"
-            placeholder="Subcategory Name"
-            value={newSubCategory.name}
-            onChange={(e) =>
-              setNewSubCategory({ ...newSubCategory, name: e.target.value })
-            }
+            value={newType}
+            onChange={(e) => setNewType(e.target.value)}
+            placeholder="Type Name"
           />
-          <textarea
-            placeholder="Subcategory Description"
-            value={newSubCategory.description}
-            onChange={(e) =>
-              setNewSubCategory({
-                ...newSubCategory,
-                description: e.target.value,
-              })
-            }
-          ></textarea>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleSubCategoryImageUpload}
-          />
-          {newSubCategory.imagePreview && (
-            <img src={newSubCategory.imagePreview} alt="Preview" width="100" />
-          )}
-          <button type="button" onClick={handleAddSubCategory}>
-            Add Subcategory
+          <button
+            type="button"
+            onClick={() => handleAddType(subCategories.length - 1)}
+          >
+            Add Type
           </button>
         </div>
 
         <button type="submit" className="btn update">
-          Submit Category
+          Update Category
         </button>
       </form>
     </div>
   );
 };
 
-export default CategoryForm;
+export default UpdateCategory;
