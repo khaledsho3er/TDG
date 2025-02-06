@@ -1,69 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { LuPackage } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import axios from "axios";
 import { Box } from "@mui/material";
-
+import { UserContext } from "../../utils/userContext";
 const OrdersPopUp = () => {
+  const { userSession } = useContext(UserContext);
   const [expandedOrder, setExpandedOrder] = useState(null); // To track which order is expanded
-  const orderData = [
-    {
-      orderNumber: "23345465182",
-      itemName: "WOODEN TABLE",
-      date: "01/01/2023",
-      price: "8,600 LE",
-      image: "Assets/productimg1.png",
-      deliveryDate: "01/02/2023",
+  const [orderData, setOrderData] = useState([]); // State to hold fetched orders
+  useEffect(() => {
+    // Fetch orders by customerId from the session
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/orders/orders/customer/${userSession.id}`
+        ); // Make API call to fetch orders
+        setOrderData(response.data); // Set the fetched orders in state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
 
-      timeline: [
-        { label: "Purchase", completed: true, icon: <ShoppingCartIcon /> },
-        { label: "Shipping", completed: true, icon: <LocalShippingIcon /> },
-        { label: "Delivered", completed: false, icon: <LuPackage /> },
-      ],
-    },
-    {
-      orderNumber: "1234567890",
-      itemName: "SOFA",
-      date: "01/01/2023",
-      price: "12,000 LE",
-      image: "Assets/prodImg1.jpg",
-      deliveryDate: "01/02/2023",
-
-      timeline: [
-        { label: "Purchase", completed: true, icon: <ShoppingCartIcon /> },
-        { label: "Shipping", completed: false, icon: <LocalShippingIcon /> },
-        { label: "Delivered", completed: false, icon: <LuPackage /> },
-      ],
-    },
-    {
-      orderNumber: "1234567890",
-      itemName: "SOFA",
-      date: "01/01/2023",
-      price: "12,000 LE",
-      image: "Assets/prodImg1.jpg",
-      deliveryDate: "01/02/2023",
-      timeline: [
-        { label: "Purchase", completed: true, icon: <ShoppingCartIcon /> },
-        { label: "Shipping", completed: false, icon: <LocalShippingIcon /> },
-        { label: "Delivered", completed: false, icon: <LuPackage /> },
-      ],
-    },
-    {
-      orderNumber: "1234567890",
-      itemName: "SOFA",
-      date: "01/01/2023",
-      price: "12,000 LE",
-      image: "Assets/prodImg1.jpg",
-      deliveryDate: "01/02/2023",
-
-      timeline: [
-        { label: "Purchase", completed: true, icon: <ShoppingCartIcon /> },
-        { label: "Shipping", completed: false, icon: <LocalShippingIcon /> },
-        { label: "Delivered", completed: false, icon: <LuPackage /> },
-      ],
-    },
-  ];
+    fetchOrders(); // Call the function when the component mounts
+  }, []);
 
   const toggleOrderDetails = (index) => {
     setExpandedOrder(expandedOrder === index ? null : index);
@@ -88,16 +49,18 @@ const OrdersPopUp = () => {
                 justifyContent: "center",
               }}
             >
-              <span className="order-number">
-                Order No: {order.orderNumber}
-              </span>
+              <span className="order-number">Order No: {order._id}</span>
               <span
                 style={{
                   fontFamily: "Montserrat",
                   fontSize: "12px",
                 }}
               >
-                {order.date}
+                {new Date(order.orderDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </span>
             </Box>
             <button
@@ -114,14 +77,15 @@ const OrdersPopUp = () => {
               {/* Order Info Section */}
               <div className="order-info">
                 <div className="order-info-headers">
-                  <h3>{order.itemName}</h3>
-                  <p>{order.price}</p>
-                  <p>Delivery Date: {order.deliveryDate}</p>
+                  <h3>{order.cartItems.name}</h3>
+                  <h3>{order.cartItems.price}</h3>
+
+                  <p>{order.total}</p>
                 </div>
-                <img src={order.image} alt="Product" />
+                <img src={order.cartItems.productId} alt="Product" />
               </div>
 
-              {/* Progress Timeline Section */}
+              {/* Progress Timeline Section
               <div className="progress-container">
                 {order.timeline.map((step, i) => (
                   <div
@@ -134,7 +98,7 @@ const OrdersPopUp = () => {
                     <span className="step-label">{step.label}</span>
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
           )}
         </div>

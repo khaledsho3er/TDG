@@ -11,6 +11,7 @@ import ShippingInfoPopup from "../Components/profilePopup/Shipping";
 import WishlistPage from "../Components/account/wishlist";
 import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
+import TrackOrder from "./TrackOrder";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -63,7 +64,7 @@ const MyAccount = () => {
 
   const sections = {
     profile: <Profile userData={userData} />, // Pass userData as a prop
-    orders: <OrdersPopUp />,
+    orders: <TrackOrder />,
     Password: <ResetPasswordForm />,
     // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,
