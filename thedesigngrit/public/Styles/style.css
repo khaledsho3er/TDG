@@ -414,7 +414,7 @@ body::-webkit-scrollbar {
   max-height: 250px; /* Limits height to prevent overflow */
   overflow-y: auto; /* Scrollable if many results */
   border-radius: 20px;
-  z-index:10000; /* Keeps it above other elements */
+  z-index: 10000; /* Keeps it above other elements */
 }
 
 /* Each Suggestion Item */
@@ -461,7 +461,6 @@ body::-webkit-scrollbar {
   color: gray;
   font-size: 14px;
 }
-
 
 .icon-container {
   display: flex;
@@ -6058,7 +6057,6 @@ input:focus {
   background-color: #4e644e;
 }
 
-
 /* subcategories page */
 .subcategory-container {
   display: flex;
@@ -6208,7 +6206,7 @@ input:focus {
   transform: scale(1.1);
   color: #2d2d2d;
 }
-  
+
 @keyframes slideIn {
   0% {
     opacity: 0;
@@ -6436,13 +6434,13 @@ input:focus {
   display: flex;
   flex-direction: row;
 }
-  
+
 .footer-bottom-lock {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-  
+
 .footer-lock-icon {
   font-size: small;
   padding-top: 0.5rem;
@@ -6453,12 +6451,12 @@ input:focus {
   font-family: "Montserrat";
   font-size: 12px;
 }
-  
+
 .error-message {
   color: red;
   font-size: 12px;
 }
-  
+
 .loading-screen {
   position: fixed;
   top: 0;
@@ -6469,4 +6467,43 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.video-progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -30px;
+  gap: 10px;
+}
+
+.video-progress-dot {
+  width: 30px;
+  height: 6px;
+  background-color: #2d2d2d;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Progress bar when video is playing */
+.video-progress-dot.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  scale: 1.1;
+}
+
+/* Circle style for inactive dots */
+.video-progress-dot.circle {
+  width: 12px;
+  height: 12px;
+  background-color: #6c7b58;
+  border-radius: 50%;
+}
+
+/* Progress bar inside active dot */
+.video-progress-bar {
+  height: 100%;
+  background-color: black;
+  transition: width 0.2s linear;
 }

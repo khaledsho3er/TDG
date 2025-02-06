@@ -14,6 +14,8 @@ import AccountingPage from "../../Components/vendorSide/Accounting";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "../../Components/vendorSide/orderDetails";
 import QuotationsPage from "../../Components/vendorSide/quotationsList";
+import NotificationsPage from "../../Components/vendorSide/notificationPage";
+import NotificationOverlayVendor from "../../Components/vendorSide/notificationOverlay";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
 
@@ -35,6 +37,7 @@ const VendorHome = () => {
     Accounting: <AccountingPage />,
     EmployeeSignup: <EmployeeSignup />,
     EmployeePage: <EmployeePage />,
+    notifications: <NotificationsPage />,
   };
 
   // Function to render content based on active page
@@ -52,6 +55,10 @@ const VendorHome = () => {
           user={vendor} // The user object should contain role and tier information
         />
         <div className="content-vendor">{renderContent()}</div>
+        {/* <div className="content-vendor">
+          {renderContent()}
+          <NotificationsPage setActivePage={setActivePage} />
+        </div> */}
       </div>
     </div>
   );

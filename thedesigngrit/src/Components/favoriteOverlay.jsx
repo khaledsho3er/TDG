@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 import { UserContext } from "../../src/utils/userContext"; // Assuming UserContext is where user session is stored
+import { useNavigate } from "react-router-dom";
 
 const FavoritesOverlay = ({ open, onClose }) => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const { userSession } = useContext(UserContext); // Access user session from context
+  const navigate = useNavigate();
 
   // Fetch favorite products when the component is mounted or when userSession changes
   useEffect(() => {
@@ -33,6 +35,9 @@ const FavoritesOverlay = ({ open, onClose }) => {
 
   if (!open) return null; // Do not render if not open
 
+  const navigateToWishlistPage = () => {
+    navigate("/myaccount", { state: { section: "wishlist" } });
+  };
   return (
     <div className="overlay-container-vendor" style={{ right: "50px" }}>
       {/* Header */}
@@ -47,7 +52,11 @@ const FavoritesOverlay = ({ open, onClose }) => {
       <div className="overlay-body-vendor">
         {favoriteProducts.length > 0 ? (
           favoriteProducts.map((product) => (
-            <div key={product._id} className="notification-item-vendor">
+            <div
+              key={product._id}
+              className="notification-item-vendor"
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
               <div className="notification-image-vendor">
                 {/* Assuming `product.mainImage` is the image path */}
                 <img
@@ -89,7 +98,9 @@ const FavoritesOverlay = ({ open, onClose }) => {
 
       {/* Footer */}
       <div className="overlay-footer-vendor">
-        <button className="view-all-vendor">VIEW ALL FAVORITES</button>
+        <button className="view-all-vendor" onClick={navigateToWishlistPage}>
+          VIEW ALL FAVORITES
+        </button>
       </div>
     </div>
   );

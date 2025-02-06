@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 // Create Vendor Context
 const VendorContext = createContext();
@@ -7,8 +7,17 @@ const VendorContext = createContext();
 export const VendorProvider = ({ children }) => {
   const [vendor, setVendor] = useState(null);
 
+  // Load vendor data from localStorage if it exists
+  useEffect(() => {
+    const storedVendor = localStorage.getItem("vendor");
+    if (storedVendor) {
+      setVendor(JSON.parse(storedVendor));
+    }
+  }, []);
+
   const login = (vendorData) => {
     setVendor(vendorData);
+    localStorage.setItem("vendor", JSON.stringify(vendorData)); // Store vendor data in localStorage
   };
 
   const logout = () => {

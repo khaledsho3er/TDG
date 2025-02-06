@@ -7,40 +7,58 @@ import { Box } from "@mui/material";
 import PartnersSection from "../Components/home/partners";
 import ProductSlider from "../Components/home/bestSeller";
 import Footer from "../Components/Footer";
-import LinearProgress from "@mui/material/LinearProgress";
 import ScrollAnimation from "../Context/scrollingAnimation"; // Import the animation wrapper
+
+const videos = [
+  "/Assets/Video-hero/herovideo.mp4",
+  "/Assets/TDGLoadingScreen.mp4",
+  "/Assets/Video-hero/herovideo.mp4",
+];
 
 function Home() {
   const videoRef = useRef(null);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
 
-  // Handle video metadata load (get video duration)
-  const handleLoadedMetadata = () => {
-    const video = videoRef.current;
-    setVideoDuration(video.duration);
-    console.log("Video Duration:", video.duration);
-  };
   useEffect(() => {
     const video = videoRef.current;
 
+    const handleLoadedMetadata = () => {
+      setVideoDuration(video.duration);
+    };
+
     const handleTimeUpdate = () => {
       if (videoDuration) {
-        const progressValue = (video.currentTime / videoDuration) * 100;
-        setProgress(progressValue);
+        setProgress((video.currentTime / videoDuration) * 100);
       }
     };
 
-    if (video) {
-      video.addEventListener("timeupdate", handleTimeUpdate);
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    const handleEnded = () => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+      setProgress(0);
+    };
 
-      return () => {
-        video.removeEventListener("timeupdate", handleTimeUpdate);
-        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      };
+    if (video) {
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      video.addEventListener("timeupdate", handleTimeUpdate);
+      video.addEventListener("ended", handleEnded);
     }
-  }, [videoDuration]);
+
+    return () => {
+      if (video) {
+        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        video.removeEventListener("timeupdate", handleTimeUpdate);
+        video.removeEventListener("ended", handleEnded);
+      }
+    };
+  }, [videoDuration, currentVideoIndex]);
+
+  // Handle clicking on dots
+  const handleDotClick = (index) => {
+    setCurrentVideoIndex(index);
+    setProgress(0);
+  };
 
   return (
     <div className="home">
@@ -48,9 +66,8 @@ function Home() {
         <video
           ref={videoRef}
           className="hero-video-element"
-          src="/Assets/Video-hero/herovideo.mp4"
+          src={videos[currentVideoIndex]}
           autoPlay
-          loop
           muted
           playsInline
         ></video>
@@ -62,18 +79,32 @@ function Home() {
           <video
             ref={videoRef}
             className="hero-video-element"
-            src="/Assets/Video-hero/herovideo.mp4"
+            src={videos[currentVideoIndex]}
             autoPlay
-            loop
             muted
             playsInline
           ></video>
-          <div className="progress-container-hero">
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              className="custom-progress-bar-hero"
-            />
+
+          {/* Progress Dots & Circles */}
+          <div className="video-progress-container">
+            {videos.map((_, index) => (
+              <div
+                key={index}
+                className={`video-progress-dot ${
+                  currentVideoIndex === index ? "active" : "circle"
+                }`}
+                onClick={() => handleDotClick(index)}
+              >
+                {currentVideoIndex === index && (
+                  <div
+                    className="video-progress-bar"
+                    style={{
+                      width: `${progress}%`,
+                    }}
+                  ></div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -208,9 +208,11 @@ const NotificationsPage = () => {
               <p>Date: {formatDate(selectedNotification.date)}</p>{" "}
               {/* Formatted date */}
               <div className="notifiy-overlay-buttons">
-                <Link to={`/orderDetail/${selectedNotification.orderId}`}>
+                {selectedNotification.type === "order" ? (
                   <button>View Order Details</button>
-                </Link>
+                ) : (
+                  <button>View Quotation Details</button>
+                )}
                 <button onClick={closeOverlay}>Close</button>
               </div>
             </div>

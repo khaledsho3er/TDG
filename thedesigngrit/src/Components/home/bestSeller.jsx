@@ -54,7 +54,7 @@ const ProductSlider = () => {
             <div className="product-info">
               <h3 className="product-title-bestseller">{product.name}</h3>
               <div className="product-price-bestseller">
-                ${product.price.toFixed(2)}
+                {product.price.toFixed(2)} LE
               </div>
             </div>
           </div>

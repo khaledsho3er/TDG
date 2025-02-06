@@ -9,6 +9,9 @@ import OrdersPopUp from "../Components/profilePopup/ordersPopup";
 import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
 import ShippingInfoPopup from "../Components/profilePopup/Shipping";
 import WishlistPage from "../Components/account/wishlist";
+import { useLocation } from "react-router-dom";
+import Footer from "../Components/Footer";
+
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
   const [selectedSection, setSelectedSection] = useState("profile");
@@ -21,8 +24,14 @@ const MyAccount = () => {
     phoneNumber: "",
     gender: "",
   });
-  const navigate = useNavigate();
+  const location = useLocation();
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (location.state?.section) {
+      setSelectedSection(location.state.section);
+    }
+  }, [location]);
   useEffect(() => {
     // Redirect to login if user is not logged in
     if (!userSession) {
@@ -106,6 +115,7 @@ const MyAccount = () => {
           <div className="content">{sections[selectedSection]}</div>
         </div>
       </Box>
+      <Footer />
     </Box>
   );
 };
