@@ -11,11 +11,34 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
-
+import axios from "axios";
 const DashboardVendor = () => {
   const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [percentageChange, setPercentageChange] = useState(0);
+  
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!vendor?.brandId) return;
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/orders/vendor/best-sellers/${vendor.brandId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
+  }, [vendor]);
 
   // Fetch order data from JSON
   useEffect(() => {
@@ -30,6 +53,10 @@ const DashboardVendor = () => {
         }
         const data = await response.json();
         setOrders(data);
+
+          // Calculate total orders
+          const total = data.reduce((sum, order) => sum + order.total, 0);
+          setTotalOrders(total);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -37,6 +64,22 @@ const DashboardVendor = () => {
 
     fetchOrders();
   }, [vendor]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/orders/order/percentage-change');
+        const data = await response.json();
+        setTotalOrders(data.totalOrders);
+        setPercentageChange(data.percentageChange);
+      } catch (error) {
+        console.error("Error fetching order data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   if (selectedOrder) {
     return (
       <OrderDetails
@@ -67,8 +110,9 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Total Orders</h3>
-            <p>LE 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            
+            <p>LE {totalOrders}</p>
+            <span>▲ {percentageChange}%  Compared to Last Month</span>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -78,7 +122,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Active Orders</h3>
             <p>LE 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            <span>▲ Compared to Last Month</span>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -88,7 +132,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
             <p>LE 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            <span>▲ 34.7%  Compared to Last Month</span>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -121,34 +165,18 @@ const DashboardVendor = () => {
         </div>
 
         <div className="best-sellers-vendor">
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <h3>Best Sellers</h3>
-          </Box>
-          <hr></hr>
-          <ul>
-            <li>
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
-            <li>
-              {" "}
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
-            <li>
-              {" "}
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
-          </ul>
-        </div>
+  <h3>Best Sellers</h3> 
+  <hr />
+  <ul>
+    {products.map((product, index) => (
+      <li key={index}>
+        <img src={`http://localhost:5000/uploads/${product.image}`} alt={product.name} />
+        {product.name} - LE {product.price} ({product.totalSold} sales)
+      </li>
+    ))}
+  </ul>
+</div>
+
       </section>
 
       {/* Recent Orders & Best Sellers */}
