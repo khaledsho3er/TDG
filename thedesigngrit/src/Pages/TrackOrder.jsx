@@ -77,8 +77,14 @@ function TrackOrder() {
                   }}
                 >
                   <Box>
-                    <h3 style={{ fontWeight: "bold", fontSize: "26px" }}>
-                      Order :{selectedOrder._id}
+                    <h3
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "20px",
+                        fontFamily: "Montserrat",
+                      }}
+                    >
+                      Order: {selectedOrder._id}
                     </h3>
                     <Box sx={{ display: "flex", gap: 2 }}>
                       <p>
@@ -87,6 +93,13 @@ function TrackOrder() {
                     </Box>
                   </Box>
                   <select
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "4px",
+                      padding: "5px",
+                      width: "30%",
+                      height: "40px",
+                    }}
                     value={selectedSubOrder.productId.name}
                     onChange={(e) =>
                       setSelectedSubOrder(
@@ -115,11 +128,39 @@ function TrackOrder() {
                         {selectedOrder.orderStatus}
                       </span>
                     </Box>
-                    <Box sx={{ display: "flex", gap: 2 }}>
-                      <ShoppingCartIcon />
-                      <LocalShippingIcon />
-                      <LuPackage />
-                    </Box>
+                    <div className="progress-container-track">
+                      {["Pending", "Shipping", "Delivered"].map((step, i) => {
+                        const isCompleted =
+                          (selectedOrder.orderStatus === "Pending" &&
+                            i === 0) ||
+                          (selectedOrder.orderStatus === "Shipped" && i <= 1) ||
+                          selectedOrder.orderStatus === "Delivered";
+
+                        return (
+                          <div
+                            key={i}
+                            className={`progress-step ${
+                              isCompleted ? "completed" : ""
+                            }`}
+                          >
+                            <div
+                              className={`step-circle-track ${
+                                isCompleted ? "completed" : ""
+                              }`}
+                            >
+                              {step === "Pending" ? (
+                                <ShoppingCartIcon />
+                              ) : step === "Shipping" ? (
+                                <LocalShippingIcon />
+                              ) : (
+                                <LuPackage />
+                              )}
+                            </div>
+                            <span className="step-label-track">{step}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p>Subtotal:</p>
