@@ -33,16 +33,17 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
     <Box
       sx={{
         position: "fixed",
-        top: 0,
-        right: 0,
-        width: "500px",
-        height: "100%",
+        top: 50,
+        right: 10,
+        width: "400px",
+        height: "55%",
         backgroundColor: "white",
         boxShadow: "-2px 0 5px rgba(0,0,0,0.2)",
         display: "flex",
         flexDirection: "column",
         padding: "16px",
         zIndex: 1000,
+        borderRadius: "8px",
       }}
       className="Cart-popup"
     >
@@ -94,9 +95,17 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
 
                   {/* Right: Name & Price */}
                   <Box>
-                    <Typography variant="body1">{item.name}</Typography>
-                    <Typography variant="body2" sx={{ color: "gray" }}>
-                      {`${item.quantity} x  $${item.unitPrice.toFixed(2)}`}
+                    <Typography
+                      variant="body1"
+                      sx={{ fontFamily: "Montserrat" }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "gray", fontFamily: "Montserrat" }}
+                    >
+                      {`${item.quantity} x  ${item.unitPrice.toFixed(2)}LE`}
                     </Typography>
                   </Box>
                 </Box>
@@ -118,7 +127,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             }}
           >
             <Typography sx={{ fontFamily: "Montserrat", fontSize: "18px" }}>
-              {`Total: $${total.toFixed(2)}`}
+              {`Total: ${total.toFixed(2)}LE`}
             </Typography>
           </Box>
 
@@ -126,7 +135,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
           <Button
             variant="contained"
             color="primary"
-            sx={{ marginTop: "10px" }}
+            sx={{ marginTop: "10px", fontFamily: "Horizon" }}
             onClick={handleCheckoutClick} // Use the corrected function
           >
             Checkout

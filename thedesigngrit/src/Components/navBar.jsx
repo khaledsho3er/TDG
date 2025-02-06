@@ -206,7 +206,6 @@ function Header() {
     handleMenuClose(); // Close the menu after clicking
   };
 
-
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
   };
@@ -224,7 +223,7 @@ function Header() {
   const handleShopClose = () => {
     setAnchorEls(null);
   };
-  
+
   return (
     <Box
       sx={{
@@ -252,10 +251,19 @@ function Header() {
               style={{ width: "69px", padding: "12px" }}
             />
           </Link>
-
-          <IconButton onClick={toggleMenu}>
-            <MenuIcon />
-          </IconButton>
+          <Box sx={{ display: "flex", gap: "1rem", flexDirection: "row" }}>
+            <IconButton onClick={handleFavoritesToggle}>
+              <FavoriteBorderIcon fontSize="20px" />
+            </IconButton>
+            <IconButton onClick={handleCartToggle}>
+              <Badge badgeContent={totalCartItems} color="error">
+                <ShoppingCartIcon fontSize="20px" />
+              </Badge>
+            </IconButton>
+            <IconButton onClick={toggleMenu}>
+              <MenuIcon />
+            </IconButton>
+          </Box>
         </Box>
       )}
       {/* Top Header */}
@@ -430,9 +438,7 @@ function Header() {
           </Menu>
           {/* Search */}
           <Box className="search-bar">
-            <SearchIcon
-              sx={{ color: "#999", cursor: "pointer" }}
-            />
+            <SearchIcon sx={{ color: "#999", cursor: "pointer" }} />
             <InputBase
               placeholder="Search by category, brand, product type, or name"
               fullWidth
@@ -445,41 +451,37 @@ function Header() {
 
             {/* Suggestion Dropdown */}
             {Array.isArray(suggestions) && suggestions.length > 0 && (
-  <Box className="suggestions-dropdown">
-    {suggestions.map((suggestion) => (
-      <Box 
-        key={suggestion._id} 
-        className="suggestion-item" 
-        onClick={() => handleSuggestionClick(suggestion)}
-      >
-        {/* Product Image */}
-        {suggestion.mainImage && (
-          <img
-            src={`http://localhost:5000/uploads/${suggestion.mainImage}`} 
-            alt={suggestion.name} 
-            className="suggestion-image"
-          />
-        )}
+              <Box className="suggestions-dropdown">
+                {suggestions.map((suggestion) => (
+                  <Box
+                    key={suggestion._id}
+                    className="suggestion-item"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {/* Product Image */}
+                    {suggestion.mainImage && (
+                      <img
+                        src={`http://localhost:5000/uploads/${suggestion.mainImage}`}
+                        alt={suggestion.name}
+                        className="suggestion-image"
+                      />
+                    )}
 
-        {/* Name & Category */}
-        <Box className="suggestion-text">
-          <Typography className="suggestion-name">
-            {suggestion.name}
-          </Typography>
-          {suggestion.category && (
-            <Typography className="suggestion-category">
-              {suggestion.category.name}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-    ))}
-  </Box>
-)}
-
-
-
-
+                    {/* Name & Category */}
+                    <Box className="suggestion-text">
+                      <Typography className="suggestion-name">
+                        {suggestion.name}
+                      </Typography>
+                      {suggestion.category && (
+                        <Typography className="suggestion-category">
+                          {suggestion.category.name}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
 
           {/* Icons */}
