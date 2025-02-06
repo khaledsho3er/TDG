@@ -110,7 +110,6 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Total Orders</h3>
-            
             <p>LE {totalOrders}</p>
             <span>▲ {percentageChange}%  Compared to Last Month</span>
           </div>

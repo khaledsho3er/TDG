@@ -11,6 +11,13 @@ const OrderDetails = ({ order, onBack }) => {
   const [error] = useState(null); // Error state
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
+  const brandId = order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
+
+  // Filter products based on brandId
+  const filteredProducts = order.cartItems.filter(
+    (product) => product.brandId === brandId
+  );
+
   return (
     <div>
       <header className="dashboard-header-vendor">
@@ -527,7 +534,7 @@ const OrderDetails = ({ order, onBack }) => {
             </tr>
           </thead>
           <tbody>
-            {order.cartItems.map((product, index) => (
+          {filteredProducts.map((product, index) => (
               <tr key={index}>
                 <td>{product.name}</td>
                 <td>{product._id}</td>
