@@ -75,6 +75,7 @@ function TrackOrder() {
                     justifyContent: "space-between",
                     marginBottom: "20px",
                   }}
+                  className="order-card-title"
                 >
                   <Box>
                     <h3
@@ -121,6 +122,7 @@ function TrackOrder() {
                 <div className="order-card">
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
+                    className="order-card-title"
                   >
                     <Box>
                       <h2>Order Summary</h2>
@@ -194,7 +196,18 @@ function TrackOrder() {
                   </Box>
                   <div className="item">
                     <div className="item-details">
-                      <Box>
+                      <Box
+                        className="suborder-item-details"
+                        sx={{
+                          display: "flex",
+                          gap: "10px",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "baseline",
+                          marginTop: "10px",
+                          margin: "auto",
+                        }}
+                      >
                         <h5>{selectedSubOrder.productId.name}</h5>
                         <p>{selectedSubOrder.totalPrice} LE</p>
                         <p>Quantity: {selectedSubOrder.quantity}</p>

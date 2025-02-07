@@ -1,18 +1,25 @@
 // RequestInfoPopup.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
 import ViewInStorePopup from "./viewInStore";
 import RequestQuote from "./RequestInfo";
-
+import { UserContext } from "../../utils/userContext";
+import { useNavigate } from "react-router-dom";
 const RequestInfoPopup = ({ open, onClose, productId }) => {
+  const { userSession } = useContext(UserContext);
+  const navigate = useNavigate();
   // Add productId here
   const [isViewInStoreOpen, setIsViewInStoreOpen] = useState(false);
   const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
 
   const handleViewInStoreClick = () => {
-    setIsViewInStoreOpen(true);
-    onClose();
+    if (!userSession) {
+      navigate("/login");
+    } else {
+      setIsViewInStoreOpen(true);
+      onClose();
+    }
   };
 
   const handleCloseViewInStore = () => {
@@ -20,8 +27,12 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
   };
 
   const handleRequestQuoteClick = () => {
-    setIsRequestQuoteOpen(true);
-    onClose();
+    if (!userSession) {
+      navigate("/login");
+    } else {
+      setIsRequestQuoteOpen(true);
+      onClose();
+    }
   };
 
   const handleCloseRequestQuote = () => {

@@ -38,11 +38,11 @@ const WishlistPage = () => {
         variant="h4"
         sx={{
           textAlign: "left",
-          marginBottom: "5  0px",
+          marginBottom: "50px",
           fontFamily: "Horizon",
         }}
       >
-        Your Wishlist
+        Wishlist
       </Typography>
 
       {/* If there are no favorite products, show a message */}

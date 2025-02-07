@@ -993,12 +993,12 @@
   h5 {
     font-size: 14px;
     text-align: left;
-    margin-left: -50px;
+    margin-left: -20px;
   }
   .concept-subtitle-text {
     margin: 0;
     margin: auto;
-    margin-left: -50px;
+    margin-left: -22px;
   }
   .concept-progress-container {
     padding-left: 120px;
@@ -1025,6 +1025,36 @@
 
   .faq-answer {
     font-size: 12px;
+  }
+  .slider-container-home {
+    width: 80%;
+    margin-left: 77px;
+  }
+  .slider-controls-home {
+    margin-right: 71px;
+  }
+  .Caption-careers {
+    padding: 50px 39px 10px 39px;
+    font-size: 16px;
+    line-height: 30px;
+  }
+  .progress-container-track {
+    width: 100%;
+  }
+  .order-details {
+    width: 100%;
+    margin-left: 0;
+  }
+  .order-card-title {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 27px;
+  }
+  .suborder-item-details {
+    flex-direction: row;
+    gap: 1px;
+    align-items: baseline;
   }
 }
 
