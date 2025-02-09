@@ -10,17 +10,18 @@ import {
   FormHelperText,
 } from "@mui/material";
 import axios from "axios";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useNavigate } from "react-router-dom";
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
   const [brandId, setBrandId] = useState(null);
+  const navigate = useNavigate();
   const [vendorData, setVendorData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    employeeNumber: "9921",
+    employeeNumber: Math.floor(1000 + Math.random() * 9000).toString(),
     password: "",
     phoneNumber: "",
     tier: "3",
@@ -160,6 +161,7 @@ function Signupvendor() {
             fees: 0,
             createdAt: "",
           });
+          navigate("/signin-vendor");
         } else {
           console.error("Failed to submit brand data");
         }
@@ -224,7 +226,6 @@ function Signupvendor() {
       case 1:
         return (
           <>
-         
             <TextField
               label="Vendor First Name"
               name="firstName"
@@ -271,7 +272,6 @@ function Signupvendor() {
       case 2:
         return (
           <>
-           
             <TextField
               label="Brand Name"
               name="brandName"
@@ -373,7 +373,6 @@ function Signupvendor() {
       case 3:
         return (
           <>
-
             <TextField
               label="Shipping Policy"
               name="shippingPolicy"
@@ -439,61 +438,66 @@ function Signupvendor() {
 
   return (
     <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      backgroundImage: "url('/Assets/signin.jpeg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    <Box
       sx={{
-        content: '""',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backdropFilter: "blur(5px)", // Adds blur to the background
-        backgroundColor: "rgba(0, 0, 0, 0.4)", // Adds a semi-transparent dark overlay
-        zIndex: 1,
-      }}
-    ></Box>
-
-    <Box
-      sx={{
-        width: "80%",
-        maxWidth: "600px",
-        backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent form
-        padding: 3,
-        borderRadius: 2,
-        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.13)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundImage: "url('/Assets/signin.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         position: "relative",
-        zIndex: 2, // Ensures the form is above the blur overlay
+        overflow: "hidden",
       }}
     >
-      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
-        Vendor and Brand Registration
-      </Typography>
-      <form onSubmit={handleNext}>
-        {renderPhaseContent()}
-        <Button
-          type="submit"
-          fullWidth
-          sx={{ marginTop: 2, color: "white", backgroundColor: "#2d2d2d","&:hover": {
-      backgroundColor: "#4a4a4a", // New color on hover
-    }, }}
-        >
-          {currentPhase === 3 ? "Finish" : "Next"}
-        </Button>
-      </form>
+      <Box
+        sx={{
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backdropFilter: "blur(5px)", // Adds blur to the background
+          backgroundColor: "rgba(0, 0, 0, 0.4)", // Adds a semi-transparent dark overlay
+          zIndex: 1,
+        }}
+      ></Box>
+
+      <Box
+        sx={{
+          width: "80%",
+          maxWidth: "600px",
+          backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent form
+          padding: 3,
+          borderRadius: 2,
+          boxShadow: "0 8px 20px rgba(0, 0, 0, 0.13)",
+          position: "relative",
+          zIndex: 2, // Ensures the form is above the blur overlay
+        }}
+      >
+        <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+          Vendor and Brand Registration
+        </Typography>
+        <form onSubmit={handleNext}>
+          {renderPhaseContent()}
+          <Button
+            type="submit"
+            fullWidth
+            sx={{
+              marginTop: 2,
+              color: "white",
+              backgroundColor: "#2d2d2d",
+              "&:hover": {
+                backgroundColor: "#4a4a4a", // New color on hover
+              },
+            }}
+          >
+            {currentPhase === 3 ? "Finish" : "Next"}
+          </Button>
+        </form>
+      </Box>
     </Box>
-  </Box>
   );
 }
 
