@@ -10,6 +10,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import axios from "axios";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -19,7 +20,7 @@ function Signupvendor() {
     firstName: "",
     lastName: "",
     email: "",
-    employeeNumber: "10021",
+    employeeNumber: "9921",
     password: "",
     phoneNumber: "",
     tier: "3",
@@ -223,9 +224,7 @@ function Signupvendor() {
       case 1:
         return (
           <>
-            <Typography variant="h5" gutterBottom>
-              Vendor Signup
-            </Typography>
+         
             <TextField
               label="Vendor First Name"
               name="firstName"
@@ -272,9 +271,7 @@ function Signupvendor() {
       case 2:
         return (
           <>
-            <Typography variant="h5" gutterBottom>
-              Brand Profile
-            </Typography>
+           
             <TextField
               label="Brand Name"
               name="brandName"
@@ -376,9 +373,7 @@ function Signupvendor() {
       case 3:
         return (
           <>
-            <Typography variant="h5" gutterBottom>
-              Additional Brand Information
-            </Typography>
+
             <TextField
               label="Shipping Policy"
               name="shippingPolicy"
@@ -420,7 +415,7 @@ function Signupvendor() {
               margin="normal"
             />
             <TextField
-              label="Tiktok URL"
+              label="TikTok URL"
               name="tiktokURL"
               value={brandData.tiktokURL || ""}
               onChange={(e) => handleInputChange(e, 3)}
@@ -435,15 +430,6 @@ function Signupvendor() {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Fees"
-              name="fees"
-              value={brandData.fees || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              fullWidth
-              margin="normal"
-              type="number"
-            />
           </>
         );
       default:
@@ -453,41 +439,61 @@ function Signupvendor() {
 
   return (
     <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      backgroundImage: "url('/Assets/signin.jpeg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      position: "relative",
+      overflow: "hidden",
+    }}
+  >
+    <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backdropFilter: "blur(5px)", // Adds blur to the background
+        backgroundColor: "rgba(0, 0, 0, 0.4)", // Adds a semi-transparent dark overlay
+        zIndex: 1,
+      }}
+    ></Box>
+
+    <Box
+      sx={{
+        width: "80%",
+        maxWidth: "600px",
+        backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent form
         padding: 3,
-        backgroundColor: "#f5f5f5",
         borderRadius: 2,
-        boxShadow: 3,
-        maxWidth: 400,
-        margin: "auto",
+        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.13)",
+        position: "relative",
+        zIndex: 2, // Ensures the form is above the blur overlay
       }}
     >
-      {renderPhaseContent()}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          marginTop: 2,
-        }}
-      >
-        {currentPhase > 1 && (
-          <Button
-            variant="outlined"
-            onClick={() => setCurrentPhase(currentPhase - 1)}
-          >
-            Back
-          </Button>
-        )}
-        <Button variant="contained" color="primary" onClick={handleNext}>
-          {currentPhase === 3 ? "Submit" : "Next"}
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+        Vendor and Brand Registration
+      </Typography>
+      <form onSubmit={handleNext}>
+        {renderPhaseContent()}
+        <Button
+          type="submit"
+          fullWidth
+          sx={{ marginTop: 2, color: "white", backgroundColor: "#2d2d2d","&:hover": {
+      backgroundColor: "#4a4a4a", // New color on hover
+    }, }}
+        >
+          {currentPhase === 3 ? "Finish" : "Next"}
         </Button>
-      </Box>
+      </form>
     </Box>
+  </Box>
   );
 }
 
