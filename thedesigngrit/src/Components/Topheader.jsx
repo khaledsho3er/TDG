@@ -44,6 +44,11 @@ function PageDescription({ category }) {
           fontWeight: "Bold",
           color: "#EFEBE8",
           paddingLeft: 13,
+          "@media (max-width: 768px)": {
+            fontSize: "24px",
+            textAlign: "start",
+            paddingLeft: "20px",
+          },
         }}
       >
         {category?.name || "Category Name Not Available"}
@@ -60,6 +65,10 @@ function PageDescription({ category }) {
             paddingRight: 20,
             display: "flex",
             lineHeight: "1.5",
+            "@media (max-width: 768px)": {
+              paddingLeft: "20px",
+              paddingRight: "20px",
+            },
           }}
         >
           <span>

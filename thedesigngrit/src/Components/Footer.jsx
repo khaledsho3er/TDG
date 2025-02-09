@@ -17,14 +17,16 @@ function Footer() {
     <Box
       sx={{
         bgcolor: "#f7f2f2",
-        padding: { xs: 2, md: 5 }, // Adjust padding for mobile and desktop
+        padding: { xs: 2, md: 5 },
         paddingBottom: 1,
         marginTop: 2,
         paddingTop: { xs: 3, md: 5 },
         width: "100%",
-        maxWidth: "100vw",
+        minWidth: "99.4vw",
         boxSizing: "border-box",
-        overflow: "hidden",
+        position: "relative",
+        left: 0,
+        right: 0,
       }}
     >
       {/* Main Footer Content */}

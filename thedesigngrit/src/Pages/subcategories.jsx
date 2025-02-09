@@ -4,7 +4,6 @@ import Header from "../Components/navBar";
 import { Link, useParams } from "react-router-dom";
 import PageDicription from "../Components/Topheader";
 
-
 function Subcategories() {
   const [subCategories, setSubCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,29 +65,33 @@ function Subcategories() {
       {category && <PageDicription category={category} />}
       {subCategories.length > 0 ? (
         <Box className="subcategory-container">
-
-  {subCategories.map((subCategory, index) => (
-    <Box key={subCategory._id} className={`subcategory-box ${index % 2 !== 0 ? "reverse" : ""}`}>
-      <img
-        src={`http://localhost:5000/uploads/${subCategory.image}`}
-        alt={subCategory.name}
-        className="subcategory-image"
-      />
-      <Box className="subcategory-content">
-        <Typography variant="h3" className="subcategory-title">{subCategory.name}</Typography>
-        <Typography variant="h2" className="subcategory-description">
-          {subCategory.description}
-        </Typography>
-        <Link
-          to={`/products/${subCategory._id}/${subCategory.name}`}
-          className="subcategory-button"
-        >
-          Shop Now
-        </Link>
-      </Box>
-    </Box>
-  ))}
-</Box>
+          {subCategories.map((subCategory, index) => (
+            <Box
+              key={subCategory._id}
+              className={`subcategory-box ${index % 2 !== 0 ? "reverse" : ""}`}
+            >
+              <img
+                src={`http://localhost:5000/uploads/${subCategory.image}`}
+                alt={subCategory.name}
+                className="subcategory-image"
+              />
+              <Box className="subcategory-content">
+                <Typography variant="h3" className="subcategory-title">
+                  {subCategory.name}
+                </Typography>
+                <Typography variant="h2" className="subcategory-description">
+                  {subCategory.description}
+                </Typography>
+                <Link
+                  to={`/products/${subCategory._id}/${subCategory.name}`}
+                  className="subcategory-button"
+                >
+                  Shop Now
+                </Link>
+              </Box>
+            </Box>
+          ))}
+        </Box>
       ) : (
         <Box>No subcategories found</Box>
       )}

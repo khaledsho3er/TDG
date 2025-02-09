@@ -22,11 +22,13 @@
     background-size: cover;
   }
 
-  .login-form,
-  .signup-form-container {
+  .login-form {
     width: 90%;
-    height: 80%;
-    padding: 20px;
+    height: 66%;
+  }
+  .signup-form-container {
+    width: 95%;
+    height: 72%;
   }
 
   .search-bar,
@@ -668,6 +670,10 @@
     width: 100%;
     margin-left: 10px;
   }
+  .concept-title {
+    padding: 20px;
+    width: 100%;
+  }
 }
 /*Job Description*/
 /* General styles are unchanged from the original */
@@ -778,6 +784,34 @@
   }
   .shop-button {
     width: 43%;
+  }
+  .MuiPaper-root {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .product-image-home img {
+    width: 100%;
+    height: auto;
+  }
+
+  .MuiDialogContent-root {
+    padding: 16px;
+  }
+
+  .product-card {
+    flex: 0 0 100%;
+  }
+  .subcategory-box,
+  .subcategory-box.reverse {
+    flex-direction: column;
+    width: 100%;
+  }
+  .subcategory-content {
+    align-items: center;
+  }
+  .subcategory-image {
+    width: 100%;
   }
 }
 
@@ -1007,6 +1041,19 @@
   .right-card {
     display: none !important; /* Ensure they are hidden */
   }
+
+  .concept-cards-container {
+    justify-content: center; /* Ensure the middle card stays centered */
+    gap: 0; /* Remove unnecessary gap */
+  }
+  .slider-container-home {
+    padding: 1rem;
+  }
+
+  .product-card {
+    width: 100%; /* Adjust card size for smaller screens */
+    padding: 0; /* Remove extra padding */
+  }
 }
 
 @media (max-width: 480px) {
@@ -1026,10 +1073,10 @@
   .faq-answer {
     font-size: 12px;
   }
-  .slider-container-home {
+  /* .slider-container-home {
     width: 80%;
     margin-left: 77px;
-  }
+  } */
   .slider-controls-home {
     margin-right: 71px;
   }
