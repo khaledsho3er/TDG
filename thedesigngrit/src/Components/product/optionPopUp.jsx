@@ -85,6 +85,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
       <ViewInStorePopup
         open={isViewInStoreOpen}
         onClose={handleCloseViewInStore}
+        productId={productId}
       />
 
       {/* RequestQuote Popup */}

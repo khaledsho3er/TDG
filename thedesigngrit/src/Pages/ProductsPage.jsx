@@ -12,8 +12,15 @@ function ProductsPage() {
   const { subcategoryId, subcategoryName } = useParams();
   const [favorites, setFavorites] = useState([]);
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
+  const [filters, setFilters] = useState({
+    brands: [],
+    colors: [],
+    tags: [],
+    priceRange: [349, 61564],
+  });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -39,6 +46,7 @@ function ProductsPage() {
         );
         const data = await response.json();
         setProducts(data);
+        setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -65,7 +73,7 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    let sortedProducts = [...products];
+    let sortedProducts = [...filteredProducts];
     switch (sortOption) {
       case "Newest":
         sortedProducts.sort(
@@ -87,8 +95,28 @@ function ProductsPage() {
       default:
         break;
     }
-    setProducts(sortedProducts);
-  }, [sortOption, products]);
+    setFilteredProducts(sortedProducts);
+  }, [sortOption, filteredProducts]);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+    const filtered = products.filter((product) => {
+      const matchesBrand =
+        newFilters.brands.length === 0 ||
+        newFilters.brands.includes(product.brand);
+      const matchesColor =
+        newFilters.colors.length === 0 ||
+        newFilters.colors.some((color) => product.colors.includes(color));
+      const matchesTag =
+        newFilters.tags.length === 0 ||
+        newFilters.tags.some((tag) => product.tags.includes(tag));
+      const matchesPrice =
+        product.price >= newFilters.priceRange[0] &&
+        product.price <= newFilters.priceRange[1];
+      return matchesBrand && matchesColor && matchesTag && matchesPrice;
+    });
+    setFilteredProducts(filtered);
+  };
 
   return (
     <Box>
@@ -100,13 +128,18 @@ function ProductsPage() {
       <Grid container spacing={2} sx={{ padding: 2 }}>
         {/* Filter section */}
         <Grid item xs={12} sm={4} md={3}>
-          <FilterSection />
+          <FilterSection
+            onFilterChange={handleFilterChange}
+            products={products}
+          />
         </Grid>
 
         {/* Product cards */}
         <Grid item xs={12} sm={8} md={9}>
-
-          <ProductCards products={products} onToggleFavorite={toggleFavorite} />
+          <ProductCards
+            products={filteredProducts}
+            onToggleFavorite={toggleFavorite}
+          />
         </Grid>
       </Grid>
 

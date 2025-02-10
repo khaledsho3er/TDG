@@ -844,16 +844,22 @@ body::-webkit-scrollbar {
 
 /*Conecpts Section*/
 .concept-explore-container {
-  padding: 20px 80px;
+  padding: 20px clamp(10px, 5vw, 80px); /* Adjust padding dynamically */
+  max-width: 100%; /* Prevents overflow */
+  box-sizing: border-box; /* Ensures padding doesn't add extra width */
   background-color: #fff;
   position: relative;
 }
 
 .concept-title-container {
-  text-align: right;
-  padding-bottom: 25px;
-  padding-top: 50px;
-  margin: -20px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 5vw; /* Adjusts spacing dynamically */
+  flex-wrap: wrap; /* Ensures content doesn't overflow */
+  margin: 40px 0;
+  padding-bottom: 20px;
+  padding-top: 80px;
 }
 
 .concept-title {
@@ -1427,6 +1433,7 @@ body::-webkit-scrollbar {
   overflow: hidden;
   background-color: #fff;
   margin-bottom: 3rem;
+  box-sizing: border-box; /* Ensures padding is included in the total width */
 }
 
 .slider-title {
@@ -1440,26 +1447,28 @@ body::-webkit-scrollbar {
 }
 
 .slider-content {
-  max-width: auto;
+  max-width: 100%; /* Ensures no extra space */
   margin: 0 auto;
   display: flex;
-  gap: 0rem;
-  padding: 1rem;
+  gap: 0; /* Removes unnecessary gaps */
+  padding: 0; /* Removes extra padding */
+  box-sizing: border-box; /* Include padding in width */
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .product-card {
-  min-width: 100%;
-  flex: 0 0 25%;
-  padding: 0 1rem;
+  flex: 0 0 auto; /* Prevents shrinking or growing */
+  width: 30%; /* Ensures full width in the slider */
+  padding: 0 0.5rem; /* Slight padding for spacing */
   transition: transform 0.3s ease-in-out;
+  box-sizing: border-box; /* Include padding in width */
 }
 
 .product-image-home {
-  position: relative;
-  aspect-ratio: 1;
+  width: 100%; /* Ensure image takes full width */
+  height: auto; /* Maintain aspect ratio */
   border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: -1rem;
+  object-fit: cover;
 }
 
 .product-image-home img {
@@ -1509,13 +1518,14 @@ body::-webkit-scrollbar {
 .slider-controls-home {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  margin-top: -1rem;
+  align-items: center; /* Align controls centrally */
+  margin-top: 1rem;
 }
 
 .dots {
   display: flex;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 .dot {
@@ -1535,7 +1545,7 @@ body::-webkit-scrollbar {
 .arrows-home {
   display: flex;
   gap: 1rem;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .arrow-home {
@@ -6506,4 +6516,14 @@ input:focus {
   height: 100%;
   background-color: black;
   transition: width 0.2s linear;
+}
+/*View in store*/
+.request-viewInStore-popup-dialog {
+  width: "80%";
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: visible;
+  background-color: #faf9f6;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
 }

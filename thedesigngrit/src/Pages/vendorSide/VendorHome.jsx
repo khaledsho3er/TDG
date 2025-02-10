@@ -16,6 +16,7 @@ import OrderDetails from "../../Components/vendorSide/orderDetails";
 import QuotationsPage from "../../Components/vendorSide/quotationsList";
 import NotificationsPage from "../../Components/vendorSide/notificationPage";
 import NotificationOverlayVendor from "../../Components/vendorSide/notificationOverlay";
+import ViewInStoreVendor from "../../Components/vendorSide/viewInStoreVendor";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
 
@@ -38,6 +39,7 @@ const VendorHome = () => {
     EmployeeSignup: <EmployeeSignup />,
     EmployeePage: <EmployeePage />,
     notifications: <NotificationsPage />,
+    ViewInStoreVendor: <ViewInStoreVendor />,
   };
 
   // Function to render content based on active page

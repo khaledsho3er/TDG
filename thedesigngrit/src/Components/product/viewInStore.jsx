@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useContext } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,21 +12,45 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { UserContext } from "../../utils/userContext";
 
-const ViewInStorePopup = ({ open, onClose }) => {
+const ViewInStorePopup = ({ open, onClose, productId }) => {
   const [confirmationMessage, setConfirmationMessage] = useState(false);
+  const { userSession } = useContext(UserContext);
+  const code = useRef(
+    Math.random().toString(36).substring(2, 10) +
+      new Date().getTime().toString(36)
+  ).current;
+  const prodId = productId;
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/view-in-store/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: code,
+          productId: prodId,
+          userId: userSession.id,
+          userName: `${userSession?.firstName || ""} ${
+            userSession?.lastName || ""
+          }`.trim(),
+          brandId: productId.brandId,
+        }),
+      });
 
-  const productInfo = {
-    code: "123456", // Replace with dynamic code generation
-    userName: "John Doe",
-    productImage: "/Assets/sofabrown.jpg", // Replace with product image URL
-    vendorLogo: "/Assets/Vendors/Istkbal/istikbal-logo.png", // Replace with vendor logo URL
-    vendorName: "Vendor Name",
-  };
-
-  const handleSubmit = () => {
-    // Simulate form submission logic (e.g., saving data to backend)
-    setConfirmationMessage(true);
+      if (response.ok) {
+        const data = await response.json();
+        console.log("ViewInStore entry created:", data);
+        setConfirmationMessage(true);
+      } else {
+        const error = await response.json();
+        console.error("Failed to create ViewInStore entry:", error);
+        alert("Error: " + error.message || "Failed to submit information.");
+      }
+    } catch (err) {
+      console.error("Request error:", err);
+      alert("Something went wrong! Please try again.");
+    }
   };
 
   return (
@@ -93,7 +117,7 @@ const ViewInStorePopup = ({ open, onClose }) => {
               }}
               gutterBottom
             >
-              Your Purchase Code: {productInfo.code}
+              Your Purchase Code: {code}
             </Typography>
             <Typography
               variant="h6"
@@ -127,12 +151,12 @@ const ViewInStorePopup = ({ open, onClose }) => {
                 }}
                 gutterBottom
               >
-                Purchase Code: {productInfo.code}
+                Purchase Code: {code}
               </Typography>
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={4}>
                   <img
-                    src={productInfo.productImage}
+                    src={productId.mainImage}
                     alt="Product"
                     style={{
                       width: "100%",
@@ -146,7 +170,7 @@ const ViewInStorePopup = ({ open, onClose }) => {
                     variant="body1"
                     sx={{ color: "#2d2d2d", fontWeight: "bold" }}
                   >
-                    Product Name: Example Product
+                    Product Name: {productId.name}
                   </Typography>
                   <Box
                     sx={{
@@ -156,10 +180,10 @@ const ViewInStorePopup = ({ open, onClose }) => {
                     }}
                   >
                     <Typography variant="body2" sx={{ color: "#6b7b58" }}>
-                      Vendor: {productInfo.vendorName}
+                      Vendor: {productId.brandName}
                     </Typography>
                     <img
-                      src={productInfo.vendorLogo}
+                      src={productId.brandLogo}
                       alt="Vendor Logo"
                       style={{ width: "100px", height: "auto" }}
                     />

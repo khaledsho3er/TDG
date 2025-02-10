@@ -121,7 +121,9 @@ function Home() {
       </ScrollAnimation>
 
       <ScrollAnimation>
-        <ProductSlider />
+        <Box sx={{ width: "100%" }}>
+          <ProductSlider />
+        </Box>
       </ScrollAnimation>
 
       <ScrollAnimation>
@@ -131,8 +133,9 @@ function Home() {
       <ScrollAnimation>
         <PartnersSection />
       </ScrollAnimation>
-
-      <Footer />
+      <ScrollAnimation>
+        <Footer />
+      </ScrollAnimation>
     </div>
   );
 }
