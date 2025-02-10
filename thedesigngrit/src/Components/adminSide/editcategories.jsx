@@ -101,54 +101,51 @@ const UpdateCategory = ({ category, onBack }) => {
     setSubCategories(updatedSubCategories);
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (!categoryName || !categoryDescription) {
-      alert("Please fill all required fields!");
-      return;
+// Handle form submission
+ // Handle form submission
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  if (!categoryName || !categoryDescription) {
+    alert("Please fill all required fields!");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", categoryName);
+  formData.append("description", categoryDescription);
+  if (categoryImage) {
+    formData.append("image", categoryImage);
+  }
+
+  // Append subcategories
+  subCategories.forEach((subCategory, index) => {
+    const subCategoryData = {
+      name: subCategory.name,
+      description: subCategory.description || "",
+      types: subCategory.types,
+      _id: subCategory._id || undefined, // Keep existing subcategories, create new ones if missing _id
+    };
+    formData.append(`subCategories[${index}]`, JSON.stringify(subCategoryData));
+
+    if (subCategory.image) {
+      formData.append("subCategoryImages", subCategory.image); // Handles subcategory images
     }
+  });
 
-    const formData = new FormData();
-    formData.append("name", categoryName);
-    formData.append("description", categoryDescription);
-
-    if (categoryImage) {
-      formData.append("image", categoryImage);
-    }
-
-    // Convert subCategories to JSON format
-    const formattedSubCategories = subCategories.map((subCategory) => {
-      return {
-        _id: subCategory._id || undefined,
-        name: subCategory.name,
-        description: subCategory.description || "",
-        types: subCategory.types.map((type) =>
-          typeof type === "string"
-            ? { name: type }
-            : { _id: type._id || undefined, name: type.name }
-        ),
-      };
-    });
-
-    formData.append("subCategories", JSON.stringify(formattedSubCategories));
-
-    // Append images separately for subcategories
-    subCategories.forEach((subCategory) => {
-      if (subCategory.image instanceof File) {
-        formData.append("subCategoryImages", subCategory.image);
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/categories/categories/${categoryId}`,
+      {
+        method: "PUT",
+        body: formData,
       }
-    });
+    );
+
+    const text = await response.text();
+    console.log("Response Text:", text);
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/categories/categories/${category._id}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
+      const data = JSON.parse(text);
       if (response.ok) {
         alert("Category updated successfully!");
         onBack();
@@ -156,9 +153,12 @@ const UpdateCategory = ({ category, onBack }) => {
         alert(data.message);
       }
     } catch (error) {
-      alert("Error updating category: " + error.message);
+      alert("Error parsing response: " + error.message);
     }
-  };
+  } catch (error) {
+    alert("Error updating category: " + error.message);
+  }
+};
 
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
