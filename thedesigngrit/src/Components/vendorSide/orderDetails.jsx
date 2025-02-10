@@ -6,12 +6,14 @@ import { FaRegUser } from "react-icons/fa";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import InvoiceDownload from "./invoice";
 
 const OrderDetails = ({ order, onBack }) => {
   const [error] = useState(null); // Error state
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
-  const brandId = order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
+  const brandId =
+    order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
 
   // Filter products based on brandId
   const filteredProducts = order.cartItems.filter(
@@ -132,7 +134,8 @@ const OrderDetails = ({ order, onBack }) => {
                 <MenuItem value="Pending">Pending</MenuItem>{" "}
               
               </Select>*/}
-            <Button
+            <InvoiceDownload
+              order={order}
               sx={{
                 marginTop: "10px",
                 backgroundColor: "#ddd",
@@ -149,7 +152,7 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               <IoMdPrint />
-            </Button>
+            </InvoiceDownload>
           </Box>
         </Box>
         <Box
@@ -534,7 +537,7 @@ const OrderDetails = ({ order, onBack }) => {
             </tr>
           </thead>
           <tbody>
-          {filteredProducts.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <tr key={index}>
                 <td>{product.name}</td>
                 <td>{product._id}</td>

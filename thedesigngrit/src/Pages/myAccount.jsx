@@ -12,6 +12,7 @@ import WishlistPage from "../Components/account/wishlist";
 import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
 import TrackOrder from "./TrackOrder";
+import LoadingScreen from "./loadingScreen";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -26,7 +27,7 @@ const MyAccount = () => {
     gender: "",
   });
   const location = useLocation();
-
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     if (location.state?.section) {
@@ -51,6 +52,8 @@ const MyAccount = () => {
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -61,7 +64,9 @@ const MyAccount = () => {
     logout(); // Call logout from context
     navigate("/home"); // Redirect to home or login page
   };
-
+  if (loading) {
+    return <LoadingScreen />;
+  }
   const sections = {
     profile: <Profile userData={userData} />, // Pass userData as a prop
     orders: <TrackOrder />,

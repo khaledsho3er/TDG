@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import Header from "../Components/navBar";
 import { Link, useParams } from "react-router-dom";
 import PageDicription from "../Components/Topheader";
+import LoadingScreen from "./loadingScreen";
 
 function Subcategories() {
   const [subCategories, setSubCategories] = useState([]);
@@ -52,7 +53,7 @@ function Subcategories() {
   const category = categories.find((cat) => cat._id === categoryId);
 
   if (loading) {
-    return <Box>Loading...</Box>;
+    return <LoadingScreen />;
   }
 
   if (error) {

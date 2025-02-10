@@ -11,6 +11,7 @@ import ReviewBox from "../Components/reviewBox";
 import RequestInfoPopup from "../Components/product/optionPopUp";
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
+import LoadingScreen from "./loadingScreen";
 
 function ProductPage() {
   // const [setShowDropdown] = useState(false);
@@ -53,7 +54,6 @@ function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoading(true); // Start loading
         const response = await fetch(
           `http://localhost:5000/api/products/getsingle/${id}`
         ); // Make an API call to fetch the product by ID
@@ -74,7 +74,7 @@ function ProductPage() {
 
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
-
+  if (loading) return <LoadingScreen />; // Show loading screen while fetching product
   if (!product) return <div>Product not found</div>;
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);

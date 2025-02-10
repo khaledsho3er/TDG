@@ -27,6 +27,7 @@ import { UserContext } from "../utils/userContext";
 import axios from "axios";
 import { useCart } from "../Context/cartcontext";
 import Badge from "@mui/material/Badge";
+import LoadingScreen from "../Pages/loadingScreen";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -53,6 +54,7 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -72,6 +74,8 @@ function Header() {
         setMenuData(data.slice(0, 6)); // Slice the first 6 categories
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -142,6 +146,8 @@ function Header() {
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -223,7 +229,9 @@ function Header() {
   const handleShopClose = () => {
     setAnchorEls(null);
   };
-
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <Box
       sx={{

@@ -7,6 +7,8 @@ import ProductCards from "../Components/Products/Productsgrid";
 import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
+import LoadingScreen from "./loadingScreen";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function ProductsPage() {
   const { subcategoryId, subcategoryName } = useParams();
@@ -15,6 +17,7 @@ function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     brands: [],
     colors: [],
@@ -49,6 +52,8 @@ function ProductsPage() {
         setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false); // إيقاف التحميل بعد اكتمال الجلب
       }
     };
 
@@ -117,6 +122,7 @@ function ProductsPage() {
     });
     setFilteredProducts(filtered);
   };
+  if (loading) return <LoadingScreen />; // عرض شاشة التحميل مباشرة إذا كانت البيانات لم تُحمّل بعد
 
   return (
     <Box>
@@ -125,24 +131,27 @@ function ProductsPage() {
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
 
-      <Grid container spacing={2} sx={{ padding: 2 }}>
-        {/* Filter section */}
-        <Grid item xs={12} sm={4} md={3}>
-          <FilterSection
-            onFilterChange={handleFilterChange}
-            products={products}
-          />
-        </Grid>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Grid container spacing={2} sx={{ padding: 2 }}>
+          {/* Filter section */}
+          <Grid item xs={12} sm={4} md={3}>
+            <FilterSection
+              onFilterChange={handleFilterChange}
+              products={products}
+            />
+          </Grid>
 
-        {/* Product cards */}
-        <Grid item xs={12} sm={8} md={9}>
-          <ProductCards
-            products={filteredProducts}
-            onToggleFavorite={toggleFavorite}
-          />
+          {/* Product cards */}
+          <Grid item xs={12} sm={8} md={9}>
+            <ProductCards
+              products={filteredProducts}
+              onToggleFavorite={toggleFavorite}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-
+      )}
       <Footer />
     </Box>
   );
