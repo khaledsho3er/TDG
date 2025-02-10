@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const UpdateCategory = ({ categoryId, onBack }) => {
+const UpdateCategory = ({ category, onBack }) => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState(null);
@@ -15,19 +15,28 @@ const UpdateCategory = ({ categoryId, onBack }) => {
   });
   const [newType, setNewType] = useState("");
 
-  // Fetch the category data on mount
   useEffect(() => {
+    if (!category || !category._id) {
+      console.error("Category is undefined or missing _id:", category);
+      return;
+    }
+
     const fetchCategory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/categories/categories/${categoryId}`
+          `http://localhost:5000/api/categories/categories/${category._id}`
         );
         const fetchedCategory = response.data;
-        setCategoryName(fetchedCategory.name);
-        setCategoryDescription(fetchedCategory.description);
+
+        setCategoryName(fetchedCategory.name || "");
+        setCategoryDescription(fetchedCategory.description || "");
         setImagePreview(
-          `http://localhost:5000/uploads/${fetchedCategory.image}`
+          fetchedCategory.image
+            ? `http://localhost:5000/uploads/${fetchedCategory.image}`
+            : null
         );
+
+        // Ensure subCategories are set correctly
         setSubCategories(fetchedCategory.subCategories || []);
       } catch (error) {
         console.error("Error fetching category:", error);
@@ -35,9 +44,8 @@ const UpdateCategory = ({ categoryId, onBack }) => {
     };
 
     fetchCategory();
-  }, [categoryId]);
+  }, [category]);
 
-  // Handle main category image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -46,7 +54,6 @@ const UpdateCategory = ({ categoryId, onBack }) => {
     }
   };
 
-  // Handle subcategory image upload
   const handleSubCategoryImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -58,7 +65,6 @@ const UpdateCategory = ({ categoryId, onBack }) => {
     }
   };
 
-  // Add subcategory
   const handleAddSubCategory = () => {
     if (newSubCategory.name.trim()) {
       setSubCategories([...subCategories, { ...newSubCategory, types: [] }]);
@@ -70,22 +76,23 @@ const UpdateCategory = ({ categoryId, onBack }) => {
       });
     }
   };
-  // Add type to a specific subcategory  // Add type to a specific subcategory
+
   const handleAddType = (subCategoryIndex) => {
     if (newType.trim() && subCategoryIndex !== null) {
       const updatedSubCategories = [...subCategories];
-      updatedSubCategories[subCategoryIndex].types.push(newType);
+
+      // Ensure types are stored by ID (or create new type objects if needed)
+      updatedSubCategories[subCategoryIndex].types.push({ name: newType });
+
       setSubCategories(updatedSubCategories);
       setNewType("");
     }
   };
 
-  // Remove subcategory
   const handleRemoveSubCategory = (index) => {
     setSubCategories(subCategories.filter((_, i) => i !== index));
   };
 
-  // Remove type from a subcategory
   const handleRemoveType = (subCategoryIndex, typeIndex) => {
     const updatedSubCategories = [...subCategories];
     updatedSubCategories[subCategoryIndex].types = updatedSubCategories[
@@ -94,7 +101,6 @@ const UpdateCategory = ({ categoryId, onBack }) => {
     setSubCategories(updatedSubCategories);
   };
 
-  // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!categoryName || !categoryDescription) {
@@ -105,42 +111,49 @@ const UpdateCategory = ({ categoryId, onBack }) => {
     const formData = new FormData();
     formData.append("name", categoryName);
     formData.append("description", categoryDescription);
+
     if (categoryImage) {
       formData.append("image", categoryImage);
     }
 
+    // Convert subCategories to JSON format
     const formattedSubCategories = subCategories.map((subCategory) => {
       return {
+        _id: subCategory._id || undefined,
         name: subCategory.name,
         description: subCategory.description || "",
-        types: subCategory.types,
+        types: subCategory.types.map((type) =>
+          typeof type === "string"
+            ? { name: type }
+            : { _id: type._id || undefined, name: type.name }
+        ),
       };
     });
 
     formData.append("subCategories", JSON.stringify(formattedSubCategories));
 
+    // Append images separately for subcategories
+    subCategories.forEach((subCategory) => {
+      if (subCategory.image instanceof File) {
+        formData.append("subCategoryImages", subCategory.image);
+      }
+    });
+
     try {
       const response = await fetch(
-        `http://localhost:5000/api/categories/categories/${categoryId}`,
+        `http://localhost:5000/api/categories/categories/${category._id}`,
         {
           method: "PUT",
           body: formData,
         }
       );
 
-      const text = await response.text();
-      console.log("Response Text:", text);
-
-      try {
-        const data = JSON.parse(text);
-        if (response.ok) {
-          alert("Category updated successfully!");
-          onBack(); // Call the onBack function to return to the category list
-        } else {
-          alert(data.message);
-        }
-      } catch (error) {
-        alert("Error parsing response: " + error.message);
+      const data = await response.json();
+      if (response.ok) {
+        alert("Category updated successfully!");
+        onBack();
+      } else {
+        alert(data.message);
       }
     } catch (error) {
       alert("Error updating category: " + error.message);
@@ -179,7 +192,6 @@ const UpdateCategory = ({ categoryId, onBack }) => {
           {imagePreview && <img src={imagePreview} alt="Preview" width="200" />}
         </div>
 
-        {/* Subcategories Section */}
         <div className="form-group">
           <label>Subcategories</label>
           {subCategories.map((subCategory, subIndex) => (
@@ -189,7 +201,7 @@ const UpdateCategory = ({ categoryId, onBack }) => {
               <ul>
                 {subCategory.types.map((type, typeIndex) => (
                   <li key={typeIndex}>
-                    {type}
+                    {type.name} {/* Ensure we access "name" property */}
                     <button
                       type="button"
                       onClick={() => handleRemoveType(subIndex, typeIndex)}
@@ -199,6 +211,7 @@ const UpdateCategory = ({ categoryId, onBack }) => {
                   </li>
                 ))}
               </ul>
+
               <button
                 type="button"
                 onClick={() => handleRemoveSubCategory(subIndex)}
@@ -245,7 +258,6 @@ const UpdateCategory = ({ categoryId, onBack }) => {
           </div>
         </div>
 
-        {/* Types Section */}
         <div className="form-group">
           <label>Add Type to Subcategory</label>
           <input
