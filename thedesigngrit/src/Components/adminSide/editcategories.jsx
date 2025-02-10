@@ -10,10 +10,11 @@ const UpdateCategory = ({ category, onBack }) => {
   const [newSubCategory, setNewSubCategory] = useState({
     name: "",
     description: "",
-    image: null,
-    imagePreview: null,
+    image: [],
+    imagePreviews: [],
+    types: [],
   });
-  const [newType, setNewType] = useState("");
+  const [newTypes, setNewTypes] = useState({});
 
   useEffect(() => {
     if (!category || !category._id) {
@@ -36,8 +37,15 @@ const UpdateCategory = ({ category, onBack }) => {
             : null
         );
 
-        // Ensure subCategories are set correctly
-        setSubCategories(fetchedCategory.subCategories || []);
+        setSubCategories(
+          fetchedCategory.subCategories.map((subCat) => ({
+            ...subCat,
+            imagePreviews: subCat.image
+              ? [`http://localhost:5000/uploads/${subCat.image}`]
+              : [],
+            types: subCat.types || [],
+          }))
+        );
       } catch (error) {
         console.error("Error fetching category:", error);
       }
@@ -45,6 +53,22 @@ const UpdateCategory = ({ category, onBack }) => {
 
     fetchCategory();
   }, [category]);
+
+  const handleDeleteCategory = async () => {
+    if (!window.confirm("Are you sure you want to delete this category?"))
+      return;
+
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/categories/categories/${category._id}`
+      );
+      alert("Category deleted successfully!");
+      onBack(); // الرجوع بعد الحذف
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      alert("Failed to delete category");
+    }
+  };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -54,111 +78,105 @@ const UpdateCategory = ({ category, onBack }) => {
     }
   };
 
-  const handleSubCategoryImageUpload = (e) => {
+  const handleSubCategoryImageUpload = (e, index) => {
     const file = e.target.files[0];
     if (file) {
-      setNewSubCategory((prev) => ({
-        ...prev,
-        image: file,
-        imagePreview: URL.createObjectURL(file),
-      }));
+      setSubCategories((prev) => {
+        const updated = [...prev];
+        updated[index].image = file;
+        updated[index].imagePreviews = [URL.createObjectURL(file)];
+        return updated;
+      });
     }
   };
 
   const handleAddSubCategory = () => {
     if (newSubCategory.name.trim()) {
-      setSubCategories([...subCategories, { ...newSubCategory, types: [] }]);
+      setSubCategories([...subCategories, { ...newSubCategory }]);
       setNewSubCategory({
         name: "",
         description: "",
-        image: null,
-        imagePreview: null,
+        image: [],
+        imagePreviews: [],
+        types: [],
       });
     }
   };
 
-  const handleAddType = (subCategoryIndex) => {
-    if (newType.trim() && subCategoryIndex !== null) {
-      const updatedSubCategories = [...subCategories];
+  const handleRemoveType = (subIndex, typeIndex) => {
+    setSubCategories((prev) => {
+      const updated = [...prev];
+      updated[subIndex].types = updated[subIndex].types.filter(
+        (_, i) => i !== typeIndex
+      );
+      return updated;
+    });
+  };
 
-      // Ensure types are stored by ID (or create new type objects if needed)
-      updatedSubCategories[subCategoryIndex].types.push({ name: newType });
+  const handleAddType = (index) => {
+    if (!newTypes[index] || newTypes[index].trim() === "") return; // تأكد أن الإدخال ليس فارغًا
 
-      setSubCategories(updatedSubCategories);
-      setNewType("");
+    setSubCategories((prev) => {
+      const updated = [...prev];
+      updated[index].types = [
+        ...updated[index].types,
+        { name: newTypes[index] },
+      ]; // ✅ تحديث الأنواع لكل subCategory
+      return updated;
+    });
+
+    setNewTypes((prev) => ({ ...prev, [index]: "" })); // إعادة تعيين الإدخال
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (!categoryName || !categoryDescription) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", categoryName);
+    formData.append("description", categoryDescription);
+    if (categoryImage) {
+      formData.append("image", categoryImage);
+    }
+
+    subCategories.forEach((subCategory, index) => {
+      const subCatData = {
+        name: subCategory.name,
+        description: subCategory.description,
+        types: subCategory.types.map((type) => ({ name: type.name })),
+        _id: subCategory._id || undefined,
+      };
+
+      formData.append(`subCategories[]`, JSON.stringify(subCatData));
+      // تعديل هنا
+
+      if (subCategory.image) {
+        formData.append(`subCategoryImages`, subCategory.image);
+      }
+    });
+
+    const response = await axios.put(
+      `http://localhost:5000/api/categories/categories/${category._id}`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    // ✅ التصحيح: لا داعي لاستخدام response.json()
+    if (response.status === 200) {
+      // تحقق من أن الطلب ناجح
+      alert("Category updated successfully!");
+      onBack();
+    } else {
+      alert(response.data.message || "Failed to update category");
     }
   };
 
   const handleRemoveSubCategory = (index) => {
-    setSubCategories(subCategories.filter((_, i) => i !== index));
+    setSubCategories((prev) => prev.filter((_, i) => i !== index));
   };
-
-  const handleRemoveType = (subCategoryIndex, typeIndex) => {
-    const updatedSubCategories = [...subCategories];
-    updatedSubCategories[subCategoryIndex].types = updatedSubCategories[
-      subCategoryIndex
-    ].types.filter((_, i) => i !== typeIndex);
-    setSubCategories(updatedSubCategories);
-  };
-
-// Handle form submission
- // Handle form submission
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
-  if (!categoryName || !categoryDescription) {
-    alert("Please fill all required fields!");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("name", categoryName);
-  formData.append("description", categoryDescription);
-  if (categoryImage) {
-    formData.append("image", categoryImage);
-  }
-
-  // Append subcategories
-  subCategories.forEach((subCategory, index) => {
-    const subCategoryData = {
-      name: subCategory.name,
-      description: subCategory.description || "",
-      types: subCategory.types,
-      _id: subCategory._id || undefined, // Keep existing subcategories, create new ones if missing _id
-    };
-    formData.append(`subCategories[${index}]`, JSON.stringify(subCategoryData));
-
-    if (subCategory.image) {
-      formData.append("subCategoryImages", subCategory.image); // Handles subcategory images
-    }
-  });
-
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/categories/categories/${categoryId}`,
-      {
-        method: "PUT",
-        body: formData,
-      }
-    );
-
-    const text = await response.text();
-    console.log("Response Text:", text);
-
-    try {
-      const data = JSON.parse(text);
-      if (response.ok) {
-        alert("Category updated successfully!");
-        onBack();
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      alert("Error parsing response: " + error.message);
-    }
-  } catch (error) {
-    alert("Error updating category: " + error.message);
-  }
-};
 
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
@@ -173,7 +191,6 @@ const handleFormSubmit = async (e) => {
             type="text"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            placeholder="Enter category name"
             required
           />
         </div>
@@ -182,9 +199,8 @@ const handleFormSubmit = async (e) => {
           <textarea
             value={categoryDescription}
             onChange={(e) => setCategoryDescription(e.target.value)}
-            placeholder="Enter category description"
             required
-          ></textarea>
+          />
         </div>
         <div className="form-group">
           <label>Category Image</label>
@@ -195,87 +211,80 @@ const handleFormSubmit = async (e) => {
         <div className="form-group">
           <label>Subcategories</label>
           {subCategories.map((subCategory, subIndex) => (
-            <div key={subIndex} style={{ marginBottom: "10px" }}>
-              <strong>{subCategory.name}</strong>
-              <p>{subCategory.description}</p>
+            <div key={subIndex}>
+              <input
+                type="text"
+                value={subCategory.name}
+                onChange={(e) => {
+                  const updated = [...subCategories];
+                  updated[subIndex].name = e.target.value;
+                  setSubCategories(updated);
+                }}
+              />
+              <input
+                type="text"
+                value={subCategory.description}
+                onChange={(e) => {
+                  const updated = [...subCategories];
+                  updated[subIndex].description = e.target.value;
+                  setSubCategories(updated);
+                }}
+                placeholder="Subcategory Description"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleSubCategoryImageUpload(e, subIndex)}
+              />
+              {subCategory.imagePreviews.map((img, i) => (
+                <img key={i} src={img} alt="Subcategory Preview" width="100" />
+              ))}
+              <button
+                type="button"
+                onClick={() => handleRemoveSubCategory(subIndex)}
+              >
+                Remove SubCategory
+              </button>
+
+              <input
+                type="text"
+                value={newTypes[subIndex] || ""}
+                onChange={(e) =>
+                  setNewTypes({ ...newTypes, [subIndex]: e.target.value })
+                }
+                placeholder="New Type"
+              />
+
+              {/* ✅ زر إضافة النوع */}
+              <button type="button" onClick={() => handleAddType(subIndex)}>
+                Add Type
+              </button>
+
+              {/* ✅ عرض الأنواع المضافة */}
               <ul>
-                {subCategory.types.map((type, typeIndex) => (
-                  <li key={typeIndex}>
-                    {type.name} {/* Ensure we access "name" property */}
+                {subCategory.types.map((type, i) => (
+                  <li key={i}>
+                    {type.name}
                     <button
                       type="button"
-                      onClick={() => handleRemoveType(subIndex, typeIndex)}
+                      onClick={() => handleRemoveType(subIndex, i)}
                     >
                       Remove
                     </button>
                   </li>
                 ))}
               </ul>
-
-              <button
-                type="button"
-                onClick={() => handleRemoveSubCategory(subIndex)}
-              >
-                Remove Subcategory
-              </button>
             </div>
           ))}
-          <div>
-            <h4>Add New Subcategory</h4>
-            <input
-              type="text"
-              value={newSubCategory.name}
-              onChange={(e) =>
-                setNewSubCategory({ ...newSubCategory, name: e.target.value })
-              }
-              placeholder="Subcategory Name"
-            />
-            <textarea
-              value={newSubCategory.description}
-              onChange={(e) =>
-                setNewSubCategory({
-                  ...newSubCategory,
-                  description: e.target.value,
-                })
-              }
-              placeholder="Subcategory Description"
-            ></textarea>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleSubCategoryImageUpload}
-            />
-            {newSubCategory.imagePreview && (
-              <img
-                src={newSubCategory.imagePreview}
-                alt="Preview"
-                width="100"
-              />
-            )}
-            <button type="button" onClick={handleAddSubCategory}>
-              Add Subcategory
-            </button>
-          </div>
         </div>
 
-        <div className="form-group">
-          <label>Add Type to Subcategory</label>
-          <input
-            type="text"
-            value={newType}
-            onChange={(e) => setNewType(e.target.value)}
-            placeholder="Type Name"
-          />
-          <button
-            type="button"
-            onClick={() => handleAddType(subCategories.length - 1)}
-          >
-            Add Type
-          </button>
-        </div>
-
-        <button type="submit" className="btn update">
-          Update Category
+        <button type="submit">Update Category</button>
+        <button
+          type="button"
+          onClick={handleDeleteCategory}
+          style={{ backgroundColor: "red", color: "white" }}
+        >
+          Delete Category
         </button>
       </form>
     </div>

@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { Grid, Box, Typography } from "@mui/material";
 import ProductCard from "../Products/productcard"; // Assuming ProductCard is already created
 import { UserContext } from "../../utils/userContext"; // User session context
+import LoadingScreen from "../../Pages/loadingScreen";
 
 const WishlistPage = () => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const { userSession } = useContext(UserContext); // Get user session from context
-
+  const [loading, setLoading] = useState(true);
   // Fetch favorite products on component mount or when userSession changes
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -24,6 +25,8 @@ const WishlistPage = () => {
         }
       } catch (error) {
         console.error("Error fetching favorites:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,7 +34,9 @@ const WishlistPage = () => {
       fetchFavorites();
     }
   }, [userSession]);
-
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <Box sx={{ maxWidth: "1200px", margin: "0 auto" }}>
       <Typography

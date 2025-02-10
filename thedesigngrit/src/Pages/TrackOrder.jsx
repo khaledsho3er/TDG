@@ -5,13 +5,14 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { LuPackage } from "react-icons/lu";
 import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
+import LoadingScreen from "./loadingScreen";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   const { userSession } = useContext(UserContext);
-
+  const [loading, setLoading] = useState(true);
   // Fetch orders based on userSession.id
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,12 +34,14 @@ function TrackOrder() {
         setSelectedSubOrder(userOrders[0]?.cartItems[0] || null); // Default to the first cart item
       } catch (error) {
         console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchOrders();
   }, [userSession]);
-
+  if (loading) return <LoadingScreen />;
   return (
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
