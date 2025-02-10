@@ -95,57 +95,63 @@ const UpdateCategory = ({ categoryId, onBack }) => {
   };
 
   // Handle form submission
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (!categoryName || !categoryDescription) {
-      alert("Please fill all required fields!");
-      return;
+ // Handle form submission
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  if (!categoryName || !categoryDescription) {
+    alert("Please fill all required fields!");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", categoryName);
+  formData.append("description", categoryDescription);
+  if (categoryImage) {
+    formData.append("image", categoryImage);
+  }
+
+  // Append subcategories
+  subCategories.forEach((subCategory, index) => {
+    const subCategoryData = {
+      name: subCategory.name,
+      description: subCategory.description || "",
+      types: subCategory.types,
+      _id: subCategory._id || undefined, // Keep existing subcategories, create new ones if missing _id
+    };
+    formData.append(`subCategories[${index}]`, JSON.stringify(subCategoryData));
+
+    if (subCategory.image) {
+      formData.append("subCategoryImages", subCategory.image); // Handles subcategory images
     }
+  });
 
-    const formData = new FormData();
-    formData.append("name", categoryName);
-    formData.append("description", categoryDescription);
-    if (categoryImage) {
-      formData.append("image", categoryImage);
-    }
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/categories/categories/${categoryId}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
 
-    const formattedSubCategories = subCategories.map((subCategory) => {
-      return {
-        name: subCategory.name,
-        description: subCategory.description || "",
-        types: subCategory.types,
-      };
-    });
-
-    formData.append("subCategories", JSON.stringify(formattedSubCategories));
+    const text = await response.text();
+    console.log("Response Text:", text);
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/categories/categories/${categoryId}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
-
-      const text = await response.text();
-      console.log("Response Text:", text);
-
-      try {
-        const data = JSON.parse(text);
-        if (response.ok) {
-          alert("Category updated successfully!");
-          onBack(); // Call the onBack function to return to the category list
-        } else {
-          alert(data.message);
-        }
-      } catch (error) {
-        alert("Error parsing response: " + error.message);
+      const data = JSON.parse(text);
+      if (response.ok) {
+        alert("Category updated successfully!");
+        onBack();
+      } else {
+        alert(data.message);
       }
     } catch (error) {
-      alert("Error updating category: " + error.message);
+      alert("Error parsing response: " + error.message);
     }
-  };
+  } catch (error) {
+    alert("Error updating category: " + error.message);
+  }
+};
 
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>

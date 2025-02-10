@@ -10,12 +10,10 @@ import {
   FormHelperText,
 } from "@mui/material";
 import axios from "axios";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
-  const [brandId, setBrandId] = useState(null);
   const [vendorData, setVendorData] = useState({
     firstName: "",
     lastName: "",
