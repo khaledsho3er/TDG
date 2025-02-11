@@ -75,7 +75,9 @@ function Header() {
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 10000);
       }
     };
 

@@ -68,13 +68,15 @@ function ProductPage() {
 
         setError(error.message); // Set error if something goes wrong
       } finally {
-        setLoading(false); // Stop loading once the fetch is complete
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       }
     };
 
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
-  if (loading) return <LoadingScreen />; // Show loading screen while fetching product
+  if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />; // Show loading screen while fetching product
   if (!product) return <div>Product not found</div>;
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);

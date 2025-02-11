@@ -4,10 +4,12 @@ import ApplicationForm from "../Components/JobDesc/jobForm";
 import { Box } from "@mui/material";
 import Footer from "../Components/Footer";
 import { useParams } from "react-router-dom";
+import LoadingScreen from "./loadingScreen";
 
 function JobDesc() {
   const [jobDetails, setJobDetails] = useState(null); // Initialize as null to show loading state
   const { jobId } = useParams(); // Get jobId from the URL
+  const [loading, setLoading] = useState(true); // Initialize as true to show loading state
 
   useEffect(() => {
     const getJobDetails = async () => {
@@ -28,6 +30,10 @@ function JobDesc() {
       } catch (error) {
         console.error("Error fetching job details:", error); // Log any errors
         setJobDetails(null); // Set to null if there's an error
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       }
     };
 
@@ -36,9 +42,12 @@ function JobDesc() {
     }
   }, [jobId]);
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
   // Show loading message while job details are being fetched
   if (jobDetails === null) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   // Check if jobDetails is an empty object or has invalid properties

@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ onComplete }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      if (onComplete) {
+        onComplete(); // Callback to proceed after loading
+      }
+    }, 10000); // Ensure it plays for at least 10 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div>
+    isVisible && (
       <div className="loading-screen">
         <video
-          src="/Assets/TDGLoadingScreen.mp4" // Add the correct path to your video file
+          src="/Assets/TDGLoadingScreen.mp4"
           autoPlay
-          loop
           muted
-          style={{ width: "100%", height: "auto" }} // Adjust styles as needed
-        >
-          Your browser does not support the video tag.
-        </video>
+          onLoadedMetadata={(e) => {
+            if (e.target.duration < 10) {
+              setTimeout(() => setIsVisible(false), 10000);
+            }
+          }}
+          style={{ width: "100%", height: "auto" }}
+        />
       </div>
-    </div>
+    )
   );
 };
 

@@ -53,7 +53,9 @@ const MyAccount = () => {
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       }
     };
 
@@ -65,7 +67,7 @@ const MyAccount = () => {
     navigate("/home"); // Redirect to home or login page
   };
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen onComplete={() => setLoading(false)} />;
   }
   const sections = {
     profile: <Profile userData={userData} />, // Pass userData as a prop

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../../Pages/loadingScreen";
 
 const CareerOpportunities = () => {
   const [jobs, setJobs] = useState([]);
   const [activeTab, setActiveTab] = useState("Top Positions");
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const getJobs = async () => {
       try {
@@ -14,11 +15,17 @@ const CareerOpportunities = () => {
       } catch (error) {
         console.error("Error fetching job data:", error);
         setJobs([]); // Ensure you handle errors and set jobs to an empty array on failure
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 4000);
       }
     };
     getJobs();
   }, []);
-
+  if (loading) {
+    return <LoadingScreen />;
+  }
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     // Filter or adjust logic for 'Top Positions' or 'All Jobs' as needed

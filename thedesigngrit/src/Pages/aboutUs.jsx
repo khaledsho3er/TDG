@@ -4,7 +4,15 @@ import HeroAbout from "../Components/About/heroAbout";
 import MeetOurTeam from "../Components/About/ourTeam";
 import { Box } from "@mui/material";
 import Footer from "../Components/Footer";
+import LoadingScreen from "./loadingScreen";
 function AboutUsPage() {
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => setLoading(false), 4000);
+  }, []);
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <Box className="">
       <NavBar />

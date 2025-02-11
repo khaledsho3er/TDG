@@ -26,7 +26,9 @@ const WishlistPage = () => {
       } catch (error) {
         console.error("Error fetching favorites:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 4000);
       }
     };
 
