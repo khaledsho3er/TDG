@@ -40,12 +40,7 @@ function SignInForm() {
         data,
         { withCredentials: true }
       );
-      // قم بجلب بيانات المستخدم مباشرة بعد تسجيل الدخول
-      const userResponse = await axios.get(
-        "https://tdg-db.onrender.com/api/getUser",
-        { withCredentials: true }
-      );
-      setUserSession(userResponse.data);
+
       setUserSession(response.data.user);
       console.log("Login successful!", response.data.user);
       alert("Login successful!");
