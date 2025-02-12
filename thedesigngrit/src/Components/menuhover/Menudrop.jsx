@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
-  console.log("Category in Menudrop:", category);
 
   // const [selectedDetail, setSelectedDetail] = useState(
   //   category.subCategories[0]
