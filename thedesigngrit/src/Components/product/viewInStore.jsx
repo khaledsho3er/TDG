@@ -186,7 +186,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                       Vendor: {productId.brandName}
                     </Typography>
                     <img
-                      src={productId.brandLogo}
+                      src={`https://tdg-db.onrender.com/uploads/${productId.brandId.brandlogo}`}
                       alt="Vendor Logo"
                       style={{ width: "100px", height: "auto" }}
                     />
