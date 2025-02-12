@@ -6,7 +6,7 @@ const SustainabilitySection = () => {
       {/* Image Container */}
       <div className="sustainability-image-container">
         <img
-          src="Assets/susSection.png"
+          src="Assets/susSection.webp"
           alt="Books and coffee cup on wooden table next to grey chair"
           className="sustainability-image"
         />

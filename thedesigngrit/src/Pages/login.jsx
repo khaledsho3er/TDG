@@ -5,7 +5,7 @@ function LoginPage() {
   return (
     <div className="container-login">
       <h1 className="signinLogo">
-        <img src="/TDG_logo_Black.webp" alt="Logo" />
+        <img src="/assets/TDG_logo_Black.webp" alt="Logo" />
       </h1>
       <Box className="login-form">
         <SignInForm />
