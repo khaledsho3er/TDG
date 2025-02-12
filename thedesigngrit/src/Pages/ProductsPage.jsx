@@ -47,6 +47,7 @@ function ProductsPage() {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
+        console.log("Products:", data);
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -130,25 +131,21 @@ function ProductsPage() {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
-
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <Grid container spacing={2} sx={{ padding: 2 }}>
-          <Grid item xs={12} sm={4} md={3}>
-            <FilterSection
-              onFilterChange={handleFilterChange}
-              products={products}
-            />
-          </Grid>
-          <Grid item xs={12} sm={8} md={9}>
-            <ProductCards
-              products={filteredProducts}
-              onToggleFavorite={toggleFavorite}
-            />
-          </Grid>
+      <Grid container spacing={2} sx={{ padding: 2 }}>
+        <Grid item xs={12} sm={4} md={3}>
+          <FilterSection
+            onFilterChange={handleFilterChange}
+            products={products}
+          />
         </Grid>
-      )}
+        <Grid item xs={12} sm={8} md={9}>
+          <ProductCards
+            products={filteredProducts}
+            onToggleFavorite={toggleFavorite}
+          />
+        </Grid>
+      </Grid>
+
       <Footer />
     </Box>
   );
