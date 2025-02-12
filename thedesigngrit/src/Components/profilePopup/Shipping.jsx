@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import axios from "axios";
 import countryList from "react-select-country-list";
 import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
 // import UpdateSentPopup from "../successMsgs/successUpdate";
-import { userSession } from "../../utils/userSession";
+import { UserContext } from "../../utils/userContext";
 const ShippingInfoPopup = () => {
   const [setIsPopupVisible] = useState(false);
   const [userData, setUserData] = useState({});
@@ -16,7 +16,7 @@ const ShippingInfoPopup = () => {
     country: "",
   });
   const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
-
+  const userSession = useContext(UserContext);
   const [countries] = useState(countryList().getData());
 
   useEffect(() => {
