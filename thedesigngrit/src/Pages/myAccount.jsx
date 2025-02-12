@@ -46,7 +46,7 @@ const MyAccount = () => {
       console.log("id in MyAccount:", userSession.id);
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/getUser",
+          `https://tdg-db.onrender.com/api/getUserById/${userSession.id}`,
           {
             withCredentials: true,
           }

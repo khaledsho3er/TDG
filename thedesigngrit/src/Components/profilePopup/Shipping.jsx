@@ -4,7 +4,7 @@ import axios from "axios";
 import countryList from "react-select-country-list";
 import ConfirmationDialog from "../confirmationMsg"; // Make sure to import your ConfirmationDialog component
 // import UpdateSentPopup from "../successMsgs/successUpdate";
-
+import { userSession } from "../../utils/userSession";
 const ShippingInfoPopup = () => {
   const [setIsPopupVisible] = useState(false);
   const [userData, setUserData] = useState({});
@@ -24,7 +24,7 @@ const ShippingInfoPopup = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/getUser",
+          `https://tdg-db.onrender.com/api/getUserById/${userSession.id}`,
           {
             withCredentials: true,
           }
