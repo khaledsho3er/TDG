@@ -327,7 +327,7 @@ function Footer() {
         {/* Payment Icons + Security */}
         <Box>
           <Box sx={{ display: "flex", gap: 1 }}>
-            {["amex", "mastercard", "meeza", "visa", "mada"].map((icon) => (
+            {["amex", "mastercard", "meeza", "visa"].map((icon) => (
               <img
                 key={icon}
                 src={`/Assets/icons/${icon}.svg`}
