@@ -7,36 +7,36 @@ import { UserProvider } from "./utils/userContext";
 import { VendorProvider } from "./utils/vendorContext";
 import ScrollToTop from "./Context/scrollToTop";
 import LoadingScreen from "./Pages/loadingScreen";
-const Home = React.lazy(() => import("./Pages/home"));
-const LoginPage = React.lazy(() => import("./Pages/login"));
-const SignUpPage = React.lazy(() => import("./Pages/signup"));
-const AboutUsPage = React.lazy(() => import("./Pages/aboutUs"));
-const JobDesc = React.lazy(() => import("./Pages/JobDescription"));
-const TermsOfService = React.lazy(() => import("./Pages/Policy"));
-const PartnersApplication = React.lazy(() => import("./Pages/Partners"));
-const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
-const ProductsPage = React.lazy(() => import("./Pages/ProductsPage"));
-const ProductPage = React.lazy(() => import("./Pages/ProductPage"));
-const Vendorspage = React.lazy(() => import("./Pages/Vendorspage"));
-const VendorProfile = React.lazy(() => import("./Pages/VendorProfile"));
-const ShoppingCart = React.lazy(() => import("./Pages/ShoppingCart"));
-const CheckoutPage = React.lazy(() => import("./Pages/Checkout"));
-const careersPage = React.lazy(() => import("./Pages/careers"));
-const FAQs = React.lazy(() => import("./Pages/FAQs"));
-const TrackOrder = React.lazy(() => import("./Pages/TrackOrder"));
-const MyAccount = React.lazy(() => import("./Pages/myAccount"));
-const UserProfile = React.lazy(() => import("./Pages/userss"));
-const VendorHome = React.lazy(() => import("./Pages/vendorSide/VendorHome"));
-const OrderDetails = React.lazy(() => import("./Components/vendorSide/orderDetails"));
-const UpdateProductForm = React.lazy(() => import("./Components/vendorSide/UpdateProduct"));
-const AdminHome = React.lazy(() => import("./Pages/vendorSide/AdminHome"));
-const VerifyPartners = React.lazy(() => import("./Components/adminSide/VerifyPartners"));
-const NotificationsPage = React.lazy(() => import("./Components/vendorSide/notificationPage"));
-const SigninVendor = React.lazy(() => import("./Components/vendorSide/signinVendor"));
-const EditEmployee = React.lazy(() => import("./Components/vendorSide/editEmployee"));
-const BrandForm = React.lazy(() => import("./Components/vendorSide/addbrand"));
-const Subcategories = React.lazy(() => import("./Pages/subcategories"));
-const Signupvendor = React.lazy(() => import("./Components/vendorSide/SignupVendor"));
+import Home from "./Pages/home";
+import LoginPage from "./Pages/login";
+import SignUpPage from "./Pages/signup";
+import AboutUsPage from "./Pages/aboutUs";
+import JobDesc from "./Pages/JobDescription";
+import TermsOfService from "./Pages/Policy";
+import PartnersApplication from "./Pages/Partners";
+import ContactUs from "./Pages/ContactUs";
+import ProductsPage from "./Pages/ProductsPage";
+import ProductPage from "./Pages/ProductPage";
+import Vendorspage from "./Pages/Vendorspage";
+import VendorProfile from "./Pages/VendorProfile";
+import ShoppingCart from "./Pages/ShoppingCart";
+import CheckoutPage from "./Pages/Checkout";
+import careersPage from "./Pages/careers";
+import FAQs from "./Pages/FAQs";
+import TrackOrder from "./Pages/TrackOrder";
+import MyAccount from "./Pages/myAccount";
+import UserProfile from "./Pages/userss";
+import VendorHome from "./Pages/vendorSide/VendorHome";
+import OrderDetails from "./Components/vendorSide/orderDetails";
+import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
+import AdminHome from "./Pages/vendorSide/AdminHome";
+import VerifyPartners from "./Components/adminSide/VerifyPartners";
+import NotificationsPage from "./Components/vendorSide/notificationPage";
+import SigninVendor from "./Components/vendorSide/signinVendor";
+import EditEmployee from "./Components/vendorSide/editEmployee";
+import BrandForm from "./Components/vendorSide/addbrand";
+import Subcategories from "./Pages/subcategories";
+import Signupvendor from "./Components/vendorSide/SignupVendor";
 
 
 
@@ -44,7 +44,7 @@ const Signupvendor = React.lazy(() => import("./Components/vendorSide/SignupVend
 function App() {
   return (
     <>
-      <Suspense fallback={<LoadingScreen />}>
+    
       <UserProvider>
         <CartProvider>
           <Router>
@@ -100,7 +100,7 @@ function App() {
           </Router>
         </CartProvider>
       </UserProvider>
-      </Suspense>
+  
       <VendorProvider>
         <Router>
           <Routes>
