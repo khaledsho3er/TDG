@@ -9,24 +9,41 @@ const LoadingScreen = ({ onComplete }) => {
       if (onComplete) {
         onComplete(); // Callback to proceed after loading
       }
-    }, 10000); // Ensure it plays for at least 10 seconds
+    }, 10000); // Ensuring a minimum 10s play time
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     isVisible && (
-      <div className="loading-screen">
+      <div
+        className="loading-screen"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "black",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999, // Ensure it's above everything
+        }}
+      >
         <video
           src="/Assets/TDGLoadingScreen.mp4"
           autoPlay
           muted
-          onLoadedMetadata={(e) => {
-            if (e.target.duration < 10) {
-              setTimeout(() => setIsVisible(false), 10000);
-            }
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          onEnded={() => setIsVisible(false)}
+          style={{
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
           }}
-          style={{ width: "100%", height: "auto" }}
         />
       </div>
     )
