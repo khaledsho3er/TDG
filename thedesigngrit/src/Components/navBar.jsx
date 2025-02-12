@@ -258,7 +258,7 @@ function Header() {
         >
           <Link to="/home">
             <img
-              src="/Assets/TDG_Logo_Black.png"
+              src="/Assets/TDG_Logo_Black.webp"
               alt="Logo"
               className="menu-logo"
               style={{ width: "69px", padding: "12px" }}
@@ -285,7 +285,7 @@ function Header() {
           {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo" variant="h4">
-              <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
+              <img src="/Assets/TDG_Logo_Black.webp" alt="Logo" />
             </Typography>
           </Link>
 
@@ -327,7 +327,7 @@ function Header() {
                 <Box className="menu-header">
                   <Link to="/home">
                     <img
-                      src="/Assets/TDG_Logo_Black.png"
+                      src="/Assets/TDG_Logo_Black.webp"
                       alt="Logo"
                       className="menu-logo"
                       style={{ width: "69px", padding: "12px" }}
