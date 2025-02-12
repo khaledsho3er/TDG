@@ -6,7 +6,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [favorites] = useState([]); // The favorites array
   const productsPerPage = 12; // Limit to 12 products per page
-
+  console.log("products in ProductCards:", products);
   // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
 

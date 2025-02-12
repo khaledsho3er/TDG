@@ -47,9 +47,10 @@ function ProductsPage() {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
-        console.log("Products:", data);
+
         setProducts(data);
         setFilteredProducts(data);
+        console.log("filtered products:", filteredProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
