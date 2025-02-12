@@ -152,11 +152,10 @@ function Profile({ userData }) {
             gap: "140px",
           }}
         >
-          <Avatar
-            src="/Assets/founder.webp"
-            alt="User Avatar"
-            className="popup-avatar"
-          />
+          <Avatar alt="User Avatar" className="popup-avatar">
+            {" "}
+            {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
+          </Avatar>
           <button
             style={{
               cursor: "pointer",
