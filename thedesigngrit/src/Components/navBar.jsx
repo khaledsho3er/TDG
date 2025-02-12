@@ -142,7 +142,7 @@ function Header() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/getUserById/${userSession._id}`,
+          `https://tdg-db.onrender.com/api/getUserById/${userSession.id}`,
           {
             withCredentials: true,
           }
