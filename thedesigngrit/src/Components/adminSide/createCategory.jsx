@@ -100,7 +100,7 @@ const CategoryForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/categories/categories",
+        "https://tdg-db.onrender.com/api/categories/categories",
         {
           method: "POST",
           body: formData,

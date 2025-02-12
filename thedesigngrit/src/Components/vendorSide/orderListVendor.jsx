@@ -22,7 +22,7 @@ const RecentPurchases = () => {
       if (!vendor?.brandId) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/orders/brand/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");

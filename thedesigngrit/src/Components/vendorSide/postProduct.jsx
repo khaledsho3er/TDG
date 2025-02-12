@@ -67,7 +67,7 @@ const AddProduct = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         setCategories(response.data); // Assuming the response contains categories
       } catch (error) {
@@ -83,7 +83,7 @@ const AddProduct = () => {
       const fetchBrandName = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/brand/${vendor.brandId}`
+            `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`
           );
           setBrandName(response.data.brandName); // Set the brand name in state
           setFormData((prevData) => ({
@@ -121,7 +121,7 @@ const AddProduct = () => {
     try {
       // Fetch subcategories for the selected category
       const response = await axios.get(
-        `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+        `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
       );
       setSubCategories(response.data);
     } catch (error) {
@@ -144,7 +144,7 @@ const AddProduct = () => {
     try {
       // Fetch types that are associated with the selected subcategory
       const response = await axios.get(
-        `http://localhost:5000/api/subcategories/bySubcategory/${selectedSubCategoryId}`
+        `https://tdg-db.onrender.com/api/subcategories/bySubcategory/${selectedSubCategoryId}`
       );
       setTypes(response.data); // Set types based on the fetched data
     } catch (error) {
@@ -288,7 +288,7 @@ const AddProduct = () => {
 
     // Send files to the backend
     axios
-      .post("http://localhost:5000/api/products/upload", formData, {
+      .post("https://tdg-db.onrender.com/api/products/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -382,7 +382,7 @@ const AddProduct = () => {
     try {
       // Send the form data to the backend
       const response = await axios.post(
-        "http://localhost:5000/api/products/addproduct",
+        "https://tdg-db.onrender.com/api/products/addproduct",
         data,
         {
           headers: {

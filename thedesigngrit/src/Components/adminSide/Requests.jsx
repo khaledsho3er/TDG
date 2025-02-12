@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 const RequestsPartners = () => {
   const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
-  const[status,setStatus]=useState("pending");
+  const [status, setStatus] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const partnersPerPage = 12; // Number of partners per page
 
   // Fetch data from JSON or API
   const fetchPartners = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/brand/status/${status}`); // Update the path if needed
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/brand/status/${status}`
+      ); // Update the path if needed
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -57,7 +59,7 @@ const RequestsPartners = () => {
           <div className="product-card-request" key={partner._id}>
             <div className="product-card-header">
               <img
-                src={`http://localhost:5000/uploads/${partner.brandlogo}`}
+                src={`https://tdg-db.onrender.com/uploads/${partner.brandlogo}`}
                 alt={`Logo`}
                 className="request-image"
               />
@@ -79,8 +81,7 @@ const RequestsPartners = () => {
             </div>
             <div className="request-card-body">
               <p className="requests-summary">
-                {partner.
-brandDescription.substring(0, 100)}...
+                {partner.brandDescription.substring(0, 100)}...
               </p>
               <button
                 onClick={() => handleMoreDetails(partner)}

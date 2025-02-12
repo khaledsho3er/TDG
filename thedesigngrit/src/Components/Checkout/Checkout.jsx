@@ -105,7 +105,7 @@ function Checkout() {
         };
         console.log("Creating order:", orderData);
 
-        return axios.post("http://localhost:5000/api/orders/", orderData);
+        return axios.post("https://tdg-db.onrender.com/api/orders/", orderData);
       });
 
       // Wait for all orders to be sent

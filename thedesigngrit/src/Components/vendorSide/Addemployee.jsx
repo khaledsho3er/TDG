@@ -53,7 +53,7 @@ const VendorSignup = () => {
       const fetchBrandName = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/brand/${vendor.brandId}`
+            `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`
           );
           setBrandName(response.data.brandName); // Set the brand name in the state
         } catch (error) {
@@ -110,7 +110,7 @@ const VendorSignup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/vendors/signup",
+        "https://tdg-db.onrender.com/api/vendors/signup",
         dataToSend
       );
 

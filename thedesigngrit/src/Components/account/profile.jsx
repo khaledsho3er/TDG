@@ -47,7 +47,7 @@ function Profile({ userData }) {
     if (dialogAction === "save") {
       try {
         const response = await axios.put(
-          "http://localhost:5000/api/updateUser",
+          "https://tdg-db.onrender.com/api/updateUser",
           formData, // Use the updated formData here
           { withCredentials: true }
         );

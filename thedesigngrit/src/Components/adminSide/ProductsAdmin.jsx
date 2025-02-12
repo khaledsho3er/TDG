@@ -25,7 +25,7 @@ const ProductPageAdmin = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/products/getproducts",
+          "https://tdg-db.onrender.com/api/products/getproducts",
           {
             params: {
               category: selectedCategory, // Still allowing category filtering if needed
@@ -41,7 +41,7 @@ const ProductPageAdmin = () => {
             if (product.type) {
               try {
                 const typeResponse = await axios.get(
-                  `http://localhost:5000/api/types/types/${product.type}`
+                  `https://tdg-db.onrender.com/api/types/types/${product.type}`
                 );
                 product.typeName = typeResponse.data.name || "Unknown"; // Set type name
               } catch (error) {
@@ -67,7 +67,7 @@ const ProductPageAdmin = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -88,7 +88,7 @@ const ProductPageAdmin = () => {
     if (selectedCategoryId) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+          `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
         );
         setSubCategories(response.data);
       } catch (error) {
@@ -241,7 +241,7 @@ const ProductPageAdmin = () => {
             <div className="all-product-card" key={product.id}>
               <div className="product-card-header">
                 <img
-                  src={`http://localhost:5000${
+                  src={`https://tdg-db.onrender.com${
                     product.mainImage.startsWith("/")
                       ? product.mainImage
                       : "/" + product.mainImage

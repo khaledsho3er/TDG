@@ -30,7 +30,7 @@ const ProductsPageVendor = () => {
       const fetchProducts = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/products/getproducts/brand/${brandId}`,
+            `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`,
             {
               params: {
                 category: selectedCategory,
@@ -45,7 +45,7 @@ const ProductsPageVendor = () => {
               if (product.type) {
                 try {
                   const typeResponse = await axios.get(
-                    `http://localhost:5000/api/types/types/${product.type}`
+                    `https://tdg-db.onrender.com/api/types/types/${product.type}`
                   );
                   product.typeName = typeResponse.data.name || "Unknown"; // Set type name
                 } catch (error) {
@@ -67,7 +67,7 @@ const ProductsPageVendor = () => {
       const fetchCategories = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:5000/api/categories/categories"
+            "https://tdg-db.onrender.com/api/categories/categories"
           );
           setCategories(response.data); // Set the fetched categories
         } catch (error) {
@@ -90,7 +90,7 @@ const ProductsPageVendor = () => {
     if (selectedCategoryId) {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/subcategories/byCategory/${selectedCategoryId}`
+          `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
         );
         setSubCategories(response.data);
       } catch (error) {
@@ -131,7 +131,9 @@ const ProductsPageVendor = () => {
     );
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${product._id}`); // Use the correct endpoint
+        await axios.delete(
+          `https://tdg-db.onrender.com/api/products/${product._id}`
+        ); // Use the correct endpoint
         setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
         alert("Product deleted successfully!");
       } catch (error) {
@@ -264,7 +266,7 @@ const ProductsPageVendor = () => {
             <div className="all-product-card" key={product.id}>
               <div className="product-card-header">
                 <img
-                  src={`http://localhost:5000${
+                  src={`https://tdg-db.onrender.com${
                     product.mainImage.startsWith("/")
                       ? product.mainImage
                       : "/" + product.mainImage

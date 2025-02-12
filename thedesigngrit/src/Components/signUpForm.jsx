@@ -50,7 +50,7 @@ const SignUpForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/signup",
+        "https://tdg-db.onrender.com/api/signup",
         data
       );
       alert(response.data.message);

@@ -19,13 +19,16 @@ const VerifyPartners = () => {
 
   const updateStatus = async (newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/brand/partners/${partner._id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/brand/partners/${partner._id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
 
       const data = await response.json();
 
@@ -41,14 +44,16 @@ const VerifyPartners = () => {
     }
   };
 
-
   return (
     <AdminPageLayout>
       <div className="verify-partners">
         <h2>Request Partnership</h2>
         <div className="partner-card">
           <div className="partner-info">
-            <img src={`http://localhost:5000/uploads/${partner.brandlogo}`} alt={`${partner.brand} Logo`} />
+            <img
+              src={`https://tdg-db.onrender.com/uploads/${partner.brandlogo}`}
+              alt={`${partner.brand} Logo`}
+            />
             <div>
               <h3>Brand:</h3>
               <p>{partner.brandName}</p>
@@ -91,8 +96,7 @@ const VerifyPartners = () => {
             </div>
             <div>
               <h4>Notes:</h4>
-              <p>{partner.
-brandDescription}</p>
+              <p>{partner.brandDescription}</p>
             </div>
             <div>
               <h4>Documents:</h4>
@@ -106,10 +110,16 @@ brandDescription}</p>
             </div>
           </div>
           <div className="action-buttons">
-      <button className="approve-btn" onClick={() => updateStatus("active")}>
+            <button
+              className="approve-btn"
+              onClick={() => updateStatus("active")}
+            >
               Approve
             </button>
-            <button className="reject-btn" onClick={() => updateStatus("rejected")}>
+            <button
+              className="reject-btn"
+              onClick={() => updateStatus("rejected")}
+            >
               Reject
             </button>
           </div>

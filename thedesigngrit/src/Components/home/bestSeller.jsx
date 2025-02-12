@@ -10,7 +10,7 @@ const ProductSlider = () => {
     const fetchBestSellers = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/orders/bestsellers"
+          "https://tdg-db.onrender.com/api/orders/bestsellers"
         );
         setProducts(response.data);
       } catch (error) {
@@ -46,7 +46,7 @@ const ProductSlider = () => {
           >
             <div className="product-image-home">
               <img
-                src={`http://localhost:5000/uploads/${product.image}`}
+                src={`https://tdg-db.onrender.com/uploads/${product.image}`}
                 alt={product.name}
               />
             </div>

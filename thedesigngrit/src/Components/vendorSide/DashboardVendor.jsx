@@ -20,13 +20,13 @@ const DashboardVendor = () => {
   const [error, setError] = useState(null);
   const [totalOrders, setTotalOrders] = useState(0);
   const [percentageChange, setPercentageChange] = useState(0);
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!vendor?.brandId) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/vendor/best-sellers/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/orders/vendor/best-sellers/${vendor.brandId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -46,7 +46,7 @@ const DashboardVendor = () => {
       if (!vendor?.brandId) return;
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/orders/brand/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -54,9 +54,9 @@ const DashboardVendor = () => {
         const data = await response.json();
         setOrders(data);
 
-          // Calculate total orders
-          const total = data.reduce((sum, order) => sum + order.total, 0);
-          setTotalOrders(total);
+        // Calculate total orders
+        const total = data.reduce((sum, order) => sum + order.total, 0);
+        setTotalOrders(total);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -68,7 +68,9 @@ const DashboardVendor = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/orders/order/percentage-change');
+        const response = await fetch(
+          "https://tdg-db.onrender.com/api/orders/order/percentage-change"
+        );
         const data = await response.json();
         setTotalOrders(data.totalOrders);
         setPercentageChange(data.percentageChange);
@@ -111,7 +113,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Total Orders</h3>
             <p>LE {totalOrders}</p>
-            <span>▲ {percentageChange}%  Compared to Last Month</span>
+            <span>▲ {percentageChange}% Compared to Last Month</span>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -131,7 +133,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
             <p>LE 126,500</p>
-            <span>▲ 34.7%  Compared to Last Month</span>
+            <span>▲ 34.7% Compared to Last Month</span>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -164,18 +166,20 @@ const DashboardVendor = () => {
         </div>
 
         <div className="best-sellers-vendor">
-  <h3>Best Sellers</h3> 
-  <hr />
-  <ul>
-    {products.map((product, index) => (
-      <li key={index}>
-        <img src={`http://localhost:5000/uploads/${product.image}`} alt={product.name} />
-        {product.name} - LE {product.price} ({product.totalSold} sales)
-      </li>
-    ))}
-  </ul>
-</div>
-
+          <h3>Best Sellers</h3>
+          <hr />
+          <ul>
+            {products.map((product, index) => (
+              <li key={index}>
+                <img
+                  src={`https://tdg-db.onrender.com/uploads/${product.image}`}
+                  alt={product.name}
+                />
+                {product.name} - LE {product.price} ({product.totalSold} sales)
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* Recent Orders & Best Sellers */}

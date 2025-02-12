@@ -65,7 +65,7 @@ function Header() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         if (!response.ok) {
           throw new Error("Failed to load categories");
@@ -92,7 +92,7 @@ function Header() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/search-suggestions?query=${query}`
+        `https://tdg-db.onrender.com/api/products/search-suggestions?query=${query}`
       );
       setSuggestions(response.data);
     } catch (error) {
@@ -141,9 +141,12 @@ function Header() {
     // Fetch user data
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/getUser", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://tdg-db.onrender.com/api/getUser",
+          {
+            withCredentials: true,
+          }
+        );
         console.log("userSession in Header:", userSession);
         setUserData(response.data);
       } catch (error) {
@@ -471,7 +474,7 @@ function Header() {
                     {/* Product Image */}
                     {suggestion.mainImage && (
                       <img
-                        src={`http://localhost:5000/uploads/${suggestion.mainImage}`}
+                        src={`https://tdg-db.onrender.com/uploads/${suggestion.mainImage}`}
                         alt={suggestion.name}
                         className="suggestion-image"
                       />

@@ -77,7 +77,7 @@ function Signupvendor() {
     if (currentPhase === 1) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/vendors/signup",
+          "https://tdg-db.onrender.com/api/vendors/signup",
           sanitizedData,
           { headers: { "Content-Type": "application/json" } } // Set Content-Type explicitly
         );
@@ -114,7 +114,7 @@ function Signupvendor() {
 
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/brand/brand",
+          "https://tdg-db.onrender.com/api/brand/brand",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -122,9 +122,12 @@ function Signupvendor() {
         if (response.status === 201) {
           console.log("Brand data submitted successfully");
           console.log("Brand ID:", response.data._id);
-          await axios.put(`http://localhost:5000/api/vendors/${vendorId}`, {
-            brandId: response.data._id,
-          });
+          await axios.put(
+            `https://tdg-db.onrender.com/api/vendors/${vendorId}`,
+            {
+              brandId: response.data._id,
+            }
+          );
           alert("Signup completed!");
           // Reset brand data to default state
           setCurrentPhase(1);

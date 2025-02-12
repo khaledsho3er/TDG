@@ -16,7 +16,7 @@ function JobDesc() {
       try {
         console.log("Fetching job details for jobId:", jobId); // Debug log to see the jobId
         const response = await fetch(
-          `http://localhost:5000/api/jobdesc/${jobId}`
+          `https://tdg-db.onrender.com/api/jobdesc/${jobId}`
         );
 
         if (!response.ok) {

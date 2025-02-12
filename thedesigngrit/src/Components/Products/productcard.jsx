@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
       if (!userSession) return; // Make sure userSession is available
 
       const response = await fetch(
-        `http://localhost:5000/api/favorites/${userSession.id}`
+        `https://tdg-db.onrender.com/api/favorites/${userSession.id}`
       );
       if (response.ok) {
         const favoritesData = await response.json();
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/favorites${endpoint}`,
+        `https://tdg-db.onrender.com/api/favorites${endpoint}`,
         {
           method: "POST",
           headers: {
@@ -89,7 +89,7 @@ const ProductCard = ({ product }) => {
         <CardMedia
           component="img"
           height="250"
-          image={`http://localhost:5000/uploads/${product.mainImage}`}
+          image={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
           alt={product.name}
           sx={{
             objectFit: "cover",

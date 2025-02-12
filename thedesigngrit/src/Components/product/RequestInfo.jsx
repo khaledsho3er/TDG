@@ -27,7 +27,7 @@ const RequestQuote = ({ onClose, productId }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/quotation/create",
+        "https://tdg-db.onrender.com/api/quotation/create",
         {
           userId: userSession.id, // Assuming userSession contains the logged-in user's data
           brandId: productId.brandId._id, // Assuming product contains the brandId

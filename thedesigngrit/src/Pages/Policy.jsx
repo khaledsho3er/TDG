@@ -15,7 +15,7 @@ function CustomerPolicy() {
     const fetchPolicyData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/policies/policies"
+          "https://tdg-db.onrender.com/api/policies/policies"
         );
         const data = await response.json();
         setPolicyData(data);

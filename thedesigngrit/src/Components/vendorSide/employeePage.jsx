@@ -16,7 +16,7 @@ const EmployeePage = () => {
     try {
       if (vendor?.brandId) {
         const response = await axios.get(
-          `http://localhost:5000/api/vendors/vendors/byBrand/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/vendors/vendors/byBrand/${vendor.brandId}`
         );
         setVendors(response.data);
       } else {
@@ -46,7 +46,7 @@ const EmployeePage = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:5000/api/vendors/${currentVendor._id}`,
+        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`,
         currentVendor
       );
       setEditPopupVisible(false);
@@ -59,7 +59,7 @@ const EmployeePage = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/vendors/${currentVendor._id}`
+        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`
       );
       setEditPopupVisible(false);
       fetchVendors();

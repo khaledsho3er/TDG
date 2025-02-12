@@ -71,7 +71,7 @@ const ApplicationForm = () => {
     });
 
     try {
-      const response = await fetch("http://localhost:5000/api/jobforms", {
+      const response = await fetch("https://tdg-db.onrender.com/api/jobforms", {
         method: "POST",
         body: formDataToSend,
       });

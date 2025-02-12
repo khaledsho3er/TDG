@@ -55,7 +55,7 @@ function ProductPage() {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/getsingle/${id}`
+          `https://tdg-db.onrender.com/api/products/getsingle/${id}`
         ); // Make an API call to fetch the product by ID
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
@@ -152,7 +152,7 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`http://localhost:5000/uploads/${product.mainImage}`}
+              src={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
               alt={product.name}
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
@@ -162,7 +162,7 @@ function ProductPage() {
                 product.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`http://localhost:5000/uploads/${image}`}
+                    src={`https://tdg-db.onrender.com/uploads/${image}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -431,7 +431,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} />
               </button>
               <img
-                src={`http://localhost:5000/uploads/${product.images[selectedImageIndex]}`}
+                src={`https://tdg-db.onrender.com/uploads/${product.images[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />

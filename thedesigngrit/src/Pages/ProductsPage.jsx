@@ -29,7 +29,7 @@ function ProductsPage() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         const data = await response.json();
         setCategories(data.slice(0, 6));
@@ -45,7 +45,7 @@ function ProductsPage() {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/products/subcategory/${subcategoryId}/${subcategoryName}`
+          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
         const data = await response.json();
         setProducts(data);

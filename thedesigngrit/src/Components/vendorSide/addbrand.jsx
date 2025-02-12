@@ -98,10 +98,13 @@ const BrandForm = () => {
 
     try {
       // Send POST request to backend
-      const response = await fetch("http://localhost:5000/api/brand/brand", {
-        method: "POST",
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/brand/brand",
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();

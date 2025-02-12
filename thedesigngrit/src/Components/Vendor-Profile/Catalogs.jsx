@@ -14,7 +14,7 @@ function VendorCatalogs({ vendorID }) {
     const fetchCatalogs = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/catalogues/vendor/${vendorID}`
+          `https://tdg-db.onrender.com/api/catalogues/vendor/${vendorID}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch catalogs");
@@ -91,9 +91,9 @@ function VendorCatalogs({ vendorID }) {
               <VendorCatalogCard
                 title={item.name}
                 year={item.year}
-                image={`http://localhost:5000/uploads/${item.image}`}
+                image={`https://tdg-db.onrender.com/uploads/${item.image}`}
                 type={item.type}
-                pdf={`http://localhost:5000/uploads/${item.pdf}`}
+                pdf={`https://tdg-db.onrender.com/uploads/${item.pdf}`}
               />
             </Grid>
           ))}
