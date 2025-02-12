@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-
+import axios from "axios";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -8,7 +8,18 @@ export const UserProvider = ({ children }) => {
     const savedSession = localStorage.getItem("userSession");
     return savedSession ? JSON.parse(savedSession) : null;
   });
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("https://tdg-db.onrender.com/api/getUser", { withCredentials: true });
+        setUserSession(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
 
+    fetchUser();
+  }, []);
   useEffect(() => {
     // Save session to LocalStorage whenever it changes
     if (userSession) {
