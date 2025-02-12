@@ -264,6 +264,7 @@ function Header() {
               height={69} // Adjust based on actual aspect ratio
               priority // Ensures it loads as early as possible
               className="menu-logo"
+              loading="lazy"
               style={{ width: "69px", padding: "12px" }}
             />
           </Link>
