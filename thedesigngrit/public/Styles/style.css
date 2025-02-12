@@ -1103,12 +1103,18 @@ body::-webkit-scrollbar {
 .ourMission-Section-typo {
   flex: 1; /* Allow the text section to take up space */
   padding-left: 200px; /* Add some space between image and text */
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .ourMission-Section-typo h2 {
   font-size: 2rem; /* Adjust title size */
   margin-bottom: 30px; /* Space below the title */
   color: #6c7c59;
+  font-family: Horizon;
+  font-weight: bold;
+  text-align: start;
+  margin-top: 30px;
 }
 
 .ourMission-Section-typo p {
@@ -1127,6 +1133,10 @@ body::-webkit-scrollbar {
   font-size: 2rem; /* Adjust title size */
   margin-bottom: 30px; /* Space below the title */
   color: #6c7c59;
+  font-family: Horizon;
+  font-weight: bold;
+  text-align: start;
+  margin-top: 30px;
 }
 
 .ourStory-Section-typo p {
@@ -1146,6 +1156,9 @@ body::-webkit-scrollbar {
   text-align: center;
   font-size: 2rem;
   color: #6c7c59;
+  font-family: Horizon;
+  font-weight: bold;
+  margin-top: 30px;
 }
 .OurTeam-section p {
   font-family: Montserrat;
@@ -2134,6 +2147,10 @@ textarea {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  font-family: Horizon;
+  font-weight: bold;
+  text-align: start;
+  margin-top: 30px;
 }
 
 .Contant-caption p {
