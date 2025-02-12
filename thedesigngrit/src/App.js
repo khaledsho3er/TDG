@@ -44,7 +44,7 @@ const Signupvendor = React.lazy(() => import("./Components/vendorSide/SignupVend
 function App() {
   return (
     <>
-      <Suspense fallback={<LoadingScreen />}>
+      {/* <Suspense fallback={<LoadingScreen />}> */}
       <UserProvider>
         <CartProvider>
           <Router>
@@ -100,7 +100,7 @@ function App() {
           </Router>
         </CartProvider>
       </UserProvider>
-      </Suspense>
+      {/* </Suspense> */}
       <VendorProvider>
         <Router>
           <Routes>
