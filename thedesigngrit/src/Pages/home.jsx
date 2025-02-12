@@ -11,8 +11,8 @@ import ScrollAnimation from "../Context/scrollingAnimation"; // Import the anima
 
 const videos = [
   "/Assets/Video-hero/herovideo.mp4",
-  "/Assets/TDGLoadingScreen.mp4",
-  "/Assets/Video-hero/herovideo.mp4",
+  "/Assets/Video-hero/herovideo2.mp4",
+  "/Assets/Video-hero/herovideo3.mp4",
 ];
 
 function Home() {

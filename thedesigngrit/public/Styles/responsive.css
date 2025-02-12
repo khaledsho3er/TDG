@@ -55,6 +55,7 @@
 
   .Contant-caption h3 {
     font-size: 1.8rem;
+    text-align: center;
   }
 
   .Contant-caption p {
@@ -356,7 +357,10 @@
     margin-bottom: 40px;
     text-align: justify;
   }
-
+  .ourStory-Section-typo h2 {
+    font-size: 18px;
+    letter-spacing: 1.5px;
+  } 
   .OurTeam-section p {
     padding: 10px 20px;
     font-size: 14px;
@@ -432,6 +436,10 @@
   .ourMission-Section-typo {
     padding-left: 0;
     margin-top: 10px;
+  }
+  .ourMission-Section-typo h2{
+    font-size: 18px;
+    letter-spacing: 1.5px;
   }
   .line-between {
     margin: 0 auto;
