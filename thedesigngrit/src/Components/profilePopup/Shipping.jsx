@@ -16,7 +16,7 @@ const ShippingInfoPopup = () => {
     country: "",
   });
   const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog state
-  const userSession = useContext(UserContext);
+  const { userSession } = useContext(UserContext);
   const [countries] = useState(countryList().getData());
 
   useEffect(() => {
