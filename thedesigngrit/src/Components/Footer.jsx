@@ -332,7 +332,7 @@ function Footer() {
                 key={icon}
                 src={`/Assets/icons/${icon}.svg`}
                 alt={icon}
-                style={{ maxWidth: "100%", height: "auto" }}
+                style={{ width: "30px", height: "40px" }}
               />
             ))}
           </Box>
