@@ -10,9 +10,9 @@ import Footer from "../Components/Footer";
 import ScrollAnimation from "../Context/scrollingAnimation"; // Import the animation wrapper
 
 const videos = [
-  "/Assets/Video-hero/herovideo.mp4",
-  "/Assets/Video-hero/herovideo2.mp4",
-  "/Assets/Video-hero/herovideo3.mp4",
+  "/Assets/Video-hero/herovideo.webm",
+  "/Assets/Video-hero/herovideo2.webm",
+  "/Assets/Video-hero/herovideo3.webm",
 ];
 
 function Home() {

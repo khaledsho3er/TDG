@@ -32,7 +32,7 @@ const LoadingScreen = ({ onComplete }) => {
         }}
       >
         <video
-          src="/Assets/TDGLoadingScreen.mp4"
+          src="/Assets/TDGLoadingScreen.webm"
           autoPlay
           muted
           playsInline
