@@ -52,8 +52,6 @@ function ProductsPage() {
         setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -122,8 +120,6 @@ function ProductsPage() {
     });
     setFilteredProducts(filtered);
   };
-
-  if (loading) return <LoadingScreen />;
 
   return (
     <Box>
