@@ -15,7 +15,7 @@ const NavbarVendor = () => {
     const fetchBrandData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/brand/${vendor.brandId}`, // Replace with your backend endpoint
+          `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`, // Replace with your backend endpoint
           {
             method: "GET",
             credentials: "include", // Include credentials for session handling
@@ -46,10 +46,13 @@ const NavbarVendor = () => {
   // Handle logout
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/vendors/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/vendors/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         console.log("Logout successful");
@@ -67,7 +70,7 @@ const NavbarVendor = () => {
     <nav className="navbar-vendor">
       <div className="navbar-logo-vendor">
         <img
-          src={`http://localhost:5000/uploads/${brandData?.brandlogo}`}
+          src={`https://tdg-db.onrender.com/uploads/${brandData?.brandlogo}`}
           alt="Vendor Logo"
         />
       </div>

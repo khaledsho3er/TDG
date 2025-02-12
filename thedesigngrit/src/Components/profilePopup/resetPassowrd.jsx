@@ -43,7 +43,7 @@ const ResetPasswordForm = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:5000/api/changePassword",
+        "https://tdg-db.onrender.com/api/changePassword",
         { currentPassword, newPassword },
         {
           headers: { Authorization: `Bearer ${token}` },

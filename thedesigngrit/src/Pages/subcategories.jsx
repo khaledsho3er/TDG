@@ -17,7 +17,7 @@ function Subcategories() {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:5000/api/subcategories/categories/${categoryId}/subcategories`
+          `https://tdg-db.onrender.com/api/subcategories/categories/${categoryId}/subcategories`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch subcategories");
@@ -38,7 +38,7 @@ function Subcategories() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         const data = await response.json();
         setCategories(data.slice(0, 6));
@@ -72,7 +72,7 @@ function Subcategories() {
               className={`subcategory-box ${index % 2 !== 0 ? "reverse" : ""}`}
             >
               <img
-                src={`http://localhost:5000/uploads/${subCategory.image}`}
+                src={`https://tdg-db.onrender.com/uploads/${subCategory.image}`}
                 alt={subCategory.name}
                 className="subcategory-image"
               />

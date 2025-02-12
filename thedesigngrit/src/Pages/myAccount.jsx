@@ -45,9 +45,12 @@ const MyAccount = () => {
     const fetchData = async () => {
       console.log("id in MyAccount:", userSession.id);
       try {
-        const response = await axios.get("http://localhost:5000/api/getUser", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://tdg-db.onrender.com/api/getUser",
+          {
+            withCredentials: true,
+          }
+        );
         console.log("userSession in MyAccount:", userSession);
         setUserData(response.data);
       } catch (error) {

@@ -20,7 +20,7 @@ const CategoryListPage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -58,7 +58,7 @@ const CategoryListPage = () => {
                   height="140"
                   image={
                     category.image
-                      ? `http://localhost:5000/uploads/${category.image}`
+                      ? `https://tdg-db.onrender.com/uploads/${category.image}`
                       : ""
                   }
                   alt={category.name}

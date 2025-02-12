@@ -20,7 +20,7 @@ const NotificationOverlayVendor = ({ onClose }) => {
           return;
         }
         const response = await fetch(
-          `http://localhost:5000/api/notifications/notifications?brandId=${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/notifications/notifications?brandId=${vendor.brandId}`
         );
         const data = await response.json();
         setNotifications(data);

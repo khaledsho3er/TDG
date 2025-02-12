@@ -24,19 +24,22 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
   const prodId = productId;
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/view-in-store/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code: code,
-          productId: prodId,
-          userId: userSession.id,
-          userName: `${userSession?.firstName || ""} ${
-            userSession?.lastName || ""
-          }`.trim(),
-          brandId: productId.brandId,
-        }),
-      });
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/view-in-store/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: code,
+            productId: prodId,
+            userId: userSession.id,
+            userName: `${userSession?.firstName || ""} ${
+              userSession?.lastName || ""
+            }`.trim(),
+            brandId: productId.brandId,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

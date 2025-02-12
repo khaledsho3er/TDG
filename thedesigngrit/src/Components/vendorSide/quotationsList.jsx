@@ -14,7 +14,7 @@ const QuotationsPage = () => {
     const fetchQuotations = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/quotation/quotations/brand/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/quotation/quotations/brand/${vendor.brandId}`
         );
         setQuotations(response.data);
         setLoading(false);
@@ -58,7 +58,7 @@ const QuotationsPage = () => {
               <img
                 src={
                   quotation.productId.mainImage
-                    ? `http://localhost:5000/uploads/${quotation.productId.mainImage}`
+                    ? `https://tdg-db.onrender.com/uploads/${quotation.productId.mainImage}`
                     : "/default-product-image.jpg"
                 } // Default image if no product image
                 alt={quotation.productId.name}
@@ -86,7 +86,7 @@ const QuotationsPage = () => {
             <img
               src={
                 selectedQuotation.productId.mainImage
-                  ? `http://localhost:5000/uploads/${selectedQuotation.productId.mainImage}`
+                  ? `https://tdg-db.onrender.com/uploads/${selectedQuotation.productId.mainImage}`
                   : "/default-product-image.jpg"
               }
               alt={selectedQuotation.productId.name}

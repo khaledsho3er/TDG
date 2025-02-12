@@ -15,7 +15,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/favorites/${userSession.id}`
+          `https://tdg-db.onrender.com/api/favorites/${userSession.id}`
         );
         if (response.ok) {
           const favoritesData = await response.json();
@@ -60,7 +60,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
               <div className="notification-image-vendor">
                 {/* Assuming `product.mainImage` is the image path */}
                 <img
-                  src={`http://localhost:5000/uploads/${product.mainImage}`}
+                  src={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
                   alt={product.title}
                   className="notification-image-vendor-image"
                 />

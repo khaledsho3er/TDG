@@ -22,9 +22,12 @@ function EditProfile() {
     // Fetch user data
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/getUser", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://tdg-db.onrender.com/api/getUser",
+          {
+            withCredentials: true,
+          }
+        );
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
@@ -56,7 +59,7 @@ function EditProfile() {
     if (dialogAction === "save") {
       try {
         const response = await axios.put(
-          "http://localhost:5000/api/updateUser",
+          "https://tdg-db.onrender.com/api/updateUser",
           userData,
           { withCredentials: true }
         );

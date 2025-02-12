@@ -20,7 +20,7 @@ function TrackOrder() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/orders/customer/${userSession.id}`
+          `https://tdg-db.onrender.com/api/orders/orders/customer/${userSession.id}`
         ); // Adjust API endpoint as needed
         const data = await response.json();
 

@@ -16,7 +16,7 @@ const EditEmployee = () => {
     const fetchEmployee = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/employee/getAll/${id}`
+          `https://tdg-db.onrender.com/api/employee/getAll/${id}`
         );
         setEmployee(response.data);
         setName(response.data.name);
@@ -35,7 +35,7 @@ const EditEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/employee/update/${id}`, {
+      await axios.put(`https://tdg-db.onrender.com/api/employee/update/${id}`, {
         name,
         employeeNumber,
         email,

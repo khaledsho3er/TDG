@@ -12,7 +12,7 @@ const VendorsGrid = () => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brand/");
+        const response = await fetch("https://tdg-db.onrender.com/api/brand/");
         const data = await response.json();
         setVendors(data);
       } catch (error) {

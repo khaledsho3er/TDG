@@ -56,7 +56,7 @@ function ContactUs() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/contactus/contact",
+        "https://tdg-db.onrender.com/api/contactus/contact",
         {
           method: "POST",
           headers: {

@@ -1,7 +1,7 @@
 useEffect(() => {
   const fetchUserData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/getUser", {
+      const response = await fetch("https://tdg-db.onrender.com/api/getUser", {
         credentials: "include", // Send cookies with the request
       });
       if (response.ok) {

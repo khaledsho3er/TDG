@@ -30,7 +30,7 @@ const FilterSection = ({ onFilterChange, products }) => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brand/");
+        const response = await fetch("https://tdg-db.onrender.com/api/brand/");
         const data = await response.json();
         setBrands(data);
       } catch (error) {

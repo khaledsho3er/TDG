@@ -17,7 +17,7 @@ const ViewInStoreVendor = () => {
     const fetchViewInStores = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/view-in-store/brand/${vendor.brandId}`
+          `https://tdg-db.onrender.com/api/view-in-store/brand/${vendor.brandId}`
         );
         setViewInStores(response.data);
         setLoading(false);
@@ -67,7 +67,7 @@ const ViewInStoreVendor = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/view-in-store/${selectedViewInStore._id}`,
+        `https://tdg-db.onrender.com/api/view-in-store/${selectedViewInStore._id}`,
         { status: newStatus }
       );
 
@@ -159,7 +159,7 @@ const ViewInStoreVendor = () => {
               <img
                 src={
                   entry.productId?.mainImage
-                    ? `http://localhost:5000/uploads/${entry.productId.mainImage}`
+                    ? `https://tdg-db.onrender.com/uploads/${entry.productId.mainImage}`
                     : "/default-product-image.jpg"
                 }
                 alt={entry.productId?.name || "Product"}
@@ -191,7 +191,7 @@ const ViewInStoreVendor = () => {
             <img
               src={
                 selectedViewInStore.productId?.mainImage
-                  ? `http://localhost:5000/uploads/${selectedViewInStore.productId.mainImage}`
+                  ? `https://tdg-db.onrender.com/uploads/${selectedViewInStore.productId.mainImage}`
                   : "/default-product-image.jpg"
               }
               alt={selectedViewInStore.productId?.name || "Product"}

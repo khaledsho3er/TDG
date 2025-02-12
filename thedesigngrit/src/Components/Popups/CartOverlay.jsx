@@ -86,7 +86,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                 {/* Left: Image */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <img
-                    src={`http://localhost:5000/uploads/${item.image}`}
+                    src={`https://tdg-db.onrender.com/uploads/${item.image}`}
                     alt={item.name}
                     width="120"
                     height="100"

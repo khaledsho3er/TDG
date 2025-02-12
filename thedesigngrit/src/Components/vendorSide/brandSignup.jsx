@@ -55,7 +55,7 @@ const BrandSignup = () => {
   const fetchBrandData = async (brandId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/brand/${brandId}`
+        `https://tdg-db.onrender.com/api/brand/${brandId}`
       );
       setFormData(response.data);
       setOriginalData(response.data);
@@ -108,7 +108,7 @@ const BrandSignup = () => {
       });
 
       const response = await axios.put(
-        `http://localhost:5000/api/brand/${vendor.brandId}`,
+        `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -162,7 +162,7 @@ const BrandSignup = () => {
           <div className="brand-logo">
             {formData.brandlogo ? (
               <img
-                src={`http://localhost:5000/uploads/${formData.brandlogo}`}
+                src={`https://tdg-db.onrender.com/uploads/${formData.brandlogo}`}
                 alt="Brand Logo"
                 width="150"
               />
@@ -216,7 +216,7 @@ const BrandSignup = () => {
                         {formData[key]?.map((fileUrl, index) => (
                           <li key={index}>
                             <a
-                              href={`http://localhost:5000/uploads/${fileUrl}`}
+                              href={`https://tdg-db.onrender.com/uploads/${fileUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
                             >

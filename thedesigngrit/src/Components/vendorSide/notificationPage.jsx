@@ -22,7 +22,7 @@ const NotificationsPage = () => {
       }
       const brandId = vendor.brandId; // Get brandId from vendor session
       const response = await fetch(
-        `http://localhost:5000/api/notifications/notifications?brandId=${brandId}`
+        `https://tdg-db.onrender.com/api/notifications/notifications?brandId=${brandId}`
       );
       const data = await response.json();
       setNotifications(data);
@@ -60,7 +60,7 @@ const NotificationsPage = () => {
 
       // Send request to the backend to persist the change
       await fetch(
-        `http://localhost:5000/api/notifications/${id}/mark-as-read`,
+        `https://tdg-db.onrender.com/api/notifications/${id}/mark-as-read`,
         {
           method: "PATCH",
         }
