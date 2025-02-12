@@ -35,7 +35,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         position: "fixed",
         top: 50,
         right: 9,
-        width: "400px",
+        width: "360px",
         height: "55%",
         backgroundColor: "white",
         boxShadow: "-2px 0 5px rgba(0,0,0,0.2)",
