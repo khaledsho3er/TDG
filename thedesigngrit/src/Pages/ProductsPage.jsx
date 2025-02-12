@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
+import axios from "axios";
 import Header from "../Components/navBar";
 import PageDicription from "../Components/Topheader";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -28,10 +29,9 @@ function ProductsPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
+        const { data } = await axios.get(
           "https://tdg-db.onrender.com/api/categories/categories"
         );
-        const data = await response.json();
         setCategories(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -44,16 +44,15 @@ function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
+        const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
-        const data = await response.json();
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
-        setLoading(false); // إيقاف التحميل بعد اكتمال الجلب
+        setLoading(false);
       }
     };
 
@@ -122,7 +121,8 @@ function ProductsPage() {
     });
     setFilteredProducts(filtered);
   };
-  if (loading) return <LoadingScreen />; // عرض شاشة التحميل مباشرة إذا كانت البيانات لم تُحمّل بعد
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <Box>
@@ -135,15 +135,12 @@ function ProductsPage() {
         <CircularProgress />
       ) : (
         <Grid container spacing={2} sx={{ padding: 2 }}>
-          {/* Filter section */}
           <Grid item xs={12} sm={4} md={3}>
             <FilterSection
               onFilterChange={handleFilterChange}
               products={products}
             />
           </Grid>
-
-          {/* Product cards */}
           <Grid item xs={12} sm={8} md={9}>
             <ProductCards
               products={filteredProducts}
