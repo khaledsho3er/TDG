@@ -260,6 +260,9 @@ function Header() {
             <img
               src="/Assets/TDG_Logo_Black.webp"
               alt="Logo"
+              width={69}
+              height={69} // Adjust based on actual aspect ratio
+              priority // Ensures it loads as early as possible
               className="menu-logo"
               style={{ width: "69px", padding: "12px" }}
             />
