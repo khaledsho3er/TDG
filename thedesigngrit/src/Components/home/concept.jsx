@@ -12,11 +12,11 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 const ExploreConcepts = () => {
   const cards = [
-    { id: 1, title: "Bed Room", image: "/Assets/concept2.png" },
-    { id: 2, title: "Living Room", image: "/Assets/concept1.png" },
-    { id: 3, title: "Dining Room", image: "/Assets/concept3.png" },
-    { id: 4, title: "Office Room", image: "/Assets/concept5.jpg" },
-    { id: 5, title: "Kitchen", image: "/Assets/concept4.jpg" },
+    { id: 1, title: "Bed Room", image: "/Assets/concept2.webp" },
+    { id: 2, title: "Living Room", image: "/Assets/concept1.webp" },
+    { id: 3, title: "Dining Room", image: "/Assets/concept3.webp" },
+    { id: 4, title: "Office Room", image: "/Assets/concept5.webp" },
+    { id: 5, title: "Kitchen", image: "/Assets/concept4.webp" },
   ]; // Imagine this list comes from the backend
 
   const [currentCard, setCurrentCard] = useState(0); // Track the current card index

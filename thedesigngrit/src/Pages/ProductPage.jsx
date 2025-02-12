@@ -302,7 +302,7 @@ function ProductPage() {
                     )}
                     {section === "Dimensions" && (
                       <div className="product-contents">
-                        <img src="/Assets/productDemi.png" alt="Dimensions" />
+                        <img src="/Assets/productDemi.webp" alt="Dimensions" />
                         <p>Width X Length X Height</p>
                         <p>
                           {product.technicalDimensions.width} x{"  "}
@@ -335,7 +335,7 @@ function ProductPage() {
                         >
                           {/* Left-aligned image */}
                           <img
-                            src="/Assets/autocadIcon.png" // Replace with the actual path to the AutoCAD logo
+                            src="/Assets/autocadIcon.webp" // Replace with the actual path to the AutoCAD logo
                             alt="AutoCAD Logo"
                             style={{
                               width: "24px",

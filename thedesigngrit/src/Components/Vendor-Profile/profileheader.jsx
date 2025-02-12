@@ -38,7 +38,7 @@ function VendorProfileHeader({ vendor }) {
       >
         <CardMedia
           component="img"
-          src={fullImagePath || "/Assets/Vendors/default-logo.png"} // Use dynamic logo or fallback
+          src={fullImagePath || "/Assets/Vendors/default-logo.webp"} // Use dynamic logo or fallback
           alt="Logo"
           sx={{
             width: { xs: "80px", md: "100px" },

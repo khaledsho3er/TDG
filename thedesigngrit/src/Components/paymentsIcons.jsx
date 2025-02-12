@@ -3,11 +3,11 @@ import { Box } from "@mui/material";
 
 const PaymentIcons = () => {
   const icons = [
-    { src: "Assets/visa-logo.png", alt: "Visa" },
-    { src: "Assets/mastercard-logo.png", alt: "MasterCard" },
-    { src: "Assets/valu-logo.png", alt: "ValU" },
-    { src: "Assets/saholoha-logo.png", alt: "Saholoha" },
-    { src: "Assets/halan-logo.png", alt: "Halan" },
+    { src: "Assets/visa-logo.webp", alt: "Visa" },
+    { src: "Assets/mastercard-logo.webp", alt: "MasterCard" },
+    { src: "Assets/valu-logo.webp", alt: "ValU" },
+    { src: "Assets/saholoha-logo.webp", alt: "Saholoha" },
+    { src: "Assets/halan-logo.webp", alt: "Halan" },
   ];
 
   return (

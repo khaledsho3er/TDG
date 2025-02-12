@@ -41,7 +41,7 @@ function CustomerPolicy() {
         <HeroAbout
           title="Our Customer Policies"
           subtitle="Explore our policies to learn how we ensure a secure and seamless shopping experience at The Design Grit (TDG)."
-          image={"Assets/PolicyHero.png"}
+          image={"Assets/PolicyHero.webp"}
         />
       </Box>
       <div className="terms-container">

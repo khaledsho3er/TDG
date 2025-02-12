@@ -490,7 +490,7 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               <h4>Payment Info</h4>
-              <img src="/Assets/icons/visa.png" alt="Visa" />
+              <img src="/Assets/icons/visa.webp" alt="Visa" />
             </Box>
             <p>Payment Method: {order.paymentDetails.paymentMethod}</p>
             <p>

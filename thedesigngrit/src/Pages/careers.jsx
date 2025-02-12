@@ -10,7 +10,7 @@ function careersPage() {
     <Box className="careersPage">
       <Header />
       <Box>
-        <HeroAbout title="Join TDG" image={"Assets/careers.jpg"} />
+        <HeroAbout title="Join TDG" image={"Assets/careers.webp"} />
       </Box>
       <Box>
         <p className="Caption-careers">

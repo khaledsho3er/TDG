@@ -20,7 +20,7 @@ function AboutUsPage() {
         <HeroAbout
           title="About Us"
           subtitle="Explore thousands of jobs on TDG to reach the next step in your career. Online job vacancies that match your preference. Search, Save, Apply today."
-          image={"Assets/AboutUs.jpg"}
+          image={"Assets/AboutUs.webp"}
         />
       </Box>
       <Box
@@ -71,7 +71,7 @@ function AboutUsPage() {
       </Box>
       <Box className="ourMission-Section">
         <Box className="ourMission-Section-image">
-          <img src="Assets/aboutUsContent.png" alt="ImageAbout" />
+          <img src="Assets/aboutUsContent.webp" alt="ImageAbout" />
         </Box>
         <Box className="ourMission-Section-typo">
           <h2>Our Mission</h2>

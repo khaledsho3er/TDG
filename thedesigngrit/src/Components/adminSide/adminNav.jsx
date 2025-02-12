@@ -36,7 +36,7 @@ const NavbarAdmin = () => {
     <nav className="navbar-vendor" style={{ position: "relative" }}>
       {/* Logo */}
       <div className="navbar-logo-vendor">
-        <img src="/Assets/TDG_Logo_Black.png" alt="ProjectLogo" />
+        <img src="/Assets/TDG_Logo_Black.webp" alt="ProjectLogo" />
       </div>
 
       {/* Actions */}

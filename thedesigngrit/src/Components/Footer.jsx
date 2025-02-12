@@ -43,7 +43,7 @@ function Footer() {
         <Box sx={{ flex: 1, minWidth: { xs: "100%", md: "300px" } }}>
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography variant="h4" sx={{ mb: 2 }}>
-              <img src="/Assets/TDG_Logo_Black.png" alt="Logo" />
+              <img src="/Assets/TDG_Logo_Black.webp" alt="Logo" />
             </Typography>
           </Link>
 
@@ -330,7 +330,7 @@ function Footer() {
             {["amex", "mastercard", "meeza", "visa", "mada"].map((icon) => (
               <img
                 key={icon}
-                src={`/Assets/icons/${icon}.png`}
+                src={`/Assets/icons/${icon}.svg`}
                 alt={icon}
                 style={{ maxWidth: "100%", height: "auto" }}
               />

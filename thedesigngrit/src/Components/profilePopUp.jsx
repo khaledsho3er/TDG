@@ -59,7 +59,7 @@ function ProfilePopup({ open, onClose }) {
                 style={{ display: "flex", justifyContent: "flex-end" }}
               >
                 <Avatar
-                  src="/Assets/founder.jpg"
+                  src="/Assets/founder.webp"
                   alt="User Avatar"
                   className="popup-avatar"
                 />

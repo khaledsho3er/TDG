@@ -118,17 +118,17 @@ const DashboardAdmin = () => {
           <hr></hr>
           <ul>
             <li>
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              <img src="Assets/sofabrown.webp" alt="sofa" />
               Lorem Ipsum - LE 126,500 (999 sales)
             </li>
             <li>
               {" "}
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              <img src="Assets/sofabrown.webp" alt="sofa" />
               Lorem Ipsum - LE 126,500 (999 sales)
             </li>
             <li>
               {" "}
-              <img src="Assets/sofabrown.jpg" alt="sofa" />
+              <img src="Assets/sofabrown.webp" alt="sofa" />
               Lorem Ipsum - LE 126,500 (999 sales)
             </li>
           </ul>

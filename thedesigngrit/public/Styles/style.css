@@ -4988,7 +4988,7 @@ iframe {
   height: 100%;
   gap: 0.3px;
   padding-bottom: 40px;
-  background-image: url("/Assets/Checkout/Checkout-background.png"); /* Replace with your image path */
+  background-image: url("/Assets/Checkout/Checkout-background.webp"); /* Replace with your image path */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

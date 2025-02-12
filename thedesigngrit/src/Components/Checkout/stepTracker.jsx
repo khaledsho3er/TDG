@@ -3,10 +3,10 @@ import { Box } from "@mui/material";
 
 function StepTracker({ currentStep, setCurrentStep }) {
   const steps = [
-    { id: 1, icon: "/Assets/Checkout/firsticon.png", label: "Cart" },
-    { id: 2, icon: "/Assets/Checkout/secondicon.png", label: "Shipping" },
-    { id: 3, icon: "/Assets/Checkout/thirdicon.png", label: "Summary" },
-    { id: 4, icon: "/Assets/Checkout/fourthicon.png", label: "Payment" },
+    { id: 1, icon: "/Assets/Checkout/firsticon.webp", label: "Cart" },
+    { id: 2, icon: "/Assets/Checkout/secondicon.webp", label: "Shipping" },
+    { id: 3, icon: "/Assets/Checkout/thirdicon.webp", label: "Summary" },
+    { id: 4, icon: "/Assets/Checkout/fourthicon.webp", label: "Payment" },
   ];
 
   const handleStepClick = (stepId) => {

@@ -4,32 +4,32 @@ const PartnersSection = () => {
   const partners = [
     {
       name: "Art House",
-      logo: "Assets/PartnersLogos/ArtHouseLogo.png",
+      logo: "Assets/PartnersLogos/ArtHouseLogo.webp",
       link: "https://arthouse.com",
     },
     {
       name: "Innovo",
-      logo: "Assets/PartnersLogos/InnovoLogo.png",
+      logo: "Assets/PartnersLogos/InnovoLogo.webp",
       link: "https://innovo.com",
     },
     {
       name: "Burotime",
-      logo: "Assets/PartnersLogos/BurotimeLogo.png",
+      logo: "Assets/PartnersLogos/BurotimeLogo.webp",
       link: "https://burotime.com",
     },
     {
       name: "Bloom Paris",
-      logo: "Assets/PartnersLogos/BloonLogo.png",
+      logo: "Assets/PartnersLogos/BloonLogo.webp",
       link: "https://bloon-paris.com",
     },
     {
       name: "Istikbal",
-      logo: "Assets/PartnersLogos/istikbal.png",
+      logo: "Assets/PartnersLogos/istikbal.webp",
       link: "https://istikbal.com",
     },
     {
       name: "Qabani",
-      logo: "Assets/PartnersLogos/kabani.png",
+      logo: "Assets/PartnersLogos/kabani.webp",
       link: "https://qabani.com",
     },
   ];
