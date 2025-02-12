@@ -159,7 +159,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={4}>
                   <img
-                    src={productId.mainImage}
+                    src={`https://tdg-db.onrender.com/uploads/${productId.mainImage}`}
                     alt="Product"
                     style={{
                       width: "100%",
