@@ -39,7 +39,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
     navigate("/myaccount", { state: { section: "wishlist" } });
   };
   return (
-    <div className="overlay-container-vendor" style={{ right: "50px" }}>
+    <div className="overlay-container-vendor" style={{ right: "30px" }}>
       {/* Header */}
       <div className="overlay-header-vendor">
         <h3>Favorites</h3>
