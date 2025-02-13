@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext";
 import * as Yup from "yup";
 
@@ -91,6 +91,12 @@ const SignIn = () => {
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>
+          <p className="signup-link">
+            Don't have an account?{" "}
+            <Link to="/signupvendor" className="signup-btn">
+              Sign Up
+            </Link>
+          </p>
         </form>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </Box>

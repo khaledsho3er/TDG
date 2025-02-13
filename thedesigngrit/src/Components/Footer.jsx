@@ -169,6 +169,12 @@ function Footer() {
                   >
                     <Typography>Support</Typography>
                   </Link>
+                  <Link
+                    to="/signin-vendor"
+                    style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  >
+                    <Typography>Partners Portal</Typography>
+                  </Link>
                 </Box>
               </Box>
             </Grid>
@@ -253,12 +259,12 @@ function Footer() {
               >
                 PAGES
               </Typography>
-              <Link
+              {/* <Link
                 to="/products"
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
-              >
-                <Typography>Furniture</Typography>
-              </Link>
+              > */}
+              <Typography>Furniture</Typography>
+
               <Typography>Kitchen & Dining</Typography>
               <Typography>Bath</Typography>
               <Typography>Lighting</Typography>
