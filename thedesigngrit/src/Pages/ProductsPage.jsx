@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import Header from "../Components/navBar";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -128,9 +128,15 @@ function ProductsPage() {
                 <productCard product={product} />
               </Grid>
             ))
+          ) : products.length === 0 ? (
+            <Grid item xs={12}>
+              <Typography>No products available.</Typography>
+            </Grid>
           ) : (
             <Grid item xs={12}>
-              No products match the selected filters.
+              <Typography>
+                All products are shown. Use filters to refine your search.
+              </Typography>
             </Grid>
           )}
         </Grid>
