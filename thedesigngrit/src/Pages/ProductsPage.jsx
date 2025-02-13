@@ -27,6 +27,7 @@ function ProductsPage() {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
+        console.log("deh ek data aheh", data);
         setProducts(data);
         setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
       } catch (error) {
@@ -108,6 +109,9 @@ function ProductsPage() {
     setFilteredProducts(filtered);
   };
 
+  useEffect(() => {
+    setFilteredProducts(products); // ✅ This ensures all products show at first
+  }, [products]);
   return (
     <Box>
       <Header />
