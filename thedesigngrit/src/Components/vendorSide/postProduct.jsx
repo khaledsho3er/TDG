@@ -173,25 +173,12 @@ const AddProduct = () => {
   };
 
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
-  const handleArrayChange = (e, field, parentField = null) => {
+  const handleArrayChange = (e, field) => {
     const { value } = e.target;
-
-    if (parentField) {
-      // Handle nested fields (e.g., warrantyInfo.warrantyCoverage)
-      setFormData({
-        ...formData,
-        [parentField]: {
-          ...formData[parentField],
-          [field]: value.split(",").map((item) => item.trim()),
-        },
-      });
-    } else {
-      // Handle top-level fields (e.g., tags, colors, sizes)
-      setFormData({
-        ...formData,
-        [field]: value.split(",").map((item) => item.trim()),
-      });
-    }
+    setFormData({
+      ...formData,
+      [field]: value.split(",").map((item) => item.trim()), // Split and trim
+    });
   };
 
   // Handle adding new tags
@@ -341,6 +328,8 @@ const AddProduct = () => {
         // Stringify nested objects
         data.append(key, JSON.stringify(formData[key]));
       } else if (Array.isArray(formData[key])) {
+        data.append(key, JSON.stringify(formData[key])); // Stringify arrays
+
         // Stringify arrays (except for reviews)
         if (key === "reviews") {
           // Ensure reviews is an array of objects
