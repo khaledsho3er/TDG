@@ -173,12 +173,25 @@ const AddProduct = () => {
   };
 
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
-  const handleArrayChange = (e, field) => {
+  const handleArrayChange = (e, field, parentField = null) => {
     const { value } = e.target;
-    setFormData({
-      ...formData,
-      [field]: value.split(",").map((item) => item.trim()), // Split and trim
-    });
+
+    if (parentField) {
+      // Handle nested fields (e.g., warrantyInfo.warrantyCoverage)
+      setFormData({
+        ...formData,
+        [parentField]: {
+          ...formData[parentField],
+          [field]: value.split(",").map((item) => item.trim()), // Split and trim
+        },
+      });
+    } else {
+      // Handle top-level fields (e.g., tags, colors, sizes)
+      setFormData({
+        ...formData,
+        [field]: value.split(",").map((item) => item.trim()), // Split and trim
+      });
+    }
   };
 
   // Handle adding new tags
@@ -817,7 +830,9 @@ const AddProduct = () => {
                   type="text"
                   name="warrantyCoverage"
                   value={formData.warrantyInfo.warrantyCoverage.join(",")}
-                  onChange={(e) => handleArrayChange(e, "warrantyCoverage")}
+                  onChange={(e) =>
+                    handleArrayChange(e, "warrantyCoverage", "warrantyInfo")
+                  }
                 />
               </div>
             </Box>
