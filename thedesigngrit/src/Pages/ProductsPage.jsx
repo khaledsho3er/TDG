@@ -139,10 +139,13 @@ function ProductsPage() {
           />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
+          {console.log("Rendering filteredProducts:", filteredProducts)}
+
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <Grid key={product._id} item xs={12} sm={6} md={4}>
                 <productCard product={product} />
+                {console.log("Product being rendered:", product)}
               </Grid>
             ))
           ) : products.length === 0 ? (
