@@ -143,7 +143,7 @@ function ProductsPage() {
 
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div key={index}>
+              <div key={product._id}>
                 <h3>{product.name}</h3>
                 <p>Price: ${product.price}</p>
               </div>
