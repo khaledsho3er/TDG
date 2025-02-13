@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
@@ -498,6 +498,19 @@ function Signupvendor() {
           >
             {currentPhase === 3 ? "Finish" : "Next"}
           </Button>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 2,
+            }}
+          >
+            Already have an account?{" "}
+            <Link to="/signin-vendor" style={{ textDecoration: "none" }}>
+              Sign in
+            </Link>
+          </Typography>
         </form>
       </Box>
     </Box>
