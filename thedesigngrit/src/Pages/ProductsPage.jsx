@@ -9,7 +9,7 @@ import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 
 function ProductsPage() {
-  const { subcategoryId } = useParams();
+  const { subcategoryId, subcategoryName } = useParams();
   const [products, setProducts] = useState([]); // جميع المنتجات
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
@@ -20,12 +20,12 @@ function ProductsPage() {
     priceRange: [349, 61564],
   });
 
-  // 🟢 جلب المنتجات من الـ API
+  // 🟢 جلب المنتجات من الـ API مع استخدام المسار الصحيح
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}`
+          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
         setProducts(data);
         setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
@@ -35,7 +35,7 @@ function ProductsPage() {
     };
 
     fetchProducts();
-  }, [subcategoryId]);
+  }, [subcategoryId, subcategoryName]);
 
   // 🟢 تطبيق الفلاتر عند التحديث
   useEffect(() => {
