@@ -142,9 +142,7 @@ function ProductsPage() {
           {console.log("Rendering filteredProducts:", filteredProducts)}
 
           {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <ProductCards key={product._id} product={product} />
-            ))
+            <ProductCards products={filteredProducts} />
           ) : products.length === 0 ? (
             <Grid item xs={12}>
               <Typography>No products available.</Typography>
