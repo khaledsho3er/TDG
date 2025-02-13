@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
 import axios from "axios";
@@ -9,70 +9,101 @@ import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 
 function ProductsPage() {
-  const { subcategoryId, subcategoryName } = useParams();
-  const [favorites, setFavorites] = useState([]);
-  const [products, setProducts] = useState([]);
+  const { subcategoryId } = useParams();
+  const [products, setProducts] = useState([]); // جميع المنتجات
+  const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
   const [filters, setFilters] = useState({
-    brands: [],
+    brands: [], // قائمة الـ ObjectId للماركات المختارة
     colors: [],
     tags: [],
     priceRange: [349, 61564],
   });
 
-  // جلب المنتجات
+  // 🟢 جلب المنتجات من الـ API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
+          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}`
         );
         setProducts(data);
+        setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
 
     fetchProducts();
-  }, [subcategoryId, subcategoryName]);
+  }, [subcategoryId]);
 
-  // 🔹 فلترة المنتجات باستخدام useMemo لتحسين الأداء
-  const filteredProducts = useMemo(() => {
-    return products
-      .filter((product) => {
-        const matchesBrand =
-          filters.brands.length === 0 || filters.brands.includes(product.brand);
-        const matchesColor =
-          filters.colors.length === 0 ||
-          filters.colors.some((color) => product.colors.includes(color));
-        const matchesTag =
-          filters.tags.length === 0 ||
-          filters.tags.some((tag) => product.tags.includes(tag));
-        const matchesPrice =
-          product.price >= filters.priceRange[0] &&
-          product.price <= filters.priceRange[1];
+  // 🟢 تطبيق الفلاتر عند التحديث
+  useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...products];
 
-        return matchesBrand && matchesColor && matchesTag && matchesPrice;
-      })
-      .sort((a, b) => {
-        switch (sortOption) {
-          case "Newest":
-            return new Date(b.dateAdded) - new Date(a.dateAdded);
-          case "Price: Low to High":
-            return a.price - b.price;
-          case "Price: High to Low":
-            return b.price - a.price;
-          case "Alphabetical: A-Z":
-            return a.name.localeCompare(b.name);
-          case "Alphabetical: Z-A":
-            return b.name.localeCompare(a.name);
-          default:
-            return 0;
-        }
-      });
-  }, [products, filters, sortOption]); // 🔥 يتم تحديث المنتجات عند أي تغيير في الفلاتر أو الترتيب
+      // ✅ فلترة حسب الـ Brand (ObjectId)
+      if (filters.brands.length > 0) {
+        filtered = filtered.filter((product) =>
+          filters.brands.includes(product.brandId)
+        );
+      }
 
-  // 🔹 تحديث الفلاتر
+      // ✅ فلترة حسب اللون (مصفوفة)
+      if (filters.colors.length > 0) {
+        filtered = filtered.filter((product) =>
+          product.colors.some((color) => filters.colors.includes(color))
+        );
+      }
+
+      // ✅ فلترة حسب التاجز (مصفوفة)
+      if (filters.tags.length > 0) {
+        filtered = filtered.filter((product) =>
+          product.tags.some((tag) => filters.tags.includes(tag))
+        );
+      }
+
+      // ✅ فلترة حسب السعر (لو فيه Sale Price نستخدمه)
+      filtered = filtered.filter(
+        (product) =>
+          (product.salePrice || product.price) >= filters.priceRange[0] &&
+          (product.salePrice || product.price) <= filters.priceRange[1]
+      );
+
+      // ✅ ترتيب المنتجات بعد التصفية
+      switch (sortOption) {
+        case "Newest":
+          filtered.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          break;
+        case "Price: Low to High":
+          filtered.sort(
+            (a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)
+          );
+          break;
+        case "Price: High to Low":
+          filtered.sort(
+            (a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)
+          );
+          break;
+        case "Alphabetical: A-Z":
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "Alphabetical: Z-A":
+          filtered.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        default:
+          break;
+      }
+
+      setFilteredProducts(filtered);
+    };
+
+    applyFilters();
+  }, [filters, sortOption, products]);
+
+  // 🟢 تحديث الفلاتر عند التغيير
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
@@ -94,7 +125,6 @@ function ProductsPage() {
           <ProductCards products={filteredProducts} />
         </Grid>
       </Grid>
-
       <Footer />
     </Box>
   );
