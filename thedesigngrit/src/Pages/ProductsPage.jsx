@@ -122,7 +122,7 @@ function ProductsPage() {
           />
         </Grid>
         <Grid item xs={12} sm={8} md={9}>
-          <ProductCards products={productsroducts} />
+          <ProductCards products={products} />
         </Grid>
       </Grid>
       <Footer />
