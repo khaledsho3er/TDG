@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Avatar, TextField } from "@mui/material";
 import { format } from "date-fns";
 import axios from "axios";
 import ConfirmationDialog from "../confirmationMsg";
-
+import { UserContext } from "../../utils/userContext";
 function Profile({ userData }) {
   // const [popupOpen, setPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // Toggle between text and form
@@ -11,7 +11,7 @@ function Profile({ userData }) {
 
   const [dialogOpen, setDialogOpen] = useState(false); // State for dialog
   const [dialogAction, setDialogAction] = useState(""); // Action for dialog
-
+  const { userSession } = useContext(UserContext); // Access user session from context
   // Sync formData with userData when userData changes or edit mode is toggled
   useEffect(() => {
     if (!isEditing) {
@@ -47,7 +47,7 @@ function Profile({ userData }) {
     if (dialogAction === "save") {
       try {
         const response = await axios.put(
-          `https://tdg-db.onrender.com/api/updateUser/${userData._id}`,
+          `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
           formData, // Use the updated formData here
           { withCredentials: true }
         );
