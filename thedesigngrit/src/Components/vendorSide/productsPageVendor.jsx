@@ -322,9 +322,7 @@ const ProductsPageVendor = () => {
                   <hr style={{ margin: "10px 0", color: "#ddd" }} />
                   <div className="product-remaining">
                     <span>Remaining Products</span>
-                    <span className="remaining-value">
-                      {product.reviewsCount}
-                    </span>
+                    <span className="remaining-value">{product.stock}</span>
                   </div>
                 </div>
               </div>

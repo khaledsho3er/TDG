@@ -202,12 +202,13 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       },
     });
   };
-  console.log("brnad name", brandName);
-  console.log("brnad name", selectedCategory, selectedSubCategory);
 
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
   const handleArrayChange = (e, field, parentField = null) => {
     const { value } = e.target;
+
+    // Split the input value by commas and trim each item
+    const arrayValues = value.split(",").map((item) => item.trim());
 
     if (parentField) {
       // Handle nested fields (e.g., warrantyInfo.warrantyCoverage)
@@ -215,14 +216,14 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
         ...formData,
         [parentField]: {
           ...formData[parentField],
-          [field]: value.split(",").map((item) => item.trim()),
+          [field]: arrayValues, // Ensure this is an array
         },
       });
     } else {
       // Handle top-level fields (e.g., tags, colors, sizes)
       setFormData({
         ...formData,
-        [field]: value.split(",").map((item) => item.trim()),
+        [field]: arrayValues, // Ensure this is an array
       });
     }
   };
@@ -372,6 +373,11 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     }));
   };
 
+  // Handle cancel
+  const handleCancel = () => {
+    onBack();
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -385,8 +391,10 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
         // Stringify nested objects
         data.append(key, JSON.stringify(formData[key]));
       } else if (Array.isArray(formData[key])) {
-        // Append arrays directly (do not stringify)
-        data.append(key, JSON.stringify(formData[key])); // If you need to send as JSON
+        // Append each array item individually
+        formData[key].forEach((item, index) => {
+          data.append(`${key}[${index}]`, item);
+        });
       } else {
         // Append regular fields
         data.append(key, formData[key]);
@@ -394,9 +402,11 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     }
 
     // Append images to FormData
-    images.forEach((image) => {
+    images.forEach((image, index) => {
       if (image instanceof File) {
         data.append("images", image);
+      } else {
+        console.error("Invalid image file at index:", index, image);
       }
     });
 
@@ -1041,7 +1051,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
           <button className="btn update" type="submit">
             UPDATE
           </button>
-          <button className="btn cancel">CANCEL</button>
+          <button className="btn cancel" onClick={handleCancel}>
+            CANCEL
+          </button>
         </div>
       </form>
     </>
