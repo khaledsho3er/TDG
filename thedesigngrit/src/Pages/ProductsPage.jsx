@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Grid, Container, Typography, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
-import FilterSection from "./FilterSection";
-import ProductCard from "./ProductCard";
+import FilterSection from "../Components/Products/filters";
+import ProductCard from "../Components/Products/productcard";
 
 const ProductsPage = () => {
   const { subcategoryId, subcategoryName } = useParams(); // Get subcategory from URL
@@ -56,7 +56,7 @@ const ProductsPage = () => {
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <Grid key={product.id} item xs={12} sm={6} md={4}>
-                    <ProductCard product={product} />
+                    <productCard product={product} />
                   </Grid>
                 ))
               ) : (
