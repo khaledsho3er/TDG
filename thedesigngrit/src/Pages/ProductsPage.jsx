@@ -143,10 +143,7 @@ function ProductsPage() {
 
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <div key={product._id}>
-                <h3>{product.name}</h3>
-                <p>Price: ${product.price}</p>
-              </div>
+              <ProductCards key={product._id} product={product} />
             ))
           ) : products.length === 0 ? (
             <Grid item xs={12}>
