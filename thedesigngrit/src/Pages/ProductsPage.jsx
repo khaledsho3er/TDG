@@ -14,13 +14,13 @@ function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
   const [filters, setFilters] = useState({
-    brands: [], // قائمة الـ ObjectId للماركات المختارة
+    brands: [],
     colors: [],
     tags: [],
     priceRange: [349, 61564],
   });
 
-  // 🟢 جلب المنتجات من الـ API مع استخدام المسار الصحيح
+  // 🟢 جلب المنتجات من الـ API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -28,7 +28,7 @@ function ProductsPage() {
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
         setProducts(data);
-        setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
+        setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -42,35 +42,30 @@ function ProductsPage() {
     const applyFilters = () => {
       let filtered = [...products];
 
-      // ✅ فلترة حسب الـ Brand (ObjectId)
       if (filters.brands.length > 0) {
         filtered = filtered.filter((product) =>
           filters.brands.includes(product.brandId)
         );
       }
 
-      // ✅ فلترة حسب اللون (مصفوفة)
       if (filters.colors.length > 0) {
         filtered = filtered.filter((product) =>
           product.colors.some((color) => filters.colors.includes(color))
         );
       }
 
-      // ✅ فلترة حسب التاجز (مصفوفة)
       if (filters.tags.length > 0) {
         filtered = filtered.filter((product) =>
           product.tags.some((tag) => filters.tags.includes(tag))
         );
       }
 
-      // ✅ فلترة حسب السعر (لو فيه Sale Price نستخدمه)
       filtered = filtered.filter(
         (product) =>
           (product.salePrice || product.price) >= filters.priceRange[0] &&
           (product.salePrice || product.price) <= filters.priceRange[1]
       );
 
-      // ✅ ترتيب المنتجات بعد التصفية
       switch (sortOption) {
         case "Newest":
           filtered.sort(
@@ -103,11 +98,6 @@ function ProductsPage() {
     applyFilters();
   }, [filters, sortOption, products]);
 
-  // 🟢 تحديث الفلاتر عند التغيير
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
-  };
-
   return (
     <Box>
       <Header />
@@ -116,10 +106,7 @@ function ProductsPage() {
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>
-          <FilterSection
-            onFilterChange={handleFilterChange}
-            products={products}
-          />
+          <FilterSection onFilterChange={setFilters} products={products} />
         </Grid>
         <Grid item xs={12} sm={8} md={9}>
           <ProductCards products={filteredProducts} />
