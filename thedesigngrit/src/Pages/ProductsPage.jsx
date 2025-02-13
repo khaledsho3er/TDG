@@ -8,8 +8,6 @@ import ProductCards from "../Components/Products/Productsgrid";
 import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
-import LoadingScreen from "./loadingScreen";
-import CircularProgress from "@mui/material/CircularProgress";
 
 function ProductsPage() {
   const { subcategoryId, subcategoryName } = useParams();
@@ -18,7 +16,6 @@ function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
-  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     brands: [],
     colors: [],
@@ -26,6 +23,7 @@ function ProductsPage() {
     priceRange: [349, 61564],
   });
 
+  // جلب التصنيفات
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -37,28 +35,26 @@ function ProductsPage() {
         console.error("Error fetching categories:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
+  // جلب المنتجات عند تغيير التصنيف الفرعي
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
         );
-
         setProducts(data);
-        setFilteredProducts(data);
-        console.log("filtered products:", filteredProducts);
+        setFilteredProducts(data); // تحديث المنتجات المعروضة عند التحميل
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, [subcategoryId, subcategoryName]);
 
+  // تحميل المفضلات من localStorage
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
@@ -76,51 +72,57 @@ function ProductsPage() {
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
+  // **💡 تحديث الفلاتر بشكل صحيح**
   useEffect(() => {
-    let sortedProducts = [...filteredProducts];
-    switch (sortOption) {
-      case "Newest":
-        sortedProducts.sort(
-          (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
-        );
-        break;
-      case "Price: Low to High":
-        sortedProducts.sort((a, b) => a.price - b.price);
-        break;
-      case "Price: High to Low":
-        sortedProducts.sort((a, b) => b.price - a.price);
-        break;
-      case "Alphabetical: A-Z":
-        sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "Alphabetical: Z-A":
-        sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      default:
-        break;
-    }
-    setFilteredProducts(sortedProducts);
-  }, [sortOption, filteredProducts]);
-
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
     const filtered = products.filter((product) => {
       const matchesBrand =
-        newFilters.brands.length === 0 ||
-        newFilters.brands.includes(product.brand);
+        filters.brands.length === 0 || filters.brands.includes(product.brand);
       const matchesColor =
-        newFilters.colors.length === 0 ||
-        newFilters.colors.some((color) => product.colors.includes(color));
+        filters.colors.length === 0 ||
+        filters.colors.some((color) => product.colors.includes(color));
       const matchesTag =
-        newFilters.tags.length === 0 ||
-        newFilters.tags.some((tag) => product.tags.includes(tag));
+        filters.tags.length === 0 ||
+        filters.tags.some((tag) => product.tags.includes(tag));
       const matchesPrice =
-        product.price >= newFilters.priceRange[0] &&
-        product.price <= newFilters.priceRange[1];
+        product.price >= filters.priceRange[0] &&
+        product.price <= filters.priceRange[1];
+
       return matchesBrand && matchesColor && matchesTag && matchesPrice;
     });
+
     setFilteredProducts(filtered);
-  };
+  }, [filters, products]); // ✅ تأكد من تحديث `filteredProducts` عندما تتغير `filters` أو `products`.
+
+  // **💡 الترتيب بعد الفلترة وليس قبلها**
+  useEffect(() => {
+    setFilteredProducts((prevFilteredProducts) => {
+      let sortedProducts = [...prevFilteredProducts];
+
+      switch (sortOption) {
+        case "Newest":
+          sortedProducts.sort(
+            (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)
+          );
+          break;
+        case "Price: Low to High":
+          sortedProducts.sort((a, b) => a.price - b.price);
+          break;
+        case "Price: High to Low":
+          sortedProducts.sort((a, b) => b.price - a.price);
+          break;
+        case "Alphabetical: A-Z":
+          sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "Alphabetical: Z-A":
+          sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        default:
+          break;
+      }
+
+      return sortedProducts;
+    });
+  }, [sortOption]);
 
   return (
     <Box>
@@ -130,13 +132,13 @@ function ProductsPage() {
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>
-          <FilterSection
-            onFilterChange={handleFilterChange}
-            products={products}
-          />
+          <FilterSection onFilterChange={setFilters} products={products} />
         </Grid>
         <Grid item xs={12} sm={8} md={9}>
-          <ProductCards products={products} onToggleFavorite={toggleFavorite} />
+          <ProductCards
+            products={filteredProducts}
+            onToggleFavorite={toggleFavorite}
+          />
         </Grid>
       </Grid>
 
