@@ -273,7 +273,15 @@ const AddProduct = () => {
     const formData = new FormData();
 
     files.forEach((file) => formData.append("images", file));
+    // Create image previews
+    const imagePreviews = files.map((file) => URL.createObjectURL(file));
+    // If no main image is set, set the first image as the main image
+    if (!mainImage && imagePreviews.length > 0) {
+      setMainImage(imagePreviews[0]);
+    }
 
+    // Update the images array
+    setImages([...images, ...imagePreviews]);
     axios
       .post("https://tdg-db.onrender.com/api/products/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -337,7 +345,12 @@ const AddProduct = () => {
 
     // Append non-file fields to FormData
     for (const key in formData) {
-      if (key === "technicalDimensions" || key === "warrantyInfo") {
+      if (
+        key === "technicalDimensions" ||
+        key === "warrantyInfo" ||
+        key === "colors" ||
+        key === "sizes"
+      ) {
         // Stringify nested objects
         data.append(key, JSON.stringify(formData[key]));
       } else if (Array.isArray(formData[key])) {
