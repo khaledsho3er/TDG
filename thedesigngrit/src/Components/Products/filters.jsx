@@ -4,7 +4,6 @@ import {
   Typography,
   Checkbox,
   FormControlLabel,
-  TextField,
   Button,
   Slider,
   Accordion,
@@ -19,7 +18,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
 
-const FilterSection = ({ onFilterChange, products }) => {
+const FilterSection = ({ products, onFilteredProductsChange }) => {
   const [selectedFilters, setSelectedFilters] = useState({
     brands: [],
     colors: [],
@@ -27,10 +26,7 @@ const FilterSection = ({ onFilterChange, products }) => {
     priceRange: [349, 61564],
   });
   const [brands, setBrands] = useState([]);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const uniqueColors = [...new Set(products.flatMap((p) => p.colors))];
@@ -49,27 +45,40 @@ const FilterSection = ({ onFilterChange, products }) => {
     fetchBrands();
   }, []);
 
-  const handleFilterChange = (type, value) => {
-    setSelectedFilters((prev) => {
-      const newFilters = {
-        ...prev,
-        [type]: prev[type].includes(value)
-          ? prev[type].filter((item) => item !== value)
-          : [...prev[type], value],
-      };
-      onFilterChange(newFilters);
-      return newFilters;
+  useEffect(() => {
+    const filteredProducts = products.filter((product) => {
+      const matchesBrand =
+        selectedFilters.brands.length === 0 ||
+        selectedFilters.brands.includes(product.brand);
+      const matchesColor =
+        selectedFilters.colors.length === 0 ||
+        product.colors.some((color) => selectedFilters.colors.includes(color));
+      const matchesTag =
+        selectedFilters.tags.length === 0 ||
+        product.tags.some((tag) => selectedFilters.tags.includes(tag));
+      const matchesPrice =
+        product.price >= selectedFilters.priceRange[0] &&
+        product.price <= selectedFilters.priceRange[1];
+      return matchesBrand && matchesColor && matchesTag && matchesPrice;
     });
+    onFilteredProductsChange(filteredProducts);
+  }, [selectedFilters, products, onFilteredProductsChange]);
+
+  const handleFilterChange = (type, value) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [type]: prev[type].includes(value)
+        ? prev[type].filter((item) => item !== value)
+        : [...prev[type], value],
+    }));
+  };
+
+  const handlePriceChange = (_, newValue) => {
+    setSelectedFilters((prev) => ({ ...prev, priceRange: newValue }));
   };
 
   const clearFilters = () => {
     setSelectedFilters({
-      brands: [],
-      colors: [],
-      tags: [],
-      priceRange: [349, 61564],
-    });
-    onFilterChange({
       brands: [],
       colors: [],
       tags: [],
@@ -92,41 +101,22 @@ const FilterSection = ({ onFilterChange, products }) => {
           Filters:
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 1 }}>
-          {selectedFilters.brands.map((filter, index) => (
+          {[
+            ...selectedFilters.brands,
+            ...selectedFilters.colors,
+            ...selectedFilters.tags,
+          ].map((filter, index) => (
             <Chip
               key={index}
               label={filter}
               onDelete={() => handleFilterChange("brands", filter)}
             />
           ))}
-          {selectedFilters.colors.map((filter, index) => (
-            <Chip
-              key={index}
-              label={filter}
-              onDelete={() => handleFilterChange("colors", filter)}
-            />
-          ))}
-          {selectedFilters.tags.map((filter, index) => (
-            <Chip
-              key={index}
-              label={filter}
-              onDelete={() => handleFilterChange("tags", filter)}
-            />
-          ))}
         </Box>
-        <Button
-          onClick={clearFilters}
-          size="small"
-          color="error"
-          sx={{
-            border: "1px solid #2d2d2d",
-            "&:hover": { backgroundColor: "#2d2d2d" },
-          }}
-        >
+        <Button onClick={clearFilters} size="small" color="error">
           Clear All
         </Button>
       </Box>
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Brands</Typography>
@@ -146,7 +136,6 @@ const FilterSection = ({ onFilterChange, products }) => {
           ))}
         </AccordionDetails>
       </Accordion>
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Price</Typography>
@@ -154,19 +143,13 @@ const FilterSection = ({ onFilterChange, products }) => {
         <AccordionDetails>
           <Slider
             value={selectedFilters.priceRange}
-            onChange={(e, newValue) =>
-              setSelectedFilters((prev) => ({
-                ...prev,
-                priceRange: newValue,
-              }))
-            }
+            onChange={handlePriceChange}
             valueLabelDisplay="auto"
             min={349}
             max={61564}
           />
         </AccordionDetails>
       </Accordion>
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Colors</Typography>
@@ -177,14 +160,8 @@ const FilterSection = ({ onFilterChange, products }) => {
               key={index}
               control={
                 <Checkbox
-                  checked={selectedColors.includes(color)}
-                  onChange={() =>
-                    setSelectedColors((prev) =>
-                      prev.includes(color)
-                        ? prev.filter((c) => c !== color)
-                        : [...prev, color]
-                    )
-                  }
+                  checked={selectedFilters.colors.includes(color)}
+                  onChange={() => handleFilterChange("colors", color)}
                 />
               }
               label={color}
@@ -192,7 +169,6 @@ const FilterSection = ({ onFilterChange, products }) => {
           ))}
         </AccordionDetails>
       </Accordion>
-
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>Tags</Typography>
@@ -203,14 +179,8 @@ const FilterSection = ({ onFilterChange, products }) => {
               key={index}
               control={
                 <Checkbox
-                  checked={selectedTags.includes(tag)}
-                  onChange={() =>
-                    setSelectedTags((prev) =>
-                      prev.includes(tag)
-                        ? prev.filter((t) => t !== tag)
-                        : [...prev, tag]
-                    )
-                  }
+                  checked={selectedFilters.tags.includes(tag)}
+                  onChange={() => handleFilterChange("tags", tag)}
                 />
               }
               label={tag}
@@ -220,7 +190,6 @@ const FilterSection = ({ onFilterChange, products }) => {
       </Accordion>
     </Box>
   );
-
   return (
     <Box>
       {isMobile ? (
