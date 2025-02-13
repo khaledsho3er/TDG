@@ -66,7 +66,14 @@ const SignIn = () => {
   };
 
   return (
-    <div className="container-login">
+    <div
+      className="container-login"
+      style={{
+        backgroundImage: "url('/Assets/signin.jpeg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <h1 className="signinLogo">
         <img src="Assets/TDG_logo_Black.webp" alt="Logo" />
       </h1>
