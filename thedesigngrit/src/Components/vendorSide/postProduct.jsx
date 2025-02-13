@@ -354,21 +354,21 @@ const AddProduct = () => {
       }
     }
 
-    // // Append images to FormData
-    // images.forEach((image, index) => {
-    //   if (image instanceof File) {
-    //     data.append("images", image);
-    //   } else {
-    //     console.error("Invalid image file at index:", index, image);
-    //   }
-    // });
+    // Append images to FormData
+    images.forEach((image, index) => {
+      if (image instanceof File) {
+        data.append("images", image);
+      } else {
+        console.error("Invalid image file at index:", index, image);
+      }
+    });
 
-    // // Append the main image
-    // if (mainImage instanceof File) {
-    //   data.append("mainImage", mainImage);
-    // } else {
-    //   console.error("Invalid main image file:", mainImage);
-    // }
+    // Append the main image
+    if (mainImage instanceof File) {
+      data.append("mainImage", mainImage);
+    } else {
+      console.error("Invalid main image file:", mainImage);
+    }
 
     try {
       // Send the form data to the backend
