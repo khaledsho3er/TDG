@@ -817,9 +817,7 @@ const AddProduct = () => {
                   type="text"
                   name="warrantyCoverage"
                   value={formData.warrantyInfo.warrantyCoverage.join(",")}
-                  onChange={(e) =>
-                    handleArrayChange(e, "warrantyCoverage", "warrantyInfo")
-                  }
+                  onChange={(e) => handleArrayChange(e, "warrantyCoverage")}
                 />
               </div>
             </Box>
