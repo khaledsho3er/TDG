@@ -182,14 +182,14 @@ const AddProduct = () => {
         ...formData,
         [parentField]: {
           ...formData[parentField],
-          [field]: value.split(",").map((item) => item.trim()), // Split and trim
+          [field]: value.split(",").map((item) => item.trim()),
         },
       });
     } else {
       // Handle top-level fields (e.g., tags, colors, sizes)
       setFormData({
         ...formData,
-        [field]: value.split(",").map((item) => item.trim()), // Split and trim
+        [field]: value.split(",").map((item) => item.trim()),
       });
     }
   };
@@ -269,12 +269,11 @@ const AddProduct = () => {
 
   // Handle image upload
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const formData = new FormData();
+    const files = Array.from(e.target.files); // Convert FileList to array
 
-    files.forEach((file) => formData.append("images", file));
     // Create image previews
     const imagePreviews = files.map((file) => URL.createObjectURL(file));
+
     // If no main image is set, set the first image as the main image
     if (!mainImage && imagePreviews.length > 0) {
       setMainImage(imagePreviews[0]);
@@ -282,24 +281,26 @@ const AddProduct = () => {
 
     // Update the images array
     setImages([...images, ...imagePreviews]);
+
+    // Prepare FormData to send files to the backend
+    const formData = new FormData();
+    files.forEach((file) => formData.append("images", file));
+
+    // Send files to the backend
     axios
       .post("https://tdg-db.onrender.com/api/products/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((response) => {
         console.log("Images uploaded successfully:", response.data);
 
-        // Extract filenames only (remove full path)
-        const filenames = response.data.filePaths.map((filePath) =>
-          filePath.split("/").pop()
-        );
-
-        setImages((prevImages) => [...prevImages, ...filenames]); // Store filenames for UI display
-
+        // Update formData with the uploaded image paths
         setFormData((prevData) => ({
           ...prevData,
-          images: [...prevData.images, ...filenames], // Store only filenames in formData
-          mainImage: prevData.mainImage || filenames[0], // Set main image if not already set
+          images: [...prevData.images, ...response.data.filePaths], // Add new file paths
+          mainImage: prevData.mainImage || response.data.filePaths[0], // Set main image if not already set
         }));
       })
       .catch((error) => {
@@ -309,10 +310,10 @@ const AddProduct = () => {
 
   // Handle setting the main image
   const handleSetMainImage = (index) => {
-    setMainImage(images[index]); // Update main image preview
+    setMainImage(images[index]);
     setFormData((prevData) => ({
       ...prevData,
-      mainImage: images[index], // Store only the filename
+      mainImage: formData.images[index], // Update mainImage in formData
     }));
   };
 
@@ -345,17 +346,10 @@ const AddProduct = () => {
 
     // Append non-file fields to FormData
     for (const key in formData) {
-      if (
-        key === "technicalDimensions" ||
-        key === "warrantyInfo" ||
-        key === "colors" ||
-        key === "sizes"
-      ) {
+      if (key === "technicalDimensions" || key === "warrantyInfo") {
         // Stringify nested objects
         data.append(key, JSON.stringify(formData[key]));
       } else if (Array.isArray(formData[key])) {
-        data.append(key, JSON.stringify(formData[key])); // Stringify arrays
-
         // Stringify arrays (except for reviews)
         if (key === "reviews") {
           // Ensure reviews is an array of objects
