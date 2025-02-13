@@ -176,20 +176,23 @@ const AddProduct = () => {
   const handleArrayChange = (e, field, parentField = null) => {
     const { value } = e.target;
 
+    // Split the input value by commas and trim each item
+    const arrayValues = value.split(",").map((item) => item.trim());
+
     if (parentField) {
       // Handle nested fields (e.g., warrantyInfo.warrantyCoverage)
       setFormData({
         ...formData,
         [parentField]: {
           ...formData[parentField],
-          [field]: value.split(",").map((item) => item.trim()),
+          [field]: arrayValues, // Ensure this is an array
         },
       });
     } else {
       // Handle top-level fields (e.g., tags, colors, sizes)
       setFormData({
         ...formData,
-        [field]: value.split(",").map((item) => item.trim()),
+        [field]: arrayValues, // Ensure this is an array
       });
     }
   };
@@ -350,13 +353,10 @@ const AddProduct = () => {
         // Stringify nested objects
         data.append(key, JSON.stringify(formData[key]));
       } else if (Array.isArray(formData[key])) {
-        // Stringify arrays (except for reviews)
-        if (key === "reviews") {
-          // Ensure reviews is an array of objects
-          data.append(key, JSON.stringify(formData[key]));
-        } else {
-          data.append(key, JSON.stringify(formData[key]));
-        }
+        // Append each array item individually
+        formData[key].forEach((item, index) => {
+          data.append(`${key}[${index}]`, item);
+        });
       } else {
         // Append regular fields
         data.append(key, formData[key]);
