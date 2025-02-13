@@ -105,13 +105,26 @@ function ProductsPage() {
   }, [filters, sortOption, products]);
 
   // 🟢 تحديث الفلاتر عند التغيير
-  const handleFilterChange = (filtered) => {
+  const handleFilterChange = (selectedFilters) => {
+    const filtered = products.filter((product) => {
+      return (
+        (!selectedFilters.color ||
+          product.colors.includes(selectedFilters.color)) &&
+        (!selectedFilters.size || product.sizes.includes(selectedFilters.size))
+      );
+    });
+
+    console.log("Filtered products after applying filters:", filtered);
     setFilteredProducts(filtered);
   };
 
   useEffect(() => {
-    setFilteredProducts(products); // ✅ This ensures all products show at first
+    if (products.length > 0) {
+      setFilteredProducts(products);
+      console.log("Filtered products initialized:", products);
+    }
   }, [products]);
+
   return (
     <Box>
       <Header />
@@ -128,7 +141,7 @@ function ProductsPage() {
         <Grid item xs={12} md={9} container spacing={3}>
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <Grid key={product.id} item xs={12} sm={6} md={4}>
+              <Grid key={product._id} item xs={12} sm={6} md={4}>
                 <productCard product={product} />
               </Grid>
             ))
