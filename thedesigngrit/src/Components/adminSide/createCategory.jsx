@@ -88,7 +88,9 @@ const CategoryForm = () => {
     formData.append("image", categoryImage);
 
     const formattedSubCategories = subCategories.map((subCategory, index) => {
-      formData.append(`subCategoryImages`, subCategory.image || ""); // Match multer field name
+      if (subCategory.image) {
+        formData.append(`subCategoryImages`, subCategory.image); // هنا يتم رفع الصور بشكل منفصل
+      }
       return {
         name: subCategory.name,
         description: subCategory.description || "",
@@ -96,6 +98,7 @@ const CategoryForm = () => {
       };
     });
 
+    // أضف البيانات النصية بعد رفع الصور
     formData.append("subCategories", JSON.stringify(formattedSubCategories));
 
     try {
