@@ -107,7 +107,7 @@
 /*Dashboard*/
 .dashboard-vendor {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
 }
 
 .dashboard-header-vendor {
@@ -240,7 +240,7 @@
 }
 .recent-orders-vendor {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
   background-color: #fff;
   border-radius: 15px;
   border: 2px solid #ddd;
@@ -272,7 +272,7 @@
 }
 .best-sellers-vendor {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
   background-color: #fff;
   border-radius: 15px;
   border: 2px solid #ddd;
@@ -430,7 +430,7 @@
 
 .product-list-page-vendor {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
 }
 
 .dashboard-header-vendor {
@@ -645,7 +645,7 @@
 }
 /*Order List*/
 .recent-purchases {
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
   margin: 20px;
   background-color: #fff;
   padding: 20px;
@@ -710,7 +710,7 @@ tr:hover {
 
 /*Table in order Details vendor*/
 .products-purchases-order {
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
   background-color: #fff;
   padding: 20px;
   border-radius: 15px;
@@ -757,7 +757,7 @@ tr:hover {
   display: flex;
   gap: 4rem;
   padding: 2rem;
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
 }
 
 .form-left {
@@ -1007,7 +1007,7 @@ textarea {
   margin-top: 20px;
 }
 .verify-partners {
-  font-family: Arial, sans-serif;
+  font-family: Montserrat;
   margin: 20px;
   padding: 20px;
   display: flex;
@@ -1178,7 +1178,7 @@ li {
   border-radius: 8px;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
   border: 1px solid #ccc;
 }
 .branding-page-form .form-field textarea {

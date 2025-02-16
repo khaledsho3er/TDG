@@ -312,7 +312,7 @@ body::-webkit-scrollbar {
 
 .product-showcase h2 {
   margin-bottom: 1rem;
-  font-family: horizon;
+  font-family: Horizon;
   font-weight: bold;
   text-align: center;
   font-size: 30px;
@@ -322,7 +322,7 @@ body::-webkit-scrollbar {
   list-style: none;
   padding: 0;
   margin: 0 0 1rem;
-  font-family: horizon;
+  font-family: Horizon;
   font-weight: bold;
   color: #2d2d2d;
   font-size: 10px;
@@ -720,7 +720,7 @@ body::-webkit-scrollbar {
 }
 
 .shop-by-category h2 {
-  font-family: horizon;
+  font-family: Horizon;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -769,7 +769,7 @@ body::-webkit-scrollbar {
 .card-content h3 {
   font-size: 1.5rem;
   font-weight: bold;
-  font-family: horizon;
+  font-family: Horizon;
   margin: 0;
   text-align: left;
   text-transform: uppercase;
@@ -1140,7 +1140,7 @@ body::-webkit-scrollbar {
 .ourStory-Section-typo p {
   font-size: 22px; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
-  font-family: montserrat;
+  font-family: Montserrat;
 }
 .line-between {
   border: 1px solid #ccc;
@@ -4009,7 +4009,7 @@ iframe {
 /*Materail Section info*/
 /* Container for the entire collapsible section */
 .material-collapsible-container {
-  font-family: Arial;
+  font-family: Montserrat;
   padding: 20px;
   width: 100%;
   max-width: 600px;
@@ -4555,8 +4555,8 @@ iframe {
 }
 
 /*profile side account page*/
-.Profile-side {
-}
+/* .Profile-side {
+} */
 
 .Profile-side h1 {
   font-size: 24px;
@@ -4575,7 +4575,7 @@ iframe {
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial;
+  font-family: Montserrat;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -4624,7 +4624,7 @@ iframe {
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial;
+  font-family: Montserrat;
 }
 
 .profile-info-second-left,
@@ -4655,7 +4655,7 @@ iframe {
   margin: auto;
   padding: 10px;
   border-radius: 15px;
-  font-family: Arial;
+  font-family: Montserrat;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -4807,7 +4807,7 @@ iframe {
   margin-bottom: 4px;
   text-align: left;
   font-size: 0.8rem;
-  font-family: "Montserrat, san-serif";
+  font-family: "Montserrat";
   padding: 20px;
 }
 
@@ -4843,7 +4843,6 @@ iframe {
 
 .vendorprofile-card-title {
   font-family: "Montserrat";
-  font-weight: "san-sarif";
   text-align: center;
   font-size: 10px;
 }
@@ -4897,7 +4896,7 @@ iframe {
 }
 
 .vendorprofile-products-card-content p {
-  font-family: "Montserrat, san-sarif ";
+  font-family: "Montserrat";
 }
 
 /* Product title */
@@ -4945,7 +4944,7 @@ iframe {
   border-radius: 30px;
   color: white;
   background-color: #000;
-  font-family: "Montserrat, san-sarif";
+  font-family: "Montserrat";
 }
 
 .Vendorprofile-contact-button:hover {
@@ -4959,7 +4958,7 @@ iframe {
 }
 
 .Vendorprofile-website-button {
-  font-family: "Montserrat, san-sarif";
+  font-family: "Montserrat";
 }
 
 /* checkout page */
@@ -5026,7 +5025,6 @@ iframe {
 
 .checkout-form h2 {
   margin-bottom: 1.5rem;
-  font-family: Arial;
   font-size: 1.5rem;
   font-weight: bold;
   text-align: left;
@@ -5240,7 +5238,7 @@ button:hover {
 }
 
 .cart-title {
-  font-family: "horizon";
+  font-family: "Horizon";
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;
@@ -5252,13 +5250,13 @@ button:hover {
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 16px;
-  font-family: "montserrat, san-sarif";
+  font-family: "Montserrat";
 }
 
 .cart-summary-total {
   display: flex;
   justify-content: space-between;
-  font-family: "montserrat, san-sarif";
+  font-family: "Montserrat";
   border-top: 1px solid #ccc;
   padding-top: 8px;
   margin-top: 8px;
@@ -5420,7 +5418,7 @@ input:focus {
 }
 
 .ordersummary-cart-title {
-  font-family: "horizon";
+  font-family: "Horizon";
   color: #eae3e4;
   font-size: 20px;
   font-weight: bold;
@@ -5432,13 +5430,13 @@ input:focus {
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 16px;
-  font-family: "montserrat, san-sarif";
+  font-family: "montserrat";
 }
 
 .ordersummary-cart-summary-total {
   display: flex;
   justify-content: space-between;
-  font-family: "montserrat, san-sarif";
+  font-family: "montserrat";
   border-top: 1px solid #ccc;
   padding-top: 8px;
   margin-top: 8px;
@@ -5473,7 +5471,7 @@ input:focus {
 .Ordersummary-secondrow-secondcolumn p {
   font-size: 14px;
   margin-left: 1rem;
-  font-family: "montserrat, san-sarif";
+  font-family: "montserrat";
 }
 
 .Ordersummary-thirdrow {
@@ -6137,7 +6135,7 @@ input:focus {
   font-size: 16px;
   color: #555;
   margin-bottom: 20px;
-  font-family: "Montserrat,san_sarif";
+  font-family: "Montserrat";
 }
 
 .subcategory-button {
