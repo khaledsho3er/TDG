@@ -1,10 +1,10 @@
-import { Box, Select, MenuItem } from "@mui/material";
+import { Box, Select, MenuItem, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
-
+import { parse, isWithinInterval, format } from "date-fns";
 const RecentPurchases = () => {
   const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
@@ -12,7 +12,7 @@ const RecentPurchases = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
   const [sortDirection] = useState("asc");
-  const [dateRange] = useState([null, null]);
+  const [dateRange, setDateRange] = useState([null, null]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
 
   const ordersPerPage = 8;
@@ -100,13 +100,43 @@ const RecentPurchases = () => {
         <div className="dashboard-date-vendor">
           <SlCalender />
           <span>
-            {dateRange[0] && dateRange[1]
-              ? `${dateRange[0]} - ${dateRange[1]}`
+            {dateRange.from && dateRange.to
+              ? `${format(new Date(dateRange.from), "yyyy-MM-dd")} - ${format(
+                  new Date(dateRange.to),
+                  "yyyy-MM-dd"
+                )}`
               : "Select date range"}
           </span>
         </div>
       </header>
-
+      {/* Date Range Picker */}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: 2,
+        }}
+      >
+        <TextField
+          type="date"
+          label="From"
+          InputLabelProps={{ shrink: true }}
+          value={dateRange.from || ""}
+          onChange={(e) =>
+            setDateRange((prev) => ({ ...prev, from: e.target.value }))
+          }
+        />
+        <TextField
+          type="date"
+          label="To"
+          InputLabelProps={{ shrink: true }}
+          value={dateRange.to || ""}
+          onChange={(e) =>
+            setDateRange((prev) => ({ ...prev, to: e.target.value }))
+          }
+        />
+      </Box>
       <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
         <Select
           sx={{ width: "200px", borderRadius: "5px", color: "#2d2d2d" }}
