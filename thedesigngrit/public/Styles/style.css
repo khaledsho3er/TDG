@@ -193,7 +193,7 @@ body::-webkit-scrollbar {
   color: #eae3e4; /* Text color for "OR" */
   font-weight: bold;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif; /* Ensure the font styling is applied */
+  font-family: "Montserrat"; /* Ensure the font styling is applied */
   position: relative;
   text-transform: uppercase; /* Makes the text all caps for style consistency */
 }
@@ -1287,7 +1287,7 @@ body::-webkit-scrollbar {
   display: block;
   color: #666;
   font-size: 1.125rem;
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
 }
 
 .sustainability-heading {
@@ -1296,7 +1296,7 @@ body::-webkit-scrollbar {
   font-weight: 200;
   color: #2d2d2d;
   line-height: 1.2;
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
 }
 
 .sustainability-description {
@@ -1304,7 +1304,7 @@ body::-webkit-scrollbar {
   font-size: 1.125rem;
   margin-bottom: 2rem;
   line-height: 1.6;
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
 }
 
 .sustainability-button {
@@ -1805,7 +1805,7 @@ body::-webkit-scrollbar {
 }
 
 .job-form-title {
-  font-family: "Horizon", sans-serif;
+  font-family: "Horizon";
   font-size: 24px;
   font-weight: bold;
   text-align: center;
@@ -1822,7 +1822,7 @@ body::-webkit-scrollbar {
   margin-bottom: 0.5rem;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .job-form-field input,
@@ -1834,7 +1834,7 @@ body::-webkit-scrollbar {
   font-size: 14px;
   color: #2d2d2d;
   background: white;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .job-form-field input::placeholder,
@@ -2068,7 +2068,7 @@ textarea {
 
 .partner-Caption p {
   font-size: 18px;
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
   font-weight: 200;
   text-align: justify;
   line-height: 1.8;
@@ -2093,7 +2093,7 @@ textarea {
 }
 
 .partners-second-section ul li {
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
   font-size: 20px;
   line-height: 1.8;
   margin-bottom: 15px;
@@ -2364,7 +2364,7 @@ textarea {
 .popup-title {
   font-size: 24px !important;
   font-weight: bold !important;
-  font-family: Horizon, sans-serif !important;
+  font-family: Horizon !important;
   margin: 0;
 }
 
@@ -2394,7 +2394,7 @@ textarea {
   display: block;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 .popup-form-firstrow {
   display: flex;
@@ -2426,7 +2426,7 @@ select {
   font-size: 14px;
   color: #2d2d2d;
   background: white;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .popup-form-full-width {
@@ -2438,7 +2438,7 @@ select {
   font-size: 14px;
   color: #2d2d2d;
   background: white;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .popup-buttons {
@@ -2559,7 +2559,7 @@ select {
   display: block;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 .reset-popup-form-firstrow {
   display: flex;
@@ -2590,7 +2590,7 @@ select {
   font-size: 14px;
   color: #2d2d2d;
   background: rgb(216, 9, 9);
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .reset-popup-form-full-width {
@@ -2651,7 +2651,7 @@ select {
   display: block;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .billing-form-field input {
@@ -2661,7 +2661,7 @@ select {
   border-radius: 6px;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 .billing-form-field-row {
   display: flex;
@@ -2725,7 +2725,7 @@ select {
   border-radius: 8px;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 .form-field select {
   width: 100%;
@@ -2758,7 +2758,7 @@ select {
   border-radius: 8px;
   font-size: 14px;
   color: #2d2d2d;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 .shipping-form-field select {
   width: 100%;
@@ -3949,7 +3949,7 @@ iframe {
   border-radius: 20px; /* Round the corners */
   text-decoration: underline; /* Underline the text */
   font-size: 14px;
-  font-family: Montserrat, sans-serif; /* Optional: Apply a specific font */
+  font-family: Montserrat; /* Optional: Apply a specific font */
   color: #2d2d2d; /* Text color */
   transition: all 0.3s; /* Smooth transition for hover effects */
 }
@@ -3970,7 +3970,7 @@ iframe {
 .right-side-content {
   width: 50%; /* Occupy 35% of the page */
   padding: 20px;
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat;
   color: #2d2d2d;
 }
 .Products-Materials {
@@ -4009,7 +4009,7 @@ iframe {
 /*Materail Section info*/
 /* Container for the entire collapsible section */
 .material-collapsible-container {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   padding: 20px;
   width: 100%;
   max-width: 600px;
@@ -4575,7 +4575,7 @@ iframe {
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -4624,7 +4624,7 @@ iframe {
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  font-family: Arial;
 }
 
 .profile-info-second-left,
@@ -4655,7 +4655,7 @@ iframe {
   margin: auto;
   padding: 10px;
   border-radius: 15px;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -4908,7 +4908,7 @@ iframe {
   text-align: left; /* Center-align title */
   color: #333; /* Darker text color for title */
   margin-bottom: 0.5rem; /* Space below title */
-  font-family: "Montserrat, sans-serif"; /* Consistent font */
+  font-family: "Montserrat"; /* Consistent font */
 }
 
 /* Product description */
@@ -4916,7 +4916,7 @@ iframe {
   font-size: 0.5rem; /* Slightly smaller font */
   color: gray; /* Neutral text color */
   text-align: left; /* Center-align description */
-  font-family: "Montserrat, sans-serif"; /* Consistent font */
+  font-family: "Montserrat"; /* Consistent font */
 }
 
 /* Product price */
@@ -5026,7 +5026,7 @@ iframe {
 
 .checkout-form h2 {
   margin-bottom: 1.5rem;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   font-size: 1.5rem;
   font-weight: bold;
   text-align: left;
@@ -5332,7 +5332,7 @@ input:focus {
 }
 
 .Ordersummary-firstrow-firstcolumn {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
   width: 80%;
   padding: 16px;
   background: #fff;
@@ -5515,19 +5515,19 @@ input:focus {
 .paymentmethod-dropdown select {
   width: 120px;
   height: 30px;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
   font-size: 0.9rem;
 }
 
 /* Fonts */
 .horizon-font {
-  font-family: "Horizon", sans-serif;
+  font-family: "Horizon";
   font-weight: bold;
   font-size: 1rem;
 }
 
 .montserrat-font {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
   font-size: 0.9rem;
 }
 
@@ -6436,7 +6436,7 @@ input:focus {
 }
 
 .footer-contact-info {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .footer-payment-logos {
