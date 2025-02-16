@@ -153,6 +153,18 @@ const ResetPasswordForm = () => {
         >
           {showCurrentPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
         </span>
+        <span
+          onClick={() => setForgotPasswordDialogOpen(true)}
+          style={{
+            position: "absolute",
+            right: "40px",
+            fontSize: "12px",
+            color: "#6b7b58",
+            cursor: "pointer",
+          }}
+        >
+          Forgot Password?
+        </span>
       </div>
 
       <div className="reset-form-field" style={{ position: "relative" }}>

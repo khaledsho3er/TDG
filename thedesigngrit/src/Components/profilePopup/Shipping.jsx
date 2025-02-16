@@ -54,6 +54,7 @@ const ShippingInfoPopup = () => {
   };
 
   const handleUpdate = async () => {
+    setDialogOpen(true);
     try {
       const response = await axios.put(
         "https://tdg-db.onrender.com/api/updateUser",
@@ -62,7 +63,7 @@ const ShippingInfoPopup = () => {
       );
       setFormData(response.data);
       alert("Profile updated successfully!");
-      setDialogOpen(true);
+
       setIsPopupVisible(true); // Show popup on successful registration
       console.log("Shipping Info Submitted:", formData);
     } catch (error) {
