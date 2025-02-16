@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { useCart } from "../../Context/cartcontext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { UserContext } from "../../utils/userContext";
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
   const { cartItems, removeFromCart } = useCart(); // Use cartItems from context
   const navigate = useNavigate();
-
+  const { userSession } = useContext(UserContext); // Access user session from context
   if (!open) return null; // Don't render if overlay is closed
 
   const subtotal = cartItems.reduce(
@@ -136,7 +137,9 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             variant="contained"
             color="primary"
             sx={{ marginTop: "10px", fontFamily: "Horizon" }}
-            onClick={handleCheckoutClick} // Use the corrected function
+            onClick={
+              userSession ? handleCheckoutClick : () => navigate("/login")
+            } // Use the corrected function
           >
             Checkout
           </Button>

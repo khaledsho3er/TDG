@@ -2,12 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 import { UserContext } from "../../src/utils/userContext"; // Assuming UserContext is where user session is stored
 import { useNavigate } from "react-router-dom";
-
 const FavoritesOverlay = ({ open, onClose }) => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
   const { userSession } = useContext(UserContext); // Access user session from context
   const navigate = useNavigate();
-
   // Fetch favorite products when the component is mounted or when userSession changes
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -98,9 +96,18 @@ const FavoritesOverlay = ({ open, onClose }) => {
 
       {/* Footer */}
       <div className="overlay-footer-vendor">
-        <button className="view-all-vendor" onClick={navigateToWishlistPage}>
-          VIEW ALL FAVORITES
-        </button>
+        {!userSession ? (
+          <button
+            className="view-all-vendor"
+            onClick={() => navigate("/login")}
+          >
+            VIEW ALL FAVORITES
+          </button>
+        ) : (
+          <button className="view-all-vendor" onClick={navigateToWishlistPage}>
+            VIEW ALL FAVORITES
+          </button>
+        )}
       </div>
     </div>
   );
