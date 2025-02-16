@@ -96,6 +96,8 @@ function App() {
                 path="/category/:categoryId/subcategories"
                 element={<Subcategories />}
               />
+              <Route path="/signin-vendor" element={<SigninVendor />} />
+              <Route path="/signupvendor" element={<Signupvendor />} />
             </Routes>
           </Router>
         </CartProvider>
@@ -104,8 +106,6 @@ function App() {
       <VendorProvider>
         <Router>
           <Routes>
-            <Route path="/signin-vendor" element={<SigninVendor />} />
-            <Route path="/signupvendor" element={<Signupvendor />} />
             <Route
               path="/vendor-dashboard/:vendorId"
               element={<VendorHome />}
