@@ -533,13 +533,23 @@ function Header() {
                 </Menu>
               </>
             ) : (
-              <button
-                variant="contained"
-                onClick={handleLoginClick}
-                className="Signup-btn-navbar"
-              >
-                Login
-              </button>
+              <Box sx={{ display: "inline", gap: "1rem" }}>
+                <IconButton onClick={handleFavoritesToggle}>
+                  <FavoriteBorderIcon fontSize="20px" />
+                </IconButton>
+                <IconButton onClick={handleCartToggle}>
+                  <Badge badgeContent={totalCartItems} color="error">
+                    <ShoppingCartIcon fontSize="20px" />
+                  </Badge>
+                </IconButton>
+                <button
+                  variant="contained"
+                  onClick={handleLoginClick}
+                  className="Signup-btn-navbar"
+                >
+                  Login
+                </button>
+              </Box>
             )}
           </Box>
         </Box>

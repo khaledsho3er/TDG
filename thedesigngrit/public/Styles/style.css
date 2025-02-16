@@ -354,7 +354,6 @@ body::-webkit-scrollbar {
   align-items: center;
   width: 100%;
   font-family: Montserrat;
-  background-color: #ffffff13;
   z-index: 2;
 }
 
@@ -489,7 +488,6 @@ body::-webkit-scrollbar {
   align-items: center;
   width: 100%;
   font-family: Montserrat;
-  background-color: #ffffff13;
   padding: 10px;
   z-index: 0;
 }
