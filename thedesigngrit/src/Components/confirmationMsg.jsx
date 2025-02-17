@@ -13,7 +13,7 @@ const ConfirmationDialog = ({ open, title, content, onConfirm, onCancel }) => {
       open={open}
       onClose={onCancel}
       sx={{
-        zIndex: 1000,
+        zIndex: 9999,
         position: "fixed",
         backdropFilter: "blur(4px)",
         "& .MuiPaper-root": {
