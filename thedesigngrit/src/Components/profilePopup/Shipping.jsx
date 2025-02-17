@@ -243,7 +243,7 @@ import { UserContext } from "../../utils/userContext";
 
 const ShippingInfoPopup = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState({ addresses: [] });
+  const [userData, setUserData] = useState({ shipmentAddress: [] });
   const [newAddress, setNewAddress] = useState({
     address1: "",
     address2: "",
@@ -291,7 +291,7 @@ const ShippingInfoPopup = () => {
 
   const handleEditAddress = (index) => {
     setSelectedAddressIndex(index);
-    setNewAddress(userData.addresses[index]);
+    setNewAddress(userData.shipmentAddress[index]);
     setIsEditing(true);
   };
 
@@ -314,7 +314,7 @@ const ShippingInfoPopup = () => {
 
   const handleConfirm = async () => {
     try {
-      let updatedAddresses = [...userData.addresses];
+      let updatedAddresses = [...userData.shipmentAddress];
 
       if (selectedAddressIndex !== null) {
         updatedAddresses[selectedAddressIndex] = newAddress;
@@ -324,13 +324,13 @@ const ShippingInfoPopup = () => {
 
       await axios.put(
         `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
-        { addresses: updatedAddresses },
+        { shipmentAddress: updatedAddresses },
         { withCredentials: true }
       );
 
       setUserData((prev) => ({
         ...prev,
-        addresses: updatedAddresses,
+        shipmentAddress: updatedAddresses,
       }));
 
       alert("Address updated successfully!");
@@ -348,20 +348,20 @@ const ShippingInfoPopup = () => {
   };
 
   const handleSetDefault = (index) => {
-    const updatedAddresses = userData.addresses.map((addr, i) => ({
+    const updatedAddresses = userData.shipmentAddress.map((addr, i) => ({
       ...addr,
       isDefault: i === index,
     }));
 
     axios.put(
       `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
-      { addresses: updatedAddresses },
+      { shipmentAddress: updatedAddresses },
       { withCredentials: true }
     );
 
     setUserData((prev) => ({
       ...prev,
-      addresses: updatedAddresses,
+      shipmentAddress: updatedAddresses,
     }));
 
     alert("Default address updated!");
@@ -383,7 +383,7 @@ const ShippingInfoPopup = () => {
     >
       <h2>Shipping Addresses</h2>
 
-      {userData.addresses.map((addr, index) => (
+      {userData.shipmentAddress.map((addr, index) => (
         <div
           key={index}
           className={`profile-info-address ${addr.isDefault ? "default" : ""}`}
