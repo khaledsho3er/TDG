@@ -95,32 +95,26 @@ const ShippingInfoPopup = () => {
 
       {/* View Mode */}
       {!isEditing ? (
-        <div className="shipping-info">
+        <div className="profile-info-first">
           <div className="profile-form-field">
-            <p>
-              <strong>Address 1:</strong> {userData.address1 || "Not provided"}
-            </p>
+            <p>Address 1:</p>
+            <p>{userData.address1 || "Not provided"}</p>
           </div>
           <div className="profile-form-field">
-            <p>
-              <strong>Address 2:</strong> {userData.address2 || "Not provided"}
-            </p>
+            <p>Address 2:</p>
+            <p>{userData.address2 || "Not provided"}</p>
           </div>
           <div className="profile-form-field">
-            <p>
-              <strong>City:</strong> {userData.city || "Not provided"}
-            </p>
+            <p>City:</p>
+            <p>{userData.city || "Not provided"}</p>
           </div>
           <div className="profile-form-field">
-            <p>
-              <strong>Postal Code:</strong>{" "}
-              {userData.postalCode || "Not provided"}
-            </p>
+            <p>Postal Code:</p>
+            <p> {userData.postalCode || "Not provided"}</p>
           </div>
           <div className="profile-form-field">
-            <p>
-              <strong>Country:</strong> {userData.country || "Not provided"}
-            </p>
+            <p>Country:</p>
+            <p>{userData.country || "Not provided"}</p>
           </div>
           <button
             style={{
@@ -128,6 +122,8 @@ const ShippingInfoPopup = () => {
               backgroundColor: "transparent",
               color: "#2d2d2d",
               textDecoration: "underline",
+              marginLeft: "auto",
+              display: "block",
             }}
             onClick={() => setIsEditing(true)}
           >
