@@ -115,7 +115,7 @@ const ShippingInfoPopup = () => {
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               justifyContent: "space-between",
             }}
           >

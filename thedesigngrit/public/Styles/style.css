@@ -4643,7 +4643,6 @@ iframe {
 
 .profile-info-second-left p:nth-child(odd),
 .profile-info-second-right p:nth-child(odd) {
-  font-weight: normal;
   color: #777;
 }
 .saved-cards {
