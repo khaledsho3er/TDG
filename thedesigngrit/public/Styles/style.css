@@ -4457,7 +4457,10 @@ iframe {
   border: 1px solid #2d2d2d;
   color: #2d2d2d;
 }
-
+.cancel-btn:hover {
+  background-color: #6c7c59;
+  color: white;
+}
 .reorder-btn {
   background-color: #2d2d2d;
   color: white;
