@@ -2617,6 +2617,9 @@ select {
   margin-top: 20px;
   font-family: Montserrat;
 }
+.reset-popUpForm-btn-save:hover {
+  background-color: #6c7c59;
+}
 .reset-popUpForm-btn-cancel {
   color: #2d2d2d;
   border: 2px solid black;
@@ -2628,6 +2631,9 @@ select {
   font-size: 14px;
   margin-top: 20px;
   font-family: Montserrat;
+}
+.reset-popUpForm-btn-cancel:hover {
+  background-color: #6c7c59;
 }
 
 /*BIlling INfo popup*/
