@@ -364,11 +364,11 @@ const ShippingInfoPopup = () => {
           style={{
             border: "1px solid #ccc",
             borderRadius: "8px",
-            marginBottom: "15px",
             width: "80%",
             textAlign: "left",
             padding: "22px",
             margin: "auto",
+            marginBottom: "15px",
           }}
         >
           <div className="profile-form-field" style={{ width: "48%" }}>
@@ -418,8 +418,6 @@ const ShippingInfoPopup = () => {
             backgroundColor: "white",
             borderRadius: "10px",
             marginTop: "10%",
-            flexDirection: "column",
-            display: "flex",
             alignItems: "center",
           }}
         >
@@ -490,20 +488,20 @@ const ShippingInfoPopup = () => {
               alignItems: "center",
             }}
           >
-            <Button
+            <button
               sx={{ width: "40%" }}
               className="submit-btn"
               onClick={handleUpdate}
             >
               Save
-            </Button>
-            <Button
+            </button>
+            <button
               sx={{ width: "40%" }}
               className="cancel-btn"
               onClick={handleCancel}
             >
               Cancel
-            </Button>
+            </button>
           </Box>
         </Box>
       </Modal>
