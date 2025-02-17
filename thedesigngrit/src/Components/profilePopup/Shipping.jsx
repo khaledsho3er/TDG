@@ -242,7 +242,6 @@ import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
@@ -371,6 +370,9 @@ const ShippingInfoPopup = () => {
             marginBottom: "15px",
           }}
         >
+          <label style={{ marginLeft: "auto", display: "block" }}>
+            {addr.isDefault ? "Default" : "Not Default"}
+          </label>
           <div className="profile-form-field" style={{ width: "48%" }}>
             <label>Address 1:</label>
             <p>{addr.address1}</p>
@@ -419,6 +421,7 @@ const ShippingInfoPopup = () => {
             borderRadius: "10px",
             marginTop: "10%",
             alignItems: "center",
+            zIndex: 1000,
           }}
         >
           <Typography variant="h6" align="center" fontFamily={"Horizon"}>
@@ -505,7 +508,7 @@ const ShippingInfoPopup = () => {
           </Box>
         </Box>
       </Modal>
-      <div style={{ position: "relative", zIndex: 1301 }}>
+      <div style={{ position: "relative", zIndex: 9999 }}>
         <ConfirmationDialog
           open={dialogOpen}
           title="Confirm Update"
