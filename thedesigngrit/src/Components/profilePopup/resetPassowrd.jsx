@@ -416,47 +416,11 @@ const ResetPasswordForm = () => {
 
   return (
     <Box sx={{ width: "100%", flexDirection: "column", alignItems: "center" }}>
-      {(error || success) && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "white",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            padding: "20px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            zIndex: 1000,
-          }}
-        >
-          <p
-            style={{
-              color: error ? "pink" : "green",
-              fontFamily: "Montserrat",
-            }}
-          >
-            {error || success}
-          </p>
-          <button
-            onClick={() => {
-              setError("");
-              setSuccess("");
-            }}
-            style={{
-              marginTop: "10px",
-              padding: "8px 16px",
-              background: "#2d2d2d",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Done
-          </button>
-        </div>
+      {error && (
+        <p style={{ color: "green", fontFamily: "Montserrat" }}>{error}</p>
+      )}
+      {success && (
+        <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
       )}
 
       <div className="reset-form-field" style={{ position: "relative" }}>
