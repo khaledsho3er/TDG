@@ -96,39 +96,57 @@ const ShippingInfoPopup = () => {
       {/* View Mode */}
       {!isEditing ? (
         <div className="profile-info-first">
-          <div className="profile-form-field">
-            <p>Address 1:</p>
-            <p>{userData.address1 || "Not provided"}</p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="profile-form-field">
+              <p>Address 1:</p>
+              <p>{userData.address1 || "Not provided"}</p>
+            </div>
+            <div className="profile-form-field">
+              <p>Address 2:</p>
+              <p>{userData.address2 || "Not provided"}</p>
+            </div>
           </div>
-          <div className="profile-form-field">
-            <p>Address 2:</p>
-            <p>{userData.address2 || "Not provided"}</p>
-          </div>
-          <div className="profile-form-field">
-            <p>City:</p>
-            <p>{userData.city || "Not provided"}</p>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="profile-form-field">
+              <p>City:</p>
+              <p>{userData.city || "Not provided"}</p>
+            </div>
+            <div className="profile-form-field">
+              <p>Country:</p>
+              <p>{userData.country || "Not provided"}</p>
+            </div>
           </div>
           <div className="profile-form-field">
             <p>Postal Code:</p>
             <p> {userData.postalCode || "Not provided"}</p>
           </div>
-          <div className="profile-form-field">
-            <p>Country:</p>
-            <p>{userData.country || "Not provided"}</p>
+          <div>
+            <button
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                color: "#2d2d2d",
+                textDecoration: "underline",
+                marginLeft: "auto",
+                display: "block",
+              }}
+              onClick={() => setIsEditing(true)}
+            >
+              {isEditing ? "Cancel" : "Edit"}
+            </button>
           </div>
-          <button
-            style={{
-              cursor: "pointer",
-              backgroundColor: "transparent",
-              color: "#2d2d2d",
-              textDecoration: "underline",
-              marginLeft: "auto",
-              display: "block",
-            }}
-            onClick={() => setIsEditing(true)}
-          >
-            {isEditing ? "Cancel" : "Edit"}
-          </button>
         </div>
       ) : (
         // Edit Mode
