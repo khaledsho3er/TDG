@@ -57,9 +57,13 @@ const ShippingInfoPopup = () => {
 
   const handleConfirm = async () => {
     try {
-      await axios.put("https://tdg-db.onrender.com/api/updateUser", userData, {
-        withCredentials: true,
-      });
+      await axios.put(
+        `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
+        userData,
+        {
+          withCredentials: true,
+        }
+      );
       alert("Profile updated successfully!");
       setIsEditing(false); // Exit edit mode after update
     } catch (error) {
@@ -92,24 +96,42 @@ const ShippingInfoPopup = () => {
       {/* View Mode */}
       {!isEditing ? (
         <div className="shipping-info">
-          <p>
-            <strong>Address 1:</strong> {userData.address1 || "Not provided"}
-          </p>
-          <p>
-            <strong>Address 2:</strong> {userData.address2 || "Not provided"}
-          </p>
-          <p>
-            <strong>City:</strong> {userData.city || "Not provided"}
-          </p>
-          <p>
-            <strong>Postal Code:</strong>{" "}
-            {userData.postalCode || "Not provided"}
-          </p>
-          <p>
-            <strong>Country:</strong> {userData.country || "Not provided"}
-          </p>
-          <button onClick={() => setIsEditing(true)} className="edit-btn">
-            Edit
+          <div className="profile-form-field">
+            <p>
+              <strong>Address 1:</strong> {userData.address1 || "Not provided"}
+            </p>
+          </div>
+          <div className="profile-form-field">
+            <p>
+              <strong>Address 2:</strong> {userData.address2 || "Not provided"}
+            </p>
+          </div>
+          <div className="profile-form-field">
+            <p>
+              <strong>City:</strong> {userData.city || "Not provided"}
+            </p>
+          </div>
+          <div className="profile-form-field">
+            <p>
+              <strong>Postal Code:</strong>{" "}
+              {userData.postalCode || "Not provided"}
+            </p>
+          </div>
+          <div className="profile-form-field">
+            <p>
+              <strong>Country:</strong> {userData.country || "Not provided"}
+            </p>
+          </div>
+          <button
+            style={{
+              cursor: "pointer",
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+              textDecoration: "underline",
+            }}
+            onClick={() => setIsEditing(true)}
+          >
+            {isEditing ? "Cancel" : "Edit"}
           </button>
         </div>
       ) : (
