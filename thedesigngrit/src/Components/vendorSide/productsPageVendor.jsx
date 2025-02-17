@@ -392,7 +392,7 @@ const ProductsPageVendor = () => {
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
 
   // State for toggling sections
-  const [showFalseStatus, setShowFalseStatus] = useState(true);
+  const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
 
   useEffect(() => {
