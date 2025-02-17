@@ -630,19 +630,19 @@ const ProductsPageVendor = () => {
             alignItems: "center",
             cursor: "pointer",
             padding: "10px",
-            backgroundColor: "#f0f0f0",
+            backgroundColor: "transparent",
             border: "1px solid #ddd",
             borderRadius: "5px",
-            marginBottom: "5px",
+            marginBottom: "30px",
           }}
         >
-          <span>Products with Status False</span>
+          <span>Products without approval</span>
           {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
         </div>
         {showFalseStatus && (
           <div className="false-status-section">
             {falseStatusProducts.length === 0 ? (
-              <p>No products with status false.</p>
+              <p>No products Not approval.</p>
             ) : (
               <div className="product-grid">
                 {falseStatusProducts.map((product) => (
@@ -732,19 +732,20 @@ const ProductsPageVendor = () => {
             alignItems: "center",
             cursor: "pointer",
             padding: "10px",
-            backgroundColor: "#f0f0f0",
+            backgroundColor: "transparent",
             border: "1px solid #ddd",
             borderRadius: "5px",
-            marginBottom: "5px",
+            marginBottom: "15px",
+            marginTop: "30px",
           }}
         >
-          <span>Products with Status True</span>
+          <span>Products with approval</span>
           {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
         </div>
         {showTrueStatus && (
           <div className="true-status-section">
             {trueStatusProducts.length === 0 ? (
-              <p>No products with status true.</p>
+              <p>No products with approval.</p>
             ) : (
               <div className="product-grid">
                 {trueStatusProducts.map((product) => (
