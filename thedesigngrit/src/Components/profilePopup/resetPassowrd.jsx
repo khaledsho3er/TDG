@@ -34,19 +34,10 @@ const ResetPasswordForm = () => {
     }
 
     try {
-      const token = localStorage.getItem("authToken");
-
-      if (!token) {
-        setError("User not authenticated. Please log in again.");
-        setLoading(false);
-        return;
-      }
-
       const response = await axios.put(
         `https://tdg-db.onrender.com/api/changePassword/${userSession.id}`,
         { currentPassword, newPassword },
         {
-          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
