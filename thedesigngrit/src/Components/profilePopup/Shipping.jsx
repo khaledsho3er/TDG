@@ -299,6 +299,16 @@ const ShippingInfoPopup = () => {
     setNewAddress(userData.shipmentAddress[index]);
     setIsEditing(true);
   };
+  const handleDefaultChange = (index) => {
+    setUserData((prev) => {
+      const updatedAddresses = prev.shipmentAddress.map((addr, i) => ({
+        ...addr,
+        isDefault: i === index, // Only the selected address is default
+      }));
+
+      return { ...prev, shipmentAddress: updatedAddresses };
+    });
+  };
 
   const handleAddNewAddress = () => {
     setNewAddress({
@@ -484,16 +494,29 @@ const ShippingInfoPopup = () => {
             control={
               <Checkbox
                 checked={newAddress.isDefault}
-                onChange={(e) =>
+                onChange={(e) => {
                   setNewAddress((prev) => ({
                     ...prev,
                     isDefault: e.target.checked,
-                  }))
-                }
+                  }));
+
+                  if (e.target.checked) {
+                    setUserData((prev) => {
+                      const updatedAddresses = prev.shipmentAddress.map(
+                        (addr) => ({
+                          ...addr,
+                          isDefault: false, // Reset all other addresses
+                        })
+                      );
+                      return { ...prev, shipmentAddress: updatedAddresses };
+                    });
+                  }
+                }}
               />
             }
             label="Set as Default"
           />
+
           <Box
             sx={{
               display: "flex",
