@@ -401,13 +401,13 @@ const ShippingInfoPopup = () => {
           </button>
         </div>
       ))}
-      <Button
+      <button
         className="submit-btn"
         sx={{ margin: "auto" }}
         onClick={handleAddNewAddress}
       >
         Add New Address
-      </Button>
+      </button>
 
       <Modal open={isEditing} onClose={handleCancel}>
         <Box
@@ -421,7 +421,7 @@ const ShippingInfoPopup = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h6">
+          <Typography variant="h6" align="center" fontFamily={"Horizon"}>
             {selectedAddressIndex !== null ? "Edit Address" : "New Address"}
           </Typography>
           <TextField
@@ -505,14 +505,15 @@ const ShippingInfoPopup = () => {
           </Box>
         </Box>
       </Modal>
-
-      <ConfirmationDialog
-        open={dialogOpen}
-        title="Confirm Update"
-        content="Are you sure you want to update your shipping information?"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      <div style={{ position: "relative", zIndex: 1301 }}>
+        <ConfirmationDialog
+          open={dialogOpen}
+          title="Confirm Update"
+          content="Are you sure you want to update your shipping information?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      </div>
     </div>
   );
 };
