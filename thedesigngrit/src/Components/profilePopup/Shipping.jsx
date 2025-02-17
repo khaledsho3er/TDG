@@ -242,8 +242,8 @@ import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
 
 const ShippingInfoPopup = () => {
-  const { userSession } = useContext(UserContext);
-  const [addresses, setAddresses] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [userData, setUserData] = useState({ addresses: [] });
   const [newAddress, setNewAddress] = useState({
     address1: "",
     address2: "",
@@ -253,199 +253,253 @@ const ShippingInfoPopup = () => {
     isDefault: false,
   });
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [onConfirm, setOnConfirm] = useState(null);
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+  const { userSession } = useContext(UserContext);
   const [countries] = useState(countryList().getData());
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       try {
         const response = await axios.get(
           `https://tdg-db.onrender.com/api/getUserById/${userSession.id}`,
           { withCredentials: true }
         );
-        setAddresses(response.data.addresses || []);
+        setUserData(response.data);
       } catch (error) {
-        console.error("Error fetching addresses:", error);
+        console.error("Error fetching user data:", error);
+        alert("Failed to fetch user data.");
       }
     };
 
-    fetchData();
+    fetchUserData();
   }, [userSession.id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));
+    setNewAddress((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleCountryChange = (selectedOption) => {
-    setNewAddress((prev) => ({ ...prev, country: selectedOption.label }));
-  };
-
-  const handleAddAddress = () => {
-    setDialogMessage("Are you sure you want to add this new address?");
-    setOnConfirm(() => confirmAddAddress);
-    setDialogOpen(true);
-  };
-
-  const confirmAddAddress = async () => {
-    if (
-      !newAddress.address1 ||
-      !newAddress.city ||
-      !newAddress.postalCode ||
-      !newAddress.country
-    ) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    const updatedAddresses = newAddress.isDefault
-      ? addresses.map((addr) => ({ ...addr, isDefault: false }))
-      : addresses;
-
-    const newAddressesList = [...updatedAddresses, newAddress];
-
-    try {
-      await axios.put(
-        `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
-        { addresses: newAddressesList },
-        { withCredentials: true }
-      );
-      setAddresses(newAddressesList);
-      setNewAddress({
-        address1: "",
-        address2: "",
-        city: "",
-        postalCode: "",
-        country: "",
-        isDefault: false,
-      });
-    } catch (error) {
-      console.error("Error adding address:", error);
-    }
-  };
-
-  const handleSetDefault = (index) => {
-    setDialogMessage(
-      "Are you sure you want to set this as your default address?"
-    );
-    setOnConfirm(() => () => confirmSetDefault(index));
-    setDialogOpen(true);
-  };
-
-  const confirmSetDefault = async (index) => {
-    const updatedAddresses = addresses.map((addr, i) => ({
-      ...addr,
-      isDefault: i === index,
+    setNewAddress((prev) => ({
+      ...prev,
+      country: selectedOption.label,
     }));
+  };
 
+  const handleEditAddress = (index) => {
+    setSelectedAddressIndex(index);
+    setNewAddress(userData.addresses[index]);
+    setIsEditing(true);
+  };
+
+  const handleAddNewAddress = () => {
+    setNewAddress({
+      address1: "",
+      address2: "",
+      city: "",
+      postalCode: "",
+      country: "",
+      isDefault: false,
+    });
+    setSelectedAddressIndex(null);
+    setIsEditing(true);
+  };
+
+  const handleUpdate = () => {
+    setDialogOpen(true);
+  };
+
+  const handleConfirm = async () => {
     try {
+      let updatedAddresses = [...userData.addresses];
+
+      if (selectedAddressIndex !== null) {
+        updatedAddresses[selectedAddressIndex] = newAddress;
+      } else {
+        updatedAddresses.push(newAddress);
+      }
+
       await axios.put(
         `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
         { addresses: updatedAddresses },
         { withCredentials: true }
       );
-      setAddresses(updatedAddresses);
+
+      setUserData((prev) => ({
+        ...prev,
+        addresses: updatedAddresses,
+      }));
+
+      alert("Address updated successfully!");
+      setIsEditing(false);
     } catch (error) {
-      console.error("Error updating default address:", error);
+      console.error("Error updating user data:", error);
+      alert("Failed to update address.");
     }
+    setDialogOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setDialogOpen(false);
+  };
+
+  const handleSetDefault = (index) => {
+    const updatedAddresses = userData.addresses.map((addr, i) => ({
+      ...addr,
+      isDefault: i === index,
+    }));
+
+    axios.put(
+      `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
+      { addresses: updatedAddresses },
+      { withCredentials: true }
+    );
+
+    setUserData((prev) => ({
+      ...prev,
+      addresses: updatedAddresses,
+    }));
+
+    alert("Default address updated!");
   };
 
   return (
-    <div className="profile-info">
+    <div
+      className="profile-info"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "20px",
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+        padding: "20px",
+        borderRadius: "10px",
+        backgroundColor: "#fff",
+      }}
+    >
       <h2>Shipping Addresses</h2>
-      {addresses.length > 0 ? (
-        addresses.map((address, index) => (
-          <div
-            key={index}
-            className={`address-box ${address.isDefault ? "default" : ""}`}
-          >
-            <p>
-              <strong>Address 1:</strong> {address.address1}
-            </p>
-            <p>
-              <strong>Address 2:</strong> {address.address2 || "N/A"}
-            </p>
-            <p>
-              <strong>City:</strong> {address.city}
-            </p>
-            <p>
-              <strong>Country:</strong> {address.country}
-            </p>
-            <p>
-              <strong>Postal Code:</strong> {address.postalCode}
-            </p>
-            {address.isDefault ? (
-              <strong>(Default Address)</strong>
-            ) : (
-              <button onClick={() => handleSetDefault(index)}>
-                Set as Default
-              </button>
-            )}
-          </div>
-        ))
-      ) : (
-        <p>No shipping addresses added yet.</p>
-      )}
 
-      <h3>Add New Address</h3>
-      <div className="shipping-form">
-        <input
-          type="text"
-          name="address1"
-          placeholder="Address 1"
-          value={newAddress.address1}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="address2"
-          placeholder="Address 2 (Optional)"
-          value={newAddress.address2}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={newAddress.city}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="postalCode"
-          placeholder="Postal Code"
-          value={newAddress.postalCode}
-          onChange={handleInputChange}
-          required
-        />
-        <Select
-          options={countries}
-          onChange={handleCountryChange}
-          placeholder="Select Country"
-          isSearchable
-          value={countries.find((c) => c.label === newAddress.country) || null}
-        />
-        <label>
+      {userData.addresses.map((addr, index) => (
+        <div
+          key={index}
+          className={`profile-info-address ${addr.isDefault ? "default" : ""}`}
+          style={{
+            padding: "10px",
+            marginBottom: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            width: "100%",
+          }}
+        >
+          <p>
+            <strong>Address 1:</strong> {addr.address1}
+          </p>
+          <p>
+            <strong>Address 2:</strong> {addr.address2 || "N/A"}
+          </p>
+          <p>
+            <strong>City:</strong> {addr.city}
+          </p>
+          <p>
+            <strong>Postal Code:</strong> {addr.postalCode}
+          </p>
+          <p>
+            <strong>Country:</strong> {addr.country}
+          </p>
+          <p>
+            <strong>Status:</strong> {addr.isDefault ? "Default" : "Secondary"}
+          </p>
+          <button onClick={() => handleEditAddress(index)}>Edit</button>
+          {!addr.isDefault && (
+            <button onClick={() => handleSetDefault(index)}>
+              Set as Default
+            </button>
+          )}
+        </div>
+      ))}
+
+      <button onClick={handleAddNewAddress}>Add New Address</button>
+
+      {isEditing && (
+        <form className="shipping-form">
+          <h3>
+            {selectedAddressIndex !== null ? "Edit Address" : "New Address"}
+          </h3>
           <input
-            type="checkbox"
-            checked={newAddress.isDefault}
-            onChange={() =>
-              setNewAddress((prev) => ({ ...prev, isDefault: !prev.isDefault }))
+            type="text"
+            name="address1"
+            value={newAddress.address1}
+            onChange={handleInputChange}
+            placeholder="Address 1"
+            required
+          />
+          <input
+            type="text"
+            name="address2"
+            value={newAddress.address2}
+            onChange={handleInputChange}
+            placeholder="Address 2 (Optional)"
+          />
+          <input
+            type="text"
+            name="city"
+            value={newAddress.city}
+            onChange={handleInputChange}
+            placeholder="City"
+            required
+          />
+          <input
+            type="text"
+            name="postalCode"
+            value={newAddress.postalCode}
+            onChange={handleInputChange}
+            placeholder="Postal Code"
+            required
+          />
+          <Select
+            options={countries}
+            onChange={handleCountryChange}
+            placeholder="Select your country"
+            isSearchable
+            menuPlacement="top"
+            value={
+              countries.find((c) => c.label === newAddress.country) || null
             }
           />
-          Set as Default
-        </label>
-        <button onClick={handleAddAddress}>Add Address</button>
-      </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                checked={newAddress.isDefault}
+                onChange={(e) =>
+                  setNewAddress((prev) => ({
+                    ...prev,
+                    isDefault: e.target.checked,
+                  }))
+                }
+              />
+              Set as Default
+            </label>
+          </div>
+          <button type="button" onClick={handleUpdate}>
+            Save
+          </button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
+        </form>
+      )}
 
       <ConfirmationDialog
         open={dialogOpen}
-        message={dialogMessage}
-        onClose={() => setDialogOpen(false)}
-        onConfirm={onConfirm}
+        title="Confirm Update"
+        content="Are you sure you want to update your shipping information?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
       />
     </div>
   );
