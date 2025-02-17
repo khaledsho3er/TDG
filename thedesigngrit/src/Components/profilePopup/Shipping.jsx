@@ -364,28 +364,38 @@ const ShippingInfoPopup = () => {
           style={{
             padding: "10px",
             border: "1px solid #ccc",
-            marginBottom: "10px",
+            borderRadius: "8px",
+            marginBottom: "15px",
+            width: "100%",
+            textAlign: "left",
+            padding: "22px",
           }}
         >
-          <p>
-            <strong>Address 1:</strong> {addr.address1}
-          </p>
-          <p>
-            <strong>Address 2:</strong> {addr.address2 || "N/A"}
-          </p>
-          <p>
-            <strong>City:</strong> {addr.city}
-          </p>
-          <p>
-            <strong>Postal Code:</strong> {addr.postalCode}
-          </p>
-          <p>
-            <strong>Country:</strong> {addr.country}
-          </p>
-          <button onClick={() => handleEditAddress(index)}>Edit</button>
+          <p>Address 1:</p>
+          <p>{addr.address1}</p>
+          <p>Address 2:</p>
+          <p>{addr.address2 || "N/A"}</p>
+          <p>City:</p>
+          <p>{addr.city}</p>
+          <p>Postal Code:</p>
+          <p>{addr.postalCode}</p>
+          <p>Country:</p>
+          <p>{addr.country}</p>
+          <button
+            style={{ marginLeft: "auto", display: "block" }}
+            className="submit-btn"
+            onClick={() => handleEditAddress(index)}
+          >
+            Edit
+          </button>
         </div>
       ))}
-      <Button variant="contained" onClick={handleAddNewAddress}>
+      <Button
+        variant="contained"
+        className="submit-btn"
+        sx={{ margin: "auto" }}
+        onClick={handleAddNewAddress}
+      >
         Add New Address
       </Button>
 
@@ -398,6 +408,9 @@ const ShippingInfoPopup = () => {
             backgroundColor: "white",
             borderRadius: "10px",
             marginTop: "10%",
+            flexDirection: "column",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <Typography variant="h6">
@@ -458,12 +471,32 @@ const ShippingInfoPopup = () => {
             }
             label="Set as Default"
           />
-          <Button variant="contained" onClick={handleUpdate}>
-            Save
-          </Button>
-          <Button variant="outlined" onClick={handleCancel}>
-            Cancel
-          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              gap: "10px",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{ width: "40%" }}
+              className="submit-btn"
+              onClick={handleUpdate}
+            >
+              Save
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{ width: "40%" }}
+              className="cancel-btn"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </Box>
         </Box>
       </Modal>
 
