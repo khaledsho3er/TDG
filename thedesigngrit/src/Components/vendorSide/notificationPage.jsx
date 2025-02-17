@@ -46,16 +46,14 @@ const NotificationsPage = () => {
     });
   };
 
-  // Mark a notification as read and update readTime
+  // Mark a notification as read (Frontend and Backend update)
   const markAsRead = async (id) => {
     try {
-      const readTime = new Date().toISOString(); // Get the current time
-
-      // Update the read status and readTime locally
+      // Update the read status locally
       setNotifications((prevNotifications) =>
         prevNotifications.map((notification) =>
           notification._id === id
-            ? { ...notification, read: true, readTime }
+            ? { ...notification, read: true }
             : notification
         )
       );
@@ -65,10 +63,6 @@ const NotificationsPage = () => {
         `https://tdg-db.onrender.com/api/notifications/${id}/mark-as-read`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ readTime }),
         }
       );
     } catch (error) {
