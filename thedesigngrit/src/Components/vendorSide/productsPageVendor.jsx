@@ -20,8 +20,11 @@ const ProductsPageVendor = () => {
   const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
-
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
+
+  // State for toggling sections
+  const [showFalseStatus, setShowFalseStatus] = useState(true);
+  const [showTrueStatus, setShowTrueStatus] = useState(true);
 
   useEffect(() => {
     if (vendor) {
@@ -108,6 +111,13 @@ const ProductsPageVendor = () => {
     }
     return true; // No filter applied
   });
+
+  const falseStatusProducts = filteredProducts.filter(
+    (product) => product.status === false
+  );
+  const trueStatusProducts = filteredProducts.filter(
+    (product) => product.status === true
+  );
 
   const toggleMenu = (productId) => {
     setMenuOpen((prevState) => ({
@@ -241,95 +251,169 @@ const ProductsPageVendor = () => {
         </FormControl>
       </div>
 
-      {/* Product List or No Products Message */}
-      {filteredProducts.length === 0 ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "50px",
-            gap: "10px",
-          }}
-        >
-          <ProductionQuantityLimitsIcon
-            style={{ fontSize: "48px", color: "#666" }}
-          />
-          <p style={{ fontSize: "18px", color: "#666" }}>
-            No products found in this category.
-          </p>
-        </div>
-      ) : (
-        <div className="vendor-products-list-grid">
-          {currentProducts.map((product) => (
-            <div className="all-product-card" key={product.id}>
-              <div className="product-card-header">
-                <img
-                  src={`https://tdg-db.onrender.com${
-                    product.mainImage.startsWith("/")
-                      ? product.mainImage
-                      : "/" + product.mainImage
-                  }`}
-                  alt={product.name}
-                  className="all-product-image"
-                />
+      {/* Section for products with status false */}
+      <div>
+        <button onClick={() => setShowFalseStatus((prev) => !prev)}>
+          {showFalseStatus ? "Hide" : "Show"} Products with Status False
+        </button>
+        {showFalseStatus && (
+          <div className="false-status-section">
+            {falseStatusProducts.length === 0 ? (
+              <p>No products with status false.</p>
+            ) : (
+              falseStatusProducts.map((product) => (
+                <div className="all-product-card" key={product.id}>
+                  <div className="product-card-header">
+                    <img
+                      src={`https://tdg-db.onrender.com${
+                        product.mainImage.startsWith("/")
+                          ? product.mainImage
+                          : "/" + product.mainImage
+                      }`}
+                      alt={product.name}
+                      className="all-product-image"
+                    />
+                    <div className="product-info-vendor">
+                      <h3>{product.name}</h3>
+                      <p>{product.typeName}</p>
+                      <p>{product.price}</p>
+                    </div>
+                    <div className="menu-container">
+                      <BsThreeDotsVertical
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent the click from triggering the document listener
+                          toggleMenu(product.id);
+                        }}
+                        className="three-dots-icon"
+                      />
+                      {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
+                        <div className="menu-dropdown">
+                          <button onClick={() => handleEdit(product)}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(product)}>
+                            Delete
+                          </button>
+                          <button onClick={() => handleInsights(product)}>
+                            Promotion
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="product-card-body">
+                    <h5>Summary</h5>
+                    <p className="product-summary">
+                      {product.description.substring(0, 100)}...
+                    </p>
+                    <div className="product-stats">
+                      <div className="product-sales">
+                        <span>Sales</span>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          <span className="sales-value">{product.rating}</span>
+                        </div>
+                      </div>
+                      <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                      <div className="product-remaining">
+                        <span>Remaining Products</span>
+                        <span className="remaining-value">{product.stock}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
 
-                <div className="product-info-vendor">
-                  <h3>{product.name}</h3>
-                  <p>{product.typeName}</p>
-                  <p>{product.price}</p>
-                </div>
-                <div className="menu-container">
-                  <BsThreeDotsVertical
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent the click from triggering the document listener
-                      toggleMenu(product.id);
-                    }}
-                    className="three-dots-icon"
-                  />
-                  {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
-                    <div className="menu-dropdown">
-                      <button onClick={() => handleEdit(product)}>Edit</button>
-                      <button onClick={() => handleDelete(product)}>
-                        Delete
-                      </button>
-                      <button onClick={() => handleInsights(product)}>
-                        Promotion
-                      </button>
+      {/* Section for products with status true */}
+      <div>
+        <button onClick={() => setShowTrueStatus((prev) => !prev)}>
+          {showTrueStatus ? "Hide" : "Show"} Products with Status True
+        </button>
+        {showTrueStatus && (
+          <div className="true-status-section">
+            {trueStatusProducts.length === 0 ? (
+              <p>No products with status true.</p>
+            ) : (
+              trueStatusProducts.map((product) => (
+                <div className="all-product-card" key={product.id}>
+                  <div className="product-card-header">
+                    <img
+                      src={`https://tdg-db.onrender.com${
+                        product.mainImage.startsWith("/")
+                          ? product.mainImage
+                          : "/" + product.mainImage
+                      }`}
+                      alt={product.name}
+                      className="all-product-image"
+                    />
+                    <div className="product-info-vendor">
+                      <h3>{product.name}</h3>
+                      <p>{product.typeName}</p>
+                      <p>{product.price}</p>
                     </div>
-                  )}
-                </div>
-              </div>
-              <div className="product-card-body">
-                <h5>Summary</h5>
-                <p className="product-summary">
-                  {product.description.substring(0, 100)}...
-                </p>
-                <div className="product-stats">
-                  <div className="product-sales">
-                    <span>Sales</span>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <span className="sales-value">{product.rating}</span>
+                    <div className="menu-container">
+                      <BsThreeDotsVertical
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent the click from triggering the document listener
+                          toggleMenu(product.id);
+                        }}
+                        className="three-dots-icon"
+                      />
+                      {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
+                        <div className="menu-dropdown">
+                          <button onClick={() => handleEdit(product)}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(product)}>
+                            Delete
+                          </button>
+                          <button onClick={() => handleInsights(product)}>
+                            Promotion
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                  <div className="product-remaining">
-                    <span>Remaining Products</span>
-                    <span className="remaining-value">{product.stock}</span>
+                  <div className="product-card-body">
+                    <h5>Summary</h5>
+                    <p className="product-summary">
+                      {product.description.substring(0, 100)}...
+                    </p>
+                    <div className="product-stats">
+                      <div className="product-sales">
+                        <span>Sales</span>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          <span className="sales-value">{product.rating}</span>
+                        </div>
+                      </div>
+                      <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                      <div className="product-remaining">
+                        <span>Remaining Products</span>
+                        <span className="remaining-value">{product.stock}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+              ))
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Pagination */}
       <div className="pagination">
