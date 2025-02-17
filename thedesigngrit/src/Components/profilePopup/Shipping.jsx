@@ -355,32 +355,43 @@ const ShippingInfoPopup = () => {
   return (
     <div
       className="profile-info"
-      style={{ textAlign: "center", padding: "20px" }}
+      style={{ textAlign: "center", padding: "20px", flexDirection: "column" }}
     >
       <h2>Shipping Addresses</h2>
       {userData.shipmentAddress.map((addr, index) => (
         <div
           key={index}
           style={{
-            padding: "10px",
             border: "1px solid #ccc",
             borderRadius: "8px",
             marginBottom: "15px",
-            width: "100%",
+            width: "80%",
             textAlign: "left",
             padding: "22px",
+            margin: "auto",
           }}
         >
-          <p>Address 1:</p>
-          <p>{addr.address1}</p>
-          <p>Address 2:</p>
-          <p>{addr.address2 || "N/A"}</p>
-          <p>City:</p>
-          <p>{addr.city}</p>
-          <p>Postal Code:</p>
-          <p>{addr.postalCode}</p>
-          <p>Country:</p>
-          <p>{addr.country}</p>
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Address 1:</label>
+            <p>{addr.address1}</p>
+          </div>
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Address 2:</label>
+            <p>{addr.address2 || "N/A"}</p>
+          </div>{" "}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>City:</label>
+
+            <p>{addr.city}</p>
+          </div>
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Postal Code:</label>
+            <p>{addr.postalCode}</p>
+          </div>
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Country:</label>
+            <p>{addr.country}</p>
+          </div>
           <button
             style={{ marginLeft: "auto", display: "block" }}
             className="submit-btn"
@@ -391,7 +402,6 @@ const ShippingInfoPopup = () => {
         </div>
       ))}
       <Button
-        variant="contained"
         className="submit-btn"
         sx={{ margin: "auto" }}
         onClick={handleAddNewAddress}
@@ -481,7 +491,6 @@ const ShippingInfoPopup = () => {
             }}
           >
             <Button
-              variant="contained"
               sx={{ width: "40%" }}
               className="submit-btn"
               onClick={handleUpdate}
@@ -489,7 +498,6 @@ const ShippingInfoPopup = () => {
               Save
             </Button>
             <Button
-              variant="outlined"
               sx={{ width: "40%" }}
               className="cancel-btn"
               onClick={handleCancel}
