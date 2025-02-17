@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { Box, Typography } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import ForgotPasswordDialog from "../forgetPassword";
 import ConfirmationDialog from "../confirmationMsg";
-
+import { UserContext } from "../../utils/userContext";
 const ResetPasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -22,7 +22,7 @@ const ResetPasswordForm = () => {
   const [forgotPasswordSuccessDialogOpen, setForgotPasswordSuccessDialogOpen] =
     useState(false);
   const [loading, setLoading] = useState(false);
-
+  const { userSession } = useContext(UserContext);
   const handleReset = async () => {
     setError("");
     setLoading(true);
@@ -43,7 +43,7 @@ const ResetPasswordForm = () => {
       }
 
       const response = await axios.put(
-        "https://tdg-db.onrender.com/api/changePassword",
+        `https://tdg-db.onrender.com/api/changePassword/${userSession.id}`,
         { currentPassword, newPassword },
         {
           headers: { Authorization: `Bearer ${token}` },
