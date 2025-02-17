@@ -492,6 +492,14 @@
   transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Adjust the minmax value as needed */
+  gap: 16px; /* Space between grid items */
+}
 .all-product-card {
   display: flex;
   flex-direction: column;
