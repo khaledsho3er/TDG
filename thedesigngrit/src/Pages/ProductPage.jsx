@@ -241,7 +241,7 @@ function ProductPage() {
                         reviews.length
                     )
                   )}
-                  {" (Average of " + reviews.length + " reviews)"}
+                  {" ( of " + reviews.length + " reviews)"}
                 </>
               ) : (
                 <span>No reviews yet</span>
