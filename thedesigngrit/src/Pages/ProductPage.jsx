@@ -233,17 +233,15 @@ function ProductPage() {
             <p className="product-brand">{product.brandName}</p>
             <br />
             <p className="product-rating">
-              {product.reviews?.length > 0 ? (
+              {reviews.length > 0 ? (
                 <>
                   {"★".repeat(
                     Math.round(
-                      product.reviews.reduce(
-                        (acc, review) => acc + review.rating,
-                        0
-                      ) / product.reviews.length
+                      reviews.reduce((acc, review) => acc + review.rating, 0) /
+                        reviews.length
                     )
                   )}
-                  {" (Average of " + product.reviews.length + " reviews)"}
+                  {" (Average of " + reviews.length + " reviews)"}
                 </>
               ) : (
                 <span>No reviews yet</span>
