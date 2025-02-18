@@ -226,13 +226,13 @@ function Footer() {
                   POLICIES & TERMS
                 </Typography>
                 <Link
-                  to="/policy"
+                  to={`/policy?section=Privacy Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
                   <Typography>Privacy Policy</Typography>
                 </Link>
                 <Link
-                  to="/policy"
+                  to={`/policy?section=Full Terms of Service Agreement`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
                   <Typography>Terms of Use</Typography>
