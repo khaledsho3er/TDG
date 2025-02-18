@@ -23,8 +23,6 @@ function CustomerPolicy() {
           "https://tdg-db.onrender.com/api/policies/policies"
         );
         const data = await response.json();
-        console.log("Fetched Policies:", data); // 🔍 Debugging log
-
         setPolicyData(data);
       } catch (error) {
         console.error("Error fetching policy data:", error);
