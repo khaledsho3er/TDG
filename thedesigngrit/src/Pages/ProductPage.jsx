@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
-import { FaFile } from "react-icons/fa";
+import { FaFile, FaStar } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
@@ -40,7 +40,11 @@ function ProductPage() {
   const { addToCart } = useCart();
   const [loading, setLoading] = useState(true); // Loading state for when the product is being fetched
   const [error, setError] = useState(null); // State for handling errors
-
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewerName, setReviewerName] = useState("");
   // Handle opening the popup
   // const handlePopupOpen = () => {
   //   setShowPopup(true);
@@ -142,6 +146,44 @@ function ProductPage() {
       size: selectedSize || "default",
       code: "N/A",
     });
+  };
+
+  //Review Function Post
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/products/${id}/reviews`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            reviewerName,
+            rating,
+            reviewText,
+            reviewDate: new Date().toISOString(),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+
+      // Update reviews in state
+      const updatedProduct = await response.json();
+      setReviews(updatedProduct.reviews);
+
+      // Reset form
+      setShowReviewForm(false);
+      setRating(0);
+      setReviewText("");
+      setReviewerName("");
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
   };
 
   return (
@@ -450,10 +492,86 @@ function ProductPage() {
           }}
         ></hr>
         <div className="reviews-section">
-          <h2>Reviews</h2>
+          <div className="reviews-header">
+            <h2>Reviews</h2>
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="write-review-btn"
+            >
+              Write a Review
+            </button>
+          </div>
+
+          {showReviewForm && (
+            <div className="review-form-overlay">
+              <div className="review-form-container">
+                <button
+                  className="close-form-btn"
+                  onClick={() => setShowReviewForm(false)}
+                >
+                  <IoMdClose />
+                </button>
+                <h3>Write a Review</h3>
+                <form onSubmit={handleSubmitReview} className="review-form">
+                  <div className="form-group">
+                    <label>Your Name</label>
+                    <input
+                      type="text"
+                      value={reviewerName}
+                      onChange={(e) => setReviewerName(e.target.value)}
+                      required
+                      className="review-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Rating</label>
+                    <div className="star-rating">
+                      {[...Array(5)].map((_, index) => {
+                        const ratingValue = index + 1;
+                        return (
+                          <FaStar
+                            key={index}
+                            className="star"
+                            color={
+                              ratingValue <= (hover || rating)
+                                ? "#ffc107"
+                                : "#e4e5e9"
+                            }
+                            size={24}
+                            onClick={() => setRating(ratingValue)}
+                            onMouseEnter={() => setHover(ratingValue)}
+                            onMouseLeave={() => setHover(rating)}
+                            style={{ cursor: "pointer" }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Your Review</label>
+                    <textarea
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      required
+                      className="review-textarea"
+                      rows={4}
+                    />
+                  </div>
+
+                  <button type="submit" className="submit-review-btn">
+                    Submit Review
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
           <Box className="review-summary">
             <ReviewBox />
           </Box>
+
           {reviews.map((review, index) => (
             <div key={index} className="review-card">
               <Box className="review-subtitle">
