@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import NavBar from "../Components/navBar";
 import HeroAbout from "../Components/About/heroAbout";
 import Footer from "../Components/Footer";
 
 function CustomerPolicy() {
-  const [selectedSection, setSelectedSection] = useState(
-    "Full Terms of Service Agreement"
-  );
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSection =
+    queryParams.get("section") || "Full Terms of Service Agreement";
+
+  const [selectedSection, setSelectedSection] = useState(initialSection);
   const [policyData, setPolicyData] = useState([]);
 
   useEffect(() => {
-    // Fetch policy data from backend (assuming an API route like "/api/policies")
     const fetchPolicyData = async () => {
       try {
         const response = await fetch(
@@ -27,9 +30,16 @@ function CustomerPolicy() {
     fetchPolicyData();
   }, []);
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const sectionFromURL = queryParams.get("section");
+    if (sectionFromURL) {
+      setSelectedSection(sectionFromURL);
+    }
+  }, [location.search]);
+
   if (!policyData.length) return <div>Loading...</div>;
 
-  // Find the selected policy's content dynamically
   const selectedPolicy = policyData.find(
     (policy) => policy.type === selectedSection
   );
@@ -45,7 +55,6 @@ function CustomerPolicy() {
         />
       </Box>
       <div className="terms-container">
-        {/* Sidebar */}
         <div className="sidebar">
           {policyData.map((policy) => (
             <button
@@ -61,7 +70,6 @@ function CustomerPolicy() {
         </div>
         <div className="divider"></div>
 
-        {/* Content Section */}
         <div className="content">
           {selectedPolicy?.subtitles?.map((subtitle, idx) => (
             <div key={idx}>

@@ -195,13 +195,13 @@ function Footer() {
                 <Typography>FAQs</Typography>
               </Link>
               <Link
-                to="/policy"
+                to={`/policy?section=Returns & Exchanges Policy`}
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
                 <Typography>Return & Exchange / Policy</Typography>
               </Link>
               <Link
-                to="/policy"
+                to={`/policy?section=Shipping Policy`}
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
                 <Typography>Shipping Information / Policy</Typography>
