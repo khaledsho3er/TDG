@@ -6,7 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import Header from "../Components/navBar";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
 import RequestInfoPopup from "../Components/product/optionPopUp";
 import Footer from "../Components/Footer";
@@ -36,7 +36,6 @@ function ProductPage() {
   const [selectedSize, setSelectedSize] = useState(null);
   const [expandedSections, setExpandedSections] = useState({});
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
-  const navigate = useNavigate();
   const { addToCart } = useCart();
   const [loading, setLoading] = useState(true); // Loading state for when the product is being fetched
   const [error, setError] = useState(null); // State for handling errors
@@ -77,7 +76,24 @@ function ProductPage() {
         }, 5000);
       }
     };
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(
+          `https://tdg-db.onrender.com/api/reviews/reviews/${product._id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
+        }
+        const data = await response.json();
+        // Adjust based on the structure of your response.
+        // If your API returns { reviews: [...] } then use data.reviews.
+        setReviews(data.reviews || data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
 
+    fetchReviews();
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />; // Show loading screen while fetching product
