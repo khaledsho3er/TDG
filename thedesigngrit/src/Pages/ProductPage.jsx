@@ -584,16 +584,20 @@ function ProductPage() {
             <ReviewBox />
           </Box>
 
-          {reviews.map((review, index) => (
-            <div key={index} className="review-card">
-              <Box className="review-subtitle">
-                <h3>{review.reviewerName}</h3>
-                <p>{review.reviewDate}</p>
-              </Box>
-              <p>{"★".repeat(review.rating)}</p>
-              <p>{review.comment}</p>
-            </div>
-          ))}
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <div key={index} className="review-card">
+                <Box className="review-subtitle">
+                  <h3>{review.reviewerName}</h3>
+                  <p>{review.reviewDate}</p>
+                </Box>
+                <p>{"★".repeat(review.rating)}</p>
+                <p>{review.comment}</p>
+              </div>
+            ))
+          ) : (
+            <p className="no-reviews">No reviews yet.</p>
+          )}
         </div>
       </div>
       <Footer />
