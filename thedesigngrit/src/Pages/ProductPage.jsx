@@ -65,7 +65,7 @@ function ProductPage() {
         }
         const data = await response.json();
         setProduct(data); // Set the fetched product to state
-        setReviews(data.reviews); // Set the fetched reviews to state
+        fetchReviews(data._id);
       } catch (error) {
         console.log(error);
 
@@ -76,24 +76,21 @@ function ProductPage() {
         }, 5000);
       }
     };
-    const fetchReviews = async () => {
+    const fetchReviews = async (productId) => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/reviews/reviews/${product._id}`
+          `https://tdg-db.onrender.com/api/reviews/reviews/${productId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch reviews");
         }
         const data = await response.json();
-        // Adjust based on the structure of your response.
-        // If your API returns { reviews: [...] } then use data.reviews.
-        setReviews(data.reviews || data);
+        setReviews(data); // Assuming the response is an array of reviews
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.log(error);
+        setError(error.message);
       }
     };
-
-    fetchReviews();
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />; // Show loading screen while fetching product
@@ -201,7 +198,6 @@ function ProductPage() {
       console.error("Error submitting review:", error);
     }
   };
-
   return (
     <div className="product-page">
       <Header />
