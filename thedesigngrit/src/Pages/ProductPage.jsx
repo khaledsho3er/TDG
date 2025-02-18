@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from "@mui/material";
 import { FaFile, FaStar } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,7 +12,7 @@ import RequestInfoPopup from "../Components/product/optionPopUp";
 import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
 import LoadingScreen from "./loadingScreen";
-
+import { UserContext } from "../utils/userContext";
 function ProductPage() {
   // const [setShowDropdown] = useState(false);
   // //const [showPopup, setShowPopup] = useState(false);
@@ -20,7 +20,7 @@ function ProductPage() {
   // const [setShowFirstPopup] = useState(false); // State for Request Quote popup
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
-
+  const { userSession } = useContext(UserContext);
   // const handleCloseRequestInfo = () => {
   //   setIsRequestInfoOpen(false);
   // };
@@ -43,7 +43,7 @@ function ProductPage() {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [reviewText, setReviewText] = useState("");
+  const [comment, setComment] = useState("");
   const [reviewerName, setReviewerName] = useState("");
   // Handle opening the popup
   // const handlePopupOpen = () => {
@@ -161,9 +161,9 @@ function ProductPage() {
           },
           body: JSON.stringify({
             reviewerName,
+            userId: userSession.id,
             rating,
-            reviewText,
-            reviewDate: new Date().toISOString(),
+            comment,
           }),
         }
       );
@@ -179,7 +179,7 @@ function ProductPage() {
       // Reset form
       setShowReviewForm(false);
       setRating(0);
-      setReviewText("");
+      setComment("");
       setReviewerName("");
     } catch (error) {
       console.error("Error submitting review:", error);
@@ -552,8 +552,8 @@ function ProductPage() {
                   <div className="form-group">
                     <label>Your Review</label>
                     <textarea
-                      value={reviewText}
-                      onChange={(e) => setReviewText(e.target.value)}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
                       required
                       className="review-textarea"
                       rows={4}
@@ -579,7 +579,7 @@ function ProductPage() {
                 <p>{review.reviewDate}</p>
               </Box>
               <p>{"★".repeat(review.rating)}</p>
-              <p>{review.reviewText}</p>
+              <p>{review.comment}</p>
             </div>
           ))}
         </div>
