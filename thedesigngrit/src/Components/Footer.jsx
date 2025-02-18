@@ -195,7 +195,9 @@ function Footer() {
                 <Typography>FAQs</Typography>
               </Link>
               <Link
-                to={`/policy?section=Returns & Exchanges Policy`}
+                to={`/policy?section=${encodeURIComponent(
+                  "Returns & Exchanges Policy"
+                )}`}
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
                 <Typography>Return & Exchange / Policy</Typography>

@@ -9,8 +9,9 @@ import LoadingScreen from "./loadingScreen";
 function CustomerPolicy() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initialSection =
-    queryParams.get("section") || "Full Terms of Service Agreement";
+  const initialSection = decodeURIComponent(
+    queryParams.get("section") || "Full Terms of Service Agreement"
+  );
 
   const [selectedSection, setSelectedSection] = useState(initialSection);
   const [policyData, setPolicyData] = useState([]);
@@ -48,8 +49,10 @@ function CustomerPolicy() {
       </div>
     );
 
+  const normalize = (str) => str?.trim().toLowerCase();
+
   const selectedPolicy = policyData.find(
-    (policy) => policy.type === selectedSection
+    (policy) => normalize(policy.type) === normalize(selectedSection)
   );
 
   return (
