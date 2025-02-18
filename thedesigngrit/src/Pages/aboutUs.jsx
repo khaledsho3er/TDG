@@ -18,8 +18,8 @@ function AboutUsPage() {
       <NavBar />
       <Box>
         <HeroAbout
-          title="About Us"
-          subtitle="Explore thousands of jobs on TDG to reach the next step in your career. Online job vacancies that match your preference. Search, Save, Apply today."
+          title="Our Story"
+          subtitle="Your vision, our canvas. Join us in celebrating our heritage, innovation and mastery."
           image={"Assets/AboutUs.webp"}
         />
       </Box>
@@ -41,6 +41,7 @@ function AboutUsPage() {
           tradition and a drive to inspire the future, we’re not just a
           marketplace—we’re a movement.{" "}
         </p>{" "}
+        <br></br>
         <p className="Caption-AboutUs">
           Our journey began with a realization: Egypt is brimming with unmatched
           talent, yet many local brands lack the visibility and tools to thrive.
@@ -48,6 +49,7 @@ function AboutUsPage() {
           exceptional design meets its audience. We connect skilled brands with
           customers who appreciate quality and a story behind each piece.
         </p>{" "}
+        <br></br>
         <p className="Caption-AboutUs">
           We don’t just sell furniture; we build connections. Our platform
           celebrates the diversity of Egyptian design, giving every brand the
@@ -56,18 +58,21 @@ function AboutUsPage() {
           businesses, we empower brands to focus on what they do best—creating
           timeless works of art.
         </p>{" "}
+        <br></br>
         <p className="Caption-AboutUs">
           For our customers, we’ve curated a space where design inspiration
           comes to life. Whether it’s finding the perfect statement piece or
           exploring trends that resonate with your style, TheDesignGrit ensures
           your shopping experience is as refined as the products we showcase.
         </p>{" "}
+        <br></br>
         <p className="Caption-AboutUs">
           {" "}
           TheDesignGrit isn’t just about furniture—it’s about crafting a legacy.
           Together, we’re redefining what it means to celebrate Egyptian design,
           one masterpiece at a time.
         </p>
+        <br></br>
       </Box>
       <Box className="ourMission-Section">
         <Box className="ourMission-Section-image">
@@ -88,7 +93,7 @@ function AboutUsPage() {
           </p>
         </Box>
       </Box>
-      <Box className="ourStory-Section-typo">
+      {/* <Box className="ourStory-Section-typo">
         <h2> Our Story</h2>
         <p>
           TheDesignGrit began with a vision: to revive Egypt’s rich design
@@ -99,7 +104,7 @@ function AboutUsPage() {
           modern innovation, empowering brands and creating an ecosystem where
           craftsmanship thrives.
         </p>
-      </Box>
+      </Box> */}
       <Box className="ourStory-Section-typo">
         <hr className="line-between" />
       </Box>

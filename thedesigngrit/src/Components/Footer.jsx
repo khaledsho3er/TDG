@@ -163,12 +163,7 @@ function Footer() {
                   >
                     <Typography>Join Us</Typography>
                   </Link>
-                  <Link
-                    to="/contactus"
-                    style={{ textDecoration: "none", color: "#2d2d2d" }}
-                  >
-                    <Typography>Support</Typography>
-                  </Link>
+
                   <Link
                     to="/signin-vendor"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}

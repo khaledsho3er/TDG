@@ -46,7 +46,7 @@ const MeetOurTeam = () => {
     <div className="meet-our-team">
       <div className="team-members">
         <TeamMember
-          image="Assets/founder.jpg" // Replace with your image paths
+          image="Assets/founder.webp" // Replace with your image paths
           name="Ibrahim Etman"
           title="CEO"
           subtitle=" The heart of TheDesignGrit. Ibrahim’s passion for architecture and interior design runs deep,
@@ -58,7 +58,7 @@ const MeetOurTeam = () => {
           InstagramUrl="https://www.instagram.com/johndoe"
         />
         <TeamMember
-          image="Assets/founder.jpg" // Replace with your image paths
+          image="Assets/founder.webp" // Replace with your image paths
           name="Khaled Megahed"
           title="CEO"
           subtitle=" The engine behind the operation. Khaled is an industrial engineer with a degree from the
@@ -66,7 +66,7 @@ const MeetOurTeam = () => {
  America. He leads the development of multimillion-dollar robotic and manual fulfillment
  centers, mastering the art of designing seamless systems. Khaled’s strategic expertise and passion
  for precision drive TheDesignGrit’s innovative platform, ensuring every process runs as
- smoothly as the designs it celebrates"
+ smoothly as the designs it celebrates."
           linkedinUrl="https://www.linkedin.com/in/janesmith"
           InstagramUrl="https://www.instagram.com/johndoe"
         />

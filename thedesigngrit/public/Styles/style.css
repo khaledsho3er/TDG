@@ -1051,7 +1051,7 @@ body::-webkit-scrollbar {
 }
 
 .hero-subtitle {
-  font-size: 15px; /* Adjust as needed */
+  font-size: 18px; /* Adjust as needed */
   margin: 10px 0 0;
   font-family: Montserrat;
 }
@@ -1074,6 +1074,7 @@ body::-webkit-scrollbar {
   text-align: justify;
   padding: 0px 140px 0px 140px;
   font-size: 25px;
+  line-height: 40px;
   font-family: "Montserrat";
 }
 .Caption-careers {

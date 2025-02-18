@@ -101,8 +101,8 @@ function ContactUs() {
         <Box className="Contant-caption">
           <h3>Let's Talk.</h3>
           <p>
-            Whether it's to discuss your next project or just to say hi, <br />
-            feel free to reach out to me. I'm excited to hear from you.
+            Get in contact with us through our email form and we will get back
+            to you as soon as we can!
           </p>
         </Box>
 
