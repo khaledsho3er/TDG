@@ -4245,6 +4245,14 @@ iframe {
   display: flex;
   gap: 0.25rem;
 }
+.no-reviews {
+  margin: auto;
+  text-align: center;
+  font-family: Montserrat;
+  color: #2d2d2d;
+  font-size: smaller;
+  margin-bottom: 2rem;
+}
 /* Related Products Section */
 .related-products {
   margin-top: 30px;
