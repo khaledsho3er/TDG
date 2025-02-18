@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import NavBar from "../Components/navBar";
 import HeroAbout from "../Components/About/heroAbout";
 import Footer from "../Components/Footer";
+import LoadingScreen from "./loadingScreen";
 
 function CustomerPolicy() {
   const location = useLocation();
@@ -21,6 +22,8 @@ function CustomerPolicy() {
           "https://tdg-db.onrender.com/api/policies/policies"
         );
         const data = await response.json();
+        console.log("Fetched Policies:", data); // 🔍 Debugging log
+
         setPolicyData(data);
       } catch (error) {
         console.error("Error fetching policy data:", error);
@@ -38,7 +41,12 @@ function CustomerPolicy() {
     }
   }, [location.search]);
 
-  if (!policyData.length) return <div>Loading...</div>;
+  if (!policyData.length)
+    return (
+      <div>
+        <LoadingScreen />
+      </div>
+    );
 
   const selectedPolicy = policyData.find(
     (policy) => policy.type === selectedSection
