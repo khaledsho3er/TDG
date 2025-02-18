@@ -153,7 +153,7 @@ function ProductPage() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/products/${id}/reviews`,
+        `https://tdg-db.onrender.com/api/reviews/createreviews/${product._id}`,
         {
           method: "POST",
           headers: {
