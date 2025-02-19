@@ -179,13 +179,13 @@ const RecentPurchases = () => {
                           ? "#f8d7da"
                           : order.orderStatus === "Delivered"
                           ? "#d4edda"
-                          : "#DABB5F",
+                          : "#FFE5B4",
                       color:
                         order.orderStatus === "Pending"
                           ? "#721c24"
                           : order.orderStatus === "Delivered"
                           ? "#155724"
-                          : "#ffa000",
+                          : "#FF7518",
                       fontWeight: "500",
                       textAlign: "center",
                       minWidth: "80px",
