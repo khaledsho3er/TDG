@@ -17,6 +17,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSendOTP = async () => {
     if (!email) {
@@ -92,6 +93,8 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       );
 
       if (response.status === 200) {
+        setSuccess(true);
+        setError("");
         onClose(); // Close the dialog after successful reset
       } else {
         setError(response.data.message || "Failed to reset password.");
@@ -116,7 +119,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
         "& .MuiPaper-root": {
           borderRadius: "16px",
           backdropFilter: "blur(5px)",
-          backgroundColor: "#ebe4e5",
+          backgroundColor: "#fff",
         },
       }}
     >
@@ -127,11 +130,19 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           ? "Forgot Password"
           : step === 2
           ? "Enter OTP"
-          : "Reset Password"}
+          : step === 3
+          ? "Reset Password"
+          : success
+          ? "Password changed successfully"
+          : "Error"}
       </DialogTitle>
 
       <DialogContent sx={{ color: "#eee", marginBottom: "20px" }}>
         {error && <p style={{ color: "red", marginBottom: "30px" }}>{error}</p>}
+
+        {success && (
+          <p style={{ marginBottom: "30px" }}>Password changed successfully</p>
+        )}
 
         {step === 1 && (
           <>
@@ -180,7 +191,13 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose} sx={{ color: "white" }}>
+        <Button
+          onClick={onClose}
+          sx={{
+            color: "#2d2d2d",
+            "&:hover": { backgroundColor: "transparent" },
+          }}
+        >
           Cancel
         </Button>
 
@@ -188,7 +205,10 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleSendOTP}
             disabled={loading}
-            sx={{ color: "#2d2d2d" }}
+            sx={{
+              color: "#2d2d2d",
+              "&:hover": { backgroundColor: "transparent" },
+            }}
           >
             {loading ? "Sending..." : "Send OTP"}
           </Button>
@@ -198,7 +218,10 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleVerifyOTP}
             disabled={loading}
-            sx={{ color: "#2d2d2d" }}
+            sx={{
+              color: "#2d2d2d",
+              "&:hover": { backgroundColor: "transparent" },
+            }}
           >
             {loading ? "Verifying..." : "Verify OTP"}
           </Button>
@@ -208,7 +231,10 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleResetPassword}
             disabled={loading}
-            sx={{ color: "#2d2d2d" }}
+            sx={{
+              color: "#2d2d2d",
+              "&:hover": { backgroundColor: "transparent" },
+            }}
           >
             {loading ? "Resetting..." : "Reset Password"}
           </Button>
