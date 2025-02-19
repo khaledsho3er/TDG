@@ -9,7 +9,7 @@ import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 
 function ProductsPage() {
-  const { subcategoryId, subcategoryName } = useParams();
+  const { typeId, typeName } = useParams();
   const [products, setProducts] = useState([]); // جميع المنتجات
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
@@ -25,9 +25,9 @@ function ProductsPage() {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/products/subcategory/${subcategoryId}/${subcategoryName}`
+          `https://tdg-db.onrender.com/api/products/types/${typeId}/${typeName}`
         );
-        console.log("deh ek data aheh", data);
+
         setProducts(data);
         setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
       } catch (error) {
