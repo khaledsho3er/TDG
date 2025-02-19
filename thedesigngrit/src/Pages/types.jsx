@@ -6,25 +6,21 @@ import PageDicription from "../Components/Topheader";
 import LoadingScreen from "./loadingScreen";
 
 function Types() {
+  const { subCategoryId } = useParams();
   const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { subCategoryId, subCategoryName } = useParams();
 
   useEffect(() => {
     const fetchTypes = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
+        const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/types/subcategories/${subCategoryId}/types`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch types");
-        }
-        const data = await response.json();
         setTypes(data);
       } catch (error) {
-        setError(error.message);
+        setError(error.response?.data?.message || "Error fetching types");
       } finally {
         setLoading(false);
       }
