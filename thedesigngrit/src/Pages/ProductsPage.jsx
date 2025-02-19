@@ -36,7 +36,7 @@ function ProductsPage() {
     };
 
     fetchProducts();
-  }, [subcategoryId, subcategoryName]);
+  }, [typeId, typeName]);
 
   // 🟢 تطبيق الفلاتر عند التحديث
   useEffect(() => {
