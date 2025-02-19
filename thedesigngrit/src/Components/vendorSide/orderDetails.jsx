@@ -50,7 +50,7 @@ const OrderDetails = ({ order, onBack }) => {
       await fetch(
         `https://tdg-db.onrender.com/api/orders/update-delivery/${order._id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -132,16 +132,16 @@ const OrderDetails = ({ order, onBack }) => {
                   fontSize: "12px",
                   backgroundColor:
                     order.status === "Pending"
-                      ? "#f8d7da"
+                      ? "#ffc107"
                       : order.status === "Delivered"
                       ? "#d4edda"
-                      : "#ffc107",
+                      : "#f8d7da",
                   color:
                     order.status === "Pending"
-                      ? "#721c24"
+                      ? "#ffa000"
                       : order.status === "Delivered"
                       ? "#155724"
-                      : "#ffa000",
+                      : "#721c24",
                   textAlign: "center",
                   minWidth: "80px",
                 }}
