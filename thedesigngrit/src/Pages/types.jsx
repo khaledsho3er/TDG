@@ -4,7 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
-function Types() {
+
+function TypesPage() {
   const { subCategoryId } = useParams();
   const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,42 +29,72 @@ function Types() {
     fetchTypes();
   }, [subCategoryId]);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
-
-  if (error) {
-    return <Box>Error: {error}</Box>;
-  }
+  if (loading) return <LoadingScreen />;
+  if (error) return <Box>Error: {error}</Box>;
 
   return (
     <Box>
       <Header />
-      <PageDicription category={{ name: subCategoryName }} />
-      {types.length > 0 ? (
-        <Box className="types-container">
-          {types.map((type) => (
-            <Link
-              to={`/products/types/${type._id}/${type.name}`}
-              key={type._id}
-              className="type-card"
-              style={{
-                backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
-              }}
-            >
-              <Box className="type-overlay">
-                <Typography variant="h3" className="type-title">
+      <Box sx={{ padding: 2 }}>
+        <Typography variant="h4" sx={{ marginBottom: 2 }}>
+          Choose a Type
+        </Typography>
+        <Grid container spacing={2}>
+          {types.length > 0 ? (
+            types.map((type) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                key={type._id}
+                component={Link}
+                to={`/products/${type._id}/${type.name}`}
+                sx={{
+                  position: "relative",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  height: 200,
+                  backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                  }}
+                />
+                <Typography
+                  variant="h6"
+                  sx={{
+                    position: "relative",
+                    color: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
                   {type.name}
                 </Typography>
-              </Box>
-            </Link>
-          ))}
-        </Box>
-      ) : (
-        <Box>No types found</Box>
-      )}
+              </Grid>
+            ))
+          ) : (
+            <Typography>No types found.</Typography>
+          )}
+        </Grid>
+      </Box>
     </Box>
   );
 }
 
-export default Types;
+export default TypesPage;
