@@ -7,17 +7,100 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import axios from "axios";
 
-const ForgotPasswordDialog = ({ open, onClose, onSend }) => {
+const ForgotPasswordDialog = ({ open, onClose }) => {
+  const [step, setStep] = useState(1); // 1: Email, 2: OTP, 3: New Password
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSendResetLink = () => {
+  const handleSendOTP = async () => {
     if (!email) {
-      alert("Please enter your email address.");
+      setError("Please enter your email.");
       return;
     }
-    onSend(); // Trigger the sending process (success dialog will open)
-    onClose(); // Close the forgot password dialog
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        "https://https://tdg-db.onrender.com/api/signin-emp/send-otp",
+        {
+          email,
+        }
+      );
+
+      if (response.status === 200) {
+        setStep(2);
+        setError("");
+      } else {
+        setError(response.data.message || "Failed to send OTP.");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async () => {
+    if (!otp) {
+      setError("Please enter the OTP.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        "https://https://tdg-db.onrender.com/api/signin-emp/verify-otp",
+        {
+          email,
+          otp,
+        }
+      );
+
+      if (response.status === 200) {
+        setStep(3);
+        setError("");
+      } else {
+        setError(response.data.message || "Invalid OTP.");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        "https://https://tdg-db.onrender.com/api/signin-emp/reset-password",
+        {
+          email,
+          newPassword,
+        }
+      );
+
+      if (response.status === 200) {
+        onClose(); // Close the dialog after successful reset
+      } else {
+        setError(response.data.message || "Failed to reset password.");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,7 +114,7 @@ const ForgotPasswordDialog = ({ open, onClose, onSend }) => {
         position: "fixed",
         backdropFilter: "blur(4px)",
         "& .MuiPaper-root": {
-          borderRadius: "16px", // Add border radius here
+          borderRadius: "16px",
           backdropFilter: "blur(5px)",
           backgroundColor: "#6b7b58",
         },
@@ -40,68 +123,96 @@ const ForgotPasswordDialog = ({ open, onClose, onSend }) => {
       <DialogTitle
         sx={{ fontWeight: "normal", color: "#2d2d2d", marginBottom: "20px" }}
       >
-        Forgot Password
+        {step === 1
+          ? "Forgot Password"
+          : step === 2
+          ? "Enter OTP"
+          : "Reset Password"}
       </DialogTitle>
+
       <DialogContent sx={{ color: "#eee", marginBottom: "20px" }}>
-        <TextField
-          label="Enter your email"
-          fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{
-            marginBottom: "20px",
-            color: "#eee", // Label color
-            "& .MuiInputBase-root": {
-              border: "1px solid #2d2d2d",
-              borderRadius: "4px",
-              "&:focus": {
-                border: "1px solid #6b7b58", // Keep custom border on focus
-              },
-            },
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#6b7b58", // Custom border color
-            },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: "#6b7b58", // Override blue border on focus
-              },
-            // Disable the default blue color on the label when focused
-            "& .MuiInputLabel-root": {
-              color: "#2d2d2d", // Custom label color (light gray)
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#2d2d2d",
-            },
-          }}
-        />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        {step === 1 && (
+          <>
+            <TextField
+              label="Enter your email"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              sx={{ marginBottom: "20px" }}
+            />
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <TextField
+              label="Enter OTP"
+              fullWidth
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              sx={{ marginBottom: "20px" }}
+            />
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <TextField
+              label="New Password"
+              type="password"
+              fullWidth
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              sx={{ marginBottom: "10px" }}
+            />
+            <TextField
+              label="Confirm Password"
+              type="password"
+              fullWidth
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              sx={{ marginBottom: "20px" }}
+            />
+          </>
+        )}
       </DialogContent>
+
       <DialogActions>
-        <Button
-          onClick={onClose}
-          sx={{
-            color: "white",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              border: "none",
-            },
-          }}
-        >
+        <Button onClick={onClose} sx={{ color: "white" }}>
           Cancel
         </Button>
-        <Button
-          onClick={handleSendResetLink}
-          sx={{
-            color: "white",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              border: "none",
-            },
-          }}
-        >
-          Send Reset Link
-        </Button>
+
+        {step === 1 && (
+          <Button
+            onClick={handleSendOTP}
+            disabled={loading}
+            sx={{ color: "white" }}
+          >
+            {loading ? "Sending..." : "Send OTP"}
+          </Button>
+        )}
+
+        {step === 2 && (
+          <Button
+            onClick={handleVerifyOTP}
+            disabled={loading}
+            sx={{ color: "white" }}
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </Button>
+        )}
+
+        {step === 3 && (
+          <Button
+            onClick={handleResetPassword}
+            disabled={loading}
+            sx={{ color: "white" }}
+          >
+            {loading ? "Resetting..." : "Reset Password"}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
