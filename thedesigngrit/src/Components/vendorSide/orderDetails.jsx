@@ -131,17 +131,17 @@ const OrderDetails = ({ order, onBack }) => {
                   borderRadius: "5px",
                   fontSize: "12px",
                   backgroundColor:
-                    order.status === "Pending"
-                      ? "#ffc107"
-                      : order.status === "Delivered"
+                    order.orderStatus === "Pending"
+                      ? "#f8d7da"
+                      : order.orderStatus === "Delivered"
                       ? "#d4edda"
-                      : "#f8d7da",
+                      : "#DABB5F",
                   color:
-                    order.status === "Pending"
-                      ? "#ffa000"
-                      : order.status === "Delivered"
+                    order.orderStatus === "Pending"
+                      ? "#721c24"
+                      : order.orderStatus === "Delivered"
                       ? "#155724"
-                      : "#721c24",
+                      : "#ffa000",
                   textAlign: "center",
                   minWidth: "80px",
                 }}

@@ -175,13 +175,17 @@ const RecentPurchases = () => {
                       padding: "4px 12px",
                       borderRadius: "5px",
                       backgroundColor:
-                        order.orderStatus === "Delivered"
+                        order.orderStatus === "Pending"
+                          ? "#f8d7da"
+                          : order.orderStatus === "Delivered"
                           ? "#d4edda"
-                          : "#f8d7da",
+                          : "#DABB5F",
                       color:
-                        order.orderStatus === "Delivered"
+                        order.orderStatus === "Pending"
+                          ? "#721c24"
+                          : order.orderStatus === "Delivered"
                           ? "#155724"
-                          : "#721c24",
+                          : "#ffa000",
                       fontWeight: "500",
                       textAlign: "center",
                       minWidth: "80px",
