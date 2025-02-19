@@ -54,7 +54,7 @@ const OrderDetails = ({ order, onBack }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ orderId: order._id, deliveryDate }),
+          body: JSON.stringify({ deliveryDate }),
         }
       );
       // Close the dialog after successful submission
@@ -131,9 +131,17 @@ const OrderDetails = ({ order, onBack }) => {
                   borderRadius: "5px",
                   fontSize: "12px",
                   backgroundColor:
-                    order.status === "Delivered" ? "#d4edda" : "#f8d7da", // Green for delivered, red for canceled
-                  color: order.status === "Delivered" ? "#155724" : "#721c24", // Text color for visibility
-                  fontWeight: "500",
+                    order.status === "Pending"
+                      ? "#f8d7da"
+                      : order.status === "Delivered"
+                      ? "#d4edda"
+                      : "#ffc107",
+                  color:
+                    order.status === "Pending"
+                      ? "#721c24"
+                      : order.status === "Delivered"
+                      ? "#155724"
+                      : "#ffa000",
                   textAlign: "center",
                   minWidth: "80px",
                 }}
@@ -195,17 +203,14 @@ const OrderDetails = ({ order, onBack }) => {
                   color: "#fff",
                 },
               }}
+              className="submit-btn"
             >
               <IoMdPrint />
             </InvoiceDownload>
             {order.orderStatus === "Pending" && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleDialogOpen}
-              >
+              <button className="submit-btn" onClick={handleDialogOpen}>
                 Set Delivery Date
-              </Button>
+              </button>
             )}
           </Box>
           <Dialog open={openDialog} onClose={handleDialogClose}>
