@@ -10,6 +10,9 @@ import InvoiceDownload from "./invoice";
 
 const OrderDetails = ({ order, onBack }) => {
   const [error] = useState(null); // Error state
+  const [openDialog, setOpenDialog] = useState(false); // State for dialog
+  const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
+
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
   const brandId =
@@ -19,6 +22,38 @@ const OrderDetails = ({ order, onBack }) => {
   const filteredProducts = order.cartItems.filter(
     (product) => product.brandId === brandId
   );
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDateChange = (event) => {
+    setDeliveryDate(event.target.value);
+  };
+  const handleSubmitDate = async () => {
+    // Make API call to update the delivery date
+    try {
+      // Replace with your API call
+      await fetch(
+        `https://tdg-db.onrender.com/api/orders/update-delivery/${order._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ orderId: order._id, deliveryDate }),
+        }
+      );
+      // Close the dialog after successful submission
+      handleDialogClose();
+      // Optionally, you can refresh the order details or show a success message
+    } catch (error) {
+      console.error("Error updating delivery date:", error);
+    }
+  };
 
   return (
     <div>
@@ -104,7 +139,7 @@ const OrderDetails = ({ order, onBack }) => {
                   fontFamily: "Montserrat, sans-serif",
                 }}
               >
-                June 12, 2024 - Oct 19, 2024
+                {new Date(order.createdAt).toLocaleDateString()}
               </span>
             </div>
           </Box>
@@ -153,7 +188,37 @@ const OrderDetails = ({ order, onBack }) => {
             >
               <IoMdPrint />
             </InvoiceDownload>
+            {order.status === "Pending" && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleDialogOpen}
+              >
+                Set Delivery Date
+              </Button>
+            )}
           </Box>
+          <Dialog open={openDialog} onClose={handleDialogClose}>
+            <DialogTitle>Set Delivery Date</DialogTitle>
+            <DialogContent>
+              <TextField
+                type="date"
+                value={deliveryDate}
+                onChange={handleDateChange}
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleSubmitDate} color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
         <Box
           sx={{
