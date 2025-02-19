@@ -4,29 +4,39 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
+import PageDescription from "../Components/Topheader";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
   const [types, setTypes] = useState([]);
+  const [subCategory, setSubCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTypes = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(
+
+        // Fetch SubCategory details
+        const subCategoryRes = await axios.get(
+          `https://tdg-db.onrender.com/api/subcategories/get/${subCategoryId}`
+        );
+        setSubCategory(subCategoryRes.data);
+
+        // Fetch Types within this SubCategory
+        const typesRes = await axios.get(
           `https://tdg-db.onrender.com/api/types/subcategories/${subCategoryId}/types`
         );
-        setTypes(data);
+        setTypes(typesRes.data);
       } catch (error) {
-        setError(error.response?.data?.message || "Error fetching types");
+        setError(error.response?.data?.message || "Error fetching data");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTypes();
+    fetchData();
   }, [subCategoryId]);
 
   if (loading) return <LoadingScreen />;
@@ -35,19 +45,25 @@ function TypesPage() {
   return (
     <Box>
       <Header />
+      {/* Pass subCategory data to PageDescription */}
+      <PageDescription
+        name={subCategory?.name}
+        description={subCategory?.description}
+      />
+
       <Box sx={{ padding: 2 }}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>
-          Choose a Type
-        </Typography>
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
           {types.length > 0 ? (
             types.map((type) => (
               <Grid
                 item
-                xs={12}
-                sm={6}
+                xs={2}
+                sm={4}
                 md={4}
-                lg={3}
                 key={type._id}
                 component={Link}
                 to={`/products/${type._id}/${type.name}`}
@@ -82,6 +98,8 @@ function TypesPage() {
                     color: "white",
                     fontWeight: "bold",
                     textAlign: "center",
+                    fontSize: 24,
+                    fontFamily: "horizon",
                   }}
                 >
                   {type.name}

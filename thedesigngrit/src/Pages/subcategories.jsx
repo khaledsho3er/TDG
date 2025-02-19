@@ -63,7 +63,11 @@ function Subcategories() {
   return (
     <Box>
       <Header />
-      {category && <PageDicription category={category} />}
+      <PageDicription
+        name={category?.name}
+        description={category?.description}
+      />
+
       {subCategories.length > 0 ? (
         <Box className="subcategory-container">
           {subCategories.map((subCategory, index) => (

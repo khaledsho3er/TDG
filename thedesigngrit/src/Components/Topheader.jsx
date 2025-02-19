@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 
-function PageDescription({ category }) {
+function PageDescription({ name, description }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [truncatedText, setTruncatedText] = useState("");
   const [fullText, setFullText] = useState("");
 
-  // Truncate text for display purposes
   useEffect(() => {
-    if (category?.description) {
-      // Set the full text from the database description
-      setFullText(category.description);
-
-      // Truncate the text if it's too long
-      const truncated =
-        category.description.length > 200
-          ? category.description.slice(0, 200) + "..."
-          : category.description;
-      setTruncatedText(truncated);
+    if (description) {
+      setFullText(description);
+      setTruncatedText(
+        description.length > 200
+          ? description.slice(0, 200) + "..."
+          : description
+      );
     }
-  }, [category]);
+  }, [description]);
 
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
@@ -36,7 +32,7 @@ function PageDescription({ category }) {
         paddingBottom: "20px",
       }}
     >
-      {/* Display the category name */}
+      {/* Display Name (Category or Type) */}
       <Typography
         sx={{
           fontFamily: "Horizon",
@@ -51,11 +47,11 @@ function PageDescription({ category }) {
           },
         }}
       >
-        {category?.name || "Category Name Not Available"}
+        {name || "Name Not Available"}
       </Typography>
 
-      {/* Check if description exists and render it */}
-      {category?.description ? (
+      {/* Description */}
+      {description ? (
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
