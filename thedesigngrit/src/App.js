@@ -67,7 +67,7 @@ function App() {
                 element={<TermsOfService />}
               />{" "}
               <Route
-                path="/products/:subcategoryId/:subcategoryName"
+                path="/products/:typeId/:typeName"
                 element={<ProductsPage />}
               />
               <Route exact path="/partners" Component={PartnersApplication} />
