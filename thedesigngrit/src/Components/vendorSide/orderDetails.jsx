@@ -198,7 +198,7 @@ const OrderDetails = ({ order, onBack }) => {
             >
               <IoMdPrint />
             </InvoiceDownload>
-            {order.status === "Pending" && (
+            {order.orderStatus === "Pending" && (
               <Button
                 variant="contained"
                 color="primary"
