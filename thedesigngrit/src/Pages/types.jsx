@@ -39,12 +39,9 @@ function TypesPage() {
       <PageDescription name={types?.name} description={types?.description} />
 
       <Box sx={{ padding: 2 }}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>
-          Choose a Type
-        </Typography>
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 4, md: 6 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           {types.length > 0 ? (
