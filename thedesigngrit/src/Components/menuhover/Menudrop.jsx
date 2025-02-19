@@ -3,11 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
-
-  // const [selectedDetail, setSelectedDetail] = useState(
-  //   category.subCategories[0]
-  // ); // Set initial subcategory
   const [selectedDetail, setSelectedDetail] = useState(null);
+
   useEffect(() => {
     if (category?.subCategories?.length > 0) {
       setSelectedDetail(category.subCategories[0]); // Automatically select the first subcategory
@@ -15,6 +12,8 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
       setSelectedDetail(null); // Reset if no subcategories
     }
   }, [category]);
+
+  // Navigate to the category page
   const handleNavigation = () => {
     if (category?._id && category?.name) {
       navigate(`/category/${category._id}/subcategories`);
@@ -23,13 +22,15 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
     }
   };
 
-  // Handle clicking a title to update the selected detail
-  const handleTitleClick = (detail) => {
-    setSelectedDetail(detail);
+  // Update selected detail when hovering over a subcategory
+  const handleMouseEnterSubCategory = (subCategory) => {
+    setSelectedDetail(subCategory);
   };
-  // const fullImagePath = selectedDetail
-  //   ? `http://localhost:5000/uploads/${selectedDetail.image}`
-  //   : ""; // Full image path for rendering
+
+  // Navigate to products page with type ID and name
+  const handleTypeClick = (type) => {
+    navigate(`/products/${type._id}/${type.name}`);
+  };
 
   return (
     <div
@@ -48,12 +49,10 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
             <div
               key={index}
               className="menu-item"
-              onClick={() =>
-                navigate(`/products/${subCategory._id}/${subCategory.name}`)
-              }
+              onMouseEnter={() => handleMouseEnterSubCategory(subCategory)}
               style={{ cursor: "pointer" }}
             >
-              <h3>{subCategory.name}</h3> {/* Display subcategory name */}
+              <h3>{subCategory.name}</h3>
             </div>
           ))}
         </div>
@@ -67,7 +66,13 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
               <h2>{selectedDetail.name}</h2>
               <ul>
                 {selectedDetail.types.map((type, idx) => (
-                  <li key={idx}>{type.name}</li> // Display type names
+                  <li
+                    key={idx}
+                    onClick={() => handleTypeClick(type)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {type.name}
+                  </li>
                 ))}
               </ul>
             </>
@@ -75,8 +80,8 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
         </div>
         {selectedDetail && (
           <img
-            src="/Assets/concept1.webp" // Display category image
-            alt={category}
+            src="/Assets/concept1.webp"
+            alt={category.name}
             style={{ maxWidth: "100%", height: "auto" }}
           />
         )}
