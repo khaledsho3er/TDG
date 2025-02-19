@@ -116,7 +116,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
         "& .MuiPaper-root": {
           borderRadius: "16px",
           backdropFilter: "blur(5px)",
-          backgroundColor: "#6b7b58",
+          backgroundColor: "#ebe4e5",
         },
       }}
     >
@@ -131,7 +131,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       </DialogTitle>
 
       <DialogContent sx={{ color: "#eee", marginBottom: "20px" }}>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red", marginBottom: "30px" }}>{error}</p>}
 
         {step === 1 && (
           <>
@@ -188,7 +188,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleSendOTP}
             disabled={loading}
-            sx={{ color: "white" }}
+            sx={{ color: "#2d2d2d" }}
           >
             {loading ? "Sending..." : "Send OTP"}
           </Button>
@@ -198,7 +198,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleVerifyOTP}
             disabled={loading}
-            sx={{ color: "white" }}
+            sx={{ color: "#2d2d2d" }}
           >
             {loading ? "Verifying..." : "Verify OTP"}
           </Button>
@@ -208,7 +208,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           <Button
             onClick={handleResetPassword}
             disabled={loading}
-            sx={{ color: "white" }}
+            sx={{ color: "#2d2d2d" }}
           >
             {loading ? "Resetting..." : "Reset Password"}
           </Button>
