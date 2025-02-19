@@ -84,7 +84,7 @@ function Subcategories() {
                   {subCategory.description}
                 </Typography>
                 <Link
-                  to={`/products/${subCategory._id}/${subCategory.name}`}
+                  to={`/types/${subCategory._id}`}
                   className="subcategory-button"
                 >
                   Shop Now

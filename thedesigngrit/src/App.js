@@ -37,7 +37,7 @@ import EditEmployee from "./Components/vendorSide/editEmployee";
 import BrandForm from "./Components/vendorSide/addbrand";
 import Subcategories from "./Pages/subcategories";
 import Signupvendor from "./Components/vendorSide/SignupVendor";
-
+import TypesPage from "./Pages/types";
 
 
 
@@ -96,6 +96,8 @@ function App() {
                 path="/category/:categoryId/subcategories"
                 element={<Subcategories />}
               />
+
+               <Route path="/types/:subCategoryId" element={<TypesPage />} />
             </Routes>
           </Router>
         </CartProvider>
