@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
-import Header from "../Components/navBar";
+import { Box, Grid, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import PageDicription from "../Components/Topheader";
+import axios from "axios";
+import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
-
 function Types() {
   const { subCategoryId } = useParams();
   const [types, setTypes] = useState([]);
