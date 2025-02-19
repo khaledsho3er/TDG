@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const CategoryCard = ({ title, image, buttonText, link }) => {
-  const fullImagePath = `https://www.thedesigngrit.com/${image}`; // Full image path for rendering
+  const fullImagePath = `https://a29dbeb11704750c5e1d4b4544ae5595.r2.cloudflarestorage.com/${image}`; // Full image path for rendering
   return (
     <div
       className="category-card"
