@@ -50,7 +50,7 @@ function TypesPage() {
           container
           spacing={3}
           columns={{ xs: 4, sm: 8, md: 12 }}
-          sx={{ margin: "0 auto", width: "100%" }}
+          sx={{ margin: "0 auto", width: "100%", padding: "16px" }}
         >
           {types.length > 0 ? (
             types.map((type) => (
