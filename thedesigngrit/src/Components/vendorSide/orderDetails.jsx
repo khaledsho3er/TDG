@@ -22,6 +22,8 @@ const OrderDetails = ({ order, onBack }) => {
   const [error] = useState(null); // Error state
   const [openDialog, setOpenDialog] = useState(false); // State for dialog
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
+  const [openFileDialog, setOpenFileDialog] = useState(false); // State for file upload dialog
+  const [file, setFile] = useState(null); // State for uploaded file
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
@@ -43,6 +45,16 @@ const OrderDetails = ({ order, onBack }) => {
   const handleDateChange = (event) => {
     setDeliveryDate(event.target.value);
   };
+  const handleFileDialogOpen = () => {
+    setOpenFileDialog(true);
+  };
+
+  const handleFileDialogClose = () => {
+    setOpenFileDialog(false);
+  };
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
   const handleSubmitDate = async () => {
     // Make API call to update the delivery date
     try {
@@ -62,6 +74,24 @@ const OrderDetails = ({ order, onBack }) => {
       // Optionally, you can refresh the order details or show a success message
     } catch (error) {
       console.error("Error updating delivery date:", error);
+    }
+  };
+  const handleFileUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("orderId", order._id); // Include order ID if needed
+
+    try {
+      await fetch("/api/upload-file", {
+        method: "POST",
+        body: formData,
+      });
+      handleFileDialogClose();
+      // Optionally, refresh the order details or show a success message
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -212,6 +242,11 @@ const OrderDetails = ({ order, onBack }) => {
                 Set Delivery Date
               </button>
             )}
+            {order.orderStatus === "Confirmed" && (
+              <button className="submit-btn" onClick={handleFileDialogOpen}>
+                Upload File
+              </button>
+            )}
           </Box>
           <Dialog open={openDialog} onClose={handleDialogClose}>
             <DialogTitle>Set Delivery Date</DialogTitle>
@@ -226,12 +261,32 @@ const OrderDetails = ({ order, onBack }) => {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDialogClose} color="primary">
+              <button onClick={handleDialogClose} className="cancel-btn">
                 Cancel
-              </Button>
-              <Button onClick={handleSubmitDate} color="primary">
+              </button>
+              <button onClick={handleSubmitDate} className="submit-btn">
                 Submit
-              </Button>
+              </button>
+            </DialogActions>
+          </Dialog>
+          {/* Dialog for File Upload */}
+          <Dialog open={openFileDialog} onClose={handleFileDialogClose}>
+            <DialogTitle>Upload File</DialogTitle>
+            <DialogContent>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                style={{ width: "100%" }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <button onClick={handleFileDialogClose} className="cancel-btn">
+                Cancel
+              </button>
+              <button onClick={handleFileUpload} className="submit-btn">
+                Upload
+              </button>
             </DialogActions>
           </Dialog>
         </Box>
