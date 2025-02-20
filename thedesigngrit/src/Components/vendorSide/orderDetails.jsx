@@ -77,18 +77,31 @@ const OrderDetails = ({ order, onBack }) => {
     }
   };
   const handleFileUpload = async () => {
-    if (!file) return;
+    if (!file || !orderId) {
+      console.error("File or orderId is missing");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("orderId", order._id); // Include order ID if needed
 
     try {
-      await fetch("/api/upload-file", {
-        method: "POST",
-        body: formData,
-      });
-      handleFileDialogClose();
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/orders/upload-file/${order._id}`, // ✅ Use the correct API endpoint
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("File uploaded successfully:", data);
+
+      handleFileDialogClose(); // Close file dialog
       // Optionally, refresh the order details or show a success message
     } catch (error) {
       console.error("Error uploading file:", error);
