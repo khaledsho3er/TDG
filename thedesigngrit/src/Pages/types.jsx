@@ -34,10 +34,11 @@ function TypesPage() {
   if (error) return <Box>Error: {error}</Box>;
 
   return (
-    <Box sx={{ marginBottom: 0 }}>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
       <Box
         sx={{
+          flexGrow: 1,
           display: "flex",
           justifyContent: "center",
           padding: 2,
@@ -47,7 +48,7 @@ function TypesPage() {
       >
         <Grid
           container
-          spacing={3} // Added spacing for gaps
+          spacing={3}
           columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{ margin: "0 auto", width: "100%" }}
         >
@@ -57,7 +58,7 @@ function TypesPage() {
                 item
                 xs={4}
                 sm={4}
-                md={3} // Ensuring 4 per row
+                md={3}
                 key={type._id}
                 component={Link}
                 to={`/products/${type._id}/${type.name}`}
@@ -66,17 +67,17 @@ function TypesPage() {
                   textDecoration: "none",
                   borderRadius: "8px",
                   overflow: "hidden",
-                  height: 300, // Increased height
+                  height: 300,
                   backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   display: "flex",
-                  alignItems: "flex-end", // Align text to bottom
-                  justifyContent: "flex-start", // Align text to left
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
                   padding: 2,
                   transition: "transform 0.3s ease-in-out",
                   "&:hover": {
-                    transform: "scale(1.05)", // Hover animation
+                    transform: "scale(1.05)",
                   },
                 }}
               >
@@ -108,7 +109,7 @@ function TypesPage() {
           )}
         </Grid>
       </Box>
-      <Footer />
+      <Footer sx={{ marginTop: "auto" }} />
     </Box>
   );
 }
