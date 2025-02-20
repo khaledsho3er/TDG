@@ -65,6 +65,7 @@ function TypesPage() {
                   borderRadius: "8px",
                   overflow: "hidden",
                   height: 200,
+                  gap: 5,
                   backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
