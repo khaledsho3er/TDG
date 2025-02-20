@@ -129,7 +129,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
-      <PageDescription name={typeName} description={typeDescription} />
+      <PageDescription name={typeName} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
