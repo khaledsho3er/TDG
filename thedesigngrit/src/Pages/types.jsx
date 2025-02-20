@@ -41,15 +41,13 @@ function TypesPage() {
           flexGrow: 1,
           display: "flex",
           justifyContent: "center",
-          padding: 2,
-          margin: "0 auto",
-          maxWidth: 1200,
+          padding: 5,
         }}
       >
         <Grid
           container
-          spacing={7}
-          columns={{ xs: 4, sm: 8, md: 20 }}
+          spacing={3}
+          columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{ margin: "0 auto", width: "100%", padding: "16px" }}
         >
           {types.length > 0 ? (
