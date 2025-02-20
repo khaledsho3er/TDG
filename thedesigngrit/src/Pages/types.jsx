@@ -34,7 +34,7 @@ function TypesPage() {
   if (error) return <Box>Error: {error}</Box>;
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: 0 }}>
       <Header />
       <Box
         sx={{
