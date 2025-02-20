@@ -36,13 +36,20 @@ function TypesPage() {
   return (
     <Box>
       <Header />
-      <PageDescription name={types?.name} description={types?.description} />
-
-      <Box sx={{ padding: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          padding: 2,
+          margin: "0 auto",
+          maxWidth: 1200,
+        }}
+      >
         <Grid
           container
           spacing={{ xs: 4, md: 6 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
+          sx={{ margin: "0 auto", width: "100%" }}
         >
           {types.length > 0 ? (
             types.map((type) => (
