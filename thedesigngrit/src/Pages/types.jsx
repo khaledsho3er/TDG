@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
-import PageDescription from "../Components/Topheader";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
@@ -47,7 +46,7 @@ function TypesPage() {
       >
         <Grid
           container
-          spacing={{ xs: 4, md: 6 }}
+          spacing={3} // Added spacing for gaps
           columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{ margin: "0 auto", width: "100%" }}
         >
@@ -55,7 +54,9 @@ function TypesPage() {
             types.map((type) => (
               <Grid
                 item
-                size={{ xs: 2, sm: 4, md: 4 }}
+                xs={4}
+                sm={4}
+                md={3} // Ensuring 4 per row
                 key={type._id}
                 component={Link}
                 to={`/products/${type._id}/${type.name}`}
@@ -64,14 +65,18 @@ function TypesPage() {
                   textDecoration: "none",
                   borderRadius: "8px",
                   overflow: "hidden",
-                  height: 200,
-                  gap: 5,
+                  height: 300, // Increased height
                   backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: "flex-end", // Align text to bottom
+                  justifyContent: "flex-start", // Align text to left
+                  padding: 2,
+                  transition: "transform 0.3s ease-in-out",
+                  "&:hover": {
+                    transform: "scale(1.05)", // Hover animation
+                  },
                 }}
               >
                 <Box
@@ -89,9 +94,7 @@ function TypesPage() {
                   sx={{
                     position: "relative",
                     color: "white",
-                    textAlign: "center",
                     fontSize: 24,
-                    fontFamily: "horizon",
                     fontWeight: "bold",
                   }}
                 >
