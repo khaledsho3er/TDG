@@ -48,8 +48,8 @@ function TypesPage() {
       >
         <Grid
           container
-          spacing={3}
-          columns={{ xs: 4, sm: 8, md: 12 }}
+          spacing={7}
+          columns={{ xs: 4, sm: 8, md: 20 }}
           sx={{ margin: "0 auto", width: "100%", padding: "16px" }}
         >
           {types.length > 0 ? (
