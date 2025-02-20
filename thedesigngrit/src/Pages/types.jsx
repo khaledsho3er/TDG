@@ -34,14 +34,23 @@ function TypesPage() {
   if (error) return <Box>Error: {error}</Box>;
 
   return (
-    <Box className="types-page">
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
-      <Box className="types-container">
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          justifyContent: "center",
+          padding: 2,
+          margin: "0 auto",
+          maxWidth: 1200,
+        }}
+      >
         <Grid
           container
           spacing={3}
           columns={{ xs: 4, sm: 8, md: 12 }}
-          className="types-grid"
+          sx={{ margin: "0 auto", width: "100%", padding: "16px" }}
         >
           {types.length > 0 ? (
             types.map((type) => (
@@ -53,13 +62,44 @@ function TypesPage() {
                 key={type._id}
                 component={Link}
                 to={`/products/${type._id}/${type.name}`}
-                className="type-item"
-                style={{
+                sx={{
+                  position: "relative",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  height: 300,
                   backgroundImage: `url(https://tdg-db.onrender.com/uploads/${type.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  padding: 2,
+                  transition: "transform 0.3s ease-in-out",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
                 }}
               >
-                <Box className="type-overlay" />
-                <Typography variant="h6" className="type-name">
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                  }}
+                />
+                <Typography
+                  variant="h6"
+                  sx={{
+                    position: "relative",
+                    color: "white",
+                    fontSize: 24,
+                    fontWeight: "bold",
+                  }}
+                >
                   {type.name}
                 </Typography>
               </Grid>
@@ -69,7 +109,7 @@ function TypesPage() {
           )}
         </Grid>
       </Box>
-      <Footer />
+      <Footer sx={{ marginTop: "auto" }} />
     </Box>
   );
 }
