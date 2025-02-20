@@ -698,9 +698,17 @@ const OrderDetails = ({ order, onBack }) => {
                       padding: "4px 12px",
                       borderRadius: "5px",
                       backgroundColor:
-                        order.status === "Delivered" ? "#d4edda" : "#f8d7da", // Green for delivered, red for pending
+                        order.orderStatus === "Pending"
+                          ? "#f8d7da"
+                          : order.orderStatus === "Delivered"
+                          ? "#d4edda"
+                          : "#FFE5B4",
                       color:
-                        order.status === "Delivered" ? "#155724" : "#721c24", // Text color for visibility
+                        order.orderStatus === "Pending"
+                          ? "#721c24"
+                          : order.orderStatus === "Delivered"
+                          ? "#155724"
+                          : "#FF7518",
                       fontWeight: "500",
                       textAlign: "center",
                       minWidth: "80px",
