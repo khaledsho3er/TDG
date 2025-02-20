@@ -107,8 +107,8 @@ function TypesPage() {
             <Typography>No types found.</Typography>
           )}
         </Grid>
-        <Footer />
       </Box>
+      <Footer />
     </Box>
   );
 }
