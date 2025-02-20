@@ -7,6 +7,7 @@ import ProductCards from "../Components/Products/Productsgrid";
 import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
+import PageDescription from "../Components/Topheader";
 
 function ProductsPage() {
   const { typeId, typeName } = useParams();
@@ -128,6 +129,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
+      <PageDescription name={typeName} description={typeDescription} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
