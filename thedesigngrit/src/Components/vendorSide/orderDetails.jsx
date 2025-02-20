@@ -77,7 +77,7 @@ const OrderDetails = ({ order, onBack }) => {
     }
   };
   const handleFileUpload = async () => {
-    if (!file || !orderId) {
+    if (!file || !order._id) {
       console.error("File or orderId is missing");
       return;
     }
