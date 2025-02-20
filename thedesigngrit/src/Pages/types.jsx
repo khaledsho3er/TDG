@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
+import Footer from "../Components/Footer";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
@@ -106,6 +107,7 @@ function TypesPage() {
             <Typography>No types found.</Typography>
           )}
         </Grid>
+        <Footer />
       </Box>
     </Box>
   );
