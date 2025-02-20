@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Avatar, TextField } from "@mui/material";
+import { Box, Avatar, TextField, MenuItem, Select } from "@mui/material";
 import { format } from "date-fns";
 import axios from "axios";
 import ConfirmationDialog from "../confirmationMsg";
@@ -132,12 +132,19 @@ function Profile({ userData }) {
 
           <p>Gender</p>
           {isEditing ? (
-            <TextField
+            <Select
               name="gender"
-              label="Gender"
               value={formData.gender}
               onChange={handleChange}
-            />
+              displayEmpty
+            >
+              <MenuItem value="" disabled>
+                Select Gender
+              </MenuItem>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Prefer not to say">Prefer not to say</MenuItem>
+            </Select>
           ) : (
             <p>{userData.gender || "Not Specified"}</p>
           )}

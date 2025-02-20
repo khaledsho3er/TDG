@@ -81,7 +81,6 @@ function TypesPage() {
                   sx={{
                     position: "relative",
                     color: "white",
-                    fontWeight: "bold",
                     textAlign: "center",
                     fontSize: 24,
                     fontFamily: "horizon",
