@@ -1453,13 +1453,13 @@ body::-webkit-scrollbar {
   overflow: hidden;
   background-color: #fff;
   margin-bottom: 3rem;
-  box-sizing: border-box; /* Ensures padding is included in the total width */
+  box-sizing: border-box;
 }
 
 .slider-title {
   max-width: 1440px;
   margin: 0 auto;
-  font-size: 1.2rem !important;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 2rem;
   font-family: Horizon;
@@ -1467,37 +1467,39 @@ body::-webkit-scrollbar {
 }
 
 .slider-content {
-  max-width: 100%; /* Ensures no extra space */
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
-  gap: 0; /* Removes unnecessary gaps */
-  padding: 0; /* Removes extra padding */
-  box-sizing: border-box; /* Include padding in width */
-  overflow-x: hidden; /* Prevent horizontal overflow */
+  gap: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
 }
 
+
 .product-card {
-  flex: 0 0 auto; /* Prevents shrinking or growing */
-  width: 30%; /* Ensures full width in the slider */
-  padding: 0 0.5rem; /* Slight padding for spacing */
+  flex: 0 0 auto;
+  width: 30%;
+  padding: 0 0.5rem;
   transition: transform 0.3s ease-in-out;
-  box-sizing: border-box; /* Include padding in width */
+  box-sizing: border-box;
+  scroll-snap-align: start;
 }
 
 .product-image-home {
-  width: 100%; /* Ensure image takes full width */
-  height: auto; /* Maintain aspect ratio */
+  width: 100%;
+  height: auto;
   border-radius: 8px;
   object-fit: cover;
 }
 
 .product-image-home img {
-  width: 80%;
-  height: 90%;
+  width: 100%;
+  height: auto;
   border-radius: 8px;
   object-fit: cover;
 }
-
 .product-badge {
   font-size: 0.5rem;
   color: #2d2d2d;
