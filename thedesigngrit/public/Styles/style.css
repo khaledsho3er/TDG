@@ -1467,8 +1467,8 @@ body::-webkit-scrollbar {
 }
 
 .slider-content {
-  max-width: 70%;
-  margin:  auto;
+  max-width: 100%;
+  margin: 0 auto;
   display: flex;
   gap: 0;
   padding: 0;
@@ -1479,28 +1479,27 @@ body::-webkit-scrollbar {
 
 
 .product-card {
-  flex: 0 0 auto;
-  width: 30%;
-  padding: 0 0.5rem;
+  flex: 0 0 auto; /* Prevents shrinking or growing */
+  width: 30%; /* Ensures full width in the slider */
+  padding: 0 0.5rem; /* Slight padding for spacing */
   transition: transform 0.3s ease-in-out;
-  box-sizing: border-box;
-  scroll-snap-align: start;
+  box-sizing: border-box; /* Include padding in width */
 }
 
 .product-image-home {
-  width: 89%;
-  height: auto;
+  width: 100%; /* Ensure image takes full width */
+  height: auto; /* Maintain aspect ratio */
   border-radius: 8px;
   object-fit: cover;
-  margin: auto;
 }
 
 .product-image-home img {
-  width: 100%;
-  height: auto;
+  width: 80%;
+  height: 90%;
   border-radius: 8px;
   object-fit: cover;
 }
+
 .product-badge {
   font-size: 0.5rem;
   color: #2d2d2d;
