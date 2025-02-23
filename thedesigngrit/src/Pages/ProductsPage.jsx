@@ -11,6 +11,8 @@ import PageDescription from "../Components/Topheader";
 
 function ProductsPage() {
   const { typeId, typeName } = useParams();
+  const [typeDescription, setTypeDescription] = useState(""); // 🔹 State to store type description
+
   const [products, setProducts] = useState([]); // جميع المنتجات
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
@@ -20,7 +22,21 @@ function ProductsPage() {
     tags: [],
     priceRange: [349, 61564],
   });
+  // 🟢 Fetch Type Details
+  useEffect(() => {
+    const fetchTypeDetails = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://tdg-db.onrender.com/api/types/${typeId}` // 🔹 Make sure this API returns type details
+        );
+        setTypeDescription(data.description); // 🔹 Store type description
+      } catch (error) {
+        console.error("Error fetching type details:", error);
+      }
+    };
 
+    if (typeId) fetchTypeDetails();
+  }, [typeId]);
   // 🟢 جلب المنتجات من الـ API مع استخدام المسار الصحيح
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,23 +51,9 @@ function ProductsPage() {
         console.error("Error fetching products:", error);
       }
     };
-    const fetchType = async () => {
-      try {
-        const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/types/types/${typeId}`
-        );
-
-        return data;
-      } catch (error) {
-        console.error("Error fetching type:", error);
-      }
-    };
 
     fetchProducts();
-    fetchType();
   }, [typeId, typeName]);
-  // 🟢 جلب تفاصيل النوع من الـ API
-
   // 🟢 تطبيق الفلاتر عند التحديث
   useEffect(() => {
     const applyFilters = () => {
@@ -142,7 +144,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
-      <PageDescription name={typeName} description={type.description} />
+      <PageDescription name={typeName} description={typeDescription} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
