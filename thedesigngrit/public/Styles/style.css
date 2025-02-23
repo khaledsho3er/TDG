@@ -5,16 +5,6 @@
   font-style: normal;
 }
 
-/* Apply Horizon Bold to Headlines */
-h1, h2, h3 {
-  font-family: "Horizon", sans-serif;
-  font-weight: bold;
-}
-
-/* Apply Montserrat for other text */
-.subtitle, p {
-  font-family: "Montserrat", sans-serif;
-}
 
 /* Login.css */
 body {
