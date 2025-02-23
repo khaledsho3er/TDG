@@ -9,9 +9,21 @@ import Footer from "../Components/Footer";
 function TypesPage() {
   const { subCategoryId } = useParams();
   const [types, setTypes] = useState([]);
+  const [subcategory, setSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  // Function to fetch the subcategory details
+  const fetchSubcategory = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://tdg-db.onrender.com/api/subcategories/${subCategoryId}`
+      );
+      setSubcategory(data);
+      console.log("Subcategory:", data);
+    } catch (error) {
+      console.error("Error fetching subcategory:", error);
+    }
+  };
   useEffect(() => {
     const fetchTypes = async () => {
       try {
@@ -28,6 +40,7 @@ function TypesPage() {
     };
 
     fetchTypes();
+    fetchSubcategory();
   }, [subCategoryId]);
 
   if (loading) return <LoadingScreen />;
@@ -36,6 +49,11 @@ function TypesPage() {
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
+      <PageDescription
+        name={subcategory.name}
+        description={subcategory.description}
+      />
+
       <Box
         sx={{
           flexGrow: 1,
