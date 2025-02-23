@@ -76,7 +76,7 @@ function Subcategories() {
               className={`subcategory-box ${index % 2 !== 0 ? "reverse" : ""}`}
             >
               <img
-                src={`https://tdg-db.onrender.com/uploads/${subCategory.image}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${subCategory.image}`}
                 alt={subCategory.name}
                 className="subcategory-image"
               />
