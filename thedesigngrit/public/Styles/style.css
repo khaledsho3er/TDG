@@ -1467,8 +1467,8 @@ body::-webkit-scrollbar {
 }
 
 .slider-content {
-  max-width: 100%;
-  margin: 0 auto;
+  max-width: 70%;
+  margin:  auto;
   display: flex;
   gap: 0;
   padding: 0;
@@ -1488,10 +1488,11 @@ body::-webkit-scrollbar {
 }
 
 .product-image-home {
-  width: 100%;
+  width: 89%;
   height: auto;
   border-radius: 8px;
   object-fit: cover;
+  margin: auto;
 }
 
 .product-image-home img {
