@@ -1254,7 +1254,7 @@ body::-webkit-scrollbar {
 .sustainability-section {
   display: flex;
   flex-direction: row;
-  width: 100vw; /* Ensures full viewport width */
+  width: 90vw; /* Ensures full viewport width */
   max-width: 100%; /* Prevents unintended margins */
   height: auto;
   background-color: #ebe4e5;
