@@ -1,9 +1,21 @@
 @font-face {
   font-family: "Horizon";
-  src: url("../fonts/horizon/horizon.otf") format("opentype");
-  font-weight: normal;
+  src: url("/fonts/horizon.otf") format("opentype"); /* Path to the font */
+  font-weight: bold;
   font-style: normal;
 }
+
+/* Apply Horizon Bold to Headlines */
+h1, h2, h3 {
+  font-family: "Horizon", sans-serif;
+  font-weight: bold;
+}
+
+/* Apply Montserrat for other text */
+.subtitle, p {
+  font-family: "Montserrat", sans-serif;
+}
+
 /* Login.css */
 body {
   margin: 0;
@@ -1251,10 +1263,15 @@ body::-webkit-scrollbar {
 .sustainability-section {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 100vw; /* Ensures full viewport width */
+  max-width: 100%; /* Prevents unintended margins */
   height: auto;
   background-color: #ebe4e5;
+  margin: 0; /* Removes any margin */
+  padding: 0; /* Removes any padding */
+  overflow-x: hidden; /* Ensures no horizontal overflow */
 }
+
 
 /* Image Container */
 .sustainability-image-container {
