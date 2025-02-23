@@ -5,6 +5,7 @@ import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
 import Footer from "../Components/Footer";
+import PageDescription from "../Components/Topheader";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
@@ -12,19 +13,20 @@ function TypesPage() {
   const [subcategory, setSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Function to fetch the subcategory details
-  const fetchSubcategory = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://tdg-db.onrender.com/api/subcategories/${subCategoryId}`
-      );
-      setSubcategory(data);
-      console.log("Subcategory:", data);
-    } catch (error) {
-      console.error("Error fetching subcategory:", error);
-    }
-  };
+
   useEffect(() => {
+    // Function to fetch the subcategory details
+    const fetchSubcategory = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://tdg-db.onrender.com/api/subcategories/${subCategoryId}`
+        );
+        setSubcategory(data);
+        console.log("Subcategory:", data);
+      } catch (error) {
+        console.error("Error fetching subcategory:", error);
+      }
+    };
     const fetchTypes = async () => {
       try {
         setLoading(true);
