@@ -30,6 +30,8 @@ function ProductsPage() {
           `https://tdg-db.onrender.com/api/types/${typeId}` // 🔹 Make sure this API returns type details
         );
         setTypeDescription(data.description); // 🔹 Store type description
+        console.log("Type description:", data.description);
+        console.log("Types:", data);
       } catch (error) {
         console.error("Error fetching type details:", error);
       }
@@ -140,7 +142,7 @@ function ProductsPage() {
       console.log("Filtered products initialized:", products);
     }
   }, [products]);
-
+  console.log("Type Descr", typeDescription);
   return (
     <Box>
       <Header />
