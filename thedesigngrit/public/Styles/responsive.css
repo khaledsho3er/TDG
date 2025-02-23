@@ -1145,10 +1145,13 @@
     align-items: baseline;
   }
   .slider-container-home {
+    width: 48%;
     padding: 1rem;
+    overflow: hidden;
+    margin: auto;
   }
   .slider-content{
-    max-width: 70%;
+    max-width: 90%;
   }
   .slider-title {
     font-size: 0.9rem;

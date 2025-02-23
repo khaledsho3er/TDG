@@ -1472,8 +1472,9 @@ body::-webkit-scrollbar {
   display: flex;
   gap: 0;
   padding: 0;
+  overflow: hidden  ;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: hidden;
   scroll-snap-type: x mandatory;
 }
 
