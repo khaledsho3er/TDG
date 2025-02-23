@@ -13,7 +13,12 @@ const CategoryForm = () => {
     image: null,
     imagePreview: null,
   });
-  const [newType, setNewType] = useState("");
+  const [newType, setNewType] = useState({
+    name: "",
+    description: "",
+    image: null,
+    imagePreview: null,
+  });
   const [currentSubCategoryIndex, setCurrentSubCategoryIndex] = useState(null);
 
   // Handle main category image upload
@@ -22,6 +27,16 @@ const CategoryForm = () => {
     if (file) {
       setCategoryImage(file);
       setImagePreview(URL.createObjectURL(file));
+    }
+  };
+  const handleTypeImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewType((prev) => ({
+        ...prev,
+        image: file,
+        imagePreview: URL.createObjectURL(file),
+      }));
     }
   };
 
@@ -52,11 +67,17 @@ const CategoryForm = () => {
 
   // Add type to a specific subcategory
   const handleAddType = () => {
-    if (newType.trim() && currentSubCategoryIndex !== null) {
+    if (newType.name.trim() && currentSubCategoryIndex !== null) {
       const updatedSubCategories = [...subCategories];
-      updatedSubCategories[currentSubCategoryIndex].types.push(newType);
+      updatedSubCategories[currentSubCategoryIndex].types.push({ ...newType });
+
       setSubCategories(updatedSubCategories);
-      setNewType("");
+      setNewType({
+        name: "",
+        description: "",
+        image: null,
+        imagePreview: null,
+      });
     }
   };
 
@@ -87,19 +108,32 @@ const CategoryForm = () => {
     formData.append("description", categoryDescription);
     formData.append("image", categoryImage);
 
-    const formattedSubCategories = subCategories.map((subCategory, index) => {
+    const formattedSubCategories = subCategories.map((subCategory) => {
+      const formattedTypes = subCategory.types.map((type, typeIndex) => {
+        if (type.image) {
+          formData.append(`typeImages`, type.image);
+        }
+        return {
+          name: type.name,
+          description: type.description || "",
+        };
+      });
+
       if (subCategory.image) {
-        formData.append(`subCategoryImages`, subCategory.image); // هنا يتم رفع الصور بشكل منفصل
+        formData.append(`subCategoryImages`, subCategory.image);
       }
+
       return {
         name: subCategory.name,
         description: subCategory.description || "",
-        types: subCategory.types,
+        types: formattedTypes,
       };
     });
 
-    // أضف البيانات النصية بعد رفع الصور
     formData.append("subCategories", JSON.stringify(formattedSubCategories));
+
+    // أضف البيانات النصية بعد رفع الصور
+    // formData.append("subCategories", JSON.stringify(formattedSubCategories));
 
     try {
       const response = await fetch(
@@ -195,7 +229,14 @@ const CategoryForm = () => {
               <ul>
                 {subCategory.types.map((type, typeIndex) => (
                   <li key={typeIndex}>
-                    {type}
+                    <strong>{type.name}</strong> - {type.description}
+                    {type.imagePreview && (
+                      <img
+                        src={type.imagePreview}
+                        alt="Type Preview"
+                        width="50"
+                      />
+                    )}
                     <button
                       type="button"
                       onClick={() => handleRemoveType(subIndex, typeIndex)}
@@ -205,15 +246,39 @@ const CategoryForm = () => {
                   </li>
                 ))}
               </ul>
+
               <input
                 type="text"
-                placeholder="Add type"
-                value={currentSubCategoryIndex === subIndex ? newType : ""}
+                placeholder="Type Name"
+                value={currentSubCategoryIndex === subIndex ? newType.name : ""}
                 onChange={(e) => {
                   setCurrentSubCategoryIndex(subIndex);
-                  setNewType(e.target.value);
+                  setNewType((prev) => ({ ...prev, name: e.target.value }));
                 }}
               />
+              <textarea
+                placeholder="Type Description"
+                value={
+                  currentSubCategoryIndex === subIndex
+                    ? newType.description
+                    : ""
+                }
+                onChange={(e) => {
+                  setCurrentSubCategoryIndex(subIndex);
+                  setNewType((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }));
+                }}
+              ></textarea>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleTypeImageUpload}
+              />
+              {newType.imagePreview && (
+                <img src={newType.imagePreview} alt="Preview" width="50" />
+              )}
               <button
                 type="button"
                 onClick={handleAddType}
