@@ -27,7 +27,7 @@ function ProductsPage() {
     const fetchTypeDetails = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/types/${typeId}` // 🔹 Make sure this API returns type details
+          `https://tdg-db.onrender.com/api/types/types/${typeId}` // 🔹 Make sure this API returns type details
         );
         setTypeDescription(data.description); // 🔹 Store type description
         console.log("Type description:", data.description);
