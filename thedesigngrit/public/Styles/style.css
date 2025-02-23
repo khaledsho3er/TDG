@@ -1497,7 +1497,6 @@ body::-webkit-scrollbar {
   height: 13rem; /* Maintain aspect ratio */
   border-radius: 8px;
   object-fit: cover;
-  margin: auto;
 }
 
 .product-image-home img {
