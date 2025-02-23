@@ -58,7 +58,7 @@ const CategoryListPage = () => {
                   height="140"
                   image={
                     category.image
-                      ? `https://tdg-db.onrender.com/uploads/${category.image}`
+                      ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${category.image}`
                       : ""
                   }
                   alt={category.name}
