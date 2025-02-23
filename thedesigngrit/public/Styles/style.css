@@ -1,9 +1,10 @@
 @font-face {
   font-family: "Horizon";
-  src: url("/fonts/horizon.otf") format("opentype"); /* Path to the font */
+  src: url("../fonts/horizon/horizon.otf") format("opentype"); /* Path to the font */
   font-weight: bold;
   font-style: normal;
 }
+
 
 
 /* Login.css */
