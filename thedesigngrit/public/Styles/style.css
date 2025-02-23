@@ -591,10 +591,12 @@ body::-webkit-scrollbar {
 }
 
 .home {
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: auto;
+  width: 100%;
 }
 
 .background-layer {
@@ -618,6 +620,7 @@ body::-webkit-scrollbar {
   border-radius: 20px;
   margin-top: 1rem;
   z-index: 2;
+  margin: auto;
 }
 
 .hero-slider {
