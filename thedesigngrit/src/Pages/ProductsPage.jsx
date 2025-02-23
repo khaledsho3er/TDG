@@ -35,9 +35,22 @@ function ProductsPage() {
         console.error("Error fetching products:", error);
       }
     };
+    const fetchType = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://tdg-db.onrender.com/api/types/types/${typeId}`
+        );
+
+        return data;
+      } catch (error) {
+        console.error("Error fetching type:", error);
+      }
+    };
 
     fetchProducts();
+    fetchType();
   }, [typeId, typeName]);
+  // 🟢 جلب تفاصيل النوع من الـ API
 
   // 🟢 تطبيق الفلاتر عند التحديث
   useEffect(() => {
@@ -129,7 +142,7 @@ function ProductsPage() {
   return (
     <Box>
       <Header />
-      <PageDescription name={typeName} />
+      <PageDescription name={typeName} description={type.description} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
