@@ -206,7 +206,7 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`${product.mainImage}`}
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
               alt={product.name}
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
@@ -216,7 +216,7 @@ function ProductPage() {
                 product.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`${image}`}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -491,7 +491,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} />
               </button>
               <img
-                src={`${product.images[selectedImageIndex]}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />
