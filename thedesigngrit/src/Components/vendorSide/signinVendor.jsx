@@ -75,7 +75,7 @@ const SignIn = () => {
       }}
     >
       <h1 className="signinLogo">
-        <img src="Assets/TDG_logo_Black.webp" alt="Logo" />
+        <img src="/Assets/TDG_logo_Black.png" alt="Logo" />
       </h1>
       <Box className="login-form" sx={{ height: "50%" }}>
         <h1>Sign In</h1>
