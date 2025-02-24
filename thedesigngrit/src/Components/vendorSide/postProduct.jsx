@@ -319,20 +319,65 @@ const AddProduct = () => {
     e.preventDefault();
 
     const data = new FormData();
-    for (const key in formData) {
-      if (key === "technicalDimensions" || key === "warrantyInfo") {
-        data.append(key, JSON.stringify(formData[key]));
-      } else if (key === "images") {
-        formData.images.forEach((file, index) => {
-          data.append("images", file); // Append File objects
-        });
-      } else if (Array.isArray(formData[key])) {
-        formData[key].forEach((item, index) => {
-          data.append(`${key}[${index}]`, item);
-        });
-      } else {
-        data.append(key, formData[key]);
-      }
+    // Append basic fields
+    data.append("name", formData.name);
+    data.append("price", formData.price);
+    data.append("salePrice", formData.salePrice || "");
+    data.append("category", formData.category);
+    data.append("subcategory", formData.subcategory);
+    data.append("manufacturer", formData.manufacturer || "");
+    data.append("collection", formData.collection || "");
+    data.append("type", formData.type || "");
+    data.append("manufactureYear", formData.manufactureYear || "");
+    data.append("description", formData.description || "");
+    data.append("brandId", formData.brandId || "");
+    data.append("brandName", formData.brandName || "");
+    data.append("leadTime", formData.leadTime || "");
+    data.append("stock", formData.stock || "");
+    data.append("sku", formData.sku || "");
+    data.append(
+      "materialCareInstructions",
+      formData.materialCareInstructions || ""
+    );
+    data.append(
+      "productSpecificRecommendations",
+      formData.productSpecificRecommendations || ""
+    );
+    data.append(
+      "Estimatedtimeleadforcustomization",
+      formData.Estimatedtimeleadforcustomization || ""
+    );
+    data.append("Additionaldetails", formData.Additionaldetails || "");
+    data.append("Additionalcosts", formData.Additionalcosts || "");
+    data.append("claimProcess", formData.claimProcess || "");
+
+    // Append array fields
+    formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
+    formData.colors.forEach((color, index) =>
+      data.append(`colors[${index}]`, color)
+    );
+    formData.sizes.forEach((size, index) =>
+      data.append(`sizes[${index}]`, size)
+    );
+    formData.Customizationoptions.forEach((option, index) =>
+      data.append(`Customizationoptions[${index}]`, option)
+    );
+
+    // Append nested objects
+    data.append(
+      "technicalDimensions",
+      JSON.stringify(formData.technicalDimensions)
+    );
+    data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
+
+    // Append images
+    formData.images.forEach((file) => {
+      data.append("images", file);
+    });
+
+    // Log FormData for debugging
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value);
     }
 
     try {
