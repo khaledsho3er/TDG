@@ -90,19 +90,22 @@ function Header() {
       );
       setSuggestions(response.data);
     } catch (error) {
-      console.error("Error fetching suggestions :", error);
+      console.error("Error fetching suggestions:", error);
     }
   };
 
   const handleSearchChange = (event) => {
-    const value = event.target.value;
+    const value = event.target.value.trim();
     setSearchQuery(value);
+    console.log("Search Query:", value);
 
-    if (value.trim() === "") {
-      setSuggestions([]); // Clear suggestions when input is empty
-    } else {
-      fetchSuggestions(value);
+    if (value === "") {
+      setSuggestions([]);
+      console.log("Suggestions cleared!");
+      return;
     }
+
+    fetchSuggestions(value);
   };
 
   const handleSuggestionClick = (suggestion) => {
