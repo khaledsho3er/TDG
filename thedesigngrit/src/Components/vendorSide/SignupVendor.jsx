@@ -391,7 +391,20 @@ function Signupvendor() {
         );
       case 3:
         return (
-          <>
+          <div
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              position: "relative",
+              minWidth: "0px",
+              padding: "0px",
+              margin: "14px 0px 0px ",
+              border: "0",
+              gap: "10px",
+              verticalAlign: "top",
+              width: "100%",
+            }}
+          >
             <TextField
               label="Shipping Policy"
               name="shippingPolicy"
@@ -448,7 +461,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
             />
-          </>
+          </div>
         );
       default:
         return null;
