@@ -22,6 +22,10 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
     }
   };
 
+  const handlesubcategoryclick = (subcategory) => {
+    navigate(`/types/${subcategory._id}`);
+  };
+
   // Update selected detail when hovering over a subcategory
   const handleMouseEnterSubCategory = (subCategory) => {
     setSelectedDetail(subCategory);
@@ -49,6 +53,7 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
             <div
               key={index}
               className="menu-item"
+              onClick={() => handlesubcategoryclick(subCategory)}
               onMouseEnter={() => handleMouseEnterSubCategory(subCategory)}
               style={{ cursor: "pointer" }}
             >
