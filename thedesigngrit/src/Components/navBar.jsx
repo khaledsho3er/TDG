@@ -90,7 +90,7 @@ function Header() {
       );
       setSuggestions(response.data);
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
+      console.error("Error fetching suggestions :", error);
     }
   };
 
