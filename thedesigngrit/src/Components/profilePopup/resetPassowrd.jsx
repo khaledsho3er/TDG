@@ -541,7 +541,7 @@ const ResetPasswordForm = () => {
           onClick={() => setForgotPasswordDialogOpen(true)}
           style={{
             position: "absolute",
-            right: "40px",
+            top: "50px",
             fontSize: "12px",
             color: "#6b7b58",
             cursor: "pointer",
