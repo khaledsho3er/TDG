@@ -97,7 +97,12 @@ function Header() {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchQuery(value);
-    fetchSuggestions(value);
+
+    if (value.trim() === "") {
+      setSuggestions([]); // Clear suggestions when input is empty
+    } else {
+      fetchSuggestions(value);
+    }
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -451,6 +456,7 @@ function Header() {
               fullWidth
               value={searchQuery}
               onChange={handleSearchChange}
+              onBlur={() => setTimeout(() => setSuggestions([]), 200)}
               // onKeyDown={(e) =>
               //   e.key === "Enter" && navigate(`/search?query=${searchQuery}`)
               // }
