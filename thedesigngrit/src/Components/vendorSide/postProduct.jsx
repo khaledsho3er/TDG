@@ -277,28 +277,13 @@ const AddProduct = () => {
     const files = Array.from(e.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
 
-    const uploadFormData = new FormData();
-    files.forEach((file) => uploadFormData.append("images", file));
-
-    axios
-      .post("https://tdg-db.onrender.com/api/products/upload", uploadFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((response) => {
-        console.log("Images uploaded successfully:", response.data);
-        const uploadedPaths = response.data.filePaths;
-
-        setImagePreviews((prev) => [...prev, ...previews]);
-        setFormData((prevData) => ({
-          ...prevData,
-          images: [...prevData.images, ...uploadedPaths],
-          mainImage: prevData.mainImage || uploadedPaths[0], // Set main image if not set
-        }));
-        setMainImagePreview((prev) => prev || previews[0]); // Set preview for main image
-      })
-      .catch((error) => {
-        console.error("Error uploading images:", error);
-      });
+    setImagePreviews((prev) => [...prev, ...previews]);
+    setFormData((prevData) => ({
+      ...prevData,
+      images: [...prevData.images, ...files], // Store File objects
+      mainImage: prevData.mainImage || files[0], // Set first file as main image (temporary)
+    }));
+    setMainImagePreview((prev) => prev || previews[0]);
   };
   // Handle setting the main image
   const handleSetMainImage = (index) => {
@@ -337,6 +322,10 @@ const AddProduct = () => {
     for (const key in formData) {
       if (key === "technicalDimensions" || key === "warrantyInfo") {
         data.append(key, JSON.stringify(formData[key]));
+      } else if (key === "images") {
+        formData.images.forEach((file, index) => {
+          data.append("images", file); // Append File objects
+        });
       } else if (Array.isArray(formData[key])) {
         formData[key].forEach((item, index) => {
           data.append(`${key}[${index}]`, item);
@@ -350,9 +339,7 @@ const AddProduct = () => {
       const response = await axios.post(
         "https://tdg-db.onrender.com/api/products/addproduct",
         data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
       console.log("Product created successfully:", response.data);
       alert("Product added successfully!");
