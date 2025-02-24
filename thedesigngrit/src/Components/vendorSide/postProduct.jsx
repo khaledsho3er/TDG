@@ -271,53 +271,44 @@ const AddProduct = () => {
   const [mainImage, setMainImage] = useState(null); // Main image
 
   // Handle image upload
-  // const handleImageUpload = (e) => {
-  //   const files = Array.from(e.target.files); // Convert FileList to array
-
-  //   // Create image previews
-  //   const imagePreviews = files.map((file) => URL.createObjectURL(file));
-
-  //   // If no main image is set, set the first image as the main image
-  //   if (!mainImage && imagePreviews.length > 0) {
-  //     setMainImage(imagePreviews[0]);
-  //   }
-
-  //   // Update the images array
-  //   setImages([...images, ...imagePreviews]);
-
-  //   // Prepare FormData to send files to the backend
-  //   const formData = new FormData();
-  //   files.forEach((file) => formData.append("images", file));
-
-  //   // Send files to the backend
-  //   axios
-  //     .post("https://tdg-db.onrender.com/api/products/upload", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log("Images uploaded successfully:", response.data);
-
-  //       // Update formData with the uploaded image paths
-  //       setFormData((prevData) => ({
-  //         ...prevData,
-  //         images: [...prevData.images, ...response.data.filePaths], // Add new file paths
-  //         mainImage: prevData.mainImage || response.data.filePaths[0], // Set main image if not already set
-  //       }));
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error uploading images:", error);
-  //     });
-  // };
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files); // Convert FileList to array
 
-    setImages((prev) => [...prev, ...files]); // Store actual file objects
+    // Create image previews
+    const imagePreviews = files.map((file) => URL.createObjectURL(file));
 
-    if (!mainImage && files.length > 0) {
-      setMainImage(files[0]); // Set the first file as the main image
+    // If no main image is set, set the first image as the main image
+    if (!mainImage && imagePreviews.length > 0) {
+      setMainImage(imagePreviews[0]);
     }
+
+    // Update the images array
+    setImages([...images, ...imagePreviews]);
+
+    // Prepare FormData to send files to the backend
+    const formData = new FormData();
+    files.forEach((file) => formData.append("images", file));
+
+    // Send files to the backend
+    axios
+      .post("https://tdg-db.onrender.com/api/products/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("Images uploaded successfully:", response.data);
+
+        // Update formData with the uploaded image paths
+        setFormData((prevData) => ({
+          ...prevData,
+          images: [...prevData.images, ...response.data.filePaths], // Add new file paths
+          mainImage: prevData.mainImage || response.data.filePaths[0], // Set main image if not already set
+        }));
+      })
+      .catch((error) => {
+        console.error("Error uploading images:", error);
+      });
   };
 
   // Handle setting the main image

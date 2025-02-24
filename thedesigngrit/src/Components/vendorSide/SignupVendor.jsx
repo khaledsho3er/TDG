@@ -274,7 +274,13 @@ function Signupvendor() {
         );
       case 2:
         return (
-          <>
+          <Box
+            sx={{
+              overflow: "auto",
+              maxHeight: "calc(100vh - 200px)",
+              padding: "20px",
+            }}
+          >
             <TextField
               label="Brand Name"
               name="brandName"
@@ -324,31 +330,40 @@ function Signupvendor() {
               margin="normal"
             />
 
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="brandlogo">Logo</InputLabel>
-              <Input
-                id="brandlogo"
-                name="brandlogo"
-                type="file"
-                onChange={(e) => handleFileChange(e, 2)}
-                accept="image/*"
-              />
-              <FormHelperText>Upload your brand's logo image</FormHelperText>
-            </FormControl>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel htmlFor="brandlogo">Logo</InputLabel>
+                  <Input
+                    id="brandlogo"
+                    name="brandlogo"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, 2)}
+                    accept="image/*"
+                  />
+                  <FormHelperText>
+                    Upload your brand's logo image
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel htmlFor="coverPhoto">Cover Photo</InputLabel>
+                  <Input
+                    id="coverPhoto"
+                    name="coverPhoto"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, 2)}
+                    accept="image/*"
+                  />
+                  <FormHelperText>
+                    Upload your brand's cover photo
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
 
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="coverPhoto">Cover Photo</InputLabel>
-              <Input
-                id="coverPhoto"
-                name="coverPhoto"
-                type="file"
-                onChange={(e) => handleFileChange(e, 2)}
-                accept="image/*"
-              />
-              <FormHelperText>Upload your brand's cover photo</FormHelperText>
-            </FormControl>
-
-            <FormControl fullWidth margin="normal">
+            {/* <FormControl fullWidth margin="normal">
               <InputLabel htmlFor="catalogues">Catalog (PDF)</InputLabel>
               <Input
                 id="catalogues"
@@ -361,7 +376,7 @@ function Signupvendor() {
               <FormHelperText>
                 Upload your product catalog (PDF format)
               </FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
             <TextField
               label="Brand Description"
@@ -371,7 +386,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
             />
-          </>
+          </Box>
         );
       case 3:
         return (
