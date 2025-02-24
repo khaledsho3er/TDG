@@ -572,7 +572,7 @@ function Header() {
           <Fragment>
             <Typography
               className="category"
-              onClick={() => navigate("/all-brands")}
+              onClick={() => navigate("/vendors")}
             >
               All Brands
             </Typography>
