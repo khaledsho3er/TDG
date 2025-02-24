@@ -70,7 +70,7 @@ const NavbarVendor = () => {
     <nav className="navbar-vendor">
       <div className="navbar-logo-vendor">
         <img
-          src={`https://tdg-db.onrender.com/uploads/${brandData?.brandlogo}`}
+          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brandData?.brandlogo}`}
           alt="Vendor Logo"
         />
       </div>
