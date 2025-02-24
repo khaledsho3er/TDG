@@ -569,17 +569,25 @@ function Header() {
         {menuData.length === 0 ? (
           <Typography>No categories available</Typography>
         ) : (
-          menuData.map((category) => (
+          <Fragment>
             <Typography
-              key={category._id}
-              className={`category ${
-                hoveredCategory === category._id ? "highlighted" : ""
-              }`}
-              onMouseEnter={() => handleMouseEnterCategory(category)}
+              className="category"
+              onClick={() => navigate("/all-brands")}
             >
-              {category.name}
+              All Brands
             </Typography>
-          ))
+            {menuData.map((category) => (
+              <Typography
+                key={category._id}
+                className={`category ${
+                  hoveredCategory === category._id ? "highlighted" : ""
+                }`}
+                onMouseEnter={() => handleMouseEnterCategory(category)}
+              >
+                {category.name}
+              </Typography>
+            ))}
+          </Fragment>
         )}
       </Box>
 
