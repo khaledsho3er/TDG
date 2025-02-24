@@ -3816,10 +3816,10 @@ textarea {
 }
 /* Modal Image */
 .modal-content img {
-  width: 50%;
-  height: 100%;
+  width: 100%;
+  height: auto;
   object-fit: cover; /* Ensures images cover the area without distortion */
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .modal.opening {
   opacity: 1;

@@ -69,11 +69,11 @@ h2 {
 }
 
 .modal-content {
-  background: white;
+  background: transparent;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  width: 60%;
+  height: 100%;
 }
 
 .modal-content h3 {
