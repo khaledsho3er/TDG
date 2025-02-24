@@ -80,7 +80,7 @@ function Header() {
 
   const fetchSuggestions = async (query) => {
     if (!query) {
-      setSuggestions([]); // Clear suggestions if input is empty
+      setSuggestions([]); // Clear suggestions if input is emptyyyy.
       return;
     }
 
