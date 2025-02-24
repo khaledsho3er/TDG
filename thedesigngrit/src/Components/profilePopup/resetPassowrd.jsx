@@ -542,7 +542,6 @@ const ResetPasswordForm = () => {
           style={{
             position: "absolute",
             right: "200px",
-            bottom: "10px",
             fontSize: "12px",
             color: "#6b7b58",
             cursor: "pointer",
