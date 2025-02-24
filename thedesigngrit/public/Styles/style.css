@@ -419,9 +419,6 @@ body::-webkit-scrollbar {
   z-index: 10000; /* Keeps it above other elements */
 }
 
-.suggestions-dropdown:empty {
-  display: none;
-}
 
 /* Each Suggestion Item */
 .suggestion-item {
