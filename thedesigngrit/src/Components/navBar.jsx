@@ -79,7 +79,7 @@ function Header() {
   }, []);
 
   const fetchSuggestions = async (query) => {
-    if (!query.trim()) {
+    if (!query) {
       setSuggestions([]); // Clear suggestions if input is empty
       return;
     }
@@ -88,28 +88,21 @@ function Header() {
       const response = await axios.get(
         `https://tdg-db.onrender.com/api/products/search-suggestions?query=${query}`
       );
-
-      // Ensure the latest query is still relevant
-      if (query === searchQuery) {
-        setSuggestions(response.data);
-      }
+      setSuggestions(response.data);
     } catch (error) {
       console.error("Error fetching suggestions :", error);
     }
   };
 
   const handleSearchChange = (event) => {
-    const value = event.target.value.trim();
+    const value = event.target.value;
     setSearchQuery(value);
-    console.log("Search Query:", value);
 
-    if (value === "") {
-      setSuggestions([]);
-      console.log("Suggestions cleared!");
-      return;
+    if (value.trim() === "") {
+      setSuggestions([]); // Clear suggestions when input is empty
+    } else {
+      fetchSuggestions(value);
     }
-
-    fetchSuggestions(value);
   };
 
   const handleSuggestionClick = (suggestion) => {
