@@ -206,7 +206,7 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
+              src={`${product.mainImage}`}
               alt={product.name}
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
@@ -216,7 +216,7 @@ function ProductPage() {
                 product.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`https://tdg-db.onrender.com/uploads/${image}`}
+                    src={`${image}`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -491,7 +491,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} />
               </button>
               <img
-                src={`https://tdg-db.onrender.com/uploads/${product.images[selectedImageIndex]}`}
+                src={`${product.images[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />

@@ -89,7 +89,7 @@ const ProductCard = ({ product }) => {
         <CardMedia
           component="img"
           height="250"
-          image={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
+          image={`${product.mainImage}`}
           alt={product.name}
           sx={{
             objectFit: "cover",
