@@ -46,15 +46,15 @@ function TrackOrder() {
   return (
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
-        <Label
-          sx={{
+        <p
+          style={{
             fontWeight: "normal",
             fontSize: "15px",
             fontFamily: "Montserrat",
           }}
         >
           Select Order
-        </Label>
+        </p>
         <FormControl fullWidth sx={{ marginBottom: "20px" }}>
           <Select
             labelId="order-select-label"
