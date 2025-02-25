@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { Box, MenuItem, Select, FormControl } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { LuPackage } from "react-icons/lu";
 import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "./loadingScreen";
-import { Label } from "@mui/icons-material";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -105,18 +104,54 @@ function TrackOrder() {
                     <Box
                       sx={{ display: "flex", gap: 1, flexDirection: "column" }}
                     >
-                      <p>
-                        {new Date(selectedOrder.createdAt).toLocaleDateString()}
-                      </p>
-
-                      <p>
-                        Delivery Date:
-                        {selectedOrder.orderStatus === "Pending"
-                          ? "Not specified yet"
-                          : new Date(
-                              selectedOrder.deliveryDate
-                            ).toLocaleDateString()}
-                      </p>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          flexDirection: "column",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            fontFamily: "Montserrat",
+                          }}
+                        >
+                          {" "}
+                          Order Date:
+                        </span>{" "}
+                        <p>
+                          {new Date(
+                            selectedOrder.createdAt
+                          ).toLocaleDateString()}
+                        </p>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          flexDirection: "column",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            fontFamily: "Montserrat",
+                          }}
+                        >
+                          {" "}
+                          Delivery Date:{" "}
+                        </span>
+                        <p>
+                          {selectedOrder.orderStatus === "Pending"
+                            ? "Not specified yet"
+                            : selectedOrder.orderStatus === "Delivered"
+                            ? "Already Delivered"
+                            : new Date(
+                                selectedOrder.deliveryDate
+                              ).toLocaleDateString()}
+                        </p>
+                      </Box>
                     </Box>
                   </Box>
                   <select
