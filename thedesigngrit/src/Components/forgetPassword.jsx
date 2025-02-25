@@ -74,16 +74,6 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
     }
   };
   const handleResetPassword = async () => {
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    if (!resetToken) {
-      setError("Reset token is missing.");
-      return;
-    }
-
     try {
       setLoading(true);
       const response = await axios.post(
@@ -91,18 +81,25 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
         {
           email,
           newPassword,
-          token: resetToken, // Ensure token is included
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${resetToken}`,
+          },
         }
       );
+
+      console.log("Response Data:", response.data);
 
       if (response.status === 200) {
         setSuccess(true);
         setError("");
-        onClose(); // Close the dialog after successful reset
+        onClose();
       } else {
         setError(response.data.message || "Failed to reset password.");
       }
     } catch (error) {
+      console.error("Error Response:", error.response);
       setError(error.response?.data?.message || "An error occurred.");
     } finally {
       setLoading(false);
