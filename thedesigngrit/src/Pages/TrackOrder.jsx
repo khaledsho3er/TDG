@@ -115,12 +115,13 @@ function TrackOrder() {
                           style={{
                             fontWeight: "bold",
                             fontFamily: "Montserrat",
+                            color: "#ccc",
                           }}
                         >
                           {" "}
                           Order Date:
                         </span>{" "}
-                        <p>
+                        <p style={{ fontWeight: "bold" }}>
                           {new Date(
                             selectedOrder.createdAt
                           ).toLocaleDateString()}
@@ -137,12 +138,13 @@ function TrackOrder() {
                           style={{
                             fontWeight: "bold",
                             fontFamily: "Montserrat",
+                            color: "#ccc",
                           }}
                         >
                           {" "}
                           Delivery Date:{" "}
                         </span>
-                        <p>
+                        <p style={{ fontWeight: "bold" }}>
                           {selectedOrder.orderStatus === "Pending"
                             ? "Not specified yet"
                             : selectedOrder.orderStatus === "Delivered"
