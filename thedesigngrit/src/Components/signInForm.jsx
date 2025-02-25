@@ -113,11 +113,15 @@ function SignInForm() {
             onClick={() => setForgotPasswordDialogOpen(true)}
             style={{
               position: "absolute",
-              right: "64px",
+              right: "80px",
               fontSize: "12px",
               color: "#e0e0e0",
               cursor: "pointer",
               fontFamily: "Montserrat",
+
+              "@media (max-width: 768px)": {
+                right: "80px",
+              },
             }}
           >
             Forgot Password?
@@ -129,7 +133,13 @@ function SignInForm() {
           <button
             type="submit"
             className="btn signin-btn"
-            style={{ marginTop: "24px", marginBottom: "-20px" }}
+            style={{
+              marginTop: "24px",
+              marginBottom: "-20px",
+              "@media (max-width: 768px)": {
+                marginBottom: "-15px",
+              },
+            }}
           >
             Sign In
           </button>
