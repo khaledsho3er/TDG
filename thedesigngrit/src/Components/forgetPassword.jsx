@@ -79,11 +79,20 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       return;
     }
 
+    if (!resetToken) {
+      setError("Reset token is missing.");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
         "https://tdg-db.onrender.com/api/forget-password/reset-password",
-        { email, newPassword, token: resetToken } // Include the reset token
+        {
+          email,
+          newPassword,
+          token: resetToken, // Ensure token is included
+        }
       );
 
       if (response.status === 200) {
