@@ -46,8 +46,10 @@ function TrackOrder() {
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
         <FormControl fullWidth sx={{ marginBottom: "20px" }}>
-          <InputLabel>Select Order</InputLabel>
+          <InputLabel id="order-select-label">Select Order</InputLabel>
           <Select
+            labelId="order-select-label"
+            id="order-select"
             value={selectedOrder?._id || ""}
             onChange={(e) => {
               const order = ordersData.find(
@@ -64,6 +66,7 @@ function TrackOrder() {
             ))}
           </Select>
         </FormControl>
+
         <div className="terms-container">
           {/* Sidebar */}
 
@@ -93,6 +96,14 @@ function TrackOrder() {
                     <Box sx={{ display: "flex", gap: 2 }}>
                       <p>
                         {new Date(selectedOrder.createdAt).toLocaleDateString()}
+                      </p>
+                      <p>
+                        Delivery Date:
+                        {selectedOrder.orderStatus === "Pending"
+                          ? "Not specified yet"
+                          : new Date(
+                              selectedOrder.deliveryDate
+                            ).toLocaleDateString()}
                       </p>
                     </Box>
                   </Box>
