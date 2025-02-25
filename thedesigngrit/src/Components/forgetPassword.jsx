@@ -18,7 +18,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const [resetToken, setResetToken] = useState("");
   const handleSendOTP = async () => {
     if (!email) {
       setError("Please enter your email.");
@@ -57,13 +57,11 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       setLoading(true);
       const response = await axios.post(
         "https://tdg-db.onrender.com/api/forget-password/verify-otp",
-        {
-          email,
-          otp,
-        }
+        { email, otp }
       );
 
       if (response.status === 200) {
+        setResetToken(response.data.resetToken); // Store the token
         setStep(3);
         setError("");
       } else {
@@ -75,7 +73,6 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       setLoading(false);
     }
   };
-
   const handleResetPassword = async () => {
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
@@ -86,10 +83,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       setLoading(true);
       const response = await axios.post(
         "https://tdg-db.onrender.com/api/forget-password/reset-password",
-        {
-          email,
-          newPassword,
-        }
+        { email, newPassword, token: resetToken } // Include the reset token
       );
 
       if (response.status === 200) {
