@@ -435,7 +435,8 @@ const ResetPasswordForm = () => {
           onClick={() => setShowCurrentPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            alignSelf: "center",
+            top: "50%",
+            transform: "translateY(-50%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -446,16 +447,7 @@ const ResetPasswordForm = () => {
       </div>
       <span
         onClick={() => setForgotPasswordDialogOpen(true)}
-        style={{
-          position: "absolute",
-          right: "298px",
-          fontSize: "12px",
-          color: "#6b7b58",
-          cursor: "pointer",
-          "@media (max-width: 768px)": {
-            right: "98px",
-          },
-        }}
+        className="forgot-password-link"
       >
         Forgot Password?
       </span>
@@ -472,7 +464,8 @@ const ResetPasswordForm = () => {
           onClick={() => setShowNewPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            alignSelf: "center",
+            top: "50%",
+            transform: "translateY(-50%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -515,7 +508,8 @@ const ResetPasswordForm = () => {
           onClick={() => setShowConfirmPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            alignSelf: "center",
+            top: "50%",
+            transform: "translateY(-50%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",

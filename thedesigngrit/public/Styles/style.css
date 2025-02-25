@@ -2565,7 +2565,13 @@ select {
   width: 80%;
   margin: auto;
 }
-
+.forgot-password-link {
+  position: absolute;
+  right: 298px;
+  font-size: 12px;
+  color: #6b7b58;
+  cursor: pointer;
+}
 .reset-form-field label {
   padding-bottom: 12px;
   padding-top: 10px;
