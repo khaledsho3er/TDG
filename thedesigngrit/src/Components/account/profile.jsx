@@ -22,7 +22,7 @@ function Profile({ userData }) {
         gender: userData.gender || "",
         email: userData.email || "",
         phoneNumber: userData.phoneNumber || "",
-        address1: userData.address1 || "",
+        // address1: userData.address1 || "",
       });
     }
   }, [userData, isEditing]);
@@ -201,7 +201,7 @@ function Profile({ userData }) {
             <p>{userData.phoneNumber || "Not Specified"}</p>
           )}
         </Box>
-        <Box className="profile-info-second-right">
+        {/* <Box className="profile-info-second-right">
           <p>Address:</p>
           {isEditing ? (
             <TextField
@@ -213,7 +213,7 @@ function Profile({ userData }) {
           ) : (
             <p>{userData.address1 || "Not Specified"}</p>
           )}
-        </Box>
+        </Box> */}
       </Box>
       {isEditing && (
         <Box

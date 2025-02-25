@@ -99,7 +99,7 @@ function ContactUs() {
 
       <div className="content-container">
         <Box className="Contant-caption">
-          <h3>Let's Talk.</h3>
+          <h3>Need to reach out?</h3>
           <p>
             Get in contact with us through our email form and we will get back
             to you as soon as we can!
