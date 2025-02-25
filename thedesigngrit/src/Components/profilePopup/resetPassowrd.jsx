@@ -299,7 +299,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import ForgotPasswordDialog from "../forgetPassword";
 import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
-
 const ResetPasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -436,6 +435,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowCurrentPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
+            alignSelf: "center",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -452,6 +452,9 @@ const ResetPasswordForm = () => {
           fontSize: "12px",
           color: "#6b7b58",
           cursor: "pointer",
+          "@media (max-width: 768px)": {
+            right: "98px",
+          },
         }}
       >
         Forgot Password?
@@ -469,6 +472,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowNewPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
+            alignSelf: "center",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -511,6 +515,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowConfirmPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
+            alignSelf: "center",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -546,7 +551,7 @@ const ResetPasswordForm = () => {
           onClick={handleChangePasswordClick}
           disabled={loading}
         >
-          {loading ? "Updating..." : "Change Password"}
+          {loading ? "Updating..." : "Update Password"}
         </button>
       </div>
 
