@@ -103,6 +103,7 @@ function SignInForm() {
                 transform: "translateY(-50%)",
                 cursor: "pointer",
                 color: "#6b7b58",
+                fontFamily: "Montserrat",
               }}
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
@@ -112,10 +113,11 @@ function SignInForm() {
             onClick={() => setForgotPasswordDialogOpen(true)}
             style={{
               position: "absolute",
-              right: "298px",
+              right: "64px",
               fontSize: "12px",
-              color: "#6b7b58",
+              color: "#e0e0e0",
               cursor: "pointer",
+              fontFamily: "Montserrat",
             }}
           >
             Forgot Password?
@@ -124,7 +126,11 @@ function SignInForm() {
             <p className="error-message">{errors.password.message}</p>
           )}
 
-          <button type="submit" className="btn signin-btn">
+          <button
+            type="submit"
+            className="btn signin-btn"
+            style={{ marginTop: "24px", marginBottom: "-20px" }}
+          >
             Sign In
           </button>
         </form>
