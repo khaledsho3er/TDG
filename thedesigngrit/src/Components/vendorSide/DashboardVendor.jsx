@@ -11,13 +11,11 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
-import axios from "axios";
 const DashboardVendor = () => {
   const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
   const [totalOrders, setTotalOrders] = useState(0);
   const [percentageChange, setPercentageChange] = useState(0);
 
@@ -172,7 +170,7 @@ const DashboardVendor = () => {
             {products.map((product, index) => (
               <li key={index}>
                 <img
-                  src={`https://tdg-db.onrender.com/uploads/${product.image}`}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
                   alt={product.name}
                 />
                 {product.name} - LE {product.price} ({product.totalSold} sales)
@@ -229,9 +227,17 @@ const DashboardVendor = () => {
                         padding: "4px 12px",
                         borderRadius: "5px",
                         backgroundColor:
-                          order.status === "Delivered" ? "#d4edda" : "#f8d7da",
+                          order.orderStatus === "Pending"
+                            ? "#f8d7da"
+                            : order.orderStatus === "Delivered"
+                            ? "#d4edda"
+                            : "#FFE5B4",
                         color:
-                          order.status === "Delivered" ? "#155724" : "#721c24",
+                          order.orderStatus === "Pending"
+                            ? "#721c24"
+                            : order.orderStatus === "Delivered"
+                            ? "#155724"
+                            : "#FF7518",
                         fontWeight: "500",
                         textAlign: "center",
                         minWidth: "80px",

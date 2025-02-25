@@ -58,7 +58,7 @@ const QuotationsPage = () => {
               <img
                 src={
                   quotation.productId.mainImage
-                    ? `https://tdg-db.onrender.com/uploads/${quotation.productId.mainImage}`
+                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${quotation.productId.mainImage}`
                     : "/default-product-image.jpg"
                 } // Default image if no product image
                 alt={quotation.productId.name}
@@ -86,7 +86,7 @@ const QuotationsPage = () => {
             <img
               src={
                 selectedQuotation.productId.mainImage
-                  ? `https://tdg-db.onrender.com/uploads/${selectedQuotation.productId.mainImage}`
+                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation.productId.mainImage}`
                   : "/default-product-image.jpg"
               }
               alt={selectedQuotation.productId.name}

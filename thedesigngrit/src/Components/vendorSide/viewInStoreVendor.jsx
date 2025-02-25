@@ -159,7 +159,7 @@ const ViewInStoreVendor = () => {
               <img
                 src={
                   entry.productId?.mainImage
-                    ? `https://tdg-db.onrender.com/uploads/${entry.productId.mainImage}`
+                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${entry.productId.mainImage}`
                     : "/default-product-image.jpg"
                 }
                 alt={entry.productId?.name || "Product"}
@@ -191,7 +191,7 @@ const ViewInStoreVendor = () => {
             <img
               src={
                 selectedViewInStore.productId?.mainImage
-                  ? `https://tdg-db.onrender.com/uploads/${selectedViewInStore.productId.mainImage}`
+                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedViewInStore.productId.mainImage}`
                   : "/default-product-image.jpg"
               }
               alt={selectedViewInStore.productId?.name || "Product"}
