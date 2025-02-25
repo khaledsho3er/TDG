@@ -8,7 +8,8 @@ import { useUser } from "../utils/userContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
+import ForgotPasswordDialog from "./forgetPassword";
+import ConfirmationDialog from "./confirmationMsg";
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -23,8 +24,12 @@ const schema = yup.object().shape({
 function SignInForm() {
   const { setUserSession } = useUser();
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
+    useState(false);
+  const [forgotPasswordSuccessDialogOpen, setForgotPasswordSuccessDialogOpen] =
+    useState(false);
   const {
     register,
     handleSubmit,
@@ -103,6 +108,18 @@ function SignInForm() {
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
           </div>
+          <span
+            onClick={() => setForgotPasswordDialogOpen(true)}
+            style={{
+              position: "absolute",
+              right: "298px",
+              fontSize: "12px",
+              color: "#6b7b58",
+              cursor: "pointer",
+            }}
+          >
+            Forgot Password?
+          </span>
           {errors.password && (
             <p className="error-message">{errors.password.message}</p>
           )}
@@ -116,6 +133,18 @@ function SignInForm() {
           If you don’t have an account? <a href="/signup">Register</a>
         </p>
       </div>
+      <ForgotPasswordDialog
+        open={forgotPasswordDialogOpen}
+        onClose={() => setForgotPasswordDialogOpen(false)}
+        onSend={() => setForgotPasswordSuccessDialogOpen(true)}
+      />
+      <ConfirmationDialog
+        open={forgotPasswordSuccessDialogOpen}
+        title="Reset Link Sent"
+        content="A password reset link has been sent to your email."
+        onConfirm={() => setForgotPasswordSuccessDialogOpen(false)}
+        onCancel={() => setForgotPasswordSuccessDialogOpen(false)}
+      />
     </div>
   );
 }
