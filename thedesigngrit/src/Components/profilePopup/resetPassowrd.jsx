@@ -435,8 +435,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowCurrentPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
+            transform: "translateY(50%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
@@ -508,8 +507,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowConfirmPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            top: "50%",
-            transform: "translateY(-50%)",
+            transform: "translateY(50%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",
