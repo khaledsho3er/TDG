@@ -113,14 +113,14 @@ function SignInForm() {
             onClick={() => setForgotPasswordDialogOpen(true)}
             style={{
               position: "absolute",
-              right: "80px",
+              right: "59px",
               fontSize: "12px",
               color: "#e0e0e0",
               cursor: "pointer",
               fontFamily: "Montserrat",
 
               "@media (max-width: 768px)": {
-                right: "80px",
+                right: "40px",
               },
             }}
           >
