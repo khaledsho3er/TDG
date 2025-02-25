@@ -46,7 +46,6 @@ function TrackOrder() {
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
         <FormControl fullWidth sx={{ marginBottom: "20px" }}>
-          <InputLabel id="order-select-label">Select Order</InputLabel>
           <Select
             labelId="order-select-label"
             id="order-select"
@@ -93,10 +92,13 @@ function TrackOrder() {
                     >
                       Order: {selectedOrder._id}
                     </h3>
-                    <Box sx={{ display: "flex", gap: 2 }}>
+                    <Box
+                      sx={{ display: "flex", gap: 1, flexDirection: "column" }}
+                    >
                       <p>
                         {new Date(selectedOrder.createdAt).toLocaleDateString()}
                       </p>
+
                       <p>
                         Delivery Date:
                         {selectedOrder.orderStatus === "Pending"
