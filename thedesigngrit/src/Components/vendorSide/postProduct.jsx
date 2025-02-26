@@ -59,7 +59,7 @@ const AddProduct = () => {
     Customizationoptions: [], // Customization options in formData
     Additionaldetails: "",
     Additionalcosts: "",
-    claimProcess: "",
+    // claimProcess: "",
   });
 
   // Fetch categories on mount
@@ -349,7 +349,7 @@ const AddProduct = () => {
     );
     data.append("Additionaldetails", formData.Additionaldetails || "");
     data.append("Additionalcosts", formData.Additionalcosts || "");
-    data.append("claimProcess", formData.claimProcess || "");
+    // data.append("claimProcess", formData.claimProcess || "");
 
     // Append array fields
     formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
@@ -419,6 +419,7 @@ const AddProduct = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  placeholder="Ex: L-shaped Sofa "
                   required
                 />
               </div>
@@ -429,6 +430,7 @@ const AddProduct = () => {
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
+                  placeholder="Ex: 10,000.00"
                   required
                 />
               </div>
@@ -439,6 +441,7 @@ const AddProduct = () => {
                   name="salePrice"
                   value={formData.salePrice}
                   onChange={handleChange}
+                  placeholder="Ex: 1000.00"
                 />
               </div>
               {/* Category Dropdown */}
@@ -504,7 +507,7 @@ const AddProduct = () => {
                 <input
                   type="text"
                   name="tags"
-                  placeholder="Add tag and press Enter"
+                  placeholder="Add tag and press Enter  Ex: Sofa, Living Room"
                   onKeyDown={handleAddTag}
                   className="tag-input"
                 />
@@ -634,6 +637,7 @@ const AddProduct = () => {
                   name="manufacturer"
                   value={formData.manufacturer}
                   onChange={handleChange}
+                  placeholder="Ex: Home Essentials"
                 />
               </div>
               <div className="form-group">
@@ -643,6 +647,7 @@ const AddProduct = () => {
                   name="collection"
                   value={formData.collection}
                   onChange={handleChange}
+                  placeholder="Ex: Living Room"
                 />
               </div>
               <div className="form-group">
@@ -652,6 +657,7 @@ const AddProduct = () => {
                   name="manufactureYear"
                   value={formData.manufactureYear}
                   onChange={handleChange}
+                  placeholder="Ex: 2023"
                 />
               </div>
               <div className="form-group">
@@ -661,6 +667,7 @@ const AddProduct = () => {
                   name="colors"
                   value={formData.colors.join(",")}
                   onChange={(e) => handleArrayChange(e, "colors")}
+                  placeholder="Ex: Red, Blue, Green"
                 />
               </div>
               <div className="form-group">
@@ -670,6 +677,7 @@ const AddProduct = () => {
                   name="sizes"
                   value={formData.sizes.join(",")}
                   onChange={(e) => handleArrayChange(e, "sizes")}
+                  placeholder="Ex: Small, Medium, Large"
                 />
               </div>
               <div className="form-group">
@@ -679,6 +687,7 @@ const AddProduct = () => {
                   name="mainImage"
                   value={formData.mainImage}
                   onChange={handleChange}
+                  readOnly
                 />
               </div>
               <div className="form-group">
@@ -687,6 +696,8 @@ const AddProduct = () => {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
+                  placeholder="Provide a detailed product description of 20-50 words. Include unique selling
+ points, features, and benefits."
                   maxLength="2000"
                 />
               </div>
@@ -718,6 +729,7 @@ const AddProduct = () => {
                     type="number"
                     name="length"
                     value={formData.technicalDimensions.length}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -729,6 +741,7 @@ const AddProduct = () => {
                     type="number"
                     name="width"
                     value={formData.technicalDimensions.width}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -740,6 +753,7 @@ const AddProduct = () => {
                     type="number"
                     name="height"
                     value={formData.technicalDimensions.height}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -751,6 +765,7 @@ const AddProduct = () => {
                     type="number"
                     name="weight"
                     value={formData.technicalDimensions.weight}
+                    placeholder="Kg"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -790,6 +805,7 @@ const AddProduct = () => {
                   name="leadTime"
                   value={formData.leadTime}
                   onChange={handleChange}
+                  placeholder="(Enter the guaranteed lead time for delivery in days)"
                 />
               </div>
 
@@ -800,6 +816,7 @@ const AddProduct = () => {
                   name="stock"
                   value={formData.stock}
                   onChange={handleChange}
+                  placeholder="Enter the stock quantity  Ex:100"
                 />
               </div>
               <div className="form-group">
@@ -809,6 +826,7 @@ const AddProduct = () => {
                   name="sku"
                   value={formData.sku}
                   onChange={handleChange}
+                  placeholder="Enter the Stock Keeping Unit"
                 />
               </div>
             </Box>
@@ -824,6 +842,7 @@ const AddProduct = () => {
                   name="warrantyYears"
                   value={formData.warrantyInfo.warrantyYears}
                   onChange={(e) => handleNestedChange(e, "warrantyInfo")}
+                  placeholder="Enter the number of years of warranty"
                 />
               </div>
               <div className="form-group">
@@ -835,6 +854,7 @@ const AddProduct = () => {
                   onChange={(e) =>
                     handleArrayChange(e, "warrantyCoverage", "warrantyInfo")
                   }
+                  placeholder="Enter the warranty coverage Ex: parts, labor, shipping"
                 />
               </div>
             </Box>
@@ -849,6 +869,7 @@ const AddProduct = () => {
                   name="materialCareInstructions"
                   value={formData.materialCareInstructions}
                   onChange={handleChange}
+                  placeholder="Enter the material care instructions"
                 />
               </div>
               <div className="form-group">
@@ -857,6 +878,7 @@ const AddProduct = () => {
                   name="productSpecificRecommendations"
                   value={formData.productSpecificRecommendations}
                   onChange={handleChange}
+                  placeholder="Enter the product specific recommendations"
                 />
               </div>
               <div className="form-group">
@@ -866,16 +888,17 @@ const AddProduct = () => {
                   name="Estimatedtimeleadforcustomization"
                   value={formData.Estimatedtimeleadforcustomization}
                   onChange={handleChange}
+                  placeholder="Enter the estimated time lead for customization, Guaranteed lead time"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Claim Process:</label>
                 <textarea
                   name="claimProcess"
                   value={formData.claimProcess}
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
             </Box>
           </div>
           <div className="form-right">
