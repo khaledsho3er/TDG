@@ -5,6 +5,8 @@
   font-style: normal;
 }
 
+
+
 /* Login.css */
 body {
   margin: 0;
@@ -149,7 +151,7 @@ body::-webkit-scrollbar {
   color: #2d2d2d;
   border-radius: 8px;
   text-align: center;
-  font-family: "Montserrat";
+  font-family: Montserrat;
   font-weight: 400;
   display: flex;
   flex-direction: row;
@@ -172,7 +174,7 @@ body::-webkit-scrollbar {
   color: #2d2d2d;
   border-radius: 8px;
   text-align: center;
-  font-family: "Montserrat";
+  font-family: Montserrat;
   font-weight: 400;
   display: flex;
   flex-direction: row;
@@ -416,6 +418,7 @@ body::-webkit-scrollbar {
   border-radius: 20px;
   z-index: 10000; /* Keeps it above other elements */
 }
+
 
 /* Each Suggestion Item */
 .suggestion-item {
@@ -1265,6 +1268,7 @@ body::-webkit-scrollbar {
   overflow-x: hidden; /* Ensures no horizontal overflow */
 }
 
+
 /* Image Container */
 .sustainability-image-container {
   width: 50%; /* Set width to 50% */
@@ -1474,11 +1478,12 @@ body::-webkit-scrollbar {
   display: flex;
   gap: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden  ;
   box-sizing: border-box;
   overflow-x: hidden;
   scroll-snap-type: x mandatory;
 }
+
 
 .product-card {
   flex: 0 0 auto; /* Prevents shrinking or growing */
@@ -2565,13 +2570,7 @@ select {
   width: 80%;
   margin: auto;
 }
-.forgot-password-link {
-  position: absolute;
-  right: 298px;
-  font-size: 12px;
-  color: #6b7b58;
-  cursor: pointer;
-}
+
 .reset-form-field label {
   padding-bottom: 12px;
   padding-top: 10px;
@@ -5922,12 +5921,12 @@ input:focus {
 .menu-right-container {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 60%;
   margin-left: -150px;
 }
 
 .menu-right {
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -6667,4 +6666,11 @@ input:focus {
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+
 /* types page */
+
+.build-package-section {
+  height: auto;
+  padding: 5% 8%;
+
+}
