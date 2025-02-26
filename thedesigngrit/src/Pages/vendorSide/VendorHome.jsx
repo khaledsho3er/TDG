@@ -28,7 +28,7 @@ const VendorHome = () => {
   // Object for rendering content based on active page
   const pageComponents = {
     dashboard: <DashboardVendor />,
-    allProducts: <ProductsPageVendor />,
+    allProducts: <ProductsPageVendor setActivePage={setActivePage} />,
     orderList: <RecentPurchases />,
     quotationsList: <QuotationsPage />,
     OrderDetails: <OrderDetails />,

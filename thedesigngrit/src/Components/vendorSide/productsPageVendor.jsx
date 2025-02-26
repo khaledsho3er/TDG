@@ -377,7 +377,7 @@ import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
 
-const ProductsPageVendor = () => {
+const ProductsPageVendor = ({ setActivePage }) => {
   const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -572,6 +572,7 @@ const ProductsPageVendor = () => {
         </div>
         <div className="dashboard-date-vendor">
           <button
+            onClick={() => setActivePage("AddProduct")}
             style={{
               display: "flex",
               alignItems: "center",
