@@ -5845,7 +5845,7 @@ input:focus {
   position: absolute;
   top: 100px;
   right: 80;
-  width: 70%;
+  width: 60%;
   height: 170%;
   background-color: #fff;
   background-color: rgba(
@@ -5870,7 +5870,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   width: 50%;
-  height: 80%;
+  height: 100%;
   padding: 0.8rem;
   background-color: #ffffff;
 }
@@ -5915,7 +5915,7 @@ input:focus {
 .menu-item h3 {
   font-family: montserrat;
   margin-top: -5px;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 }
 
 .menu-right-container {
