@@ -5921,7 +5921,7 @@ input:focus {
 .menu-right-container {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 60%;
   margin-left: -150px;
 }
 
