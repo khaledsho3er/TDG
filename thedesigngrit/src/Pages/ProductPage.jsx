@@ -472,6 +472,13 @@ function ProductPage() {
                     {expandedMaterialSections[index] && (
                       <div className="material-collapsible-content">
                         Content for {section}
+                        {section === "Delivery & Returns" ? (
+                          <p>{product.productSpecificRecommendations}</p>
+                        ) : section === "Care Instructions" ? (
+                          <p>{product.materialCareInstructions}</p>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     )}
                   </div>
@@ -485,10 +492,10 @@ function ProductPage() {
           <div className={`modal ${isTransitioning ? "opening" : "closing"}`}>
             <div className="modal-content">
               <button className="modal-close" onClick={handleCloseModal}>
-                <IoMdClose size={30} />
+                <IoMdClose size={30} color="#fff" />
               </button>
               <button className="modal-prev" onClick={handlePrevImage}>
-                <IoIosArrowBack size={30} />
+                <IoIosArrowBack size={30} color="#fff" />
               </button>
               <img
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
@@ -496,7 +503,7 @@ function ProductPage() {
                 className="modal-image"
               />
               <button className="modal-next" onClick={handleNextImage}>
-                <IoIosArrowForward size={30} />
+                <IoIosArrowForward size={30} color="#fff" />
               </button>
             </div>
           </div>

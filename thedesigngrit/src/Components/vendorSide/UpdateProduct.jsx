@@ -58,7 +58,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     Customizationoptions: [], // Customization options in formData
     Additionaldetails: "",
     Additionalcosts: "",
-    claimProcess: "",
+    // claimProcess: "",
   });
 
   // Fetch categories on mount
@@ -922,21 +922,21 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Claim Process:</label>
                 <textarea
                   name="claimProcess"
                   value={formData.claimProcess}
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
             </Box>
           </div>
           <div className="form-right">
             <div className="image-placeholder">
               {mainImage ? (
                 <img
-                  src={mainImage}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
                   alt="Main Preview"
                   className="main-image"
                 />
@@ -1016,7 +1016,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                       }}
                     >
                       <img
-                        src={`https://tdg-db.onrender.com${image}`} // Adjust the URL as needed
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`} // Adjust the URL as needed
                         alt={`Thumbnail ${index}`}
                         className="image-thumbnail"
                         onClick={() => handleSetMainImage(index)}
