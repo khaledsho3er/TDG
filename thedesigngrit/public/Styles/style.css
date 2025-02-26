@@ -4266,8 +4266,9 @@ iframe {
   margin: auto;
   text-align: center;
   font-family: Montserrat;
-  color: #2d2d2d;
-  font-size: smaller;
+  color: #ccc;
+  font-weight: bold;
+  font-size: larger;
   margin-bottom: 2rem;
 }
 /* Related Products Section */
