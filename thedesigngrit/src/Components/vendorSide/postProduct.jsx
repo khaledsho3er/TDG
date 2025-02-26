@@ -658,6 +658,7 @@ const AddProduct = () => {
                   value={formData.manufactureYear}
                   onChange={handleChange}
                   placeholder="Ex: 2023"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -806,6 +807,7 @@ const AddProduct = () => {
                   value={formData.leadTime}
                   onChange={handleChange}
                   placeholder="(Enter the guaranteed lead time for delivery in days)"
+                  required
                 />
               </div>
 
@@ -870,6 +872,7 @@ const AddProduct = () => {
                   value={formData.materialCareInstructions}
                   onChange={handleChange}
                   placeholder="Enter the material care instructions"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -879,6 +882,7 @@ const AddProduct = () => {
                   value={formData.productSpecificRecommendations}
                   onChange={handleChange}
                   placeholder="Enter the product specific recommendations"
+                  required
                 />
               </div>
               <div className="form-group">
