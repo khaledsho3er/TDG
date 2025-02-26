@@ -83,7 +83,7 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
             </>
           ) : null}
         </div>
-        <div className="menu-image">
+        <div style={{ maxWidth: "100%", height: "auto" }}>
           {selectedDetail && (
             <img
               src="/Assets/concept1.webp"
