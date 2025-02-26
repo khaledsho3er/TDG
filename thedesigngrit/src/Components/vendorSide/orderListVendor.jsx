@@ -11,7 +11,7 @@ const RecentPurchases = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
-  const [sortDirection] = useState("asc");
+  const [sortDirection] = useState("desc");
   const [dateRange] = useState([null, null]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
 
@@ -57,9 +57,8 @@ const RecentPurchases = () => {
   const sortedOrders = [...dateFilteredOrders].sort((a, b) => {
     switch (sortOption) {
       case "Date":
-        return sortDirection === "asc"
-          ? new Date(a.orderDate) - new Date(b.orderDate)
-          : new Date(b.orderDate) - new Date(a.orderDate);
+        return new Date(b.orderDate) - new Date(a.orderDate); // Ensures newest orders come first
+
       case "Alphabetical":
         return sortDirection === "asc"
           ? a.cartItems[0]?.name.localeCompare(b.cartItems[0]?.name)
@@ -121,7 +120,7 @@ const RecentPurchases = () => {
         >
           <MenuItem value="All">Sort By Status</MenuItem>
           <MenuItem value="Pending">Pending</MenuItem>
-          <MenuItem value="Processing">Processing</MenuItem>
+          <MenuItem value="Processing">Confirmed</MenuItem>
           <MenuItem value="Shipped">Shipped</MenuItem>
           <MenuItem value="Delivered">Delivered</MenuItem>
           <MenuItem value="Cancelled">Cancelled</MenuItem>
