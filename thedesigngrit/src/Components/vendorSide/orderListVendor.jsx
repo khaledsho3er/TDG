@@ -1,12 +1,9 @@
 import { Box, Select, MenuItem } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
-import OrderDetails from "./orderDetails";
+import OrderDetails from "./orderDetails"; // Import OrderDetails component
 
 const RecentPurchases = () => {
   const { vendor } = useVendor();
@@ -15,8 +12,8 @@ const RecentPurchases = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
   const [sortDirection] = useState("asc");
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [dateRange] = useState([null, null]);
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
 
   const ordersPerPage = 8;
 
@@ -40,7 +37,7 @@ const RecentPurchases = () => {
     fetchOrders();
   }, [vendor]);
 
-  // Filter Orders by Status
+  // Filter Orders
   const filteredOrders =
     filterStatus === "All"
       ? orders
@@ -49,13 +46,11 @@ const RecentPurchases = () => {
   // Filter Orders by Date Range
   const dateFilteredOrders =
     dateRange[0] && dateRange[1]
-      ? filteredOrders.filter((order) => {
-          const orderDate = new Date(order.orderDate);
-          return (
-            orderDate >= new Date(dateRange[0]) &&
-            orderDate <= new Date(dateRange[1])
-          );
-        })
+      ? filteredOrders.filter(
+          (order) =>
+            new Date(order.orderDate) >= new Date(dateRange[0]) &&
+            new Date(order.orderDate) <= new Date(dateRange[1])
+        )
       : filteredOrders;
 
   // Sort Orders
@@ -85,6 +80,7 @@ const RecentPurchases = () => {
 
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
 
+  // If an order is selected, show OrderDetails instead of the table
   if (selectedOrder) {
     return (
       <OrderDetails
@@ -103,18 +99,17 @@ const RecentPurchases = () => {
         </div>
         <div className="dashboard-date-vendor">
           <SlCalender />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={dateRange}
-              onChange={(newValue) => setDateRange(newValue)}
-              renderInput={(startProps, endProps) => (
-                <>
-                  <input {...startProps.inputProps} />
-                  <input {...endProps.inputProps} />
-                </>
-              )}
-            />
-          </LocalizationProvider>
+          <span>
+            {dateRange[0] && dateRange[1] ? (
+              <>{`${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`}</>
+            ) : (
+              "Select date range"
+            )}
+            :
+            {dateRange[0] && dateRange[1]
+              ? `${dateRange[0]} - ${dateRange[1]}`
+              : "Select date range"}
+          </span>
         </div>
       </header>
 
@@ -151,6 +146,7 @@ const RecentPurchases = () => {
       <div className="recent-purchases">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <h2>Recent Purchases</h2>
+          <BsThreeDotsVertical />
         </Box>
         <hr />
         <table>
@@ -173,7 +169,32 @@ const RecentPurchases = () => {
                 <td>{order.cartItems[0]?.name || "N/A"}</td>
                 <td>{order._id}</td>
                 <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                <td>{order.orderStatus}</td>
+                <td>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 12px",
+                      borderRadius: "5px",
+                      backgroundColor:
+                        order.orderStatus === "Pending"
+                          ? "#f8d7da"
+                          : order.orderStatus === "Delivered"
+                          ? "#d4edda"
+                          : "#FFE5B4",
+                      color:
+                        order.orderStatus === "Pending"
+                          ? "#721c24"
+                          : order.orderStatus === "Delivered"
+                          ? "#155724"
+                          : "#FF7518",
+                      fontWeight: "500",
+                      textAlign: "center",
+                      minWidth: "80px",
+                    }}
+                  >
+                    {order.orderStatus}
+                  </span>
+                </td>
                 <td>{order.total.toFixed(2)}LE</td>
               </tr>
             ))}
