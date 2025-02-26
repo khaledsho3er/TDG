@@ -4,7 +4,8 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const RecentPurchases = () => {
   const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
@@ -12,9 +13,9 @@ const RecentPurchases = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
   const [sortDirection] = useState("asc");
-  const [dateRange] = useState([null, null]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
-
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
   const ordersPerPage = 8;
 
   useEffect(() => {
@@ -99,16 +100,16 @@ const RecentPurchases = () => {
         </div>
         <div className="dashboard-date-vendor">
           <SlCalender />
-          <span>
-            {dateRange[0] && dateRange[1] ? (
-              <>{`${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`}</>
-            ) : (
-              "Select date range"
-            )}
-            {dateRange[0] && dateRange[1]
-              ? `${dateRange[0]} - ${dateRange[1]}`
-              : "Select date range"}
-          </span>
+          <DatePicker
+            selectsRange={true}
+            startDate={startDate}
+            endDate={endDate}
+            onChange={(update) => {
+              setDateRange(update);
+            }}
+            isClearable={true}
+            placeholderText="Select date range"
+          />
         </div>
       </header>
 
