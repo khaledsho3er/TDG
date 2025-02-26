@@ -650,7 +650,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                   <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev${product.mainImage}`}
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                         alt={product.name}
                         className="all-product-image"
                       />
@@ -749,7 +749,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                   <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev${product.mainImage}`}
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                         alt={product.name}
                         className="all-product-image"
                       />
