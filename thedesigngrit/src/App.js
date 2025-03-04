@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import { CartProvider } from "./Context/cartcontext";
 import { UserProvider } from "./utils/userContext";
@@ -39,12 +39,9 @@ import Subcategories from "./Pages/subcategories";
 import Signupvendor from "./Components/vendorSide/SignupVendor";
 import TypesPage from "./Pages/types";
 
-
-
 function App() {
   return (
     <>
-    
       <UserProvider>
         <CartProvider>
           <Router>
@@ -96,13 +93,12 @@ function App() {
                 path="/category/:categoryId/subcategories"
                 element={<Subcategories />}
               />
-
-               <Route path="/types/:subCategoryId" element={<TypesPage />} />
+              <Route path="/types/:subCategoryId" element={<TypesPage />} />
             </Routes>
           </Router>
         </CartProvider>
       </UserProvider>
-  
+
       <VendorProvider>
         <Router>
           <Routes>
@@ -117,7 +113,6 @@ function App() {
           </Routes>
         </Router>
       </VendorProvider>
-      
     </>
   );
 }
