@@ -18,6 +18,7 @@ function Signupvendor() {
   const [vendorId, setVendorId] = useState(null);
   const [brandId, setBrandId] = useState(null);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
   const [vendorData, setVendorData] = useState({
     firstName: "",
     lastName: "",
@@ -72,6 +73,11 @@ function Signupvendor() {
 
   const handleNext = async (e) => {
     e.preventDefault();
+    const validationErrors = validate(
+      currentPhase === 1 ? vendorData : brandData
+    );
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
     const sanitizedData = sanitizeVendorData();
     console.log("Sanitized Vendor Data:", sanitizedData); // Log sanitized data
 
@@ -225,6 +231,33 @@ function Signupvendor() {
     }
   };
 
+  const validate = (values) => {
+    const errors = {};
+    if (!values.firstName) {
+      errors.firstName = "Required";
+    }
+    if (!values.lastName) {
+      errors.lastName = "Required";
+    }
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = "Invalid email address";
+    }
+    if (!values.password) {
+      errors.password = "Required";
+    } else if (values.password.length < 8) {
+      errors.password = "Password must be at least 8 characters long";
+    }
+    if (!values.phoneNumber) {
+      errors.phoneNumber = "Required";
+    } else if (!/^\d{10}$/i.test(values.phoneNumber)) {
+      errors.phoneNumber = "Invalid phone number";
+    }
+
+    return errors;
+  };
+
   const renderPhaseContent = () => {
     switch (currentPhase) {
       case 1:
@@ -237,6 +270,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 1)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.firstName)}
+              helperText={errors.firstName}
             />
             <TextField
               label="Vendor Last Name"
@@ -245,6 +280,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 1)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.lastName)}
+              helperText={errors.lastName}
             />
             <TextField
               label="Vendor Email"
@@ -253,6 +290,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 1)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.email)}
+              helperText={errors.email}
             />
             <TextField
               label="Vendor Password"
@@ -262,6 +301,8 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               type="password"
+              error={Boolean(errors.password)}
+              helperText={errors.password}
             />
             <TextField
               label="Vendor Phone Number"
@@ -270,6 +311,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 1)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.phoneNumber)}
+              helperText={errors.phoneNumber}
             />
           </>
         );
@@ -289,6 +332,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.brandName)}
+              helperText={errors.brandName}
             />
             <TextField
               label="Commercial Register No."
@@ -297,6 +342,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.commercialRegisterNo)}
+              helperText={errors.commercialRegisterNo}
             />
             <TextField
               label="Tax Number"
@@ -305,6 +352,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.taxNumber)}
+              helperText={errors.taxNumber}
             />
             <TextField
               label="Company Address"
@@ -313,6 +362,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.companyAddress)}
+              helperText={errors.companyAddress}
             />
             <TextField
               label="Phone Number"
@@ -321,6 +372,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.phoneNumber)}
+              helperText={errors.phoneNumber}
             />
             <TextField
               label="Email"
@@ -329,6 +382,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.email)}
+              helperText={errors.email}
             />
 
             <Grid container spacing={2} alignItems="center">
@@ -386,6 +441,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.brandDescription)}
+              helperText={errors.brandDescription}
             />
           </Box>
         );
@@ -412,6 +469,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.shippingPolicy)}
+              helperText={errors.shippingPolicy}
             />
             <TextField
               label="Bank Account Number"
@@ -420,6 +479,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.bankAccountNumber)}
+              helperText={errors.bankAccountNumber}
             />
             <TextField
               label="Website URL"
@@ -428,6 +489,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.websiteURL)}
+              helperText={errors.websiteURL}
             />
             <TextField
               label="Instagram URL"
@@ -436,6 +499,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.instagramURL)}
+              helperText={errors.instagramURL}
             />
             <TextField
               label="Facebook URL"
@@ -444,6 +509,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.facebookURL)}
+              helperText={errors.facebookURL}
             />
             <TextField
               label="TikTok URL"
@@ -452,6 +519,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.tiktokURL)}
+              helperText={errors.tiktokURL}
             />
             <TextField
               label="LinkedIn URL"
@@ -460,6 +529,8 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              error={Boolean(errors.linkedinURL)}
+              helperText={errors.linkedinURL}
             />
           </div>
         );
