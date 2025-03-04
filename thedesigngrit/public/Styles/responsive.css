@@ -1124,7 +1124,7 @@
     margin-left: 77px;
   } */
   .slider-controls-home {
-    margin-right: 71px;
+    margin: auto;
   }
   .Caption-careers {
     padding: 50px 39px 10px 39px;
@@ -1150,8 +1150,8 @@
     align-items: baseline;
   }
   .slider-container-home {
-    width: 48%;
-    padding: 1rem;
+    width: 100%;
+    padding: 0.2rem;
     overflow: hidden;
     margin: auto;
   }
