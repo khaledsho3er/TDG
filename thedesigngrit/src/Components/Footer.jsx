@@ -165,7 +165,7 @@ function Footer() {
                   </Link>
 
                   <Link
-                    to="/signupvendor"
+                    to="/signin-vendor"
                     style={{ textDecoration: "none", color: "#2d2d2d" }}
                   >
                     <Typography>Partners Portal</Typography>
