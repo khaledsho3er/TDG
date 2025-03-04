@@ -44,7 +44,10 @@ const SustainabilitySection = () => {
             fontSize={isSmallScreen ? "2rem" : "3.5rem"} // Smaller font on mobile
             fontWeight="600"
             fontFamily={"Horizon"}
-            sx={{ paddingTop: { xs: "1rem", md: "2rem" } }}
+            sx={{
+              paddingTop: { xs: "1rem", md: "2rem" },
+              paddingBottom: { xs: "1rem", md: "0" },
+            }}
           >
             What is TDG?
           </Typography>
