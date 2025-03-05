@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
 
 const VendorCard = ({ vendor, onClick }) => {
-  const { brandlogo, products = [], brandName } = vendor; // Default to empty array if products is undefined
+  const { brandlogo, products = [], brandName } = vendor;
 
   return (
     <Card
       sx={{
-        width: 300, // Increase width
-        height: 300, // Increase height
+        width: 300,
+        height: 350, // Ensure height is fixed
         borderRadius: 4,
         boxShadow: 3,
         overflow: "hidden",
@@ -16,60 +16,69 @@ const VendorCard = ({ vendor, onClick }) => {
         border: "1px solid #ddd",
         margin: 2,
         cursor: "pointer",
+        display: "flex",
+        flexDirection: "column",
       }}
-      onClick={onClick} // Handle the click on the entire card
+      onClick={onClick}
     >
-      {/* Vendor Logo */}
-      <Box
+      {/* Content Wrapper */}
+      <Box sx={{ flexGrow: 1 }}>
+        {/* Vendor Logo */}
+        <Box
+          sx={{
+            height: 70,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={`https://tdg-db.onrender.com/uploads/${brandlogo}`}
+            alt={`${brandName} logo`}
+            sx={{ maxHeight: "80%", maxWidth: "80%", objectFit: "contain" }}
+          />
+        </Box>
+
+        {/* Product Images */}
+        <Box sx={{ padding: 1 }}>
+          {Array.isArray(products) && products.length > 0 ? (
+            products.slice(0, 4).map((product, index) => (
+              <CardMedia
+                component="img"
+                key={index}
+                image={product}
+                alt={`Product ${index + 1}`}
+                sx={{
+                  height: 100,
+                  borderRadius: 2,
+                  objectFit: "cover",
+                  border: "1px solid #ddd",
+                }}
+              />
+            ))
+          ) : (
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              No products available
+            </Typography>
+          )}
+        </Box>
+      </Box>
+
+      {/* Vendor Name - Pushed to Bottom */}
+      <CardContent
         sx={{
-          height: 70,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "white",
+          backgroundColor: "#f5f5f5", // Optional: Different background color for separation
+          padding: 1,
         }}
       >
-        <CardMedia
-          component="img"
-          image={`https://tdg-db.onrender.com/uploads/${brandlogo}`}
-          alt={`${brandName} logo`}
-          sx={{ maxHeight: "80%", maxWidth: "80%", objectFit: "contain" }}
-        />
-      </Box>
-
-      {/* Product Images */}
-      <Box sx={{ padding: 1 }}>
-        {Array.isArray(products) && products.length > 0 ? (
-          products.slice(0, 4).map((product, index) => (
-            <CardMedia
-              component="img"
-              key={index}
-              image={product}
-              alt={`Product ${index + 1}`}
-              sx={{
-                height: 100, // Increase product image size
-                borderRadius: 2,
-                objectFit: "cover",
-                border: "1px solid #ddd",
-              }}
-            />
-          ))
-        ) : (
-          <Typography variant="body2" sx={{ color: "gray" }}>
-            No products available
-          </Typography>
-        )}
-      </Box>
-
-      {/* Vendor Name */}
-      <CardContent>
         <Typography
           variant="h6"
           sx={{
             fontWeight: "bold",
             fontFamily: "Horizon",
             color: "#333",
-            bottom: "10px",
           }}
         >
           {brandName}

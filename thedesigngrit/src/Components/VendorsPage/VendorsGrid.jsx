@@ -91,12 +91,12 @@ const VendorsGrid = ({ selectedCategory }) => {
             color="primary"
             sx={{
               "& .MuiPaginationItem-root": {
-                backgroundColor: "#fff",
+                backgroundColor: "black",
                 boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
                 borderRadius: 2,
               },
-              "& .Mui-selected": { backgroundColor: "#6B7B58", color: "#fff" },
-              "& .MuiPaginationItem-root:hover": { backgroundColor: "#f5f5f5" },
+              "& .Mui-selected": { backgroundColor: "black", color: "#fff" },
+              "& .MuiPaginationItem-root:hover": { backgroundColor: "green" },
             }}
           />
         </Box>
