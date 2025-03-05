@@ -13,6 +13,13 @@ const EmployeePage = () => {
   const [currentVendor, setCurrentVendor] = useState(null);
   const [signupPopupVisible, setSignupPopupVisible] = useState(false);
 
+  const handleOpenSignup = () => {
+    setSignupPopupVisible(true);
+  };
+
+  const handleCloseSignup = () => {
+    setSignupPopupVisible(false);
+  };
   // Define fetchVendors function and memoize it
   const fetchVendors = useCallback(async () => {
     try {
@@ -74,7 +81,7 @@ const EmployeePage = () => {
     <div style={{ padding: "70px" }}>
       <div className="dashboard-date-vendor">
         <button
-          onClick={() => setSignupPopupVisible(true)} // Show popup on click
+          onClick={handleOpenSignup} // Show popup on click
           style={{
             display: "flex",
             alignItems: "center",
@@ -141,8 +148,8 @@ const EmployeePage = () => {
           </Box>
         </div>
         {signupPopupVisible && (
-          <div className="review-form-overlay">
-            <div className="review-form-container">
+          <div className="requestInfo-popup-overlay">
+            <div className="requestInfo-popup">
               <div className="popup-header">
                 <h2>Add Employee</h2>
                 <IconButton
@@ -157,7 +164,10 @@ const EmployeePage = () => {
                   <IoIosClose size={30} />
                 </IconButton>
               </div>
-              <VendorSignup closePopup={() => setSignupPopupVisible(false)} />
+              <VendorSignup
+                open={signupPopupVisible}
+                onClose={handleCloseSignup}
+              />
             </div>
           </div>
         )}
