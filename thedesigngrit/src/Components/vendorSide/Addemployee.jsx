@@ -9,12 +9,15 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
-import AccountSentPopup from "../successMsgs/successfullyRegistered";
 import * as Yup from "yup"; // Import Yup
 
-const VendorSignup = () => {
+const VendorSignup = ({ open, handleClose }) => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
   const [formData, setFormData] = useState({
     firstname: "",
@@ -29,7 +32,6 @@ const VendorSignup = () => {
   const [errors, setErrors] = useState({}); // State to hold error messages
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [brandName, setBrandName] = useState(""); // State to store the brand name
-  const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
 
   // Define the validation schema
   const validationSchema = Yup.object().shape({
@@ -118,20 +120,8 @@ const VendorSignup = () => {
       console.log("API Response:", response);
 
       if (response.status === 200) {
-        // Show the success popup if the vendor is added successfully
-        setShowPopup(true);
-        console.log("Employee added successfully."); // Log the success message
-        // Reset form
-        setFormData({
-          firstname: "",
-          lastname: "",
-          employeeNumber: "",
-          email: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
-          tier: "", // Reset tier field
-        });
+        console.log("Employee added successfully.");
+        handleClose(); // Close modal after successful submission
       }
     } catch (err) {
       console.error("Error:", err);
@@ -144,147 +134,127 @@ const VendorSignup = () => {
     }
   };
 
-  // Function to close the success popup
-  const closePopup = () => {
-    setShowPopup(false);
-  };
-
   return (
-    <div style={{ padding: "110px", fontFamily: "Montserrat" }}>
-      <Typography
-        variant="h4"
-        sx={{ fontWeight: "bold", fontFamily: "Horizon" }}
-        gutterBottom
-      >
-        Add New Vendor
-        {/* Display brand name */}
-      </Typography>
-      <p>Brand: {brandName || "Loading..."} </p>
-      <br></br>
-
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="First Name"
-              variant="outlined"
-              fullWidth
-              name="firstname"
-              value={formData.firstname}
-              onChange={handleChange}
-              error={!!errors.firstname} // Show error state
-              helperText={errors.firstname} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Last Name"
-              variant="outlined"
-              fullWidth
-              name="lastname"
-              value={formData.lastname}
-              onChange={handleChange}
-              error={!!errors.lastname} // Show error state
-              helperText={errors.lastname} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Employee Number"
-              variant="outlined"
-              fullWidth
-              name="employeeNumber"
-              value={formData.employeeNumber}
-              onChange={handleChange}
-              error={!!errors.employeeNumber} // Show error state
-              helperText={errors.employeeNumber} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Email"
-              variant="outlined"
-              fullWidth
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              error={!!errors.email} // Show error state
-              helperText={errors.email} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Phone Number"
-              variant="outlined"
-              fullWidth
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              error={!!errors.phoneNumber} // Show error state
-              helperText={errors.phoneNumber} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Set Password"
-              variant="outlined"
-              type="password"
-              fullWidth
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={!!errors.password} // Show error state
-              helperText={errors.password} // Display error message
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Confirm Password"
-              variant="outlined"
-              type="password"
-              fullWidth
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={!!errors.confirmPassword} // Show error state
-              helperText={errors.confirmPassword} // Display error message
-            />
-          </Grid>
-          {/* Dropdown for tier selection */}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth error={!!errors.tier}>
-              {" "}
-              {/* Show error state */}
-              <InputLabel>Authority Level (Tier)</InputLabel>
-              <Select
-                label="Authority Level (Tier)"
-                name="tier"
-                value={formData.tier}
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+      <DialogTitle>Add New Vendor</DialogTitle>
+      <DialogContent>
+        <Typography>Brand: {brandName || "Loading..."}</Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3} sx={{ mt: 2 }}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="First Name"
+                fullWidth
+                name="firstname"
+                value={formData.firstname}
                 onChange={handleChange}
-              >
-                <MenuItem value="1">Tier 1</MenuItem>
-                <MenuItem value="2">Tier 2</MenuItem>
-                <MenuItem value="3">Tier 3</MenuItem>
-              </Select>
-              {errors.tier && <p style={{ color: "red" }}>{errors.tier}</p>}{" "}
-              {/* Display error message */}
-            </FormControl>
+                error={!!errors.firstname}
+                helperText={errors.firstname}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Last Name"
+                fullWidth
+                name="lastname"
+                value={formData.lastname}
+                onChange={handleChange}
+                error={!!errors.lastname}
+                helperText={errors.lastname}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Employee Number"
+                fullWidth
+                name="employeeNumber"
+                value={formData.employeeNumber}
+                onChange={handleChange}
+                error={!!errors.employeeNumber}
+                helperText={errors.employeeNumber}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Email"
+                fullWidth
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Phone Number"
+                fullWidth
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                error={!!errors.phoneNumber}
+                helperText={errors.phoneNumber}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Set Password"
+                fullWidth
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Confirm Password"
+                fullWidth
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth error={!!errors.tier}>
+                <InputLabel>Authority Level (Tier)</InputLabel>
+                <Select
+                  name="tier"
+                  value={formData.tier}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="1">Tier 1</MenuItem>
+                  <MenuItem value="2">Tier 2</MenuItem>
+                  <MenuItem value="3">Tier 3</MenuItem>
+                </Select>
+                {errors.tier && (
+                  <Typography color="error">{errors.tier}</Typography>
+                )}
+              </FormControl>
+            </Grid>
           </Grid>
-        </Grid>
-        {errors.api && <p style={{ color: "red" }}>{errors.api}</p>}{" "}
-        {/* Display API error message */}
+          {errors.api && <Typography color="error">{errors.api}</Typography>}
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="secondary">
+          Cancel
+        </Button>
         <Button
-          type="submit"
-          variant="contained"
+          onClick={handleSubmit}
           color="primary"
+          variant="contained"
           disabled={isSubmitting}
-          style={{ marginTop: "20px" }}
         >
           {isSubmitting ? "Adding Vendor..." : "Add Vendor"}
         </Button>
-      </form>
-      <AccountSentPopup show={showPopup} closePopup={closePopup} />
-    </div>
+      </DialogActions>
+    </Dialog>
   );
 };
 
