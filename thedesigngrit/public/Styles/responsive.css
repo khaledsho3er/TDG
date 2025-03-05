@@ -847,6 +847,9 @@
   .subcategory-content h2 {
     font-size: 12px;
   }
+  .subcategory-description {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
