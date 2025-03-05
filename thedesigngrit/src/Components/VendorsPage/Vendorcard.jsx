@@ -8,7 +8,7 @@ const VendorCard = ({ vendor, onClick }) => {
     <Card
       sx={{
         width: 300, // Increase width
-        height: 400, // Increase height
+        height: 300, // Increase height
         borderRadius: 4,
         boxShadow: 3,
         overflow: "hidden",
@@ -47,7 +47,7 @@ const VendorCard = ({ vendor, onClick }) => {
               image={product}
               alt={`Product ${index + 1}`}
               sx={{
-                height: 80,
+                height: 100, // Increase product image size
                 borderRadius: 2,
                 objectFit: "cover",
                 border: "1px solid #ddd",
@@ -65,7 +65,12 @@ const VendorCard = ({ vendor, onClick }) => {
       <CardContent>
         <Typography
           variant="h6"
-          sx={{ fontWeight: "bold", fontFamily: "Horizon", color: "#333" }}
+          sx={{
+            fontWeight: "bold",
+            fontFamily: "Horizon",
+            color: "#333",
+            bottom: "10px",
+          }}
         >
           {brandName}
         </Typography>
