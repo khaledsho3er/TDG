@@ -69,7 +69,6 @@ const VendorCard = ({ vendor, onClick }) => {
       {/* Vendor Name - Pushed to Bottom */}
       <CardContent
         sx={{
-          backgroundColor: "#f5f5f5", // Optional: Different background color for separation
           padding: 1,
         }}
       >
