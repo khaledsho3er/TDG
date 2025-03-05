@@ -5,15 +5,15 @@ import { IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
 import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
-import VendorSignup from "./Addemployee"; // Import the VendorSignup component
-
+import VendorSignup from "./Addemployee";
 const EmployeePage = () => {
-  const { vendor } = useVendor();
+  const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
-  const [signupPopupVisible, setSignupPopupVisible] = useState(false); // Add state for VendorSignup popup
   const [currentVendor, setCurrentVendor] = useState(null);
+  const [signupPopupVisible, setSignupPopupVisible] = useState(false);
 
+  // Define fetchVendors function and memoize it
   const fetchVendors = useCallback(async () => {
     try {
       if (vendor?.brandId) {
@@ -27,11 +27,12 @@ const EmployeePage = () => {
     } catch (error) {
       console.error("Error fetching vendors", error);
     }
-  }, [vendor?.brandId]);
+  }, [vendor?.brandId]); // Add vendor.brandId as a dependency
 
+  // Fetch vendors when the component mounts or vendor changes
   useEffect(() => {
     fetchVendors();
-  }, [fetchVendors]);
+  }, [fetchVendors]); // Include fetchVendors in dependency array
 
   const handleEditClick = (vendor) => {
     setCurrentVendor(vendor);
@@ -43,15 +44,37 @@ const EmployeePage = () => {
     setCurrentVendor(null);
   };
 
-  const handleSignupClose = () => {
-    setSignupPopupVisible(false);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`,
+        currentVendor
+      );
+      setEditPopupVisible(false);
+      fetchVendors();
+    } catch (error) {
+      console.error("Error updating vendor", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`
+      );
+      setEditPopupVisible(false);
+      fetchVendors();
+    } catch (error) {
+      console.error("Error deleting vendor", error);
+    }
   };
 
   return (
     <div style={{ padding: "70px" }}>
       <div className="dashboard-date-vendor">
         <button
-          onClick={() => setSignupPopupVisible(true)} // Open signup popup
+          onClick={() => setSignupPopupVisible(true)} // Show popup on click
           style={{
             display: "flex",
             alignItems: "center",
@@ -68,7 +91,6 @@ const EmployeePage = () => {
           <CiCirclePlus /> Add Employee
         </button>
       </div>
-
       <section className="dashboard-lists-vendor">
         <div className="recent-orders-vendor">
           <Box
@@ -104,7 +126,10 @@ const EmployeePage = () => {
                     <td>
                       <button
                         onClick={() => handleEditClick(vendor)}
-                        style={{ color: "#e3e3e3", backgroundColor: "#6a8452" }}
+                        style={{
+                          color: "#e3e3e3",
+                          backgroundColor: "#6a8452",
+                        }}
                       >
                         Edit
                       </button>
@@ -115,25 +140,148 @@ const EmployeePage = () => {
             </table>
           </Box>
         </div>
-
         {signupPopupVisible && (
-          <div className="review-form-overlay">
-            <div className="review-form-container">
-              <IconButton
-                onClick={handleSignupClose}
-                sx={{
-                  position: "absolute",
-                  top: "16px",
-                  right: "16px",
-                  color: "#2d2d2d",
-                }}
-              >
-                <IoIosClose size={30} />
-              </IconButton>
-              <VendorSignup
-                open={signupPopupVisible}
-                onClose={handleSignupClose}
-              />
+          <div className="popup-overlay">
+            <div className="popup-content">
+              <div className="popup-header">
+                <h2>Add Employee</h2>
+                <IconButton
+                  onClick={() => setSignupPopupVisible(false)}
+                  sx={{
+                    position: "absolute",
+                    top: "16px",
+                    right: "16px",
+                    color: "#2d2d2d",
+                  }}
+                >
+                  <IoIosClose size={30} />
+                </IconButton>
+              </div>
+              <VendorSignup closePopup={() => setSignupPopupVisible(false)} />
+            </div>
+          </div>
+        )}
+        {editPopupVisible && currentVendor && (
+          <div className="requestInfo-popup-overlay">
+            <div className="requestInfo-popup">
+              <div className="requestInfo-popup-header">
+                <h2>Edit Vendor</h2>
+                <IconButton
+                  onClick={handleEditClose}
+                  sx={{
+                    position: "absolute",
+                    top: "16px",
+                    right: "16px",
+                    color: "#2d2d2d",
+                  }}
+                >
+                  <IoIosClose size={30} />
+                </IconButton>
+              </div>
+              <form onSubmit={handleFormSubmit}>
+                <div className="requestInfo-form-group">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    value={currentVendor.firstName}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        firstName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    value={currentVendor.lastName}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        lastName: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={currentVendor.email}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Employee Number</label>
+                  <input
+                    type="text"
+                    value={currentVendor.employeeNumber}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        employeeNumber: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="text"
+                    value={currentVendor.phoneNumber}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        phoneNumber: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Tier</label>
+                  <input
+                    type="text"
+                    value={currentVendor.tier}
+                    onChange={(e) =>
+                      setCurrentVendor({
+                        ...currentVendor,
+                        tier: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: "auto",
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="requestInfo-submit-button"
+                    style={{ width: "15%" }}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="requestInfo-submit-button"
+                    style={{ backgroundColor: "#DC143C", width: "15%" }}
+                  >
+                    Delete Vendor
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

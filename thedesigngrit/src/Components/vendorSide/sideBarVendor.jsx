@@ -103,14 +103,14 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           </li>
         )}
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-        {vendor?.tier >= 3 && (
+        {/* {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("EmployeeSignup")}
             className={getActiveClass("EmployeeSignup")}
           >
             Add Employee
           </li>
-        )}
+        )} */}
 
         {/* Render "Employee Page" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (

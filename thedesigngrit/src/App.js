@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import { CartProvider } from "./Context/cartcontext";
 import { UserProvider } from "./utils/userContext";
 import { VendorProvider } from "./utils/vendorContext";
