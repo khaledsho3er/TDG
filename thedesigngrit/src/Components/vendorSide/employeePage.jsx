@@ -6,6 +6,7 @@ import { IoIosClose } from "react-icons/io";
 import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
+import CircularProgress from "@mui/material/CircularProgress";
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
@@ -121,29 +122,39 @@ const EmployeePage = () => {
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {vendors.map((vendor) => (
-                  <tr key={vendor._id}>
-                    <td>{vendor.firstName}</td>
-                    <td>{vendor.lastName}</td>
-                    <td>{vendor.email}</td>
-                    <td>{vendor.employeeNumber}</td>
-                    <td>{vendor.phoneNumber}</td>
-                    <td>{vendor.tier}</td>
-                    <td>
-                      <button
-                        onClick={() => handleEditClick(vendor)}
-                        style={{
-                          color: "#e3e3e3",
-                          backgroundColor: "#6a8452",
-                        }}
-                      >
-                        Edit
-                      </button>
+              {vendors.length === 0 ? (
+                <tbody>
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: "center" }}>
+                      <CircularProgress />
                     </td>
                   </tr>
-                ))}
-              </tbody>
+                </tbody>
+              ) : (
+                <tbody>
+                  {vendors.map((vendor) => (
+                    <tr key={vendor._id}>
+                      <td>{vendor.firstName}</td>
+                      <td>{vendor.lastName}</td>
+                      <td>{vendor.email}</td>
+                      <td>{vendor.employeeNumber}</td>
+                      <td>{vendor.phoneNumber}</td>
+                      <td>{vendor.tier}</td>
+                      <td>
+                        <button
+                          onClick={() => handleEditClick(vendor)}
+                          style={{
+                            color: "#e3e3e3",
+                            backgroundColor: "#6a8452",
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           </Box>
         </div>
