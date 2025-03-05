@@ -362,6 +362,12 @@ function Header() {
                       categoriesVisible ? "open" : ""
                     }`}
                   >
+                    <Typography
+                      className="category"
+                      onClick={() => navigate("/vendors")}
+                    >
+                      All Brands
+                    </Typography>
                     {menuData.length > 0 ? (
                       menuData.map((category) => (
                         <Typography

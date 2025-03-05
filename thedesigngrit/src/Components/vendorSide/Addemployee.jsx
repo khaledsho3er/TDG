@@ -246,13 +246,12 @@ const VendorSignup = ({ open, onClose }) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onClose} className="btn-cancel">
           Cancel
         </Button>
         <Button
           onClick={handleSubmit}
           className="btn-save"
-          variant="contained"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Adding..." : "Add"}
