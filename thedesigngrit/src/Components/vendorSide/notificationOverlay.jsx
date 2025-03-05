@@ -3,7 +3,7 @@ import { FaTimes } from "react-icons/fa"; // React Icons
 import { useVendor } from "../../utils/vendorContext"; // Vendor context
 import { useNavigate } from "react-router-dom";
 
-const NotificationOverlayVendor = ({ onClose }) => {
+const NotificationOverlayVendor = ({ onClose, setActivePage }) => {
   // const [showAll, setShowAll] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { vendor } = useVendor(); // Get vendor data
@@ -37,7 +37,10 @@ const NotificationOverlayVendor = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleOpenPage = () => {
-    navigate("/notificationsPage");
+    setActivePage("notifications"); // Change the active page without changing the URL
+    onClose(); // Close the overlay
+
+    // navigate("/notificationsPage");
   };
 
   return (

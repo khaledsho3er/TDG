@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Adjust the import path
 import NotificationOverlayVendor from "./notificationOverlay";
 
-const NavbarVendor = () => {
+const NavbarVendor = ({ setActivePage }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [brandData, setBrandData] = useState(null); // State for brand data
   const { vendor, logout } = useVendor(); // Access vendor and logout from context
@@ -81,7 +81,12 @@ const NavbarVendor = () => {
           <option>Settings</option>
           <option>Logout</option>
         </select>
-        {isOverlayOpen && <NotificationOverlayVendor onClose={toggleOverlay} />}
+        {isOverlayOpen && (
+          <NotificationOverlayVendor
+            onClose={toggleOverlay}
+            setActivePage={setActivePage}
+          />
+        )}
       </div>
     </nav>
   );
