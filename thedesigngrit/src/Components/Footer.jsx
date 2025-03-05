@@ -13,6 +13,26 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Link } from "react-router-dom";
 
 function Footer() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "https://tdg-db.onrender.com/api/categories/categories"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to load categories");
+        }
+        const data = await response.json();
+        setCategories(data.slice(0, 6)); // Taking the first 6 categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
   return (
     <Box
       sx={{
@@ -133,12 +153,6 @@ function Footer() {
                   <Typography>About Us</Typography>
                 </Link>
                 <Link
-                  to="/contactus"
-                  style={{ textDecoration: "none", color: "#2d2d2d" }}
-                >
-                  <Typography>Contact Us</Typography>
-                </Link>
-                <Link
                   to="/careers"
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
@@ -195,24 +209,10 @@ function Footer() {
                 <Typography>FAQs</Typography>
               </Link>
               <Link
-                to={`/policy?section=${encodeURIComponent(
-                  "Returns & Exchanges Policy"
-                )}`}
+                to="/contactus"
                 style={{ textDecoration: "none", color: "#2d2d2d" }}
               >
-                <Typography>Return & Exchange / Policy</Typography>
-              </Link>
-              <Link
-                to={`/policy?section=Shipping Policy`}
-                style={{ textDecoration: "none", color: "#2d2d2d" }}
-              >
-                <Typography>Shipping Information / Policy</Typography>
-              </Link>
-              <Link
-                to="/trackorder"
-                style={{ textDecoration: "none", color: "#2d2d2d" }}
-              >
-                <Typography>Track Your Order</Typography>
+                <Typography>Contact Us</Typography>
               </Link>
               <Box sx={{ mt: 4 }}>
                 <Typography
@@ -232,6 +232,20 @@ function Footer() {
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
                   <Typography>Privacy Policy</Typography>
+                </Link>
+                <Link
+                  to={`/policy?section=${encodeURIComponent(
+                    "Returns & Exchanges Policy"
+                  )}`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Return & Exchange / Policy</Typography>
+                </Link>
+                <Link
+                  to={`/policy?section=Shipping Policy`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Shipping Information / Policy</Typography>
                 </Link>
                 <Link
                   to={`/policy?section=Full Terms of Service Agreement`}
@@ -256,18 +270,15 @@ function Footer() {
               >
                 PAGES
               </Typography>
-              {/* <Link
-                to="/products"
-                style={{ textDecoration: "none", color: "#2d2d2d" }}
-              > */}
-              <Typography>Furniture</Typography>
-
-              <Typography>Kitchen & Dining</Typography>
-              <Typography>Bath</Typography>
-              <Typography>Lighting</Typography>
-              <Typography>Home Decor</Typography>
-              <Typography>Outdoor</Typography>
-              <Typography>Brand</Typography>
+              {categories.map((category) => (
+                <Link
+                  key={category._id}
+                  to={`/category/${category._id}/subcategories`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>{category.name}</Typography>
+                </Link>
+              ))}
             </Grid>
           </Grid>
         </Box>

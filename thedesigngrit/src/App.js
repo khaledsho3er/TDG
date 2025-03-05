@@ -39,7 +39,7 @@ import SigninVendor from "./Components/vendorSide/signinVendor";
 import EditEmployee from "./Components/vendorSide/editEmployee";
 import BrandForm from "./Components/vendorSide/addbrand";
 import Signupvendor from "./Components/vendorSide/SignupVendor";
-
+import VerifyPartners from "./Components/adminSide/VerifyPartners";
 // Layouts for Separation
 const PublicRoutes = () => (
   <Routes>
@@ -71,7 +71,6 @@ const PublicRoutes = () => (
       element={<Subcategories />}
     />
     <Route path="/types/:subCategoryId" element={<TypesPage />} />
-    
   </Routes>
 );
 
