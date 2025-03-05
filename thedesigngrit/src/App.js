@@ -49,13 +49,14 @@ const PublicRoutes = () => (
     <Route exact path="/signup" element={<SignUpPage />} />
     <Route exact path="/vendors" element={<Vendorspage />} />
     <Route exact path="/about" element={<AboutUsPage />} />
+    <Route exact path="/mycart" Component={ShoppingCart} />
+    <Route exact path="/careers" Component={careersPage} />
     <Route exact path="/contactus" element={<ContactUs />} />
     <Route path="/policy" element={<TermsOfService />} />
     <Route path="/product/:id" element={<ProductPage />} />
     <Route exact path="/ProductsPage" element={<ProductsPage />} />
     <Route exact path="/vendor/:id" element={<VendorProfile />} />
     <Route path="/checkout" element={<CheckoutPage />} />
-    <Route exact path="/careers" element={<careersPage />} />
     <Route path="/jobdesc/:jobId" element={<JobDesc />} />
     <Route path="/policy/:section" element={<TermsOfService />} />{" "}
     <Route path="/products/:typeId/:typeName" element={<ProductsPage />} />
