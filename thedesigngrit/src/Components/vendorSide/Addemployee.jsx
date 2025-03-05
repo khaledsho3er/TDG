@@ -136,9 +136,13 @@ const VendorSignup = ({ open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Add New Vendor</DialogTitle>
+      <DialogTitle style={{ fontWeight: "Bold", fontFamily: "Horizon" }}>
+        Add New Vendor
+      </DialogTitle>
       <DialogContent>
-        <Typography>Brand: {brandName || "Loading..."}</Typography>
+        <Typography fontFamily={"Montserrat"}>
+          Brand: {brandName || "Loading..."}
+        </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3} sx={{ mt: 2 }}>
             <Grid item xs={12} sm={6}>

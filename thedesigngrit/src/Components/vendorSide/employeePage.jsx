@@ -148,28 +148,26 @@ const EmployeePage = () => {
           </Box>
         </div>
         {signupPopupVisible && (
-          <div className="requestInfo-popup-overlay">
-            <div className="requestInfo-popup">
-              <div className="popup-header">
-                <h2>Add Employee</h2>
-                <IconButton
-                  onClick={() => setSignupPopupVisible(false)}
-                  sx={{
-                    position: "absolute",
-                    top: "16px",
-                    right: "16px",
-                    color: "#2d2d2d",
-                  }}
-                >
-                  <IoIosClose size={30} />
-                </IconButton>
-              </div>
-              <VendorSignup
-                open={signupPopupVisible}
-                onClose={handleCloseSignup}
-              />
+          <>
+            <div className="popup-header">
+              <h2>Add Employee</h2>
+              <IconButton
+                onClick={() => setSignupPopupVisible(false)}
+                sx={{
+                  position: "absolute",
+                  top: "16px",
+                  right: "16px",
+                  color: "#2d2d2d",
+                }}
+              >
+                <IoIosClose size={30} />
+              </IconButton>
             </div>
-          </div>
+            <VendorSignup
+              open={signupPopupVisible}
+              onClose={handleCloseSignup}
+            />
+          </>
         )}
         {editPopupVisible && currentVendor && (
           <div className="requestInfo-popup-overlay">
