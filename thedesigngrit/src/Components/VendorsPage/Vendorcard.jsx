@@ -7,14 +7,15 @@ const VendorCard = ({ vendor, onClick }) => {
   return (
     <Card
       sx={{
-        width: 250,
+        width: 300, // Increase width
+        height: 400, // Increase height
         borderRadius: 4,
         boxShadow: 3,
         overflow: "hidden",
         textAlign: "center",
         border: "1px solid #ddd",
         margin: 2,
-        cursor: "pointer", // Make the card visually clickable
+        cursor: "pointer",
       }}
       onClick={onClick} // Handle the click on the entire card
     >
