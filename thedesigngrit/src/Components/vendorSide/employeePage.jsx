@@ -7,6 +7,7 @@ import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
+import { color } from "framer-motion";
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
@@ -126,7 +127,7 @@ const EmployeePage = () => {
                 <tbody>
                   <tr>
                     <td colSpan={7} style={{ textAlign: "center" }}>
-                      <CircularProgress />
+                      <CircularProgress style={{ color: "#6b7b58" }} />
                     </td>
                   </tr>
                 </tbody>
