@@ -141,8 +141,8 @@ const EmployeePage = () => {
           </Box>
         </div>
         {signupPopupVisible && (
-          <div className="popup-overlay">
-            <div className="popup-content">
+          <div className="review-form-overlay">
+            <div className="review-form-container">
               <div className="popup-header">
                 <h2>Add Employee</h2>
                 <IconButton
