@@ -840,6 +840,13 @@
   .forgot-password-link {
     right: 68px;
   }
+  .subcategory-content {
+    width: 100%;
+    padding: 2px;
+  }
+  .subcategory-content h2 {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 480px) {
