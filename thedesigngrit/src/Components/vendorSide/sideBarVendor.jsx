@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useVendor } from "../../utils/vendorContext";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { LuPackageOpen } from "react-icons/lu";
-import { CiDeliveryTruck } from "react-icons/ci";
+import { TbTruckDelivery } from "react-icons/tb";
 import { FaMoneyBill } from "react-icons/fa6";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { MdAccountBalance } from "react-icons/md";
@@ -48,35 +48,35 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           onClick={() => setActivePage("dashboard")}
           className={getActiveClass("dashboard")}
         >
-          <RiDashboard3Fill />
+          <RiDashboard3Fill size={20} style={{ marginRight: "5px" }} />
           Dashboard
         </li>
         <li
           onClick={() => setActivePage("allProducts")}
           className={getActiveClass("allProducts")}
         >
-          <LuPackageOpen />
+          <LuPackageOpen size={20} style={{ marginRight: "5px" }} />
           All Products
         </li>
         <li
           onClick={() => setActivePage("orderList")}
           className={getActiveClass("orderList")}
         >
-          <CiDeliveryTruck />
+          <TbTruckDelivery size={20} style={{ marginRight: "5px" }} />
           Order List
         </li>
         <li
           onClick={() => setActivePage("quotationsList")}
           className={getActiveClass("quotationsList")}
         >
-          <FaMoneyBill />
+          <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
           Quotation List
         </li>
         <li
           onClick={() => setActivePage("ViewInStoreVendor")}
           className={getActiveClass("ViewInStoreVendor")}
         >
-          <HiBuildingStorefront />
+          <HiBuildingStorefront size={20} style={{ marginRight: "5px" }} />
           View In Store
         </li>
         {/* Render "Add Product" only if vendor tier is 3 or higher */}
@@ -95,7 +95,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("BrandForm")}
             className={getActiveClass("BrandForm")}
           >
-            <FaWpforms />
+            <FaWpforms size={20} style={{ marginRight: "5px" }} />
             Brand Form
           </li>
         )}
@@ -105,7 +105,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("BrandingPage")}
             className={getActiveClass("BrandingPage")}
           >
-            <ImProfile />
+            <ImProfile size={20} style={{ marginRight: "5px" }} />
             Brand Profile
           </li>
         )}
@@ -115,7 +115,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("Accounting")}
             className={getActiveClass("Accounting")}
           >
-            <MdAccountBalance />
+            <MdAccountBalance size={20} style={{ marginRight: "5px" }} />
             Accounting
           </li>
         )}
@@ -135,7 +135,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("EmployeePage")}
             className={getActiveClass("EmployeePage")}
           >
-            <FaUsers />
+            <FaUsers size={20} style={{ marginRight: "5px" }} />
             Employees
           </li>
         )}
