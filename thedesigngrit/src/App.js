@@ -25,6 +25,9 @@ import ProductPage from "./Pages/ProductPage";
 import ProductsPage from "./Pages/ProductsPage";
 import Subcategories from "./Pages/subcategories";
 import TypesPage from "./Pages/types";
+import TermsOfService from "./Pages/Policy";
+import JobDesc from "./Pages/JobDescription";
+import PartnersApplication from "./Pages/Partners";
 
 // Import Vendor Pages
 import VendorHome from "./Pages/vendorSide/VendorHome";
@@ -47,11 +50,17 @@ const PublicRoutes = () => (
     <Route exact path="/vendors" element={<Vendorspage />} />
     <Route exact path="/about" element={<AboutUsPage />} />
     <Route exact path="/contactus" element={<ContactUs />} />
+    <Route path="/policy" element={<TermsOfService />} />
     <Route path="/product/:id" element={<ProductPage />} />
     <Route exact path="/ProductsPage" element={<ProductsPage />} />
     <Route exact path="/vendor/:id" element={<VendorProfile />} />
     <Route path="/checkout" element={<CheckoutPage />} />
     <Route exact path="/careers" element={<careersPage />} />
+    <Route path="/jobdesc/:jobId" element={<JobDesc />} />
+    <Route path="/policy/:section" element={<TermsOfService />} />{" "}
+    <Route path="/products/:typeId/:typeName" element={<ProductsPage />} />
+    <Route exact path="/partners" Component={PartnersApplication} />
+    <Route path="/checkout" element={<CheckoutPage />} />
     <Route path="/faqs" element={<FAQs />} />
     <Route path="/trackorder" element={<TrackOrder />} />
     <Route path="/myaccount" element={<MyAccount />} />
