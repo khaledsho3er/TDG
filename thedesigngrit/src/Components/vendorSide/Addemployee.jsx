@@ -17,7 +17,7 @@ import {
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
 import * as Yup from "yup"; // Import Yup
 
-const VendorSignup = ({ open, handleClose }) => {
+const VendorSignup = ({ open, onClose }) => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
   const [formData, setFormData] = useState({
     firstname: "",
@@ -121,7 +121,7 @@ const VendorSignup = ({ open, handleClose }) => {
 
       if (response.status === 200) {
         console.log("Employee added successfully.");
-        handleClose(); // Close modal after successful submission
+        onClose(); // Close modal after successful submission
       }
     } catch (err) {
       console.error("Error:", err);
@@ -135,7 +135,7 @@ const VendorSignup = ({ open, handleClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>Add New Vendor</DialogTitle>
       <DialogContent>
         <Typography>Brand: {brandName || "Loading..."}</Typography>
@@ -242,16 +242,16 @@ const VendorSignup = ({ open, handleClose }) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={onClose} color="secondary">
           Cancel
         </Button>
         <Button
           onClick={handleSubmit}
-          color="primary"
+          className="btn-save"
           variant="contained"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Adding Vendor..." : "Add Vendor"}
+          {isSubmitting ? "Adding..." : "Add"}
         </Button>
       </DialogActions>
     </Dialog>
