@@ -3,11 +3,11 @@ import { Grid, Box, Pagination } from "@mui/material";
 import VendorCard from "./Vendorcard";
 import { useNavigate } from "react-router-dom";
 
-const VendorsGrid = () => {
+const VendorsGrid = ({ selectedCategory }) => {
   const [vendors, setVendors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const vendorsPerPage = 9;
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVendors = async () => {
@@ -23,19 +23,27 @@ const VendorsGrid = () => {
     fetchVendors();
   }, []);
 
+  // Filter vendors based on selected category
+  const filteredVendors = selectedCategory
+    ? vendors.filter((vendor) => vendor.category === selectedCategory)
+    : vendors;
+
   const indexOfLastVendor = currentPage * vendorsPerPage;
   const indexOfFirstVendor = indexOfLastVendor - vendorsPerPage;
-  const currentVendors = vendors.slice(indexOfFirstVendor, indexOfLastVendor);
+  const currentVendors = filteredVendors.slice(
+    indexOfFirstVendor,
+    indexOfLastVendor
+  );
 
-  const totalPages = Math.ceil(vendors.length / vendorsPerPage);
+  const totalPages = Math.ceil(filteredVendors.length / vendorsPerPage);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   const handleVendorClick = (vendorId) => {
-    navigate(`/vendor/${vendorId}`); // Navigate to the vendor's profile
+    navigate(`/vendor/${vendorId}`);
   };
 
   return (
@@ -58,7 +66,7 @@ const VendorsGrid = () => {
         }}
       >
         {currentVendors.map((vendor) => (
-          <Grid item xs={12} sm={6} md={4} key={vendor._id}>
+          <Grid item xs={12} sm={6} md={6} lg={4} key={vendor._id}>
             <VendorCard
               vendor={vendor}
               onClick={() => handleVendorClick(vendor._id)}
