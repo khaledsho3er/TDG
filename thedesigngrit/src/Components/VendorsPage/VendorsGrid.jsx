@@ -88,14 +88,13 @@ const VendorsGrid = ({ selectedCategory }) => {
             count={totalPages}
             page={currentPage}
             onChange={handlePageChange}
-            color="primary"
             sx={{
               "& .MuiPaginationItem-root": {
-                backgroundColor: "black",
+                backgroundColor: "grey",
                 boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
                 borderRadius: 2,
               },
-              "& .Mui-selected": { backgroundColor: "black", color: "#fff" },
+              "& .Mui-selected": { backgroundColor: "grey", color: "#fff" },
               "& .MuiPaginationItem-root:hover": { backgroundColor: "green" },
             }}
           />
