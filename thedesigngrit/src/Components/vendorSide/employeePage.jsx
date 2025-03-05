@@ -117,8 +117,8 @@ const EmployeePage = () => {
         </div>
 
         {signupPopupVisible && (
-          <div className="popup-overlay-employee">
-            <div className="popup-content-employee">
+          <div className="review-form-overlay">
+            <div className="review-form-container">
               <IconButton
                 onClick={handleSignupClose}
                 sx={{
@@ -130,7 +130,10 @@ const EmployeePage = () => {
               >
                 <IoIosClose size={30} />
               </IconButton>
-              <VendorSignup onClose={handleSignupClose} />
+              <VendorSignup
+                open={signupPopupVisible}
+                onClose={handleSignupClose}
+              />
             </div>
           </div>
         )}
