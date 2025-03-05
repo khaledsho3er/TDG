@@ -71,6 +71,7 @@ const PublicRoutes = () => (
       element={<Subcategories />}
     />
     <Route path="/types/:subCategoryId" element={<TypesPage />} />
+    
   </Routes>
 );
 
@@ -80,6 +81,7 @@ const VendorRoutes = () => (
     <Route path="/orderDetail/:id" element={<OrderDetails />} />
     <Route path="/update-product" element={<UpdateProductForm />} />
     <Route path="/adminpanel" element={<AdminHome />} />
+    <Route path="/verify-partner" element={<VerifyPartners />} />
     <Route path="/notificationspage" element={<NotificationsPage />} />
     <Route path="/signin-vendor" element={<SigninVendor />} />
     <Route path="/signupvendor" element={<Signupvendor />} />
