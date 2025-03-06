@@ -362,7 +362,7 @@ function ProductPage() {
                     )}
                     {section === "Dimensions" && (
                       <div className="product-contents">
-                        <img src="/Assets/productDemi.webp" alt="Dimensions" />
+                        {/* <img src="/Assets/productDemi.webp" alt="Dimensions" /> */}
                         <p>Width X Length X Height</p>
                         <p>
                           {product.technicalDimensions.width} x{"  "}
