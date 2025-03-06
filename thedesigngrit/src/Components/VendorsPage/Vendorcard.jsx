@@ -35,7 +35,7 @@ const VendorCard = ({ vendor, onClick }) => {
         >
           <CardMedia
             component="img"
-            image={`https://tdg-db.onrender.com/uploads/${brandlogo}`}
+            image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brandlogo}`}
             alt={`${brandName} logo`}
             sx={{ maxHeight: "80%", maxWidth: "80%", objectFit: "contain" }}
           />

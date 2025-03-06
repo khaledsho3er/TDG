@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Button, CardMedia } from "@mui/material";
 
 function VendorProfileHeader({ vendor }) {
-  const fullImagePath = `https://tdg-db.onrender.com/uploads/${vendor.brandlogo}`; // Full image path for rendering
+  const fullImagePath = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${vendor.brandlogo}`; // Full image path for rendering
 
   return (
     <Box

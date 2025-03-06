@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 
 function VendorProfileHero({ vendor }) {
-  const fullImagePath = `https://tdg-db.onrender.com/uploads/${vendor.coverPhoto}`; // Full image path for rendering
+  const fullImagePath = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${vendor.coverPhoto}`; // Full image path for rendering
 
   // Log the image path for debugging
   console.log("Full Image Path:", fullImagePath);
