@@ -37,7 +37,9 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [strength] = useState(0);
+  const [password, setPassword] = useState("");
+
+  const [strength, setStrength] = useState(0);
 
   const {
     register,
@@ -55,7 +57,9 @@ const SignUpForm = () => {
       );
       alert(response.data.message);
       setIsPopupVisible(true);
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // Wait 3 seconds before navigating
     } catch (error) {
       console.error("Sign-up error:", error);
       alert(
@@ -63,9 +67,19 @@ const SignUpForm = () => {
       );
     }
   };
+  const calculateStrength = (password) => {
+    let score = 0;
+    if (password.length >= 8) score += 25;
+    if (/[A-Z]/.test(password)) score += 25;
+    if (/\d/.test(password)) score += 25;
+    if (/[\W_]/.test(password)) score += 25;
+    setStrength(score);
+  };
+
   const getBarColors = () => {
-    if (strength <= 50) return ["red", "#efebe8", "#efebe8", "#efebe8"];
-    if (strength <= 75) return ["orange", "orange", "#efebe8", "#efebe8"];
+    if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
+    if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
+    if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
     return ["green", "green", "green", "green"];
   };
   const closePopup = () => {
@@ -114,6 +128,10 @@ const SignUpForm = () => {
             placeholder="Password"
             className="input-field"
             {...register("password")}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              calculateStrength(e.target.value);
+            }}
           />
           <span
             onClick={() => setShowPassword((prev) => !prev)}
