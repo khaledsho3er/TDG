@@ -234,7 +234,7 @@ const OrderDetails = ({ order, onBack }) => {
               order={order}
               sx={{
                 marginTop: "10px",
-                backgroundColor: "#2d2d2d !important",
+                bgcolor: "#2d2d2d !important", // Using bgcolor instead of backgroundColor
                 color: "#2d2d2d",
                 borderRadius: "5px",
                 padding: "11px 10px",
@@ -242,7 +242,7 @@ const OrderDetails = ({ order, onBack }) => {
                 justifyContent: "center",
                 display: "flex",
                 "&:hover": {
-                  backgroundColor: "#2d2d2d",
+                  bgcolor: "#2d2d2d",
                   color: "#fff",
                 },
               }}
@@ -373,6 +373,7 @@ const OrderDetails = ({ order, onBack }) => {
                       flexDirection: "column",
                       alignItems: "start",
                       gap: "12px",
+                      fontWeight: "bold",
                     }}
                   >
                     <p>Full Name:</p>
