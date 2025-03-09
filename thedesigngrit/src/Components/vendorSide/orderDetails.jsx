@@ -230,27 +230,26 @@ const OrderDetails = ({ order, onBack }) => {
                 <MenuItem value="Pending">Pending</MenuItem>{" "}
               
               </Select>*/}
-            <Button
-              onClick={() => InvoiceDownload({ order })}
+            <InvoiceDownload
+              order={order}
               sx={{
                 marginTop: "10px",
-                backgroundColor: "#2d2d2d",
-                color: "#fff",
+                backgroundColor: "#2d2d2d !important",
+                color: "#2d2d2d",
                 borderRadius: "5px",
                 padding: "11px 10px",
                 alignItems: "center",
                 justifyContent: "center",
                 display: "flex",
                 "&:hover": {
-                  backgroundColor: "#ddd",
-                  color: "#2d2d2d",
+                  backgroundColor: "#2d2d2d",
+                  color: "#fff",
                 },
               }}
               className="submit-btn"
             >
-              <IoMdPrint style={{ color: "#fff" }} /> Download <hr></hr>Invoice
-            </Button>
-
+              <IoMdPrint />
+            </InvoiceDownload>
             {order.orderStatus === "Pending" && (
               <button className="submit-btn" onClick={handleDialogOpen}>
                 Set Delivery Date
@@ -320,7 +319,7 @@ const OrderDetails = ({ order, onBack }) => {
               flexDirection: "column",
               border: "2px solid #ddd",
               borderRadius: "15px",
-              width: "55%", // Ensures equal width for each Box
+              width: "45%", // Ensures equal width for each Box
             }}
           >
             <Box
@@ -356,6 +355,7 @@ const OrderDetails = ({ order, onBack }) => {
                   fontFamily: "Montserrat",
                   display: "flex",
                   flexDirection: "column",
+                  gap: "20px",
                 }}
               >
                 <h4>Customer</h4>
@@ -364,6 +364,7 @@ const OrderDetails = ({ order, onBack }) => {
                     fontFamily: "Montserrat",
                     display: "flex",
                     flexDirection: "row",
+                    gap: "20px",
                   }}
                 >
                   <div
@@ -371,7 +372,7 @@ const OrderDetails = ({ order, onBack }) => {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "start",
-                      gap: "5px",
+                      gap: "12px",
                     }}
                   >
                     <p>Full Name:</p>
@@ -382,8 +383,7 @@ const OrderDetails = ({ order, onBack }) => {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "end",
-                      gap: "5px",
+                      gap: "12px",
                     }}
                   >
                     <span> {order.customerId.firstName}</span>
@@ -539,43 +539,45 @@ const OrderDetails = ({ order, onBack }) => {
                   fontFamily: "Montserrat",
                   display: "flex",
                   flexDirection: "column",
+                  gap: "20px",
                 }}
               >
                 <h4>Delivery</h4>
                 <div
                   style={{
                     fontFamily: "Montserrat",
-                    display: "flex",
-                    flexDirection: "row",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "10px 20px",
+                    alignItems: "center",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    // maxWidth: "400px",
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "start",
-                      gap: "5px",
-                    }}
-                  >
-                    <p>Address: </p>
-                    <p>Label:</p>
-                    <p>Apartment:</p>
-                    <p>Floor:</p>
-                  </div>
+                  {/* Row 1 */}
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
+                  <span style={{ margin: 0 }}>
+                    {order.shippingDetails.address}
+                  </span>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-end",
-                      gap: "5px",
-                    }}
-                  >
-                    <span> {order.shippingDetails.address} </span>
-                    <span> {order.shippingDetails.label} </span>
-                    <span> {order.shippingDetails.apartment} </span>
-                    <span> {order.shippingDetails.floor} </span>
-                  </div>
+                  {/* Row 2 */}
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
+                  <span style={{ margin: 0 }}>
+                    {order.shippingDetails.label}
+                  </span>
+
+                  {/* Row 3 */}
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
+                  <span style={{ margin: 0 }}>
+                    {order.shippingDetails.apartment}
+                  </span>
+
+                  {/* Row 4 */}
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
+                  <span style={{ margin: 0 }}>
+                    {order.shippingDetails.floor}
+                  </span>
                 </div>
               </div>
             </Box>
@@ -640,13 +642,12 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               <h4>Payment Info</h4>
-              <img src="/Assets/icons/visa-logo.webp" alt="Visa" />
+              <img src="/Assets/visa-logo.webp" alt="Visa" />
             </Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                border: "2px solid #ddd",
                 borderRadius: "15px",
                 fontFamily: "Montserrat",
                 padding: "10px",
