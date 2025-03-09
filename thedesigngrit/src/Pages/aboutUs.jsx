@@ -111,14 +111,6 @@ function AboutUsPage() {
       <Box className="OurTeam-section">
         <Box className="OurTeam-section-typo">
           <h2>Meet Our Team</h2>
-          <p>
-            Born out of a deep appreciation for design, our founders combine
-            their global expertise in design and operations with a passion for
-            Egyptian artistry. After studying interior design and Milan, they
-            recognized the need for a platform that could spotlight Egypt’s
-            unmatched talent. Their goal is to reshape how Egyptian brands are
-            seen and celebrated worldwide.
-          </p>
         </Box>
         <Box className="ourTeam-Section-image">
           <MeetOurTeam />
