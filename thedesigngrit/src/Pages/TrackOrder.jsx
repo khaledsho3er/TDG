@@ -6,6 +6,7 @@ import { LuPackage } from "react-icons/lu";
 import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "./loadingScreen";
+import { GiConfirmed } from "react-icons/gi";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -194,7 +195,7 @@ function TrackOrder() {
                       </span>
                     </Box>
                     <div className="progress-container-track">
-                      {["Pending", "Shipping", "Confirmed", "Delivered"].map(
+                      {["Pending", "Confirmed", "Shipping", "Delivered"].map(
                         (step, i) => {
                           const isCompleted =
                             (selectedOrder.orderStatus === "Pending" &&
@@ -218,8 +219,9 @@ function TrackOrder() {
                               >
                                 {step === "Pending" ? (
                                   <ShoppingCartIcon />
-                                ) : step === "Shipping" ||
-                                  step === "Confirmed" ? (
+                                ) : step === "Confirmed" ? (
+                                  <GiConfirmed />
+                                ) : step === "Shipping" ? (
                                   <LocalShippingIcon />
                                 ) : (
                                   <LuPackage />

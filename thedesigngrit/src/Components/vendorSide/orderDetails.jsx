@@ -230,26 +230,27 @@ const OrderDetails = ({ order, onBack }) => {
                 <MenuItem value="Pending">Pending</MenuItem>{" "}
               
               </Select>*/}
-            <InvoiceDownload
-              order={order}
+            <Button
+              onClick={() => InvoiceDownload({ order })}
               sx={{
                 marginTop: "10px",
-                backgroundColor: "#ddd",
-                color: "#2d2d2d",
+                backgroundColor: "#2d2d2d",
+                color: "#fff",
                 borderRadius: "5px",
                 padding: "11px 10px",
                 alignItems: "center",
                 justifyContent: "center",
                 display: "flex",
                 "&:hover": {
-                  backgroundColor: "#2d2d2d",
-                  color: "#fff",
+                  backgroundColor: "#ddd",
+                  color: "#2d2d2d",
                 },
               }}
               className="submit-btn"
             >
-              <IoMdPrint />
-            </InvoiceDownload>
+              <IoMdPrint style={{ color: "#fff" }} /> Download <hr></hr>Invoice
+            </Button>
+
             {order.orderStatus === "Pending" && (
               <button className="submit-btn" onClick={handleDialogOpen}>
                 Set Delivery Date
@@ -319,7 +320,7 @@ const OrderDetails = ({ order, onBack }) => {
               flexDirection: "column",
               border: "2px solid #ddd",
               borderRadius: "15px",
-              width: "30%", // Ensures equal width for each Box
+              width: "55%", // Ensures equal width for each Box
             }}
           >
             <Box
@@ -421,7 +422,7 @@ const OrderDetails = ({ order, onBack }) => {
           </Box>
 
           {/* Order Info Box */}
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -489,9 +490,10 @@ const OrderDetails = ({ order, onBack }) => {
                   }}
                 >
                   Download File{" "}
-                </Button> */}
+                </Button> */
+          /*} 
             </Box>
-          </Box>
+          </Box> */}
 
           {/* Delivery Info Box */}
           <Box
@@ -500,7 +502,7 @@ const OrderDetails = ({ order, onBack }) => {
               flexDirection: "column",
               border: "2px solid #ddd",
               borderRadius: "15px",
-              width: "30%", // Ensures equal width for each Box
+              width: "45%", // Ensures equal width for each Box
               justifyContent: "space-between",
             }}
           >
@@ -638,16 +640,37 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               <h4>Payment Info</h4>
-              <img src="/Assets/icons/visa.webp" alt="Visa" />
+              <img src="/Assets/icons/visa-logo.webp" alt="Visa" />
             </Box>
-            <p>Payment Method: {order.paymentDetails.paymentMethod}</p>
-            <p>
-              Transaction ID:{" "}
-              {order.paymentDetails.transactionId || "120002554"}
-            </p>
-            <p>
-              Payment Status: {order.paymentDetails.paymentStatus || "Pending"}
-            </p>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                border: "2px solid #ddd",
+                borderRadius: "15px",
+                fontFamily: "Montserrat",
+                padding: "10px",
+                gap: "10px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>
+                  <p>Payment Method:</p>
+                  <p>Transaction ID:</p>
+                  <p>Payment Status:</p>
+                </Box>
+                <Box sx={{ textAlign: "right" }}>
+                  <p>{order.paymentDetails.paymentMethod}</p>
+                  <p>{order.paymentDetails.transactionId || "120002554"}</p>
+                  <p>{order.paymentDetails.paymentStatus || "Pending"}</p>
+                </Box>
+              </Box>
+            </Box>
           </Box>
           {/* Note Box */}
           <Box sx={{ display: "flex", flexDirection: "column", width: "65%" }}>
