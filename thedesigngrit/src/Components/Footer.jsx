@@ -228,10 +228,16 @@ function Footer() {
                   POLICIES & TERMS
                 </Typography>
                 <Link
+                  to={`/policy?section=Cookie Policy`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Cookie</Typography>
+                </Link>
+                <Link
                   to={`/policy?section=Privacy Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Privacy Policy</Typography>
+                  <Typography>Privacy</Typography>
                 </Link>
                 <Link
                   to={`/policy?section=${encodeURIComponent(
@@ -239,14 +245,34 @@ function Footer() {
                   )}`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Return & Exchange / Policy</Typography>
+                  <Typography>Return & Exchange</Typography>
                 </Link>
+                <Link
+                  to={`/policy?section=Payment Policy`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Payment</Typography>
+                </Link>
+
                 <Link
                   to={`/policy?section=Shipping Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>Shipping Information / Policy</Typography>
+                  <Typography>Shipping Information</Typography>
                 </Link>
+                <Link
+                  to={`/policy?section=Security Policy`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Security </Typography>
+                </Link>
+                <Link
+                  to={`/policy?section=Compliance Policy`}
+                  style={{ textDecoration: "none", color: "#2d2d2d" }}
+                >
+                  <Typography>Compliance</Typography>
+                </Link>
+
                 <Link
                   to={`/policy?section=Full Terms of Service Agreement`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
