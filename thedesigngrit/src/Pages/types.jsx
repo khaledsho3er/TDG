@@ -77,7 +77,7 @@ function TypesPage() {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            gap: "4px",
+            gap: "40px",
           }}
         >
           {types.length > 0 ? (
