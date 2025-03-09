@@ -77,8 +77,9 @@ function SummaryForm({ billData }) {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                columnGap: "16px",
-                paddingLeft: "20px",
+                columnGap: "4px",
+                fontFamily: "Montserrat",
+                fontSize: "13px",
                 "& a": {
                   textDecoration: "underline",
                   color: "#2962ff",
