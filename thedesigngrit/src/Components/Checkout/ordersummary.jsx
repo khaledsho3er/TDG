@@ -1,8 +1,8 @@
-import { Box, FormControlLabel, Checkbox } from "@mui/material";
+import { Box, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import React from "react";
 import { useCart } from "../../Context/cartcontext"; // Import CartContext
 import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
-
+import { Link } from "react-router-dom";
 function SummaryForm({ billData }) {
   const { cartItems } = useCart(); // Get cart items from context
   const { subtotal, shippingFee, total } = billData;
@@ -70,7 +70,28 @@ function SummaryForm({ billData }) {
       <Box className="Ordersummary-thirdrow">
         <FormControlLabel
           control={<Checkbox />}
-          label="I have read and accept the terms and conditions."
+          label={
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                columnGap: "16px",
+                paddingLeft: "20px",
+                "& a": {
+                  textDecoration: "underline",
+                  color: "#2962ff",
+                },
+              }}
+            >
+              I have read and accept the{" "}
+              <Link to="/policy?section=Full Terms of Service Agreement">
+                terms and conditions
+              </Link>
+              .
+            </Typography>
+          }
           sx={{
             display: "flex",
             alignItems: "center",

@@ -49,7 +49,6 @@ const NavbarAdmin = () => {
         />
         <select>
           <option>Admin</option>
-          <option>Settings</option>
           <option>Logout</option>
         </select>
       </div>
