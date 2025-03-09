@@ -95,7 +95,9 @@ function TypesPage() {
                   borderRadius: "8px",
                   overflow: "hidden",
                   height: 300,
-                  backgroundImage: `url(https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${type.image})`,
+                  backgroundImage: `url(https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                    type.image || "/Assets/aboutUsContents.webp"
+                  })`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   display: "flex",
