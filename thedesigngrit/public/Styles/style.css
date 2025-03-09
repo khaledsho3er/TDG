@@ -5,8 +5,6 @@
   font-style: normal;
 }
 
-
-
 /* Login.css */
 body {
   margin: 0;
@@ -418,7 +416,6 @@ body::-webkit-scrollbar {
   border-radius: 20px;
   z-index: 10000; /* Keeps it above other elements */
 }
-
 
 /* Each Suggestion Item */
 .suggestion-item {
@@ -1268,7 +1265,6 @@ body::-webkit-scrollbar {
   overflow-x: hidden; /* Ensures no horizontal overflow */
 }
 
-
 /* Image Container */
 .sustainability-image-container {
   width: 50%; /* Set width to 50% */
@@ -1478,12 +1474,11 @@ body::-webkit-scrollbar {
   display: flex;
   gap: 0;
   padding: 0;
-  overflow: hidden  ;
+  overflow: hidden;
   box-sizing: border-box;
   overflow-x: hidden;
   scroll-snap-type: x mandatory;
 }
-
 
 .product-card {
   flex: 0 0 auto; /* Prevents shrinking or growing */
@@ -6667,11 +6662,28 @@ input:focus {
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-
 /* types page */
 
 .build-package-section {
   height: auto;
   padding: 5% 8%;
+}
+.invoice-download-btn {
+  margin-top: 10px;
+  background-color: #2d2d2d;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  font-size: 16px;
+}
 
+.invoice-download-btn:hover {
+  background-color: #ddd;
+  color: #2d2d2d;
 }

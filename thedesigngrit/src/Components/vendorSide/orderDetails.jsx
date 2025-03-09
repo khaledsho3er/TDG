@@ -232,7 +232,7 @@ const OrderDetails = ({ order, onBack }) => {
               </Select>*/}
             <InvoiceDownload
               order={order}
-              sx={{
+              style={{
                 marginTop: "10px",
                 bgcolor: "#2d2d2d !important", // Using bgcolor instead of backgroundColor
                 color: "#2d2d2d",
@@ -246,9 +246,9 @@ const OrderDetails = ({ order, onBack }) => {
                   color: "#fff",
                 },
               }}
-              className="submit-btn"
+              className="invoice-download-btn"
             >
-              <IoMdPrint />
+              <IoMdPrint style={{ color: "#fff", fontSize: "20px" }} />
             </InvoiceDownload>
             {order.orderStatus === "Pending" && (
               <button className="submit-btn" onClick={handleDialogOpen}>
@@ -310,6 +310,7 @@ const OrderDetails = ({ order, onBack }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             gap: "20px", // Adds space between each box
+            padding: "6px 22px 0px 0px",
           }}
         >
           {/* Customer Info Box */}
