@@ -194,37 +194,42 @@ function TrackOrder() {
                       </span>
                     </Box>
                     <div className="progress-container-track">
-                      {["Pending", "Shipping", "Delivered"].map((step, i) => {
-                        const isCompleted =
-                          (selectedOrder.orderStatus === "Pending" &&
-                            i === 0) ||
-                          (selectedOrder.orderStatus === "Shipped" && i <= 1) ||
-                          selectedOrder.orderStatus === "Delivered";
+                      {["Pending", "Shipping", "Confirmed", "Delivered"].map(
+                        (step, i) => {
+                          const isCompleted =
+                            (selectedOrder.orderStatus === "Pending" &&
+                              i === 0) ||
+                            selectedOrder.orderStatus === "Shipped" ||
+                            (selectedOrder.orderStatus === "Confirmed" &&
+                              i <= 1) ||
+                            selectedOrder.orderStatus === "Delivered";
 
-                        return (
-                          <div
-                            key={i}
-                            className={`progress-step ${
-                              isCompleted ? "completed" : ""
-                            }`}
-                          >
+                          return (
                             <div
-                              className={`step-circle-track ${
+                              key={i}
+                              className={`progress-step ${
                                 isCompleted ? "completed" : ""
                               }`}
                             >
-                              {step === "Pending" ? (
-                                <ShoppingCartIcon />
-                              ) : step === "Shipping" ? (
-                                <LocalShippingIcon />
-                              ) : (
-                                <LuPackage />
-                              )}
+                              <div
+                                className={`step-circle-track ${
+                                  isCompleted ? "completed" : ""
+                                }`}
+                              >
+                                {step === "Pending" ? (
+                                  <ShoppingCartIcon />
+                                ) : step === "Shipping" ||
+                                  step === "Confirmed" ? (
+                                  <LocalShippingIcon />
+                                ) : (
+                                  <LuPackage />
+                                )}
+                              </div>
+                              <span className="step-label-track">{step}</span>
                             </div>
-                            <span className="step-label-track">{step}</span>
-                          </div>
-                        );
-                      })}
+                          );
+                        }
+                      )}
                     </div>
                   </Box>
                   <Box className="order-pays-subtotal">
