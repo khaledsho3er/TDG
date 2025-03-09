@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 
@@ -35,6 +35,12 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
 }));
 
 function ShippingForm({ shippingData, onChange }) {
+  const [selectedOption, setSelectedOption] = useState("new");
+
+  const handleCheckboxChange = (option) => {
+    setSelectedOption(option);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedData = { ...shippingData, [name]: value };
@@ -43,7 +49,6 @@ function ShippingForm({ shippingData, onChange }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Call the parent onChange function to update the shipping data
     console.log("Shipping Data:", shippingData);
     onChange(shippingData);
   };
@@ -52,17 +57,22 @@ function ShippingForm({ shippingData, onChange }) {
     <Box className="Billinginfo_container">
       <Box className="Billinginfo_checkbox">
         <FormControlLabel
-          control={<CircularCheckbox />}
-          label="Use the existing Billing Information"
+          control={
+            <CircularCheckbox
+              checked={selectedOption === "existing"}
+              onChange={() => handleCheckboxChange("existing")}
+            />
+          }
+          label="Use the existing Shipping Information"
           sx={{
             display: "flex",
             alignItems: "center",
-            columnGap: "16px", // Adjust spacing between checkbox and label
+            columnGap: "16px",
             paddingLeft: "20px",
             "& .MuiFormControlLabel-label": {
-              fontFamily: "Montserrat, san-sarif", // Change to your desired font
-              fontSize: "13px", // Adjust font size
-              color: "#333", // Adjust font color
+              fontFamily: "Montserrat, san-sarif",
+              fontSize: "13px",
+              color: "#333",
             },
           }}
         />
@@ -75,149 +85,158 @@ function ShippingForm({ shippingData, onChange }) {
           }}
         />
         <FormControlLabel
-          control={<CircularCheckbox />}
-          label="Enter a new Billing Information"
+          control={
+            <CircularCheckbox
+              checked={selectedOption === "new"}
+              onChange={() => handleCheckboxChange("new")}
+            />
+          }
+          label="Enter a new Shipping Information"
           sx={{
             display: "flex",
             alignItems: "center",
-            columnGap: "16px", // Adjust spacing between checkbox and label
+            columnGap: "16px",
             paddingLeft: "20px",
             "& .MuiFormControlLabel-label": {
-              fontFamily: "Montserrat, san-sarif", // Change to your desired font
-              fontSize: "13px", // Adjust font size
-              color: "#333", // Adjust font color
+              fontFamily: "Montserrat, san-sarif",
+              fontSize: "13px",
+              color: "#333",
             },
           }}
         />
       </Box>
 
-      <Box className="shipping-form-container">
-        <Box className="shipping-form">
-          <form onSubmit={handleSubmit} className="shippingform-form-container">
-            {/* Row 1 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First Name"
-                  value={shippingData.firstName}
-                  onChange={handleChange}
-                  required
-                />
+      {selectedOption === "new" && (
+        <Box className="shipping-form-container">
+          <Box className="shipping-form">
+            <form
+              onSubmit={handleSubmit}
+              className="shippingform-form-container"
+            >
+              {/* Row 1 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First Name"
+                    value={shippingData.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={shippingData.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Last Name"
-                  value={shippingData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
 
-            {/* Row 2 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  placeholder="Address"
-                  value={shippingData.address}
-                  onChange={handleChange}
-                  required
-                />
+              {/* Row 2 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Address"
+                    value={shippingData.address}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="label"
+                    name="label"
+                    placeholder="Label"
+                    value={shippingData.label}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="label"
-                  name="label"
-                  placeholder="Label"
-                  value={shippingData.label}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
 
-            {/* Row 3 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="apartment"
-                  name="apartment"
-                  placeholder="Apartment"
-                  value={shippingData.apartment}
-                  onChange={handleChange}
-                  required
-                />
+              {/* Row 3 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="apartment"
+                    name="apartment"
+                    placeholder="Apartment"
+                    value={shippingData.apartment}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="floor"
+                    name="floor"
+                    placeholder="Floor"
+                    value={shippingData.floor}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="floor"
-                  name="floor"
-                  placeholder="Floor"
-                  value={shippingData.floor}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
 
-            {/* Row 4 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="country"
-                  name="country"
-                  placeholder="Country"
-                  value={shippingData.country}
-                  onChange={handleChange}
-                  required
-                />
+              {/* Row 4 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="country"
+                    name="country"
+                    placeholder="Country"
+                    value={shippingData.country}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder="City"
+                    value={shippingData.city}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  placeholder="City"
-                  value={shippingData.city}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
 
-            {/* Row 5 */}
-            <div className="shippingform-form-row-zip">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  placeholder="Zip Code"
-                  value={shippingData.zipCode}
-                  onChange={handleChange}
-                  required
-                />
+              {/* Row 5 */}
+              <div className="shippingform-form-row-zip">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="zipCode"
+                    name="zipCode"
+                    placeholder="Zip Code"
+                    value={shippingData.zipCode}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Submit button */}
-            <button type="submit" style={{ display: "none" }}></button>
-          </form>
+              <button type="submit" style={{ display: "none" }}></button>
+            </form>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 }

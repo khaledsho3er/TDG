@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
@@ -12,6 +12,7 @@ function Checkout() {
   const { userSession } = useUser();
   const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
+  const validateCheckboxRef = useRef(null);
   const [billingData, setBillingData] = useState({
     firstName: "",
     lastName: "",
@@ -55,6 +56,13 @@ function Checkout() {
 
   const handlePaymentChange = (data) => {
     setPaymentData(data);
+  };
+
+  const handleNext = () => {
+    if (validateCheckboxRef.current && !validateCheckboxRef.current()) {
+      return; // Stop if validation fails
+    }
+    console.log("Proceed to next step");
   };
 
   const handlePaymentSubmit = async () => {
@@ -163,7 +171,10 @@ function Checkout() {
       id: 3,
       label: "Order Summary",
       content: (
-        <SummaryForm billData={{ cartItems, subtotal, shippingFee, total }} />
+        <SummaryForm
+          billData={{ cartItems, subtotal, shippingFee, total }}
+          onValidate={(fn) => (validateCheckboxRef.current = fn)}
+        />
       ),
     },
     {
