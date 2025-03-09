@@ -135,11 +135,6 @@ function TypesPage() {
                     >
                       {type.name}
                     </Typography>
-                    {type.image ? (
-                      <img src={type.image} alt={type.name} />
-                    ) : (
-                      <p>No Image Available</p>
-                    )}
                   </Grid>
                 )
               )
