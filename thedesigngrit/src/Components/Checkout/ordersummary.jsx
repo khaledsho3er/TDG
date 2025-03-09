@@ -87,9 +87,13 @@ function SummaryForm({ billData }) {
               }}
             >
               I have read and accept the{" "}
-              <Link to="/policy?section=Full Terms of Service Agreement">
+              <a
+                href="/policy?section=Full Terms of Service Agreement"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 terms and conditions
-              </Link>
+              </a>
               .
             </Typography>
           }
