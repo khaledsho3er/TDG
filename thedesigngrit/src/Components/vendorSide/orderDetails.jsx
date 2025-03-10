@@ -717,9 +717,9 @@ const OrderDetails = ({ order, onBack }) => {
           }}
         >
           <h3>Products</h3>
-          <Button className="submit-btn" onClick={handleOpen}>
+          <button className="submit-btn" onClick={handleOpen}>
             Set Delivery Date
-          </Button>
+          </button>
         </Box>
         <hr></hr>
         <table>
