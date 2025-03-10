@@ -18,6 +18,12 @@ const DashboardVendor = () => {
   const [products, setProducts] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [percentageChange, setPercentageChange] = useState(0);
+  const [activeOrders, setActiveOrders] = useState(0);
+  const [activePercentageChange, setActivePercentageChange] = useState(0);
+  const [completedOrders, setCompletedOrders] = useState(0);
+  const [completedPercentageChange, setCompletedPercentageChange] = useState(0);
+  const [returnedOrders, setReturnedOrders] = useState(0);
+  const [returnedPercentageChange, setReturnedPercentageChange] = useState(0);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -65,20 +71,28 @@ const DashboardVendor = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!vendor?.brandId) return;
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/orders/order/percentage-change"
+          `https://tdg-db.onrender.com/api/orders/order/statistics/${vendor.brandId}`
         );
         const data = await response.json();
+        console.log("Fetched Orders:", data);
         setTotalOrders(data.totalOrders);
         setPercentageChange(data.percentageChange);
+        setActiveOrders(data.activeOrders);
+        setActivePercentageChange(data.activePercentageChange);
+        setCompletedOrders(data.completedOrders);
+        setCompletedPercentageChange(data.completedPercentageChange);
+        setReturnedOrders(data.returnedOrders);
+        setReturnedPercentageChange(data.returnedPercentageChange);
       } catch (error) {
-        console.error("Error fetching order data:", error);
+        console.error("Error fetching brand order statistics:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [vendor]);
 
   if (selectedOrder) {
     return (
@@ -114,38 +128,40 @@ const DashboardVendor = () => {
             <span>▲ {percentageChange}% Compared to Last Month</span>
           </div>
         </div>
+
         <div className="overview-card-vendor">
           <div className="card-icon-vendor">
             <FaTruck />
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders</h3>
-            <p>LE 126,500</p>
-            <span>▲ Compared to Last Month</span>
+            <p>LE {activeOrders}</p>
+            <span>▲ {activePercentageChange}% Compared to Last Month</span>
           </div>
         </div>
+
         <div className="overview-card-vendor">
           <div className="card-icon-vendor">
             <FaCheckCircle />
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
-            <p>LE 126,500</p>
-            <span>▲ 34.7% Compared to Last Month</span>
+            <p>LE {completedOrders}</p>
+            <span>▲ {completedPercentageChange}% Compared to Last Month</span>
           </div>
         </div>
+
         <div className="overview-card-vendor">
           <div className="card-icon-vendor">
             <FaRedo />
           </div>
           <div className="card-content-vendor">
             <h3>Return Orders</h3>
-            <p>LE 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            <p>LE {returnedOrders}</p>
+            <span>▲ {returnedPercentageChange}% Compared to Last Month</span>
           </div>
         </div>
       </section>
-
       {/* Sales Chart Section */}
       <section className="dashboard-chart-vendor">
         <div className="chart-header-vendor">
