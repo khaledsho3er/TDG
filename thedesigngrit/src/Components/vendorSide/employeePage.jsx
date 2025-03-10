@@ -7,7 +7,6 @@ import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
-import { color } from "framer-motion";
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
@@ -266,8 +265,7 @@ const EmployeePage = () => {
                 </div>
                 <div className="requestInfo-form-group">
                   <label>Tier</label>
-                  <input
-                    type="text"
+                  <select
                     value={currentVendor.tier}
                     onChange={(e) =>
                       setCurrentVendor({
@@ -275,7 +273,11 @@ const EmployeePage = () => {
                         tier: e.target.value,
                       })
                     }
-                  />
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
                 </div>
                 <div
                   style={{

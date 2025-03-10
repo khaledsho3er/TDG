@@ -793,10 +793,10 @@ const OrderDetails = ({ order, onBack }) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="secondary">
+            <Button className="cancel-btn" onClick={handleClose}>
               Cancel
             </Button>
-            <Button onClick={handleClose} color="primary">
+            <Button className="submit-btn" onClick={handleClose}>
               Save
             </Button>
           </DialogActions>
