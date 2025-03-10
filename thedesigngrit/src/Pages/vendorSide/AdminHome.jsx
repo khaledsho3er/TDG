@@ -7,6 +7,7 @@ import ProductsPageAdmin from "../../Components/adminSide/ProductsAdmin";
 import RequestsPartners from "../../Components/adminSide/Requests";
 import CategoryForm from "../../Components/adminSide/createCategory";
 import CategoryListPage from "../../Components/adminSide/categoriesList";
+import TagsTable from "../../Components/adminSide/tags";
 const AdminHome = () => {
   const [activePage, setActivePage] = useState("dashboard");
 
@@ -24,6 +25,8 @@ const AdminHome = () => {
         return <CategoryForm />;
       case "categoriesList":
         return <CategoryListPage />;
+      case "tags":
+        return <TagsTable />;
       default:
         return "DashboardVendor";
     }

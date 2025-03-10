@@ -40,6 +40,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Categories List
         </li>
+        <li
+          onClick={() => setActivePage("tags")}
+          className="sidebar-item-vendor"
+        >
+          Tags
+        </li>
       </ul>
     </aside>
   );
