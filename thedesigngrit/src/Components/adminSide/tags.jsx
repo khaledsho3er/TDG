@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
+  Box,
+  CircularProgress,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -8,208 +10,141 @@ import {
   Button,
   Select,
   MenuItem,
-  TextField,
 } from "@mui/material";
-
-const categories = [
-  "Color",
-  "Style",
-  "Material",
-  "Finish",
-  "Size",
-  "Shape",
-  "Functionality/Special Features",
-];
 
 const TagsTable = () => {
   const [tags, setTags] = useState([]);
-  const [newTag, setNewTag] = useState({ name: "", category: categories[0] });
-  const [editingTag, setEditingTag] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedTag, setSelectedTag] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     fetchTags();
+    fetchCategories();
   }, []);
 
-  // Fetch all tags
   const fetchTags = async () => {
     try {
       const response = await axios.get("https://tdg-db.onrender.com/api/tags");
       setTags(response.data);
     } catch (error) {
       console.error("Error fetching tags:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Add a new tag
-  const handleAddTag = async () => {
-    if (!newTag.name.trim()) return;
+  const fetchCategories = async () => {
     try {
-      const response = await axios.post(
-        "https://tdg-db.onrender.com/api/tags",
-        newTag
+      const response = await axios.get(
+        "https://tdg-db.onrender.com/api/categories"
       );
-      setTags([...tags, response.data]);
-      setNewTag({ name: "", category: categories[0] });
-      setOpenDialog(false);
+      setCategories(response.data);
     } catch (error) {
-      console.error("Error adding tag:", error);
+      console.error("Error fetching categories:", error);
     }
   };
 
-  // Edit a tag
-  const handleEditTag = async (_id, updatedTag) => {
-    try {
-      await axios.put(`/api/tags/${_id}`, updatedTag);
-      setTags(tags.map((tag) => (tag._id === _id ? updatedTag : tag)));
-      setEditingTag(null);
-    } catch (error) {
-      console.error("Error updating tag:", error);
-    }
+  const handleEditClick = (tag) => {
+    setSelectedTag(tag);
+    setSelectedCategory(tag.category || "");
+    setOpenDialog(true);
   };
 
-  // Delete a tag
-  const handleDeleteTag = async (_id) => {
-    if (!window.confirm("Are you sure you want to delete this tag?")) return;
-    try {
-      await axios.delete(`https://tdg-db.onrender.com/api/tags/${_id}`);
-      setTags(tags.filter((tag) => tag._id !== _id));
-    } catch (error) {
-      console.error("Error deleting tag:", error);
-    }
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedTag(null);
   };
 
   return (
-    <div>
-      <h2>Tags Management</h2>
-
-      {/* Table */}
-      <table border="1" w_idth="100%">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tags.map((tag) => (
-            <tr key={tag._id}>
-              <td>{tag.id}</td>
-              <td>
-                {editingTag === tag._id ? (
-                  <TextField
-                    value={tag.name}
-                    onChange={(e) =>
-                      setTags(
-                        tags.map((t) =>
-                          t._id === tag._id ? { ...t, name: e.target.value } : t
-                        )
-                      )
-                    }
-                    variant="outlined"
-                    size="small"
-                  />
-                ) : (
-                  tag.name
-                )}
-              </td>
-              <td>
-                {editingTag === tag._id ? (
-                  <Select
-                    value={tag.category}
-                    onChange={(e) =>
-                      setTags(
-                        tags.map((t) =>
-                          t._id === tag._id
-                            ? { ...t, category: e.target.value }
-                            : t
-                        )
-                      )
-                    }
-                    size="small"
-                  >
-                    {categories.map((cat) => (
-                      <MenuItem key={cat} value={cat}>
-                        {cat}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ) : (
-                  tag.category
-                )}
-              </td>
-              <td>
-                {editingTag === tag._id ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleEditTag(tag._id, tag)}
-                  >
-                    Save
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => setEditingTag(tag._id)}
-                  >
-                    Edit
-                  </Button>
-                )}
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleDeleteTag(tag._id)}
-                >
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Add Tag Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpenDialog(true)}
-        style={{ marginTop: "10px" }}
-      >
-        Add New Tag
-      </Button>
-
-      {/* Dialog for Adding New Tag */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Add New Tag</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Tag Name"
-            value={newTag.name}
-            onChange={(e) => setNewTag({ ...newTag, name: e.target.value })}
-            fullW_idth
-            margin="normal"
-          />
-          <Select
-            value={newTag.category}
-            onChange={(e) => setNewTag({ ...newTag, category: e.target.value })}
-            fullW_idth
-            margin="normal"
+    <div style={{ padding: "70px" }}>
+      <section className="dashboard-lists-vendor">
+        <div className="recent-orders-vendor">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            {categories.map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
+            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>Tags List</h2>
+            <table>
+              <thead style={{ backgroundColor: "#f2f2f2", color: "#2d2d2d" }}>
+                <tr>
+                  <th>Id</th>
+                  <th>Tag Name</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              {loading ? (
+                <tbody>
+                  <tr>
+                    <td colSpan={3} style={{ textAlign: "center" }}>
+                      <CircularProgress style={{ color: "#6b7b58" }} />
+                    </td>
+                  </tr>
+                </tbody>
+              ) : (
+                <tbody>
+                  {tags.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} style={{ textAlign: "center" }}>
+                        No tags found
+                      </td>
+                    </tr>
+                  ) : (
+                    tags.map((tag) => (
+                      <tr key={tag._id}>
+                        <td>{tag.id}</td>
+                        <td>{tag.name}</td>
+                        <td>{tag.category || "Uncategorized"}</td>
+                        <td>
+                          <button
+                            onClick={() => handleEditClick(tag)}
+                            style={{
+                              color: "#e3e3e3",
+                              backgroundColor: "#6a8452",
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              )}
+            </table>
+          </Box>
+        </div>
+      </section>
+
+      {/* Edit Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Edit Tag</DialogTitle>
+        <DialogContent>
+          <p>Tag Name: {selectedTag?.name}</p>
+          <label>Category:</label>
+          <Select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            fullWidth
+          >
+            {categories.map((category) => (
+              <MenuItem key={category._id} value={category.name}>
+                {category.name}
               </MenuItem>
             ))}
           </Select>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleAddTag} variant="contained" color="primary">
-            Add
+          <Button onClick={handleCloseDialog} color="secondary">
+            Cancel
           </Button>
+          <Button color="primary">Save</Button>
         </DialogActions>
       </Dialog>
     </div>
