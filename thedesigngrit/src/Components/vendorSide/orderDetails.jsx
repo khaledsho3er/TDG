@@ -9,16 +9,22 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { IoMdPrint } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
-import { MdOutlineShoppingBag } from "react-icons/md";
+// import { MdOutlineShoppingBag } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import InvoiceDownload from "./invoice";
 
 const OrderDetails = ({ order, onBack }) => {
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [subDeliveryDate, setSubDeliveryDate] = useState("");
+
   const [error] = useState(null); // Error state
   const [openDialog, setOpenDialog] = useState(false); // State for dialog
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
@@ -55,6 +61,10 @@ const OrderDetails = ({ order, onBack }) => {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleProductChange = (event) => setSelectedProduct(event.target.value);
+  const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
   const handleSubmitDate = async () => {
     // Make API call to update the delivery date
     try {
@@ -699,6 +709,9 @@ const OrderDetails = ({ order, onBack }) => {
 
       <div className="products-purchases-order" style={{ padding: "20px" }}>
         <h3 style={{ marginTop: "20px" }}>Products</h3>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
+          Set Delivery Date
+        </Button>
         <hr></hr>
         <table>
           <thead>
@@ -748,7 +761,37 @@ const OrderDetails = ({ order, onBack }) => {
             ))}
           </tbody>
         </table>
-
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Set Delivery Date</DialogTitle>
+          <DialogContent>
+            <Select
+              value={selectedProduct}
+              onChange={handleProductChange}
+              fullWidth
+            >
+              {filteredProducts.map((product) => (
+                <MenuItem key={product._id} value={product.name}>
+                  {product.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <TextField
+              type="date"
+              fullWidth
+              margin="normal"
+              value={subDeliveryDate}
+              onChange={handleSubDateChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div
           style={{
             marginTop: "30px",
