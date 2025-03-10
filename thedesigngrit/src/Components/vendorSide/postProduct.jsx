@@ -309,53 +309,66 @@ const AddProduct = () => {
       Additionaldetails: value, // Update formData
     });
   };
-  const [imagePreviews, setImagePreviews] = useState([]); // For displaying previews
-  const [mainImagePreview, setMainImagePreview] = useState(null); // For main image preview
-  const [images, setImages] = useState([]); // Array of uploaded images
-  const [mainImage, setMainImage] = useState(null); // Main image
+  const [imagePreviews, setImagePreviews] = useState([]); // Preview URLs
+  const [mainImagePreview, setMainImagePreview] = useState(null); // Main image preview
+  const [images, setImages] = useState([]); // Uploaded images
+  const [mainImage, setMainImage] = useState(null); // Main image file
 
   // Handle image upload
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
 
-    setImagePreviews((prev) => [...prev, ...previews]);
+    setImages((prev) => [...prev, ...files]); // Store actual files
+    setImagePreviews((prev) => [...prev, ...previews]); // Store preview URLs
+
     setFormData((prevData) => ({
       ...prevData,
-      images: [...prevData.images, ...files], // Store File objects
-      mainImage: prevData.mainImage || files[0], // Set first file as main image (temporary)
+      images: [...prevData.images, ...files],
+      mainImage: prevData.mainImage || files[0], // Set first uploaded image as main if none exists
     }));
-    setMainImagePreview((prev) => prev || previews[0]);
+
+    setMainImage((prev) => prev || files[0]); // Set first uploaded file as main
+    setMainImagePreview((prev) => prev || previews[0]); // Set first preview as main
   };
+
   // Handle setting the main image
   const handleSetMainImage = (index) => {
-    setMainImage(images[index]);
+    setMainImage(images[index]); // Set main image file
+    setMainImagePreview(imagePreviews[index]); // Set preview
+
     setFormData((prevData) => ({
       ...prevData,
-      mainImage: formData.images[index], // Update mainImage in formData
+      mainImage: images[index], // Update formData with the selected main image
     }));
   };
 
   // Handle removing an image
   const handleRemoveImage = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+
     setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
 
     // If the removed image was the main image, update the main image
     if (images[index] === mainImage) {
       setMainImage(updatedImages[0] || null);
+      setMainImagePreview(updatedPreviews[0] || null);
+
       setFormData((prevData) => ({
         ...prevData,
         mainImage: updatedImages[0] || "", // Update mainImage in formData
       }));
     }
 
-    // Remove the image path from formData
+    // Update formData images list
     setFormData((prevData) => ({
       ...prevData,
-      images: prevData.images.filter((_, i) => i !== index),
+      images: updatedImages,
     }));
   };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -972,9 +985,9 @@ const AddProduct = () => {
           </div>
           <div className="form-right">
             <div className="image-placeholder">
-              {mainImage ? (
+              {mainImagePreview ? (
                 <img
-                  src={mainImage}
+                  src={mainImagePreview} // Use preview URL instead of file object
                   alt="Main Preview"
                   className="main-image"
                 />
@@ -995,6 +1008,7 @@ const AddProduct = () => {
                 </p>
               )}
             </div>
+
             <div className="product-gallery">
               <label>Product Gallery</label>
 
@@ -1037,6 +1051,7 @@ const AddProduct = () => {
                   Upload Images
                 </button>
               </div>
+
               <div className="thumbnail-list">
                 {imagePreviews.map((preview, index) => (
                   <div
@@ -1045,7 +1060,6 @@ const AddProduct = () => {
                     }`}
                     key={index}
                   >
-                    {" "}
                     <div
                       style={{
                         display: "flex",
