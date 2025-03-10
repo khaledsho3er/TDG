@@ -708,10 +708,19 @@ const OrderDetails = ({ order, onBack }) => {
       </Box>
 
       <div className="products-purchases-order" style={{ padding: "20px" }}>
-        <h3 style={{ marginTop: "20px" }}>Products</h3>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          Set Delivery Date
-        </Button>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <h3>Products</h3>
+          <Button className="submit-btn" onClick={handleOpen}>
+            Set Delivery Date
+          </Button>
+        </Box>
         <hr></hr>
         <table>
           <thead>
