@@ -10,19 +10,31 @@ import {
   Button,
   Select,
   MenuItem,
+  TextField,
 } from "@mui/material";
+import { CiCirclePlus } from "react-icons/ci";
+
+const TAG_CATEGORIES = [
+  "Color",
+  "Style",
+  "Material",
+  "Finish",
+  "Size",
+  "Shape",
+  "Functionality",
+];
 
 const TagsTable = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTag, setSelectedTag] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [tagName, setTagName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     fetchTags();
-    fetchCategories();
   }, []);
 
   const fetchTags = async () => {
@@ -36,20 +48,9 @@ const TagsTable = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(
-        "https://tdg-db.onrender.com/api/categories"
-      );
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
   const handleEditClick = (tag) => {
     setSelectedTag(tag);
-    setSelectedCategory(tag.category || "");
+    setSelectedCategory(tag.category);
     setOpenDialog(true);
   };
 
@@ -58,8 +59,52 @@ const TagsTable = () => {
     setSelectedTag(null);
   };
 
+  const handleCloseAddDialog = () => {
+    setOpenAddDialog(false);
+    setTagName("");
+    setSelectedCategory("");
+  };
+
+  const handleSaveTag = async () => {
+    if (!tagName || !selectedCategory) {
+      alert("Please enter a tag name and select a category.");
+      return;
+    }
+
+    try {
+      await axios.post("https://tdg-db.onrender.com/api/tags", {
+        name: tagName,
+        category: selectedCategory,
+      });
+      fetchTags();
+      handleCloseAddDialog();
+    } catch (error) {
+      console.error("Error adding tag:", error);
+    }
+  };
+
   return (
     <div style={{ padding: "70px" }}>
+      <div className="dashboard-date-vendor">
+        <button
+          onClick={() => setOpenAddDialog(true)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            backgroundColor: "#2d2d2d",
+            color: "white",
+            padding: "15px 15px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          <CiCirclePlus /> Add Tag
+        </button>
+      </div>
+
       <section className="dashboard-lists-vendor">
         <div className="recent-orders-vendor">
           <Box
@@ -100,7 +145,7 @@ const TagsTable = () => {
                       <tr key={tag._id}>
                         <td>{tag.id}</td>
                         <td>{tag.name}</td>
-                        <td>{tag.category || "Uncategorized"}</td>
+                        <td>{tag.category}</td>
                         <td>
                           <button
                             onClick={() => handleEditClick(tag)}
@@ -122,20 +167,58 @@ const TagsTable = () => {
         </div>
       </section>
 
-      {/* Edit Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Edit Tag</DialogTitle>
+      {/* Add Tag Dialog */}
+      <Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
+        <DialogTitle>Add New Tag</DialogTitle>
         <DialogContent>
-          <p>Tag Name: {selectedTag?.name}</p>
-          <label>Category:</label>
+          <TextField
+            label="Tag Name"
+            fullWidth
+            value={tagName}
+            onChange={(e) => setTagName(e.target.value)}
+            margin="dense"
+          />
+          <label style={{ display: "block", marginTop: "10px" }}>
+            Category:
+          </label>
           <Select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             fullWidth
           >
-            {categories.map((category) => (
-              <MenuItem key={category._id} value={category.name}>
-                {category.name}
+            {TAG_CATEGORIES.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSaveTag} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Tag Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Edit Tag</DialogTitle>
+        <DialogContent>
+          <p>Tag Name: {selectedTag?.name}</p>
+          <label style={{ display: "block", marginTop: "10px" }}>
+            Category:
+          </label>
+          <Select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            fullWidth
+          >
+            {TAG_CATEGORIES.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
               </MenuItem>
             ))}
           </Select>
