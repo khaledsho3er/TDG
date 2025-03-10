@@ -73,7 +73,7 @@ const TagsTable = () => {
         <tbody>
           {tags.map((tag) => (
             <tr key={tag._id}>
-              <td>{tag._id}</td>
+              <td>{tag.id}</td>
               <td>
                 <input
                   type="text"
@@ -81,6 +81,7 @@ const TagsTable = () => {
                   onChange={(e) =>
                     handleEditTag(tag._id, { ...tag, name: e.target.value })
                   }
+                  readOnly
                 />
               </td>
               <td>
