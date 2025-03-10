@@ -198,7 +198,7 @@ const TagsTable = () => {
             Cancel
           </Button>
           <Button onClick={handleSaveTag} color="primary">
-            Save
+            Add{" "}
           </Button>
         </DialogActions>
       </Dialog>
@@ -207,7 +207,14 @@ const TagsTable = () => {
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Edit Tag</DialogTitle>
         <DialogContent>
-          <p>Tag Name: {selectedTag?.name}</p>
+          <label style={{ display: "block" }}>Tag Name:</label>
+          <TextField
+            label="Tag Name"
+            fullWidth
+            value={tagName}
+            onChange={(e) => setTagName(e.target.value)}
+            margin="dense"
+          />
           <label style={{ display: "block", marginTop: "10px" }}>
             Category:
           </label>
@@ -227,7 +234,7 @@ const TagsTable = () => {
           <Button onClick={handleCloseDialog} color="secondary">
             Cancel
           </Button>
-          <Button color="primary">Save</Button>
+          <Button color="primary">Update</Button>
         </DialogActions>
       </Dialog>
     </div>
