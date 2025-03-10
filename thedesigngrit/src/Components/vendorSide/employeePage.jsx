@@ -292,7 +292,7 @@ const EmployeePage = () => {
                     className="requestInfo-submit-button"
                     style={{ width: "15%" }}
                   >
-                    Save Changes
+                    Edit Employee
                   </button>
                   <button
                     type="button"
@@ -300,7 +300,7 @@ const EmployeePage = () => {
                     className="requestInfo-submit-button"
                     style={{ backgroundColor: "#DC143C", width: "15%" }}
                   >
-                    Delete Vendor
+                    Delete Employee
                   </button>
                 </div>
               </form>

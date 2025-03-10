@@ -137,7 +137,7 @@ const VendorSignup = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle style={{ fontWeight: "Bold", fontFamily: "Horizon" }}>
-        Add New Vendor
+        Add New Employee
       </DialogTitle>
       <DialogContent>
         <Typography fontFamily={"Montserrat"}>

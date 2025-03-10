@@ -4,6 +4,22 @@ import { TiDeleteOutline } from "react-icons/ti"; // Import the delete icon
 import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
+
+const tagOptions = {
+  Color: ["Red", "Blue", "Green", "Black", "White"],
+  Shape: ["Round", "Square", "Rectangle", "Oval"],
+  Size: ["Small", "Medium", "Large", "Extra Large"],
+  Material: ["Wood", "Metal", "Plastic", "Glass"],
+  Style: ["Modern", "Classic", "Minimalist", "Vintage"],
+  Finish: ["Glossy", "Matte", "Textured"],
+  "Functionality/Special Features": [
+    "Foldable",
+    "Waterproof",
+    "Smart",
+    "Portable",
+  ],
+};
+
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
 
@@ -197,27 +213,53 @@ const AddProduct = () => {
     }
   };
 
-  // Handle adding new tags
+  // // Handle adding new tags
+  // const handleAddTag = (e) => {
+  //   if (e.key === "Enter" && e.target.value.trim() !== "") {
+  //     const newTag = e.target.value.trim();
+  //     setTags([...tags, newTag]); // Update local tags state
+  //     setFormData({
+  //       ...formData,
+  //       tags: [...formData.tags, newTag], // Update formData tags
+  //     });
+  //     e.target.value = ""; // Clear input
+  //   }
+  // };
+
+  // // Function to remove a tag by index
+  // const handleRemoveTag = (index) => {
+  //   const newTags = tags.filter((_, i) => i !== index);
+  //   setTags(newTags); // Update local tags state
+  //   setFormData({
+  //     ...formData,
+  //     tags: newTags, // Update formData tags
+  //   });
+  // };
+  // Handles adding a tag from the input field (Press Enter)
   const handleAddTag = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
-      setTags([...tags, newTag]); // Update local tags state
-      setFormData({
-        ...formData,
-        tags: [...formData.tags, newTag], // Update formData tags
-      });
+      if (!tags.includes(newTag)) {
+        setTags([...tags, newTag]); // Update local state
+        setFormData({ ...formData, tags: [...formData.tags, newTag] }); // Update formData
+      }
       e.target.value = ""; // Clear input
+    }
+  };
+
+  // Handles adding a tag from a dropdown
+  const handleSelectTag = (category, value) => {
+    if (value && !tags.includes(value)) {
+      setTags([...tags, value]); // Update local state
+      setFormData({ ...formData, tags: [...formData.tags, value] }); // Update formData
     }
   };
 
   // Function to remove a tag by index
   const handleRemoveTag = (index) => {
     const newTags = tags.filter((_, i) => i !== index);
-    setTags(newTags); // Update local tags state
-    setFormData({
-      ...formData,
-      tags: newTags, // Update formData tags
-    });
+    setTags(newTags); // Update local state
+    setFormData({ ...formData, tags: newTags }); // Update formData
   };
 
   // Handle customization options change
@@ -504,6 +546,28 @@ const AddProduct = () => {
               {/* Tags Input */}
               <div className="form-group">
                 <label>Tag</label>
+
+                {/* Dropdowns for predefined tag categories */}
+                <div className="dropdown-container">
+                  {Object.entries(tagOptions).map(([category, options]) => (
+                    <select
+                      key={category}
+                      onChange={(e) => {
+                        handleSelectTag(category, e.target.value);
+                        e.target.value = ""; // Reset dropdown after selection
+                      }}
+                    >
+                      <option value="">{`Select ${category}`}</option>
+                      {options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ))}
+                </div>
+
+                {/* Input field for custom tags */}
                 <input
                   type="text"
                   name="tags"
@@ -511,6 +575,8 @@ const AddProduct = () => {
                   onKeyDown={handleAddTag}
                   className="tag-input"
                 />
+
+                {/* Display Selected Tags */}
                 <br />
                 <div className="tags">
                   {tags.map((tag, index) => (
@@ -521,8 +587,7 @@ const AddProduct = () => {
                         onClick={() => handleRemoveTag(index)}
                         className="remove-tag-btn"
                       >
-                        <TiDeleteOutline size={18} />{" "}
-                        {/* TiDeleteOutline icon */}
+                        <TiDeleteOutline size={18} />
                       </button>
                     </span>
                   ))}
