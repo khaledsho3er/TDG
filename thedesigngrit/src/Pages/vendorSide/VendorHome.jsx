@@ -25,7 +25,7 @@ const VendorHome = () => {
   console.log("vendor in VendorHome:", vendor);
   const [activePage, setActivePage] = useState("dashboard");
 
-  // Object for rendering content based on active page
+  // Object for rendering content based on activepage
   const pageComponents = {
     dashboard: <DashboardVendor />,
     allProducts: <ProductsPageVendor setActivePage={setActivePage} />,
