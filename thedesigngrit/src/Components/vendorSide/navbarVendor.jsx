@@ -77,7 +77,7 @@ const NavbarVendor = ({ setActivePage }) => {
       <div className="navbar-actions-vendor">
         <FaBell className="icon-vendor-bar" onClick={toggleOverlay} />
         <select onChange={(e) => e.target.value === "Logout" && handleLogout()}>
-          <option>{vendor?.firstName}</option>
+          <option>Profile</option>
           <option>Logout</option>
         </select>
         {isOverlayOpen && (
