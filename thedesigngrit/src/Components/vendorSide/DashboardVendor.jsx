@@ -77,6 +77,7 @@ const DashboardVendor = () => {
           `https://tdg-db.onrender.com/api/orders/order/statistics/${vendor.brandId}`
         );
         const data = await response.json();
+        console.log("Fetched Orders:", data);
         setTotalOrders(data.totalOrders);
         setPercentageChange(data.percentageChange);
         setActiveOrders(data.activeOrders);
