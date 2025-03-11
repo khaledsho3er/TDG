@@ -4383,12 +4383,17 @@ iframe {
   height: 400px;
   font-family: "Montserrat";
 }
-
+.carousel-header {
+  text-align: center;
+}
+.carousel-divider {
+  border-top: 1px solid #2d2d2d;
+  margin: 10px 0;
+}
 .carousel-contact-section {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-bottom: 1px solid #ddd;
   padding-bottom: 12px;
   color: #2d2d2d;
 }
@@ -4434,6 +4439,7 @@ iframe {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   position: absolute;
+  height: 117px;
 }
 
 .carousel-item.active {
@@ -4442,28 +4448,34 @@ iframe {
 }
 
 .carousel-product-image {
-  width: 100%;
+  width: 176px;
+  height: 162px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
 .carousel-product-info {
   text-align: center;
   color: #333;
+  font-family: "Montserrat";
 }
 
 .carousel-product-details {
   font-size: 12px;
   color: #777;
+  font-family: "Montserrat";
 }
 
 .carousel-product-name {
   font-size: 16px;
   font-weight: bold;
+  font-family: "Montserrat";
 }
 
 .carousel-product-price {
   font-size: 14px;
   color: #555;
+  font-family: "Montserrat";
 }
 
 .carousel-button {
@@ -4476,6 +4488,9 @@ iframe {
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  width: auto;
+  height: 35px;
+  margin: auto;
 }
 
 .carousel-button:hover {

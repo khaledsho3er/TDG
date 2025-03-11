@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { FaPhone, FaQuoteRight, FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
+import { IoNewspaperOutline } from "react-icons/io5";
+import { LuPhone } from "react-icons/lu";
+
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 
 const products = [
@@ -42,13 +45,13 @@ export default function BrandCursol() {
           href="mailto:info@thedesigngrit.com?subject=Request a quotation"
           className="contact-link"
         >
-          <FaQuoteRight /> Request a quotation
+          <IoNewspaperOutline /> Request a quotation
         </a>
-        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+        <hr className="carousel-divider" />
         <a href="tel:+390805543553" className="contact-link">
-          <FaPhone /> Call us at +39 080 554 3553
+          <LuPhone /> Call us at +39 080 554 3553
         </a>
-        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+        <hr className="carousel-divider" />
         <a
           href="https://wa.me/393664455454"
           className="contact-link"
