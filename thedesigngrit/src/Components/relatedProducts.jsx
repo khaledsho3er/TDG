@@ -1,123 +1,60 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // ✅ For navigation
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import axios from "axios";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    fetchRelatedProducts();
+    const fetchRelatedProducts = async () => {
+      try {
+        const response =
+          await axios.get(`https://tdg-db.onrender.com/api/related-products/related/${productId}
+`);
+        setRelatedProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching related products:", error);
+      }
+    };
+
+    if (productId) fetchRelatedProducts();
   }, [productId]);
 
-  const fetchRelatedProducts = async () => {
-    try {
-      const response = await axios.get(
-        `https://tdg-db.onrender.com/api/related-products/related/${productId}`
-      );
-      setRelatedProducts(response.data);
-    } catch (error) {
-      console.error("Error fetching related products:", error);
-    }
-  };
-
   return (
-    <div
-      style={{
-        position: "relative",
-        padding: "20px",
-        maxWidth: "900px",
-        margin: "auto",
-      }}
-    >
-      <h2
-        style={{ textAlign: "center", color: "#2d2d2d", marginBottom: "20px" }}
-      >
-        Related Products
-      </h2>
-
+    <div className="related-products-container">
       <Swiper
         modules={[Navigation]}
         slidesPerView={3}
-        spaceBetween={15}
-        navigation={{ nextEl: ".next", prevEl: ".prev" }}
+        spaceBetween={20}
+        navigation
         loop={true}
+        className="related-swiper"
       >
         {relatedProducts.map((product) => (
           <SwiperSlide key={product._id}>
-            <div
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                overflow: "hidden",
-                textAlign: "center",
-                backgroundColor: "#fff",
-                padding: "10px",
-                boxShadow: "0px 4px 8px rgba(0,0,0,0.1)",
-              }}
+            <Link
+              to={`/product/${product._id}`}
+              className="related-product-card"
             >
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                src={product.mainImage}
                 alt={product.name}
-                style={{
-                  width: "100%",
-                  height: "150px",
-                  objectFit: "cover",
-                  borderRadius: "5px",
-                }}
+                className="related-img"
               />
-              <h4 style={{ margin: "10px 0", fontSize: "16px", color: "#333" }}>
-                {product.name}
-              </h4>
-              <p style={{ fontWeight: "bold", color: "#6a8452" }}>
-                {product.price}E£
-              </p>
-            </div>
+              <div className="related-info">
+                <p className="related-category">{product.category}</p>
+                <h3 className="related-name">{product.name}</h3>
+                <p className="related-description">{product.description}</p>
+                <p className="related-price">${product.price}</p>
+              </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* Navigation Buttons */}
-      <button
-        className="prev"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "-40px",
-          transform: "translateY(-50%)",
-          background: "#6a8452",
-          color: "#fff",
-          border: "none",
-          borderRadius: "50%",
-          padding: "10px",
-          cursor: "pointer",
-          zIndex: "10",
-        }}
-      >
-        <FaArrowLeft size={20} />
-      </button>
-
-      <button
-        className="next"
-        style={{
-          position: "absolute",
-          top: "50%",
-          right: "-40px",
-          transform: "translateY(-50%)",
-          background: "#6a8452",
-          color: "#fff",
-          border: "none",
-          borderRadius: "50%",
-          padding: "10px",
-          cursor: "pointer",
-          zIndex: "10",
-        }}
-      >
-        <FaArrowRight size={20} />
-      </button>
     </div>
   );
 };

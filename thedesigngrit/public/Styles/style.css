@@ -4266,7 +4266,7 @@ iframe {
   font-size: larger;
   margin-bottom: 2rem;
 }
-/* Related Products Section */
+/* Related Products Section
 .related-products {
   margin-top: 30px;
 }
@@ -4290,6 +4290,69 @@ iframe {
 
 .related-product-price {
   color: #777;
+} */
+.related-products-container {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+}
+
+.related-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.related-swiper {
+  padding: 10px 0;
+}
+
+.related-product-card {
+  display: block;
+  background: #000;
+  color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.related-product-card:hover {
+  transform: scale(1.05);
+}
+
+.related-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+
+.related-info {
+  padding: 15px;
+  text-align: left;
+}
+
+.related-category {
+  font-size: 12px;
+  color: gray;
+}
+
+.related-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.related-description {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.related-price {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 5px;
 }
 
 /*careers page*/
