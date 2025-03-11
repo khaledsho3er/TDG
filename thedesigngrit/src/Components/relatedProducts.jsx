@@ -62,15 +62,19 @@ const RelatedProducts = ({ productId }) => {
                 to={`/product/${product._id}`}
                 className="related-product-card"
               >
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                  alt={product.name}
-                  className="related-img"
-                />
-                <div className="related-info">
-                  <p className="related-category">{categoryName}</p>
-                  <h3 className="related-name">{product.name}</h3>
-                  <p className="related-price">{product.price}E£</p>
+                <div className="related-product-card">
+                  <div className="related-product-image-container">
+                    <img
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                      alt={product.name}
+                      className="related-img"
+                    />
+                  </div>
+                  <div className="related-info">
+                    <p className="related-category">{categoryName}</p>
+                    <h3 className="related-name">{product.name}</h3>
+                    <p className="related-price">{product.price}E£</p>
+                  </div>
                 </div>
               </Link>
             </SwiperSlide>

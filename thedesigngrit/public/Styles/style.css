@@ -4292,68 +4292,83 @@ iframe {
   color: #777;
 } */
 .related-products-container {
-  width: 90%;
-  margin: auto;
-  text-align: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px 16px;
 }
 
-.related-title {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.related-products-grid {
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
+.related-products h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 32px;
 }
 
 .related-product-card {
-  width: 32%;
-  background: white;
-  border-radius: 10px;
-  text-align: left;
-  text-decoration: none;
-  color: black;
-  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-.related-product-card:hover {
-  transform: scale(1.05);
+.related-product-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
 .related-img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 256px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.related-product-card:hover .related-img{
+  transform: scale(1.05);
 }
 
 .related-info {
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .related-category {
-  font-size: 14px;
-  color: gray;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
 }
 
 .related-name {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.related-description {
-  font-size: 14px;
-  color: gray;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .related-price {
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 5px;
+  color: #111827;
+  margin: 0;
 }
+
+/* Swiper customization */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000 !important;
+  background: white;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 20px !important;
+}
+
+.swiper-button-disabled {
+  opacity: 0.5 !important;
+}
+
 /*careers page*/
 .careers-page {
   font-family: Montserrat;
