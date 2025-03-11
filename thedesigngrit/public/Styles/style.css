@@ -4292,68 +4292,91 @@ iframe {
   color: #777;
 } */
 .related-products-container {
-  width: 80%;
-  margin: auto;
-  text-align: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.related-title {
+.related-products-title {
   font-size: 24px;
-  font-weight: 800;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: #333;
   text-transform: uppercase;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
 .related-swiper {
-  padding: 10px 0;
+  width: 100%;
 }
 
 .related-product-card {
-  display: block;
-  color: #2d2d2d;
-  border-radius: 15px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
-  transition: transform 0.3s ease-in-out;
+  color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
 .related-product-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+}
+
+.related-product-image-container {
+  width: 100%;
+  height: 200px; /* Fixed height to match the image aspect ratio */
+  overflow: hidden;
 }
 
 .related-img {
   width: 100%;
-  height: 250px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 10px 10px 0 0;
 }
 
 .related-info {
   padding: 15px;
-  text-align: left;
-}
-
-.related-category {
-  font-size: 12px;
-  color: gray;
-}
-
-.related-name {
-  font-size: 18px;
-  font-weight: 700;
+  text-align: center;
 }
 
 .related-description {
   font-size: 14px;
-  color: #ccc;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+.related-category {
+  font-size: 12px;
+  color: #999;
+  margin: 5px 0 0;
+  text-transform: uppercase;
 }
 
 .related-price {
-  font-size: 18px;
-  font-weight: 700;
-  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10px;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .related-swiper {
+    slidesperview: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .related-swiper {
+    slidesperview: 1;
+  }
+}
 /*careers page*/
 .careers-page {
   font-family: Montserrat;
