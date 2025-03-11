@@ -14,23 +14,16 @@ import { useCart } from "../Context/cartcontext";
 import LoadingScreen from "./loadingScreen";
 import { UserContext } from "../utils/userContext";
 import RelatedProducts from "../Components/relatedProducts";
+import BrandCursol from "../Components/brandCursol";
 function ProductPage() {
-  // const [setShowDropdown] = useState(false);
-  // //const [showPopup, setShowPopup] = useState(false);
-  // const [showViewInStorePopup, setShowViewInStorePopup] = useState(false); // State for ViewInStorePopup
-  // const [setShowFirstPopup] = useState(false); // State for Request Quote popup
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
-  // const handleCloseRequestInfo = () => {
-  //   setIsRequestInfoOpen(false);
-  // };
+
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-
   const [product, setProduct] = useState(null);
-
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   const [selectedColor, setSelectedColor] = useState(null);
@@ -45,18 +38,11 @@ function ProductPage() {
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewerName, setReviewerName] = useState("");
-  // Handle opening the popup
-  // const handlePopupOpen = () => {
-  //   setShowPopup(true);
-  // };
 
-  // Handle closing the popup
-  // const handlePopupClose = () => {
-  //   setShowPopup(false);
-  // };
   // Fetch product details by ID
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/products/getsingle/${id}`
@@ -92,8 +78,10 @@ function ProductPage() {
         setError(error.message);
       }
     };
+
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
+
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />; // Show loading screen while fetching product
   if (!product) return <div>Product not found</div>;
   const handleImageClick = (index) => {
@@ -144,11 +132,6 @@ function ProductPage() {
   };
 
   const handleAddToCart = (product) => {
-    // const compositeKey = `${product.id} -  ${selectedColor || "default"}-${
-    //   selectedSize || "default"
-    // }`;
-    // console.log("Composite Key:", compositeKey); // Debug log
-
     addToCart({
       id: product._id, // Use composite key as the unique identifier
       name: product.name,
@@ -485,6 +468,9 @@ function ProductPage() {
                   </div>
                 )
               )}
+            </div>
+            <div className="brand-cursol">
+              <BrandCursol />
             </div>
           </div>
         </div>
