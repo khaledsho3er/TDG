@@ -37,9 +37,6 @@ export default function BrandCursol() {
   return (
     // carsoul in product page
     <div className="carousel-container">
-      <div className="carousel-header">
-        <img src="/Assets/PartnersLogos/istikbal.webp" />
-      </div>
       <div className="carousel-contact-section">
         <a
           href="mailto:info@thedesigngrit.com?subject=Request a quotation"
@@ -73,7 +70,7 @@ export default function BrandCursol() {
               <img
                 src={product.image}
                 alt={product.name}
-                className="product-image"
+                className="carousel-product-image"
               />
               <div className="carousel-product-info">
                 <h3 className="carousel-product-name">{product.name}</h3>

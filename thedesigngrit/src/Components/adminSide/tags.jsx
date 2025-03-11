@@ -156,6 +156,15 @@ const TagsTable = () => {
                           >
                             Edit
                           </button>
+                          <button
+                            onClick={() => handleEditClick(tag)}
+                            style={{
+                              color: "#e3e3e3",
+                              backgroundColor: "#6a8452",
+                            }}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))

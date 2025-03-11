@@ -4423,7 +4423,7 @@ iframe {
   position: relative;
   margin-top: 16px;
   overflow: hidden;
-  height: 160px;
+  height: 300px;
   align-items: center;
   display: flex;
   flex-direction: column;
