@@ -41,7 +41,7 @@ const RelatedProducts = ({ productId }) => {
               className="related-product-card"
             >
               <img
-                src={product.mainImage}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                 alt={product.name}
                 className="related-img"
               />
