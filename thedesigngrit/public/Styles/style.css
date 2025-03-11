@@ -4291,6 +4291,7 @@ iframe {
 .related-product-price {
   color: #777;
 } */
+
 .related-products-container {
   max-width: 100%;
   padding: 48px 16px;
@@ -4307,6 +4308,8 @@ iframe {
 
 .related-product-card {
   cursor: pointer;
+  text-decoration: none; /* Remove underline from the link */
+  color: inherit; /* Inherit the container's text color (#2d2d2d) */
 }
 
 .related-product-image-container {
@@ -4326,31 +4329,30 @@ iframe {
 .related-product-card:hover .related-img {
   transform: scale(1.05);
 }
-
 .related-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  padding: 10px;
 }
 
 .related-category {
-  font-size: 0.875rem;
-  color: #ccc;
-  margin: 0;
+  font-size: 14px;
+  color: gray;
 }
 
 .related-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin: 0;
-  color: #2d2d2d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.related-description {
+  font-size: 14px;
+  color: gray;
 }
 
 .related-price {
-  color: #2d2d2d;
-  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
 }
-
 /* Swiper customization */
 .swiper-button-next,
 .swiper-button-prev {
