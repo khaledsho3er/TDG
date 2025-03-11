@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -20,10 +21,24 @@ const RelatedProducts = ({ productId }) => {
         console.error("Error fetching related products:", error);
       }
     };
-
     if (productId) fetchRelatedProducts();
   }, [productId]);
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "https://tdg-db.onrender.com/api/categories/categories"
+        );
+        const data = await response.json();
+        setCategories(data); // Store all categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
+    fetchCategories();
+  }, []);
   return (
     <div className="related-products-container">
       <Swiper
@@ -34,26 +49,33 @@ const RelatedProducts = ({ productId }) => {
         loop={true}
         className="related-swiper"
       >
-        {relatedProducts.map((product) => (
-          <SwiperSlide key={product._id}>
-            <Link
-              to={`/product/${product._id}`}
-              className="related-product-card"
-            >
-              <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                alt={product.name}
-                className="related-img"
-              />
-              <div className="related-info">
-                <p className="related-category">{product.category}</p>
-                <h3 className="related-name">{product.name}</h3>
-                <p className="related-description">{product.description}</p>
-                <p className="related-price">${product.price}</p>
-              </div>
-            </Link>
-          </SwiperSlide>
-        ))}
+        {relatedProducts.map((product) => {
+          // Find category name based on product's categoryId
+          const category = categories.find(
+            (cat) => cat._id === product.categoryId
+          );
+          const categoryName = category ? category.name : "Unknown Category";
+
+          return (
+            <SwiperSlide key={product._id}>
+              <Link
+                to={`/product/${product._id}`}
+                className="related-product-card"
+              >
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                  alt={product.name}
+                  className="related-img"
+                />
+                <div className="related-info">
+                  <p className="related-category">{categoryName}</p>
+                  <h3 className="related-name">{product.name}</h3>
+                  <p className="related-price">{product.price}E£</p>
+                </div>
+              </Link>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
