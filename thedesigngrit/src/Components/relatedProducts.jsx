@@ -50,7 +50,7 @@ const RelatedProducts = ({ productId }) => {
         className="related-swiper"
       >
         {relatedProducts.map((product) => {
-          // Find category name based on product's categoryId
+          // Find category name based on product's cateory
           const category = categories.find(
             (cat) => cat._id === product.categoryId
           );
