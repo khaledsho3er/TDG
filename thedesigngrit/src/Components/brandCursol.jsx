@@ -6,17 +6,17 @@ const products = [
   {
     name: "Sofa",
     price: "LE 49.00",
-    image: "https://source.unsplash.com/200x200/?sofa",
+    image: "/Assets/seatersofa.webp",
   },
   {
     name: "Chair",
     price: "LE 49.00",
-    image: "https://source.unsplash.com/200x200/?chair",
+    image: "/Assets/sofabrown.webp",
   },
   {
     name: "Couch",
     price: "LE 49.00",
-    image: "https://source.unsplash.com/200x200/?couch",
+    image: "/Assets/prodImg1.webp",
   },
 ];
 
