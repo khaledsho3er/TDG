@@ -32,51 +32,49 @@ export default function BrandCursol() {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto bg-white shadow-lg rounded-lg">
-      <div className="flex flex-col gap-2 border-b pb-4">
-        <button className="flex items-center gap-2 text-gray-700 font-medium">
+    <div className="carousel-container">
+      <div className="carousel-contact-section">
+        <button className="contact-button">
           <FaQuoteRight /> Request a quotation
         </button>
-        <button className="flex items-center gap-2 text-gray-700 font-medium">
+        <button className="carousel-contact-button">
           <FaPhone /> Call us at +39 080 554 3553
         </button>
-        <button className="flex items-center gap-2 text-gray-700 font-medium">
+        <button className="carousel-contact-button">
           <FaWhatsapp /> Write to us or order on Whatsapp
         </button>
       </div>
-      <div className="relative mt-4">
-        <div className="flex items-center overflow-hidden">
+      <div className="carousel">
+        <div className="carousel-wrapper">
           {products.map((product, index) => (
             <div
               key={index}
-              className={`absolute w-full transition-opacity duration-500 ease-in-out ${
-                index === currentIndex ? "opacity-100" : "opacity-0"
+              className={`carousel-item ${
+                index === currentIndex ? "active" : ""
               }`}
             >
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full rounded-lg"
+                className="product-image"
               />
-              <div className="mt-2 text-center text-gray-800">
-                <p className="text-sm">Min. 250 units · Delivery: 2 weeks</p>
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-gray-600">from {product.price} per unit</p>
+              <div className="carousel-product-info">
+                <p className="carousel-product-details">
+                  Min. 250 units · Delivery: 2 weeks
+                </p>
+                <h3 className="carousel-product-name">{product.name}</h3>
+                <p className="carousel-product-price">
+                  from {product.price} per unit
+                </p>
               </div>
             </div>
           ))}
         </div>
-        <button
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-          onClick={prevSlide}
-        >
-          <HiOutlineChevronLeft />
+        <button className="carousel-button left" onClick={prevSlide}>
+          <ChevronLeft />
         </button>
-        <button
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
-          onClick={nextSlide}
-        >
-          <HiOutlineChevronRight />
+        <button className="carousel-button right" onClick={nextSlide}>
+          <ChevronRight />
         </button>
       </div>
     </div>
