@@ -71,10 +71,10 @@ export default function BrandCursol() {
           ))}
         </div>
         <button className="carousel-button left" onClick={prevSlide}>
-          <ChevronLeft />
+          <HiOutlineChevronLeft />
         </button>
         <button className="carousel-button right" onClick={nextSlide}>
-          <ChevronRight />
+          <HiOutlineChevronRight />
         </button>
       </div>
     </div>
