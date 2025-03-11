@@ -32,6 +32,7 @@ export default function BrandCursol() {
   };
 
   return (
+    // carsoul in product page
     <div className="carousel-container">
       <div className="carousel-header">
         <img src="/Assets/PartnersLogos/istikbal.webp" />
