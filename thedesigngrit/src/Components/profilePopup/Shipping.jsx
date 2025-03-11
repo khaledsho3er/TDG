@@ -144,21 +144,23 @@ const ShippingInfoPopup = () => {
             marginBottom: "15px",
           }}
         >
-          <label
-            style={{
-              marginLeft: "auto",
-              display: "block",
-              padding: "5px",
-              border: addr.isDefault ? "1px solid #6c7c59" : "1px solid #ccc",
-              backgroundColor: addr.isDefault ? "#6c7c59" : "transparent",
-              color: addr.isDefault ? "#fff" : "#2d2d2d",
-              borderRadius: "4px",
-              textAlign: "center",
-              width: "fit-content",
-            }}
-          >
-            {addr.isDefault ? "Default" : "Not Default"}
-          </label>
+          {addr.isDefault === "Default" && (
+            <label
+              style={{
+                marginLeft: "auto",
+                display: "block",
+                padding: "5px",
+                border: "1px solid #6c7c59",
+                backgroundColor: "#6c7c59",
+                color: "#fff",
+                borderRadius: "4px",
+                textAlign: "center",
+                width: "fit-content",
+              }}
+            >
+              Default
+            </label>
+          )}
           <div className="profile-form-field" style={{ width: "48%" }}>
             <label>Address 1:</label>
             <p>{addr.address1}</p>
