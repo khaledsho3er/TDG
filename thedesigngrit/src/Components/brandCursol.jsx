@@ -34,15 +34,23 @@ export default function BrandCursol() {
   return (
     <div className="carousel-container">
       <div className="carousel-contact-section">
-        <button className="contact-button">
+        <a
+          href="mailto:info@thedesigngrit.com?subject=Request a quotation"
+          className="contact-link"
+        >
           <FaQuoteRight /> Request a quotation
-        </button>
-        <button className="carousel-contact-button">
+        </a>
+        <a href="tel:+390805543553" className="contact-link">
           <FaPhone /> Call us at +39 080 554 3553
-        </button>
-        <button className="carousel-contact-button">
+        </a>
+        <a
+          href="https://wa.me/393664455454"
+          className="contact-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaWhatsapp /> Write to us or order on Whatsapp
-        </button>
+        </a>
       </div>
       <div className="carousel">
         <div className="carousel-wrapper">
@@ -59,22 +67,17 @@ export default function BrandCursol() {
                 className="product-image"
               />
               <div className="carousel-product-info">
-                <p className="carousel-product-details">
-                  Min. 250 units · Delivery: 2 weeks
-                </p>
                 <h3 className="carousel-product-name">{product.name}</h3>
-                <p className="carousel-product-price">
-                  from {product.price} per unit
-                </p>
+                <p className="carousel-product-price">{product.price}E£</p>
               </div>
             </div>
           ))}
         </div>
         <button className="carousel-button left" onClick={prevSlide}>
-          <HiOutlineChevronLeft />
+          <HiOutlineChevronLeft color="#2d2d2d" />
         </button>
         <button className="carousel-button right" onClick={nextSlide}>
-          <HiOutlineChevronRight />
+          <HiOutlineChevronRight color="#2d2d2d" />
         </button>
       </div>
     </div>
