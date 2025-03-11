@@ -13,7 +13,7 @@ import Footer from "../Components/Footer";
 import { useCart } from "../Context/cartcontext";
 import LoadingScreen from "./loadingScreen";
 import { UserContext } from "../utils/userContext";
-import RelatedProducts from "../Components/relatedProducts";
+import RelatedProducts from "../Components/relatedProduct";
 function ProductPage() {
   // const [setShowDropdown] = useState(false);
   // //const [showPopup, setShowPopup] = useState(false);
@@ -519,7 +519,8 @@ function ProductPage() {
         ></hr>
         <div>
           <h2>Related Products</h2>
-          <RelatedProducts productId={product._id} />
+          {/* <RelatedProducts productId={product._id} /> */}
+          <RelatedProducts />
         </div>
         <div className="reviews-section">
           <div className="reviews-header">

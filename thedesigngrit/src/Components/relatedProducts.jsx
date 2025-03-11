@@ -60,7 +60,7 @@ const RelatedProducts = ({ productId }) => {
               }}
             >
               <img
-                src={product.mainImage}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                 alt={product.name}
                 style={{
                   width: "100%",
@@ -73,7 +73,7 @@ const RelatedProducts = ({ productId }) => {
                 {product.name}
               </h4>
               <p style={{ fontWeight: "bold", color: "#6a8452" }}>
-                ${product.price}
+                {product.price}E£
               </p>
             </div>
           </SwiperSlide>
