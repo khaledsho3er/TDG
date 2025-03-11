@@ -16,7 +16,7 @@ const RelatedProducts = ({ productId }) => {
   const fetchRelatedProducts = async () => {
     try {
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/products/related/${productId}`
+        `https://tdg-db.onrender.com/api/related-products/related/${productId}`
       );
       setRelatedProducts(response.data);
     } catch (error) {
