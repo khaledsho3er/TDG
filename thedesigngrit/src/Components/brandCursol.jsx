@@ -33,6 +33,9 @@ export default function BrandCursol() {
 
   return (
     <div className="carousel-container">
+      <div className="carousel-header">
+        <img src="/Assets/PartnersLogos/istikbal.webp" />
+      </div>
       <div className="carousel-contact-section">
         <a
           href="mailto:info@thedesigngrit.com?subject=Request a quotation"
@@ -40,9 +43,11 @@ export default function BrandCursol() {
         >
           <FaQuoteRight /> Request a quotation
         </a>
+        <hr style={{ margin: "10px 0", color: "#ddd" }} />
         <a href="tel:+390805543553" className="contact-link">
           <FaPhone /> Call us at +39 080 554 3553
         </a>
+        <hr style={{ margin: "10px 0", color: "#ddd" }} />
         <a
           href="https://wa.me/393664455454"
           className="contact-link"
