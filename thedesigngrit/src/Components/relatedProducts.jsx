@@ -73,7 +73,7 @@ const RelatedProducts = ({ productId }) => {
                   <div className="related-info">
                     <p className="related-category">{categoryName}</p>
                     <h3 className="related-name">{product.name}</h3>
-                    <p className="related-price">{product.price}E£</p>
+                    <p className="related-price">{product.price} E£</p>
                   </div>
                 </div>
               </Link>

@@ -4292,9 +4292,10 @@ iframe {
   color: #777;
 } */
 .related-products-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
+  max-width: 100%;
   padding: 48px 16px;
+  text-decoration: none;
+  color: #2d2d2d;
 }
 
 .related-products h2 {
@@ -4322,7 +4323,7 @@ iframe {
   transition: transform 0.3s ease;
 }
 
-.related-product-card:hover .related-img{
+.related-product-card:hover .related-img {
   transform: scale(1.05);
 }
 
@@ -4334,7 +4335,7 @@ iframe {
 
 .related-category {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #ccc;
   margin: 0;
 }
 
@@ -4342,10 +4343,11 @@ iframe {
   font-size: 1.125rem;
   font-weight: 600;
   margin: 0;
+  color: #2d2d2d;
 }
 
 .related-price {
-  color: #111827;
+  color: #2d2d2d;
   margin: 0;
 }
 
