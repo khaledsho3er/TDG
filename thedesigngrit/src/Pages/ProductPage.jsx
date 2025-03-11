@@ -42,7 +42,6 @@ function ProductPage() {
   // Fetch product details by ID
   useEffect(() => {
     const fetchProduct = async () => {
-      setLoading(true);
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/products/getsingle/${id}`
