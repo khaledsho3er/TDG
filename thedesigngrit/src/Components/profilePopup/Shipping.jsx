@@ -90,6 +90,27 @@ const ShippingInfoPopup = () => {
   const handleUpdate = () => {
     setDialogOpen(true);
   };
+  const handleDeleteAddress = async (addressId) => {
+    if (!window.confirm("Are you sure you want to delete this address?"))
+      return;
+
+    try {
+      const response = await axios.delete(
+        `https://tdg-db.onrender.com/api/removeAddress/${userSession.id}/${addressId}`,
+        { withCredentials: true }
+      );
+
+      setUserData((prev) => ({
+        ...prev,
+        shipmentAddress: response.data.shipmentAddress, // Update UI with the latest address list
+      }));
+
+      alert("Address removed successfully!");
+    } catch (error) {
+      console.error("Error removing address:", error);
+      alert("Failed to remove address.");
+    }
+  };
 
   const handleConfirm = async () => {
     try {
@@ -188,6 +209,20 @@ const ShippingInfoPopup = () => {
             onClick={() => handleEditAddress(index)}
           >
             Edit
+          </button>
+          {/* Delete Button */}
+          <button
+            style={{
+              marginLeft: "10px",
+              backgroundColor: "red",
+              color: "white",
+              border: "none",
+              padding: "5px 10px",
+              cursor: "pointer",
+            }}
+            onClick={() => handleDeleteAddress(addr._id)}
+          >
+            Delete
           </button>
         </div>
       ))}
