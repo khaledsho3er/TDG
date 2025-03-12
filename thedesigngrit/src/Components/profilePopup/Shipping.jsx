@@ -268,14 +268,6 @@ const ShippingInfoPopup = () => {
             onChange={handleInputChange}
             margin="normal"
           />
-          <TextField
-            fullWidth
-            label="Postal Code"
-            name="postalCode"
-            value={newAddress.postalCode}
-            onChange={handleInputChange}
-            margin="normal"
-          />
           <Select
             options={countries}
             onChange={handleCountryChange}
@@ -284,6 +276,14 @@ const ShippingInfoPopup = () => {
             value={
               countries.find((c) => c.label === newAddress.country) || null
             }
+          />
+          <TextField
+            fullWidth
+            label="Postal Code"
+            name="postalCode"
+            value={newAddress.postalCode}
+            onChange={handleInputChange}
+            margin="normal"
           />
           <FormControlLabel
             control={
