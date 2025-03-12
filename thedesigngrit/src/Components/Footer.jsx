@@ -321,7 +321,7 @@ function Footer() {
           borderTop: "1px solid black",
           width: "100%",
           pt: 2,
-          gap: { xs: 3, md: 0 }, // Add spacing between components on mobile
+          gap: { xs: 3, md: 0 }, // Add spacing between components on mobile;
         }}
       >
         {/* Social Media + Location */}
