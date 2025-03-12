@@ -212,14 +212,8 @@ const ShippingInfoPopup = () => {
           </button>
           {/* Delete Button */}
           <button
-            style={{
-              marginLeft: "10px",
-              backgroundColor: "red",
-              color: "white",
-              border: "none",
-              padding: "5px 10px",
-              cursor: "pointer",
-            }}
+            style={{ marginLeft: "auto", display: "block" }}
+            className="submit-btn"
             onClick={() => handleDeleteAddress(addr._id)}
           >
             Delete
