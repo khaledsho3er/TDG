@@ -349,6 +349,17 @@ function Footer() {
           >
             © 2024 TheDesignGrit. All rights reserved.
           </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: { xs: "10px", md: "10px" },
+              mt: 1,
+            }}
+          >
+            Powered By
+            <strong>Young Productions Software House</strong>{" "}
+          </Typography>
         </Box>
 
         {/* Email */}
