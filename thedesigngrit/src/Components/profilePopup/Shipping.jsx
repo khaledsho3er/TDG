@@ -196,28 +196,39 @@ const ShippingInfoPopup = () => {
             <p>{addr.city}</p>
           </div>
           <div className="profile-form-field" style={{ width: "48%" }}>
-            <label>Postal Code:</label>
-            <p>{addr.postalCode}</p>
-          </div>
-          <div className="profile-form-field" style={{ width: "48%" }}>
             <label>Country:</label>
             <p>{addr.country}</p>
           </div>
-          <button
-            style={{ marginLeft: "auto", display: "block" }}
-            className="submit-btn"
-            onClick={() => handleEditAddress(index)}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Postal Code:</label>
+            <p>{addr.postalCode}</p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              gap: "10px",
+              alignItems: "center",
+            }}
           >
-            Edit
-          </button>
-          {/* Delete Button */}
-          <button
-            style={{ marginLeft: "auto", display: "block" }}
-            className="submit-btn"
-            onClick={() => handleDeleteAddress(addr._id)}
-          >
-            Delete
-          </button>
+            {/* Edit Button */}
+            <button
+              style={{ marginLeft: "auto", display: "block" }}
+              className="submit-btn"
+              onClick={() => handleEditAddress(index)}
+            >
+              Edit
+            </button>
+            {/* Delete Button */}
+            <button
+              style={{ marginLeft: "auto", display: "block" }}
+              className="submit-btn"
+              onClick={() => handleDeleteAddress(addr._id)}
+            >
+              Remove Address
+            </button>
+          </div>
         </div>
       ))}
       <button
