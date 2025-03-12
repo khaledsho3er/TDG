@@ -35,6 +35,7 @@ const AddProduct = () => {
   const [otherCustomization, setOtherCustomization] = useState(""); // Other customization details
   const [additionalCosts, setAdditionalCosts] = useState(""); // Additional costs selection
   const [costBreakdown, setCostBreakdown] = useState(""); // Cost breakdown for variable option
+  const [tagOptions, setTagOptions] = useState({}); // Store tags per category
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -236,6 +237,35 @@ const AddProduct = () => {
   //   });
   // };
   // Handles adding a tag from the input field (Press Enter)
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const categories = [
+          "Color",
+          "Shape",
+          "Size",
+          "Material",
+          "Style",
+          "Finish",
+          "Functionality",
+        ];
+
+        const fetchedTags = {};
+        for (const category of categories) {
+          const response = await axios.get(
+            `https://tdg-db.onrender.com/api/tags/tags/${category}`
+          );
+          fetchedTags[category] = response.data.map((tag) => tag.name);
+        }
+
+        setTagOptions(fetchedTags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+
+    fetchTags();
+  }, []);
   const handleAddTag = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
