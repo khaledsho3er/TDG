@@ -226,7 +226,7 @@ const ShippingInfoPopup = () => {
               className="submit-btn"
               onClick={() => handleDeleteAddress(addr._id)}
             >
-              Remove Address
+              Remove
             </button>
           </div>
         </div>
