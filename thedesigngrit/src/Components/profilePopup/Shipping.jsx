@@ -23,7 +23,9 @@ const ShippingInfoPopup = () => {
     isDefault: false,
   });
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const { userSession } = useContext(UserContext);
   const [countries] = useState(countryList().getData());
 
@@ -90,13 +92,14 @@ const ShippingInfoPopup = () => {
   const handleUpdate = () => {
     setDialogOpen(true);
   };
-  const handleDeleteAddress = async (addressId) => {
-    if (!window.confirm("Are you sure you want to delete this address?"))
-      return;
-
+  const handleDeleteAddress = (addressId) => {
+    setSelectedAddressId(addressId);
+    setDeleteDialogOpen(true);
+  };
+  const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://tdg-db.onrender.com/api/removeAddress/${userSession.id}/${addressId}`,
+        `https://tdg-db.onrender.com/api/removeAddress/${userSession.id}/${selectedAddressId}`,
         { withCredentials: true }
       );
 
@@ -110,8 +113,8 @@ const ShippingInfoPopup = () => {
       console.error("Error removing address:", error);
       alert("Failed to remove address.");
     }
+    setDeleteDialogOpen(false);
   };
-
   const handleConfirm = async () => {
     try {
       let updatedAddresses = [...userData.shipmentAddress];
@@ -139,6 +142,9 @@ const ShippingInfoPopup = () => {
       alert("Failed to update address.");
     }
     setDialogOpen(false);
+  };
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false);
   };
 
   const handleCancel = () => {
@@ -214,7 +220,7 @@ const ShippingInfoPopup = () => {
           >
             {/* Edit Button */}
             <button
-              style={{ marginLeft: "auto", display: "block" }}
+              style={{ display: "block" }}
               className="submit-btn"
               onClick={() => handleEditAddress(index)}
             >
@@ -222,7 +228,7 @@ const ShippingInfoPopup = () => {
             </button>
             {/* Delete Button */}
             <button
-              style={{ marginLeft: "auto", display: "block" }}
+              style={{ display: "block" }}
               className="submit-btn"
               onClick={() => handleDeleteAddress(addr._id)}
             >
@@ -356,6 +362,15 @@ const ShippingInfoPopup = () => {
           content="Are you sure you want to update your shipping information?"
           onConfirm={handleConfirm}
           onCancel={handleCancel}
+        />
+      </div>
+      <div style={{ position: "relative", zIndex: 9999 }}>
+        <ConfirmationDialog
+          open={deleteDialogOpen}
+          title="Confirm Delete"
+          content="Are you sure you want to delete this address?"
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
         />
       </div>
     </div>
