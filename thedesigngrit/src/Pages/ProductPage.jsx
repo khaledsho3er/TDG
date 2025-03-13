@@ -469,7 +469,7 @@ function ProductPage() {
               )}
             </div>
             <div className="brand-cursol">
-              <BrandCursol />
+              <BrandCursol brandId={product.brandId} />
             </div>
           </div>
         </div>
