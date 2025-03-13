@@ -101,9 +101,7 @@ export default function BrandCursol({ brandId }) {
                       ? product.name.split(" ").map((word, index) => (
                           <span key={index}>
                             {word}
-                            {index !== product.name.split(" ").length - 1 && (
-                              <br />
-                            )}
+                            {index === 3 && <br />}
                           </span>
                         ))
                       : "Unnamed Product"}
