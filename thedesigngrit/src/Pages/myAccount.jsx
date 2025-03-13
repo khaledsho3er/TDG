@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
 import TrackOrder from "./TrackOrder";
 import LoadingScreen from "./loadingScreen";
+import BillingInfo from "../Components/profilePopup/billingInfo";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -78,6 +79,7 @@ const MyAccount = () => {
     Password: <ResetPasswordForm />,
     // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,
+    billing: <BillingInfo />,
     wishlist: <WishlistPage />,
     // Render logout as a clickable word that performs the logout directly
     logout: (
