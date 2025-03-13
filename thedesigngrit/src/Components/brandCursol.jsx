@@ -15,7 +15,7 @@ export default function BrandCursol({ brandId }) {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId._id}`
         );
         const data = await response.json();
         setProducts(data.products.slice(0, 5));
