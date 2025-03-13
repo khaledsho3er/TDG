@@ -65,30 +65,27 @@ export default function BrandCursol({ brandId }) {
         </a>
       </div>
       <div className="carousel">
-        {products.length > 0 ? (
-          <div className="carousel-wrapper">
-            {products.map((product, index) => (
-              <div
-                key={product._id}
-                className={`carousel-item ${
-                  index === currentIndex ? "active" : ""
-                }`}
-              >
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                  alt={product.name}
-                  className="carousel-product-image"
-                />
-                <div className="carousel-product-info">
-                  <h3 className="carousel-product-name">{product.name}</h3>
-                  <p className="carousel-product-price">{product.price}E£</p>
-                </div>
+        <div className="carousel-wrapper">
+          {products.map((product, index) => (
+            <div
+              key={product._id}
+              className={`carousel-item ${
+                index === currentIndex ? "active" : ""
+              }`}
+            >
+              <img
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                alt={product.name}
+                className="carousel-product-image"
+              />
+              <div className="carousel-product-info">
+                <h3 className="carousel-product-name">{product.name}</h3>
+                <p className="carousel-product-price">{product.price}E£</p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading products...</p>
-        )}
+            </div>
+          ))}
+        </div>
+
         {products.length > 1 && (
           <>
             <button className="carousel-button left" onClick={prevSlide}>
