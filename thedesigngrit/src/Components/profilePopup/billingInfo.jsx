@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from "@mui/material";
 import BillingInfoPopup from "./BillingInfoPop";
 import ConfirmationDialog from "../confirmationMsg";
+import { UserContext } from "../../utils/userContext";
 
 const BillingInfo = () => {
-  const [savedCards, setSavedCards] = useState([
-    { id: 1, cardNumber: "4111111111111234", type: "Visa", isDefault: true },
-    {
-      id: 2,
-      cardNumber: "5500000000005678",
-      type: "Mastercard",
-      isDefault: false,
-    },
-  ]);
+  const [savedCards, setSavedCards] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [pendingDefaultCard, setPendingDefaultCard] = useState(null);
+  const { userSession } = useContext(UserContext);
+  const userId = userSession.id;
+  // Fetch saved cards from the API
+  useEffect(() => {
+    fetch(`https://tdg-db.onrender.com/api/cards/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSavedCards(
+          data.map((card) => ({
+            id: card._id,
+            cardNumber: card.cardNumber,
+            type: card.cardType,
+            isDefault: card.default,
+          }))
+        );
+      })
+      .catch((error) => console.error("Error fetching cards:", error));
+  }, []);
 
   const handleSetDefault = (cardId) => {
     setPendingDefaultCard(cardId);
@@ -26,19 +37,24 @@ const BillingInfo = () => {
   };
 
   const confirmSetDefault = () => {
-    setSavedCards((prev) =>
-      prev.map((card) => ({
-        ...card,
-        isDefault: card.id === pendingDefaultCard,
-      }))
-    );
-    setShowConfirmation(false);
-    setPendingDefaultCard(null);
-  };
-
-  const cancelSetDefault = () => {
-    setShowConfirmation(false);
-    setPendingDefaultCard(null);
+    fetch(`https://tdg-db.onrender.com/api/cards/set-default`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, cardId: pendingDefaultCard }),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        setSavedCards((prev) =>
+          prev.map((card) => ({
+            ...card,
+            isDefault: card.id === pendingDefaultCard,
+          }))
+        );
+        setShowConfirmation(false);
+      })
+      .catch((error) => console.error("Error updating default card:", error));
   };
 
   const handleEditCard = (card) => {
@@ -53,25 +69,6 @@ const BillingInfo = () => {
     setShowPopup(true);
   };
 
-  const handleSaveCard = (cardDetails) => {
-    if (isAddingNew) {
-      setSavedCards((prev) => [
-        ...prev,
-        { id: Date.now(), ...cardDetails, isDefault: false },
-      ]);
-      setConfirmationMessage("New payment method added successfully!");
-    } else {
-      setSavedCards((prev) =>
-        prev.map((card) =>
-          card.id === selectedCard.id ? { ...card, ...cardDetails } : card
-        )
-      );
-      setConfirmationMessage("Payment method updated successfully!");
-    }
-    setShowPopup(false);
-    setShowConfirmation(true);
-  };
-
   const handleCancel = () => {
     setShowPopup(false);
   };
@@ -82,39 +79,18 @@ const BillingInfo = () => {
 
   return (
     <Box
-      // sx={{
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   justifyContent: "center",
-      //   margin: "auto",
-      //   width: "100%",
-      //   alignItems: "center",
-      //   fontFamily: "Montserrat",
-      //   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-      //   border: "1px solid #6c7c59",
-      //   borderRadius: "5px",
-      //   padding: "20px",
-      // }}
       className="profile-info"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <div
         className="saved-cards"
         style={{
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          fontFamily: "Montserrat",
-          overflow: "auto",
           maxHeight: "300px",
-          paddingTop: savedCards.length > 3 ? "100px" : "0px",
+          overflow: "auto",
         }}
       >
         {savedCards.map((card) => (
@@ -123,48 +99,30 @@ const BillingInfo = () => {
             className={`card-box ${card.isDefault ? "default-card" : ""}`}
             sx={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
               margin: "10px",
               width: "60%",
               padding: "15px",
               border: "1px solid #ccc",
-              backgroundColor: "#fff",
-              color: "#2d2d2d",
               borderRadius: "5px",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#fff",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "Column",
-                justifyContent: "space-between",
-                alignItems: "start",
-              }}
-            >
-              <p style={{ color: "#2d2d2d" }}>
-                **** **** **** {card.cardNumber.slice(-4)}
-              </p>
-              <p style={{ color: "#2d2d2d" }}>{card.type}</p>
+            <Box>
+              <p>**** **** **** {card.cardNumber.slice(-4)}</p>
+              <p>{card.cardType}</p>
             </Box>
-            <Box sx={{ display: "flex", gap: "5px", flexDirection: "Column" }}>
+            <Box sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
               <button
-                onClick={() => handleSetDefault(card.id)}
-                style={{
-                  backgroundColor: "#6c7c59",
-                  color: "#fff",
-                }}
+                onClick={() => handleSetDefault(card._id)}
+                style={{ backgroundColor: "#6c7c59", color: "#fff" }}
               >
-                {card.isDefault ? "Default" : "Set as Default"}
+                {card.default ? "Default" : "Set as Default"}
               </button>
               <button
                 onClick={() => handleEditCard(card)}
-                style={{
-                  backgroundColor: "#6c7c59",
-                  color: "#fff",
-                }}
+                style={{ backgroundColor: "#6c7c59", color: "#fff" }}
               >
                 Edit
               </button>
@@ -172,31 +130,23 @@ const BillingInfo = () => {
           </Box>
         ))}
       </div>
-      <div className="AddnewPayment">
-        <Button variant="contained" onClick={handleAddNew}>
-          Add New Payment Method
-        </Button>
-      </div>
+      <Button variant="contained" onClick={handleAddNew}>
+        Add New Payment Method
+      </Button>
+
       <BillingInfoPopup
         open={showPopup}
         card={selectedCard}
         isAddingNew={isAddingNew}
-        onSave={handleSaveCard}
         onCancel={handleCancel}
       />
-      <ConfirmationDialog
-        open={showConfirmation}
-        title="Success"
-        content={confirmationMessage}
-        onConfirm={handleConfirmationClose}
-        onCancel={handleConfirmationClose}
-      />
+
       <ConfirmationDialog
         open={showConfirmation}
         title="Set Default Card"
         content="Are you sure you want to set this card as the default?"
         onConfirm={confirmSetDefault}
-        onCancel={cancelSetDefault}
+        onCancel={handleConfirmationClose}
       />
     </Box>
   );

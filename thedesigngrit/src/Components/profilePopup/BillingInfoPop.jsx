@@ -18,7 +18,7 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
   useEffect(() => {
     if (card) {
       setCardNumber(card.cardNumber || "");
-      setCardType(card.type || "Visa");
+      setCardType(card.cardType || "Visa");
     } else {
       setCardNumber("");
       setCardType("Visa");
