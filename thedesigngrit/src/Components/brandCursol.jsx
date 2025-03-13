@@ -18,7 +18,7 @@ export default function BrandCursol({ brandId }) {
           `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId._id}`
         );
         const data = await response.json();
-        setProducts(data.products.slice(0, 5));
+        setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
