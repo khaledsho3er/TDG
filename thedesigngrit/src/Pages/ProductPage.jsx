@@ -244,7 +244,10 @@ function ProductPage() {
                   <div
                     key={index}
                     className="color-circle"
-                    style={{ backgroundColor: color }}
+                    style={{
+                      backgroundColor: color,
+                      border: color === "white" ? "1px solid #2d2d2d" : "none",
+                    }}
                     title={color.name}
                     onClick={() => handleColorSelect(color.name)}
                   ></div>
