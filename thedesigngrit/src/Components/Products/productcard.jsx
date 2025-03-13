@@ -120,7 +120,7 @@ const ProductCard = ({ product }) => {
       </Card>
 
       {/* Product Information */}
-      <CardContent sx={{ padding: "10px" }}>
+      <CardContent sx={{ padding: "10px", width: "250px" }}>
         <Typography
           variant="h6"
           sx={{
