@@ -7,7 +7,7 @@ import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 
 export default function BrandCursol({ brandId }) {
   const [products, setProducts] = useState([]);
-  console.log(" brand caursol brandId:", brandId);
+  console.log(" brand caursol brandId:", brandId._id);
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
     if (!brandId) return;
@@ -69,7 +69,7 @@ export default function BrandCursol({ brandId }) {
                 }`}
               >
                 <img
-                  src={product.image}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                   alt={product.name}
                   className="carousel-product-image"
                 />
