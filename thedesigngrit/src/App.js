@@ -99,6 +99,7 @@ function App() {
             <ScrollToTop />
             <PublicRoutes />
             <VendorRoutes />
+            <Analytics />
           </Router>
         </CartProvider>
       </VendorProvider>
