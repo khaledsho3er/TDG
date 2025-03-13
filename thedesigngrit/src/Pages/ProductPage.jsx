@@ -246,7 +246,12 @@ function ProductPage() {
                     className="color-circle"
                     style={{
                       backgroundColor: color,
-                      border: color === "white" ? "1px solid #2d2d2d" : "none",
+                      border:
+                        color === "white" ||
+                        color === "offwhite" ||
+                        color === "beige"
+                          ? "1px solid #2d2d2d"
+                          : "none",
                     }}
                     title={color.name}
                     onClick={() => handleColorSelect(color.name)}

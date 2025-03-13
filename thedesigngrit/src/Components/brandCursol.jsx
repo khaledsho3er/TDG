@@ -7,7 +7,7 @@ import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 
 export default function BrandCursol({ brandId }) {
   const [products, setProducts] = useState([]);
-
+  console.log(" brand caursol brandId:", brandId);
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
     if (!brandId) return;
