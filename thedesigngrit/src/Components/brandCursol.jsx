@@ -97,7 +97,16 @@ export default function BrandCursol({ brandId }) {
                 )}
                 <div className="carousel-product-info">
                   <h3 className="carousel-product-name">
-                    {product.name || "Unnamed Product"}
+                    {product.name
+                      ? product.name.split(" ").map((word, index) => (
+                          <span key={index}>
+                            {word}
+                            {index !== product.name.split(" ").length - 1 && (
+                              <br />
+                            )}
+                          </span>
+                        ))
+                      : "Unnamed Product"}
                   </h3>
                   <p className="carousel-product-price">
                     {product.price
