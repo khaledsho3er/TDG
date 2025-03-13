@@ -5,6 +5,7 @@ import { CartProvider } from "./Context/cartcontext";
 import { UserProvider } from "./utils/userContext";
 import { VendorProvider } from "./utils/vendorContext";
 import ScrollToTop from "./Context/scrollToTop";
+import { Analytics } from "@vercel/analytics/react";
 
 // Import Public Pages
 import Home from "./Pages/home";
