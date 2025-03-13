@@ -14,10 +14,12 @@ export default function BrandCursol({ brandId }) {
 
     const fetchProducts = async () => {
       try {
+        console.log(`Fetching products for brandId: ${brandId._id}`);
         const response = await fetch(
           `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId._id}`
         );
         const data = await response.json();
+        console.log("Fetched API response carsoul product:", data);
         setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
