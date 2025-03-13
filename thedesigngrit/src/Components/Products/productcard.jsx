@@ -145,7 +145,7 @@ const ProductCard = ({ product }) => {
             marginTop: "4px",
           }}
         >
-          {product.description}
+          {product.description.split(" ").slice(0, 10).join(" ")}
         </Typography>
 
         <Typography
