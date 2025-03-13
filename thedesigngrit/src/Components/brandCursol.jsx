@@ -20,7 +20,11 @@ export default function BrandCursol({ brandId }) {
         );
         const data = await response.json();
         console.log("Fetched API response carsoul product:", data);
-        setProducts(data.products);
+        if (data.products && Array.isArray(data.products)) {
+          setProducts(data.products.slice(0, 5)); // Limit to 5 products
+        } else {
+          console.error("Invalid products structure:", data);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
