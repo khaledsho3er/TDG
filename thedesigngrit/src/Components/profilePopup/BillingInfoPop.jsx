@@ -54,7 +54,7 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           paddingLeft: "16px",
         }}
       >
-        {isAddingNew ? "Add New Payment Method" : "Edit Payment Method"}
+        {isAddingNew ? "Add New Payment Method " : "Edit Payment Method"}
       </DialogTitle>
       <DialogContent
         sx={{
