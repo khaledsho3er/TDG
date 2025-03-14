@@ -87,8 +87,8 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
       <DialogTitle
         sx={{
           fontWeight: "normal",
-          backgroundColor: "#6b7b58",
-          color: "white",
+          backgroundColor: "white",
+          color: "black",
           paddingLeft: "16px",
         }}
       >
@@ -97,8 +97,8 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
       <DialogContent
         sx={{
           fontWeight: "bold",
-          backgroundColor: "#6b7b58",
-          color: "white",
+          backgroundColor: "white",
+          color: "vlack",
         }}
       >
         <TextField
