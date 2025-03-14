@@ -5,16 +5,15 @@ import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
 
 const BillingInfo = () => {
-  const [savedCards, setSavedCards] = useState([]); // State to store saved cards
-  const [showPopup, setShowPopup] = useState(false); // Controls billing info popup visibility
-  const [selectedCard, setSelectedCard] = useState(null); // Stores the selected card for editing
-  const [isAddingNew, setIsAddingNew] = useState(false); // Determines if adding a new card
-  const [showConfirmation, setShowConfirmation] = useState(false); // Controls confirmation dialog visibility
-  const [confirmationMessage, setConfirmationMessage] = useState(""); // Message for confirmation dialog
-  const [pendingDefaultCard, setPendingDefaultCard] = useState(null); // Temporarily stores card ID for setting default
+  const [savedCards, setSavedCards] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [pendingDefaultCard, setPendingDefaultCard] = useState(null);
   const { userSession } = useContext(UserContext);
   const userId = userSession.id;
-
   // Fetch saved cards from the API
   useEffect(() => {
     fetch(`https://tdg-db.onrender.com/api/cards/user/${userId}`)
@@ -32,13 +31,11 @@ const BillingInfo = () => {
       .catch((error) => console.error("Error fetching cards:", error));
   }, []);
 
-  // Handle setting a card as the default
   const handleSetDefault = (cardId) => {
     setPendingDefaultCard(cardId);
     setShowConfirmation(true);
   };
 
-  // Confirm setting a card as the default and update the backend
   const confirmSetDefault = () => {
     fetch(`https://tdg-db.onrender.com/api/cards/set-default`, {
       method: "PUT",
@@ -60,26 +57,22 @@ const BillingInfo = () => {
       .catch((error) => console.error("Error updating default card:", error));
   };
 
-  // Handle editing an existing card
   const handleEditCard = (card) => {
     setSelectedCard(card);
     setIsAddingNew(false);
     setShowPopup(true);
   };
 
-  // Handle adding a new card
   const handleAddNew = () => {
     setSelectedCard(null);
     setIsAddingNew(true);
     setShowPopup(true);
   };
 
-  // Close the billing info popup
   const handleCancel = () => {
     setShowPopup(false);
   };
 
-  // Close the confirmation dialog
   const handleConfirmationClose = () => {
     setShowConfirmation(false);
   };
@@ -89,7 +82,6 @@ const BillingInfo = () => {
       className="profile-info"
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {/* Display saved cards */}
       <div
         className="saved-cards"
         style={{
@@ -138,13 +130,10 @@ const BillingInfo = () => {
           </Box>
         ))}
       </div>
-
-      {/* Button to add a new payment method */}
       <Button variant="contained" onClick={handleAddNew}>
         Add New Payment Method
       </Button>
 
-      {/* Billing info popup component */}
       <BillingInfoPopup
         open={showPopup}
         card={selectedCard}
@@ -152,7 +141,6 @@ const BillingInfo = () => {
         onCancel={handleCancel}
       />
 
-      {/* Confirmation dialog for setting default card */}
       <ConfirmationDialog
         open={showConfirmation}
         title="Set Default Card"

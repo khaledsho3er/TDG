@@ -11,7 +11,7 @@ import {
 
 const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
   const [cardNumber, setCardNumber] = useState("");
-  const [cardType, setCardType] = useState("");
+  const [cardType, setCardType] = useState("Visa");
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
 
@@ -29,44 +29,6 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
 
   const handleSave = () => {
     onSave({ cardNumber, type: cardType });
-  };
-
-  useEffect(() => {
-    if (card) {
-      setCardNumber(card.cardNumber || "");
-      detectCardType(card.cardNumber);
-    }
-  }, [card]);
-
-  useEffect(() => {
-    detectCardType(cardNumber);
-  }, [cardNumber]);
-
-  const detectCardType = (number) => {
-    if (!number) {
-      setCardType("");
-      return;
-    }
-
-    const visaRegex = /^4/;
-    const masterCardRegex = /^5[1-5]/;
-    const valuRegex = /^6/; // Example, adjust as needed
-    const sohoulaRegex = /^7/; // Example, adjust as needed
-    const symplRegex = /^8/; // Example, adjust as needed
-
-    if (visaRegex.test(number)) {
-      setCardType("Visa");
-    } else if (masterCardRegex.test(number)) {
-      setCardType("Mastercard");
-    } else if (valuRegex.test(number)) {
-      setCardType("Valu");
-    } else if (sohoulaRegex.test(number)) {
-      setCardType("Sohoula");
-    } else if (symplRegex.test(number)) {
-      setCardType("Sympl");
-    } else {
-      setCardType("Unknown");
-    }
   };
 
   return (
@@ -87,8 +49,8 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
       <DialogTitle
         sx={{
           fontWeight: "normal",
-          backgroundColor: "white",
-          color: "black",
+          backgroundColor: "#6b7b58",
+          color: "white",
           paddingLeft: "16px",
         }}
       >
@@ -97,8 +59,8 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
       <DialogContent
         sx={{
           fontWeight: "bold",
-          backgroundColor: "white",
-          color: "vlack",
+          backgroundColor: "#6b7b58",
+          color: "white",
         }}
       >
         <TextField
@@ -116,15 +78,26 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           }}
         />
         <TextField
+          select
           label="Card Type"
           variant="outlined"
           fullWidth
           value={cardType}
+          onChange={(e) => setCardType(e.target.value)}
           margin="normal"
-          disabled
-          InputLabelProps={{ style: { color: "white" } }}
-          InputProps={{ style: { color: "white" } }}
-        />
+          InputLabelProps={{
+            style: { color: "white" },
+          }}
+          InputProps={{
+            style: { color: "white" },
+          }}
+        >
+          <MenuItem value="Visa">Visa</MenuItem>
+          <MenuItem value="Mastercard">Mastercard</MenuItem>
+          <MenuItem value="Valu">Valu</MenuItem>
+          <MenuItem value="Sohoula">Sohoula</MenuItem>
+          <MenuItem value="Sympl">Sympl</MenuItem>
+        </TextField>
         <TextField
           label="CVV"
           variant="outlined"
