@@ -169,7 +169,7 @@ function TrackOrder() {
                         border: "1px solid #ccc",
                         borderRadius: "4px",
                         padding: "5px",
-                        width: "30%",
+                        width: "100%",
                         height: "40px",
                       }}
                       value={selectedSubOrder?.productId?.name || ""}
@@ -305,6 +305,7 @@ function TrackOrder() {
                           color: "#6b7b58",
                           padding: "10px",
                           borderRadius: "5px",
+                          alignItems: "end",
                         }}
                       >
                         Get Support?
@@ -326,9 +327,15 @@ function TrackOrder() {
                           margin: "auto",
                         }}
                       >
-                        <img
+                        {/* <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
-                        />
+                          alt={selectedSubOrder.productId.name}
+                          style={{
+                            width: "80px",
+                            height: "80px",
+                            borderRadius: "5px",
+                          }}
+                        /> */}
                         <h5>{selectedSubOrder.productId.name}</h5>
                         <p>{selectedSubOrder.totalPrice} LE</p>
                         <p>Quantity: {selectedSubOrder.quantity}</p>
