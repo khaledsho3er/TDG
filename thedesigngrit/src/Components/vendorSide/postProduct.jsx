@@ -171,12 +171,40 @@ const AddProduct = () => {
   // Handle input change for basic fields
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let formattedValue = value;
+
+    // Only apply bullet points for specific textarea fields
+    if (
+      name === "productSpecificRecommendations" ||
+      name === "materialCareInstructions"
+    ) {
+      formattedValue = value
+        .split("\n")
+        .map((line) => (line.startsWith("•") ? line : `• ${line.trim()}`)) // Add bullet if missing
+        .join("\n");
+    }
+
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: formattedValue,
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent new line in textarea
+
+      // Append a new bullet point
+      setFormData((prev) => ({
+        ...prev,
+        productSpecificRecommendations:
+          (prev.productSpecificRecommendations
+            ? prev.productSpecificRecommendations + "\n• "
+            : "• ") + e.target.value.slice(e.target.selectionStart),
+      }));
+    }
+  };
   // Handle nested input change
   const handleNestedChange = (e, parentField) => {
     const { name, value } = e.target;
@@ -989,6 +1017,7 @@ const AddProduct = () => {
                   name="productSpecificRecommendations"
                   value={formData.productSpecificRecommendations}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                   placeholder="Enter the product specific recommendations"
                   required
                 />
