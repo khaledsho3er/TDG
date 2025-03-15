@@ -46,7 +46,7 @@ const ProductSlider = () => {
           >
             <div className="product-image-home">
               <img
-                src={`https://tdg-db.onrender.com/uploads/${product.image}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                 alt={product.name}
               />
             </div>
@@ -54,7 +54,7 @@ const ProductSlider = () => {
             <div className="product-info">
               <h3 className="product-title-bestseller">{product.name}</h3>
               <div className="product-price-bestseller">
-                {product.price.toFixed(2)} LE
+                {product.price.toFixed(2)} E£
               </div>
             </div>
           </div>
