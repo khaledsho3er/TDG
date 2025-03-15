@@ -12,6 +12,7 @@ const ProductSlider = () => {
         const response = await axios.get(
           "https://tdg-db.onrender.com/api/orders/bestsellers"
         );
+        console.log("Bestsellers:", response.data);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching bestsellers:", error);
