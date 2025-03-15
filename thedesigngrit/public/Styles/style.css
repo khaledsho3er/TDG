@@ -6900,3 +6900,23 @@ input:focus {
   background-color: #ddd;
   color: #2d2d2d;
 }
+.invoice-modal {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.invoice-modal button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

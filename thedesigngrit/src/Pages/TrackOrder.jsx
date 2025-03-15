@@ -7,6 +7,8 @@ import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "./loadingScreen";
 import { GiConfirmed } from "react-icons/gi";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import InvoicePDF from "../Components/invoiceOrderCustomer";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -14,6 +16,8 @@ function TrackOrder() {
   const [selectedSubOrder, setSelectedSubOrder] = useState(null);
   const { userSession } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const [showInvoice, setShowInvoice] = useState(false);
+
   // Fetch orders based on userSession.id
   useEffect(() => {
     const fetchOrders = async () => {
@@ -183,6 +187,18 @@ function TrackOrder() {
                       </option>
                     ))}
                   </select>
+                  <button onClick={() => setShowInvoice(true)}>
+                    View Invoice
+                  </button>
+                  {/* Download Invoice Button */}
+                  <PDFDownloadLink
+                    document={<InvoicePDF order={selectedOrder} />}
+                    fileName={`invoice_${selectedOrder._id}.pdf`}
+                  >
+                    {({ loading }) =>
+                      loading ? "Loading..." : <button>Download Invoice</button>
+                    }
+                  </PDFDownloadLink>
                 </Box>
 
                 {/* Order Summary */}
@@ -264,6 +280,18 @@ function TrackOrder() {
                       </span>
                     </Box>
                     <Box sx={{ paddingTop: "26px", display: "flex", gap: 2 }}>
+                      <a
+                        href="mailto:getsupport@thedesigngrit.com?subject=Support Request for Order {selectedOrder._id}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#6b7b58",
+                          padding: "10px",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        Get Support?
+                      </a>
                       <InteractiveStarRating />
                     </Box>
                   </Box>
@@ -281,6 +309,9 @@ function TrackOrder() {
                           margin: "auto",
                         }}
                       >
+                        <img
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.image}`}
+                        />
                         <h5>{selectedSubOrder.productId.name}</h5>
                         <p>{selectedSubOrder.totalPrice} LE</p>
                         <p>Quantity: {selectedSubOrder.quantity}</p>
@@ -293,6 +324,15 @@ function TrackOrder() {
           </div>
         </div>
       </Box>
+      {/* Show Invoice in Modal or Full Screen */}
+      {showInvoice && (
+        <div className="invoice-modal">
+          <PDFViewer width="600" height="700">
+            <InvoicePDF order={selectedOrder} />
+          </PDFViewer>
+          <button onClick={() => setShowInvoice(false)}>Close</button>
+        </div>
+      )}
     </Box>
   );
 }
