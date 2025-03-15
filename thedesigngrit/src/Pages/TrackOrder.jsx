@@ -161,44 +161,54 @@ function TrackOrder() {
                       </Box>
                     </Box>
                   </Box>
-                  <select
-                    style={{
-                      border: "1px solid #ccc",
-                      borderRadius: "4px",
-                      padding: "5px",
-                      width: "30%",
-                      height: "40px",
-                    }}
-                    value={selectedSubOrder?.productId?.name || ""}
-                    onChange={(e) =>
-                      setSelectedSubOrder(
-                        selectedOrder.cartItems.find(
-                          (item) => item.productId.name === e.target.value
+                  <Box
+                    style={{ display: "flex", gap: 1, flexDirection: "column" }}
+                  >
+                    <select
+                      style={{
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        padding: "5px",
+                        width: "30%",
+                        height: "40px",
+                      }}
+                      value={selectedSubOrder?.productId?.name || ""}
+                      onChange={(e) =>
+                        setSelectedSubOrder(
+                          selectedOrder.cartItems.find(
+                            (item) => item.productId.name === e.target.value
+                          )
                         )
-                      )
-                    }
-                  >
-                    {selectedOrder.cartItems.map((item) => (
-                      <option
-                        key={item._id}
-                        value={item?.productId?.name || "Unknown"}
-                      >
-                        {item?.productId?.name || "Unknown"}
-                      </option>
-                    ))}
-                  </select>
-                  <button onClick={() => setShowInvoice(true)}>
-                    View Invoice
-                  </button>
-                  {/* Download Invoice Button */}
-                  <PDFDownloadLink
-                    document={<InvoicePDF order={selectedOrder} />}
-                    fileName={`invoice_${selectedOrder._id}.pdf`}
-                  >
-                    {({ loading }) =>
-                      loading ? "Loading..." : <button>Download Invoice</button>
-                    }
-                  </PDFDownloadLink>
+                      }
+                    >
+                      {selectedOrder.cartItems.map((item) => (
+                        <option
+                          key={item._id}
+                          value={item?.productId?.name || "Unknown"}
+                        >
+                          {item?.productId?.name || "Unknown"}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <button onClick={() => setShowInvoice(true)}>
+                      View Invoice
+                    </button> */}
+                    {/* Download Invoice Button */}
+                    <PDFDownloadLink
+                      document={<InvoicePDF order={selectedOrder} />}
+                      fileName={`invoice_${selectedOrder._id}.pdf`}
+                    >
+                      {({ loading }) =>
+                        loading ? (
+                          "Loading..."
+                        ) : (
+                          <button className="submit-btn">
+                            Download Invoice
+                          </button>
+                        )
+                      }
+                    </PDFDownloadLink>
+                  </Box>
                 </Box>
 
                 {/* Order Summary */}
@@ -279,7 +289,14 @@ function TrackOrder() {
                         {selectedOrder.orderStatus}
                       </span>
                     </Box>
-                    <Box sx={{ paddingTop: "26px", display: "flex", gap: 2 }}>
+                    <Box
+                      sx={{
+                        paddingTop: "26px",
+                        display: "flex",
+                        gap: 2,
+                        flexDirection: "column",
+                      }}
+                    >
                       <a
                         href="mailto:getsupport@thedesigngrit.com?subject=Support Request for Order {selectedOrder._id}"
                         target="_blank"
@@ -310,7 +327,7 @@ function TrackOrder() {
                         }}
                       >
                         <img
-                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.image}`}
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
                         />
                         <h5>{selectedSubOrder.productId.name}</h5>
                         <p>{selectedSubOrder.totalPrice} LE</p>
