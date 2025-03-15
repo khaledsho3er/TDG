@@ -446,36 +446,57 @@ function ProductPage() {
                 <span>Removable and ergonomic</span>
               </ul>
             </div>
-
             <div className="material-collapsible-container">
-              {["Delivery & Returns", "Care Instructions"].map(
-                (section, index) => (
-                  <div key={index} className="material-collapsible-section">
-                    <div
-                      className="material-collapsible-header"
-                      onClick={() => handleToggleSection(index, "material")}
-                    >
-                      {section}
-                      <span className="material-collapsible-icon">
-                        {expandedMaterialSections[index] ? "-" : "+"}
-                      </span>
-                    </div>
-                    {expandedMaterialSections[index] && (
-                      <div className="material-collapsible-content">
-                        Content for {section}
-                        {section === "Delivery & Returns" ? (
-                          <p>{product.productSpecificRecommendations}</p>
-                        ) : section === "Care Instructions" ? (
-                          <p>{product.materialCareInstructions}</p>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    )}
+              {[
+                "Delivery & Returns",
+                "Care Instructions",
+                "Product Specifications",
+              ].map((section, index) => (
+                <div key={index} className="material-collapsible-section">
+                  <div
+                    className="material-collapsible-header"
+                    onClick={() => handleToggleSection(index, "material")}
+                  >
+                    {section}
+                    <span className="material-collapsible-icon">
+                      {expandedMaterialSections[index] ? "-" : "+"}
+                    </span>
                   </div>
-                )
-              )}
+                  {expandedMaterialSections[index] && (
+                    <div className="material-collapsible-content">
+                      {section === "Delivery & Returns" ? (
+                        <ul>
+                          {product.Estimatedtimeleadforcustomization?.split(
+                            /(?<=\w)\s(?=[A-Z])/
+                          ).map((point, idx) => (
+                            <li key={idx}>{point}</li>
+                          ))}
+                        </ul>
+                      ) : section === "Care Instructions" ? (
+                        <ul>
+                          {product.materialCareInstructions
+                            ?.split(/(?<=\w)\s(?=[A-Z])/)
+                            .map((point, idx) => (
+                              <li key={idx}>{point}</li>
+                            ))}
+                        </ul>
+                      ) : section === "Product Specifications" ? (
+                        <ul>
+                          {product.productSpecificRecommendations
+                            ?.split(/(?<=\w)\s(?=[A-Z])/)
+                            .map((point, idx) => (
+                              <li key={idx}>{point}</li>
+                            ))}
+                        </ul>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
+            ;
             <div className="brand-cursol">
               <BrandCursol brandId={product.brandId} />
             </div>
