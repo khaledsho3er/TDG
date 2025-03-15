@@ -4,21 +4,7 @@ import { TiDeleteOutline } from "react-icons/ti"; // Import the delete icon
 import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
-
-const tagOptions = {
-  Color: ["Red", "Blue", "Green", "Black", "White"],
-  Shape: ["Round", "Square", "Rectangle", "Oval"],
-  Size: ["Small", "Medium", "Large", "Extra Large"],
-  Material: ["Wood", "Metal", "Plastic", "Glass"],
-  Style: ["Modern", "Classic", "Minimalist", "Vintage"],
-  Finish: ["Glossy", "Matte", "Textured"],
-  "Functionality/Special Features": [
-    "Foldable",
-    "Waterproof",
-    "Smart",
-    "Portable",
-  ],
-};
+import ConfirmationDialog from "../confirmationMsg";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -36,7 +22,8 @@ const AddProduct = () => {
   const [additionalCosts, setAdditionalCosts] = useState(""); // Additional costs selection
   const [costBreakdown, setCostBreakdown] = useState(""); // Cost breakdown for variable option
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
-
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [pendingSubmission, setPendingSubmission] = useState(false);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -426,11 +413,21 @@ const AddProduct = () => {
       images: updatedImages,
     }));
   };
+  // Open confirmation dialog
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  // Close confirmation dialog
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setDialogOpen(false);
+    setPendingSubmission(true);
     const data = new FormData();
     // Append basic fields
     data.append("name", formData.name);
@@ -505,6 +502,7 @@ const AddProduct = () => {
       console.error("Error creating product:", error.response?.data || error);
       alert("Failed to add product. Please try again.");
     }
+    setPendingSubmission(false);
   };
   return (
     <>
@@ -517,7 +515,7 @@ const AddProduct = () => {
           </p>
         </div>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <div className="product-form">
           <div className="form-left">
             <h1>Add Product</h1>
@@ -1007,6 +1005,7 @@ const AddProduct = () => {
                   name="materialCareInstructions"
                   value={formData.materialCareInstructions}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                   placeholder="Enter the material care instructions"
                   required
                 />
@@ -1160,12 +1159,25 @@ const AddProduct = () => {
           </div>
         </div>
         <div className="form-actions">
-          <button className="btn update" type="submit">
+          <button
+            className="btn update"
+            type="button"
+            onClick={handleOpenDialog}
+            disabled={pendingSubmission}
+          >
             ADD
           </button>
           <button className="btn delete">DELETE</button>
           <button className="btn cancel">CANCEL</button>
         </div>{" "}
+        {/* Confirmation Dialog */}
+        <ConfirmationDialog
+          open={isDialogOpen}
+          title="Confirm Product Addition"
+          content="Are you sure you want to add this product?"
+          onConfirm={handleSubmit}
+          onCancel={handleCloseDialog}
+        />
       </form>
     </>
   );
