@@ -30,6 +30,7 @@ const BillingInfo = () => {
       })
       .catch((error) => console.error("Error fetching cards:", error));
   }, []);
+  console.log("Saved card:", savedCards);
 
   const handleSetDefault = (cardId) => {
     setPendingDefaultCard(cardId);
