@@ -130,9 +130,9 @@ const BillingInfo = () => {
           </Box>
         ))}
       </div>
-      <Button variant="contained" onClick={handleAddNew}>
+      <button className="submit-btn" onClick={handleAddNew}>
         Add New Payment Method
-      </Button>
+      </button>
 
       <BillingInfoPopup
         open={showPopup}

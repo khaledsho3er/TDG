@@ -165,7 +165,7 @@ function TrackOrder() {
                       width: "30%",
                       height: "40px",
                     }}
-                    value={selectedSubOrder.productId.name}
+                    value={selectedSubOrder?.productId?.name || ""}
                     onChange={(e) =>
                       setSelectedSubOrder(
                         selectedOrder.cartItems.find(
@@ -175,8 +175,11 @@ function TrackOrder() {
                     }
                   >
                     {selectedOrder.cartItems.map((item) => (
-                      <option key={item._id} value={item.productId.name}>
-                        {item.productId.name}
+                      <option
+                        key={item._id}
+                        value={item?.productId?.name || "Unknown"}
+                      >
+                        {item?.productId?.name || "Unknown"}
                       </option>
                     ))}
                   </select>

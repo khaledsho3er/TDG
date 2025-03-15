@@ -42,14 +42,14 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
         "& .MuiPaper-root": {
           borderRadius: "16px",
           backdropFilter: "blur(5px)",
-          backgroundColor: "#6b7b58",
+          backgroundColor: "#ffffff",
         },
       }}
     >
       <DialogTitle
         sx={{
           fontWeight: "normal",
-          backgroundColor: "#6b7b58",
+          backgroundColor: "#ffffff",
           color: "white",
           paddingLeft: "16px",
         }}
@@ -59,7 +59,7 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
       <DialogContent
         sx={{
           fontWeight: "bold",
-          backgroundColor: "#6b7b58",
+          backgroundColor: "#ffffff",
           color: "white",
         }}
       >
@@ -71,10 +71,10 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           onChange={(e) => setCardNumber(e.target.value)}
           margin="normal"
           InputLabelProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
           InputProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
         />
         <TextField
@@ -86,10 +86,10 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           onChange={(e) => setCardType(e.target.value)}
           margin="normal"
           InputLabelProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
           InputProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
         >
           <MenuItem value="Visa">Visa</MenuItem>
@@ -107,10 +107,10 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           margin="normal"
           placeholder="***"
           InputLabelProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
           InputProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
         />
         <TextField
@@ -122,27 +122,27 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           margin="normal"
           placeholder="MM/YY"
           InputLabelProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
           InputProps={{
-            style: { color: "white" },
+            style: { color: "#2d2d2d" },
           }}
         />
       </DialogContent>
       <DialogActions
         sx={{
           fontWeight: "bold",
-          backgroundColor: "#6b7b58",
+          backgroundColor: "#ffffff",
         }}
       >
         <Button
           onClick={onCancel}
           sx={{
-            color: "white",
+            color: "#2d2d2d",
             border: "none",
             "&:hover": {
-              backgroundColor: "#2d2d2d",
-              border: "none",
+              backgroundColor: "transparent",
+              border: "1px solid #6c7c59",
             },
           }}
         >
@@ -151,10 +151,10 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
         <Button
           onClick={handleSave}
           sx={{
-            color: "white",
+            color: "#2d2d2d",
             border: "none",
             "&:hover": {
-              backgroundColor: "#2d2d2d",
+              backgroundColor: "#6c7c59",
               border: "none",
             },
           }}
