@@ -346,7 +346,7 @@ function ProductPage() {
                           </p>
                         </div>
 
-                        <p style={{ fontSize: "20px" }}>
+                        <p style={{ fontSize: "20px", textAlign: "justify" }}>
                           {product.description}
                         </p>
                       </div>
@@ -357,16 +357,16 @@ function ProductPage() {
                         <p>Width X Length X Height</p>
                         <p>
                           <strong>{product.technicalDimensions.width}</strong>{" "}
-                          Cm x{"  "}
+                          cm x{"  "}
                           <strong>
                             {" "}
                             {product.technicalDimensions.length}
                           </strong>{" "}
-                          Cm X{"  "}
+                          cm X{"  "}
                           <strong>
                             {product.technicalDimensions.height}
                           </strong>{" "}
-                          Cm
+                          cm
                         </p>
                         <p>
                           Weight :{" "}

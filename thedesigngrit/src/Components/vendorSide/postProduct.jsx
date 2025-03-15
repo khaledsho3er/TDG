@@ -459,7 +459,6 @@ const AddProduct = () => {
     );
     data.append("Additionaldetails", formData.Additionaldetails || "");
     data.append("Additionalcosts", formData.Additionalcosts || "");
-    // data.append("claimProcess", formData.claimProcess || "");
 
     // Append array fields
     formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
@@ -498,6 +497,44 @@ const AddProduct = () => {
       );
       console.log("Product created successfully:", response.data);
       alert("Product added successfully!");
+      setFormData({
+        name: "",
+        price: "",
+        salePrice: "",
+        category: "",
+        subcategory: "",
+        manufacturer: "",
+        collection: "",
+        type: "",
+        manufactureYear: "",
+        description: "",
+        brandId: "",
+        brandName: "",
+        leadTime: "",
+        stock: "",
+        sku: "",
+        materialCareInstructions: "",
+        productSpecificRecommendations: "",
+        Estimatedtimeleadforcustomization: "",
+        Additionaldetails: "",
+        Additionalcosts: "",
+        tags: [],
+        colors: [],
+        sizes: [],
+        Customizationoptions: [],
+        technicalDimensions: {
+          length: "",
+          width: "",
+          height: "",
+          weight: "",
+        },
+        warrantyInfo: {
+          warrantyYears: "",
+          warrantyCoverage: [],
+        },
+        images: [],
+        mainImage: "",
+      });
     } catch (error) {
       console.error("Error creating product:", error.response?.data || error);
       alert("Failed to add product. Please try again.");
