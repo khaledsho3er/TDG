@@ -356,11 +356,23 @@ function ProductPage() {
                         {/* <img src="/Assets/productDemi.webp" alt="Dimensions" /> */}
                         <p>Width X Length X Height</p>
                         <p>
-                          {product.technicalDimensions.width} x{"  "}
-                          {product.technicalDimensions.length} X{"  "}
-                          {product.technicalDimensions.height}
+                          <strong>{product.technicalDimensions.width}</strong>{" "}
+                          Cm x{"  "}
+                          <strong>
+                            {" "}
+                            {product.technicalDimensions.length}
+                          </strong>{" "}
+                          Cm X{"  "}
+                          <strong>
+                            {product.technicalDimensions.height}
+                          </strong>{" "}
+                          Cm
                         </p>
-                        <p>Weight:{product.technicalDimensions.weight}</p>
+                        <p>
+                          Weight :{" "}
+                          <strong>{product.technicalDimensions.weight}</strong>{" "}
+                          Kgs
+                        </p>
                       </div>
                     )}
                     {section === "BIM/CAD" && (
@@ -475,7 +487,7 @@ function ProductPage() {
                       ) : section === "Care Instructions" ? (
                         <ul>
                           {product.materialCareInstructions
-                            ?.split(/(?<=\w)\s(?=[A-Z])/)
+                            .split("\n")
                             .map((point, idx) => (
                               <li key={idx}>{point}</li>
                             ))}
@@ -483,9 +495,9 @@ function ProductPage() {
                       ) : section === "Product Specifications" ? (
                         <ul>
                           {product.productSpecificRecommendations
-                            ?.split(/(?<=\w)\s(?=[A-Z])/)
-                            .map((point, idx) => (
-                              <li key={idx}>{point}</li>
+                            .split("\n")
+                            .map((point, index) => (
+                              <li key={index}>{point.trim()}</li>
                             ))}
                         </ul>
                       ) : (
