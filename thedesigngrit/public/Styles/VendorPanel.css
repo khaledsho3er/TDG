@@ -1503,6 +1503,22 @@ h1 {
   font-size: 1.1em;
   margin-bottom: 10px;
 }
+.no-quotations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh; /* Adjust as needed */
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ff9800; /* Warning color */
+}
+
+.exclamation {
+  font-size: 3rem;
+  margin-top: 10px;
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 10px; /* Adjust the width of the scrollbar */

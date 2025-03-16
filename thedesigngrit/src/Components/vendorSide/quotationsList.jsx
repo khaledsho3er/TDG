@@ -19,7 +19,8 @@ const QuotationsPage = () => {
         setQuotations(response.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load quotations");
+        console.error("Error fetching quotations:", err); // Log error for debugging
+        setError(err.response?.data?.message || "Failed to load quotations"); // Show API error message if available
         setLoading(false);
       }
     };
@@ -60,7 +61,7 @@ const QuotationsPage = () => {
                   quotation.productId.mainImage
                     ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${quotation.productId.mainImage}`
                     : "/default-product-image.jpg"
-                } // Default image if no product image
+                }
                 alt={quotation.productId.name}
                 className="quotation-card-img"
               />
@@ -72,7 +73,10 @@ const QuotationsPage = () => {
           ))}
         </div>
       ) : (
-        <div>No quotations available for this brand.</div>
+        <div className="no-quotations">
+          <p>No quotations yet!</p>
+          <span className="exclamation">⚠️</span>
+        </div>
       )}
 
       {/* Popup for displaying quotation details */}
