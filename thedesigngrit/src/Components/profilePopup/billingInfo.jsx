@@ -132,7 +132,11 @@ const BillingInfo = () => {
           </Box>
         ))}
       </div>
-      <Button variant="contained" onClick={handleAddNew}>
+      <Button
+        sx={{ backgroundColor: "#6c7c59", color: "#fff" }}
+        variant="contained"
+        onClick={handleAddNew}
+      >
         Add New Payment Method
       </Button>
 
