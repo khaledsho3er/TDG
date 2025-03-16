@@ -20,8 +20,8 @@ const QuotationsPage = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching quotations:", err); // Log error for debugging
-        setError(err.response?.data?.message || "Failed to load quotations"); // Show API error message if available
-        setLoading(false);
+        // setError(err.response?.data?.message || "Failed to load quotations"); // Show API error message if available
+        // setLoading(false);
       }
     };
 
@@ -38,10 +38,6 @@ const QuotationsPage = () => {
 
   if (loading) {
     return <div>Loading quotations...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
   }
 
   return (
