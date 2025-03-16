@@ -6931,12 +6931,13 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 /* Modal Box */
 .greeting-modal {
   display: flex;
-  width: 500px;
+  width: 800px;
   background: #f7f4f1;
   border-radius: 10px;
   overflow: hidden;
@@ -6957,8 +6958,13 @@ input:focus {
 /* Right Side (Content) */
 .greeting-right {
   width: 50%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the text */
+  justify-content: center; /* Centers vertically */
+  text-align: center; /* Centers text inside */
   padding: 20px;
-  text-align: center;
   position: relative;
 }
 
@@ -6969,8 +6975,15 @@ input:focus {
   right: 10px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
+  color: #2d2d2d;
+
+}
+
+.greeting-close:hover {
+  color: #2d2d2d;
+  background-color: transparent;
 }
 
 /* Check Icon */
@@ -6981,14 +6994,14 @@ input:focus {
 
 /* Title */
 .greeting-title {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
-  color: #000;
+  color: #2d2d2d;
   margin-bottom: 10px;
 }
 
 /* Description */
 .greeting-text {
-  font-size: 14px;
-  color: #333;
+  font-size: 16px;
+  color: #2d2d2d;
 }

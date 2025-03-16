@@ -16,7 +16,7 @@ const GreetingModal = ({ email, onClose }) => {
           <button className="greeting-close" onClick={onClose}>
             &times;
           </button>
-          <FaRegCircleCheck />
+          <FaRegCircleCheck size={30} />
           <h2 className="greeting-title">Thank you for subscribing!</h2>
           <p className="greeting-text">
             We have sent you an offer to <strong>{email}</strong>
