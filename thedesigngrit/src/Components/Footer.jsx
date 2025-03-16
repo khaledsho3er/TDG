@@ -358,7 +358,7 @@ function Footer() {
             }}
           >
             Powered By
-            <strong>Young Productions Software House</strong>{" "}
+            <strong>Young Software House </strong>{" "}
           </Typography>
         </Box>
 

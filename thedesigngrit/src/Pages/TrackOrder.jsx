@@ -7,7 +7,7 @@ import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "./loadingScreen";
 import { GiConfirmed } from "react-icons/gi";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
 import InvoicePDF from "../Components/invoiceOrderCustomer";
 
 function TrackOrder() {
@@ -46,6 +46,11 @@ function TrackOrder() {
 
     fetchOrders();
   }, [userSession]);
+  const openInvoiceInNewTab = async () => {
+    const blob = await pdf(<InvoicePDF order={selectedOrder} />).toBlob();
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, "_blank");
+  };
   if (loading) return <LoadingScreen />;
   return (
     <Box sx={{ fontFamily: "Montserrat" }}>
@@ -190,10 +195,13 @@ function TrackOrder() {
                         </option>
                       ))}
                     </select>
-                    {/* <button onClick={() => setShowInvoice(true)}>
+                    <button
+                      onClick={openInvoiceInNewTab}
+                      className="submit-btn"
+                    >
                       View Invoice
-                    </button> */}
-                    {/* Download Invoice Button */}
+                    </button>
+                    ;{/* Download Invoice Button */}
                     <PDFDownloadLink
                       document={<InvoicePDF order={selectedOrder} />}
                       fileName={`invoice_${selectedOrder._id}.pdf`}
