@@ -30,7 +30,6 @@ const BillingInfo = () => {
       })
       .catch((error) => console.error("Error fetching cards:", error));
   }, []);
-  console.log("Saved cards :", savedCards);
 
   const handleSetDefault = (cardId) => {
     setPendingDefaultCard(cardId);
@@ -97,7 +96,7 @@ const BillingInfo = () => {
         {savedCards.map((card) => (
           <Box
             key={card.id}
-            className={`card-box ${card.default ? "default-card" : ""}`}
+            className={`card-box ${card.isDefault ? "default-card" : ""}`}
             sx={{
               display: "flex",
               justifyContent: "space-between",
@@ -111,8 +110,10 @@ const BillingInfo = () => {
             }}
           >
             <Box>
-              <p>**** **** **** {card.cardNumber.slice(-4)}</p>
-              <p>{card.cardType}</p>
+              <p style={{ color: "#2d2d2d" }}>
+                **** **** **** {card.cardNumber.slice(-4)}
+              </p>
+              <p style={{ color: "#2d2d2d" }}>{card.cardType}</p>
             </Box>
             <Box sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
               <button
@@ -131,9 +132,9 @@ const BillingInfo = () => {
           </Box>
         ))}
       </div>
-      <button className="submit-btn" onClick={handleAddNew}>
+      <Button variant="contained" onClick={handleAddNew}>
         Add New Payment Method
-      </button>
+      </Button>
 
       <BillingInfoPopup
         open={showPopup}
