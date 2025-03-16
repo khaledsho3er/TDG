@@ -14,31 +14,71 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
   const [useDateRange, setUseDateRange] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [errors, setErrors] = useState({}); // State for error messages
 
-  // Calculate discount percentage dynamically
+  // When user enters a discount percentage, calculate sale price
+  const handleDiscountChange = (value) => {
+    setDiscountPercentage(value);
+
+    if (price && value) {
+      const discountedPrice = price - (price * value) / 100;
+      setSalePrice(discountedPrice.toFixed(2)); // Round to 2 decimal places
+    } else {
+      setSalePrice("");
+    }
+  };
+  // When user enters a sale price, calculate discount percentage
   const handleSalePriceChange = (value) => {
     setSalePrice(value);
-    if (price) {
+
+    if (price && value) {
       const discount = ((price - value) / price) * 100;
-      setDiscountPercentage(discount.toFixed(2));
+      setDiscountPercentage(discount.toFixed(2)); // Round to 2 decimal places
+    } else {
+      setDiscountPercentage("");
     }
   };
 
+  const validateFields = () => {
+    let errors = {};
+
+    if (!salePrice) {
+      errors.salePrice = "Sale price is required.";
+    } else if (salePrice >= price) {
+      errors.salePrice = "Sale price must be lower than the original price.";
+    }
+
+    if (useDateRange) {
+      if (!startDate) {
+        errors.startDate = "Start date is required.";
+      }
+      if (!endDate) {
+        errors.endDate = "End date is required.";
+      }
+      if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
+        errors.dateRange = "Start date must be before the end date.";
+      }
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
   const handleSave = async () => {
+    if (!validateFields()) return;
+
     const promotionDetails = {
       salePrice,
-      startDate: useDateRange ? startDate : null,
-      endDate: useDateRange ? endDate : null,
+      discountPercentage,
+      startDate,
+      endDate,
     };
 
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/products/promotion/${product._id}`,
+        `http://localhost:5000/api/products/promotion/${product._id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(promotionDetails),
         }
       );
@@ -87,14 +127,18 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
           type="number"
           value={salePrice}
           onChange={(e) => handleSalePriceChange(e.target.value)}
+          error={!!errors.salePrice}
+          helperText={errors.salePrice}
           sx={{ mb: 2 }}
         />
         <TextField
           fullWidth
           label="Discount Percentage"
-          type="text"
-          value={`${discountPercentage}%`}
-          InputProps={{ readOnly: true }}
+          type="number"
+          value={discountPercentage}
+          onChange={(e) => handleDiscountChange(e.target.value)}
+          error={!!errors.discountPercentage}
+          helperText={errors.discountPercentage}
           sx={{ mb: 2 }}
         />
         <FormControlLabel
@@ -114,6 +158,8 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
               InputLabelProps={{ shrink: true }}
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
+              error={!!errors.startDate}
+              helperText={errors.startDate}
               fullWidth
             />
             <TextField
@@ -122,10 +168,14 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
               InputLabelProps={{ shrink: true }}
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
+              error={!!errors.endDate}
+              helperText={errors.endDate}
               fullWidth
             />
           </Box>
         )}
+        {errors.dateRange && <p style={{ color: "red" }}>{errors.dateRange}</p>}
+
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
           <button className="promotion-cancel-button" onClick={onClose}>
             Cancel
