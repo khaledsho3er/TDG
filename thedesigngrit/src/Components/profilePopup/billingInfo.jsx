@@ -113,7 +113,7 @@ const BillingInfo = () => {
               <p style={{ color: "#2d2d2d" }}>
                 **** **** **** {card.cardNumber.slice(-4)}
               </p>
-              <p style={{ color: "#2d2d2d" }}>{card.cardType}</p>
+              <p style={{ color: "#2d2d2d" }}>{card.type}</p>
             </Box>
             <Box sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
               <button
