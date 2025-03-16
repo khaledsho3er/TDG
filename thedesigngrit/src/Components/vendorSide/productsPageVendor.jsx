@@ -178,7 +178,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
 
   // Close all menus when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => closeAllMenus(); // Close all menus on outside click
+    const handleClickOutside = () => closeAllMenus(); // Close all menus on outside clicks
 
     document.addEventListener("click", handleClickOutside);
 
