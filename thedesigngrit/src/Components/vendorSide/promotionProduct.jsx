@@ -33,7 +33,7 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/products/promotion/${product._id}`,
+        `https://tdg-db.onrender.com/api/products/promotion/${product._id}`,
         {
           method: "PUT",
           headers: {
