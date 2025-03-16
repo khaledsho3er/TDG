@@ -114,28 +114,44 @@ function Footer() {
                 width: "100%",
               }}
             >
-              <TextField
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter Your Email..."
-                variant="standard"
-                size="small"
-                fullWidth
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    "&:after": {
-                      borderBottom: "2px solid #2d2d2d",
-                    },
-                  },
-                }}
+              <Box
                 sx={{
-                  "& input::placeholder": {
-                    fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
-                  },
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  alignItems: "center",
                 }}
-              />
-
+              >
+                <TextField
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter Your Email..."
+                  variant="standard"
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    disableUnderline: true,
+                    sx: {
+                      "&:after": {
+                        borderBottom: "2px solid #2d2d2d",
+                      },
+                    },
+                  }}
+                  sx={{
+                    "& input::placeholder": {
+                      fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
+                    },
+                  }}
+                />
+                <hr
+                  style={{
+                    width: "100%",
+                    height: "2px",
+                    color: "#2d2d2d",
+                    backgroundColor: "#2d2d2d",
+                  }}
+                />
+              </Box>
               <Button
                 variant="contained"
                 size="small"
