@@ -15,7 +15,7 @@ const UpdateSentPopup = ({ show, closePopup }) => {
           <FontAwesomeIcon icon={faEnvelope} className="animated-mail-icon" />
         </div>
 
-        <h1>YOUR ACCOUNT HAS BEEN Updated SUCCESSFULLY!</h1>
+        <h1>YOUR ACCOUNT HAS BEEN UPDATED SUCCESSFULLY!</h1>
         <p>
           Enjoy our services.
           <br />

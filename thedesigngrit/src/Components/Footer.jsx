@@ -11,9 +11,15 @@ import {
 import { Facebook, Instagram } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
 import { Link } from "react-router-dom";
+import GreetingModal from "./successMsgs/greeting";
 
 function Footer() {
+  const [email, setEmail] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -33,6 +39,39 @@ function Footer() {
 
     fetchCategories();
   }, []);
+  const handleSubscribe = async () => {
+    if (!email) {
+      setError("Please enter an email.");
+      return;
+    }
+    if (!isChecked) {
+      setError("You must agree to receive newsletters.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/newsletter/subscribe",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Subscription failed");
+      }
+
+      setMessage("Subscribed successfully!");
+      setEmail("");
+      setError("");
+      setShowModal(true); // Show modal after successful subscription
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   return (
     <Box
       sx={{
@@ -77,20 +116,18 @@ function Footer() {
               }}
             >
               <TextField
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter Your Email..."
                 variant="standard"
                 size="small"
                 fullWidth
                 InputProps={{ disableUnderline: true }}
-                sx={{
-                  "& input::placeholder": {
-                    fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
-                  },
-                }}
               />
               <Button
                 variant="contained"
                 size="small"
+                onClick={handleSubscribe}
                 sx={{
                   textTransform: "none",
                   fontSize: "14px",
@@ -103,6 +140,12 @@ function Footer() {
               >
                 Subscribe
               </Button>
+              {showModal && (
+                <GreetingModal
+                  email={email}
+                  onClose={() => setShowModal(false)}
+                />
+              )}
             </Box>
             <Box
               sx={{
