@@ -231,11 +231,37 @@ function ProductPage() {
               )}
             </p>
             <p className="product-price">
-              {product.price > 1000
-                ? new Intl.NumberFormat("en-US").format(product.price)
-                : product.price}
-              .00 E£
+              {product.salePrice ? (
+                <>
+                  <span
+                    style={{
+                      textDecoration: "line-through",
+                      color: "gray",
+                      marginRight: "8px",
+                    }}
+                  >
+                    {product.price > 1000
+                      ? new Intl.NumberFormat("en-US").format(product.price)
+                      : product.price}
+                    .00 E£
+                  </span>
+                  <span style={{ color: "red", fontWeight: "bold" }}>
+                    {product.salePrice > 1000
+                      ? new Intl.NumberFormat("en-US").format(product.salePrice)
+                      : product.salePrice}
+                    .00 E£
+                  </span>
+                </>
+              ) : (
+                <>
+                  {product.price > 1000
+                    ? new Intl.NumberFormat("en-US").format(product.price)
+                    : product.price}
+                  .00 E£
+                </>
+              )}
             </p>
+
             <hr />
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
