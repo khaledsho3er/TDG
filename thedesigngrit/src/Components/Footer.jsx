@@ -58,7 +58,7 @@ function Footer() {
           body: JSON.stringify({ email }),
         }
       );
-
+      console.log(`Subscription response status: ${response.status}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || "Subscription failed");
@@ -106,15 +106,9 @@ function Footer() {
             </Typography>
           </Link>
 
-          <Box sx={{ position: "relative", width: "100%" }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                width: "100%",
-              }}
-            >
+          <Box>
+            {/* Input & Button */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <TextField
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -129,45 +123,39 @@ function Footer() {
                 size="small"
                 onClick={handleSubscribe}
                 sx={{
-                  textTransform: "none",
-                  fontSize: "14px",
-                  width: 120,
-                  height: 30,
-                  marginBottom: 1,
                   bgcolor: "#2D2D2D",
                   "&:hover": { bgcolor: "#2D2D2D" },
                 }}
               >
                 Subscribe
               </Button>
-              {showModal && (
-                <GreetingModal
-                  email={email}
-                  onClose={() => setShowModal(false)}
-                />
-              )}
             </Box>
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: "1px",
-                backgroundColor: "rgba(0, 0, 0, 0.42)",
-              }}
-            />
-          </Box>
-          <Box sx={{ mt: 1 }}>
+
+            {/* Checkbox */}
             <FormControlLabel
-              control={<Checkbox />}
-              label="I agree to receive newsletters and promotional emails."
-              sx={{
-                color: "#000",
-                fontFamily: "Montserrat, sans-serif",
-                fontSize: { xs: "12px", md: "14px" }, // Adjust font size for mobile
-              }}
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                />
+              }
+              label="I agree to receive newsletters."
             />
+
+            {/* Error Message */}
+            {error && (
+              <Typography color="error" sx={{ mt: 1 }}>
+                {error}
+              </Typography>
+            )}
+
+            {/* Greeting Modal */}
+            {showModal && (
+              <GreetingModal
+                email={email}
+                onClose={() => setShowModal(false)}
+              />
+            )}
           </Box>
         </Box>
 
