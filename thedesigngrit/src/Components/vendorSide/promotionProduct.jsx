@@ -24,17 +24,34 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const promotionDetails = {
-      price,
       salePrice,
-      discountPercentage,
-      useDateRange,
       startDate: useDateRange ? startDate : null,
       endDate: useDateRange ? endDate : null,
     };
-    onSave(promotionDetails);
-    onClose();
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/products/promotion/${product._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(promotionDetails),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update promotion");
+
+      const data = await response.json();
+      console.log("Promotion updated:", data);
+      onSave(data.product);
+      onClose();
+    } catch (error) {
+      console.error("Error updating promotion:", error);
+    }
   };
 
   return (

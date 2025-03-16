@@ -161,7 +161,6 @@ const EmployeePage = () => {
         {signupPopupVisible && (
           <>
             <div className="popup-header">
-              <h2>Add Employee</h2>
               <IconButton
                 onClick={() => setSignupPopupVisible(false)}
                 sx={{
@@ -274,9 +273,19 @@ const EmployeePage = () => {
                       })
                     }
                   >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    <option value="1">
+                      {" "}
+                      Tier 1 - Notification Page, Orders List
+                    </option>
+                    <option value="2">
+                      {" "}
+                      Tier 2 - Notifications Page, Orders List, all Products,
+                      Promotion, brand profile
+                    </option>
+                    <option value="3">
+                      {" "}
+                      Tier 3 - Full Access + Financials
+                    </option>
                   </select>
                 </div>
                 <div
