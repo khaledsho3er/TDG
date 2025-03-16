@@ -162,7 +162,7 @@ const BrandSignup = () => {
           <div className="brand-logo">
             {formData.brandlogo ? (
               <img
-                src={`https://tdg-db.onrender.com/uploads/${formData.brandlogo}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${formData.brandlogo}`}
                 alt="Brand Logo"
                 width="150"
               />

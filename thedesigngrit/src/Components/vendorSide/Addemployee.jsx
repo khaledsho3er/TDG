@@ -232,9 +232,16 @@ const VendorSignup = ({ open, onClose }) => {
                   value={formData.tier}
                   onChange={handleChange}
                 >
-                  <MenuItem value="1">Tier 1</MenuItem>
-                  <MenuItem value="2">Tier 2</MenuItem>
-                  <MenuItem value="3">Tier 3</MenuItem>
+                  <MenuItem value="1">
+                    Tier 1 - Notification Page, Orders List
+                  </MenuItem>
+                  <MenuItem value="2">
+                    Tier 2 - Notifications Page, Orders List, all Products,
+                    Promotion, brand profile
+                  </MenuItem>
+                  <MenuItem value="3">
+                    Tier 3 - Full Access + Financials
+                  </MenuItem>
                 </Select>
                 {errors.tier && (
                   <Typography color="error">{errors.tier}</Typography>
