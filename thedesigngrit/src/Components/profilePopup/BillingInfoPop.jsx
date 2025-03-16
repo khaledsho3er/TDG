@@ -9,7 +9,32 @@ import {
   MenuItem,
 } from "@mui/material";
 
-const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
+const detectCardType = (number) => {
+  const firstDigit = number.charAt(0);
+  if (/^4/.test(number)) return "Visa";
+  if (/^5[1-5]/.test(number)) return "MasterCard";
+  if (/^3[47]/.test(number)) return "Amex";
+  if (/^6/.test(number)) return "Discover";
+  if (/^5(0|6|7|8|9)/.test(number)) return "Valu"; // Custom for Valu
+  return "Unknown";
+};
+
+// Format card number: "1234567812345678" → "1234 5678 1234 5678"
+const formatCardNumber = (value) => {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{4})/g, "$1 ")
+    .trim();
+};
+
+const BillingInfoPopup = ({
+  open,
+  card,
+  isAddingNew,
+  onSave,
+  onCancel,
+  userId,
+}) => {
   const [cardNumber, setCardNumber] = useState("");
   const [cardType, setCardType] = useState("Visa");
   const [cvv, setCvv] = useState("");
@@ -18,19 +43,49 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
   useEffect(() => {
     if (card) {
       setCardNumber(card.cardNumber || "");
-      setCardType(card.cardType || "Visa");
+      setCardType(card.cardType || "Unknown");
+      setExpiryDate(card.expiryDate || "");
     } else {
       setCardNumber("");
-      setCardType("Visa");
+      setCardType("Unknown");
+      setExpiryDate("");
     }
     setCvv("");
-    setExpiryDate("");
   }, [card]);
 
-  const handleSave = () => {
-    onSave({ cardNumber, type: cardType });
+  const handleCardNumberChange = (e) => {
+    let rawValue = e.target.value.replace(/\s/g, ""); // Remove spaces
+    if (/^\d*$/.test(rawValue)) {
+      setCardNumber(formatCardNumber(rawValue));
+      setCardType(detectCardType(rawValue));
+    }
   };
 
+  const handleSave = async () => {
+    if (!userId) {
+      alert("User ID is missing. Please log in.");
+      return;
+    }
+
+    const cardData = {
+      userId,
+      cardNumber: cardNumber.replace(/\s/g, ""),
+      expiryDate,
+      defaultCard,
+    };
+
+    try {
+      const response = await axios.post("/api/cards/add", cardData);
+      onSave(response.data.card); // Pass saved card to parent
+      onCancel(); // Close modal
+    } catch (error) {
+      console.error(
+        "Error saving card:",
+        error.response?.data || error.message
+      );
+      alert("Failed to save card. Please try again.");
+    }
+  };
   return (
     <Dialog
       open={open}
@@ -50,68 +105,38 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
         sx={{
           fontWeight: "normal",
           backgroundColor: "#ffffff",
-          color: "white",
           paddingLeft: "16px",
         }}
       >
         {isAddingNew ? "Add New Payment Method" : "Edit Payment Method"}
       </DialogTitle>
-      <DialogContent
-        sx={{
-          fontWeight: "bold",
-          backgroundColor: "#ffffff",
-          color: "white",
-        }}
-      >
+      <DialogContent sx={{ backgroundColor: "#ffffff" }}>
         <TextField
           label="Card Number"
           variant="outlined"
           fullWidth
           value={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
+          onChange={handleCardNumberChange}
           margin="normal"
-          InputLabelProps={{
-            style: { color: "#2d2d2d" },
-          }}
-          InputProps={{
-            style: { color: "#2d2d2d" },
-          }}
+          placeholder="1234 5678 1234 5678"
         />
         <TextField
-          select
           label="Card Type"
           variant="outlined"
           fullWidth
           value={cardType}
-          onChange={(e) => setCardType(e.target.value)}
+          disabled
           margin="normal"
-          InputLabelProps={{
-            style: { color: "#2d2d2d" },
-          }}
-          InputProps={{
-            style: { color: "#2d2d2d" },
-          }}
-        >
-          <MenuItem value="Visa">Visa</MenuItem>
-          <MenuItem value="Mastercard">Mastercard</MenuItem>
-          <MenuItem value="Valu">Valu</MenuItem>
-          <MenuItem value="Sohoula">Sohoula</MenuItem>
-          <MenuItem value="Sympl">Sympl</MenuItem>
-        </TextField>
+        />
         <TextField
           label="CVV"
           variant="outlined"
           fullWidth
           value={cvv}
-          onChange={(e) => setCvv(e.target.value)}
+          onChange={(e) => setCvv(e.target.value.replace(/\D/g, ""))} // Only numbers
           margin="normal"
           placeholder="***"
-          InputLabelProps={{
-            style: { color: "#2d2d2d" },
-          }}
-          InputProps={{
-            style: { color: "#2d2d2d" },
-          }}
+          inputProps={{ maxLength: 4 }}
         />
         <TextField
           label="Expiry Date"
@@ -121,46 +146,11 @@ const BillingInfoPopup = ({ open, card, isAddingNew, onSave, onCancel }) => {
           onChange={(e) => setExpiryDate(e.target.value)}
           margin="normal"
           placeholder="MM/YY"
-          InputLabelProps={{
-            style: { color: "#2d2d2d" },
-          }}
-          InputProps={{
-            style: { color: "#2d2d2d" },
-          }}
         />
       </DialogContent>
-      <DialogActions
-        sx={{
-          fontWeight: "bold",
-          backgroundColor: "#ffffff",
-        }}
-      >
-        <Button
-          onClick={onCancel}
-          sx={{
-            color: "#2d2d2d",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "transparent",
-              border: "1px solid #6c7c59",
-            },
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSave}
-          sx={{
-            color: "#2d2d2d",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "#6c7c59",
-              border: "none",
-            },
-          }}
-        >
-          {isAddingNew ? "Add" : "Update"}
-        </Button>
+      <DialogActions sx={{ backgroundColor: "#ffffff" }}>
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={handleSave}>{isAddingNew ? "Add" : "Update"}</Button>
       </DialogActions>
     </Dialog>
   );

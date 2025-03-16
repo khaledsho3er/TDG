@@ -133,7 +133,14 @@ const BillingInfo = () => {
         ))}
       </div>
       <Button
-        sx={{ backgroundColor: "#6c7c59", color: "#fff" }}
+        sx={{
+          backgroundColor: "#6c7c59",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#6c7c59", // Change to desired hover color
+            color: "fff", // Change text color on hover if needed
+          },
+        }}
         variant="contained"
         onClick={handleAddNew}
       >
