@@ -698,7 +698,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             }}
                           >
                             <span className="sales-value">
-                              {product.rating}
+                              {product.sales ? product.sales : "No yet sales"}
                             </span>
                           </div>
                         </div>
