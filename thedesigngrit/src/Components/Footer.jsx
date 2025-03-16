@@ -108,7 +108,14 @@ function Footer() {
 
           <Box>
             {/* Input & Button */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                width: "100%",
+              }}
+            >
               <TextField
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -117,7 +124,13 @@ function Footer() {
                 size="small"
                 fullWidth
                 InputProps={{ disableUnderline: true }}
+                sx={{
+                  "& input::placeholder": {
+                    fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
+                  },
+                }}
               />
+
               <Button
                 variant="contained"
                 size="small"
@@ -130,7 +143,16 @@ function Footer() {
                 Subscribe
               </Button>
             </Box>
-
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "1px",
+                backgroundColor: "rgba(0, 0, 0, 0.42)",
+              }}
+            />
             {/* Checkbox */}
             <FormControlLabel
               control={
