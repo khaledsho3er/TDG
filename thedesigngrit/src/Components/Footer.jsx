@@ -16,7 +16,6 @@ import GreetingModal from "./successMsgs/greeting";
 function Footer() {
   const [email, setEmail] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -64,8 +63,7 @@ function Footer() {
         throw new Error(data.error || "Subscription failed");
       }
 
-      setMessage("Subscribed successfully!");
-      setEmail("");
+      setEmail(email);
       setError("");
       setShowModal(true); // Show modal after successful subscription
     } catch (err) {
@@ -123,7 +121,14 @@ function Footer() {
                 variant="standard"
                 size="small"
                 fullWidth
-                InputProps={{ disableUnderline: true }}
+                InputProps={{
+                  disableUnderline: true,
+                  sx: {
+                    "&:after": {
+                      borderBottom: "2px solid #2d2d2d",
+                    },
+                  },
+                }}
                 sx={{
                   "& input::placeholder": {
                     fontSize: { xs: "16px", md: "20px" }, // Adjust font size for mobile
@@ -143,7 +148,7 @@ function Footer() {
                 Subscribe
               </Button>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 position: "absolute",
                 bottom: 0,
@@ -152,7 +157,7 @@ function Footer() {
                 height: "1px",
                 backgroundColor: "rgba(0, 0, 0, 0.42)",
               }}
-            />
+            /> */}
             {/* Checkbox */}
             <FormControlLabel
               control={
