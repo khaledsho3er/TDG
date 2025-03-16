@@ -215,21 +215,43 @@ function ProductPage() {
             <h1 className="product-title">{product.name}</h1>
             <p className="product-brand">{product.brandName}</p>
             <br />
-            <p className="product-rating">
-              {reviews.length > 0 ? (
-                <>
-                  {"★".repeat(
-                    Math.round(
-                      reviews.reduce((acc, review) => acc + review.rating, 0) /
-                        reviews.length
-                    )
-                  )}
-                  {" ( of " + reviews.length + " reviews)"}
-                </>
-              ) : (
-                <span>No reviews yet</span>
-              )}
-            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <p className="product-rating">
+                {reviews.length > 0 ? (
+                  <>
+                    {"★".repeat(
+                      Math.round(
+                        reviews.reduce(
+                          (acc, review) => acc + review.rating,
+                          0
+                        ) / reviews.length
+                      )
+                    )}
+                    {" ( of " + reviews.length + " reviews)"}
+                  </>
+                ) : (
+                  <span>No reviews yet</span>
+                )}
+              </p>
+              <p
+                style={{
+                  display: product.discountPercentage ? "block" : "none",
+                  alignSelf: "end",
+                }}
+              >
+                {product.discountPercentage ? (
+                  `${product.discountPercentage}% off`
+                ) : (
+                  <span style={{ display: "none" }}></span>
+                )}
+              </p>
+            </div>
             <p className="product-price">
               {product.salePrice ? (
                 <>
