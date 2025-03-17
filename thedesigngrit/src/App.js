@@ -1,5 +1,4 @@
-import "./App.css";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { CartProvider } from "./Context/cartcontext";
 import { UserProvider } from "./utils/userContext";
@@ -7,87 +6,97 @@ import { VendorProvider } from "./utils/vendorContext";
 import ScrollToTop from "./Context/scrollToTop";
 import { Analytics } from "@vercel/analytics/react";
 
-// Import Public Pages
-import Home from "./Pages/home";
-import LoginPage from "./Pages/login";
-import SignUpPage from "./Pages/signup";
-import AboutUsPage from "./Pages/aboutUs";
-import ContactUs from "./Pages/ContactUs";
-import Vendorspage from "./Pages/Vendorspage";
-import VendorProfile from "./Pages/VendorProfile";
-import ShoppingCart from "./Pages/ShoppingCart";
-import CheckoutPage from "./Pages/Checkout";
-import careersPage from "./Pages/careers";
-import FAQs from "./Pages/FAQs";
-import TrackOrder from "./Pages/TrackOrder";
-import MyAccount from "./Pages/myAccount";
-import UserProfile from "./Pages/userss";
-import ProductPage from "./Pages/ProductPage";
-import ProductsPage from "./Pages/ProductsPage";
-import Subcategories from "./Pages/subcategories";
-import TypesPage from "./Pages/types";
-import TermsOfService from "./Pages/Policy";
-import JobDesc from "./Pages/JobDescription";
-import PartnersApplication from "./Pages/Partners";
+// Lazy Load Pages (Public)
+const Home = lazy(() => import("./Pages/home"));
+const LoginPage = lazy(() => import("./Pages/login"));
+const SignUpPage = lazy(() => import("./Pages/signup"));
+const AboutUsPage = lazy(() => import("./Pages/aboutUs"));
+const ContactUs = lazy(() => import("./Pages/ContactUs"));
+const Vendorspage = lazy(() => import("./Pages/Vendorspage"));
+const VendorProfile = lazy(() => import("./Pages/VendorProfile"));
+const ShoppingCart = lazy(() => import("./Pages/ShoppingCart"));
+const CheckoutPage = lazy(() => import("./Pages/Checkout"));
+const CareersPage = lazy(() => import("./Pages/careers"));
+const FAQs = lazy(() => import("./Pages/FAQs"));
+const TrackOrder = lazy(() => import("./Pages/TrackOrder"));
+const MyAccount = lazy(() => import("./Pages/myAccount"));
+const UserProfile = lazy(() => import("./Pages/userss"));
+const ProductPage = lazy(() => import("./Pages/ProductPage"));
+const ProductsPage = lazy(() => import("./Pages/ProductsPage"));
+const Subcategories = lazy(() => import("./Pages/subcategories"));
+const TypesPage = lazy(() => import("./Pages/types"));
+const TermsOfService = lazy(() => import("./Pages/Policy"));
+const JobDesc = lazy(() => import("./Pages/JobDescription"));
+const PartnersApplication = lazy(() => import("./Pages/Partners"));
 
-// Import Vendor Pages
-import VendorHome from "./Pages/vendorSide/VendorHome";
-import OrderDetails from "./Components/vendorSide/orderDetails";
-import UpdateProductForm from "./Components/vendorSide/UpdateProduct";
-import AdminHome from "./Pages/vendorSide/AdminHome";
-import NotificationsPage from "./Components/vendorSide/notificationPage";
-import SigninVendor from "./Components/vendorSide/signinVendor";
-import EditEmployee from "./Components/vendorSide/editEmployee";
-import BrandForm from "./Components/vendorSide/addbrand";
-import Signupvendor from "./Components/vendorSide/SignupVendor";
-import VerifyPartners from "./Components/adminSide/VerifyPartners";
-// Layouts for Separation
+// Lazy Load Pages (Vendor)
+const VendorHome = lazy(() => import("./Pages/vendorSide/VendorHome"));
+const OrderDetails = lazy(() => import("./Components/vendorSide/orderDetails"));
+const UpdateProductForm = lazy(() =>
+  import("./Components/vendorSide/UpdateProduct")
+);
+const AdminHome = lazy(() => import("./Pages/vendorSide/AdminHome"));
+const NotificationsPage = lazy(() =>
+  import("./Components/vendorSide/notificationPage")
+);
+const SigninVendor = lazy(() => import("./Components/vendorSide/signinVendor"));
+const EditEmployee = lazy(() => import("./Components/vendorSide/editEmployee"));
+const BrandForm = lazy(() => import("./Components/vendorSide/addbrand"));
+const SignupVendor = lazy(() => import("./Components/vendorSide/SignupVendor"));
+const VerifyPartners = lazy(() =>
+  import("./Components/adminSide/VerifyPartners")
+);
+
 const PublicRoutes = () => (
-  <Routes>
-    <Route exact path="/" element={<Home />} />
-    <Route exact path="/home" element={<Home />} />
-    <Route exact path="/login" element={<LoginPage />} />
-    <Route exact path="/signup" element={<SignUpPage />} />
-    <Route exact path="/vendors" element={<Vendorspage />} />
-    <Route exact path="/about" element={<AboutUsPage />} />
-    <Route exact path="/mycart" Component={ShoppingCart} />
-    <Route exact path="/careers" Component={careersPage} />
-    <Route exact path="/contactus" element={<ContactUs />} />
-    <Route path="/policy" element={<TermsOfService />} />
-    <Route path="/product/:id" element={<ProductPage />} />
-    <Route exact path="/ProductsPage" element={<ProductsPage />} />
-    <Route exact path="/vendor/:id" element={<VendorProfile />} />
-    <Route path="/checkout" element={<CheckoutPage />} />
-    <Route path="/jobdesc/:jobId" element={<JobDesc />} />
-    <Route path="/policy/:section" element={<TermsOfService />} />{" "}
-    <Route path="/products/:typeId/:typeName" element={<ProductsPage />} />
-    <Route exact path="/partners" Component={PartnersApplication} />
-    <Route path="/checkout" element={<CheckoutPage />} />
-    <Route path="/faqs" element={<FAQs />} />
-    <Route path="/trackorder" element={<TrackOrder />} />
-    <Route path="/myaccount" element={<MyAccount />} />
-    <Route path="/usersss" element={<UserProfile />} />
-    <Route
-      path="/category/:categoryId/subcategories"
-      element={<Subcategories />}
-    />
-    <Route path="/types/:subCategoryId" element={<TypesPage />} />
-  </Routes>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route exact path="/home" element={<Home />} />
+      <Route exact path="/login" element={<LoginPage />} />
+      <Route exact path="/signup" element={<SignUpPage />} />
+      <Route exact path="/vendors" element={<Vendorspage />} />
+      <Route exact path="/about" element={<AboutUsPage />} />
+      <Route exact path="/mycart" element={<ShoppingCart />} />
+      <Route exact path="/careers" element={<CareersPage />} />
+      <Route exact path="/contactus" element={<ContactUs />} />
+      <Route path="/policy" element={<TermsOfService />} />
+      <Route path="/product/:id" element={<ProductPage />} />
+      <Route exact path="/ProductsPage" element={<ProductsPage />} />
+      <Route exact path="/vendor/:id" element={<VendorProfile />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/jobdesc/:jobId" element={<JobDesc />} />
+      <Route path="/policy/:section" element={<TermsOfService />} />
+      <Route path="/products/:typeId/:typeName" element={<ProductsPage />} />
+      <Route exact path="/partners" element={<PartnersApplication />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/faqs" element={<FAQs />} />
+      <Route path="/trackorder" element={<TrackOrder />} />
+      <Route path="/myaccount" element={<MyAccount />} />
+      <Route path="/usersss" element={<UserProfile />} />
+      <Route
+        path="/category/:categoryId/subcategories"
+        element={<Subcategories />}
+      />
+      <Route path="/types/:subCategoryId" element={<TypesPage />} />
+    </Routes>
+  </Suspense>
 );
 
 const VendorRoutes = () => (
-  <Routes>
-    <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} />
-    <Route path="/orderDetail/:id" element={<OrderDetails />} />
-    <Route path="/update-product" element={<UpdateProductForm />} />
-    <Route path="/adminpanel" element={<AdminHome />} />
-    <Route path="/verify-partner" element={<VerifyPartners />} />
-    <Route path="/notificationspage" element={<NotificationsPage />} />
-    <Route path="/signin-vendor" element={<SigninVendor />} />
-    <Route path="/signupvendor" element={<Signupvendor />} />
-    <Route path="/addbrand" element={<BrandForm />} />
-    <Route path="/edit-employee/:id" element={<EditEmployee />} />
-  </Routes>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} />
+      <Route path="/orderDetail/:id" element={<OrderDetails />} />
+      <Route path="/update-product" element={<UpdateProductForm />} />
+      <Route path="/adminpanel" element={<AdminHome />} />
+      <Route path="/verify-partner" element={<VerifyPartners />} />
+      <Route path="/notificationspage" element={<NotificationsPage />} />
+      <Route path="/signin-vendor" element={<SigninVendor />} />
+      <Route path="/signupvendor" element={<SignupVendor />} />
+      <Route path="/addbrand" element={<BrandForm />} />
+      <Route path="/edit-employee/:id" element={<EditEmployee />} />
+    </Routes>
+  </Suspense>
 );
 
 function App() {
