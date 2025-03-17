@@ -22,6 +22,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
+  const [analyticsData, setAnalyticsData] = useState([]);
 
   // State for toggling sections
   const [showFalseStatus, setShowFalseStatus] = useState(false);
@@ -83,7 +84,24 @@ const ProductsPageVendor = ({ setActivePage }) => {
       fetchCategories(); // Fetch categories
     }
   }, [vendor, selectedCategory, subCategories]); // Fetch when vendor context changes
+  useEffect(() => {
+    if (vendor) {
+      const { brandId } = vendor; // Get brandId
 
+      const fetchAnalytics = async () => {
+        try {
+          const response = await axios.get(
+            `https://tdg-db.onrender.com/api/sales/sales/${brandId}`
+          );
+          setAnalyticsData(response.data); // Store analytics data
+        } catch (error) {
+          console.error("Error fetching sales analytics:", error);
+        }
+      };
+
+      fetchAnalytics();
+    }
+  }, [vendor]);
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
     setSelectedCategory(selectedCategoryId); // Save the selected category ID
@@ -222,7 +240,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
           </button>
         </div>
       </header>
-      <ProductAnalyticsGraph vendorSession={vendor} />
+      <ProductAnalyticsGraph analyticsData={analyticsData} />
 
       {/* Filters */}
       <div
