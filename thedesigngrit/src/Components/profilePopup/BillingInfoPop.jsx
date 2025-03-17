@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 import axios from "axios";
+
 const detectCardType = (number) => {
   // const firstDigit = number.charAt(0);
   if (/^4/.test(number)) return "Visa";
@@ -40,6 +41,7 @@ const BillingInfoPopup = ({
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [defaultCard] = useState("");
+  const [expiryError, setExpiryError] = useState("");
 
   useEffect(() => {
     if (card) {
@@ -87,6 +89,31 @@ const BillingInfoPopup = ({
       alert("Failed to save card. Please try again.");
     }
   };
+
+  const validateExpiryDate = (expiry) => {
+    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/; // Matches MM/YY format
+    if (!regex.test(expiry)) {
+      return "Invalid format. Use MM/YY";
+    }
+
+    const [month, year] = expiry.split("/").map(Number);
+    const currentYear = new Date().getFullYear() % 100; // Get last two digits of year
+    const currentMonth = new Date().getMonth() + 1; // Months are 0-based
+
+    if (year < currentYear || (year === currentYear && month < currentMonth)) {
+      return "Card is expired";
+    }
+
+    return null; // Valid expiry date
+  };
+
+  const handleExpiryChange = (e) => {
+    const value = e.target.value;
+    setExpiryDate(value);
+    const errorMessage = validateExpiryDate(value);
+    setExpiryError(errorMessage);
+  };
+
   return (
     <Dialog
       open={open}
@@ -140,14 +167,16 @@ const BillingInfoPopup = ({
           inputProps={{ maxLength: 4 }}
         />
         <TextField
-          label="Expiry Date"
-          variant="outlined"
-          fullWidth
+          type="text"
           value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          margin="normal"
+          onChange={handleExpiryChange}
           placeholder="MM/YY"
+          maxLength="5"
+          style={{ borderColor: expiryError ? "red" : "#ccc" }}
         />
+        {expiryError && (
+          <p style={{ color: "red", fontSize: "12px" }}>{expiryError}</p>
+        )}
       </DialogContent>
       <DialogActions sx={{ backgroundColor: "#ffffff" }}>
         <Button onClick={onCancel}>Cancel</Button>
