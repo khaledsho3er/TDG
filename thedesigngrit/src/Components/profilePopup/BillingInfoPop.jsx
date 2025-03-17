@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
+import axios from "axios";
 const detectCardType = (number) => {
   const firstDigit = number.charAt(0);
   if (/^4/.test(number)) return "Visa";
@@ -39,6 +40,7 @@ const BillingInfoPopup = ({
   const [cardType, setCardType] = useState("Visa");
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
+  const [defaultCard, setDefaultCard] = useState("");
 
   useEffect(() => {
     if (card) {
