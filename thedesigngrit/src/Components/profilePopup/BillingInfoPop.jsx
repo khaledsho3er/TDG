@@ -117,7 +117,10 @@ const BillingInfoPopup = ({
     };
 
     try {
-      const response = await axios.post("/api/cards/add", cardData);
+      const response = await axios.post(
+        "https://tdg-db.onrender.com/api/cards/add",
+        cardData
+      );
       onSave(response.data.card); // Pass saved card to parent
       onCancel(); // Close modal
     } catch (error) {
