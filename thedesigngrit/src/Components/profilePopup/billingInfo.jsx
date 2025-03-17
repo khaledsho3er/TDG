@@ -173,6 +173,7 @@ const BillingInfo = () => {
         card={selectedCard}
         isAddingNew={isAddingNew}
         onCancel={handleCancel}
+        userId={userId} // Ensure this is available in the parent component
       />
 
       <ConfirmationDialog
