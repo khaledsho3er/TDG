@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import BillingInfoPopup from "./BillingInfoPop";
 import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
+import axios from "axios";
 
 const BillingInfo = () => {
   const [savedCards, setSavedCards] = useState([]);
@@ -12,6 +13,8 @@ const BillingInfo = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingDefaultCard, setPendingDefaultCard] = useState(null);
   const { userSession } = useContext(UserContext);
+  const [cardToDelete, setCardToDelete] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const userId = userSession.id;
   // Fetch saved cards from the API
   useEffect(() => {
@@ -56,10 +59,29 @@ const BillingInfo = () => {
       .catch((error) => console.error("Error updating default card:", error));
   };
 
-  const handleEditCard = (card) => {
-    setSelectedCard(card);
-    setIsAddingNew(false);
-    setShowPopup(true);
+  const handleDeleteClick = (cardId) => {
+    setCardToDelete(cardId);
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!cardToDelete) return;
+
+    try {
+      const response = await axios.delete(
+        `https://tdg-db.onrender.com/api/cards/${cardToDelete}`
+      );
+      console.log(response.data.message);
+      setSavedCards((prev) => prev.filter((card) => card.id !== cardToDelete));
+    } catch (error) {
+      console.error(
+        "Error deleting card:",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setShowDeleteConfirmation(false);
+      setCardToDelete(null);
+    }
   };
 
   const handleAddNew = () => {
@@ -116,16 +138,16 @@ const BillingInfo = () => {
             </Box>
             <Box sx={{ display: "flex", gap: "5px", flexDirection: "column" }}>
               <button
-                onClick={() => handleSetDefault(card._id)}
+                onClick={() => handleSetDefault(card.id)}
                 style={{ backgroundColor: "#6c7c59", color: "#fff" }}
               >
                 {card.isDefault ? "Default" : "Set as Default"}
               </button>
               <button
-                onClick={() => handleEditCard(card)}
+                onClick={() => handleDeleteClick(card.id)}
                 style={{ backgroundColor: "#6c7c59", color: "#fff" }}
               >
-                Edit
+                Delete
               </button>
             </Box>
           </Box>
@@ -159,6 +181,13 @@ const BillingInfo = () => {
         content="Are you sure you want to set this card as the default?"
         onConfirm={confirmSetDefault}
         onCancel={handleConfirmationClose}
+      />
+      <ConfirmationDialog
+        open={showDeleteConfirmation}
+        title="Delete Card"
+        content="Are you sure you want to delete this card?"
+        onConfirm={confirmDelete}
+        onCancel={() => setShowDeleteConfirmation(false)}
       />
     </Box>
   );
