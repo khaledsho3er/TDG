@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Grid,
-  CardMedia,
-  Button,
-} from "@mui/material";
+import { Card, CardContent, Typography, Grid, CardMedia } from "@mui/material";
 import UpdateCategory from "./editcategories";
 
 const CategoryListPage = () => {

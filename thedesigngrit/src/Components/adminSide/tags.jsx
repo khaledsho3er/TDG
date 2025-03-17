@@ -27,7 +27,7 @@ const TAG_CATEGORIES = [
 const TagsTable = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState(null);
+  const [setSelectedTag] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [tagName, setTagName] = useState("");

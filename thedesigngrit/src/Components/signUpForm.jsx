@@ -37,7 +37,7 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [password, setPassword] = useState("");
+  const [setPassword] = useState("");
 
   const [strength, setStrength] = useState(0);
 

@@ -17,7 +17,7 @@ import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
-  const [isRequestInfoOpen, setIsRequestInfoOpen] = useState(true);
+  const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);

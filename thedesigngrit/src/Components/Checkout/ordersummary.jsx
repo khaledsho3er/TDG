@@ -2,7 +2,6 @@ import { Box, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import React from "react";
 import { useCart } from "../../Context/cartcontext"; // Import CartContext
 import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
-import { Link } from "react-router-dom";
 function SummaryForm({ billData }) {
   const { cartItems } = useCart(); // Get cart items from context
   const { subtotal, shippingFee, total } = billData;

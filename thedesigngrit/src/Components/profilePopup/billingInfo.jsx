@@ -10,7 +10,6 @@ const BillingInfo = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState("");
   const [pendingDefaultCard, setPendingDefaultCard] = useState(null);
   const { userSession } = useContext(UserContext);
   const userId = userSession.id;
@@ -29,7 +28,7 @@ const BillingInfo = () => {
         );
       })
       .catch((error) => console.error("Error fetching cards:", error));
-  }, []);
+  }, [userId]);
 
   const handleSetDefault = (cardId) => {
     setPendingDefaultCard(cardId);
@@ -120,7 +119,7 @@ const BillingInfo = () => {
                 onClick={() => handleSetDefault(card._id)}
                 style={{ backgroundColor: "#6c7c59", color: "#fff" }}
               >
-                {card.default ? "Default" : "Set as Default"}
+                {card.isDefault ? "Default" : "Set as Default"}
               </button>
               <button
                 onClick={() => handleEditCard(card)}

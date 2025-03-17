@@ -6,7 +6,6 @@ const QuotationsPage = () => {
   const { vendor } = useVendor(); // Access vendor data from context
   const [quotations, setQuotations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [selectedQuotation, setSelectedQuotation] = useState(null); // State to store the selected quotation for popup
 
   // Fetch quotations for a brand when the component mounts

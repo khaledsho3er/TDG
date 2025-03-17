@@ -5,7 +5,6 @@ import axios from "axios";
 import Profile from "../Components/account/profile";
 import { UserContext } from "../utils/userContext";
 import { useNavigate } from "react-router-dom";
-import OrdersPopUp from "../Components/profilePopup/ordersPopup";
 import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
 import ShippingInfoPopup from "../Components/profilePopup/Shipping";
 import WishlistPage from "../Components/account/wishlist";

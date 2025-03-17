@@ -631,12 +631,10 @@ import {
   Grid,
 } from "@mui/material";
 import axios from "axios";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useNavigate, Link } from "react-router-dom";
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
-  const [brandId, setBrandId] = useState(null);
   const navigate = useNavigate();
   const [vendorData, setVendorData] = useState({
     firstName: "",

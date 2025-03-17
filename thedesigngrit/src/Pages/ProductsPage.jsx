@@ -16,7 +16,7 @@ function ProductsPage() {
   const [products, setProducts] = useState([]); // جميع المنتجات
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     brands: [], // قائمة الـ ObjectId للماركات المختارة
     colors: [],
     tags: [],

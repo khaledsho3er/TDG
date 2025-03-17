@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa"; // React Icons
 import { useVendor } from "../../utils/vendorContext"; // Vendor context
-import { useNavigate } from "react-router-dom";
 
 const NotificationOverlayVendor = ({ onClose, setActivePage }) => {
   // const [showAll, setShowAll] = useState(false);
@@ -34,7 +33,6 @@ const NotificationOverlayVendor = ({ onClose, setActivePage }) => {
 
   // Show last 3 notifications
   const latestNotifications = notifications.slice(-3);
-  const navigate = useNavigate();
 
   const handleOpenPage = () => {
     setActivePage("notifications"); // Change the active page without changing the URL

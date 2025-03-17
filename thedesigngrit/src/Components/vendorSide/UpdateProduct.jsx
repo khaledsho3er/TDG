@@ -9,12 +9,13 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const { vendor } = useVendor(); // Access vendor data from context
 
   // State variables
-  const [brandName, setBrandName] = useState(""); // Store fetched brand name
+  const [brandName, setBrandName] = useState("");
   const [categories, setCategories] = useState([]); // Categories from API
   const [subCategories, setSubCategories] = useState([]); // Subcategories from API
   const [types, setTypes] = useState([]); // Types from API
-  const [selectedCategory, setSelectedCategory] = useState(""); // Selected category
-  const [selectedSubCategory, setSelectedSubCategory] = useState(""); // Selected subcategory
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
+
   const [tags, setTags] = useState([]); // Tags array
   const [customizationOptions, setCustomizationOptions] = useState([]); // Customization options
   const [otherCustomization, setOtherCustomization] = useState(""); // Other customization details
@@ -96,7 +97,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       };
       fetchBrandName();
     }
-  }, [vendor?.brandId]);
+  }, [vendor?.brandId, brandName]);
 
   // Set brandId from vendor context
   useEffect(() => {
@@ -136,7 +137,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       };
       fetchSubCategoriesAndTypes();
     }
-  }, [existingProduct]);
+  }, [existingProduct, selectedCategory, selectedSubCategory]);
 
   // Handle category change
   const handleCategoryChange = async (e) => {

@@ -1,7 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import { LuPackage } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import axios from "axios";
 import { Box } from "@mui/material";
@@ -24,7 +21,7 @@ const OrdersPopUp = () => {
     };
 
     fetchOrders(); // Call the function when the component mounts
-  }, []);
+  }, [userSession.id]);
 
   const toggleOrderDetails = (index) => {
     setExpandedOrder(expandedOrder === index ? null : index);

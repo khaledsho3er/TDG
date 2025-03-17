@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
@@ -15,7 +15,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
 
 const FilterSection = ({ onFilterChange, products }) => {
@@ -43,9 +42,34 @@ const FilterSection = ({ onFilterChange, products }) => {
     fetchBrands();
   }, []);
 
+  // Inside the component
+  const applyFilters = useCallback(() => {
+    let filtered = products.filter((product) => {
+      const matchesBrand =
+        selectedFilters.brands.length === 0 ||
+        selectedFilters.brands.includes(product.brand);
+
+      const matchesColor =
+        selectedFilters.colors.length === 0 ||
+        product.colors.some((color) => selectedFilters.colors.includes(color));
+
+      const matchesTag =
+        selectedFilters.tags.length === 0 ||
+        product.tags.some((tag) => selectedFilters.tags.includes(tag));
+
+      const matchesPrice =
+        product.price >= selectedFilters.priceRange[0] &&
+        product.price <= selectedFilters.priceRange[1];
+
+      return matchesBrand && matchesColor && matchesTag && matchesPrice;
+    });
+
+    onFilterChange(filtered);
+  }, [products, selectedFilters, onFilterChange]); // Add dependencies
+
   useEffect(() => {
     applyFilters();
-  }, [selectedFilters]);
+  }, [selectedFilters, applyFilters]); // No more ESLint warning ✅
 
   const handleFilterChange = (type, value) => {
     setSelectedFilters((prev) => ({
@@ -70,30 +94,6 @@ const FilterSection = ({ onFilterChange, products }) => {
       tags: [],
       priceRange: [349, 61564],
     });
-  };
-
-  const applyFilters = () => {
-    let filtered = products.filter((product) => {
-      const matchesBrand =
-        selectedFilters.brands.length === 0 ||
-        selectedFilters.brands.includes(product.brand);
-
-      const matchesColor =
-        selectedFilters.colors.length === 0 ||
-        product.colors.some((color) => selectedFilters.colors.includes(color));
-
-      const matchesTag =
-        selectedFilters.tags.length === 0 ||
-        product.tags.some((tag) => selectedFilters.tags.includes(tag));
-
-      const matchesPrice =
-        product.price >= selectedFilters.priceRange[0] &&
-        product.price <= selectedFilters.priceRange[1];
-
-      return matchesBrand && matchesColor && matchesTag && matchesPrice;
-    });
-
-    onFilterChange(filtered);
   };
 
   const renderFilters = () => (

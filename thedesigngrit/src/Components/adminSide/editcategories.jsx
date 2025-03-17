@@ -7,13 +7,13 @@ const UpdateCategory = ({ category, onBack }) => {
   const [categoryImage, setCategoryImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
-  const [newSubCategory, setNewSubCategory] = useState({
-    name: "",
-    description: "",
-    image: [],
-    imagePreviews: [],
-    types: [],
-  });
+  // const [newSubCategory, setNewSubCategory] = useState({
+  //   name: "",
+  //   description: "",
+  //   image: [],
+  //   imagePreviews: [],
+  //   types: [],
+  // });
   const [newTypes, setNewTypes] = useState({});
 
   useEffect(() => {
@@ -90,18 +90,18 @@ const UpdateCategory = ({ category, onBack }) => {
     }
   };
 
-  const handleAddSubCategory = () => {
-    if (newSubCategory.name.trim()) {
-      setSubCategories([...subCategories, { ...newSubCategory }]);
-      setNewSubCategory({
-        name: "",
-        description: "",
-        image: [],
-        imagePreviews: [],
-        types: [],
-      });
-    }
-  };
+  // const handleAddSubCategory = () => {
+  //   if (newSubCategory.name.trim()) {
+  //     setSubCategories([...subCategories, { ...newSubCategory }]);
+  //     setNewSubCategory({
+  //       name: "",
+  //       description: "",
+  //       image: [],
+  //       imagePreviews: [],
+  //       types: [],
+  //     });
+  //   }
+  // };
 
   const handleRemoveType = (subIndex, typeIndex) => {
     setSubCategories((prev) => {

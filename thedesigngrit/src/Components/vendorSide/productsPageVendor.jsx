@@ -6,7 +6,6 @@ import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow ico
 import axios from "axios";
 import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
-import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
 import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
@@ -166,12 +165,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
     setPromotionModalOpen(false); // Close the modal after saving
   };
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = filteredProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);

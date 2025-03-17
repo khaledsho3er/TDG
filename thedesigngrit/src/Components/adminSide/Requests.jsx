@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 const RequestsPartners = () => {
   const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
-  const [status, setStatus] = useState("pending");
+  const [status] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
   const partnersPerPage = 12; // Number of partners per page
 
-  // Fetch data from JSON or API
-  const fetchPartners = async () => {
+  // استخدام useCallback لتثبيت الدالة
+  const fetchPartners = useCallback(async () => {
     try {
       const response = await fetch(
         `https://tdg-db.onrender.com/api/brand/status/${status}`
-      ); // Update the path if needed
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -23,11 +23,11 @@ const RequestsPartners = () => {
     } catch (error) {
       console.error("Error fetching partners:", error);
     }
-  };
+  }, [status]); // طالما status ثابت مش هيحصل re-render
 
   useEffect(() => {
     fetchPartners();
-  }, []);
+  }, [fetchPartners]);
 
   // Pagination Logic
   const indexOfLastPartner = currentPage * partnersPerPage;

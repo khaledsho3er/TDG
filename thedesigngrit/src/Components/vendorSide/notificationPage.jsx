@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5"; // For status dots
@@ -13,14 +13,13 @@ const NotificationsPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const notificationsPerPage = 8;
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     try {
       if (!vendor || !vendor.brandId) {
         console.error("Brand ID not found in vendor session");
         return;
       }
-      const brandId = vendor.brandId; // Get brandId from vendor session
+      const brandId = vendor.brandId;
       const response = await fetch(
         `https://tdg-db.onrender.com/api/notifications/notifications?brandId=${brandId}`
       );
@@ -29,12 +28,11 @@ const NotificationsPage = () => {
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-  };
+  }, [vendor]); // تثبيت الدالة مع vendor كـ dependency
 
   useEffect(() => {
     fetchNotifications();
-  }, [vendor]); // Re-fetch notifications if vendor data changes
-
+  }, [fetchNotifications]); // استدعاء الدالة عند تغيّر vendor
   // Function to format the date
   const formatDate = (dateString) => {
     const date = new Date(dateString);

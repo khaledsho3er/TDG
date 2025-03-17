@@ -6,12 +6,11 @@ import {
   DialogTitle,
   Button,
   TextField,
-  MenuItem,
 } from "@mui/material";
 
 import axios from "axios";
 const detectCardType = (number) => {
-  const firstDigit = number.charAt(0);
+  // const firstDigit = number.charAt(0);
   if (/^4/.test(number)) return "Visa";
   if (/^5[1-5]/.test(number)) return "MasterCard";
   if (/^3[47]/.test(number)) return "Amex";
@@ -40,7 +39,7 @@ const BillingInfoPopup = ({
   const [cardType, setCardType] = useState("Visa");
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
-  const [defaultCard, setDefaultCard] = useState("");
+  const [defaultCard] = useState("");
 
   useEffect(() => {
     if (card) {

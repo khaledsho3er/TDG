@@ -7,12 +7,12 @@ const LoadingScreen = ({ onComplete }) => {
     const timer = setTimeout(() => {
       setIsVisible(false);
       if (onComplete) {
-        onComplete(); // Callback to proceed after loading
+        onComplete();
       }
-    }, 10000); // Ensuring a minimum 10s play time
+    }, 10000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [onComplete]); // Added onComplete as a dependency
 
   return (
     isVisible && (

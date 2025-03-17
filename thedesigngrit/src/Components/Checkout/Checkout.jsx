@@ -58,12 +58,12 @@ function Checkout() {
     setPaymentData(data);
   };
 
-  const handleNext = () => {
-    if (validateCheckboxRef.current && !validateCheckboxRef.current()) {
-      return; // Stop if validation fails
-    }
-    console.log("Proceed to next step");
-  };
+  // const handleNext = () => {
+  //   if (validateCheckboxRef.current && !validateCheckboxRef.current()) {
+  //     return; // Stop if validation fails
+  //   }
+  //   console.log("Proceed to next step");
+  // };
 
   const handlePaymentSubmit = async () => {
     if (!cartItems || cartItems.length === 0) {
