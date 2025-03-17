@@ -25,11 +25,11 @@ const ProductAnalyticsGraph = ({ vendorSession }) => {
 
   // Fetch available products list (without sales data)
   useEffect(() => {
-    const brandId = vendorSession.brandId;
+    console.log("Vendor Session: ", vendorSession);
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+          `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendorSession.brandId}`
         );
         const data = await res.json();
         setProducts(data.products);
