@@ -36,7 +36,7 @@ const BillingInfoPopup = ({
   userId,
 }) => {
   const [cardNumber, setCardNumber] = useState("");
-  const [cardType, setCardType] = useState("Unknown");
+  const [cardType, setCardType] = useState(" ");
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [expiryError, setExpiryError] = useState("");
@@ -113,6 +113,7 @@ const BillingInfoPopup = ({
     const cardData = {
       userId,
       cardNumber: cardNumber.replace(/\s/g, ""),
+      cardType,
       expiryDate,
     };
 
