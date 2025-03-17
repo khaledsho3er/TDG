@@ -222,7 +222,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
           </button>
         </div>
       </header>
-      <ProductAnalyticsGraph products={products} />
+      <ProductAnalyticsGraph vendorSession={vendor} />
 
       {/* Filters */}
       <div

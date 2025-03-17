@@ -16,38 +16,58 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const ProductAnalyticsGraph = () => {
-  const [products, setProducts] = useState([]); // Store products list
+const ProductAnalyticsGraph = ({ vendorSession }) => {
+  const [products, setProducts] = useState([]); // Store product list
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [timeframe, setTimeframe] = useState("7d");
-  const [analyticsData, setAnalyticsData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [analyticsData, setAnalyticsData] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  // Fetch Products & Analytics Data
+  // Fetch available products list (without sales data)
   useEffect(() => {
-    const fetchData = async () => {
+    const brandId = vendorSession.brandId;
+    const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "https://tdg-db.onrender.com/api/analytics/sales"
+          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
         );
         const data = await res.json();
         setProducts(data.products);
-        setAnalyticsData(
-          data.products.map((p) => ({
-            id: p._id,
-            name: p.name,
-            sales: p.sales,
-          }))
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Fetch analytics for selected products
+  useEffect(() => {
+    if (selectedProducts.length === 0) return;
+
+    setLoading(true);
+    const fetchAnalytics = async () => {
+      try {
+        const fetchedData = {};
+        await Promise.all(
+          selectedProducts.map(async (productId) => {
+            const res = await fetch(
+              `https://tdg-db.onrender.com/api/analytics/sales/${productId}`
+            );
+            const data = await res.json();
+            fetchedData[productId] = data.product.sales; // Store sales data
+          })
         );
-        setLoading(false);
+        setAnalyticsData(fetchedData);
       } catch (error) {
         console.error("Error fetching analytics:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    fetchAnalytics();
+  }, [selectedProducts]);
 
   const handleSelectProduct = (productId) => {
     setSelectedProducts((prev) => {
@@ -60,14 +80,11 @@ const ProductAnalyticsGraph = () => {
     });
   };
 
-  // Process data for the chart
-  const chartData = selectedProducts.map((productId) => {
-    const product = analyticsData.find((p) => p.id === productId);
-    return {
-      product,
-      data: [{ date: "Total", sales: product?.sales || 0 }],
-    };
-  });
+  // Format data for the chart
+  const chartData = selectedProducts.map((productId) => ({
+    product: products.find((p) => p._id === productId),
+    data: [{ date: "Total", sales: analyticsData[productId] || 0 }],
+  }));
 
   return (
     <div
@@ -125,7 +142,7 @@ const ProductAnalyticsGraph = () => {
               <Legend />
               {chartData.map(({ product, data }) => (
                 <Line
-                  key={product.id}
+                  key={product._id}
                   type="monotone"
                   data={data}
                   dataKey="sales"
