@@ -301,7 +301,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                           }}
                           className="three-dots-icon"
                         />
-                        {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
+                        {menuOpen[product.id] && (
                           <div className="menu-dropdown">
                             <button onClick={() => handleEdit(product)}>
                               Edit
