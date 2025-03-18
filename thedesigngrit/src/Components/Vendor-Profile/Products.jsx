@@ -58,7 +58,7 @@ function VendorsProductsGrid({ vendor }) {
                 title={product.name}
                 description={product.description}
                 price={product.price}
-                image={product.mainImage}
+                mainImage={product.mainImage}
               />
             </Grid>
           ))
