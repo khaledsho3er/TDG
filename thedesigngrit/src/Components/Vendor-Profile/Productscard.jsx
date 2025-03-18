@@ -12,7 +12,7 @@ const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
         loop={true}
         className="related-swiper"
       >
-        <SwiperSlide key={_id} className="related-product-card">
+        <SwiperSlide key={_id} style={{ width: "250px" }}>
           <div className="related-product-card">
             <div className="related-product-image-container">
               <img
