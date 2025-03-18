@@ -14,8 +14,7 @@ const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
         loop={true}
         className="related-swiper"
       >
-        return (
-        <SwiperSlide key={_id}>
+        <SwiperSlide key={_id} style={{ width: "100%" }}>
           <div className="related-product-card">
             <div className="related-product-image-container">
               <img
@@ -30,7 +29,6 @@ const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
             </div>
           </div>
         </SwiperSlide>
-        );
       </Swiper>
     </div>
   );
