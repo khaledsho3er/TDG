@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Dialog, Menu, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  Menu,
+  MenuItem,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
@@ -98,7 +107,7 @@ const BrandingPage = () => {
               style={{ position: "relative", marginRight: "10px" }}
             >
               <a
-                href={catalog.fileUrl}
+                href={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${catalog.pdf}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -106,7 +115,8 @@ const BrandingPage = () => {
                   style={{
                     width: "120px",
                     height: "160px",
-                    background: "#ddd",
+                    backgroundImage: `url(https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${catalog.image})`,
+                    backgroundSize: "cover",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -115,13 +125,13 @@ const BrandingPage = () => {
                   {catalog.title}
                 </div>
               </a>
-              <Button
+              <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={(e) => handleMenuOpen(e, catalog)}
               >
-                ⋮
-              </Button>
+                <GiHamburgerMenu />
+              </IconButton>
             </div>
           ))}
         </div>
