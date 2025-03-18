@@ -1,8 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
   return (
     <div className="related-products-container">
@@ -14,7 +12,7 @@ const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
         loop={true}
         className="related-swiper"
       >
-        <SwiperSlide key={_id} style={{ width: "100%" }}>
+        <SwiperSlide key={_id} className="related-product-card">
           <div className="related-product-card">
             <div className="related-product-image-container">
               <img
