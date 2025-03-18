@@ -141,13 +141,16 @@ const BrandingPage = () => {
               >
                 <div
                   style={{
-                    width: "120px",
-                    height: "160px",
+                    width: "150px",
+                    height: "180px",
                     backgroundImage: `url(https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${catalog.image})`,
                     backgroundSize: "cover",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                    cursor: "pointer",
                   }}
                 >
                   {catalog.title}
@@ -156,6 +159,14 @@ const BrandingPage = () => {
               <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
+                sx={{
+                  position: "absolute",
+                  top: "5px",
+                  right: "5px",
+                  backgroundColor: "#fff",
+                  javascript: "none",
+                  color: "#2d2d2d",
+                }}
                 onClick={(e) => handleMenuOpen(e, catalog)}
               >
                 <GiHamburgerMenu />
