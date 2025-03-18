@@ -55,7 +55,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
               padding: "4px 8px",
               fontSize: 12,
               borderRadius: 1,
-              fontFamily: "Montserrat, san-serif",
+              fontFamily: "Montserrat",
             }}
           >
             {type}
@@ -77,7 +77,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
             fontSize: 14,
             marginBottom: "4px",
             textAlign: "left",
-            fontFamily: "Montserrat, san-serif",
+            fontFamily: "Montserrat",
           }}
         >
           {title}
@@ -88,7 +88,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
             fontSize: 12,
             color: "text.secondary",
             textAlign: "left",
-            fontFamily: "Montserrat, san-serif",
+            fontFamily: "Montserrat",
           }}
         >
           {year}

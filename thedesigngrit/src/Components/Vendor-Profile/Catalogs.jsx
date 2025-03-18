@@ -89,7 +89,7 @@ function VendorCatalogs({ vendorID }) {
             <Grid item xs={12} sm={6} md={2.4} key={item._id}>
               {/* Pass data to the card component */}
               <VendorCatalogCard
-                title={item.name}
+                title={item.title}
                 year={item.year}
                 image={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.image}`}
                 type={item.type}

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import VendorProductsCard from "./Productscard";
 
-function VendorsProductsGrid({ vendorId }) {
+function VendorsProductsGrid({ vendorId, vendorname }) {
   const [products, setProducts] = useState([]);
-
+  console.log("brand Id in vendor profile", vendorId);
   // Fetch products from the JSON file
   useEffect(() => {
     fetch(
@@ -37,7 +37,7 @@ function VendorsProductsGrid({ vendorId }) {
             padding: "25px",
           }}
         >
-          Istikbal's Products
+          {vendorname} 's Products
         </Typography>
         <Button variant="contained">View all</Button>
       </Box>
@@ -48,11 +48,11 @@ function VendorsProductsGrid({ vendorId }) {
             xs={12}
             sm={6}
             md={2.4}
-            key={product.id}
+            key={product._id}
             className="vendorProducts-grid-item"
           >
             <VendorProductsCard
-              title={product.title}
+              title={product.name}
               description={product.description}
               price={product.price}
               image={product.mainimage}
