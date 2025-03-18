@@ -1,22 +1,37 @@
 import React from "react";
-
-const VendorProductsCard = ({ title, description, price, mainImage }) => {
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
   return (
-    <div className="vendorprofile-products-card">
-      {/* Image Section */}
-      <img
-        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
-        alt={`${title} ImageProducts`}
-        className="vendorprofile-products-card-media"
-      />
-      {/* Card Content Section */}
-      <div className="vendorprofile-products-card-content">
-        <p className="vendorprofile-products-card-title">{title}</p>
-        <p className="vendorprofile-products-card-description">
-          {description.split(" ").slice(0, 10).join(" ")}
-        </p>
-        <p className="vendorprofile-products-card-price">{price}</p>
-      </div>
+    <div className="related-products-container">
+      <Swiper
+        modules={[Navigation]}
+        slidesPerView={3}
+        spaceBetween={20}
+        navigation
+        loop={true}
+        className="related-swiper"
+      >
+        return (
+        <SwiperSlide key={_id}>
+          <div className="related-product-card">
+            <div className="related-product-image-container">
+              <img
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
+                alt={title}
+                className="related-img"
+              />
+            </div>
+            <div className="related-info">
+              <h3 className="related-name">{title}</h3>
+              <p className="related-price">{price} E£</p>
+            </div>
+          </div>
+        </SwiperSlide>
+        );
+      </Swiper>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import VendorProfileHero from "../Components/Vendor-Profile/Hero";
 import Header from "../Components/navBar";
 import VendorProfileHeader from "../Components/Vendor-Profile/profileheader";
 import VendorCatalogs from "../Components/Vendor-Profile/Catalogs";
-import VendorCategoriesGrid from "../Components/Vendor-Profile/Categories";
+// import VendorCategoriesGrid from "../Components/Vendor-Profile/Categories";
 import VendorsProductsGrid from "../Components/Vendor-Profile/Products";
 import Footer from "../Components/Footer";
 
@@ -40,7 +40,7 @@ function VendorProfile() {
       <VendorProfileHero vendor={vendor} />
       <VendorProfileHeader vendor={vendor} />
       <VendorCatalogs vendorID={vendor._id} />
-      <VendorCategoriesGrid vendor={vendor} />
+      {/* <VendorCategoriesGrid vendor={vendor} /> */}
       <VendorsProductsGrid vendor={vendor} />
       <Footer />
     </Box>
