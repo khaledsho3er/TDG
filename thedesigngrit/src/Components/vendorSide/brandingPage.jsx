@@ -20,7 +20,7 @@ const BrandingPage = () => {
 
   useEffect(() => {
     axios
-      .get(`https://tdg-db.onrender.com/api/catalogues/${brandId}`)
+      .get(`https://tdg-db.onrender.com/api/catalogs/${brandId}`)
       .then((res) => setCatalogs(res.data));
   }, [brandId]);
 
@@ -48,7 +48,7 @@ const BrandingPage = () => {
     data.append("type", formData.type);
     data.append("brandId", brandId);
 
-    await axios.post("https://tdg-db.onrender.com/api/catalogues/upload", data);
+    await axios.post("https://tdg-db.onrender.com/api/catalogs/upload", data);
     setCatalogs([...catalogs, { ...formData, id: Date.now() }]);
     handleCloseDialog();
   };
@@ -68,7 +68,7 @@ const BrandingPage = () => {
 
   const handleDelete = async () => {
     await axios.delete(
-      `https://tdg-db.onrender.com/api/catalogues/${selectedCatalog.id}`
+      `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
     );
     setCatalogs(catalogs.filter((c) => c.id !== selectedCatalog.id));
     handleMenuClose();
