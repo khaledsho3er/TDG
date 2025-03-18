@@ -22,9 +22,21 @@ const ProductAnalyticsGraph = ({ products }) => {
     }
 
     const salesMap = {};
+
     selectedProducts.forEach((productId) => {
       const product = products.find((p) => p._id === productId);
-      if (!product || !product.sales) return;
+
+      // Debugging: Check if the product exists and has sales
+      console.log("Selected Product:", product);
+
+      if (!product) return;
+      if (!Array.isArray(product.sales)) {
+        console.error(
+          `Error: sales is not an array for product ${product.name}`,
+          product.sales
+        );
+        return;
+      }
 
       product.sales.forEach((sale) => {
         if (!salesMap[sale.date]) {
