@@ -50,12 +50,14 @@ function VendorsProductsGrid({ vendor }) {
               md={2.4}
               key={product._id}
               className="vendorProducts-grid-item"
+              onClick={() => navigate(`/product/${product._id}`)}
+              style={{ cursor: "pointer" }}
             >
               <VendorProductsCard
                 title={product.name}
                 description={product.description}
                 price={product.price}
-                image={product.mainimage}
+                image={product.mainImage}
               />
             </Grid>
           ))
