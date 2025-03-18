@@ -5,8 +5,10 @@ import VendorProductsCard from "./Productscard";
 function VendorsProductsGrid({ vendor }) {
   const [products, setProducts] = useState([]);
   console.log("brand Id in vendor profile", vendor);
-  // Fetch products from the JSON file
+
   useEffect(() => {
+    if (!vendor?._id) return; // Ensure vendor._id is available before fetching
+
     fetch(
       `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendor._id}`
     )
@@ -17,14 +19,11 @@ function VendorsProductsGrid({ vendor }) {
         return response.json();
       })
       .then((data) => {
-        // Filter products based on vendorId
-        const filteredProducts = data.filter(
-          (product) => product.vendor === vendor._id
-        );
-        setProducts(filteredProducts);
+        console.log("Fetched Products:", data);
+        setProducts(data); // No need to filter if API already returns correct products
       })
       .catch((error) => console.error("Error fetching products:", error));
-  }, [vendor._id]); // Re-run fetch when vendorId changes
+  }, [vendor._id]);
 
   return (
     <Box>
@@ -42,23 +41,29 @@ function VendorsProductsGrid({ vendor }) {
         <Button variant="contained">View all</Button>
       </Box>
       <Grid container spacing={3} className="vendorProducts-grid">
-        {products.map((product) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={2.4}
-            key={product._id}
-            className="vendorProducts-grid-item"
-          >
-            <VendorProductsCard
-              title={product.name}
-              description={product.description}
-              price={product.price}
-              image={product.mainimage}
-            />
-          </Grid>
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={2.4}
+              key={product._id}
+              className="vendorProducts-grid-item"
+            >
+              <VendorProductsCard
+                title={product.name}
+                description={product.description}
+                price={product.price}
+                image={product.mainimage}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Typography sx={{ padding: "20px", color: "gray" }}>
+            No products found for this vendor.
+          </Typography>
+        )}
       </Grid>
     </Box>
   );
