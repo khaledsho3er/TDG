@@ -44,13 +44,7 @@ function VendorsProductsGrid({ vendor }) {
       <Grid container spacing={3} className="vendorProducts-grid">
         {products.length > 0 ? (
           products.map((product) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={2.4}
-              key={product._id}
-              className="vendorProducts-grid-item"
+            <div
               onClick={() => navigate(`/product/${product._id}`)}
               style={{ cursor: "pointer" }}
             >
@@ -61,7 +55,7 @@ function VendorsProductsGrid({ vendor }) {
                 price={product.price}
                 mainImage={product.mainImage}
               />
-            </Grid>
+            </div>
           ))
         ) : (
           <Typography sx={{ padding: "20px", color: "gray" }}>
