@@ -5,15 +5,17 @@ const VendorProductsCard = ({ title, description, price, mainImage }) => {
     <div className="vendorprofile-products-card">
       {/* Image Section */}
       <img
-        src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${mainImage}`}
+        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
         alt={`${title} ImageProducts`}
         className="vendorprofile-products-card-media"
       />
       {/* Card Content Section */}
       <div className="vendorprofile-products-card-content">
         <p className="vendorprofile-products-card-title">{title}</p>
-        <p className="vendorprofile-products-card-description">{description}</p>
-        <p className="vendorprofile-products-card-Price">{price}</p>
+        <p className="vendorprofile-products-card-description">
+          {description.split(" ").slice(0, 10).join(" ")}
+        </p>
+        <p className="vendorprofile-products-card-price">{price}</p>
       </div>
     </div>
   );
