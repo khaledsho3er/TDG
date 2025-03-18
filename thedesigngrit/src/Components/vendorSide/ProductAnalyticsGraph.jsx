@@ -25,25 +25,33 @@ const ProductAnalyticsGraph = ({ products }) => {
     });
   };
 
-  // Generate sales & revenue data
-  const generateAnalyticsData = () => {
-    return Array.from({ length: 7 }, (_, i) => {
-      const entry = { date: `Day ${i + 1}` };
+  // Convert real sales data into a structured format for the graph
+  const processSalesData = () => {
+    const allDates = new Set();
+    const salesMap = {};
 
-      selectedProducts.forEach((productId) => {
-        const product = products.find((p) => p._id === productId);
-        const sales = Math.floor(Math.random() * 100); // Mock sales
-        const revenue = sales * (product.salePrice || product.price);
+    selectedProducts.forEach((productId) => {
+      const product = products.find((p) => p._id === productId);
+      if (!product || !product.sales) return;
 
-        entry[`${productId}_sales`] = sales;
-        entry[`${productId}_revenue`] = revenue;
+      product.sales.forEach((sale) => {
+        allDates.add(sale.date);
+        if (!salesMap[sale.date]) {
+          salesMap[sale.date] = { date: sale.date };
+        }
+
+        const revenue = sale.sales * (product.salePrice || product.price);
+        salesMap[sale.date][`${productId}_sales`] = sale.sales;
+        salesMap[sale.date][`${productId}_revenue`] = revenue;
       });
-
-      return entry;
     });
+
+    return Object.values(salesMap).sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
   };
 
-  const chartData = generateAnalyticsData();
+  const chartData = processSalesData();
 
   return (
     <div
@@ -104,7 +112,7 @@ const ProductAnalyticsGraph = ({ products }) => {
                   name={`${product.name} Sales`}
                   stroke={`#${Math.floor(Math.random() * 16777215).toString(
                     16
-                  )}`} // Random color
+                  )}`}
                 />
                 <Line
                   key={`${productId}_revenue`}
@@ -113,7 +121,7 @@ const ProductAnalyticsGraph = ({ products }) => {
                   name={`${product.name} Revenue`}
                   stroke={`#${Math.floor(Math.random() * 16777215).toString(
                     16
-                  )}`} // Another random color
+                  )}`}
                   strokeDasharray="5 5"
                 />
               </>
