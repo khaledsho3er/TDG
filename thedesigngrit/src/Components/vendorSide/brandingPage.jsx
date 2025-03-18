@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Button,
   Dialog,
   Menu,
   MenuItem,
@@ -125,9 +124,9 @@ const BrandingPage = () => {
           minHeight: "200px",
         }}
       >
-        <Button className="submit-btn" onClick={handleOpenDialog}>
+        <button className="submit-btn" onClick={handleOpenDialog}>
           Upload Catalog
-        </Button>
+        </button>
         <div
           className="catalogs-container"
           style={{ display: "flex", overflowX: "auto", marginTop: "20px" }}
@@ -141,6 +140,7 @@ const BrandingPage = () => {
                 href={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${catalog.pdf}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
               >
                 <div
                   style={{
@@ -154,6 +154,7 @@ const BrandingPage = () => {
                     borderRadius: "8px",
                     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
                     cursor: "pointer",
+                    textDecoration: "none",
                   }}
                 >
                   <span
@@ -161,30 +162,31 @@ const BrandingPage = () => {
                       backgroundColor: "#fff",
                       color: "#2d2d2d",
                       fontFamily: "Montserrat",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      textDecoration: "none",
                     }}
                   >
                     {catalog.title}
                   </span>
                 </div>
               </a>
-              <div className="menu-container">
-                <IconButton
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  sx={{
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    backgroundColor: "transparent",
-                    color: "#2d2d2d",
-                  }}
-                  onClick={(e) => handleMenuOpen(e, catalog)}
-                >
-                  <BsThreeDotsVertical
-                    style={{ fontSize: "12px", backgroundColor: "transparent" }}
-                  />
-                </IconButton>
-              </div>
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                sx={{
+                  position: "absolute",
+                  top: "5px",
+                  right: "5px",
+                  backgroundColor: "transparent",
+                  color: "#2d2d2d",
+                }}
+                onClick={(e) => handleMenuOpen(e, catalog)}
+              >
+                <BsThreeDotsVertical
+                  style={{ fontSize: "12px", backgroundColor: "transparent" }}
+                />
+              </IconButton>
             </div>
           ))}
         </div>
