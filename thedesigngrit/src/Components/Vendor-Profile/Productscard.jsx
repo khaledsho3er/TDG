@@ -1,11 +1,11 @@
 import React from "react";
 
-const VendorProductsCard = ({ title, description, price, image }) => {
+const VendorProductsCard = ({ title, description, price, mainImage }) => {
   return (
     <div className="vendorprofile-products-card">
       {/* Image Section */}
       <img
-        src={image}
+        src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${mainImage}`}
         alt={`${title} ImageProducts`}
         className="vendorprofile-products-card-media"
       />

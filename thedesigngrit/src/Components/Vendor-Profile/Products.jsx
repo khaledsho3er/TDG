@@ -7,7 +7,9 @@ function VendorsProductsGrid({ vendorId }) {
 
   // Fetch products from the JSON file
   useEffect(() => {
-    fetch("/json/Product.json")
+    fetch(
+      `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendorId}`
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -53,7 +55,7 @@ function VendorsProductsGrid({ vendorId }) {
               title={product.title}
               description={product.description}
               price={product.price}
-              image={product.image}
+              image={product.mainimage}
             />
           </Grid>
         ))}
