@@ -40,8 +40,8 @@ function VendorProfile() {
       <VendorProfileHero vendor={vendor} />
       <VendorProfileHeader vendor={vendor} />
       <VendorCatalogs vendorID={vendor._id} />
-      <VendorCategoriesGrid vendor={vendor} vendorname={vendor.name} />
-      <VendorsProductsGrid vendorId={id} vendorname={vendor.name} />
+      <VendorCategoriesGrid vendor={vendor} />
+      <VendorsProductsGrid vendor={vendor} />
       <Footer />
     </Box>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import VendorCategoryCard from "./CategoryCard";
 
-const VendorCategoriesgrid = ({ vendorId, vendorname }) => {
+const VendorCategoriesgrid = ({ vendor }) => {
   const [categories, setCategories] = useState([]);
 
   // Fetch data from the JSON file
@@ -21,7 +21,7 @@ const VendorCategoriesgrid = ({ vendorId, vendorname }) => {
   return (
     <Box className="vendorcategories-grid-container">
       <Typography variant="h1" className="vendorcategories-title">
-        {vendorname}'s Categories
+        {vendor.brandName}'s Categories
       </Typography>
       <Grid container spacing={3} className="vendorcategories-grid">
         {categories.map((category) => (

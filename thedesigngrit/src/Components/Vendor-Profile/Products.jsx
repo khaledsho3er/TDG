@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import VendorProductsCard from "./Productscard";
 
-function VendorsProductsGrid({ vendorId, vendorname }) {
+function VendorsProductsGrid({ vendor }) {
   const [products, setProducts] = useState([]);
-  console.log("brand Id in vendor profile", vendorId);
+  console.log("brand Id in vendor profile", vendor);
   // Fetch products from the JSON file
   useEffect(() => {
     fetch(
-      `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendorId}`
+      `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendor._id}`
     )
       .then((response) => {
         if (!response.ok) {
@@ -19,12 +19,12 @@ function VendorsProductsGrid({ vendorId, vendorname }) {
       .then((data) => {
         // Filter products based on vendorId
         const filteredProducts = data.filter(
-          (product) => product.vendorId === vendorId
+          (product) => product.vendor === vendor._id
         );
         setProducts(filteredProducts);
       })
       .catch((error) => console.error("Error fetching products:", error));
-  }, [vendorId]); // Re-run fetch when vendorId changes
+  }, [vendor._id]); // Re-run fetch when vendorId changes
 
   return (
     <Box>
@@ -37,7 +37,7 @@ function VendorsProductsGrid({ vendorId, vendorname }) {
             padding: "25px",
           }}
         >
-          {vendorname} 's Products
+          {vendor.brandName} 's Products
         </Typography>
         <Button variant="contained">View all</Button>
       </Box>
