@@ -22,7 +22,7 @@ const BrandingPage = () => {
     year: "",
     model: "",
     type: "",
-    file: null,
+    pdf: null,
     image: null,
   });
   const { vendor } = useVendor(); // Get vendor from context
@@ -44,7 +44,7 @@ const BrandingPage = () => {
       year: "",
       model: "",
       type: "",
-      file: null,
+      pdf: null,
       image: null,
     });
   };
@@ -65,7 +65,7 @@ const BrandingPage = () => {
 
   const handleUpload = async () => {
     const data = new FormData();
-    if (formData.file) data.append("file", formData.file);
+    if (formData.file) data.append("pdf", formData.file);
     if (formData.image) data.append("image", formData.image);
     data.append("title", formData.title);
     data.append("year", formData.year);
@@ -219,11 +219,13 @@ const BrandingPage = () => {
           <input
             type="file"
             accept=".pdf"
+            name="pdf"
             onChange={(e) => handleFileChange(e, "file")}
           />
           <label>Upload Image:</label>
           <input
             type="file"
+            name="image"
             accept="image/*"
             onChange={(e) => handleFileChange(e, "image")}
           />
