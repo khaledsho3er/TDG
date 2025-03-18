@@ -23,43 +23,67 @@ const BrandingPage = () => {
     model: "",
     type: "",
     file: null,
+    image: null,
   });
   const { vendor } = useVendor(); // Get vendor from context
-  const brandId = vendor.brandId; // Example brandId, replace with dynamic value
+  const brandId = vendor?.brandId; // Ensure brandId is available
 
   useEffect(() => {
     axios
       .get(`https://tdg-db.onrender.com/api/catalogs/${brandId}`)
-      .then((res) => setCatalogs(res.data));
+      .then((res) => setCatalogs(res.data))
+      .catch((err) => console.error("Error fetching catalogs:", err));
   }, [brandId]);
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedCatalog(null);
-    setFormData({ title: "", year: "", model: "", type: "", file: null });
+    setFormData({
+      title: "",
+      year: "",
+      model: "",
+      type: "",
+      file: null,
+      image: null,
+    });
   };
 
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
+  // Handle file selection for both PDF and image
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFormData((prevData) => ({ ...prevData, [type]: file }));
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleUpload = async () => {
     const data = new FormData();
-    data.append("file", formData.file);
+    if (formData.file) data.append("file", formData.file);
+    if (formData.image) data.append("image", formData.image);
     data.append("title", formData.title);
     data.append("year", formData.year);
     data.append("model", formData.model);
     data.append("type", formData.type);
     data.append("brandId", brandId);
 
-    await axios.post("https://tdg-db.onrender.com/api/catalogs/upload", data);
-    setCatalogs([...catalogs, { ...formData, id: Date.now() }]);
-    handleCloseDialog();
+    try {
+      const response = await axios.post(
+        "https://tdg-db.onrender.com/api/catalogs/upload",
+        data
+      );
+
+      setCatalogs([...catalogs, { ...formData, id: response.data.id }]);
+      handleCloseDialog();
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
   };
 
   const handleMenuOpen = (event, catalog) => {
@@ -76,10 +100,14 @@ const BrandingPage = () => {
   };
 
   const handleDelete = async () => {
-    await axios.delete(
-      `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
-    );
-    setCatalogs(catalogs.filter((c) => c.id !== selectedCatalog.id));
+    try {
+      await axios.delete(
+        `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
+      );
+      setCatalogs(catalogs.filter((c) => c.id !== selectedCatalog.id));
+    } catch (error) {
+      console.error("Error deleting catalog:", error);
+    }
     handleMenuClose();
   };
 
@@ -173,10 +201,21 @@ const BrandingPage = () => {
             fullWidth
             margin="normal"
           />
-          <input type="file" accept=".pdf" onChange={handleFileChange} />
-          <Button onClick={handleUpload}>
+          <label>Upload PDF:</label>
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={(e) => handleFileChange(e, "file")}
+          />
+          <label>Upload Image:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, "image")}
+          />
+          <button className="submit-btn" onClick={handleUpload}>
             {selectedCatalog ? "Update" : "Upload"}
-          </Button>
+          </button>
         </Box>
       </Dialog>
 
