@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
-import { GiHamburgerMenu } from "react-icons/gi";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
@@ -125,7 +125,7 @@ const BrandingPage = () => {
           minHeight: "200px",
         }}
       >
-        <Button variant="contained" onClick={handleOpenDialog}>
+        <Button className="submit-btn" onClick={handleOpenDialog}>
           Upload Catalog
         </Button>
         <div
@@ -144,8 +144,8 @@ const BrandingPage = () => {
               >
                 <div
                   style={{
-                    width: "150px",
-                    height: "180px",
+                    width: "180px",
+                    height: "220px",
                     backgroundImage: `url(https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${catalog.image})`,
                     backgroundSize: "cover",
                     display: "flex",
@@ -156,24 +156,35 @@ const BrandingPage = () => {
                     cursor: "pointer",
                   }}
                 >
-                  {catalog.title}
+                  <span
+                    style={{
+                      backgroundColor: "#fff",
+                      color: "#2d2d2d",
+                      fontFamily: "Montserrat",
+                    }}
+                  >
+                    {catalog.title}
+                  </span>
                 </div>
               </a>
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                sx={{
-                  position: "absolute",
-                  top: "5px",
-                  right: "5px",
-                  backgroundColor: "#fff",
-                  javascript: "none",
-                  color: "#2d2d2d",
-                }}
-                onClick={(e) => handleMenuOpen(e, catalog)}
-              >
-                <GiHamburgerMenu />
-              </IconButton>
+              <div className="menu-container">
+                <IconButton
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  sx={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "5px",
+                    backgroundColor: "transparent",
+                    color: "#2d2d2d",
+                  }}
+                  onClick={(e) => handleMenuOpen(e, catalog)}
+                >
+                  <BsThreeDotsVertical
+                    style={{ fontSize: "12px", backgroundColor: "transparent" }}
+                  />
+                </IconButton>
+              </div>
             </div>
           ))}
         </div>
@@ -182,7 +193,17 @@ const BrandingPage = () => {
       {/* Upload Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <Box padding={3}>
-          <h3>{selectedCatalog ? "Edit Catalog" : "Upload Catalog"}</h3>
+          <h3
+            style={{
+              color: "#2d2d2d",
+              fontFamily: "Horizon",
+              textAlign: "center",
+              fontWeight: "bold",
+              padding1: "15px",
+            }}
+          >
+            {selectedCatalog ? "Edit Catalog" : "Upload Catalog"}
+          </h3>
           <TextField
             name="title"
             label="Title"

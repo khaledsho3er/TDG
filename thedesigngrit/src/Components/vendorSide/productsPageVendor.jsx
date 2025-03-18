@@ -7,7 +7,7 @@ import axios from "axios";
 import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
-import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
+// import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
 const ProductsPageVendor = ({ setActivePage }) => {
   const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
