@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import VendorProductsCard from "./Productscard";
-
+import { useNavigate } from "react-router-dom";
 function VendorsProductsGrid({ vendor }) {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   console.log("brand Id in vendor profile", vendor);
 
