@@ -76,7 +76,10 @@ const BrandingPage = () => {
     try {
       const response = await axios.post(
         "https://tdg-db.onrender.com/api/catalogs/upload",
-        data
+        data,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       );
 
       setCatalogs([...catalogs, { ...formData, id: response.data.id }]);
