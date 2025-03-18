@@ -375,7 +375,9 @@ function Signupvendor() {
                     onChange={(e) => handleFileChange(e, 2)}
                     accept="image/*"
                   />
-                  <FormHelperText>Upload your brand's logo</FormHelperText>
+                  <FormHelperText>
+                    Please upload in .png, .jpeg, or .svg format
+                  </FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={6}>
@@ -389,7 +391,8 @@ function Signupvendor() {
                     accept="image/*"
                   />
                   <FormHelperText>
-                    Upload your brand's cover photo
+                    Upload image with recommended dimensions of 1920x1080px or
+                    16:9 aspect ratio
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -397,7 +400,7 @@ function Signupvendor() {
 
             <TextField
               label="Brand Description"
-              helperText="Provide a short description of your brand"
+              helperText="Enter a brief brand description, around 50-150 words. Ensure it's consistent in style and tone with the brand’s voice"
               name="brandDescription"
               value={brandData.brandDescription || ""}
               onChange={(e) => handleInputChange(e, 2)}
