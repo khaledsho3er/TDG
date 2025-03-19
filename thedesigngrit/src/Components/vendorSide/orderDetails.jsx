@@ -73,28 +73,26 @@ const OrderDetails = ({ order, onBack }) => {
 
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/product/${selectedProduct}/update-sub-delivery`,
+        `https://tdg-db.onrender.com/api/orders/${order._id}/products/${selectedProduct}/updateSubDeliveryDate`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            subDeliveryDate,
-            subOrderStatus: "Scheduled", // Adjust based on your logic
-          }),
+          body: JSON.stringify({ subDeliveryDate }),
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        alert("Delivery Date Updated!");
+        alert("Sub-delivery date updated successfully!");
         setOpen(false);
       } else {
-        alert(data.message || "Error updating delivery date");
+        alert(data.message || "Error updating sub-delivery date");
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("Failed to update sub-delivery date.");
     }
   };
   const handleSubmitDate = async () => {
@@ -254,24 +252,6 @@ const OrderDetails = ({ order, onBack }) => {
               flexDirection: "row",
             }}
           >
-            {/* <Select
-                sx={{
-                  width: "200px",
-                  backgroundColor: "#ddd",
-                  borderRadius: "5px",
-                  padding: "0px",
-                  color: "#2d2d2d",
-                }}
-                value={status} // Bind the value to the status state
-                onChange={handleStatusChange} // Handle the change
-              >
-                <MenuItem value="">Change Status</MenuItem>{" "}
-                
-                <MenuItem value="Delivered">Delivered</MenuItem>
-                <MenuItem value="Canceled">Canceled</MenuItem>
-                <MenuItem value="Pending">Pending</MenuItem>{" "}
-              
-              </Select>*/}
             <InvoiceDownload
               order={order}
               style={{
@@ -444,101 +424,8 @@ const OrderDetails = ({ order, onBack }) => {
                 alignItems: "center",
                 padding: "10px",
               }}
-            >
-              {/* <Button
-                  sx={{
-                    width: "80%",
-                    marginTop: "10px",
-                    padding: "10px 15px",
-                    backgroundColor: "#6c7c59",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    fontFamily: "Montserrat",
-                    "&:hover": {
-                      backgroundColor: "#2d2d2d",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  View Profile
-                </Button> */}
-            </Box>
+            ></Box>
           </Box>
-
-          {/* Order Info Box */}
-          {/* <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              border: "2px solid #ddd",
-              borderRadius: "15px",
-              width: "30%", // Ensures equal width for each Box
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                gap: "20px",
-                padding: "10px",
-                alignItems: "start",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  textAlign: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#6c7c59",
-                  borderRadius: "5px",
-                  width: "40px",
-                  height: "40px",
-                  color: "#fff",
-                  fontSize: "20px",
-                }}
-              >
-                <MdOutlineShoppingBag />
-              </Box>
-              <div
-                style={{
-                  fontFamily: "Montserrat",
-                }}
-              >
-                <h4>Billing Info</h4>
-                <p>Address: {order.billingDetails.address}</p>
-                <p>Country: {order.billingDetails.country}</p>
-                <p>zip Code: {order.billingDetails.zipCode}</p>
-              </div>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "10px",
-              }}
-            >
-              {/* <Button
-                  sx={{
-                    width: "80%",
-                    marginTop: "10px",
-                    padding: "10px 15px",
-                    backgroundColor: "#6c7c59",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    fontFamily: "Montserrat",
-                    "&:hover": {
-                      backgroundColor: "#2d2d2d",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Download File{" "}
-                </Button> */
-          /*} 
-            </Box>
-          </Box> */}
-
           {/* Delivery Info Box */}
           <Box
             sx={{
@@ -633,25 +520,7 @@ const OrderDetails = ({ order, onBack }) => {
                 alignItems: "flex-end",
                 padding: "10px",
               }}
-            >
-              {/* <Button
-                  sx={{
-                    width: "80%",
-                    marginTop: "10px",
-                    padding: "10px 15px",
-                    backgroundColor: "#6c7c59",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    fontFamily: "Montserrat",
-                    "&:hover": {
-                      backgroundColor: "#2d2d2d",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  View Profile
-                </Button> */}
-            </Box>
+            ></Box>
           </Box>
         </Box>
         {/*3rd Row*/}
@@ -806,16 +675,17 @@ const OrderDetails = ({ order, onBack }) => {
 
         {/* Set Delivery Date Dialog */}
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Set Delivery Date</DialogTitle>
+          <DialogTitle>Set Sub-Delivery Date</DialogTitle>
           <DialogContent>
             {/* Product Selection */}
             <Select
               value={selectedProduct}
               onChange={handleProductChange}
               fullWidth
+              margin="normal"
             >
               {filteredProducts.map((product) => (
-                <MenuItem key={product._id} value={product._id}>
+                <MenuItem key={product.productId} value={product.productId}>
                   {product.name}
                 </MenuItem>
               ))}
@@ -839,7 +709,6 @@ const OrderDetails = ({ order, onBack }) => {
             </Button>
           </DialogActions>
         </Dialog>
-
         <div
           style={{
             marginTop: "30px",
