@@ -641,40 +641,45 @@ const OrderDetails = ({ order, onBack }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product, index) => (
-              <tr key={index}>
-                <td>{product.name}</td>
-                <td>{product._id}</td>
-                <td>{product.quantity} Item</td>
-                <td>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 12px",
-                      borderRadius: "5px",
-                      backgroundColor:
-                        order.orderStatus === "Pending"
-                          ? "#f8d7da"
-                          : order.orderStatus === "Delivered"
-                          ? "#d4edda"
-                          : "#FFE5B4",
-                      color:
-                        order.orderStatus === "Pending"
-                          ? "#721c24"
-                          : order.orderStatus === "Delivered"
-                          ? "#155724"
-                          : "#FF7518",
-                      fontWeight: "500",
-                      textAlign: "center",
-                      minWidth: "80px",
-                    }}
-                  >
-                    {order.product.subOrderStatus}
-                  </span>
-                </td>
-                <td>{product.totalPrice} LE</td>
-              </tr>
-            ))}
+            {filteredProducts.map(
+              (product, index) => (
+                console.log("Product:", product),
+                (
+                  <tr key={index}>
+                    <td>{product.name}</td>
+                    <td>{product._id}</td>
+                    <td>{product.quantity} Item</td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 12px",
+                          borderRadius: "5px",
+                          backgroundColor:
+                            order.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : order.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            order.orderStatus === "Pending"
+                              ? "#721c24"
+                              : order.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                          fontWeight: "500",
+                          textAlign: "center",
+                          minWidth: "80px",
+                        }}
+                      >
+                        {order.orderStatus}
+                      </span>
+                    </td>
+                    <td>{product.totalPrice} LE</td>
+                  </tr>
+                )
+              )
+            )}
           </tbody>
         </table>
 
