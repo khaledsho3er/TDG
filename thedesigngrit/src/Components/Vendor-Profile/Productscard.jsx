@@ -80,8 +80,8 @@ const VendorProductsCard = ({ vendor }) => {
     <div className="related-products-container">
       <Swiper
         modules={[Navigation]}
-        slidesPerView={3} // ✅ Fixed number to prevent auto-resizing
-        spaceBetween={20} // ✅ Keeps spacing between slides
+        slidesPerView={3}
+        spaceBetween={20}
         navigation
         loop={true}
         className="related-swiper"
