@@ -24,7 +24,6 @@ const OrderDetails = ({ order, onBack }) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [subDeliveryDate, setSubDeliveryDate] = useState("");
-
   const [error] = useState(null); // Error state
   const [openDialog, setOpenDialog] = useState(false); // State for dialog
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
@@ -73,7 +72,7 @@ const OrderDetails = ({ order, onBack }) => {
 
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/${order._id}/products/${selectedProduct}/updateSubDeliveryDate`,
+        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/suborder/${selectedProduct}/updateSubDeliveryDate`,
         {
           method: "PUT",
           headers: {
