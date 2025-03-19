@@ -4298,7 +4298,13 @@ iframe {
   text-decoration: none;
   color: #2d2d2d;
 }
-
+.related-swiper {
+  width: 100%; /* Ensure Swiper takes full width */
+  max-width: 1000px; /* Adjust as needed */
+}
+.swiper-slide {
+  width: 250px !important; /* Force SwiperSlide width */
+}
 .related-products h2 {
   font-size: 2rem;
   font-weight: 700;
@@ -6978,7 +6984,6 @@ input:focus {
   font-size: 24px;
   cursor: pointer;
   color: #2d2d2d;
-
 }
 
 .greeting-close:hover {

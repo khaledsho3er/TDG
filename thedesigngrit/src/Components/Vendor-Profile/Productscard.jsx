@@ -13,6 +13,7 @@ const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
         navigation
         loop={true}
         className="related-swiper"
+        style={{ width: "100%" }} // Ensures Swiper takes full width
       >
         <SwiperSlide key={_id} style={{ width: "250px" }}>
           <div className="related-product-card">
