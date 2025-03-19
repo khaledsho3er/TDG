@@ -19,7 +19,6 @@ import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import InvoiceDownload from "./invoice";
-import SetDeliveryDialog from "./setDeliveryDateSub";
 
 const OrderDetails = ({ order, onBack }) => {
   const [open, setOpen] = useState(false);
@@ -66,6 +65,38 @@ const OrderDetails = ({ order, onBack }) => {
   const handleClose = () => setOpen(false);
   const handleProductChange = (event) => setSelectedProduct(event.target.value);
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
+  const handleSaveSubDeliveryDate = async () => {
+    if (!selectedProduct || !subDeliveryDate) {
+      alert("Please select a product and set a delivery date.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/product/${selectedProduct}/update-sub-delivery`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subDeliveryDate,
+            subOrderStatus: "Scheduled", // Adjust based on your logic
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Delivery Date Updated!");
+        setOpen(false);
+      } else {
+        alert(data.message || "Error updating delivery date");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const handleSubmitDate = async () => {
     // Make API call to update the delivery date
     try {
@@ -722,7 +753,9 @@ const OrderDetails = ({ order, onBack }) => {
             Set Delivery Date
           </button>
         </Box>
-        <hr></hr>
+        <hr />
+
+        {/* Products Table */}
         <table>
           <thead>
             <tr>
@@ -740,7 +773,6 @@ const OrderDetails = ({ order, onBack }) => {
                 <td>{product._id}</td>
                 <td>{product.quantity} Item</td>
                 <td>
-                  {" "}
                   <span
                     style={{
                       display: "inline-block",
@@ -771,20 +803,25 @@ const OrderDetails = ({ order, onBack }) => {
             ))}
           </tbody>
         </table>
-        {/* <Dialog open={open} onClose={handleClose}>
+
+        {/* Set Delivery Date Dialog */}
+        <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Set Delivery Date</DialogTitle>
           <DialogContent>
+            {/* Product Selection */}
             <Select
               value={selectedProduct}
               onChange={handleProductChange}
               fullWidth
             >
               {filteredProducts.map((product) => (
-                <MenuItem key={product._id} value={product.name}>
+                <MenuItem key={product._id} value={product._id}>
                   {product.name}
                 </MenuItem>
               ))}
             </Select>
+
+            {/* Delivery Date Input */}
             <TextField
               type="date"
               fullWidth
@@ -797,11 +834,12 @@ const OrderDetails = ({ order, onBack }) => {
             <Button className="cancel-btn" onClick={handleClose}>
               Cancel
             </Button>
-            <Button className="submit-btn" onClick={handleClose}>
+            <Button className="submit-btn" onClick={handleSaveSubDeliveryDate}>
               Save
             </Button>
           </DialogActions>
-        </Dialog> */}
+        </Dialog>
+
         <div
           style={{
             marginTop: "30px",
@@ -829,12 +867,6 @@ const OrderDetails = ({ order, onBack }) => {
           </Box>
         </div>
       </div>
-      <SetDeliveryDialog
-        open={openDialog}
-        handleClose={handleCloseDialog}
-        orderId={orderId}
-        cartItems={cartItems}
-      />
     </div>
   );
 };
