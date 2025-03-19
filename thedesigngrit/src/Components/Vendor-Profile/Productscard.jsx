@@ -3,7 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 const VendorProductsCard = ({ _id, title, description, price, mainImage }) => {
   return (
-    <div className="reviews-section" style={{ padding: "10px", width: "100%" }}>
+    <div
+      className="reviews-section"
+      style={{ padding: "10px", width: "274px" }}
+    >
       <div className="related-products-container">
         <Swiper
           modules={[Navigation]}
