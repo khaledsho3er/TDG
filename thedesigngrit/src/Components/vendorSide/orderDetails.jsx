@@ -669,7 +669,7 @@ const OrderDetails = ({ order, onBack }) => {
                       minWidth: "80px",
                     }}
                   >
-                    {order.orderStatus}
+                    {order.product.subOrderStatus}
                   </span>
                 </td>
                 <td>{product.totalPrice} LE</td>
