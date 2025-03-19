@@ -656,15 +656,15 @@ const OrderDetails = ({ order, onBack }) => {
                           padding: "4px 12px",
                           borderRadius: "5px",
                           backgroundColor:
-                            order.orderStatus === "Pending"
+                            product.subOrderStatus === "Pending"
                               ? "#f8d7da"
-                              : order.orderStatus === "Delivered"
+                              : product.subOrderStatus === "Delivered"
                               ? "#d4edda"
                               : "#FFE5B4",
                           color:
-                            order.orderStatus === "Pending"
+                            product.subOrderStatus === "Pending"
                               ? "#721c24"
-                              : order.orderStatus === "Delivered"
+                              : product.subOrderStatus === "Delivered"
                               ? "#155724"
                               : "#FF7518",
                           fontWeight: "500",
