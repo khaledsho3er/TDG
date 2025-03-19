@@ -72,7 +72,9 @@ const OrderDetails = ({ order, onBack }) => {
 
     const parentOrderId = order._id; // Main order ID
     const cartItemId = selectedProduct._id; // Selected cartItem ID
-
+    console.log("Parent order ID:", parentOrderId);
+    console.log("Selected product:", selectedProduct);
+    console.log("Sub-delivery date:", subDeliveryDate);
     try {
       const response = await fetch(
         `https://tdg-db.onrender.com/api/orders/orders/${parentOrderId}/suborder/${cartItemId}/updateSubDeliveryDate`,
