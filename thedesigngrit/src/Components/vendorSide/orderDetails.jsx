@@ -19,6 +19,7 @@ import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 import InvoiceDownload from "./invoice";
+import SetDeliveryDialog from "./setDeliveryDateSub";
 
 const OrderDetails = ({ order, onBack }) => {
   const [open, setOpen] = useState(false);
@@ -770,7 +771,7 @@ const OrderDetails = ({ order, onBack }) => {
             ))}
           </tbody>
         </table>
-        <Dialog open={open} onClose={handleClose}>
+        {/* <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Set Delivery Date</DialogTitle>
           <DialogContent>
             <Select
@@ -800,7 +801,7 @@ const OrderDetails = ({ order, onBack }) => {
               Save
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog> */}
         <div
           style={{
             marginTop: "30px",
@@ -828,6 +829,12 @@ const OrderDetails = ({ order, onBack }) => {
           </Box>
         </div>
       </div>
+      <SetDeliveryDialog
+        open={openDialog}
+        handleClose={handleCloseDialog}
+        orderId={orderId}
+        cartItems={cartItems}
+      />
     </div>
   );
 };
