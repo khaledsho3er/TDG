@@ -31,7 +31,7 @@ const DashboardVendor = () => {
   // const [activePercentageChange, setActivePercentageChange] = useState(0);
   // const [completedPercentageChange, setCompletedPercentageChange] = useState(0);
   // const [returnedPercentageChange, setReturnedPercentageChange] = useState(0);
-
+  //
   const [salesPercentageChange, setSalesPercentageChange] = useState(0);
   const [confirmedSalesPercentageChange, setConfirmedSalesPercentageChange] =
     useState(0);
