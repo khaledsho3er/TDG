@@ -4373,7 +4373,7 @@ iframe {
   opacity: 0.5 !important;
 }
 /*brand carsoul*/
-/* .carousel-container {
+.carousel-container {
   max-width: 400px;
   margin: 0;
   background: white;
@@ -4382,7 +4382,8 @@ iframe {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   height: 400px;
   font-family: "Montserrat";
-} */
+  perspective: 1000px;
+}
 .carousel-header {
   text-align: center;
 }
@@ -4478,7 +4479,7 @@ iframe {
   font-family: "Montserrat";
 }
 
-/* .carousel-button {
+.carousel-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -4503,8 +4504,8 @@ iframe {
 
 .carousel-button.right {
   right: 10px;
-} */
-.carousel-container {
+}
+/* .carousel-container {
   position: relative;
   width: 100%;
   height: 300px;
@@ -4512,7 +4513,7 @@ iframe {
   justify-content: center;
   align-items: center;
   perspective: 1000px;
-}
+} */
 
 .carousel-wrapper {
   display: flex;
@@ -4542,7 +4543,7 @@ iframe {
   border-radius: 10px 10px 0 0;
 }
 
-.carousel-button {
+/* .carousel-button {
   position: absolute;
   top: 50%;
   background: none;
@@ -4558,7 +4559,7 @@ iframe {
 
 .right {
   right: 10px;
-}
+} */
 
 /*careers page*/
 .careers-page {
