@@ -122,14 +122,23 @@ const BillingInfoPopup = ({
         "https://tdg-db.onrender.com/api/cards/add",
         cardData
       );
-      onSave(response.data.card); // Pass saved card to parent
-      alert("card saved successfully");
-      onCancel(); // Close modal
+
+      if (response.status === 200 || response.status === 201) {
+        onSave(response.data.card); // Update the parent component with the saved card
+
+        setTimeout(() => {
+          alert("Card saved successfully! ✅");
+        }, 100);
+
+        setTimeout(() => {
+          onCancel(); // Close the popup smoothly
+        }, 200);
+      } else {
+        throw new Error("Unexpected response status: " + response.status);
+      }
     } catch (error) {
-      console.error(
-        "Error saving card:",
-        error.response?.data || error.message
-      );
+      console.error("Error saving card:", error);
+      alert("Failed to save card. Please try again.");
     }
   };
 
