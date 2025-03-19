@@ -213,11 +213,20 @@ const BillingInfoPopup = ({
       <DialogActions
         sx={{
           backgroundColor: "#ffffff",
-          "&:hover": { backgroundColor: "#000000", color: "#ffffff" }, // Black background with white text on hover
         }}
       >
-        <Button onClick={onCancel}>Cancel</Button>
-        <Button onClick={handleSave}>{isAddingNew ? "Add" : "Update"}</Button>
+        <Button
+          sx={{ color: "white", backgroundColor: "black" }}
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Button
+          sx={{ color: "white", backgroundColor: "black" }}
+          onClick={handleSave}
+        >
+          {isAddingNew ? "Add" : "Update"}
+        </Button>
       </DialogActions>
     </Dialog>
   );
