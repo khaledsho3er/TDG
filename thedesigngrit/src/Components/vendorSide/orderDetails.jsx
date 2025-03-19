@@ -66,13 +66,16 @@ const OrderDetails = ({ order, onBack }) => {
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
   const handleSaveSubDeliveryDate = async () => {
     if (!selectedProduct || !subDeliveryDate) {
-      alert("Please select a product and set a delivery date.");
+      alert("Please select a product and a delivery date.");
       return;
     }
 
+    const parentOrderId = order._id; // Main order ID
+    const cartItemId = selectedProduct._id; // Selected cartItem ID
+
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/suborder/${selectedProduct}/updateSubDeliveryDate`,
+        `https://tdg-db.onrender.com/api/orders/orders/${parentOrderId}/suborder/${cartItemId}/updateSubDeliveryDate`,
         {
           method: "PUT",
           headers: {
@@ -94,6 +97,7 @@ const OrderDetails = ({ order, onBack }) => {
       alert("Failed to update sub-delivery date.");
     }
   };
+
   const handleSubmitDate = async () => {
     // Make API call to update the delivery date
     try {
@@ -678,8 +682,13 @@ const OrderDetails = ({ order, onBack }) => {
           <DialogContent>
             {/* Product Selection */}
             <Select
-              value={selectedProduct}
-              onChange={handleProductChange}
+              value={selectedProduct ? selectedProduct._id : ""}
+              onChange={(e) => {
+                const product = filteredProducts.find(
+                  (p) => p._id === e.target.value
+                );
+                setSelectedProduct(product);
+              }}
               fullWidth
               margin="normal"
             >
