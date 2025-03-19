@@ -123,13 +123,13 @@ const BillingInfoPopup = ({
         cardData
       );
       onSave(response.data.card); // Pass saved card to parent
+      alert("card saved successfully");
       onCancel(); // Close modal
     } catch (error) {
       console.error(
         "Error saving card:",
         error.response?.data || error.message
       );
-      alert("Failed to save card. Please try again.");
     }
   };
 
