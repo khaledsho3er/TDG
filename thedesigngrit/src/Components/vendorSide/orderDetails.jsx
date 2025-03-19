@@ -684,7 +684,7 @@ const OrderDetails = ({ order, onBack }) => {
               margin="normal"
             >
               {filteredProducts.map((product) => (
-                <MenuItem key={product.productId} value={product.productId}>
+                <MenuItem key={product._id} value={product._id}>
                   {product.name}
                 </MenuItem>
               ))}
