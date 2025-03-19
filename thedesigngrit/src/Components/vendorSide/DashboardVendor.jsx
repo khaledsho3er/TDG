@@ -196,19 +196,30 @@ const DashboardVendor = () => {
   }, [vendor]);
 
   useEffect(() => {
+    let formattedData = [];
     switch (activeTab) {
       case "weekly":
-        setChartData(weeklySales);
+        formattedData = weeklySales.map((item) => ({
+          ...item,
+          week: `Week ${item.week}`, // Convert to string
+        }));
         break;
       case "monthly":
-        setChartData(monthlySales);
+        formattedData = monthlySales.map((item) => ({
+          ...item,
+          month: `Month ${item.month}`, // Convert to string
+        }));
         break;
       case "yearly":
-        setChartData(yearlySales);
+        formattedData = yearlySales.map((item) => ({
+          ...item,
+          year: `${item.year}`, // Convert to string
+        }));
         break;
       default:
-        setChartData([]);
+        formattedData = [];
     }
+    setChartData(formattedData);
   }, [activeTab, weeklySales, monthlySales, yearlySales]);
 
   if (selectedOrder) {
