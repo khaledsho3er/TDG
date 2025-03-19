@@ -124,21 +124,20 @@ const BillingInfoPopup = ({
       );
 
       if (response.status === 200 || response.status === 201) {
-        onSave(response.data.card); // Update the parent component with the saved card
+        // 1. Show success alert first
+        alert("✅ Card saved successfully!");
 
-        setTimeout(() => {
-          alert("Card saved successfully! ✅");
-        }, 100);
+        // 2. Update UI state
+        onSave(response.data.card);
 
-        setTimeout(() => {
-          onCancel(); // Close the popup smoothly
-        }, 200);
+        // 3. Close the modal
+        onCancel();
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
     } catch (error) {
       console.error("Error saving card:", error);
-      alert("Failed to save card. Please try again.");
+      alert("❌ Failed to save card. Please try again.");
     }
   };
 
