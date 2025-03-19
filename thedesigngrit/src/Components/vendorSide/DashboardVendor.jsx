@@ -194,7 +194,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Total Sales</h3>
             <p>LE {totalSales}</p>
-            <h2>Total orders</h2>
+            <h3>Total orders</h3>
             <p>{totalOrders}</p>
             <span>▲ {salesPercentageChange}% Compared to Last Month</span>
           </div>
@@ -207,7 +207,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Active Orders sales</h3>
             <p>LE {confirmedSales}</p>
-            <h2>Active Orders </h2>
+            <h3>Active Orders </h3>
             <p> {activeOrders}</p>
             <span>
               ▲ {confirmedSalesPercentageChange}% Compared to Last Month
@@ -237,7 +237,7 @@ const DashboardVendor = () => {
           <div className="card-content-vendor">
             <h3>Return Orders sales</h3>
             <p>LE {returnedSales}</p>
-            <h2>Returned Orders</h2>
+            <h3>Returned Orders</h3>
             <p>{returnedOrders}</p>
             <span>
               ▲ {returnedSalesPercentageChange}% Compared to Last Month
