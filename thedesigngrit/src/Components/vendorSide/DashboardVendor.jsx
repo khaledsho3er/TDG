@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
+import { FaBox, FaTruck, FaCheckCircle, FaRedo } from "react-icons/fa"; // React Icons
 import {
-  FaBox,
-  FaTruck,
-  FaCheckCircle,
-  FaRedo,
-  FaChartLine,
-} from "react-icons/fa"; // React Icons
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
@@ -39,6 +43,11 @@ const DashboardVendor = () => {
     useState(0);
   const [returnedSalesPercentageChange, setReturnedSalesPercentageChange] =
     useState(0);
+  const [activeTab, setActiveTab] = useState("weekly");
+  const [weeklySales, setWeeklySales] = useState([]);
+  const [monthlySales, setMonthlySales] = useState([]);
+  const [yearlySales, setYearlySales] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -164,6 +173,44 @@ const DashboardVendor = () => {
     fetchData();
   }, [vendor]); // Re-run when `vendor` changes
 
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      if (!vendor?.brandId) return;
+
+      try {
+        const response = await fetch(
+          `https://tdg-db.onrender.com/api/orders/sales-graph/${vendor.brandId}`
+        );
+        const data = await response.json();
+        console.log("Sales Graph Data:", data);
+
+        setWeeklySales(data.weeklySales);
+        setMonthlySales(data.monthlySales);
+        setYearlySales(data.yearlySales);
+      } catch (error) {
+        console.error("Error fetching sales graph data:", error);
+      }
+    };
+
+    fetchSalesData();
+  }, [vendor]);
+
+  useEffect(() => {
+    switch (activeTab) {
+      case "weekly":
+        setChartData(weeklySales);
+        break;
+      case "monthly":
+        setChartData(monthlySales);
+        break;
+      case "yearly":
+        setChartData(yearlySales);
+        break;
+      default:
+        setChartData([]);
+    }
+  }, [activeTab, weeklySales, monthlySales, yearlySales]);
+
   if (selectedOrder) {
     return (
       <OrderDetails
@@ -249,18 +296,53 @@ const DashboardVendor = () => {
       {/* Sales Chart Section */}
       <section className="dashboard-chart-vendor">
         <div className="chart-header-vendor">
-          <div className="chart-header-title-vendor">
-            <h3>Sale Graph</h3>
-            <div className="chart-tabs-vendor">
-              <button className="chart-tab-vendor active">Weekly</button>
-              <button className="chart-tab-vendor">Monthly</button>
-              <button className="chart-tab-vendor">Yearly</button>
-            </div>
+          <h3>Sales Graph</h3>
+          <div className="chart-tabs-vendor">
+            <button
+              className={`chart-tab-vendor ${
+                activeTab === "weekly" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("weekly")}
+            >
+              Weekly
+            </button>
+            <button
+              className={`chart-tab-vendor ${
+                activeTab === "monthly" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("monthly")}
+            >
+              Monthly
+            </button>
+            <button
+              className={`chart-tab-vendor ${
+                activeTab === "yearly" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("yearly")}
+            >
+              Yearly
+            </button>
           </div>
-          <div className="chart-content-vendor">
-            {/* Placeholder for Sale Graph */}
-            <FaChartLine className="chart-placeholder-icon-vendor" />
-          </div>
+        </div>
+
+        <div className="chart-content-vendor">
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={chartData}>
+              <XAxis
+                dataKey={
+                  activeTab === "weekly"
+                    ? "week"
+                    : activeTab === "monthly"
+                    ? "month"
+                    : "year"
+                }
+              />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="best-sellers-vendor">
