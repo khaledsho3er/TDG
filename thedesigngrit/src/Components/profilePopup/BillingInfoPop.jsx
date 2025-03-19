@@ -122,14 +122,19 @@ const BillingInfoPopup = ({
         "https://tdg-db.onrender.com/api/cards/add",
         cardData
       );
+
       onSave(response.data.card); // Pass saved card to parent
-      alert("card saved successfully");
-      onCancel(); // Close modal
+
+      onCancel(); // Close modal first
+      setTimeout(() => {
+        alert("Card saved successfully!"); // Show alert after closing modal
+      }, 200);
     } catch (error) {
       console.error(
         "Error saving card:",
         error.response?.data || error.message
       );
+      alert("Failed to save card. Please try again.");
     }
   };
 
