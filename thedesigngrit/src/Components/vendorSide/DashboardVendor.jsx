@@ -27,10 +27,10 @@ const DashboardVendor = () => {
   const [deliveredSales, setDeliveredSales] = useState(0);
   const [returnedSales, setReturnedSales] = useState(0);
 
-  const [percentageChange, setPercentageChange] = useState(0);
-  const [activePercentageChange, setActivePercentageChange] = useState(0);
-  const [completedPercentageChange, setCompletedPercentageChange] = useState(0);
-  const [returnedPercentageChange, setReturnedPercentageChange] = useState(0);
+  // const [percentageChange, setPercentageChange] = useState(0);
+  // const [activePercentageChange, setActivePercentageChange] = useState(0);
+  // const [completedPercentageChange, setCompletedPercentageChange] = useState(0);
+  // const [returnedPercentageChange, setReturnedPercentageChange] = useState(0);
 
   const [salesPercentageChange, setSalesPercentageChange] = useState(0);
   const [confirmedSalesPercentageChange, setConfirmedSalesPercentageChange] =
@@ -112,27 +112,28 @@ const DashboardVendor = () => {
         setDeliveredSales(data.deliveredSales);
         setReturnedSales(data.returnedSales);
 
-        // Percentage calculations
-        setPercentageChange(
-          data.totalOrders > 0
-            ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
-            : 0
-        );
-        setActivePercentageChange(
-          data.totalConfirmed > 0
-            ? ((data.totalConfirmed / data.totalOrders) * 100).toFixed(2)
-            : 0
-        );
-        setCompletedPercentageChange(
-          data.totalDelivered > 0
-            ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
-            : 0
-        );
-        setReturnedPercentageChange(
-          data.totalReturned > 0
-            ? ((data.totalReturned / data.totalOrders) * 100).toFixed(2)
-            : 0
-        );
+        // // Percentage calculations
+        // setPercentageChange(
+        //   data.totalOrders > 0
+        //     ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
+        //     : 0
+        // );
+
+        // setActivePercentageChange(
+        //   data.totalConfirmed > 0
+        //     ? ((data.totalConfirmed / data.totalOrders) * 100).toFixed(2)
+        //     : 0
+        // );
+        // setCompletedPercentageChange(
+        //   data.totalDelivered > 0
+        //     ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
+        //     : 0
+        // );
+        // setReturnedPercentageChange(
+        //   data.totalReturned > 0
+        //     ? ((data.totalReturned / data.totalOrders) * 100).toFixed(2)
+        //     : 0
+        // );
 
         // Sales percentage calculations
         setSalesPercentageChange(

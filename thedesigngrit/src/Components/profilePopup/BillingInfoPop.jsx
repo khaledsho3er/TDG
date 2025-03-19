@@ -210,7 +210,12 @@ const BillingInfoPopup = ({
           helperText={expiryError}
         />
       </DialogContent>
-      <DialogActions sx={{ backgroundColor: "#ffffff" }}>
+      <DialogActions
+        sx={{
+          backgroundColor: "#ffffff",
+          "&:hover": { backgroundColor: "#000000", color: "#ffffff" }, // Black background with white text on hover
+        }}
+      >
         <Button onClick={onCancel}>Cancel</Button>
         <Button onClick={handleSave}>{isAddingNew ? "Add" : "Update"}</Button>
       </DialogActions>
