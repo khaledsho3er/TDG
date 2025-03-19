@@ -40,7 +40,10 @@ const VendorProductsCard = ({ vendor }) => {
     fetchCategories();
   }, []);
   return (
-    <div className="related-products-container">
+    <div
+      className="related-products-container"
+      style={{ padding: "49px 110px" }}
+    >
       <Swiper
         modules={[Navigation]}
         slidesPerView={3}
