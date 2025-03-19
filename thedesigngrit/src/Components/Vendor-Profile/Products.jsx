@@ -42,20 +42,7 @@ function VendorsProductsGrid({ vendor }) {
         <Button variant="contained">View all</Button>
       </Box>
       <Grid container spacing={3} className="vendorProducts-grid">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <div
-              onClick={() => navigate(`/product/${product._id}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <VendorProductsCard vendor={vendor} />
-            </div>
-          ))
-        ) : (
-          <Typography sx={{ padding: "20px", color: "gray" }}>
-            No products found for this vendor.
-          </Typography>
-        )}
+        <VendorProductsCard vendor={vendor} />
       </Grid>
     </Box>
   );
