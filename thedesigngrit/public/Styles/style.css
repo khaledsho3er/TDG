@@ -4380,7 +4380,7 @@ iframe {
   padding: 16px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  height: 400px;
+  height: 485px;
   font-family: "Montserrat";
   perspective: 1000px;
 }
@@ -4500,11 +4500,11 @@ iframe {
 }
 
 .carousel-button.left {
-  left: 10px;
+  left: -109px;
 }
 
 .carousel-button.right {
-  right: 10px;
+  right: -10px;
 }
 /* .carousel-container {
   position: relative;
@@ -4535,7 +4535,6 @@ iframe {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.5s ease, opacity 0.5s ease;
-  
 }
 
 .carousel-product-image {

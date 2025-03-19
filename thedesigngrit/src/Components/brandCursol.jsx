@@ -106,7 +106,16 @@ export default function BrandCursol({ brandId }) {
                     alt={product.name || "Product"}
                     className="carousel-product-image"
                   />
-                  <h3>{product.name}</h3>
+                  <h3
+                    style={{
+                      fontSize: "16px",
+                      fontFamily: "Montserrat",
+                      paddingTop: "12px",
+                      paddingBottom: "16px",
+                    }}
+                  >
+                    {product.name}
+                  </h3>
                   <p>
                     {product.price
                       ? `${product.price} E£`
