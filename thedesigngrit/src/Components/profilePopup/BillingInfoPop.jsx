@@ -216,13 +216,21 @@ const BillingInfoPopup = ({
         }}
       >
         <Button
-          sx={{ color: "white", backgroundColor: "black" }}
+          sx={{
+            color: "white",
+            backgroundColor: "black",
+            "&:hover": { backgroundColor: "white", color: "black" },
+          }}
           onClick={onCancel}
         >
           Cancel
         </Button>
         <Button
-          sx={{ color: "white", backgroundColor: "black" }}
+          sx={{
+            color: "white",
+            backgroundColor: "black",
+            "&:hover": { backgroundColor: "white", color: "black" },
+          }}
           onClick={handleSave}
         >
           {isAddingNew ? "Add" : "Update"}
