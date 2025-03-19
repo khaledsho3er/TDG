@@ -4428,6 +4428,8 @@ iframe {
   align-items: center;
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
 }
 
 /* .carousel-wrapper {
@@ -4491,6 +4493,7 @@ iframe {
   cursor: pointer;
   width: auto;
   height: 35px;
+  color: #2d2d2d;
   margin: auto;
 }
 
@@ -4527,13 +4530,14 @@ iframe {
 
 .carousel-item {
   position: absolute;
-  width: 200px;
-  height: 250px;
+  width: 215px;
+  height: 276px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.5s ease, opacity 0.5s ease;
+  transform-origin: center center;
 }
 
 .carousel-product-image {
