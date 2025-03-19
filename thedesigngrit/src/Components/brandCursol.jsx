@@ -42,15 +42,12 @@ export default function BrandCursol({ brandId }) {
     fetchProducts();
   }, [brandId]);
 
-  const totalCards = products.length;
-  const angle = 360 / totalCards; // Distribute evenly around a circle
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalCards);
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? products.length - 1 : prev - 1));
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -92,14 +89,16 @@ export default function BrandCursol({ brandId }) {
         >
           <div className="carousel-wrapper">
             {products.map((product, index) => {
-              const rotation = angle * (index - currentIndex);
+              const offset = (index - currentIndex) * 40; // Controls spacing and depth
               return (
                 <div
                   key={product._id}
                   className="carousel-item"
                   style={{
-                    transform: `rotateY(${rotation}deg) translateZ(300px)`,
-                    opacity: index === currentIndex ? 1 : 0.5,
+                    transform: `perspective(1000px) rotateY(${offset}deg) translateZ(${
+                      -Math.abs(offset) * 3
+                    }px)`,
+                    opacity: Math.abs(index - currentIndex) < 2 ? 1 : 0.3,
                   }}
                 >
                   <img

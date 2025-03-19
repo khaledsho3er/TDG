@@ -4428,8 +4428,6 @@ iframe {
   align-items: center;
   display: flex;
   flex-direction: column;
-  transform-style: preserve-3d;
-  transition: transform 0.8s ease-in-out;
 }
 
 /* .carousel-wrapper {
@@ -4537,7 +4535,7 @@ iframe {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.5s ease, opacity 0.5s ease;
-  transform-origin: center center;
+  
 }
 
 .carousel-product-image {
