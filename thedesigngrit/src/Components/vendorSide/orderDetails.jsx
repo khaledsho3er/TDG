@@ -77,7 +77,7 @@ const OrderDetails = ({ order, onBack }) => {
     console.log("Sub-delivery date:", subDeliveryDate);
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/orders/${parentOrderId}/suborder/${cartItemId}/updateSubDeliveryDate`,
+        `https://tdg-db.onrender.com/api/orders/orders/${parentOrderId}/cart-items/${cartItemId}/delivery-date`,
         {
           method: "PUT",
           headers: {
