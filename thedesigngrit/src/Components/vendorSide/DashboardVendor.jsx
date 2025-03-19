@@ -334,26 +334,25 @@ const DashboardVendor = () => {
               Yearly
             </button>
           </div>
-        </div>
-
-        <div className="chart-content-vendor">
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData}>
-              <XAxis
-                dataKey={
-                  activeTab === "weekly"
-                    ? "week"
-                    : activeTab === "monthly"
-                    ? "month"
-                    : "year"
-                }
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="sales" stroke="#8884d8" />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="chart-content-vendor">
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={chartData}>
+                <XAxis
+                  dataKey={
+                    activeTab === "weekly"
+                      ? "week"
+                      : activeTab === "monthly"
+                      ? "month"
+                      : "year"
+                  }
+                />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         <div className="best-sellers-vendor">
