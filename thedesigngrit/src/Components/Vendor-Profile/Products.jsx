@@ -46,9 +46,20 @@ function VendorsProductsGrid({ vendor }) {
           products.map((product) => (
             <div
               onClick={() => navigate(`/product/${product._id}`)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", width: "100%" }}
             >
-              <VendorProductsCard products={products} />
+              <div
+                className="reviews-section"
+                style={{ padding: "10px", width: "100%" }}
+              >
+                <VendorProductsCard
+                  _id={product._id}
+                  title={product.name}
+                  description={product.description}
+                  price={product.price}
+                  mainImage={product.mainImage}
+                />
+              </div>
             </div>
           ))
         ) : (

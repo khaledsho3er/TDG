@@ -6978,7 +6978,6 @@ input:focus {
   font-size: 24px;
   cursor: pointer;
   color: #2d2d2d;
-
 }
 
 .greeting-close:hover {
@@ -7004,74 +7003,4 @@ input:focus {
 .greeting-text {
   font-size: 16px;
   color: #2d2d2d;
-}
-/*products Vendor profile*/
-
-/* Container */
-.vendor-related-products-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Swiper */
-.vendor-related-swiper {
-  width: 100%;
-  max-width: 1200px; /* Adjust max width */
-}
-
-/* Swiper Slide */
-.vendor-swiper-slide {
-  width: 250px !important; /* Force slide width */
-  cursor: pointer;
-}
-
-/* Product Card */
-.vendor-related-product-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.vendor-related-product-card:hover {
-  transform: scale(1.05);
-}
-
-/* Image */
-.vendor-related-product-image-container {
-  width: 100%;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.vendor-related-img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 8px;
-}
-
-/* Info */
-.vendor-related-info {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.vendor-related-name {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.vendor-related-price {
-  font-size: 14px;
-  color: #777;
-  margin-top: 5px;
 }
