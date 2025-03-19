@@ -41,7 +41,12 @@ function VendorProfile() {
       <VendorProfileHeader vendor={vendor} />
       <VendorCatalogs vendorID={vendor._id} />
       {/* <VendorCategoriesGrid vendor={vendor} /> */}
-      <VendorsProductsGrid vendor={vendor} />
+      <div
+        className="reviews-section"
+        style={{ padding: "10px", width: "100%" }}
+      >
+        <VendorsProductsGrid vendor={vendor} />
+      </div>
       <Footer />
     </Box>
   );
