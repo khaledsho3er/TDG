@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SlCalender } from "react-icons/sl";
 import {
   Box,
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { IoMdPrint } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
+import axios from "axios";
 // import { MdOutlineShoppingBag } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -29,6 +30,9 @@ const OrderDetails = ({ order, onBack }) => {
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
   const [openFileDialog, setOpenFileDialog] = useState(false); // State for file upload dialog
   const [file, setFile] = useState(null); // State for uploaded file
+  const [note, setNote] = useState("");
+  const [isReadOnly, setIsReadOnly] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
@@ -152,7 +156,43 @@ const OrderDetails = ({ order, onBack }) => {
       console.error("Error uploading file:", error);
     }
   };
+  useEffect(() => {
+    // Fetch existing note if available
+    const fetchNote = async () => {
+      try {
+        const response = await axios.get(
+          `https://tdg-db.onrender.com/api/orders/${order._id}`
+        );
+        if (response.data.note) {
+          setNote(response.data.note);
+          setIsReadOnly(true);
+        }
+      } catch (error) {
+        console.error("Error fetching order note:", error);
+      }
+    };
 
+    fetchNote();
+  }, [orderId]);
+  const handleChange = (e) => {
+    setNote(e.target.value);
+    setShowButton(e.target.value.trim() !== ""); // Show button when user starts typing
+  };
+
+  const handlePostNote = async () => {
+    try {
+      await axios.put(
+        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/note`,
+        {
+          note,
+        }
+      );
+      setIsReadOnly(true);
+      setShowButton(false);
+    } catch (error) {
+      console.error("Error posting note:", error);
+    }
+  };
   return (
     <div>
       <header className="dashboard-header-vendor">
@@ -596,8 +636,6 @@ const OrderDetails = ({ order, onBack }) => {
             <h4>Notes</h4>
             <textarea
               style={{
-                display: "flex",
-                flexDirection: "column",
                 border: "2px solid #ddd",
                 borderRadius: "15px",
                 width: "97%",
@@ -605,10 +643,29 @@ const OrderDetails = ({ order, onBack }) => {
                 padding: "10px",
                 height: "150px",
                 fontFamily: "Montserrat",
-                color: "#ddd",
+                color: isReadOnly ? "#666" : "#ddd",
+                backgroundColor: isReadOnly ? "#f5f5f5" : "white",
+                cursor: isReadOnly ? "not-allowed" : "text",
               }}
-              placeholder="Type some notes....."
+              placeholder="Type some notes..."
+              value={note}
+              onChange={handleChange}
+              readOnly={isReadOnly}
             ></textarea>
+            {showButton && !isReadOnly && (
+              <Button
+                sx={{
+                  marginTop: "10px",
+                  width: "150px",
+                  backgroundColor: "#2d2d2d",
+                  color: "#fff",
+                  ":hover": { backgroundColor: "#2d2d2d" },
+                }}
+                onClick={handlePostNote}
+              >
+                Post Note
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>

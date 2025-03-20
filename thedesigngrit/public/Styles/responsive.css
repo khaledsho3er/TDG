@@ -1262,6 +1262,10 @@
   .partners-second-section ul li {
     font-size: 14px;
   }
+  .partners-section {
+    flex-direction: column;
+    padding: 20px;
+  }
 }
 /* For tablets and small laptops */
 /* For small laptops and tablets */
