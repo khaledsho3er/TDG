@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SlCalender } from "react-icons/sl";
 import {
   Box,
@@ -30,9 +30,13 @@ const OrderDetails = ({ order, onBack }) => {
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
   const [openFileDialog, setOpenFileDialog] = useState(false); // State for file upload dialog
   const [file, setFile] = useState(null); // State for uploaded file
-  const [note, setNote] = useState(order?.note || "");
-  const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
-  const [showButton, setShowButton] = useState(!!order?.note);
+  const [note, setNote] = useState(order && order.note ? order.note : "");
+  const [isReadOnly, setIsReadOnly] = useState(
+    order && order.note ? true : false
+  );
+  const [showButton, setShowButton] = useState(
+    order && order.note ? true : false
+  );
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
