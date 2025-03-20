@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow icons
 import axios from "axios";
-import PromotionModal from "./promotionProduct";
-import { useVendor } from "../../utils/vendorContext";
-import UpdateProduct from "./UpdateProduct";
-import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
+import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
+import { useVendor } from "../../utils/vendorContext"; // Import vendor context
+import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
+// import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
 const ProductsPageVendor = ({ setActivePage }) => {
-  const { vendor } = useVendor();
+  const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -18,18 +18,18 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-  const [menuOpen, setMenuOpen] = useState({});
+  const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
   const [showUpdate, setShowUpdate] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [promotionModalOpen, setPromotionModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
+
+  // State for toggling sections
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [timeframe, setTimeframe] = useState("month");
 
   useEffect(() => {
     if (vendor) {
-      const { brandId } = vendor;
+      const { brandId } = vendor; // Destructure brandId from the vendor object
 
       const fetchProducts = async () => {
         try {
@@ -43,6 +43,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
           );
           const fetchedProducts = response.data;
 
+          // Map products and fetch type name by type ID
           const productsWithTypeNames = await Promise.all(
             fetchedProducts.map(async (product) => {
               if (product.type) {
@@ -50,18 +51,18 @@ const ProductsPageVendor = ({ setActivePage }) => {
                   const typeResponse = await axios.get(
                     `https://tdg-db.onrender.com/api/types/types/${product.type}`
                   );
-                  product.typeName = typeResponse.data.name || "Unknown";
+                  product.typeName = typeResponse.data.name || "Unknown"; // Set type name
                 } catch (error) {
                   console.error("Error fetching type:", error);
-                  product.typeName = "Unknown";
+                  product.typeName = "Unknown"; // Fallback in case of error
                 }
               } else {
-                product.typeName = "Unknown";
+                product.typeName = "Unknown"; // Handle products with no type
               }
               return product;
             })
           );
-          setProducts(productsWithTypeNames);
+          setProducts(productsWithTypeNames); // Set the products with type names
         } catch (error) {
           console.error("Error fetching products:", error);
         }
@@ -72,23 +73,24 @@ const ProductsPageVendor = ({ setActivePage }) => {
           const response = await axios.get(
             "https://tdg-db.onrender.com/api/categories/categories"
           );
-          setCategories(response.data);
+          setCategories(response.data); // Set the fetched categories
         } catch (error) {
           console.error("Error fetching categories:", error);
         }
       };
 
-      fetchProducts();
-      fetchCategories();
+      fetchProducts(); // Fetch products
+      fetchCategories(); // Fetch categories
     }
-  }, [vendor, selectedCategory, subCategories]);
+  }, [vendor, selectedCategory, subCategories]); // Fetch when vendor context changes
 
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
-    setSelectedCategory(selectedCategoryId);
-    setSubCategories([]);
-    setSelectedSubCategory("");
+    setSelectedCategory(selectedCategoryId); // Save the selected category ID
+    setSubCategories([]); // Reset subcategories
+    setSelectedSubCategory(""); // Reset selected subcategory
 
+    // Fetch subcategories if needed
     if (selectedCategoryId) {
       try {
         const response = await axios.get(
@@ -106,9 +108,9 @@ const ProductsPageVendor = ({ setActivePage }) => {
       return product.subCategoryId === selectedSubCategory;
     }
     if (selectedCategory) {
-      return product.category === selectedCategory;
+      return product.category === selectedCategory; // Match product.category with selectedCategory ID
     }
-    return true;
+    return true; // No filter applied
   });
 
   const falseStatusProducts = filteredProducts.filter(
@@ -121,12 +123,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const toggleMenu = (productId) => {
     setMenuOpen((prevState) => ({
       ...prevState,
-      [productId]: !prevState[productId],
+      [productId]: !prevState[productId], // Toggle specific menu state
     }));
   };
 
   const closeAllMenus = () => {
-    setMenuOpen({});
+    setMenuOpen({}); // Close all menus
   };
 
   const handleEdit = (product) => {
@@ -142,8 +144,8 @@ const ProductsPageVendor = ({ setActivePage }) => {
       try {
         await axios.delete(
           `https://tdg-db.onrender.com/api/products/${product._id}`
-        );
-        setProducts(products.filter((p) => p._id !== product._id));
+        ); // Use the correct endpoint
+        setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
         alert("Product deleted successfully!");
       } catch (error) {
         console.error("Error deleting product:", error);
@@ -153,41 +155,42 @@ const ProductsPageVendor = ({ setActivePage }) => {
   };
 
   const handleInsights = (product) => {
-    setSelectedProduct(product);
-    setPromotionModalOpen(true);
+    setSelectedProduct(product); // Set the selected product
+    setPromotionModalOpen(true); // Open the modal
   };
 
   const handleSavePromotion = (promotionDetails) => {
     console.log("Promotion Details:", promotionDetails);
-    setPromotionModalOpen(false);
+    // Save promotion details (e.g., send to API or update state)
+    setPromotionModalOpen(false); // Close the modal after saving
   };
 
-  const handleProductSelect = (productId) => {
-    if (selectedProducts.includes(productId)) {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
-    } else if (selectedProducts.length < 3) {
-      setSelectedProducts([...selectedProducts, productId]);
-    }
-  };
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = filteredProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Close all menus when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => closeAllMenus();
+    const handleClickOutside = () => closeAllMenus(); // Close all menus on outside clicks
 
     document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside); // Cleanup
     };
   }, []);
 
   if (showUpdate) {
     return (
       <UpdateProduct
-        existingProduct={selectedProduct}
-        onBack={() => setShowUpdate(false)}
+        existingProduct={selectedProduct} // Pass the selected product data
+        onBack={() => setShowUpdate(false)} // Function to go back to the product list
       />
     );
   }
@@ -219,41 +222,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
           </button>
         </div>
       </header>
-
-      {/* Graph Component */}
-      <ProductAnalyticsGraph
-        products={products}
-        selectedProducts={selectedProducts}
-        timeframe={timeframe}
-      />
-
-      {/* Timeframe Selector */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "end",
-          marginBottom: "20px",
-        }}
-      >
-        <FormControl sx={{ m: 1 }}>
-          <InputLabel id="timeframe-label">Timeframe</InputLabel>
-          <Select
-            sx={{
-              width: "200px",
-              color: "#2d2d2d",
-              backgroundColor: "#fff",
-            }}
-            value={timeframe}
-            onChange={(e) => setTimeframe(e.target.value)}
-          >
-            <MenuItem value="day">Day</MenuItem>
-            <MenuItem value="week">Week</MenuItem>
-            <MenuItem value="month">Month</MenuItem>
-            <MenuItem value="year">Year</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+      {/* <ProductAnalyticsGraph products={products} /> */}
 
       {/* Filters */}
       <div
@@ -326,7 +295,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                       <div className="menu-container">
                         <BsThreeDotsVertical
                           onClick={(e) => {
-                            e.stopPropagation();
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
                             toggleMenu(product.id);
                           }}
                           className="three-dots-icon"
@@ -341,13 +310,6 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             </button>
                             <button onClick={() => handleInsights(product)}>
                               Promotion
-                            </button>
-                            <button
-                              onClick={() => handleProductSelect(product._id)}
-                            >
-                              {selectedProducts.includes(product._id)
-                                ? "Deselect"
-                                : "Select"}
                             </button>
                           </div>
                         )}
@@ -432,12 +394,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
                       <div className="menu-container">
                         <BsThreeDotsVertical
                           onClick={(e) => {
-                            e.stopPropagation();
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
                             toggleMenu(product.id);
                           }}
                           className="three-dots-icon"
                         />
-                        {menuOpen[product.id] && (
+                        {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
                           <div className="menu-dropdown">
                             <button onClick={() => handleEdit(product)}>
                               Edit
@@ -447,13 +409,6 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             </button>
                             <button onClick={() => handleInsights(product)}>
                               Promotion
-                            </button>
-                            <button
-                              onClick={() => handleProductSelect(product._id)}
-                            >
-                              {selectedProducts.includes(product._id)
-                                ? "Deselect"
-                                : "Select"}
                             </button>
                           </div>
                         )}
