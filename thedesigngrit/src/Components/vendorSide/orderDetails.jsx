@@ -31,15 +31,17 @@ const OrderDetails = ({ order, onBack }) => {
   const [openFileDialog, setOpenFileDialog] = useState(false); // State for file upload dialog
   const [file, setFile] = useState(null); // State for uploaded file
   const [note, setNote] = useState(order?.note || "");
+  const [notePostedAt, setNotePostedAt] = useState(order?.notePostedAt || null);
   const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
   const [showButton, setShowButton] = useState(!!order?.note);
   useEffect(() => {
     if (order.note) {
       setNote(order.note);
+      setNotePostedAt(order.notePostedAt || null);
       setIsReadOnly(true);
       setShowButton(false);
     }
-  }, [order.note]);
+  }, [order.note, order.notePostedAt]);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
@@ -178,6 +180,8 @@ const OrderDetails = ({ order, onBack }) => {
           note,
         }
       );
+      const now = new Date();
+      setNotePostedAt(now);
       setIsReadOnly(true);
       setShowButton(false);
     } catch (error) {
@@ -625,24 +629,39 @@ const OrderDetails = ({ order, onBack }) => {
           {/* Note Box */}
           <Box sx={{ display: "flex", flexDirection: "column", width: "65%" }}>
             <h4>Notes</h4>
-            <textarea
-              style={{
-                border: "2px solid #ddd",
-                borderRadius: "15px",
-                width: "97%",
-                fontSize: "14px",
-                padding: "10px",
-                height: "150px",
-                fontFamily: "Montserrat",
-                color: isReadOnly ? "#666" : "#ddd",
-                backgroundColor: isReadOnly ? "#f5f5f5" : "white",
-                cursor: isReadOnly ? "not-allowed" : "text",
-              }}
-              placeholder="Type some notes..."
-              value={note}
-              onChange={handleChange}
-              readOnly={isReadOnly}
-            ></textarea>
+            <div style={{ position: "relative", width: "97%" }}>
+              {notePostedAt && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "10px",
+                    fontSize: "12px",
+                    color: "#666",
+                  }}
+                >
+                  {new Date(notePostedAt).toLocaleString()}
+                </div>
+              )}
+              <textarea
+                style={{
+                  border: "2px solid #ddd",
+                  borderRadius: "15px",
+                  width: "97%",
+                  fontSize: "14px",
+                  padding: "10px",
+                  height: "150px",
+                  fontFamily: "Montserrat",
+                  color: isReadOnly ? "#666" : "#ddd",
+                  backgroundColor: isReadOnly ? "#f5f5f5" : "white",
+                  cursor: isReadOnly ? "not-allowed" : "text",
+                }}
+                placeholder="Type some notes..."
+                value={note}
+                onChange={handleChange}
+                readOnly={isReadOnly}
+              ></textarea>
+            </div>
             {showButton && !isReadOnly && (
               <Button
                 sx={{
