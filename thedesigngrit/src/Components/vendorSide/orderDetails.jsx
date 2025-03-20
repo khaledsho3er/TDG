@@ -312,12 +312,14 @@ const OrderDetails = ({ order, onBack }) => {
             >
               <IoMdPrint style={{ color: "#fff", fontSize: "20px" }} />
             </InvoiceDownload>
-            {order.orderStatus === "Pending" && (
+            {/* {order.orderStatus === "Pending" && (
               <button className="submit-btn" onClick={handleDialogOpen}>
                 Set Delivery Date
               </button>
-            )}
-            {order.orderStatus === "Confirmed" && (
+            )} */}
+            {order.cartItems.every(
+              (item) => item.subOrderStatus === "Confirmed"
+            ) && (
               <button className="submit-btn" onClick={handleFileDialogOpen}>
                 Upload File
               </button>
@@ -634,8 +636,8 @@ const OrderDetails = ({ order, onBack }) => {
                 <div
                   style={{
                     position: "absolute",
-                    top: "5px",
-                    right: "10px",
+                    top: "123px",
+                    right: "31px",
                     fontSize: "12px",
                     color: "#666",
                   }}
