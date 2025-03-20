@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SlCalender } from "react-icons/sl";
 import {
   Box,
@@ -30,9 +30,9 @@ const OrderDetails = ({ order, onBack }) => {
   const [deliveryDate, setDeliveryDate] = useState(""); // State for delivery date
   const [openFileDialog, setOpenFileDialog] = useState(false); // State for file upload dialog
   const [file, setFile] = useState(null); // State for uploaded file
-  const [note, setNote] = useState("");
-  const [isReadOnly, setIsReadOnly] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [note, setNote] = useState(order?.note || "");
+  const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
+  const [showButton, setShowButton] = useState(!!order?.note);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
@@ -68,21 +68,6 @@ const OrderDetails = ({ order, onBack }) => {
   const handleClose = () => setOpen(false);
   const handleProductChange = (event) => setSelectedProduct(event.target.value);
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
-
-  const fetchOrderNote = async () => {
-    try {
-      const response = await axios.get(
-        `https://tdg-db.onrender.com/api/orders/${order._id}`
-      );
-      if (response.data.note) {
-        setNote(response.data.note);
-        setIsReadOnly(true);
-        setShowButton(true);
-      }
-    } catch (error) {
-      console.error("Error fetching order note:", error);
-    }
-  };
 
   const handleSaveSubDeliveryDate = async () => {
     if (!selectedProduct || !subDeliveryDate) {
