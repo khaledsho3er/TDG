@@ -7,28 +7,7 @@ import axios from "axios";
 import PromotionModal from "./promotionProduct";
 import { useVendor } from "../../utils/vendorContext";
 import UpdateProduct from "./UpdateProduct";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-// Register ChartJS components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
 const ProductsPageVendor = ({ setActivePage }) => {
   const { vendor } = useVendor();
@@ -38,21 +17,16 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
   const [menuOpen, setMenuOpen] = useState({});
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [promotionModalOpen, setPromotionModalOpen] = useState(false);
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [timeframe, setTimeframe] = useState("month");
 
-  // Analytics states
-  const [selectedProducts, setSelectedProducts] = useState([]); // For comparison (up to 3)
-  const [timeframe, setTimeframe] = useState("30d"); // Default 30 days
-  const [analyticsData, setAnalyticsData] = useState(null);
-
-  const productsPerPage = 12;
-
-  // Fetch products and analytics data
   useEffect(() => {
     if (vendor) {
       const { brandId } = vendor;
@@ -61,7 +35,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
         try {
           const response = await axios.get(
             `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`,
-            { params: { category: selectedCategory } }
+            {
+              params: {
+                category: selectedCategory,
+              },
+            }
           );
           const fetchedProducts = response.data;
 
@@ -74,6 +52,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                   );
                   product.typeName = typeResponse.data.name || "Unknown";
                 } catch (error) {
+                  console.error("Error fetching type:", error);
                   product.typeName = "Unknown";
                 }
               } else {
@@ -102,70 +81,8 @@ const ProductsPageVendor = ({ setActivePage }) => {
       fetchProducts();
       fetchCategories();
     }
-  }, [vendor, selectedCategory]);
+  }, [vendor, selectedCategory, subCategories]);
 
-  // Fetch analytics data when selected products or timeframe changes
-  useEffect(() => {
-    if (selectedProducts.length > 0) {
-      fetchAnalyticsData();
-    }
-  }, [selectedProducts, timeframe]);
-
-  const fetchAnalyticsData = async () => {
-    try {
-      const promises = selectedProducts.map((product) =>
-        axios.get(
-          `https://tdg-db.onrender.com/api/products/sales/${product._id}`,
-          { params: { timeframe } }
-        )
-      );
-      const responses = await Promise.all(promises);
-
-      const datasets = responses.map((response, index) => ({
-        label: selectedProducts[index].name,
-        data: response.data.salesData, // Assuming API returns { date, sales }
-        borderColor: `hsl(${index * 120}, 70%, 50%)`,
-        backgroundColor: `hsla(${index * 120}, 70%, 50%, 0.2)`,
-        fill: true,
-      }));
-
-      setAnalyticsData({
-        labels: responses[0]?.data.dates || [], // Assuming consistent dates across products
-        datasets,
-      });
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-    }
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: "top" },
-      title: { display: true, text: "Product Sales Analytics" },
-    },
-    scales: {
-      x: { title: { display: true, text: "Date" } },
-      y: { title: { display: true, text: "Sales" }, beginAtZero: true },
-    },
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-  };
-
-  // Product selection for comparison
-  const handleProductSelect = (product) => {
-    if (selectedProducts.some((p) => p._id === product._id)) {
-      setSelectedProducts(
-        selectedProducts.filter((p) => p._id !== product._id)
-      );
-    } else if (selectedProducts.length < 3) {
-      setSelectedProducts([...selectedProducts, product]);
-    }
-  };
-
-  // Other existing functions remain largely the same
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
     setSelectedCategory(selectedCategoryId);
@@ -185,20 +102,32 @@ const ProductsPageVendor = ({ setActivePage }) => {
   };
 
   const filteredProducts = products.filter((product) => {
-    if (selectedSubCategory)
+    if (selectedSubCategory) {
       return product.subCategoryId === selectedSubCategory;
-    if (selectedCategory) return product.category === selectedCategory;
+    }
+    if (selectedCategory) {
+      return product.category === selectedCategory;
+    }
     return true;
   });
 
-  const falseStatusProducts = filteredProducts.filter((p) => !p.status);
-  const trueStatusProducts = filteredProducts.filter((p) => p.status);
+  const falseStatusProducts = filteredProducts.filter(
+    (product) => product.status === false
+  );
+  const trueStatusProducts = filteredProducts.filter(
+    (product) => product.status === true
+  );
 
   const toggleMenu = (productId) => {
-    setMenuOpen((prev) => ({ ...prev, [productId]: !prev[productId] }));
+    setMenuOpen((prevState) => ({
+      ...prevState,
+      [productId]: !prevState[productId],
+    }));
   };
 
-  const closeAllMenus = () => setMenuOpen({});
+  const closeAllMenus = () => {
+    setMenuOpen({});
+  };
 
   const handleEdit = (product) => {
     setSelectedProduct(product);
@@ -206,7 +135,10 @@ const ProductsPageVendor = ({ setActivePage }) => {
   };
 
   const handleDelete = async (product) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmDelete) {
       try {
         await axios.delete(
           `https://tdg-db.onrender.com/api/products/${product._id}`
@@ -215,7 +147,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
         alert("Product deleted successfully!");
       } catch (error) {
         console.error("Error deleting product:", error);
-        alert("Failed to delete product.");
+        alert("Failed to delete product. Please try again.");
       }
     }
   };
@@ -230,13 +162,25 @@ const ProductsPageVendor = ({ setActivePage }) => {
     setPromotionModalOpen(false);
   };
 
+  const handleProductSelect = (productId) => {
+    if (selectedProducts.includes(productId)) {
+      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+    } else if (selectedProducts.length < 3) {
+      setSelectedProducts([...selectedProducts, productId]);
+    }
+  };
+
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     const handleClickOutside = () => closeAllMenus();
+
     document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   if (showUpdate) {
@@ -253,7 +197,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <h2>All Products</h2>
-          <p>Home All Products</p>
+          <p>Home &gt; All Products</p>
         </div>
         <div className="dashboard-date-vendor">
           <button
@@ -276,44 +220,58 @@ const ProductsPageVendor = ({ setActivePage }) => {
         </div>
       </header>
 
-      {/* Analytics Graph Section */}
-      <div style={{ margin: "20px 0" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
-        >
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel>Timeframe</InputLabel>
-            <Select
-              value={timeframe}
-              onChange={(e) => setTimeframe(e.target.value)}
-            >
-              <MenuItem value="7d">Last 7 Days</MenuItem>
-              <MenuItem value="30d">Last 30 Days</MenuItem>
-              <MenuItem value="90d">Last 90 Days</MenuItem>
-              <MenuItem value="all">All Time</MenuItem>
-            </Select>
-          </FormControl>
-          <div>Selected Products: {selectedProducts.length}/3</div>
-        </div>
-        {analyticsData && (
-          <div style={{ height: "400px" }}>
-            <Line data={analyticsData} options={chartOptions} />
-          </div>
-        )}
+      {/* Graph Component */}
+      <ProductAnalyticsGraph
+        products={products}
+        selectedProducts={selectedProducts}
+        timeframe={timeframe}
+      />
+
+      {/* Timeframe Selector */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          marginBottom: "20px",
+        }}
+      >
+        <FormControl sx={{ m: 1 }}>
+          <InputLabel id="timeframe-label">Timeframe</InputLabel>
+          <Select
+            sx={{
+              width: "200px",
+              color: "#2d2d2d",
+              backgroundColor: "#fff",
+            }}
+            value={timeframe}
+            onChange={(e) => setTimeframe(e.target.value)}
+          >
+            <MenuItem value="day">Day</MenuItem>
+            <MenuItem value="week">Week</MenuItem>
+            <MenuItem value="month">Month</MenuItem>
+            <MenuItem value="year">Year</MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       {/* Filters */}
       <div
-        style={{ display: "flex", justifyContent: "end", marginBottom: "20px" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          marginBottom: "20px",
+        }}
       >
         <FormControl sx={{ m: 1 }}>
-          <InputLabel>Category</InputLabel>
+          <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
           <Select
-            sx={{ width: "200px", color: "#2d2d2d", backgroundColor: "#fff" }}
+            sx={{
+              width: "200px",
+              color: "#2d2d2d",
+              backgroundColor: "#fff",
+            }}
             value={selectedCategory}
             onChange={handleCategoryChange}
           >
@@ -327,7 +285,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
         </FormControl>
       </div>
 
-      {/* Products with status false */}
+      {/* Section for products with status false */}
       <div>
         <div
           onClick={() => setShowFalseStatus((prev) => !prev)}
@@ -353,36 +311,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
             ) : (
               <div className="product-grid">
                 {falseStatusProducts.map((product) => (
-                  <div
-                    className="all-product-card"
-                    key={product._id}
-                    onMouseEnter={() =>
-                      !selectedProducts.length && setSelectedProducts([product])
-                    }
-                    onMouseLeave={() =>
-                      !selectedProducts.length && setSelectedProducts([])
-                    }
-                    style={{
-                      border: selectedProducts.some(
-                        (p) => p._id === product._id
-                      )
-                        ? "2px solid #2d2d2d"
-                        : "1px solid #ddd",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.some(
-                        (p) => p._id === product._id
-                      )}
-                      onChange={() => handleProductSelect(product)}
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "10px",
-                      }}
-                    />
-                    {/* Rest of the product card content remains the same */}
+                  <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
@@ -398,11 +327,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                         <BsThreeDotsVertical
                           onClick={(e) => {
                             e.stopPropagation();
-                            toggleMenu(product._id);
+                            toggleMenu(product.id);
                           }}
                           className="three-dots-icon"
                         />
-                        {menuOpen[product._id] && (
+                        {menuOpen[product.id] && (
                           <div className="menu-dropdown">
                             <button onClick={() => handleEdit(product)}>
                               Edit
@@ -412,6 +341,13 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             </button>
                             <button onClick={() => handleInsights(product)}>
                               Promotion
+                            </button>
+                            <button
+                              onClick={() => handleProductSelect(product._id)}
+                            >
+                              {selectedProducts.includes(product._id)
+                                ? "Deselect"
+                                : "Select"}
                             </button>
                           </div>
                         )}
@@ -425,9 +361,17 @@ const ProductsPageVendor = ({ setActivePage }) => {
                       <div className="product-stats">
                         <div className="product-sales">
                           <span>Sales</span>
-                          <span className="sales-value">
-                            {product.sales ? product.sales : "No yet sales"}
-                          </span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.sales ? product.sales : "No yet sales"}
+                            </span>
+                          </div>
                         </div>
                         <hr style={{ margin: "10px 0", color: "#ddd" }} />
                         <div className="product-remaining">
@@ -446,7 +390,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
         )}
       </div>
 
-      {/* Products with status true */}
+      {/* Section for products with status true */}
       <div>
         <div
           onClick={() => setShowTrueStatus((prev) => !prev)}
@@ -473,36 +417,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
             ) : (
               <div className="product-grid">
                 {trueStatusProducts.map((product) => (
-                  <div
-                    className="all-product-card"
-                    key={product._id}
-                    onMouseEnter={() =>
-                      !selectedProducts.length && setSelectedProducts([product])
-                    }
-                    onMouseLeave={() =>
-                      !selectedProducts.length && setSelectedProducts([])
-                    }
-                    style={{
-                      border: selectedProducts.some(
-                        (p) => p._id === product._id
-                      )
-                        ? "2px solid #2d2d2d"
-                        : "1px solid #ddd",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.some(
-                        (p) => p._id === product._id
-                      )}
-                      onChange={() => handleProductSelect(product)}
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "10px",
-                      }}
-                    />
-                    {/* Rest of the product card content remains the same */}
+                  <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
@@ -518,11 +433,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                         <BsThreeDotsVertical
                           onClick={(e) => {
                             e.stopPropagation();
-                            toggleMenu(product._id);
+                            toggleMenu(product.id);
                           }}
                           className="three-dots-icon"
                         />
-                        {menuOpen[product._id] && (
+                        {menuOpen[product.id] && (
                           <div className="menu-dropdown">
                             <button onClick={() => handleEdit(product)}>
                               Edit
@@ -532,6 +447,13 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             </button>
                             <button onClick={() => handleInsights(product)}>
                               Promotion
+                            </button>
+                            <button
+                              onClick={() => handleProductSelect(product._id)}
+                            >
+                              {selectedProducts.includes(product._id)
+                                ? "Deselect"
+                                : "Select"}
                             </button>
                           </div>
                         )}
@@ -545,7 +467,17 @@ const ProductsPageVendor = ({ setActivePage }) => {
                       <div className="product-stats">
                         <div className="product-sales">
                           <span>Sales</span>
-                          <span className="sales-value">{product.rating}</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.rating}
+                            </span>
+                          </div>
                         </div>
                         <hr style={{ margin: "10px 0", color: "#ddd" }} />
                         <div className="product-remaining">
@@ -585,6 +517,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
         ))}
       </div>
 
+      {/* Promotion Modal */}
       {promotionModalOpen && (
         <PromotionModal
           open={promotionModalOpen}
