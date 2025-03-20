@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { SlCalender } from "react-icons/sl";
 import {
   Box,
@@ -68,6 +68,22 @@ const OrderDetails = ({ order, onBack }) => {
   const handleClose = () => setOpen(false);
   const handleProductChange = (event) => setSelectedProduct(event.target.value);
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
+
+  const fetchOrderNote = async () => {
+    try {
+      const response = await axios.get(
+        `https://tdg-db.onrender.com/api/orders/${order._id}`
+      );
+      if (response.data.note) {
+        setNote(response.data.note);
+        setIsReadOnly(true);
+        setShowButton(true);
+      }
+    } catch (error) {
+      console.error("Error fetching order note:", error);
+    }
+  };
+
   const handleSaveSubDeliveryDate = async () => {
     if (!selectedProduct || !subDeliveryDate) {
       alert("Please select a product and a delivery date.");
@@ -156,24 +172,7 @@ const OrderDetails = ({ order, onBack }) => {
       console.error("Error uploading file:", error);
     }
   };
-  useEffect(() => {
-    // Fetch existing note if available
-    const fetchNote = async () => {
-      try {
-        const response = await axios.get(
-          `https://tdg-db.onrender.com/api/orders/${order._id}`
-        );
-        if (response.data.note) {
-          setNote(response.data.note);
-          setIsReadOnly(true);
-        }
-      } catch (error) {
-        console.error("Error fetching order note:", error);
-      }
-    };
 
-    fetchNote();
-  }, [orderId]);
   const handleChange = (e) => {
     setNote(e.target.value);
     setShowButton(e.target.value.trim() !== ""); // Show button when user starts typing
@@ -698,43 +697,43 @@ const OrderDetails = ({ order, onBack }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map(
-              (product, index) => (
-                console.log("Product:", product),
-                (
-                  <tr key={index}>
-                    <td>{product.name}</td>
-                    <td>{product._id}</td>
-                    <td>{product.quantity} Item</td>
-                    <td>
-                      <span
-                        style={{
-                          display: "inline-block",
-                          padding: "4px 12px",
-                          borderRadius: "5px",
-                          backgroundColor:
-                            product.subOrderStatus === "Pending"
-                              ? "#f8d7da"
-                              : product.subOrderStatus === "Delivered"
-                              ? "#d4edda"
-                              : "#FFE5B4",
-                          color:
-                            product.subOrderStatus === "Pending"
-                              ? "#721c24"
-                              : product.subOrderStatus === "Delivered"
-                              ? "#155724"
-                              : "#FF7518",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          minWidth: "80px",
-                        }}
-                      >
-                        {product.subOrderStatus}
-                      </span>
-                    </td>
-                    <td>{product.totalPrice} LE</td>
-                  </tr>
-                )
+            {filteredProducts.map((product, index) =>
+              console.log(
+                "Product:",
+                product
+              )(
+                <tr key={index}>
+                  <td>{product.name}</td>
+                  <td>{product._id}</td>
+                  <td>{product.quantity} Item</td>
+                  <td>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: "5px",
+                        backgroundColor:
+                          product.subOrderStatus === "Pending"
+                            ? "#f8d7da"
+                            : product.subOrderStatus === "Delivered"
+                            ? "#d4edda"
+                            : "#FFE5B4",
+                        color:
+                          product.subOrderStatus === "Pending"
+                            ? "#721c24"
+                            : product.subOrderStatus === "Delivered"
+                            ? "#155724"
+                            : "#FF7518",
+                        fontWeight: "500",
+                        textAlign: "center",
+                        minWidth: "80px",
+                      }}
+                    >
+                      {product.subOrderStatus}
+                    </span>
+                  </td>
+                  <td>{product.totalPrice} LE</td>
+                </tr>
               )
             )}
           </tbody>
