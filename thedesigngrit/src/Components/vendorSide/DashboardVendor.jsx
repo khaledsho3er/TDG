@@ -103,19 +103,13 @@ const DashboardVendor = () => {
     if (!vendor?.brandId) return;
 
     const fetchOrders = async () => {
-      try {
-        const response = await fetchData(
-          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`,
-          "orders"
-        );
-        if (!response.ok) throw new Error("Failed to fetch orders");
-        const data = await response.json();
-        setOrders(Array.isArray(data) ? data : []); // Ensure an empty array if no orders exist
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-
-      // if (data) setOrders(Array.isArray(data) ? data : []);
+      const data = await fetchData(
+        `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`,
+        "orders"
+      );
+      if (!data.ok) throw new Error("Failed to fetch orders");
+      data = await data.json();
+      if (data) setOrders(Array.isArray(data) ? data : []);
     };
 
     fetchOrders();
