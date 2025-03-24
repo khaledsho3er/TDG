@@ -43,11 +43,13 @@ function Signupvendor() {
     coverPhoto: "", // Single cover photo path
     catalogues: [], // Array of catalogue paths
     brandDescription: "",
+    type: [],
     status: "pending", // Default status
     documents: [], // Array of document paths (e.g., tax documents)
     fees: 0, // Placeholder value
     createdAt: "", // Can be generated on the server side
   });
+  const [types, setTypes] = useState([]);
 
   const sanitizeVendorData = () => {
     const allowedKeys = [
@@ -67,6 +69,23 @@ function Signupvendor() {
       }, {});
   };
 
+  const fetchTypes = async () => {
+    try {
+      const response = await axios.get(
+        "https://tdg-db.onrender.com/api/types/"
+      );
+      if (response.status === 200) {
+        setTypes(response.data); // Assuming response.data is an array of types
+      }
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
+
   const handleNext = async (e) => {
     e.preventDefault();
     const sanitizedData = sanitizeVendorData();
@@ -77,7 +96,7 @@ function Signupvendor() {
         const response = await axios.post(
           "https://tdg-db.onrender.com/api/vendors/signup",
           sanitizedData,
-          { headers: { "Content-Type": "application/json" } } // Set Content-Type explicitly
+          { headers: { "Content-Type": "application/json" } }
         );
 
         if (response.status === 201) {
@@ -101,10 +120,17 @@ function Signupvendor() {
 
       Object.keys(brandData).forEach((key) => {
         if (Array.isArray(brandData[key])) {
-          // Handle arrays (e.g., catalogues, documents)
-          brandData[key].forEach((item, index) => {
-            formData.append(`${key}[${index}]`, item);
-          });
+          if (key === "type") {
+            // Append each type ID separately
+            brandData[key].forEach((typeId) => {
+              formData.append("type[]", typeId);
+            });
+          } else {
+            // Append other arrays normally
+            brandData[key].forEach((item, index) => {
+              formData.append(`${key}[${index}]`, item);
+            });
+          }
         } else {
           formData.append(key, brandData[key]);
         }
@@ -120,6 +146,7 @@ function Signupvendor() {
         if (response.status === 201) {
           console.log("Brand data submitted successfully");
           console.log("Brand ID:", response.data._id);
+
           await axios.put(
             `https://tdg-db.onrender.com/api/vendors/${vendorId}`,
             {
@@ -157,6 +184,7 @@ function Signupvendor() {
             coverPhoto: "",
             catalogues: [],
             brandDescription: "",
+            type: [], // Reset selected types
             status: "pending",
             documents: [],
             fees: 0,
@@ -362,6 +390,31 @@ function Signupvendor() {
               required
               error={!brandData.email}
             />
+            {/* 🚀 Added Types Selection */}
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Brand Types</InputLabel>
+              <Select
+                multiple
+                value={brandData.type}
+                onChange={(e) => {
+                  const selectedValues = Array.from(
+                    e.target.selectedOptions,
+                    (option) => option.value
+                  );
+                  setBrandData((prevState) => ({
+                    ...prevState,
+                    type: selectedValues, // Store selected type IDs
+                  }));
+                }}
+              >
+                {types.map((type) => (
+                  <option key={type._id} value={type._id}>
+                    {type.name} {/* Assuming each type has a 'name' */}
+                  </option>
+                ))}
+              </Select>
+              <FormHelperText>Select one or more types</FormHelperText>
+            </FormControl>
 
             {/* File Upload Section - Fixed UI Issue */}
             <Grid container spacing={2} alignItems="center">
