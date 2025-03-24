@@ -102,18 +102,28 @@ const DashboardVendor = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       if (!vendor?.brandId) return;
-      console.log("Vendor ID in orderes", vendor.brandId);
+
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch orderes");
+          throw new Error("Failed to fetch orders");
         }
-        const data = await response.json();
+        let data = await response.json();
+
+        // Remove orders where products don't exist
+        data = data.map((order) => ({
+          ...order,
+          cartItems: order.cartItems?.filter((item) => item !== null) || [],
+        }));
+
         setOrders(data);
       } catch (error) {
-        console.error("Error fetchiing orders:", error);
+        console.error("Error fetching orders:", error);
+        setError((prev) => ({ ...prev, orders: error.message }));
+      } finally {
+        setLoading((prev) => ({ ...prev, orders: false }));
       }
     };
 
