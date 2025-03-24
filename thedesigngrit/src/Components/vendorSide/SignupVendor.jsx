@@ -78,6 +78,7 @@ function Signupvendor() {
       );
       if (response.status === 200) {
         setTypes(response.data); // Assuming response.data is an array of types
+        console.log("Fetched types:", response.data);
       }
     } catch (error) {
       console.error("Error fetching types:", error);
