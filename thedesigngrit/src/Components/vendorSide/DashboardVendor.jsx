@@ -112,10 +112,6 @@ const DashboardVendor = () => {
         }
         const data = await response.json();
         setOrders(data);
-
-        // Calculate total orders
-        const total = data.reduce((sum, order) => sum + order.total, 0);
-        setTotalOrders(total);
       } catch (error) {
         console.error("Error fetchiing orders:", error);
       }
