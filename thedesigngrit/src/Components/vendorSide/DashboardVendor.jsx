@@ -435,7 +435,13 @@ const DashboardVendor = () => {
             <h3>Recent Orders</h3>
             <BsThreeDotsVertical />
           </Box>
-          {orders.length > 0 ? (
+          {orders.length === 0 ? (
+            <p
+              style={{ textAlign: "center", padding: "20px", fontSize: "18px" }}
+            >
+              No orders received yet
+            </p>
+          ) : (
             <table>
               <thead>
                 <tr>
@@ -494,8 +500,6 @@ const DashboardVendor = () => {
                 ))}
               </tbody>
             </table>
-          ) : (
-            <div className="no-data-message">No recent orders available</div>
           )}
         </div>
       </section>
