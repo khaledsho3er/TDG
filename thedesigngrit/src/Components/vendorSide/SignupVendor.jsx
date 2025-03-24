@@ -74,7 +74,7 @@ function Signupvendor() {
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
-        "https://tdg-db.onrender.com/api/types/"
+        "https://tdg-db.onrender.com/api/types/getAll"
       );
       if (response.status === 200) {
         setTypes(response.data); // Assuming response.data is an array of types
