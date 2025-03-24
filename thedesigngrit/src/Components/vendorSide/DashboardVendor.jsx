@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
-import { FaBox, FaTruck, FaCheckCircle, FaRedo } from "react-icons/fa";
+import {
+  FaBox,
+  FaBoxOpen,
+  FaTruck,
+  FaCheckCircle,
+  FaRedo,
+} from "react-icons/fa";
 import {
   LineChart,
   Line,
@@ -97,11 +103,19 @@ const DashboardVendor = () => {
     if (!vendor?.brandId) return;
 
     const fetchOrders = async () => {
-      const data = await fetchData(
-        `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`,
-        "orders"
-      );
-      if (data) setOrders(Array.isArray(data) ? data : []);
+      try {
+        const response = await fetchData(
+          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`,
+          "orders"
+        );
+        if (!response.ok) throw new Error("Failed to fetch orders");
+        const data = await response.json();
+        setOrders(Array.isArray(data) ? data : []); // Ensure an empty array if no orders exist
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+
+      // if (data) setOrders(Array.isArray(data) ? data : []);
     };
 
     fetchOrders();
@@ -453,52 +467,63 @@ const DashboardVendor = () => {
                   <th>Amount</th>
                 </tr>
               </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr
-                    key={order._id || Math.random()}
-                    onClick={() => setSelectedOrder(order)}
-                    style={{ cursor: "pointer" }}
+              {error || orders.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="3"
+                    style={{ textAlign: "center", padding: "20px" }}
                   >
-                    <td>{getProductName(order)}</td>
-                    <td>{order._id?.substring(0, 8) || "N/A"}</td>
-                    <td>
-                      {order.orderDate
-                        ? new Date(order.orderDate).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                    <td>{getCustomerName(order)}</td>
-                    <td>
-                      <span
-                        style={{
-                          display: "inline-block",
-                          marginTop: "4px",
-                          padding: "4px 12px",
-                          borderRadius: "5px",
-                          backgroundColor:
-                            order.orderStatus === "Pending"
-                              ? "#f8d7da"
-                              : order.orderStatus === "Delivered"
-                              ? "#d4edda"
-                              : "#FFE5B4",
-                          color:
-                            order.orderStatus === "Pending"
-                              ? "#721c24"
-                              : order.orderStatus === "Delivered"
-                              ? "#155724"
-                              : "#FF7518",
-                          fontWeight: "500",
-                          textAlign: "center",
-                          minWidth: "80px",
-                        }}
-                      >
-                        {order.orderStatus || "Unknown"}
-                      </span>
-                    </td>
-                    <td>LE {order.total || 0}</td>
-                  </tr>
-                ))}
-              </tbody>
+                    <FaBoxOpen size={24} /> No Orders Received
+                  </td>
+                </tr>
+              ) : (
+                <tbody>
+                  {orders.map((order) => (
+                    <tr
+                      key={order._id || Math.random()}
+                      onClick={() => setSelectedOrder(order)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <td>{getProductName(order)}</td>
+                      <td>{order._id?.substring(0, 8) || "N/A"}</td>
+                      <td>
+                        {order.orderDate
+                          ? new Date(order.orderDate).toLocaleDateString()
+                          : "N/A"}
+                      </td>
+                      <td>{getCustomerName(order)}</td>
+                      <td>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            marginTop: "4px",
+                            padding: "4px 12px",
+                            borderRadius: "5px",
+                            backgroundColor:
+                              order.orderStatus === "Pending"
+                                ? "#f8d7da"
+                                : order.orderStatus === "Delivered"
+                                ? "#d4edda"
+                                : "#FFE5B4",
+                            color:
+                              order.orderStatus === "Pending"
+                                ? "#721c24"
+                                : order.orderStatus === "Delivered"
+                                ? "#155724"
+                                : "#FF7518",
+                            fontWeight: "500",
+                            textAlign: "center",
+                            minWidth: "80px",
+                          }}
+                        >
+                          {order.orderStatus || "Unknown"}
+                        </span>
+                      </td>
+                      <td>LE {order.total || 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           )}
         </div>
