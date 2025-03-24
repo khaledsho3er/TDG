@@ -100,16 +100,24 @@ const DashboardVendor = () => {
 
   // Fetch orders data
   useEffect(() => {
-    if (!vendor?.brandId) return;
-
     const fetchOrders = async () => {
-      const data = await fetchData(
-        `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`,
-        "orders"
-      );
-      if (!data.ok) throw new Error("Failed to fetch orders");
-      data = await data.json();
-      if (data) setOrders(Array.isArray(data) ? data : []);
+      if (!vendor?.brandId) return;
+      try {
+        const response = await fetch(
+          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data = await response.json();
+        setOrders(data);
+
+        // Calculate total orders
+        const total = data.reduce((sum, order) => sum + order.total, 0);
+        setTotalOrders(total);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
     };
 
     fetchOrders();
