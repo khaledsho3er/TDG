@@ -16,11 +16,10 @@ const QuotationsPage = () => {
           `https://tdg-db.onrender.com/api/quotation/quotations/brand/${vendor.brandId}`
         );
         setQuotations(response.data);
-        setLoading(false);
       } catch (err) {
-        console.error("Error fetching quotations:", err); // Log error for debugging
-        // setError(err.response?.data?.message || "Failed to load quotations"); // Show API error message if available
-        // setLoading(false);
+        console.error("Error fetching quotations:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,7 +50,7 @@ const QuotationsPage = () => {
         <div className="quotations-list">
           {quotations.map((quotation) => (
             <div
-              key={quotation._id}
+              key={quotation?._id || Math.random()}
               className="quotation-card"
               onClick={() => handleCardClick(quotation)}
             >
@@ -61,12 +60,12 @@ const QuotationsPage = () => {
                     ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${quotation?.productId?.mainImage}`
                     : "/default-product-image.jpg"
                 }
-                alt={quotation.productId.name}
+                alt={quotation?.productId?.name || "Unnamed Product"}
                 className="quotation-card-img"
               />
               <div className="quotation-card-info">
-                <h2>{quotation.productId.name}</h2>
-                <p>ID: {quotation._id}</p>
+                <h2>{quotation?.productId?.name || "Unnamed Product"}</h2>
+                <p>ID: {quotation?.productId?.id || "No ID"}</p>
               </div>
             </div>
           ))}
@@ -80,42 +79,50 @@ const QuotationsPage = () => {
             <span className="close-btn" onClick={handleClosePopup}>
               &times;
             </span>
-            <h2>Quotation For: {selectedQuotation.productId.name}</h2>
+            <h2>
+              Quotation For:{" "}
+              {selectedQuotation?.productId?.name || "Unnamed Product"}
+            </h2>
             <img
               src={
-                selectedQuotation.productId.mainImage
+                selectedQuotation?.productId?.mainImage
                   ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation?.productId?.mainImage}`
                   : "/default-product-image.jpg"
               }
-              alt={selectedQuotation.productId.name}
+              alt={selectedQuotation?.productId?.name || "Unnamed Product"}
               className="quotation-popup-img"
             />
             <p>
-              <strong>Material:</strong> {selectedQuotation.material}
+              <strong>Material:</strong> {selectedQuotation?.material || "N/A"}
             </p>
             <p>
-              <strong>Size:</strong> {selectedQuotation.size}
+              <strong>Size:</strong> {selectedQuotation?.size || "N/A"}
             </p>
             <p>
-              <strong>Color:</strong> {selectedQuotation.color}
+              <strong>Color:</strong> {selectedQuotation?.color || "N/A"}
             </p>
             <p>
-              <strong>Customization:</strong> {selectedQuotation.customization}
+              <strong>Customization:</strong>{" "}
+              {selectedQuotation?.customization || "N/A"}
             </p>
             <p>
-              <strong>User:</strong> {selectedQuotation.userId.firstName}{" "}
-              {selectedQuotation.userId.lastName}
+              <strong>User:</strong>
+              {selectedQuotation?.userId?.firstName || "Unknown"}
+              {selectedQuotation?.userId?.lastName || " User"}
             </p>
             <p>
-              <strong>Email:</strong> {selectedQuotation.userId.email}
+              <strong>Email:</strong>{" "}
+              {selectedQuotation?.userId?.email || "No Email"}
             </p>
             <p>
-              <strong>Number:</strong> {selectedQuotation.userId.phoneNumber}
+              <strong>Number:</strong>{" "}
+              {selectedQuotation?.userId?.phoneNumber || "No Phone Number"}
             </p>
-
             <p>
               <strong>Date:</strong>{" "}
-              {new Date(selectedQuotation.createdAt).toLocaleDateString()}
+              {selectedQuotation?.createdAt
+                ? new Date(selectedQuotation.createdAt).toLocaleDateString()
+                : "No Date"}
             </p>
           </div>
         </div>
