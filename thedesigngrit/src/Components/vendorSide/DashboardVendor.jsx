@@ -420,6 +420,89 @@ const DashboardVendor = () => {
           )}
         </div>
       </section>
+
+      {/* Recent Orders */}
+      <section className="dashboard-lists-vendor">
+        <div className="recent-orders-vendor">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h3>Recent Orders</h3>
+            <BsThreeDotsVertical />
+          </Box>
+          {orders.length === 0 ? (
+            <p
+              style={{ textAlign: "center", padding: "20px", fontSize: "18px" }}
+            >
+              No orders received yet
+            </p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer Name</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr
+                    key={order._id || Math.random()}
+                    onClick={() => setSelectedOrder(order)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{getProductName(order)}</td>
+                    <td>{order._id?.substring(0, 8) || "N/A"}</td>
+                    <td>
+                      {order.orderDate
+                        ? new Date(order.orderDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                    <td>{getCustomerName(order)}</td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          marginTop: "4px",
+                          padding: "4px 12px",
+                          borderRadius: "5px",
+                          backgroundColor:
+                            order.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : order.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            order.orderStatus === "Pending"
+                              ? "#721c24"
+                              : order.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                          fontWeight: "500",
+                          textAlign: "center",
+                          minWidth: "80px",
+                        }}
+                      >
+                        {order.orderStatus || "Unknown"}
+                      </span>
+                    </td>
+                    <td>LE {order.total || 0}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </section>
     </div>
   );
 };
