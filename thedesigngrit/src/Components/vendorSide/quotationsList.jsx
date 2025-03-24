@@ -43,7 +43,11 @@ const QuotationsPage = () => {
     <div className="quotations-page">
       <h1>Quotations for Brand</h1>
 
-      {quotations.length > 0 ? (
+      {quotations.length === 0 ? (
+        <div className="no-quotations">
+          <p>No quotations yet!</p>
+        </div>
+      ) : (
         <div className="quotations-list">
           {quotations.map((quotation) => (
             <div
@@ -53,8 +57,8 @@ const QuotationsPage = () => {
             >
               <img
                 src={
-                  quotation.productId.mainImage
-                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${quotation.productId.mainImage}`
+                  quotation?.productId?.mainImage
+                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${quotation?.productId?.mainImage}`
                     : "/default-product-image.jpg"
                 }
                 alt={quotation.productId.name}
@@ -66,11 +70,6 @@ const QuotationsPage = () => {
               </div>
             </div>
           ))}
-        </div>
-      ) : (
-        <div className="no-quotations">
-          <p>No quotations yet!</p>
-          <span className="exclamation">⚠️</span>
         </div>
       )}
 
@@ -85,7 +84,7 @@ const QuotationsPage = () => {
             <img
               src={
                 selectedQuotation.productId.mainImage
-                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation.productId.mainImage}`
+                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation?.productId?.mainImage}`
                   : "/default-product-image.jpg"
               }
               alt={selectedQuotation.productId.name}
