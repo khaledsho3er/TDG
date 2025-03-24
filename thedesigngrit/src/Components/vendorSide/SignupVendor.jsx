@@ -7,6 +7,7 @@ import {
   Input,
   FormControl,
   FormHelperText,
+  MenuItem,
   InputLabel,
   Select,
   Grid,
@@ -78,7 +79,6 @@ function Signupvendor() {
       );
       if (response.status === 200) {
         setTypes(response.data); // Assuming response.data is an array of types
-        console.log("Fetched types:", response.data);
       }
     } catch (error) {
       console.error("Error fetching types:", error);
@@ -88,7 +88,6 @@ function Signupvendor() {
   useEffect(() => {
     fetchTypes();
   }, []);
-
   const handleNext = async (e) => {
     e.preventDefault();
     const sanitizedData = sanitizeVendorData();
@@ -398,22 +397,24 @@ function Signupvendor() {
               <InputLabel>Brand Types</InputLabel>
               <Select
                 multiple
+                name="type"
                 value={brandData.type}
                 onChange={(e) => {
-                  const selectedValues = Array.from(
-                    e.target.selectedOptions,
-                    (option) => option.value
-                  );
                   setBrandData((prevState) => ({
                     ...prevState,
-                    type: selectedValues, // Store selected type IDs
+                    type: e.target.value, // Correct handling for multiple selection
                   }));
                 }}
+                renderValue={(selected) =>
+                  selected
+                    .map((id) => types.find((type) => type._id === id)?.name)
+                    .join(", ")
+                }
               >
                 {types.map((type) => (
-                  <option key={type._id} value={type._id}>
-                    {type.name} {/* Assuming each type has a 'name' */}
-                  </option>
+                  <MenuItem key={type._id} value={type._id}>
+                    {type.name}
+                  </MenuItem>
                 ))}
               </Select>
               <FormHelperText>Select one or more types</FormHelperText>
