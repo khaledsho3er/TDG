@@ -110,8 +110,7 @@ const DashboardVendor = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
-        let data = await response.json();
-        setOrders(data);
+        setOrders(response);
         console.log("set orders:", setOrders);
         console.log("orders:", orders);
       } catch (error) {
