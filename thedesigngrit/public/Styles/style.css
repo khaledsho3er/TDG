@@ -7042,8 +7042,7 @@ input:focus {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 9999;
-  animation: slideIn 0.3s ease-in-out;
+  z-index: 1000;
 }
 
 .toast-content {
@@ -7054,15 +7053,8 @@ input:focus {
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  min-width: 250px;
-}
-
-.toast-content p {
-  margin: 0;
-  font-family: Montserrat;
-  font-size: 14px;
-  flex: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
 }
 
 .toast-close {
@@ -7074,7 +7066,6 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
 }
 
 .toast-close:hover {
