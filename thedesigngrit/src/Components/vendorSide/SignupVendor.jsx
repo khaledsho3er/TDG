@@ -127,11 +127,9 @@ function Signupvendor() {
       Object.keys(brandData).forEach((key) => {
         if (Array.isArray(brandData[key])) {
           if (key === "type") {
-            // Append each type ID separately
-            brandData[key].forEach((typeId) => {
-              formData.append("type", typeId); // Changed from type[] to type
-              console.log("Appending type ID:", typeId);
-            });
+            // Send type array as a JSON string
+            formData.append("type", JSON.stringify(brandData[key]));
+            console.log("Appending type array:", brandData[key]);
           } else {
             // Append other arrays normally
             brandData[key].forEach((item, index) => {
