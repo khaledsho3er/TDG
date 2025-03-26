@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from "@mui/material";
-import { FaFile, FaStar } from "react-icons/fa";
+import { FaFile, FaStar, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
@@ -430,7 +430,7 @@ function ProductPage() {
                             backgroundColor: "transparent",
                             color: "#2d2d2d",
                             borderRadius: "10px",
-                            border: "1px solid #2d2d2d", // Correct way to set the border
+                            border: "1px solid #2d2d2d",
                             width: "40%",
                             padding: "10px 20px",
                             minWidth: "150px",
@@ -443,10 +443,23 @@ function ProductPage() {
                               color: "#fff",
                             },
                           }}
+                          onClick={() => {
+                            if (product.cadFile) {
+                              // Create a temporary anchor element
+                              const link = document.createElement("a");
+                              link.href = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.cadFile}`; // Add the URL prefix
+                              link.download = `product_cad_${product._id}`; // Suggested filename
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            } else {
+                              alert("No CAD file available for download");
+                            }
+                          }}
                         >
                           {/* Left-aligned image */}
                           <img
-                            src="/Assets/autocadIcon.webp" // Replace with the actual path to the AutoCAD logo
+                            src="/Assets/autocadIcon.webp"
                             alt="AutoCAD Logo"
                             style={{
                               width: "24px",
@@ -455,11 +468,9 @@ function ProductPage() {
                             }}
                           />
                           {/* Centered text */}
-                          <span>AutoCAD</span>{" "}
-                          <span>
-                            1 <FaFile sx={{ marginLeft: "10px" }} />
-                          </span>
-                          {/* Right-aligned file icon */}
+                          <span>Download CAD File</span>
+                          {/* Right-aligned download icon */}
+                          <FaDownload style={{ marginLeft: "10px" }} />
                         </Button>
                       </div>
                     )}
