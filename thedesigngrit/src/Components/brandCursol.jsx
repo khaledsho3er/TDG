@@ -16,7 +16,6 @@ export default function BrandCursol({ brandId }) {
 
     const fetchProducts = async () => {
       try {
-        console.log(`Fetching products for brandId: ${brandId._id}`);
         const response = await fetch(
           `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId._id}`
         );
@@ -26,14 +25,7 @@ export default function BrandCursol({ brandId }) {
         }
 
         const data = await response.json();
-        console.log("Fetched API response:", data);
-        setProducts(data.slice(0, 5));
-        // if (data.products && Array.isArray(data.products)) {
-        //   setProducts(data.slice(0, 5)); // Limit to 5 products
-        // } else {
-        //   console.error("Invalid products structure:", data);
-        //   setProducts([]); // Reset state in case of incorrect response
-        // }
+        setProducts(data.slice(0, 3)); // Limit to 3 products
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -77,54 +69,31 @@ export default function BrandCursol({ brandId }) {
 
       {/* Carousel */}
       {Array.isArray(products) && products.length > 0 ? (
-        <div
-          className="carousel-container"
-          style={{
-            height: "324px",
-            background: "transparent",
-            boxShadow: "none",
-            padding0: "0px",
-            marginLeft: "100px",
-          }}
-        >
-          <div className="carousel-wrapper">
-            {products.map((product, index) => {
-              const offset = (index - currentIndex) * 40; // Controls spacing and depth
-              return (
-                <div
-                  key={product._id}
-                  className="carousel-item"
-                  style={{
-                    transform: `perspective(1000px) rotateY(${offset}deg) translateZ(${
-                      -Math.abs(offset) * 3
-                    }px)`,
-                    opacity: Math.abs(index - currentIndex) < 2 ? 1 : 0.3,
-                  }}
-                >
-                  <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                    alt={product.name || "Product"}
-                    className="carousel-product-image"
-                  />
-                  <h3
-                    style={{
-                      fontSize: "16px",
-                      fontFamily: "Montserrat",
-                      paddingTop: "12px",
-                      paddingBottom: "16px",
-                    }}
-                  >
-                    {product.name}
-                  </h3>
-                  <p>
-                    {product.price
-                      ? `${product.price} E£`
-                      : "Price Unavailable"}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+        <div className="carousel-wrapper">
+          {products.map((product, index) => {
+            const position =
+              (index - currentIndex + products.length) % products.length;
+            return (
+              <div
+                key={product._id}
+                className={`carousel-item ${position === 0 ? "active" : ""}`}
+                style={{
+                  transform: `translateX(${position * 100}%)`,
+                  zIndex: products.length - position,
+                }}
+              >
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                  alt={product.name || "Product"}
+                  className="carousel-product-image"
+                />
+                <h3 className="carousel-product-name">{product.name}</h3>
+                <p className="carousel-product-price">
+                  {product.price ? `${product.price} E£` : "Price Unavailable"}
+                </p>
+              </div>
+            );
+          })}
           {products.length > 1 && (
             <>
               <button className="carousel-button left" onClick={prevSlide}>
