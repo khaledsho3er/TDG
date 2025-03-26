@@ -121,12 +121,16 @@ function Signupvendor() {
     } else if (currentPhase === 3) {
       const formData = new FormData();
 
+      console.log("Brand Data before form submission:", brandData);
+      console.log("Selected Types:", brandData.type);
+
       Object.keys(brandData).forEach((key) => {
         if (Array.isArray(brandData[key])) {
           if (key === "type") {
             // Append each type ID separately
             brandData[key].forEach((typeId) => {
-              formData.append("type[]", typeId);
+              formData.append("type", typeId); // Changed from type[] to type
+              console.log("Appending type ID:", typeId);
             });
           } else {
             // Append other arrays normally
@@ -138,6 +142,11 @@ function Signupvendor() {
           formData.append(key, brandData[key]);
         }
       });
+
+      // Log the FormData contents
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
 
       try {
         const response = await axios.post(
@@ -465,7 +474,7 @@ function Signupvendor() {
 
             <TextField
               label="Brand Description"
-              helperText="Enter a brief brand description, around 50-150 words. Ensure it's consistent in style and tone with the brand’s voice"
+              helperText="Enter a brief brand description, around 50-150 words. Ensure it's consistent in style and tone with the brand's voice"
               name="brandDescription"
               value={brandData.brandDescription || ""}
               onChange={(e) => handleInputChange(e, 2)}
