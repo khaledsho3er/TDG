@@ -63,7 +63,7 @@ const AddProduct = () => {
     Customizationoptions: [], // Customization options in formData
     Additionaldetails: "",
     Additionalcosts: "",
-    cad: null, // Add CAD field
+    cadFile: null, // Add CAD field
     // claimProcess: "",
   });
 
@@ -428,9 +428,20 @@ const AddProduct = () => {
   const handleCADUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Check file type
+      const allowedTypes = [".dwg", ".dxf", ".stp", ".step", ".igs", ".iges"];
+      const fileExtension = "." + file.name.split(".").pop().toLowerCase();
+
+      if (!allowedTypes.includes(fileExtension)) {
+        alert(
+          "Please upload a valid CAD file (DWG, DXF, STP, STEP, IGS, or IGES format)"
+        );
+        return;
+      }
+
       setFormData((prevData) => ({
         ...prevData,
-        cad: file,
+        cadFile: file, // Changed from 'cad' to 'cadFile' to match backend
       }));
     }
   };
@@ -498,8 +509,9 @@ const AddProduct = () => {
     });
 
     // Append CAD file if exists
-    if (formData.cad) {
-      data.append("cad", formData.cad);
+    if (formData.cadFile) {
+      // Changed from 'cad' to 'cadFile'
+      data.append("cadFile", formData.cadFile);
     }
 
     // Log FormData for debugging
@@ -550,7 +562,7 @@ const AddProduct = () => {
           warrantyYears: "",
           warrantyCoverage: [],
         },
-        cad: null,
+        cadFile: null, // Changed from 'cad' to 'cadFile'
         images: [],
         mainImage: "",
       });
@@ -1213,7 +1225,7 @@ const AddProduct = () => {
               </div>
             </div>
 
-            {/* Add CAD Upload Section */}
+            {/* Update CAD Upload Section */}
             <div className="cad-upload-section">
               <label>CAD File Upload</label>
               <div className="cad-drop-zone">
@@ -1240,13 +1252,13 @@ const AddProduct = () => {
                   Upload CAD File
                 </button>
               </div>
-              {formData.cad && (
+              {formData.cadFile && ( // Changed from 'cad' to 'cadFile'
                 <div className="cad-file-info">
-                  <span>Selected file: {formData.cad.name}</span>
+                  <span>Selected file: {formData.cadFile.name}</span>
                   <button
                     type="button"
                     onClick={() =>
-                      setFormData((prev) => ({ ...prev, cad: null }))
+                      setFormData((prev) => ({ ...prev, cadFile: null }))
                     }
                     className="remove-cad-btn"
                   >
