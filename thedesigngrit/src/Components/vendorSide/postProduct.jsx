@@ -5,8 +5,6 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
-import VariantDialog from "./VariantDialog";
-import { FormControlLabel, Switch, Button } from "@mui/material";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -68,11 +66,6 @@ const AddProduct = () => {
     cadFile: null, // Add CAD field
     // claimProcess: "",
   });
-
-  // Add these new state variables after other state declarations
-  const [hasVariants, setHasVariants] = useState(false);
-  const [isVariantDialogOpen, setIsVariantDialogOpen] = useState(false);
-  const [productVariants, setProductVariants] = useState([]);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -257,6 +250,28 @@ const AddProduct = () => {
     }
   };
 
+  // // Handle adding new tags
+  // const handleAddTag = (e) => {
+  //   if (e.key === "Enter" && e.target.value.trim() !== "") {
+  //     const newTag = e.target.value.trim();
+  //     setTags([...tags, newTag]); // Update local tags state
+  //     setFormData({
+  //       ...formData,
+  //       tags: [...formData.tags, newTag], // Update formData tags
+  //     });
+  //     e.target.value = ""; // Clear input
+  //   }
+  // };
+
+  // // Function to remove a tag by index
+  // const handleRemoveTag = (index) => {
+  //   const newTags = tags.filter((_, i) => i !== index);
+  //   setTags(newTags); // Update local tags state
+  //   setFormData({
+  //     ...formData,
+  //     tags: newTags, // Update formData tags
+  //   });
+  // };
   // Handles adding a tag from the input field (Press Enter)
   useEffect(() => {
     const fetchTags = async () => {
@@ -451,12 +466,7 @@ const AddProduct = () => {
     }
   };
 
-  // Add this function before handleSubmit
-  const handleVariantsSave = (variants) => {
-    setProductVariants(variants);
-  };
-
-  // Update the handleSubmit function to include variants
+  // Update handleSubmit to include CAD file
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
@@ -524,22 +534,6 @@ const AddProduct = () => {
       data.append("cadFile", formData.cadFile);
     }
 
-    // Append variants data if hasVariants is true
-    if (hasVariants && productVariants.length > 0) {
-      data.append("hasVariants", "true");
-      productVariants.forEach((variant, index) => {
-        Object.entries(variant).forEach(([key, value]) => {
-          if (key === "image" && value) {
-            data.append(`variants[${index}][${key}]`, value);
-          } else if (key === "dimensions" || key === "technicalSpecs") {
-            data.append(`variants[${index}][${key}]`, JSON.stringify(value));
-          } else {
-            data.append(`variants[${index}][${key}]`, value);
-          }
-        });
-      });
-    }
-
     // Log FormData for debugging
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
@@ -553,9 +547,6 @@ const AddProduct = () => {
       );
       console.log("Product created successfully:", response.data);
       alert("Product added successfully!");
-      // Reset form and variants
-      setProductVariants([]);
-      setHasVariants(false);
       setFormData({
         name: "",
         price: "",
@@ -1296,38 +1287,6 @@ const AddProduct = () => {
                 </div>
               )}
             </div>
-
-            <div className="variant-section">
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={hasVariants}
-                    onChange={(e) => setHasVariants(e.target.checked)}
-                  />
-                }
-                label="This product has variants"
-              />
-              {hasVariants && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setIsVariantDialogOpen(true)}
-                  sx={{ mt: 2 }}
-                >
-                  {productVariants.length > 0
-                    ? `Edit Variants (${productVariants.length})`
-                    : "Add Variants"}
-                </Button>
-              )}
-            </div>
-
-            {/* Add the VariantDialog component */}
-            <VariantDialog
-              open={isVariantDialogOpen}
-              onClose={() => setIsVariantDialogOpen(false)}
-              onSave={handleVariantsSave}
-              productName={formData.name}
-            />
           </div>
         </div>
         <div className="form-actions">
