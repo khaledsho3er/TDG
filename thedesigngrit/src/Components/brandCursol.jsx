@@ -105,14 +105,14 @@ export default function BrandCursol({ brandId }) {
             })}
           </div>
           {products.length > 1 && (
-            <div className="carousel-navigation">
-              <button className="carousel-button" onClick={prevSlide}>
+            <>
+              <button className="carousel-button left" onClick={prevSlide}>
                 <HiOutlineChevronLeft />
               </button>
-              <button className="carousel-button" onClick={nextSlide}>
+              <button className="carousel-button right" onClick={nextSlide}>
                 <HiOutlineChevronRight />
               </button>
-            </div>
+            </>
           )}
         </div>
       ) : (
