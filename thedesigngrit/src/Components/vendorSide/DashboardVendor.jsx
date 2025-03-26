@@ -110,9 +110,10 @@ const DashboardVendor = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
-        setOrders(response);
-        console.log("set orders:", setOrders);
+        const data = await response.json();
+        setOrders(data);
         console.log("orders:", orders);
+        console.log("data:", data);
       } catch (error) {
         console.error("Error fetching orders:", error);
         setError((prev) => ({ ...prev, orders: error.message }));
@@ -122,7 +123,7 @@ const DashboardVendor = () => {
     };
 
     fetchOrders();
-  }, [vendor]);
+  }, [vendor, orders]);
 
   // Fetch statistics data
   useEffect(() => {
