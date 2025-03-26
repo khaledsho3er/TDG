@@ -3,10 +3,10 @@ import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
 import {
   FaBox,
-  FaBoxOpen,
   FaTruck,
   FaCheckCircle,
   FaRedo,
+  FaBoxOpen,
 } from "react-icons/fa";
 import {
   LineChart,
@@ -111,9 +111,8 @@ const DashboardVendor = () => {
           throw new Error("Failed to fetch orders");
         }
         const data = await response.json();
-        setOrders(data);
-        console.log("orders:", orders);
-        console.log("data:", data);
+        console.log("Fetched orders data:", data);
+        setOrders(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching orders:", error);
         setError((prev) => ({ ...prev, orders: error.message }));
@@ -123,7 +122,7 @@ const DashboardVendor = () => {
     };
 
     fetchOrders();
-  }, [vendor, orders]);
+  }, [vendor]);
 
   // Fetch statistics data
   useEffect(() => {
@@ -453,12 +452,33 @@ const DashboardVendor = () => {
             <h3>Recent Orders</h3>
             <BsThreeDotsVertical />
           </Box>
-          {orders.length === 0 ? (
-            <p
-              style={{ textAlign: "center", padding: "20px", fontSize: "18px" }}
+          {!orders || orders.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "40px 20px",
+                backgroundColor: "#f8f9fa",
+                borderRadius: "8px",
+                marginTop: "20px",
+              }}
             >
-              No orders received yet
-            </p>
+              <FaBoxOpen
+                size={48}
+                style={{ color: "#6c757d", marginBottom: "15px" }}
+              />
+              <p
+                style={{
+                  fontSize: "18px",
+                  color: "#6c757d",
+                  marginBottom: "10px",
+                }}
+              >
+                No Orders Received Yet
+              </p>
+              <p style={{ fontSize: "14px", color: "#adb5bd" }}>
+                When customers place orders, they will appear here
+              </p>
+            </div>
           ) : (
             <table>
               <thead>
@@ -471,63 +491,52 @@ const DashboardVendor = () => {
                   <th>Amount</th>
                 </tr>
               </thead>
-              {error || orders.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan="3"
-                    style={{ textAlign: "center", padding: "20px" }}
+              <tbody>
+                {orders.map((order) => (
+                  <tr
+                    key={order._id || Math.random()}
+                    onClick={() => setSelectedOrder(order)}
+                    style={{ cursor: "pointer" }}
                   >
-                    <FaBoxOpen size={24} /> No Orders Received
-                  </td>
-                </tr>
-              ) : (
-                <tbody>
-                  {orders.map((order) => (
-                    <tr
-                      key={order._id || Math.random()}
-                      onClick={() => setSelectedOrder(order)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <td>{getProductName(order)}</td>
-                      <td>{order._id?.substring(0, 8) || "N/A"}</td>
-                      <td>
-                        {order.orderDate
-                          ? new Date(order.orderDate).toLocaleDateString()
-                          : "N/A"}
-                      </td>
-                      <td>{getCustomerName(order)}</td>
-                      <td>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            marginTop: "4px",
-                            padding: "4px 12px",
-                            borderRadius: "5px",
-                            backgroundColor:
-                              order.orderStatus === "Pending"
-                                ? "#f8d7da"
-                                : order.orderStatus === "Delivered"
-                                ? "#d4edda"
-                                : "#FFE5B4",
-                            color:
-                              order.orderStatus === "Pending"
-                                ? "#721c24"
-                                : order.orderStatus === "Delivered"
-                                ? "#155724"
-                                : "#FF7518",
-                            fontWeight: "500",
-                            textAlign: "center",
-                            minWidth: "80px",
-                          }}
-                        >
-                          {order.orderStatus || "Unknown"}
-                        </span>
-                      </td>
-                      <td>LE {order.total || 0}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              )}
+                    <td>{getProductName(order)}</td>
+                    <td>{order._id?.substring(0, 8) || "N/A"}</td>
+                    <td>
+                      {order.orderDate
+                        ? new Date(order.orderDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                    <td>{getCustomerName(order)}</td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          marginTop: "4px",
+                          padding: "4px 12px",
+                          borderRadius: "5px",
+                          backgroundColor:
+                            order.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : order.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            order.orderStatus === "Pending"
+                              ? "#721c24"
+                              : order.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                          fontWeight: "500",
+                          textAlign: "center",
+                          minWidth: "80px",
+                        }}
+                      >
+                        {order.orderStatus || "Unknown"}
+                      </span>
+                    </td>
+                    <td>LE {order.total || 0}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           )}
         </div>
