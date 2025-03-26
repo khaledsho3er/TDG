@@ -160,37 +160,57 @@ const AddProduct = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    let formattedValue = value;
-
-    // Only apply bullet points for specific textarea fields
-    if (
-      name === "productSpecificRecommendations" ||
-      name === "materialCareInstructions"
-    ) {
-      formattedValue = value
+    // Handle bullet points for specific fields
+    if (name === "materialCareInstructions") {
+      // For material care instructions, just allow normal line breaks
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else if (name === "productSpecificRecommendations") {
+      // For product recommendations, add bullet points
+      const formattedValue = value
         .split("\n")
-        .map((line) => (line.startsWith("•") ? line : `• ${line.trim()}`)) // Add bullet if missing
+        .map((line) => (line.startsWith("•") ? line : `• ${line.trim()}`))
         .join("\n");
-    }
 
-    setFormData({
-      ...formData,
-      [name]: formattedValue,
-    });
+      setFormData({
+        ...formData,
+        [name]: formattedValue,
+      });
+    } else {
+      // For all other fields, just update normally
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent new line in textarea
+      e.preventDefault();
+      const { name } = e.target;
 
-      // Append a new bullet point
-      setFormData((prev) => ({
-        ...prev,
-        productSpecificRecommendations:
-          (prev.productSpecificRecommendations
-            ? prev.productSpecificRecommendations + "\n• "
-            : "• ") + e.target.value.slice(e.target.selectionStart),
-      }));
+      if (name === "productSpecificRecommendations") {
+        // Only add bullet points for product recommendations
+        setFormData((prev) => ({
+          ...prev,
+          productSpecificRecommendations:
+            (prev.productSpecificRecommendations
+              ? prev.productSpecificRecommendations + "\n• "
+              : "• ") + e.target.value.slice(e.target.selectionStart),
+        }));
+      } else if (name === "materialCareInstructions") {
+        // For material care, just add a new line
+        setFormData((prev) => ({
+          ...prev,
+          materialCareInstructions:
+            (prev.materialCareInstructions
+              ? prev.materialCareInstructions + "\n"
+              : "") + e.target.value.slice(e.target.selectionStart),
+        }));
+      }
     }
   };
   // Handle nested input change
