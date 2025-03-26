@@ -7036,19 +7036,3 @@ input:focus {
   font-size: 16px;
   color: #2d2d2d;
 }
-
-.variant-section {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.variant-section .MuiFormControlLabel-root {
-  margin-bottom: 10px;
-}
-
-.variant-section .MuiButton-root {
-  width: 100%;
-}

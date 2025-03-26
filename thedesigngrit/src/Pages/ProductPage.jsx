@@ -15,10 +15,14 @@ import LoadingScreen from "./loadingScreen";
 import { UserContext } from "../utils/userContext";
 import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
+import Toast from "../Components/toast";
+
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -132,7 +136,7 @@ function ProductPage() {
 
   const handleAddToCart = (product) => {
     addToCart({
-      id: product._id, // Use composite key as the unique identifier
+      id: product._id,
       name: product.name,
       unitPrice: product.price,
       quantity: 1,
@@ -142,6 +146,8 @@ function ProductPage() {
       size: selectedSize || "default",
       code: "N/A",
     });
+    setToastMessage("Item added successfully to cart!");
+    setShowToast(true);
   };
 
   //Review Function Post
@@ -184,6 +190,9 @@ function ProductPage() {
   return (
     <div className="product-page">
       <Header />
+      {showToast && (
+        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
+      )}
 
       <div className="product-container">
         <div className="grid-container">
