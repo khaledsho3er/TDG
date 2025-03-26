@@ -3,34 +3,32 @@ import { Box, Typography, Grid } from "@mui/material";
 import VendorCategoryCard from "./CategoryCard";
 
 const VendorCategoriesgrid = ({ vendor }) => {
-  const [categories, setCategories] = useState([]);
+  const [types, setTypes] = useState([]);
 
-  // Fetch data from the JSON file
   useEffect(() => {
-    fetch("/json/vendorcategories.json")
+    fetch(`https://tdg-db.onrender.com/api/types/${vendor._id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         return response.json();
       })
-      .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching categories:", error));
-  }, []);
+      .then((data) => setTypes(data))
+      .catch((error) => console.error("Error fetching types:", error));
+  }, [vendor._id]);
 
   return (
     <Box className="vendorcategories-grid-container">
       <Typography variant="h1" className="vendorcategories-title">
-        {vendor.brandName}'s Categories
+        {vendor.brandName}'s Types
       </Typography>
       <Grid container spacing={3} className="vendorcategories-grid">
-        {categories.map((category) => (
-          <Grid item xs={12} sm={6} md={2.4} key={category.id}>
+        {types.slice(0, 3).map((type) => (
+          <Grid item xs={12} sm={6} md={4} key={type._id}>
             <VendorCategoryCard
-              title={category.title}
-              description={category.description}
-              price={category.price}
-              image={category.image}
+              name={type.name}
+              description={type.description}
+              image={type.image}
             />
           </Grid>
         ))}

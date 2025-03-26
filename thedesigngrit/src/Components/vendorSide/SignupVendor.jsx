@@ -11,6 +11,7 @@ import {
   InputLabel,
   Select,
   Grid,
+  Checkbox,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -400,10 +401,13 @@ function Signupvendor() {
                 name="type"
                 value={brandData.type}
                 onChange={(e) => {
-                  setBrandData((prevState) => ({
-                    ...prevState,
-                    type: e.target.value, // Correct handling for multiple selection
-                  }));
+                  const selectedValues = e.target.value;
+                  if (selectedValues.length <= 3) {
+                    setBrandData((prevState) => ({
+                      ...prevState,
+                      type: selectedValues,
+                    }));
+                  }
                 }}
                 renderValue={(selected) =>
                   selected
@@ -413,13 +417,17 @@ function Signupvendor() {
               >
                 {types.map((type) => (
                   <MenuItem key={type._id} value={type._id}>
+                    <Checkbox checked={brandData.type.includes(type._id)} />
                     {type.name}
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>Select one or more types</FormHelperText>
+              <FormHelperText>
+                {brandData.type.length >= 3
+                  ? "You can select up to 3 types only."
+                  : "Select up to 3 types"}
+              </FormHelperText>
             </FormControl>
-
             {/* File Upload Section - Fixed UI Issue */}
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={6}>
