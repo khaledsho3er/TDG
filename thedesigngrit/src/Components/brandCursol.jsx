@@ -70,30 +70,40 @@ export default function BrandCursol({ brandId }) {
       {/* Carousel */}
       {Array.isArray(products) && products.length > 0 ? (
         <div className="carousel-wrapper">
-          {products.map((product, index) => {
-            const position =
-              (index - currentIndex + products.length) % products.length;
-            return (
-              <div
-                key={product._id}
-                className={`carousel-item ${position === 0 ? "active" : ""}`}
-                style={{
-                  transform: `translateX(${position * 100}%)`,
-                  zIndex: products.length - position,
-                }}
-              >
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                  alt={product.name || "Product"}
-                  className="carousel-product-image"
-                />
-                <h3 className="carousel-product-name">{product.name}</h3>
-                <p className="carousel-product-price">
-                  {product.price ? `${product.price} E£` : "Price Unavailable"}
-                </p>
-              </div>
-            );
-          })}
+          <div className="carousel-3d">
+            {products.map((product, index) => {
+              const position =
+                (index - currentIndex + products.length) % products.length;
+              const rotation = position * 120; // 360 degrees / 3 items = 120 degrees per item
+              const isCenter = position === 0;
+
+              return (
+                <div
+                  key={product._id}
+                  className="carousel-item"
+                  style={{
+                    transform: `rotateY(${rotation}deg) translateZ(200px)`,
+                    opacity: isCenter ? 1 : 0.3,
+                    filter: isCenter ? "blur(0)" : "blur(4px)",
+                    zIndex: isCenter ? 3 : 1,
+                    scale: isCenter ? "1" : "0.8",
+                  }}
+                >
+                  <img
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                    alt={product.name || "Product"}
+                    className="carousel-product-image"
+                  />
+                  <h3 className="carousel-product-name">{product.name}</h3>
+                  <p className="carousel-product-price">
+                    {product.price
+                      ? `${product.price} E£`
+                      : "Price Unavailable"}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
           {products.length > 1 && (
             <>
               <button className="carousel-button left" onClick={prevSlide}>
