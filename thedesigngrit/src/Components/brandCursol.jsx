@@ -3,6 +3,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
+import { Box } from "@mui/material";
 
 export default function BrandCursol({ brandId }) {
   const [products, setProducts] = useState([]);
@@ -105,14 +106,14 @@ export default function BrandCursol({ brandId }) {
             })}
           </div>
           {products.length > 1 && (
-            <>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
               <button className="carousel-button left" onClick={prevSlide}>
                 <HiOutlineChevronLeft />
               </button>
               <button className="carousel-button right" onClick={nextSlide}>
                 <HiOutlineChevronRight />
               </button>
-            </>
+            </Box>
           )}
         </div>
       ) : (
