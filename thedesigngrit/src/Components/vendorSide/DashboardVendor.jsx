@@ -111,13 +111,6 @@ const DashboardVendor = () => {
           throw new Error("Failed to fetch orders");
         }
         let data = await response.json();
-
-        // Remove orders where products don't exist
-        data = data.map((order) => ({
-          ...order,
-          cartItems: order.cartItems?.filter((item) => item !== null) || [],
-        }));
-
         setOrders(data);
         console.log("set orders:", setOrders);
         console.log("orders:", orders);
