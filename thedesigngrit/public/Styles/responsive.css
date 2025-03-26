@@ -239,6 +239,7 @@
     padding-left: 20px;
     padding-right: 20px;
     background-size: cover;
+    flex-direction: column;
   }
 
   .login-form {

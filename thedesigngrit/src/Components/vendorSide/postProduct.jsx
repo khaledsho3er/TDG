@@ -63,6 +63,7 @@ const AddProduct = () => {
     Customizationoptions: [], // Customization options in formData
     Additionaldetails: "",
     Additionalcosts: "",
+    cad: null, // Add CAD field
     // claimProcess: "",
   });
 
@@ -423,12 +424,24 @@ const AddProduct = () => {
     setDialogOpen(false);
   };
 
-  // Handle form submission
+  // Add CAD file handling functions
+  const handleCADUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        cad: file,
+      }));
+    }
+  };
+
+  // Update handleSubmit to include CAD file
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
     setPendingSubmission(true);
     const data = new FormData();
+
     // Append basic fields
     data.append("name", formData.name);
     data.append("price", formData.price);
@@ -484,6 +497,11 @@ const AddProduct = () => {
       data.append("images", file);
     });
 
+    // Append CAD file if exists
+    if (formData.cad) {
+      data.append("cad", formData.cad);
+    }
+
     // Log FormData for debugging
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
@@ -532,6 +550,7 @@ const AddProduct = () => {
           warrantyYears: "",
           warrantyCoverage: [],
         },
+        cad: null,
         images: [],
         mainImage: "",
       });
@@ -1192,6 +1211,49 @@ const AddProduct = () => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Add CAD Upload Section */}
+            <div className="cad-upload-section">
+              <label>CAD File Upload</label>
+              <div className="cad-drop-zone">
+                <input
+                  type="file"
+                  accept=".dwg,.dxf,.stp,.step,.igs,.iges"
+                  onChange={handleCADUpload}
+                  className="cad-file-input"
+                  style={{ display: "none" }}
+                  id="cadFileInput"
+                />
+                <label htmlFor="cadFileInput" className="cad-drop-zone-label">
+                  Drop your CAD file here, or browse
+                  <br />
+                  Supported formats: DWG, DXF, STP, STEP, IGS, IGES
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.getElementById("cadFileInput").click()
+                  }
+                  className="upload-btn"
+                >
+                  Upload CAD File
+                </button>
+              </div>
+              {formData.cad && (
+                <div className="cad-file-info">
+                  <span>Selected file: {formData.cad.name}</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, cad: null }))
+                    }
+                    className="remove-cad-btn"
+                  >
+                    ✖
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
