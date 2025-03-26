@@ -111,7 +111,7 @@ const DashboardVendor = () => {
           throw new Error("Failed to fetch orders");
         }
         let data = await response.json();
-    
+
         // Remove orders where products don't exist
         data = data.map((order) => ({
           ...order,
@@ -119,8 +119,8 @@ const DashboardVendor = () => {
         }));
 
         setOrders(data);
-        console.log("set orders:",setOrders);
-        
+        console.log("set orders:", setOrders);
+        console.log("orders:", orders);
       } catch (error) {
         console.error("Error fetching orders:", error);
         setError((prev) => ({ ...prev, orders: error.message }));
