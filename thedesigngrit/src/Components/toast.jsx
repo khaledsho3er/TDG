@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
+import "./toast.css";
 
 const Toast = ({ message, onClose, duration = 3000 }) => {
   useEffect(() => {
