@@ -16,7 +16,6 @@ import { UserContext } from "../utils/userContext";
 import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
-import "../Styles/toast.css";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
