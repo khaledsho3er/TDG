@@ -53,6 +53,7 @@ const AddProduct = () => {
     leadTime: "",
     stock: "",
     sku: "",
+    readyToShip: false, // Add readyToShip field with default value false
     warrantyInfo: {
       warrantyYears: "",
       warrantyCoverage: [],
@@ -466,7 +467,16 @@ const AddProduct = () => {
     }
   };
 
-  // Update handleSubmit to include CAD file
+  // Add handleCheckboxChange function
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  // Update handleSubmit to include readyToShip
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
@@ -489,6 +499,7 @@ const AddProduct = () => {
     data.append("leadTime", formData.leadTime || "");
     data.append("stock", formData.stock || "");
     data.append("sku", formData.sku || "");
+    data.append("readyToShip", formData.readyToShip); // Add readyToShip to FormData
     data.append(
       "materialCareInstructions",
       formData.materialCareInstructions || ""
@@ -585,6 +596,7 @@ const AddProduct = () => {
         cadFile: null, // Changed from 'cad' to 'cadFile'
         images: [],
         mainImage: "",
+        readyToShip: false,
       });
     } catch (error) {
       console.error("Error creating product:", error.response?.data || error);
@@ -1026,7 +1038,7 @@ const AddProduct = () => {
                   type="text"
                   name="brandId"
                   value={formData.brandId}
-                  readOnly // Make it read-only since it's fetched from vendor
+                  readOnly
                 />
               </div>
               <div className="form-group">
@@ -1040,7 +1052,20 @@ const AddProduct = () => {
                 />
               </div>
               <div className="form-group">
-                {/* Stock and SKU */}
+                <label
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <input
+                    type="checkbox"
+                    name="readyToShip"
+                    checked={formData.readyToShip}
+                    onChange={handleCheckboxChange}
+                    style={{ width: "auto" }}
+                  />
+                  Ready to Ship
+                </label>
+              </div>
+              <div className="form-group">
                 <label>Lead Time:</label>
                 <input
                   type="text"
@@ -1051,7 +1076,6 @@ const AddProduct = () => {
                   required
                 />
               </div>
-
               <div className="form-group">
                 <label>Stock:</label>
                 <input
