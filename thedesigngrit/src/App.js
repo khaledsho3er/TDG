@@ -5,6 +5,7 @@ import { UserProvider } from "./utils/userContext";
 import { VendorProvider } from "./utils/vendorContext";
 import ScrollToTop from "./Context/scrollToTop";
 import { Analytics } from "@vercel/analytics/react";
+import LoadingScreen from "./Pages/loadingScreen";
 
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
@@ -48,7 +49,7 @@ const VerifyPartners = lazy(() =>
 );
 
 const PublicRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<LoadingScreen />}>
     <Routes>
       <Route exact path="/" element={<Home />} />
       <Route exact path="/home" element={<Home />} />
@@ -83,7 +84,7 @@ const PublicRoutes = () => (
 );
 
 const VendorRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<LoadingScreen />}>
     <Routes>
       <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} />
       <Route path="/orderDetail/:id" element={<OrderDetails />} />
