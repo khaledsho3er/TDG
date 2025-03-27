@@ -589,12 +589,7 @@ function Header() {
             >
               All Brands
             </Typography>
-            <Typography
-              className="category"
-              onClick={() => navigate("/vendors")}
-            >
-              Ready To Ship
-            </Typography>
+
             {menuData.map((category) => (
               <Typography
                 key={category._id}
@@ -606,6 +601,12 @@ function Header() {
                 {category.name}
               </Typography>
             ))}
+            <Typography
+              className="category"
+              onClick={() => navigate("/vendors")}
+            >
+              Ready To Ship
+            </Typography>
           </Fragment>
         )}
       </Box>
