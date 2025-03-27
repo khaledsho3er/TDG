@@ -224,6 +224,21 @@ function ProductPage() {
             <h1 className="product-title">{product.name}</h1>
             <p className="product-brand">{product.brandName}</p>
             <br />
+            {product.readyToShip === true && (
+              <div
+                style={{
+                  display: "inline-block",
+                  padding: "4px 12px",
+                  border: "1px solid #2d2d2d",
+                  borderRadius: "4px",
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                  fontSize: "14px",
+                }}
+              >
+                Ready to Ship
+              </div>
+            )}
             <div
               style={{
                 display: "flex",
