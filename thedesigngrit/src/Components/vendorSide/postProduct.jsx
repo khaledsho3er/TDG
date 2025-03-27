@@ -923,11 +923,11 @@ const AddProduct = () => {
                       .trim()
                       .split(/\s+/)
                       .filter((word) => word.length > 0);
-                    if (words.length <= 50) {
+                    if (words.length <= 10) {
                       handleChange(e);
                     }
                   }}
-                  placeholder="Provide a detailed product description of 20-50 words. Include unique selling points, features, and benefits."
+                  placeholder="Provide a brief product description (max 10 words). Include key features and benefits."
                   maxLength="2000"
                 />
                 <div
@@ -940,7 +940,7 @@ const AddProduct = () => {
                       .split(/\s+/)
                       .filter((word) => word.length > 0).length
                   }
-                  /50 words
+                  /10 words
                 </div>
               </div>
             </Box>
