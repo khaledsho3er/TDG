@@ -159,7 +159,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={4}>
                   <img
-                    src={`https://tdg-db.onrender.com/uploads/${productId.mainImage}`}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${productId.mainImage}`}
                     alt="Product"
                     style={{
                       width: "100%",
@@ -186,7 +186,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                       Vendor: {productId.brandName}
                     </Typography>
                     <img
-                      src={`https://tdg-db.onrender.com/uploads/${productId.brandId.brandlogo}`}
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${productId.brandId.brandlogo}`}
                       alt="Vendor Logo"
                       style={{ width: "100px", height: "auto" }}
                     />
