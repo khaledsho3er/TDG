@@ -6321,7 +6321,7 @@ input:focus {
   font-weight: bold;
   background-color: transparent;
   color: #2d2d2d;
-  width: 70%;
+  width: 40%;
   height: 104px;
   border: 1px solid #2d2d2d;
   border-radius: 16px;
@@ -6331,6 +6331,7 @@ input:focus {
 
 .request-popup-button:hover {
   background-color: #2d2d2d;
+  color: #ffffff;
 }
 /* Floating button */
 .floating-button {

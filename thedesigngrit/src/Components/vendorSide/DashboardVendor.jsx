@@ -11,15 +11,18 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
+import LoadingScreen from "../../Pages/loadingScreen";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails"; // Import OrderDetails component
+
 const DashboardVendor = () => {
   const { vendor } = useVendor();
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [totalOrders, setTotalOrders] = useState(0);
   const [activeOrders, setActiveOrders] = useState(0);
@@ -31,11 +34,6 @@ const DashboardVendor = () => {
   const [deliveredSales, setDeliveredSales] = useState(0);
   const [returnedSales, setReturnedSales] = useState(0);
 
-  // const [percentageChange, setPercentageChange] = useState(0);
-  // const [activePercentageChange, setActivePercentageChange] = useState(0);
-  // const [completedPercentageChange, setCompletedPercentageChange] = useState(0);
-  // const [returnedPercentageChange, setReturnedPercentageChange] = useState(0);
-  //
   const [salesPercentageChange, setSalesPercentageChange] = useState(0);
   const [confirmedSalesPercentageChange, setConfirmedSalesPercentageChange] =
     useState(0);
@@ -49,29 +47,66 @@ const DashboardVendor = () => {
   const [yearlySales, setYearlySales] = useState([]);
   const [chartData, setChartData] = useState([]);
 
+  // Add date calculation
+  const getCurrentDateRange = () => {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setMonth(endDate.getMonth() - 6);
+
+    const formatDate = (date) => {
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return `${
+        months[date.getMonth()]
+      } ${date.getDate()}, ${date.getFullYear()}`;
+    };
+
+    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+  };
+
+  // Fetch best sellers
   useEffect(() => {
-    const fetchOrders = async () => {
-      if (!vendor?.brandId) return;
+    const fetchProducts = async () => {
+      if (!vendor?.brandId) {
+        setIsLoading(false);
+        return;
+      }
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/orders/vendor/best-sellers/${vendor.brandId}`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch orders");
+          throw new Error("Failed to fetch best sellers");
         }
         const data = await response.json();
-        setProducts(data);
+        setProducts(data || []);
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        console.error("Error fetching best sellers:", error);
+        setProducts([]);
       }
     };
-    fetchOrders();
+    fetchProducts();
   }, [vendor]);
 
-  // Fetch order data from JSON
+  // Fetch orders
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!vendor?.brandId) return;
+      if (!vendor?.brandId) {
+        setIsLoading(false);
+        return;
+      }
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
@@ -80,98 +115,103 @@ const DashboardVendor = () => {
           throw new Error("Failed to fetch orders");
         }
         const data = await response.json();
-        setOrders(data);
-
-        // Calculate total orders
-        const total = data.reduce((sum, order) => sum + order.total, 0);
-        setTotalOrders(total);
+        setOrders(data || []);
+        setTotalOrders(data?.length || 0);
       } catch (error) {
         console.error("Error fetching orders:", error);
+        setOrders([]);
+        setTotalOrders(0);
       }
     };
 
     fetchOrders();
   }, [vendor]);
 
+  // Fetch statistics
   useEffect(() => {
     const fetchData = async () => {
-      if (!vendor?.brandId) return; // Ensure brandId exists
-
+      if (!vendor?.brandId) {
+        setIsLoading(false);
+        return;
+      }
+      setIsLoading(true);
       try {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/orders/statistics/${vendor.brandId}`
         );
         const data = await response.json();
-        console.log("Fetched Orders:", data);
 
         if (data.error) {
           console.warn("No orders found for this brand.");
-          return;
+          // Set default values when no orders exist
+          setTotalOrders(0);
+          setActiveOrders(0);
+          setCompletedOrders(0);
+          setReturnedOrders(0);
+          setTotalSales(0);
+          setConfirmedSales(0);
+          setDeliveredSales(0);
+          setReturnedSales(0);
+          setSalesPercentageChange(0);
+          setConfirmedSalesPercentageChange(0);
+          setDeliveredSalesPercentageChange(0);
+          setReturnedSalesPercentageChange(0);
+        } else {
+          // Set statistics from data
+          setTotalOrders(data.totalOrders || 0);
+          setActiveOrders(data.totalConfirmed || 0);
+          setCompletedOrders(data.totalDelivered || 0);
+          setReturnedOrders(data.totalReturned || 0);
+          setTotalSales(data.totalSales || 0);
+          setConfirmedSales(data.confirmedSales || 0);
+          setDeliveredSales(data.deliveredSales || 0);
+          setReturnedSales(data.returnedSales || 0);
+
+          // Calculate percentages safely
+          setSalesPercentageChange(
+            data.totalSales > 0
+              ? ((data.deliveredSales / data.totalSales) * 100).toFixed(2)
+              : 0
+          );
+          setConfirmedSalesPercentageChange(
+            data.totalSales > 0
+              ? ((data.confirmedSales / data.totalSales) * 100).toFixed(2)
+              : 0
+          );
+          setDeliveredSalesPercentageChange(
+            data.totalSales > 0
+              ? ((data.deliveredSales / data.totalSales) * 100).toFixed(2)
+              : 0
+          );
+          setReturnedSalesPercentageChange(
+            data.totalSales > 0
+              ? ((data.returnedSales / data.totalSales) * 100).toFixed(2)
+              : 0
+          );
         }
-
-        // Set order statistics
-        setTotalOrders(data.totalOrders);
-        setActiveOrders(data.totalConfirmed);
-        setCompletedOrders(data.totalDelivered);
-        setReturnedOrders(data.totalReturned);
-
-        // Set sales statistics
-        setTotalSales(data.totalSales);
-        setConfirmedSales(data.confirmedSales);
-        setDeliveredSales(data.deliveredSales);
-        setReturnedSales(data.returnedSales);
-
-        // // Percentage calculations
-        // setPercentageChange(
-        //   data.totalOrders > 0
-        //     ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
-        //     : 0
-        // );
-
-        // setActivePercentageChange(
-        //   data.totalConfirmed > 0
-        //     ? ((data.totalConfirmed / data.totalOrders) * 100).toFixed(2)
-        //     : 0
-        // );
-        // setCompletedPercentageChange(
-        //   data.totalDelivered > 0
-        //     ? ((data.totalDelivered / data.totalOrders) * 100).toFixed(2)
-        //     : 0
-        // );
-        // setReturnedPercentageChange(
-        //   data.totalReturned > 0
-        //     ? ((data.totalReturned / data.totalOrders) * 100).toFixed(2)
-        //     : 0
-        // );
-
-        // Sales percentage calculations
-        setSalesPercentageChange(
-          data.totalSales > 0
-            ? ((data.deliveredSales / data.totalSales) * 100).toFixed(2)
-            : 0
-        );
-        setConfirmedSalesPercentageChange(
-          data.confirmedSales > 0
-            ? ((data.confirmedSales / data.totalSales) * 100).toFixed(2)
-            : 0
-        );
-        setDeliveredSalesPercentageChange(
-          data.deliveredSales > 0
-            ? ((data.deliveredSales / data.totalSales) * 100).toFixed(2)
-            : 0
-        );
-        setReturnedSalesPercentageChange(
-          data.returnedSales > 0
-            ? ((data.returnedSales / data.totalSales) * 100).toFixed(2)
-            : 0
-        );
       } catch (error) {
-        console.error("Error fetching brand order statistics:", error);
+        console.error("Error fetching statistics:", error);
+        setError("Failed to load statistics");
+        // Set default values on error
+        setTotalOrders(0);
+        setActiveOrders(0);
+        setCompletedOrders(0);
+        setReturnedOrders(0);
+        setTotalSales(0);
+        setConfirmedSales(0);
+        setDeliveredSales(0);
+        setReturnedSales(0);
+        setSalesPercentageChange(0);
+        setConfirmedSalesPercentageChange(0);
+        setDeliveredSalesPercentageChange(0);
+        setReturnedSalesPercentageChange(0);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [vendor]); // Re-run when `vendor` changes
+  }, [vendor]);
 
   useEffect(() => {
     const fetchSalesData = async () => {
@@ -182,13 +222,16 @@ const DashboardVendor = () => {
           `https://tdg-db.onrender.com/api/orders/sales-graph/${vendor.brandId}`
         );
         const data = await response.json();
-        console.log("Sales Graph Data:", data);
 
-        setWeeklySales(data.weeklySales);
-        setMonthlySales(data.monthlySales);
-        setYearlySales(data.yearlySales);
+        // Set default empty arrays if no data
+        setWeeklySales(data.weeklySales || []);
+        setMonthlySales(data.monthlySales || []);
+        setYearlySales(data.yearlySales || []);
       } catch (error) {
         console.error("Error fetching sales graph data:", error);
+        setWeeklySales([]);
+        setMonthlySales([]);
+        setYearlySales([]);
       }
     };
 
@@ -199,22 +242,28 @@ const DashboardVendor = () => {
     let formattedData = [];
     switch (activeTab) {
       case "weekly":
-        formattedData = weeklySales.map((item) => ({
-          ...item,
-          week: `Week ${item.week}`, // Convert to string
-        }));
+        formattedData =
+          weeklySales.map((item) => ({
+            ...item,
+            week: `Week ${item.week}`,
+            sales: item.sales || 0,
+          })) || [];
         break;
       case "monthly":
-        formattedData = monthlySales.map((item) => ({
-          ...item,
-          month: `Month ${item.month}`, // Convert to string
-        }));
+        formattedData =
+          monthlySales.map((item) => ({
+            ...item,
+            month: `Month ${item.month}`,
+            sales: item.sales || 0,
+          })) || [];
         break;
       case "yearly":
-        formattedData = yearlySales.map((item) => ({
-          ...item,
-          year: `${item.year}`, // Convert to string
-        }));
+        formattedData =
+          yearlySales.map((item) => ({
+            ...item,
+            year: `${item.year}`,
+            sales: item.sales || 0,
+          })) || [];
         break;
       default:
         formattedData = [];
@@ -231,6 +280,21 @@ const DashboardVendor = () => {
     );
   }
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (error) {
+    return (
+      <div
+        className="dashboard-vendor"
+        style={{ textAlign: "center", padding: "2rem", color: "red" }}
+      >
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -240,7 +304,7 @@ const DashboardVendor = () => {
         </div>
         <div className="dashboard-date-vendor">
           <SlCalender />
-          <span>June 12, 2024 - Oct 19, 2024</span>
+          <span>{getCurrentDateRange()}</span>
         </div>
       </header>
 
@@ -335,40 +399,66 @@ const DashboardVendor = () => {
             </button>
           </div>
           <div className="chart-content-vendor">
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={chartData}>
-                <XAxis
-                  dataKey={
-                    activeTab === "weekly"
-                      ? "week"
-                      : activeTab === "monthly"
-                      ? "month"
-                      : "year"
-                  }
-                />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="sales" stroke="#8884d8" />
-              </LineChart>
-            </ResponsiveContainer>
+            {chartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={chartData}>
+                  <XAxis
+                    dataKey={
+                      activeTab === "weekly"
+                        ? "week"
+                        : activeTab === "monthly"
+                        ? "month"
+                        : "year"
+                    }
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div
+                style={{
+                  height: "300px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: "8px",
+                }}
+              >
+                No sales data available
+              </div>
+            )}
           </div>
         </div>
 
         <div className="best-sellers-vendor">
           <h3>Best Sellers</h3>
           <hr />
-          <ul>
-            {products.map((product, index) => (
-              <li key={index}>
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
-                  alt={product.name}
-                />
-                {product.name} - LE {product.price} ({product.totalSold} sales)
-              </li>
-            ))}
-          </ul>
+          {products.length > 0 ? (
+            <ul>
+              {products.map((product, index) => (
+                <li key={index}>
+                  <img
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
+                    alt={product.name}
+                    onError={(e) => {
+                      e.target.src = "placeholder-image-url"; // Add a placeholder image URL
+                      e.target.onerror = null;
+                    }}
+                  />
+                  {product.name} - LE {product.price} ({product.totalSold}{" "}
+                  sales)
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div style={{ textAlign: "center", padding: "1rem" }}>
+              No best sellers data available
+            </div>
+          )}
         </div>
       </section>
 
@@ -386,63 +476,77 @@ const DashboardVendor = () => {
             <h3>Recent Orders</h3>
             <BsThreeDotsVertical />
           </Box>
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Customer Name</th>
-                <th>Status</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr
-                  key={order._id}
-                  onClick={() => setSelectedOrder(order)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <td>{order.cartItems[0]?.name || "N/A"}</td>
-                  <td>{order._id}</td>
-                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                  <td>
-                    {order.customerId.firstName} {""}
-                    {order.customerId.lastName}
-                  </td>
-                  <td>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        marginTop: "4px",
-                        padding: "4px 12px",
-                        borderRadius: "5px",
-                        backgroundColor:
-                          order.orderStatus === "Pending"
-                            ? "#f8d7da"
-                            : order.orderStatus === "Delivered"
-                            ? "#d4edda"
-                            : "#FFE5B4",
-                        color:
-                          order.orderStatus === "Pending"
-                            ? "#721c24"
-                            : order.orderStatus === "Delivered"
-                            ? "#155724"
-                            : "#FF7518",
-                        fontWeight: "500",
-                        textAlign: "center",
-                        minWidth: "80px",
-                      }}
-                    >
-                      {order.orderStatus}
-                    </span>
-                  </td>
-                  <td>LE {order.total}</td>
+          {orders.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer Name</th>
+                  <th>Status</th>
+                  <th>Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr
+                    key={order._id}
+                    onClick={() => setSelectedOrder(order)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td>{order.cartItems[0]?.name || "N/A"}</td>
+                    <td>{order._id}</td>
+                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td>
+                      {order.customerId.firstName} {""}
+                      {order.customerId.lastName}
+                    </td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          marginTop: "4px",
+                          padding: "4px 12px",
+                          borderRadius: "5px",
+                          backgroundColor:
+                            order.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : order.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            order.orderStatus === "Pending"
+                              ? "#721c24"
+                              : order.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                          fontWeight: "500",
+                          textAlign: "center",
+                          minWidth: "80px",
+                        }}
+                      >
+                        {order.orderStatus}
+                      </span>
+                    </td>
+                    <td>LE {order.total}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "2rem",
+                backgroundColor: "#f5f5f5",
+                borderRadius: "8px",
+                margin: "1rem 0",
+              }}
+            >
+              No orders available
+            </div>
+          )}
         </div>
       </section>
     </div>
