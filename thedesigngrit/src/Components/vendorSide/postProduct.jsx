@@ -918,11 +918,30 @@ const AddProduct = () => {
                 <textarea
                   name="description"
                   value={formData.description}
-                  onChange={handleChange}
-                  placeholder="Provide a detailed product description of 20-50 words. Include unique selling
- points, features, and benefits."
+                  onChange={(e) => {
+                    const words = e.target.value
+                      .trim()
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0);
+                    if (words.length <= 50) {
+                      handleChange(e);
+                    }
+                  }}
+                  placeholder="Provide a detailed product description of 20-50 words. Include unique selling points, features, and benefits."
                   maxLength="2000"
                 />
+                <div
+                  style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}
+                >
+                  Word count:{" "}
+                  {
+                    formData.description
+                      .trim()
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0).length
+                  }
+                  /50 words
+                </div>
               </div>
             </Box>
 
