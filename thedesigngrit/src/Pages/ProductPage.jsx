@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Button } from "@mui/material";
-import { FaFile, FaStar, FaDownload } from "react-icons/fa";
+import { FaStar, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
@@ -234,6 +234,7 @@ function ProductPage() {
                   marginTop: "8px",
                   marginBottom: "8px",
                   fontSize: "14px",
+                  fontFamily: "Montserrat",
                 }}
               >
                 Ready to Ship

@@ -604,6 +604,31 @@ const AddProduct = () => {
     }
     setPendingSubmission(false);
   };
+
+  // Add this new function near your other handlers
+  const handleWarrantyCoverageChange = (coverage) => {
+    setFormData((prevState) => {
+      const currentCoverage = prevState.warrantyInfo.warrantyCoverage;
+      let newCoverage;
+
+      if (currentCoverage.includes(coverage)) {
+        // Remove the coverage if it's already selected
+        newCoverage = currentCoverage.filter((item) => item !== coverage);
+      } else {
+        // Add the coverage if it's not selected
+        newCoverage = [...currentCoverage, coverage];
+      }
+
+      return {
+        ...prevState,
+        warrantyInfo: {
+          ...prevState.warrantyInfo,
+          warrantyCoverage: newCoverage,
+        },
+      };
+    });
+  };
+
   return (
     <>
       <header className="dashboard-header-vendor">
@@ -1113,16 +1138,42 @@ const AddProduct = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Warranty Coverage (comma separated):</label>
-                <input
-                  type="text"
-                  name="warrantyCoverage"
-                  value={formData.warrantyInfo.warrantyCoverage.join(",")}
-                  onChange={(e) =>
-                    handleArrayChange(e, "warrantyCoverage", "warrantyInfo")
-                  }
-                  placeholder="Enter the warranty coverage Ex: parts, labor, shipping"
-                />
+                <label>Warranty Coverage:</label>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {[
+                    "Manufacturer Defects",
+                    "Wear and Tear",
+                    "Damage During Shipping",
+                  ].map((coverage) => (
+                    <label
+                      key={coverage}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.warrantyInfo.warrantyCoverage.includes(
+                          coverage
+                        )}
+                        onChange={() => handleWarrantyCoverageChange(coverage)}
+                        style={{ cursor: "pointer" }}
+                      />
+                      {coverage}
+                    </label>
+                  ))}
+                </div>
               </div>
             </Box>
             <Box
