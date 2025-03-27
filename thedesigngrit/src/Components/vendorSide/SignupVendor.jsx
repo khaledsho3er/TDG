@@ -19,6 +19,24 @@ function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
   const navigate = useNavigate();
+  const [touched, setTouched] = useState({
+    // Vendor data fields
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    phoneNumber: false,
+    // Brand data fields
+    brandName: false,
+    commercialRegisterNo: false,
+    taxNumber: false,
+    companyAddress: false,
+    brandPhoneNumber: false,
+    brandEmail: false,
+    // Phase 3 fields
+    shippingPolicy: false,
+    bankAccountNumber: false,
+  });
   const [vendorData, setVendorData] = useState({
     firstName: "",
     lastName: "",
@@ -213,6 +231,13 @@ function Signupvendor() {
     }
   };
 
+  const handleBlur = (fieldName) => {
+    setTouched((prev) => ({
+      ...prev,
+      [fieldName]: true,
+    }));
+  };
+
   const handleInputChange = (event, phase) => {
     const { name, value } = event.target;
 
@@ -271,10 +296,11 @@ function Signupvendor() {
               name="firstName"
               value={vendorData.firstName}
               onChange={(e) => handleInputChange(e, 1)}
+              onBlur={() => handleBlur("firstName")}
               fullWidth
               margin="normal"
               required
-              error={!vendorData.firstName}
+              error={touched.firstName && !vendorData.firstName}
             />
             <TextField
               label="Vendor Last Name"
@@ -282,10 +308,11 @@ function Signupvendor() {
               name="lastName"
               value={vendorData.lastName}
               onChange={(e) => handleInputChange(e, 1)}
+              onBlur={() => handleBlur("lastName")}
               fullWidth
               margin="normal"
               required
-              error={!vendorData.lastName}
+              error={touched.lastName && !vendorData.lastName}
             />
             <TextField
               label="Vendor Email"
@@ -294,10 +321,11 @@ function Signupvendor() {
               type="email"
               value={vendorData.email}
               onChange={(e) => handleInputChange(e, 1)}
+              onBlur={() => handleBlur("email")}
               fullWidth
               margin="normal"
               required
-              error={!vendorData.email}
+              error={touched.email && !vendorData.email}
             />
             <TextField
               label="Vendor Password"
@@ -305,11 +333,12 @@ function Signupvendor() {
               name="password"
               value={vendorData.password}
               onChange={(e) => handleInputChange(e, 1)}
+              onBlur={() => handleBlur("password")}
               fullWidth
               margin="normal"
               type="password"
               required
-              error={!vendorData.password}
+              error={touched.password && !vendorData.password}
             />
             <TextField
               label="Vendor Phone Number"
@@ -317,10 +346,11 @@ function Signupvendor() {
               name="phoneNumber"
               value={vendorData.phoneNumber}
               onChange={(e) => handleInputChange(e, 1)}
+              onBlur={() => handleBlur("phoneNumber")}
               fullWidth
               margin="normal"
               required
-              error={!vendorData.phoneNumber}
+              error={touched.phoneNumber && !vendorData.phoneNumber}
             />
           </>
         );
@@ -340,10 +370,11 @@ function Signupvendor() {
               name="brandName"
               value={brandData.brandName || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("brandName")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.brandName}
+              error={touched.brandName && !brandData.brandName}
             />
             <TextField
               label="Commercial Register No."
@@ -351,10 +382,13 @@ function Signupvendor() {
               name="commercialRegisterNo"
               value={brandData.commercialRegisterNo || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("commercialRegisterNo")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.commercialRegisterNo}
+              error={
+                touched.commercialRegisterNo && !brandData.commercialRegisterNo
+              }
             />
             <TextField
               label="Tax Number"
@@ -362,10 +396,11 @@ function Signupvendor() {
               name="taxNumber"
               value={brandData.taxNumber || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("taxNumber")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.taxNumber}
+              error={touched.taxNumber && !brandData.taxNumber}
             />
             <TextField
               label="Company Address"
@@ -373,10 +408,11 @@ function Signupvendor() {
               name="companyAddress"
               value={brandData.companyAddress || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("companyAddress")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.companyAddress}
+              error={touched.companyAddress && !brandData.companyAddress}
             />
             <TextField
               label="Phone Number"
@@ -384,10 +420,11 @@ function Signupvendor() {
               name="phoneNumber"
               value={brandData.phoneNumber || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("brandPhoneNumber")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.phoneNumber}
+              error={touched.brandPhoneNumber && !brandData.phoneNumber}
             />
             <TextField
               label="Email"
@@ -395,10 +432,11 @@ function Signupvendor() {
               name="email"
               value={brandData.email || ""}
               onChange={(e) => handleInputChange(e, 2)}
+              onBlur={() => handleBlur("brandEmail")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.email}
+              error={touched.brandEmail && !brandData.email}
             />
             {/* 🚀 Added Types Selection */}
             <FormControl fullWidth margin="normal">
@@ -498,10 +536,11 @@ function Signupvendor() {
               name="shippingPolicy"
               value={brandData.shippingPolicy || ""}
               onChange={(e) => handleInputChange(e, 3)}
+              onBlur={() => handleBlur("shippingPolicy")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.shippingPolicy}
+              error={touched.shippingPolicy && !brandData.shippingPolicy}
             />
             <TextField
               label="Bank Account Number"
@@ -509,10 +548,11 @@ function Signupvendor() {
               name="bankAccountNumber"
               value={brandData.bankAccountNumber || ""}
               onChange={(e) => handleInputChange(e, 3)}
+              onBlur={() => handleBlur("bankAccountNumber")}
               fullWidth
               margin="normal"
               required
-              error={!brandData.bankAccountNumber}
+              error={touched.bankAccountNumber && !brandData.bankAccountNumber}
             />
             <TextField
               label="Website URL"
@@ -599,7 +639,7 @@ function Signupvendor() {
         sx={{
           width: "80%",
           maxWidth: "600px",
-          backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent form
+          backgroundColor: "rgba(108, 124, 89, 0.8)", // Semi-transparent form
           padding: 3,
           borderRadius: 2,
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.13)",
