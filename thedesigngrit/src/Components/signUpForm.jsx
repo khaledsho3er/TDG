@@ -38,8 +38,8 @@ const SignUpForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [setPassword] = useState("");
-
   const [strength, setStrength] = useState(0);
+  const [touchedFields, setTouchedFields] = useState({});
 
   const {
     register,
@@ -47,7 +47,19 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onTouched", // Only validate after field is touched
   });
+
+  const handleFieldBlur = (fieldName) => {
+    setTouchedFields((prev) => ({
+      ...prev,
+      [fieldName]: true,
+    }));
+  };
+
+  const shouldShowError = (fieldName) => {
+    return touchedFields[fieldName] && errors[fieldName];
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -88,7 +100,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "rgba(108, 124, 89, 0.8)" }}>
       <h1 className="form-title-signup">Register</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
         <input
@@ -96,8 +108,9 @@ const SignUpForm = () => {
           placeholder="E-mail"
           className="input-field"
           {...register("email")}
+          onBlur={() => handleFieldBlur("email")}
         />
-        {errors.email && (
+        {shouldShowError("email") && (
           <p className="error-message">{errors.email.message}</p>
         )}
 
@@ -106,8 +119,9 @@ const SignUpForm = () => {
           placeholder="First Name"
           className="input-field"
           {...register("firstName")}
+          onBlur={() => handleFieldBlur("firstName")}
         />
-        {errors.firstName && (
+        {shouldShowError("firstName") && (
           <p className="error-message">{errors.firstName.message}</p>
         )}
 
@@ -116,8 +130,9 @@ const SignUpForm = () => {
           placeholder="Last Name"
           className="input-field"
           {...register("lastName")}
+          onBlur={() => handleFieldBlur("lastName")}
         />
-        {errors.lastName && (
+        {shouldShowError("lastName") && (
           <p className="error-message">{errors.lastName.message}</p>
         )}
 
@@ -128,6 +143,7 @@ const SignUpForm = () => {
             placeholder="Password"
             className="input-field"
             {...register("password")}
+            onBlur={() => handleFieldBlur("password")}
             onChange={(e) => {
               setPassword(e.target.value);
               calculateStrength(e.target.value);
@@ -159,7 +175,7 @@ const SignUpForm = () => {
             ></div>
           ))}
         </div>
-        {errors.password && (
+        {shouldShowError("password") && (
           <p className="error-message">{errors.password.message}</p>
         )}
 
@@ -170,6 +186,7 @@ const SignUpForm = () => {
             placeholder="Confirm Password"
             className="input-field"
             {...register("confirmPassword")}
+            onBlur={() => handleFieldBlur("confirmPassword")}
           />
           <span
             onClick={() => setShowConfirmPassword((prev) => !prev)}
@@ -184,13 +201,14 @@ const SignUpForm = () => {
             {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </span>
         </div>
-        {errors.confirmPassword && (
+        {shouldShowError("confirmPassword") && (
           <p className="error-message">{errors.confirmPassword.message}</p>
         )}
 
         <div className="register-policy-container">
           <Checkbox
             {...register("terms")}
+            onBlur={() => handleFieldBlur("terms")}
             sx={{ color: "#efebe8", "&.Mui-checked": { color: "#efebe8" } }}
           />
           <p className="register-policy">
@@ -198,7 +216,7 @@ const SignUpForm = () => {
             <a href="/policy">Privacy Policy</a>.
           </p>
         </div>
-        {errors.terms && (
+        {shouldShowError("terms") && (
           <p className="error-message">{errors.terms.message}</p>
         )}
 
