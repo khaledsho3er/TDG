@@ -6279,7 +6279,7 @@ input:focus {
   color: #2d2d2d;
 }
 .request-popup-paper {
-  width: 80%;
+  width: 65%;
   height: 80%;
   border-radius: 20px;
   padding: 20px;
@@ -6298,6 +6298,7 @@ input:focus {
 }
 
 .request-popup-title h2 {
+  margin: 23px;
   text-align: left;
   font-size: 30px;
   font-weight: bold;
@@ -6307,20 +6308,22 @@ input:focus {
 
 .request-popup-content {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 16px;
+  gap: 0;
+
+  margin-top: 0;
 }
 
 .request-popup-button {
   font-size: 24px;
   font-weight: bold;
-  background-color: #6b7b58;
-  color: #fbf7f5;
-  width: 30%;
-  height: 280px;
+  background-color: transparent;
+  color: #2d2d2d;
+  width: 70%;
+  height: 104px;
+  border: 1px solid #2d2d2d;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
