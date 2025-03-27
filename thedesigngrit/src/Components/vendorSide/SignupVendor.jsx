@@ -522,12 +522,15 @@ function Signupvendor() {
 
       case 3:
         return (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
+          <Box
+            sx={{
+              overflow: "auto",
+              maxHeight: "calc(100vh - 300px)", // Reduced height to account for header and buttons
+              padding: "20px",
               width: "100%",
+              "& .MuiTextField-root": {
+                marginBottom: 2, // Add consistent spacing between fields
+              },
             }}
           >
             <TextField
@@ -599,7 +602,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
             />
-          </div>
+          </Box>
         );
 
       default:
