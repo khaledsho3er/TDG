@@ -368,6 +368,7 @@ function Header() {
                     >
                       All Brands
                     </Typography>
+
                     {menuData.length > 0 ? (
                       menuData.map((category) => (
                         <Typography
@@ -384,6 +385,12 @@ function Header() {
                     ) : (
                       <Typography>No Categories Available</Typography>
                     )}
+                    <Typography
+                      className="category"
+                      onClick={() => navigate("/vendors")}
+                    >
+                      Ready To Ship
+                    </Typography>
                   </Box>
 
                   <Typography
@@ -581,6 +588,12 @@ function Header() {
               onClick={() => navigate("/vendors")}
             >
               All Brands
+            </Typography>
+            <Typography
+              className="category"
+              onClick={() => navigate("/vendors")}
+            >
+              Ready To Ship
             </Typography>
             {menuData.map((category) => (
               <Typography
