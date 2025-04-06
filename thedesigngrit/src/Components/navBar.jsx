@@ -387,7 +387,7 @@ function Header() {
                     )}
                     <Typography
                       className="category"
-                      onClick={() => navigate("/vendors")}
+                      onClick={() => navigate("/products/readytoship")}
                     >
                       Ready To Ship
                     </Typography>
@@ -603,7 +603,7 @@ function Header() {
             ))}
             <Typography
               className="category"
-              onClick={() => navigate("/vendors")}
+              onClick={() => navigate("/products/readytoship")}
             >
               Ready To Ship
             </Typography>
