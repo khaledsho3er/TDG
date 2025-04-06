@@ -6,7 +6,7 @@ import { useVendor } from "../../utils/vendorContext"; // Vendor context for bra
 import EditPromotionModal from "./EditPromotionModal"; // adjust path as needed
 import CreatePromotionDialog from "./CreatePromotionDialog"; // adjust path
 
-const PromotionsPage = ({ setActivePage }) => {
+const PromotionsPage = () => {
   const { vendor } = useVendor(); // Access vendor context for brandId
   const [products, setProducts] = useState([]);
   const [showFalseStatus, setShowFalseStatus] = useState(false); // Show products without promotion
@@ -267,24 +267,25 @@ const PromotionsPage = ({ setActivePage }) => {
                           </p>{" "}
                           <p>{product.salePrice}</p>
                         </div>
-                        <div className="product-stats">
-                          {/* Display metrics */}
-                          <div className="product-metrics">
-                            <h5>Promotion Metrics</h5>
-                            <ul>
-                              <li>
-                                Sales During Promotion:{" "}
-                                {metrics.salesDuringPromotion || 0}
-                              </li>
-                              <li>
-                                Views During Promotion:{" "}
-                                {metrics.viewsDuringPromotion || 0}
-                              </li>
-                              <li>
-                                Turnover Increase: {metrics.turnoverIncrease}%
-                              </li>
-                            </ul>
-                          </div>
+                      </div>
+
+                      <div className="product-stats">
+                        {/* Display metrics */}
+                        <div className="product-metrics">
+                          <h5>Promotion Metrics</h5>
+                          <ul>
+                            <li>
+                              Sales During Promotion:{" "}
+                              {metrics.salesDuringPromotion || 0}
+                            </li>
+                            <li>
+                              Views During Promotion:{" "}
+                              {metrics.viewsDuringPromotion || 0}
+                            </li>
+                            <li>
+                              Turnover Increase: {metrics.turnoverIncrease}%
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
