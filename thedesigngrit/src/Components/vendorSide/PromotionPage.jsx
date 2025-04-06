@@ -1,157 +1,233 @@
 import React, { useState, useEffect } from "react";
+import { CiCirclePlus } from "react-icons/ci";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import axios from "axios";
-import { useVendor } from "../../utils/vendorContext"; // Import vendor context
+import DiscountModal from "./discountModal"; // Modal component for creating promotions
+import UpdatePromotionModal from "./updatePromotion"; // Modal component for updating promotions
+import { useVendor } from "../../utils/vendorContext"; // Vendor context for brandId
 
 const PromotionsPage = ({ setActivePage }) => {
-  const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
-  const [currentPromotions, setCurrentPromotions] = useState([]);
-  const [pastPromotions, setPastPromotions] = useState([]);
-  const [newPromotion, setNewPromotion] = useState({
-    salePrice: "",
-    startDate: "",
-    endDate: "",
-  });
+  const { vendor } = useVendor(); // Access vendor context for brandId
+  const [products, setProducts] = useState([]);
+  const [showFalseStatus, setShowFalseStatus] = useState(false); // Show products without promotion
+  const [showTrueStatus, setShowTrueStatus] = useState(true); // Show products with promotion
+  const [menuOpen, setMenuOpen] = useState({}); // Track which menu is open
+  const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Create promotion modal state
+  const [updatePromotionModalOpen, setUpdatePromotionModalOpen] =
+    useState(false); // Update promotion modal state
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for promotion update
+  const [currentPromotions, setCurrentPromotions] = useState([]); // Current promotions
+  const [pastPromotions, setPastPromotions] = useState([]); // Past promotions
 
-  // Fetch current and past promotions from backend
   useEffect(() => {
-    const { brandId } = vendor; // Destructure brandId from the vendor object
-
-    const fetchPromotions = async () => {
-      try {
-        const currentResponse = await axios.get(
-          `https://tdg-db.onrender.com/api/promotions/promotions/current/${brandId}`
-        );
-        const pastResponse = await axios.get(
-          `https://tdg-db.onrender.com/api/promotions/promotions/past/${brandId}`
-        );
-        setCurrentPromotions(currentResponse.data);
-        setPastPromotions(pastResponse.data);
-      } catch (error) {
-        console.error("Error fetching promotions", error);
-      }
-    };
-    fetchPromotions();
-  }, []);
-
-  // Handle new promotion form submission
-  const handleCreatePromotion = async (e) => {
-    e.preventDefault();
-    try {
-      const { salePrice, startDate, endDate } = newPromotion;
-      const response = await axios.post(
-        "https://tdg-db.onrender.com/api/promotions/promotions",
-        {
-          salePrice,
-          startDate,
-          endDate,
+    if (vendor) {
+      const { brandId } = vendor; // Get the brandId from vendor context
+      const fetchProducts = async () => {
+        try {
+          const response = await axios.get(
+            `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+          );
+          setProducts(response.data); // Set fetched products
+          // Separate current and past promotions
+          const current = response.data.filter(
+            (product) => product.isPromotionActive
+          );
+          const past = response.data.filter(
+            (product) => !product.isPromotionActive
+          );
+          setCurrentPromotions(current);
+          setPastPromotions(past);
+        } catch (error) {
+          console.error("Error fetching products:", error);
         }
-      );
-      setCurrentPromotions([response.data, ...currentPromotions]);
-    } catch (error) {
-      console.error("Error creating promotion", error);
+      };
+      fetchProducts(); // Fetch products based on the brandId
     }
+  }, [vendor]); // Re-fetch when vendor changes
+
+  // Handle menu toggle for product options
+  const toggleMenu = (productId) => {
+    setMenuOpen((prevState) => ({
+      ...prevState,
+      [productId]: !prevState[productId], // Toggle the specific product's menu
+    }));
   };
 
-  // Handle change in new promotion form inputs
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPromotion((prev) => ({ ...prev, [name]: value }));
+  // Open promotion creation modal for a selected product
+  const handleCreatePromotion = () => {
+    setPromotionModalOpen(true); // Open create promotion modal
   };
 
-  // End promotion function
-  const endPromotion = async (id) => {
-    try {
-      const response = await axios.post(
-        `https://tdg-db.onrender.com/api/promotions/promotions/end/${id}`
-      );
-      setCurrentPromotions(
-        currentPromotions.filter((promotion) => promotion._id !== id)
-      );
-    } catch (error) {
-      console.error("Error ending promotion", error);
-    }
+  // Open promotion update modal for a selected product
+  const handleUpdatePromotion = (product) => {
+    setSelectedProduct(product); // Set the selected product for update
+    setUpdatePromotionModalOpen(true); // Open update promotion modal
   };
 
   return (
-    <div>
-      <h1>Promotions Page</h1>
+    <div className="promotions-page">
+      <header className="dashboard-header-vendor">
+        <div className="dashboard-header-title">
+          <h2>Promotions</h2>
+          <p>Home &gt; Promotions</p>
+        </div>
+        <div className="dashboard-date-vendor">
+          <button
+            onClick={handleCreatePromotion}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              padding: "15px 15px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            <CiCirclePlus /> Create Promotion
+          </button>
+        </div>
+      </header>
 
-      {/* Current Promotions Section */}
-      <h2>Current Promotions</h2>
+      {/* Section for current promotions */}
       <div>
-        {currentPromotions.map((promotion) => (
-          <div key={promotion._id}>
-            <h3>{promotion.productName}</h3>
-            <p>
-              <span style={{ textDecoration: "line-through" }}>
-                {promotion.originalPrice}
-              </span>{" "}
-              {promotion.salePrice} ({promotion.discountPercentage}% off)
-            </p>
-            <p>
-              Promotion runs from {promotion.promotionStartDate} to{" "}
-              {promotion.promotionEndDate}
-            </p>
-            <button onClick={() => endPromotion(promotion._id)}>
-              End Promotion
-            </button>
+        <div
+          onClick={() => setShowTrueStatus((prev) => !prev)}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            padding: "10px",
+            backgroundColor: "transparent",
+            border: "1px solid #ddd",
+            borderRadius: "5px",
+            marginBottom: "30px",
+          }}
+        >
+          <span>Current Promotions</span>
+          {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
+        </div>
+        {showTrueStatus && (
+          <div className="current-promotions-section">
+            {currentPromotions.length === 0 ? (
+              <p>No products with active promotions.</p>
+            ) : (
+              <div className="product-grid">
+                {currentPromotions.map((product) => (
+                  <div className="product-card" key={product.id}>
+                    <div className="product-card-header">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="product-image"
+                      />
+                      <div className="product-info">
+                        <h3>{product.name}</h3>
+                        <p>{product.typeName}</p>
+                        <p>{product.price}</p>
+                      </div>
+                      <div className="menu-container">
+                        <BsThreeDotsVertical
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMenu(product.id);
+                          }}
+                          className="three-dots-icon"
+                        />
+                        {menuOpen[product.id] && (
+                          <div className="menu-dropdown">
+                            <button
+                              onClick={() => handleUpdatePromotion(product)}
+                            >
+                              Update Promotion
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="product-card-body">
+                      <h5>Summary</h5>
+                      <p className="product-summary">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
+        )}
       </div>
 
-      {/* Past Promotions Section */}
-      <h2>Past Promotions</h2>
+      {/* Section for past promotions */}
       <div>
-        {pastPromotions.map((promotion) => (
-          <div key={promotion._id}>
-            <h3>{promotion.productName}</h3>
-            <p>
-              {promotion.salePrice} (Was {promotion.originalPrice})
-            </p>
-            <p>Ended on: {promotion.promotionEndDate}</p>
-            {/* Metrics */}
-            <p>Sales: {promotion.sales}</p>
-            <p>Views: {promotion.views}</p>
-            <p>Turnover: {promotion.turnover}%</p>
+        <div
+          onClick={() => setShowFalseStatus((prev) => !prev)}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            padding: "10px",
+            backgroundColor: "transparent",
+            border: "1px solid #ddd",
+            borderRadius: "5px",
+            marginBottom: "30px",
+          }}
+        >
+          <span>Past Promotions</span>
+          {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
+        </div>
+        {showFalseStatus && (
+          <div className="past-promotions-section">
+            {pastPromotions.length === 0 ? (
+              <p>No past promotions.</p>
+            ) : (
+              <div className="product-grid">
+                {pastPromotions.map((product) => (
+                  <div className="product-card" key={product.id}>
+                    <div className="product-card-header">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="product-image"
+                      />
+                      <div className="product-info">
+                        <h3>{product.name}</h3>
+                        <p>{product.typeName}</p>
+                        <p>{product.price}</p>
+                      </div>
+                    </div>
+                    <div className="product-card-body">
+                      <h5>Summary</h5>
+                      <p className="product-summary">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
+        )}
       </div>
 
-      {/* Create New Promotion Form */}
-      <h2>Create New Promotion</h2>
-      <form onSubmit={handleCreatePromotion}>
-        <div>
-          <label>Sale Price</label>
-          <input
-            type="number"
-            name="salePrice"
-            value={newPromotion.salePrice}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Start Date</label>
-          <input
-            type="date"
-            name="startDate"
-            value={newPromotion.startDate}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <label>End Date</label>
-          <input
-            type="date"
-            name="endDate"
-            value={newPromotion.endDate}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <button type="submit">Create Promotion</button>
-      </form>
+      {/* Modal for creating promotion */}
+      {promotionModalOpen && (
+        <DiscountModal onClose={() => setPromotionModalOpen(false)} />
+      )}
+      {/* Modal for updating promotion */}
+      {updatePromotionModalOpen && (
+        <UpdatePromotionModal
+          product={selectedProduct}
+          onClose={() => setUpdatePromotionModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
