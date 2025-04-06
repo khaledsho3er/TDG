@@ -175,7 +175,7 @@ const PromotionsPage = ({ setActivePage }) => {
                     <div className="product-card-body">
                       <h5>Summary</h5>
                       <p className="product-summary">
-                        {product.description.substring(0, 100)}...
+                        {product.description.substring(0, 5)}...
                       </p>
                       <div className="product-stats">
                         <div className="product-sales">
@@ -190,7 +190,8 @@ const PromotionsPage = ({ setActivePage }) => {
                             <span className="sales-value">
                               {product.discountPercentage
                                 ? product.discountPercentage
-                                : "No yet Discount"}
+                                : "No yet Discount"}{" "}
+                              %
                             </span>
                           </div>
                         </div>
@@ -246,29 +247,44 @@ const PromotionsPage = ({ setActivePage }) => {
                   const metrics = calculatePromotionMetrics(product);
                   return (
                     <div className="all-product-card" key={product.id}>
-                      <div className="product-info-vendor">
-                        <h3>{product.name}</h3>
-                        <p>{product.typeName}</p>
-                        <p>{product.price}</p>
-                        <p>{product.salePrice}</p>
-                      </div>
-                      <div className="product-stats">
-                        {/* Display metrics */}
-                        <div className="product-metrics">
-                          <h5>Promotion Metrics</h5>
-                          <ul>
-                            <li>
-                              Sales During Promotion:{" "}
-                              {metrics.salesDuringPromotion || 0}
-                            </li>
-                            <li>
-                              Views During Promotion:{" "}
-                              {metrics.viewsDuringPromotion || 0}
-                            </li>
-                            <li>
-                              Turnover Increase: {metrics.turnoverIncrease}%
-                            </li>
-                          </ul>
+                      <div className="product-card-header">
+                        <img
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                          alt={product.name}
+                          className="all-product-image"
+                        />
+                        <div className="product-info-vendor">
+                          <h3>{product.name}</h3>
+                          <p>{product.typeName}</p>
+                          <p
+                            style={{
+                              textDecoration: product.salePrice
+                                ? "line-through"
+                                : "none",
+                            }}
+                          >
+                            {product.price}
+                          </p>{" "}
+                          <p>{product.salePrice}</p>
+                        </div>
+                        <div className="product-stats">
+                          {/* Display metrics */}
+                          <div className="product-metrics">
+                            <h5>Promotion Metrics</h5>
+                            <ul>
+                              <li>
+                                Sales During Promotion:{" "}
+                                {metrics.salesDuringPromotion || 0}
+                              </li>
+                              <li>
+                                Views During Promotion:{" "}
+                                {metrics.viewsDuringPromotion || 0}
+                              </li>
+                              <li>
+                                Turnover Increase: {metrics.turnoverIncrease}%
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
