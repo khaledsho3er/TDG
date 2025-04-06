@@ -74,7 +74,7 @@ const EditPromotionModal = ({ open, onClose, product, onSave, onEnd }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/products/promotion/${product._id}`,
+        ` https://tdg-db.onrender.com/api/products/promotion/${product._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -94,7 +94,7 @@ const EditPromotionModal = ({ open, onClose, product, onSave, onEnd }) => {
   const handleEndPromotion = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/products/promotion/end/${product._id}`,
+        `https://tdg-db.onrender.com/api/products/promotion/end/${product._id}`,
         {
           method: "PATCH",
         }

@@ -28,12 +28,24 @@ const PromotionsPage = ({ setActivePage }) => {
           );
           setProducts(response.data); // Set fetched products
           // Separate current and past promotions
-          const current = response.data.filter(
-            (product) => product.isPromotionActive
-          );
-          const past = response.data.filter(
-            (product) => !product.isPromotionActive
-          );
+          const now = new Date();
+          const current = response.data.filter((product) => {
+            return (
+              product.promotionStartDate &&
+              product.promotionEndDate &&
+              new Date(product.promotionStartDate) <= now &&
+              new Date(product.promotionEndDate) >= now
+            );
+          });
+
+          const past = response.data.filter((product) => {
+            return (
+              product.promotionStartDate &&
+              product.promotionEndDate &&
+              new Date(product.promotionEndDate) < now
+            );
+          });
+
           setCurrentPromotions(current);
           setPastPromotions(past);
         } catch (error) {
@@ -115,7 +127,15 @@ const PromotionsPage = ({ setActivePage }) => {
                       <div className="product-info-vendor">
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
-                        <p>{product.price}</p>
+                        <p
+                          style={{
+                            textDecoration: product.salePrice
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
+                          {product.price}
+                        </p>{" "}
                         <p>{product.salePrice}</p>
                       </div>
                     </div>
@@ -145,8 +165,13 @@ const PromotionsPage = ({ setActivePage }) => {
                         <div className="product-remaining">
                           <span>Date</span>
                           <span className="remaining-value">
-                            {product.promotionStartDate}-
-                            {product.promotionEndDate}
+                            {new Date(
+                              product.promotionStartDate
+                            ).toLocaleDateString()}{" "}
+                            -{" "}
+                            {new Date(
+                              product.promotionEndDate
+                            ).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
@@ -195,7 +220,15 @@ const PromotionsPage = ({ setActivePage }) => {
                       <div className="product-info-vendor">
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
-                        <p>{product.price}</p>
+                        <p
+                          style={{
+                            textDecoration: product.salePrice
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
+                          {product.price}
+                        </p>
                         <p>{product.salePrice}</p>
                       </div>
                     </div>
@@ -225,8 +258,13 @@ const PromotionsPage = ({ setActivePage }) => {
                         <div className="product-remaining">
                           <span>Date</span>
                           <span className="remaining-value">
-                            {product.promotionStartDate}-
-                            {product.promotionEndDate}
+                            {new Date(
+                              product.promotionStartDate
+                            ).toLocaleDateString()}{" "}
+                            -{" "}
+                            {new Date(
+                              product.promotionEndDate
+                            ).toLocaleDateString()}
                           </span>
                         </div>
                         <div
