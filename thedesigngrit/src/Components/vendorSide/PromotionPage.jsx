@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { CiCirclePlus } from "react-icons/ci";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import axios from "axios";
-import DiscountModal from "./discountModal"; // Modal component for creating promotions
-import UpdatePromotionModal from "./updatePromotion"; // Modal component for updating promotions
 import { useVendor } from "../../utils/vendorContext"; // Vendor context for brandId
+import EditPromotionModal from "./EditPromotionModal"; // adjust path as needed
+import CreatePromotionDialog from "./CreatePromotionDialog"; // adjust path
 
 const PromotionsPage = ({ setActivePage }) => {
   const { vendor } = useVendor(); // Access vendor context for brandId
   const [products, setProducts] = useState([]);
   const [showFalseStatus, setShowFalseStatus] = useState(false); // Show products without promotion
   const [showTrueStatus, setShowTrueStatus] = useState(true); // Show products with promotion
-  const [menuOpen, setMenuOpen] = useState({}); // Track which menu is open
-  const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Create promotion modal state
-  const [updatePromotionModalOpen, setUpdatePromotionModalOpen] =
-    useState(false); // Update promotion modal state
-  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for promotion update
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentPromotions, setCurrentPromotions] = useState([]); // Current promotions
   const [pastPromotions, setPastPromotions] = useState([]); // Past promotions
 
@@ -46,25 +44,6 @@ const PromotionsPage = ({ setActivePage }) => {
     }
   }, [vendor]); // Re-fetch when vendor changes
 
-  // Handle menu toggle for product options
-  const toggleMenu = (productId) => {
-    setMenuOpen((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId], // Toggle the specific product's menu
-    }));
-  };
-
-  // Open promotion creation modal for a selected product
-  const handleCreatePromotion = () => {
-    setPromotionModalOpen(true); // Open create promotion modal
-  };
-
-  // Open promotion update modal for a selected product
-  const handleUpdatePromotion = (product) => {
-    setSelectedProduct(product); // Set the selected product for update
-    setUpdatePromotionModalOpen(true); // Open update promotion modal
-  };
-
   return (
     <div className="promotions-page">
       <header className="dashboard-header-vendor">
@@ -74,7 +53,7 @@ const PromotionsPage = ({ setActivePage }) => {
         </div>
         <div className="dashboard-date-vendor">
           <button
-            onClick={handleCreatePromotion}
+            onClick={() => setShowCreateDialog(true)}
             style={{
               display: "flex",
               alignItems: "center",
@@ -119,7 +98,14 @@ const PromotionsPage = ({ setActivePage }) => {
             ) : (
               <div className="product-grid">
                 {currentPromotions.map((product) => (
-                  <div className="all-product-card" key={product.id}>
+                  <div
+                    className="all-product-card"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setEditModalOpen(true);
+                    }}
+                    key={product.id}
+                  >
                     <div className="product-card-header">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
@@ -132,22 +118,6 @@ const PromotionsPage = ({ setActivePage }) => {
                         <p>{product.price}</p>
                         <p>{product.salePrice}</p>
                       </div>
-                      {/* <div className="menu-container">
-                        <BsThreeDotsVertical
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent the click from triggering the document listener
-                            toggleMenu(product.id);
-                          }}
-                          className="three-dots-icon"
-                        />
-                        {menuOpen[product.id] && (
-                          <div className="menu-dropdown">
-                            <button onClick={() => handleInsights(product)}>
-                              Promotion
-                            </button>
-                          </div>
-                        )}
-                      </div> */}
                     </div>
                     <div className="product-card-body">
                       <h5>Summary</h5>
@@ -228,28 +198,6 @@ const PromotionsPage = ({ setActivePage }) => {
                         <p>{product.price}</p>
                         <p>{product.salePrice}</p>
                       </div>
-                      {/* <div className="menu-container">
-                        <BsThreeDotsVertical
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent the click from triggering the document listener
-                            toggleMenu(product.id);
-                          }}
-                          className="three-dots-icon"
-                        />
-                        {menuOpen[product.id] && (
-                          <div className="menu-dropdown">
-                            <button onClick={() => handleEdit(product)}>
-                              Edit
-                            </button>
-                            <button onClick={() => handleDelete(product)}>
-                              Delete
-                            </button>
-                            <button onClick={() => handleInsights(product)}>
-                              Promotion
-                            </button>
-                          </div>
-                        )}
-                      </div> */}
                     </div>
                     <div className="product-card-body">
                       <h5>Summary</h5>
@@ -281,6 +229,34 @@ const PromotionsPage = ({ setActivePage }) => {
                             {product.promotionEndDate}
                           </span>
                         </div>
+                        <div
+                          className="product-metrics"
+                          style={{ marginTop: "15px" }}
+                        >
+                          <h5 style={{ fontSize: "14px", marginBottom: "8px" }}>
+                            Promotion Metrics
+                          </h5>
+                          <ul
+                            style={{
+                              fontSize: "13px",
+                              paddingLeft: "15px",
+                              color: "#555",
+                            }}
+                          >
+                            <li>
+                              Sales During Promotion:{" "}
+                              {product.promotionSales || 0}
+                            </li>
+                            <li>
+                              Views During Promotion:{" "}
+                              {product.promotionViews || 0}
+                            </li>
+                            <li>
+                              Turnover Increase:{" "}
+                              {product.promotionTurnoverPercentage || 0}%
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -290,18 +266,37 @@ const PromotionsPage = ({ setActivePage }) => {
           </div>
         )}
       </div>
-
-      {/* Modal for creating promotion */}
-      {promotionModalOpen && (
-        <DiscountModal onClose={() => setPromotionModalOpen(false)} />
-      )}
-      {/* Modal for updating promotion */}
-      {updatePromotionModalOpen && (
-        <UpdatePromotionModal
+      {selectedProduct && (
+        <EditPromotionModal
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
           product={selectedProduct}
-          onClose={() => setUpdatePromotionModalOpen(false)}
+          onSave={(updatedProduct) => {
+            setCurrentPromotions((prev) =>
+              prev.map((p) =>
+                p._id === updatedProduct._id ? updatedProduct : p
+              )
+            );
+            setEditModalOpen(false);
+          }}
+          onEnd={(productId) => {
+            setCurrentPromotions((prev) =>
+              prev.filter((p) => p._id !== productId)
+            );
+            setEditModalOpen(false);
+          }}
         />
       )}
+      <CreatePromotionDialog
+        open={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+        brandId={vendor?.brandId}
+        onPromotionCreated={(updatedProduct) => {
+          // refresh logic if needed
+          setCurrentPromotions((prev) => [...prev, updatedProduct]);
+          setShowCreateDialog(false);
+        }}
+      />
     </div>
   );
 };

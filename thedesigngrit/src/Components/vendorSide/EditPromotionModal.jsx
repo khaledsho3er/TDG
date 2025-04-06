@@ -1,52 +1,46 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Modal,
   Box,
   TextField,
   Checkbox,
   FormControlLabel,
+  Button,
 } from "@mui/material";
-const DiscountModal = ({
-  open,
-  onClose,
-  onSave,
-  product,
-  isUpdate = false,
-}) => {
-  const [price, setPrice] = useState(product.price);
-  const [salePrice, setSalePrice] = useState(product.salePrice || "");
-  const [discountPercentage, setDiscountPercentage] = useState("");
-  const [useDateRange, setUseDateRange] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [errors, setErrors] = useState({}); // State for error messages
 
-  // When user enters a discount percentage, calculate sale price
+const EditPromotionModal = ({ open, onClose, product, onSave, onEnd }) => {
+  const [price] = useState(product.price);
+  const [salePrice, setSalePrice] = useState(product.salePrice || "");
+  const [discountPercentage, setDiscountPercentage] = useState(
+    product.discountPercentage || ""
+  );
+  const [useDateRange, setUseDateRange] = useState(
+    !!product.promotionStartDate
+  );
+  const [startDate, setStartDate] = useState(product.promotionStartDate || "");
+  const [endDate, setEndDate] = useState(product.promotionEndDate || "");
+  const [errors, setErrors] = useState({});
+
   const handleDiscountChange = (value) => {
     setDiscountPercentage(value);
-
     if (price && value) {
       const discountedPrice = price - (price * value) / 100;
-      setSalePrice(discountedPrice.toFixed(2)); // Round to 2 decimal places
+      setSalePrice(discountedPrice.toFixed(2));
     } else {
       setSalePrice("");
     }
   };
 
-  // When user enters a sale price, calculate discount percentage
   const handleSalePriceChange = (value) => {
     setSalePrice(value);
-
     if (price && value) {
       const discount = ((price - value) / price) * 100;
-      setDiscountPercentage(discount.toFixed(2)); // Round to 2 decimal places
+      setDiscountPercentage(discount.toFixed(2));
     } else {
       setDiscountPercentage("");
     }
   };
 
-  // Validate fields
   const validateFields = () => {
     let errors = {};
 
@@ -57,14 +51,10 @@ const DiscountModal = ({
     }
 
     if (useDateRange) {
-      if (!startDate) {
-        errors.startDate = "Start date is required.";
-      }
-      if (!endDate) {
-        errors.endDate = "End date is required.";
-      }
+      if (!startDate) errors.startDate = "Start date is required.";
+      if (!endDate) errors.endDate = "End date is required.";
       if (startDate && endDate && new Date(startDate) >= new Date(endDate)) {
-        errors.dateRange = "Start date must be before the end date.";
+        errors.dateRange = "Start date must be before end date.";
       }
     }
 
@@ -75,45 +65,48 @@ const DiscountModal = ({
   const handleSave = async () => {
     if (!validateFields()) return;
 
-    const promotionDetails = {
+    const updatedData = {
       salePrice,
       discountPercentage,
-      startDate,
-      endDate,
+      startDate: useDateRange ? startDate : null,
+      endDate: useDateRange ? endDate : null,
     };
 
     try {
-      const apiUrl = isUpdate
-        ? `https://tdg-db.onrender.com/api/promotions/update/${product._id}` // Update promotion
-        : `https://tdg-db.onrender.com/api/promotions/create/${product._id}`; // Create promotion
-
-      const response = await fetch(apiUrl, {
-        method: "PUT", // Use PUT for both update and create in your backend
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(promotionDetails),
-      });
-
-      if (!response.ok) throw new Error("Failed to save promotion");
+      const response = await fetch(
+        `http://localhost:5000/api/products/promotion/${product._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to update promotion");
 
       const data = await response.json();
-      console.log("Promotion saved:", data);
-      onSave(data.product); // Send updated product data back to the parent
-      onClose(); // Close the modal
+      onSave(data.product);
+      onClose();
     } catch (error) {
-      console.error("Error saving promotion:", error);
+      console.error("Error updating promotion:", error);
     }
   };
 
-  // For update mode, prepopulate dates
-  useEffect(() => {
-    if (isUpdate && product.salePrice) {
-      setSalePrice(product.salePrice);
-      setDiscountPercentage(product.discountPercentage);
-      setStartDate(product.promotionStartDate);
-      setEndDate(product.promotionEndDate);
-      setUseDateRange(true); // Ensure date range is enabled in update mode
+  const handleEndPromotion = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/products/promotion/end/${product._id}`,
+        {
+          method: "PATCH",
+        }
+      );
+      if (!response.ok) throw new Error("Failed to end promotion");
+
+      onEnd(product._id);
+      onClose();
+    } catch (error) {
+      console.error("Error ending promotion:", error);
     }
-  }, [isUpdate, product]);
+  };
 
   return (
     <Modal open={open} onClose={onClose} sx={{ backdropFilter: "blur(5px)" }}>
@@ -132,16 +125,16 @@ const DiscountModal = ({
         }}
       >
         <h3 style={{ textAlign: "center", marginBottom: "20px" }}>
-          {isUpdate ? "Update Promotion" : "Create Promotion"}
+          Edit Promotion
         </h3>
+
         <TextField
           fullWidth
           label="Original Price"
           type="number"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          disabled
           sx={{ mb: 2 }}
-          disabled={isUpdate} // Disable for updates
         />
         <TextField
           fullWidth
@@ -159,8 +152,6 @@ const DiscountModal = ({
           type="number"
           value={discountPercentage}
           onChange={(e) => handleDiscountChange(e.target.value)}
-          error={!!errors.discountPercentage}
-          helperText={errors.discountPercentage}
           sx={{ mb: 2 }}
         />
         <FormControlLabel
@@ -170,7 +161,7 @@ const DiscountModal = ({
               onChange={(e) => setUseDateRange(e.target.checked)}
             />
           }
-          label="Enable Promotion Date Range"
+          label="Enable Date Range"
         />
         {useDateRange && (
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
@@ -198,17 +189,20 @@ const DiscountModal = ({
         )}
         {errors.dateRange && <p style={{ color: "red" }}>{errors.dateRange}</p>}
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-          <button className="promotion-cancel-button" onClick={onClose}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+          <Button onClick={onClose} variant="outlined" color="secondary">
             Cancel
-          </button>
-          <button className="promotion-save-button" onClick={handleSave}>
+          </Button>
+          <Button onClick={handleEndPromotion} variant="outlined" color="error">
+            End
+          </Button>
+          <Button onClick={handleSave} variant="contained" color="primary">
             Save
-          </button>
+          </Button>
         </Box>
       </Box>
     </Modal>
   );
 };
 
-export default DiscountModal;
+export default EditPromotionModal;
