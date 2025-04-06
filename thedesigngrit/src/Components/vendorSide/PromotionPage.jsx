@@ -119,42 +119,63 @@ const PromotionsPage = ({ setActivePage }) => {
             ) : (
               <div className="product-grid">
                 {currentPromotions.map((product) => (
-                  <div className="product-card" key={product.id}>
+                  <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                         alt={product.name}
-                        className="product-image"
+                        className="all-product-image"
                       />
-                      <div className="product-info">
+                      <div className="product-info-vendor">
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
                         <p>{product.price}</p>
                       </div>
-                      <div className="menu-container">
+                      {/* <div className="menu-container">
                         <BsThreeDotsVertical
                           onClick={(e) => {
-                            e.stopPropagation();
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
                             toggleMenu(product.id);
                           }}
                           className="three-dots-icon"
                         />
                         {menuOpen[product.id] && (
                           <div className="menu-dropdown">
-                            <button
-                              onClick={() => handleUpdatePromotion(product)}
-                            >
-                              Update Promotion
+                            <button onClick={() => handleInsights(product)}>
+                              Promotion
                             </button>
                           </div>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="product-card-body">
                       <h5>Summary</h5>
                       <p className="product-summary">
                         {product.description.substring(0, 100)}...
                       </p>
+                      <div className="product-stats">
+                        <div className="product-sales">
+                          <span>Sales</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.sales ? product.sales : "No yet sales"}
+                            </span>
+                          </div>
+                        </div>
+                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                        <div className="product-remaining">
+                          <span>Remaining Products</span>
+                          <span className="remaining-value">
+                            {product.stock}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -190,24 +211,69 @@ const PromotionsPage = ({ setActivePage }) => {
             ) : (
               <div className="product-grid">
                 {pastPromotions.map((product) => (
-                  <div className="product-card" key={product.id}>
+                  <div className="all-product-card" key={product.id}>
                     <div className="product-card-header">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                         alt={product.name}
-                        className="product-image"
+                        className="all-product-image"
                       />
-                      <div className="product-info">
+                      <div className="product-info-vendor">
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
                         <p>{product.price}</p>
                       </div>
+                      {/* <div className="menu-container">
+                        <BsThreeDotsVertical
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
+                            toggleMenu(product.id);
+                          }}
+                          className="three-dots-icon"
+                        />
+                        {menuOpen[product.id] && (
+                          <div className="menu-dropdown">
+                            <button onClick={() => handleEdit(product)}>
+                              Edit
+                            </button>
+                            <button onClick={() => handleDelete(product)}>
+                              Delete
+                            </button>
+                            <button onClick={() => handleInsights(product)}>
+                              Promotion
+                            </button>
+                          </div>
+                        )}
+                      </div> */}
                     </div>
                     <div className="product-card-body">
                       <h5>Summary</h5>
                       <p className="product-summary">
                         {product.description.substring(0, 100)}...
                       </p>
+                      <div className="product-stats">
+                        <div className="product-sales">
+                          <span>Sales</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.sales ? product.sales : "No yet sales"}
+                            </span>
+                          </div>
+                        </div>
+                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                        <div className="product-remaining">
+                          <span>Remaining Products</span>
+                          <span className="remaining-value">
+                            {product.stock}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
