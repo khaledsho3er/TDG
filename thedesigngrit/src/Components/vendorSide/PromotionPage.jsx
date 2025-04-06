@@ -56,7 +56,9 @@ const PromotionsPage = ({ setActivePage }) => {
       // Fetch promotion metrics
       const fetchPromotionMetrics = async () => {
         try {
-          const response = await axios.get("/api/past-promotions/metrics");
+          const response = await axios.get(
+            "https://tdg-db.onrender.com/api/products/past-promotions/metrics"
+          );
           setPastPromotionMetrics(response.data);
         } catch (error) {
           console.error("Error fetching promotion metrics", error);
