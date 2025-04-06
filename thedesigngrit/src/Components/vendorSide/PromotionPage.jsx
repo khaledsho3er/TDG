@@ -130,6 +130,7 @@ const PromotionsPage = ({ setActivePage }) => {
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
                         <p>{product.price}</p>
+                        <p>{product.salePrice}</p>
                       </div>
                       {/* <div className="menu-container">
                         <BsThreeDotsVertical
@@ -155,7 +156,7 @@ const PromotionsPage = ({ setActivePage }) => {
                       </p>
                       <div className="product-stats">
                         <div className="product-sales">
-                          <span>Sales</span>
+                          <span>Discount</span>
                           <div
                             style={{
                               display: "flex",
@@ -164,15 +165,18 @@ const PromotionsPage = ({ setActivePage }) => {
                             }}
                           >
                             <span className="sales-value">
-                              {product.sales ? product.sales : "No yet sales"}
+                              {product.discountPercentage
+                                ? product.discountPercentage
+                                : "No yet Discount"}
                             </span>
                           </div>
                         </div>
                         <hr style={{ margin: "10px 0", color: "#ddd" }} />
                         <div className="product-remaining">
-                          <span>Remaining Products</span>
+                          <span>Date</span>
                           <span className="remaining-value">
-                            {product.stock}
+                            {product.promotionStartDate}-
+                            {product.promotionEndDate}
                           </span>
                         </div>
                       </div>
@@ -222,6 +226,7 @@ const PromotionsPage = ({ setActivePage }) => {
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
                         <p>{product.price}</p>
+                        <p>{product.salePrice}</p>
                       </div>
                       {/* <div className="menu-container">
                         <BsThreeDotsVertical
@@ -253,7 +258,7 @@ const PromotionsPage = ({ setActivePage }) => {
                       </p>
                       <div className="product-stats">
                         <div className="product-sales">
-                          <span>Sales</span>
+                          <span>Discount</span>
                           <div
                             style={{
                               display: "flex",
@@ -262,15 +267,18 @@ const PromotionsPage = ({ setActivePage }) => {
                             }}
                           >
                             <span className="sales-value">
-                              {product.sales ? product.sales : "No yet sales"}
+                              {product.discountPercentage
+                                ? product.discountPercentage
+                                : "No yet Discount"}
                             </span>
                           </div>
                         </div>
                         <hr style={{ margin: "10px 0", color: "#ddd" }} />
                         <div className="product-remaining">
-                          <span>Remaining Products</span>
+                          <span>Date</span>
                           <span className="remaining-value">
-                            {product.stock}
+                            {product.promotionStartDate}-
+                            {product.promotionEndDate}
                           </span>
                         </div>
                       </div>
