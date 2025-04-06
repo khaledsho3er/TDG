@@ -120,15 +120,15 @@ function ReadyToShip() {
         <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
-        {/* <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={3}>
           <FilterSection
             onFilterChange={handleFilterChange}
             products={products}
           />
-        </Grid> */}
+        </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
-          {products.length > 0 ? (
-            <ProductCards products={products} />
+          {filteredProducts.length > 0 ? (
+            <ProductCards products={filteredProducts} />
           ) : (
             <Grid item xs={12}>
               <Typography>No ready-to-ship products available.</Typography>

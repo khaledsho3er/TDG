@@ -96,94 +96,103 @@ const FilterSection = ({ onFilterChange, products }) => {
     });
   };
 
-  const renderFilters = () => (
-    <Box sx={{ width: isMobile ? "100%" : 300, padding: 2 }}>
-      {isMobile && (
-        <IconButton
-          onClick={() => setDrawerOpen(false)}
-          sx={{ position: "absolute", top: 10, right: 10 }}
-        >
-          <CloseIcon />
-        </IconButton>
-      )}
-      <Typography variant="h6" fontWeight="bold">
-        Filters:
-      </Typography>
+  const renderFilters = () => {
+    const allColors = Array.isArray(products)
+      ? products.flatMap((p) => (Array.isArray(p.colors) ? p.colors : []))
+      : [];
+    const allTags = Array.isArray(products)
+      ? products.flatMap((p) => (Array.isArray(p.tags) ? p.tags : []))
+      : [];
 
-      {/* Selected Filters */}
-      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 1 }}>
-        {selectedFilters.brands.map((filter) => (
-          <Chip
-            key={filter}
-            label={filter}
-            onDelete={() => handleFilterChange("brands", filter)}
-          />
-        ))}
-        {selectedFilters.colors.map((filter) => (
-          <Chip
-            key={filter}
-            label={filter}
-            onDelete={() => handleFilterChange("colors", filter)}
-          />
-        ))}
-        {selectedFilters.tags.map((filter) => (
-          <Chip
-            key={filter}
-            label={filter}
-            onDelete={() => handleFilterChange("tags", filter)}
-          />
-        ))}
-      </Box>
+    return (
+      <Box sx={{ width: isMobile ? "100%" : 300, padding: 2 }}>
+        {isMobile && (
+          <IconButton
+            onClick={() => setDrawerOpen(false)}
+            sx={{ position: "absolute", top: 10, right: 10 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
+        <Typography variant="h6" fontWeight="bold">
+          Filters:
+        </Typography>
 
-      <Button onClick={clearFilters} size="small" color="error">
-        Clear All
-      </Button>
-
-      {/* Brand Filter */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Brands</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {brands.map((brand) => (
-            <FormControlLabel
-              key={brand.brandName}
-              control={
-                <Checkbox
-                  checked={selectedFilters.brands.includes(brand.brandName)}
-                  onChange={() => handleFilterChange("brands", brand.brandName)}
-                />
-              }
-              label={brand.brandName}
+        {/* Selected Filters */}
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 1 }}>
+          {selectedFilters.brands.map((filter) => (
+            <Chip
+              key={filter}
+              label={filter}
+              onDelete={() => handleFilterChange("brands", filter)}
             />
           ))}
-        </AccordionDetails>
-      </Accordion>
+          {selectedFilters.colors.map((filter) => (
+            <Chip
+              key={filter}
+              label={filter}
+              onDelete={() => handleFilterChange("colors", filter)}
+            />
+          ))}
+          {selectedFilters.tags.map((filter) => (
+            <Chip
+              key={filter}
+              label={filter}
+              onDelete={() => handleFilterChange("tags", filter)}
+            />
+          ))}
+        </Box>
 
-      {/* Price Filter */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Price</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Slider
-            value={selectedFilters.priceRange}
-            onChange={handlePriceChange}
-            valueLabelDisplay="auto"
-            min={349}
-            max={61564}
-          />
-        </AccordionDetails>
-      </Accordion>
+        <Button onClick={clearFilters} size="small" color="error">
+          Clear All
+        </Button>
 
-      {/* Color Filter */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Colors</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {Array.from(new Set(products.flatMap((p) => p.colors))).map(
-            (color) => (
+        {/* Brand Filter */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Brands</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {brands.map((brand) => (
+              <FormControlLabel
+                key={brand.brandName}
+                control={
+                  <Checkbox
+                    checked={selectedFilters.brands.includes(brand.brandName)}
+                    onChange={() =>
+                      handleFilterChange("brands", brand.brandName)
+                    }
+                  />
+                }
+                label={brand.brandName}
+              />
+            ))}
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Price Filter */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Price</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Slider
+              value={selectedFilters.priceRange}
+              onChange={handlePriceChange}
+              valueLabelDisplay="auto"
+              min={349}
+              max={61564}
+            />
+          </AccordionDetails>
+        </Accordion>
+
+        {/* Color Filter */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Colors</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {Array.from(new Set(allColors)).map((color) => (
               <FormControlLabel
                 key={color}
                 control={
@@ -194,33 +203,33 @@ const FilterSection = ({ onFilterChange, products }) => {
                 }
                 label={color}
               />
-            )
-          )}
-        </AccordionDetails>
-      </Accordion>
+            ))}
+          </AccordionDetails>
+        </Accordion>
 
-      {/* Tags Filter */}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Tags</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {Array.from(new Set(products.flatMap((p) => p.tags))).map((tag) => (
-            <FormControlLabel
-              key={tag}
-              control={
-                <Checkbox
-                  checked={selectedFilters.tags.includes(tag)}
-                  onChange={() => handleFilterChange("tags", tag)}
-                />
-              }
-              label={tag}
-            />
-          ))}
-        </AccordionDetails>
-      </Accordion>
-    </Box>
-  );
+        {/* Tags Filter */}
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Tags</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {Array.from(new Set(allTags)).map((tag) => (
+              <FormControlLabel
+                key={tag}
+                control={
+                  <Checkbox
+                    checked={selectedFilters.tags.includes(tag)}
+                    onChange={() => handleFilterChange("tags", tag)}
+                  />
+                }
+                label={tag}
+              />
+            ))}
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+    );
+  };
 
   return isMobile ? (
     <Drawer
