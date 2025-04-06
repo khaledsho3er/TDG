@@ -24,7 +24,7 @@ function ReadyToShip() {
     const fetchReadyToShipProducts = async () => {
       try {
         const { data } = await axios.get(
-          "https://tdg-db.onrender.com/api/products/ready-to-ship"
+          "https://tdg-db.onrender.com/api/products/products/readytoship"
         );
         setProducts(data);
         setFilteredProducts(data);
