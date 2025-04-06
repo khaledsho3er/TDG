@@ -88,7 +88,13 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             Add Product
           </li>
         )} */}
-
+        <li
+          onClick={() => setActivePage("promotionsPage")}
+          className={getActiveClass("promotionsPage")}
+        >
+          <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
+          Promotions
+        </li>
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li

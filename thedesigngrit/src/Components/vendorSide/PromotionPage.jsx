@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 
-const PromotionsPage = () => {
+const PromotionsPage = ({ setActivePage }) => {
+  const { vendor } = useVendor(); // Access vendor data from context (vendorId, brandId)
   const [currentPromotions, setCurrentPromotions] = useState([]);
   const [pastPromotions, setPastPromotions] = useState([]);
   const [newPromotion, setNewPromotion] = useState({
@@ -12,13 +14,15 @@ const PromotionsPage = () => {
 
   // Fetch current and past promotions from backend
   useEffect(() => {
+    const { brandId } = vendor; // Destructure brandId from the vendor object
+
     const fetchPromotions = async () => {
       try {
         const currentResponse = await axios.get(
-          "https://tdg-db.onrender.com/api/promotions/promotions/current"
+          `https://tdg-db.onrender.com/api/promotions/promotions/current/${brandId}`
         );
         const pastResponse = await axios.get(
-          "https://tdg-db.onrender.com/api/promotions/promotions/past"
+          `https://tdg-db.onrender.com/api/promotions/promotions/past/${brandId}`
         );
         setCurrentPromotions(currentResponse.data);
         setPastPromotions(pastResponse.data);
