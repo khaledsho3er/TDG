@@ -17,6 +17,7 @@ const PromotionsPage = ({ setActivePage }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentPromotions, setCurrentPromotions] = useState([]); // Current promotions
   const [pastPromotions, setPastPromotions] = useState([]); // Past promotions
+  const [pastPromotionMetrics, setPastPromotionMetrics] = useState([]); // Metrics for past promotions
 
   useEffect(() => {
     if (vendor) {
@@ -52,10 +53,40 @@ const PromotionsPage = ({ setActivePage }) => {
           console.error("Error fetching products:", error);
         }
       };
-      fetchProducts(); // Fetch products based on the brandId
+      // Fetch promotion metrics
+      const fetchPromotionMetrics = async () => {
+        try {
+          const response = await axios.get("/api/past-promotions/metrics");
+          setPastPromotionMetrics(response.data);
+        } catch (error) {
+          console.error("Error fetching promotion metrics", error);
+        }
+      };
+
+      fetchProducts();
+      fetchPromotionMetrics();
     }
   }, [vendor]); // Re-fetch when vendor changes
+  const calculatePromotionMetrics = (product) => {
+    // Find the corresponding metrics for the product in past promotions
+    const metrics = pastPromotionMetrics.find(
+      (metric) => metric.productId === product._id
+    );
 
+    if (metrics) {
+      return {
+        salesDuringPromotion: metrics.salesDuringPromotion,
+        viewsDuringPromotion: metrics.viewsDuringPromotion,
+        turnoverIncrease: metrics.turnoverIncrease,
+      };
+    }
+
+    return {
+      salesDuringPromotion: 0,
+      viewsDuringPromotion: 0,
+      turnoverIncrease: 0,
+    };
+  };
   return (
     <div className="promotions-page">
       <header className="dashboard-header-vendor">
@@ -209,96 +240,38 @@ const PromotionsPage = ({ setActivePage }) => {
               <p>No past promotions.</p>
             ) : (
               <div className="product-grid">
-                {pastPromotions.map((product) => (
-                  <div className="all-product-card" key={product.id}>
-                    <div className="product-card-header">
-                      <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                        alt={product.name}
-                        className="all-product-image"
-                      />
+                {pastPromotions.map((product) => {
+                  const metrics = calculatePromotionMetrics(product);
+                  return (
+                    <div className="all-product-card" key={product.id}>
                       <div className="product-info-vendor">
                         <h3>{product.name}</h3>
                         <p>{product.typeName}</p>
-                        <p
-                          style={{
-                            textDecoration: product.salePrice
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          {product.price}
-                        </p>
+                        <p>{product.price}</p>
                         <p>{product.salePrice}</p>
                       </div>
-                    </div>
-                    <div className="product-card-body">
-                      <h5>Summary</h5>
-                      <p className="product-summary">
-                        {product.description.substring(0, 100)}...
-                      </p>
                       <div className="product-stats">
-                        <div className="product-sales">
-                          <span>Discount</span>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "5px",
-                            }}
-                          >
-                            <span className="sales-value">
-                              {product.discountPercentage
-                                ? product.discountPercentage
-                                : "No yet Discount"}
-                            </span>
-                          </div>
-                        </div>
-                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                        <div className="product-remaining">
-                          <span>Date</span>
-                          <span className="remaining-value">
-                            {new Date(
-                              product.promotionStartDate
-                            ).toLocaleDateString()}{" "}
-                            -{" "}
-                            {new Date(
-                              product.promotionEndDate
-                            ).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <div
-                          className="product-metrics"
-                          style={{ marginTop: "15px" }}
-                        >
-                          <h5 style={{ fontSize: "14px", marginBottom: "8px" }}>
-                            Promotion Metrics
-                          </h5>
-                          <ul
-                            style={{
-                              fontSize: "13px",
-                              paddingLeft: "15px",
-                              color: "#555",
-                            }}
-                          >
+                        {/* Display metrics */}
+                        <div className="product-metrics">
+                          <h5>Promotion Metrics</h5>
+                          <ul>
                             <li>
                               Sales During Promotion:{" "}
-                              {product.promotionSales || 0}
+                              {metrics.salesDuringPromotion || 0}
                             </li>
                             <li>
                               Views During Promotion:{" "}
-                              {product.promotionViews || 0}
+                              {metrics.viewsDuringPromotion || 0}
                             </li>
                             <li>
-                              Turnover Increase:{" "}
-                              {product.promotionTurnoverPercentage || 0}%
+                              Turnover Increase: {metrics.turnoverIncrease}%
                             </li>
                           </ul>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
