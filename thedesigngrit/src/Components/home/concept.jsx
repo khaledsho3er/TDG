@@ -66,18 +66,21 @@ const ExploreConcepts = () => {
     const left = node.x * scaleX; // Position on X axis
     const top = node.y * scaleY; // Position on Y axis
 
-    return { left: `${left}px`, top: `${top}px` };
+    return { left, top }; // Return as raw values, not strings yet
   };
 
   // Apply position: fixed to the nodes
-  const nodeStyle = (node) => ({
-    position: "fixed", // Fixed position to keep it in the viewport
-    left: getNodePosition(node).left,
-    top: getNodePosition(node).top,
-    transform: "translate(-50%, -50%)", // Centers the node on the position
-    cursor: "pointer",
-    backgroundColor: "transparent",
-  });
+  const nodeStyle = (node) => {
+    const { left, top } = getNodePosition(node);
+    return {
+      position: "fixed", // Fixed position to keep it in the viewport
+      left: `${left}px`, // Use calculated values as pixel units
+      top: `${top}px`,
+      transform: "translate(-50%, -50%)", // Centers the node on the position
+      cursor: "pointer",
+      backgroundColor: "transparent",
+    };
+  };
 
   return (
     <Box className="concept-explore-container">
