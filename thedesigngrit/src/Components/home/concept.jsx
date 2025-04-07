@@ -52,25 +52,32 @@ const ExploreConcepts = () => {
   const currentConcept = concepts[currentCard];
 
   // Function to convert node coordinates based on image size and aspect ratio
-  // Function to convert node coordinates based on image size and aspect ratio
   const getNodePosition = (node) => {
     if (!imageRef.current) return { left: 0, top: 0 };
 
-    const imgWidth = imageRef.current.offsetWidth;
-    const imgHeight = imageRef.current.offsetHeight;
-
+    const imgWidth = imageRef.current.offsetWidth; // Width of the image container
+    const imgHeight = imageRef.current.offsetHeight; // Height of the image container
     const imgNaturalWidth = imageRef.current.naturalWidth;
     const imgNaturalHeight = imageRef.current.naturalHeight;
 
-    // Adjust node positioning to account for aspect ratio differences
     const scaleX = imgWidth / imgNaturalWidth; // Scale based on width
     const scaleY = imgHeight / imgNaturalHeight; // Scale based on height
 
-    const left = node.x * scaleX; // Scale based on width
-    const top = node.y * scaleY; // Scale based on height
+    const left = node.x * scaleX; // Position on X axis
+    const top = node.y * scaleY; // Position on Y axis
 
     return { left: `${left}px`, top: `${top}px` };
   };
+
+  // Apply position: fixed to the nodes
+  const nodeStyle = (node) => ({
+    position: "fixed", // Fixed position to keep it in the viewport
+    left: getNodePosition(node).left,
+    top: getNodePosition(node).top,
+    transform: "translate(-50%, -50%)", // Centers the node on the position
+    cursor: "pointer",
+    backgroundColor: "transparent",
+  });
 
   return (
     <Box className="concept-explore-container">
@@ -114,14 +121,7 @@ const ExploreConcepts = () => {
                     concept.nodes.map((node, idx) => (
                       <Box
                         key={idx}
-                        sx={{
-                          position: "absolute",
-                          left: getNodePosition(node).left,
-                          top: getNodePosition(node).top,
-                          transform: "translate(-50%, -50%)",
-                          cursor: "pointer",
-                          backgroundColor: "transparent",
-                        }}
+                        sx={nodeStyle(node)} // Apply the node style here
                         onClick={() =>
                           navigate(`/product/${node.productId._id}`)
                         }
