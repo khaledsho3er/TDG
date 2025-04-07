@@ -101,7 +101,6 @@ const ExploreConcepts = () => {
                   image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
                   alt={concept.title}
                   sx={{
-                    objectFit: "contain", // Maintain aspect ratio
                     width: "100%",
                     height: "100%",
                   }}
