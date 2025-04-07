@@ -78,7 +78,7 @@ export default function ConceptManager() {
     formData.append("description", description);
     formData.append("nodes", JSON.stringify(nodes));
 
-    await fetch("htttps://tdg-db.onrender.com/api/concepts/concepts", {
+    await fetch("https://tdg-db.onrender.com/api/concepts/concepts", {
       method: "POST",
       body: formData,
     });
