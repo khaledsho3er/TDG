@@ -88,16 +88,27 @@ export default function ConceptManager() {
   };
 
   const handleSave = async () => {
-    if (!imageFile || !title) return;
+    if (!title) return; // Ensure title is provided
+
     setLoading(true);
     const formData = new FormData();
-    formData.append("image", imageFile);
+
+    if (imageFile) {
+      formData.append("image", imageFile); // Only add image if it's new
+    }
+
     formData.append("title", title);
     formData.append("description", description);
     formData.append("nodes", JSON.stringify(nodes));
 
-    await fetch("https://tdg-db.onrender.com/api/concepts/concepts", {
-      method: "POST",
+    const url = isEditMode
+      ? `https://tdg-db.onrender.com/api/concepts/concepts/${editingConcept._id}`
+      : "https://tdg-db.onrender.com/api/concepts/concepts";
+
+    const method = isEditMode ? "PUT" : "POST";
+
+    await fetch(url, {
+      method,
       body: formData,
     });
 
@@ -108,15 +119,28 @@ export default function ConceptManager() {
     setNodes([]);
     setTitle("");
     setDescription("");
-    mutate();
+    setIsEditMode(false); // Reset after save
+    mutate(); // Refresh data
   };
 
   const handleDelete = async (id) => {
-    await fetch(`https://tdg-db.onrender.com/api/concepts/concepts/${id}`, {
-      method: "DELETE",
-    });
-    handleMenuClose();
-    mutate();
+    try {
+      const response = await fetch(
+        `https://tdg-db.onrender.com/api/concepts/concepts/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        handleMenuClose();
+        mutate(); // Refresh data
+      } else {
+        console.error("Failed to delete concept.");
+      }
+    } catch (error) {
+      console.error("Error deleting concept:", error);
+    }
   };
 
   const handleDeleteNode = (index) => {
@@ -227,7 +251,28 @@ export default function ConceptManager() {
                     };
                     handleMoveNode(index, newCoords); // Update node position if clicked
                   }}
-                />
+                >
+                  {/* Add Delete Button */}
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering node click
+                      handleDeleteNode(index); // Delete the node
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: -6,
+                      right: -6,
+                      backgroundColor: "#fff",
+                      borderRadius: "50%",
+                      padding: 4,
+                    }}
+                  >
+                    <span style={{ fontSize: "14px", color: "#d32f2f" }}>
+                      X
+                    </span>{" "}
+                    {/* Delete icon */}
+                  </IconButton>
+                </Box>
               ))}
             </div>
           )}
