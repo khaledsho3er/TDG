@@ -236,7 +236,7 @@ export default function ConceptManager() {
                   <CardMedia
                     component="img"
                     height="120"
-                    image={product.images?.[0]}
+                    image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${product.mainImage?.[0]}`}
                     alt={product.name}
                   />
                   <MUICardContent>
