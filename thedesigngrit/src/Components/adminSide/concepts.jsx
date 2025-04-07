@@ -96,14 +96,8 @@ export default function ConceptManager() {
     formData.append("description", description);
     formData.append("nodes", JSON.stringify(nodes));
 
-    const endpoint = isEditMode
-      ? `/api/concepts/concepts/${editingConcept._id}`
-      : "/api/concepts/concepts";
-
-    const method = isEditMode ? "PUT" : "POST";
-
-    await fetch(endpoint, {
-      method,
+    await fetch("https://tdg-db.onrender.com/api/concepts/concepts", {
+      method: "POST",
       body: formData,
     });
 
@@ -114,8 +108,6 @@ export default function ConceptManager() {
     setNodes([]);
     setTitle("");
     setDescription("");
-    setIsEditMode(false);
-    setEditingConcept(null);
     mutate();
   };
 
@@ -125,6 +117,18 @@ export default function ConceptManager() {
     });
     handleMenuClose();
     mutate();
+  };
+
+  const handleDeleteNode = (index) => {
+    const newNodes = [...nodes];
+    newNodes.splice(index, 1);
+    setNodes(newNodes);
+  };
+
+  const handleMoveNode = (index, newCoords) => {
+    const updatedNodes = [...nodes];
+    updatedNodes[index] = { ...updatedNodes[index], ...newCoords };
+    setNodes(updatedNodes);
   };
 
   return (
@@ -167,7 +171,9 @@ export default function ConceptManager() {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>Upload Concept Image</DialogTitle>
+        <DialogTitle>
+          {isEditMode ? "Edit Concept" : "Upload Concept Image"}
+        </DialogTitle>
         <DialogContent>
           <input type="file" accept="image/*" onChange={handleFileChange} />
           <input
@@ -211,6 +217,19 @@ export default function ConceptManager() {
                     height: 12,
                     borderRadius: "50%",
                     border: "2px solid white",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newCoords = {
+                      x:
+                        (e.clientX - imageRef.current.offsetLeft) /
+                        imageRef.current.offsetWidth,
+                      y:
+                        (e.clientY - imageRef.current.offsetTop) /
+                        imageRef.current.offsetHeight,
+                    };
+                    handleMoveNode(index, newCoords);
                   }}
                 />
               ))}
@@ -307,7 +326,7 @@ export default function ConceptManager() {
                     setTitle(conceptToEdit.title);
                     setDescription(conceptToEdit.description);
                     setPreviewUrl(
-                      `https://your-r2-domain/concepts/${conceptToEdit.imageUrl}`
+                      `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${conceptToEdit.imageUrl}`
                     );
                     setNodes(conceptToEdit.nodes || []);
                     setOpen(true);
