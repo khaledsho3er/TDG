@@ -11,7 +11,7 @@ import {
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
@@ -110,6 +110,8 @@ const ExploreConcepts = () => {
                           left: getNodePosition(node).left,
                           top: getNodePosition(node).top,
                           transform: "translate(-50%, -50%)",
+                          cursor: "pointer",
+                          backgroundColor: "transparent",
                         }}
                         onClick={() =>
                           navigate(`/product/${node.productId._id}`)
@@ -122,19 +124,25 @@ const ExploreConcepts = () => {
                                 padding: 1,
                                 backgroundColor: "#ffffff",
                                 color: "#2d2d2d",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                flexDirection: "row",
                               }}
                             >
-                              <Typography variant="body2">
-                                {node.productId.name}
-                              </Typography>
-                              <Typography variant="body2">
-                                E£{node.productId.price}
-                              </Typography>
-                              <Typography variant="body2">
-                                {node.productId.category.name}
-                              </Typography>
+                              <Box>
+                                <Typography variant="body2">
+                                  {node.productId.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                  E£{node.productId.price}
+                                </Typography>
+                                <Typography variant="body2">
+                                  {node.productId.category.name}
+                                </Typography>
+                              </Box>
                               <Box sx={{ ml: 1 }}>
-                                <ArrowRightAltIcon />
+                                <MdOutlineArrowForwardIos />
                               </Box>
                             </Box>
                           }
