@@ -39,6 +39,8 @@ export default function ConceptManager() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingConcept, setEditingConcept] = useState(null);
 
   const imageRef = useRef();
 
@@ -94,8 +96,14 @@ export default function ConceptManager() {
     formData.append("description", description);
     formData.append("nodes", JSON.stringify(nodes));
 
-    await fetch("https://tdg-db.onrender.com/api/concepts/concepts", {
-      method: "POST",
+    const endpoint = isEditMode
+      ? `/api/concepts/concepts/${editingConcept._id}`
+      : "/api/concepts/concepts";
+
+    const method = isEditMode ? "PUT" : "POST";
+
+    await fetch(endpoint, {
+      method,
       body: formData,
     });
 
@@ -106,6 +114,8 @@ export default function ConceptManager() {
     setNodes([]);
     setTitle("");
     setDescription("");
+    setIsEditMode(false);
+    setEditingConcept(null);
     mutate();
   };
 
@@ -240,7 +250,7 @@ export default function ConceptManager() {
                   <CardMedia
                     component="img"
                     height="120"
-                    image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${product.mainImage?.[0]}`}
+                    image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                     alt={product.name}
                   />
                   <MUICardContent>
@@ -288,7 +298,25 @@ export default function ConceptManager() {
                 open={Boolean(anchorEl) && menuConceptId === concept._id}
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    const conceptToEdit = concepts.concepts.find(
+                      (c) => c._id === menuConceptId
+                    );
+                    setEditingConcept(conceptToEdit);
+                    setTitle(conceptToEdit.title);
+                    setDescription(conceptToEdit.description);
+                    setPreviewUrl(
+                      `https://your-r2-domain/concepts/${conceptToEdit.imageUrl}`
+                    );
+                    setNodes(conceptToEdit.nodes || []);
+                    setOpen(true);
+                    setIsEditMode(true);
+                    handleMenuClose();
+                  }}
+                >
+                  Edit
+                </MenuItem>
                 <MenuItem onClick={() => handleDelete(concept._id)}>
                   Delete
                 </MenuItem>
