@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Typography,
@@ -10,12 +10,14 @@ import {
 } from "@mui/material";
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { Link } from "react-router-dom"; // Assuming you're using React Router
+import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
 
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const imageRef = useRef(null); // To reference the image for positioning nodes
 
   useEffect(() => {
     // Fetch the concept data from the backend
@@ -47,6 +49,18 @@ const ExploreConcepts = () => {
   const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
   const currentConcept = concepts[currentCard];
+  // Function to convert node coordinates based on image size
+  const getNodePosition = (node) => {
+    if (!imageRef.current) return { left: 0, top: 0 };
+
+    const imgWidth = imageRef.current.offsetWidth;
+    const imgHeight = imageRef.current.offsetHeight;
+
+    const left = (node.x / imgWidth) * 100; // Percentage based on image width
+    const top = (node.y / imgHeight) * 100; // Percentage based on image height
+
+    return { left: `${left}%`, top: `${top}%` };
+  };
 
   return (
     <Box className="concept-explore-container">
@@ -76,6 +90,7 @@ const ExploreConcepts = () => {
             return (
               <Card key={concept.id} className={className}>
                 <CardMedia
+                  ref={imageRef} // Reference the image for positioning the nodes
                   component="img"
                   image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
                   alt={concept.title}
@@ -91,10 +106,13 @@ const ExploreConcepts = () => {
                         key={idx}
                         sx={{
                           position: "absolute",
-                          left: `${node.x * 100}%`,
-                          top: `${node.y * 100}%`,
+                          left: getNodePosition(node).left,
+                          top: getNodePosition(node).top,
                           transform: "translate(-50%, -50%)",
                         }}
+                        onClick={() =>
+                          navigate(`/product/${node.productId.id}`)
+                        }
                       >
                         <Tooltip
                           title={
@@ -106,10 +124,10 @@ const ExploreConcepts = () => {
                               }}
                             >
                               <Typography variant="body2">
-                                {node.productName}
+                                {node.productId.name}
                               </Typography>
                               <Typography variant="body2">
-                                ${node.productPrice}
+                                ${node.productId.price}
                               </Typography>
                             </Box>
                           }
