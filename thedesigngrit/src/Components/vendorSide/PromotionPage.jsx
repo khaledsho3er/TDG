@@ -68,7 +68,7 @@ const PromotionsPage = () => {
       fetchProducts();
       fetchPromotionMetrics();
     }
-  }, [vendor]); // Re-fetch when vendor changes
+  }, [vendor, products]); // Re-fetch when vendor changes
   const calculatePromotionMetrics = (product) => {
     // Find the corresponding metrics for the product in past promotions
     const metrics = pastPromotionMetrics.find(

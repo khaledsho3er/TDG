@@ -9,7 +9,7 @@ import { MdAccountBalance } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { FaWpforms } from "react-icons/fa";
-import { RiFileExcel2Fill } from "react-icons/ri";
+// import { RiFileExcel2Fill } from "react-icons/ri";
 
 const SidebarVendor = ({ setActivePage, activePage }) => {
   // Get vendor data (including tier) from the useVendor hook
