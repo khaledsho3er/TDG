@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -17,9 +17,7 @@ const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const imageRef = useRef(null); // To reference the image for positioning nodes
-
+  const navigate = useNavigate(); // Initialize the navigate function
   useEffect(() => {
     // Fetch the concept data from the backend
     const fetchConcepts = async () => {
@@ -49,39 +47,6 @@ const ExploreConcepts = () => {
   // Calculate left position for the progress fill
   const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
-  const currentConcept = concepts[currentCard];
-
-  // Function to convert node coordinates based on image size and aspect ratio
-  const getNodePosition = (node) => {
-    if (!imageRef.current) return { left: 0, top: 0 };
-
-    const imgWidth = imageRef.current.offsetWidth; // Width of the image container
-    const imgHeight = imageRef.current.offsetHeight; // Height of the image container
-    const imgNaturalWidth = imageRef.current.naturalWidth;
-    const imgNaturalHeight = imageRef.current.naturalHeight;
-
-    const scaleX = imgWidth / imgNaturalWidth; // Scale based on width
-    const scaleY = imgHeight / imgNaturalHeight; // Scale based on height
-
-    const left = node.x * scaleX; // Position on X axis
-    const top = node.y * scaleY; // Position on Y axis
-
-    return { left, top }; // Return as raw values, not strings yet
-  };
-
-  // Apply position: fixed to the nodes
-  const nodeStyle = (node) => {
-    const { left, top } = getNodePosition(node);
-    return {
-      position: "fixed", // Fixed position to keep it in the viewport
-      left: `${left}px`, // Use calculated values as pixel units
-      top: `${top}px`,
-      transform: "translate(-50%, -50%)", // Centers the node on the position
-      cursor: "pointer",
-      backgroundColor: "transparent",
-    };
-  };
-
   return (
     <Box className="concept-explore-container">
       {/* Title */}
@@ -108,9 +73,8 @@ const ExploreConcepts = () => {
             if (position === 2) className += " right-card"; // Right card
 
             return (
-              <Card key={concept.id} className={className}>
+              <Card key={concept._id} className={className}>
                 <CardMedia
-                  ref={imageRef} // Reference the image for positioning the nodes
                   component="img"
                   image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
                   alt={concept.title}
@@ -124,7 +88,12 @@ const ExploreConcepts = () => {
                     concept.nodes.map((node, idx) => (
                       <Box
                         key={idx}
-                        sx={nodeStyle(node)} // Apply the node style here
+                        sx={{
+                          position: "absolute",
+                          left: `${node.x * 100}%`,
+                          top: `${node.y * 100}%`,
+                          transform: "translate(-50%, -50%)",
+                        }}
                         onClick={() =>
                           navigate(`/product/${node.productId._id}`)
                         }
