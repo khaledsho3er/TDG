@@ -99,6 +99,10 @@ const ExploreConcepts = () => {
                         }
                       >
                         <Tooltip
+                          style={{
+                            zIndex: 1000,
+                            backgroundColor: "transparent",
+                          }}
                           title={
                             <Box
                               sx={{
