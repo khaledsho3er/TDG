@@ -165,6 +165,9 @@ const BrandingPage = () => {
                       padding: "5px 10px",
                       borderRadius: "5px",
                       textDecoration: "none",
+                      fontSize: "14px",
+                      border: "1px solid #2d2d2d",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
                     }}
                   >
                     {catalog.title}

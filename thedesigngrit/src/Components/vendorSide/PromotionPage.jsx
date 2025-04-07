@@ -232,6 +232,7 @@ const PromotionsPage = () => {
             border: "1px solid #ddd",
             borderRadius: "5px",
             marginBottom: "30px",
+            marginTop: "30px",
           }}
         >
           <span>Past Promotions</span>
