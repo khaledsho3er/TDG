@@ -76,10 +76,10 @@ export default function ConceptManager() {
 
   const handleImageClick = (e) => {
     const rect = imageRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width).toFixed(4);
-    const y = ((e.clientY - rect.top) / rect.height).toFixed(4);
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
     setCurrentCoords({ x, y });
-    setProductDialogOpen(true);
+    setProductDialogOpen(true); // Open product selection dialog
   };
 
   const handleProductSelect = (productId) => {
@@ -209,8 +209,8 @@ export default function ConceptManager() {
                   key={index}
                   sx={{
                     position: "absolute",
-                    left: `${node.x * 100}%`,
-                    top: `${node.y * 100}%`,
+                    left: `${node.x * 100}%`, // Convert fractional x to percentage
+                    top: `${node.y * 100}%`, // Convert fractional y to percentage
                     transform: "translate(-50%, -50%)",
                     backgroundColor: "#6c7c59",
                     width: 12,
@@ -229,7 +229,7 @@ export default function ConceptManager() {
                         (e.clientY - imageRef.current.offsetTop) /
                         imageRef.current.offsetHeight,
                     };
-                    handleMoveNode(index, newCoords);
+                    handleMoveNode(index, newCoords); // Update node position if clicked
                   }}
                 />
               ))}
