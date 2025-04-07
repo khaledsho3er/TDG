@@ -50,17 +50,22 @@ const ExploreConcepts = () => {
   const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
   const currentConcept = concepts[currentCard];
-  // Function to convert node coordinates based on image size
+
+  // Function to convert node coordinates based on image size and aspect ratio
   const getNodePosition = (node) => {
     if (!imageRef.current) return { left: 0, top: 0 };
 
     const imgWidth = imageRef.current.offsetWidth;
     const imgHeight = imageRef.current.offsetHeight;
 
-    const left = (node.x / imgWidth) * 100; // Percentage based on image width
-    const top = (node.y / imgHeight) * 100; // Percentage based on image height
+    // Adjust node positioning to account for aspect ratio differences
+    const scaleX = imgWidth / imageRef.current.naturalWidth;
+    const scaleY = imgHeight / imageRef.current.naturalHeight;
 
-    return { left: `${left}%`, top: `${top}%` };
+    const left = node.x * scaleX; // Scale based on width
+    const top = node.y * scaleY; // Scale based on height
+
+    return { left: `${left}px`, top: `${top}px` };
   };
 
   return (
@@ -95,6 +100,11 @@ const ExploreConcepts = () => {
                   component="img"
                   image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
                   alt={concept.title}
+                  sx={{
+                    objectFit: "contain", // Maintain aspect ratio
+                    width: "100%",
+                    height: "100%",
+                  }}
                 />
 
                 <CardContent className="concept-card-content">
