@@ -46,6 +46,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Tags
         </li>
+        <li
+          onClick={() => setActivePage("concepts")}
+          className="sidebar-item-vendor"
+        >
+          Concepts
+        </li>
       </ul>
     </aside>
   );
