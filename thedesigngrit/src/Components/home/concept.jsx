@@ -159,7 +159,7 @@ const ExploreConcepts = () => {
                         >
                           <Box
                             sx={{
-                              backgroundColor: "#6c7c59",
+                              backgroundColor: "#ffffff",
                               width: 12,
                               height: 12,
                               borderRadius: "50%",
