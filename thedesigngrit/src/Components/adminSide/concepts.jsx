@@ -136,7 +136,6 @@ export default function ConceptManager() {
       style={{
         padding: "16px",
         fontFamily: "Montserrat",
-        backgroundColor: "#ffffff",
         minHeight: "100vh",
         color: "#2d2d2d",
       }}
@@ -149,10 +148,7 @@ export default function ConceptManager() {
           marginBottom: "24px",
         }}
       >
-        <Typography
-          variant="h4"
-          style={{ fontWeight: "bold", fontFamily: "Horizon-bold" }}
-        >
+        <Typography variant="h4" style={{ fontFamily: "Montserrat" }}>
           Concepts
         </Typography>
         <Button
