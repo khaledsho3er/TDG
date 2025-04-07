@@ -11,6 +11,7 @@ import {
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
@@ -111,7 +112,7 @@ const ExploreConcepts = () => {
                           transform: "translate(-50%, -50%)",
                         }}
                         onClick={() =>
-                          navigate(`/product/${node.productId.id}`)
+                          navigate(`/product/${node.productId._id}`)
                         }
                       >
                         <Tooltip
@@ -119,16 +120,22 @@ const ExploreConcepts = () => {
                             <Box
                               sx={{
                                 padding: 1,
-                                backgroundColor: "#333",
-                                color: "#fff",
+                                backgroundColor: "#ffffff",
+                                color: "#2d2d2d",
                               }}
                             >
                               <Typography variant="body2">
                                 {node.productId.name}
                               </Typography>
                               <Typography variant="body2">
-                                ${node.productId.price}
+                                E£{node.productId.price}
                               </Typography>
+                              <Typography variant="body2">
+                                {node.productId.category.name}
+                              </Typography>
+                              <Box sx={{ ml: 1 }}>
+                                <ArrowRightAltIcon />
+                              </Box>
                             </Box>
                           }
                           placement="top"
