@@ -315,6 +315,7 @@ export default function ConceptManager() {
                   />
                   <MUICardContent>
                     <Typography variant="body1">{product.name}</Typography>
+                    <Typography variant="body1">{product.price}</Typography>
                   </MUICardContent>
                 </Card>
               </Grid>
@@ -357,6 +358,14 @@ export default function ConceptManager() {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl) && menuConceptId === concept._id}
                 onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
               >
                 <MenuItem
                   onClick={() => {

@@ -99,10 +99,6 @@ const ExploreConcepts = () => {
                         }
                       >
                         <Tooltip
-                          style={{
-                            zIndex: 1000,
-                            backgroundColor: "transparent",
-                          }}
                           title={
                             <Box
                               sx={{
@@ -113,6 +109,7 @@ const ExploreConcepts = () => {
                                 alignItems: "center",
                                 justifyContent: "space-between",
                                 flexDirection: "row",
+                                borderRadius: "8px",
                               }}
                             >
                               <Box>
