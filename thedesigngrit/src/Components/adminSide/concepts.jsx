@@ -45,7 +45,11 @@ export default function ConceptManager() {
   useEffect(() => {
     fetch("https://tdg-db.onrender.com/api/products/getproducts")
       .then((res) => res.json())
-      .then((data) => setProducts(data.products || []));
+      .then((data) => {
+        console.log("Fetched products:", data);
+        setProducts(data.products ?? data); // Handles both structures
+      })
+      .catch((err) => console.error("Error fetching products:", err));
   }, []);
 
   const handleFileChange = (e) => {
