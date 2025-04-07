@@ -96,7 +96,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
           Promotions
         </li>
-        {vendor?.tier >= 3 && (
+        {/* {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("posPage")}
             className={getActiveClass("posPage")}
@@ -104,7 +104,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <RiFileExcel2Fill size={20} style={{ marginRight: "5px" }} />
             Pos Page
           </li>
-        )}
+        )} */}
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li

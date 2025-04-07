@@ -42,7 +42,7 @@ const VendorHome = () => {
     notifications: <NotificationsPage />,
     ViewInStoreVendor: <ViewInStoreVendor />,
     promotionsPage: <PromotionsPage />,
-    posPage: <POSPage />,
+    // posPage: <POSPage />,
   };
 
   // Function to render content based on active page
