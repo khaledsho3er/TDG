@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -24,9 +24,12 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function ConceptManager() {
   const [open, setOpen] = useState(false);
+  const [productDialogOpen, setProductDialogOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [nodes, setNodes] = useState([]);
+  const [currentCoords, setCurrentCoords] = useState(null);
+  const [products, setProducts] = useState([]);
   const { data: concepts, mutate } = useSWR(
     "https://tdg-db.onrender.com/api/concepts/concepts",
     fetcher
@@ -38,6 +41,12 @@ export default function ConceptManager() {
   const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
+
+  useEffect(() => {
+    fetch("https://tdg-db.onrender.com/api/products/getproducts")
+      .then((res) => res.json())
+      .then((data) => setProducts(data.products || []));
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -63,10 +72,13 @@ export default function ConceptManager() {
     const rect = imageRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width).toFixed(4);
     const y = ((e.clientY - rect.top) / rect.height).toFixed(4);
-    const productId = prompt("Enter product ID for this node (mock)");
-    if (productId) {
-      setNodes([...nodes, { x, y, productId }]);
-    }
+    setCurrentCoords({ x, y });
+    setProductDialogOpen(true);
+  };
+
+  const handleProductSelect = (productId) => {
+    setNodes([...nodes, { x: currentCoords.x, y: currentCoords.y, productId }]);
+    setProductDialogOpen(false);
   };
 
   const handleSave = async () => {
@@ -202,6 +214,39 @@ export default function ConceptManager() {
             {loading ? <CircularProgress size={24} color="inherit" /> : "Save"}
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={productDialogOpen}
+        onClose={() => setProductDialogOpen(false)}
+      >
+        <DialogTitle>Select a Product for Node</DialogTitle>
+        <DialogContent>
+          <Grid
+            container
+            spacing={2}
+            sx={{ maxHeight: 400, overflowY: "auto" }}
+          >
+            {products.map((product) => (
+              <Grid item xs={6} key={product._id}>
+                <Card
+                  onClick={() => handleProductSelect(product._id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="120"
+                    image={product.images?.[0]}
+                    alt={product.name}
+                  />
+                  <MUICardContent>
+                    <Typography variant="body1">{product.name}</Typography>
+                  </MUICardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
       </Dialog>
 
       <Grid container spacing={3}>
