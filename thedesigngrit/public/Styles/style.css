@@ -895,16 +895,16 @@ body::-webkit-scrollbar {
   height: 100%;
 }
 
-.concept-card::before {
+/* .concept-card::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.2); /* Slight dark overlay */
-  z-index: 1; /* Place it below content but above the image */
-}
+  background: rgba(0, 0, 0, 0.2); 
+  z-index: 1;
+} */
 
 .concept-card-content {
   position: absolute; /* Position within the card */
