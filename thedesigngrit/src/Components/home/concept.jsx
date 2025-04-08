@@ -76,8 +76,12 @@ const ExploreConcepts = () => {
               <Card key={concept._id} className={className}>
                 <CardMedia
                   component="img"
-                  image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
-                  alt={concept.title}
+                  image={
+                    concept.imageUrl
+                      ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`
+                      : "path/to/default-image.jpg" // Provide a default image if imageUrl is not available
+                  }
+                  alt={concept.title || "Concept image"} // Default alt text
                 />
                 {concept.nodes &&
                   concept.nodes.map((node, idx) => (

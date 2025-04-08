@@ -5,22 +5,36 @@
   font-style: normal;
 }
 
-/* Login.css */
 body {
   margin: 0;
   font-family: "Horizon", Montserrat;
   overflow-y: scroll; /* Ensures the page scrolls vertically */
-  scrollbar-width: none; /* Firefox */
 }
 
+/* Firefox */
+body {
+  scrollbar-width: thin; /* Makes the scrollbar thin in Firefox */
+  scrollbar-color: rgba(216, 216, 216, 0.5) transparent; /* Adjust scrollbar color */
+}
+
+/* Webkit Browsers (Chrome, Safari, Edge) */
 body::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 6px; /* Thinner scrollbar */
+  background: transparent; /* Transparent background */
 }
 
 body::-webkit-scrollbar:hover {
-  width: 10px;
-  background: rgb(216, 216, 216);
+  width: 10px; /* Widen the scrollbar when hovered */
+  background: rgb(216, 216, 216); /* Background color of the scrollbar */
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(216, 216, 216, 0.5); /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(216, 216, 216, 0.7); /* Thumb color on hover */
 }
 
 * {
@@ -2054,7 +2068,7 @@ textarea {
   font-family: Montserrat;
 }
 
-.content::-webkit-scrollbar {
+/* .content::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -2070,7 +2084,7 @@ textarea {
 
 .content::-webkit-scrollbar-thumb:hover {
   background: #4e5b44;
-}
+} */
 
 /*Partners Application Page*/
 .partner-page {
@@ -2876,7 +2890,7 @@ select {
   border-radius: 8px; /* Rounded corners */
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar
 .orders-popup::-webkit-scrollbar {
   width: 8px;
 }
@@ -2893,7 +2907,7 @@ select {
 
 .orders-popup::-webkit-scrollbar-thumb:hover {
   background: #4e5b44;
-}
+} */
 .order-card-popup {
   border: 1px solid #e1e1e1;
 
@@ -5059,7 +5073,7 @@ iframe {
   color: #fff;
   text-align: center;
 }
-/* Custom Scrollbar */
+/* Custom Scrollbar
 .saved-cards::-webkit-scrollbar {
   width: 8px;
 }
@@ -5076,7 +5090,7 @@ iframe {
 
 .saved-cards::-webkit-scrollbar-thumb:hover {
   background: #4e5b44;
-}
+} */
 
 /* Cards.css */
 .card-grid {
