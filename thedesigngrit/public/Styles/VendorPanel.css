@@ -1539,20 +1539,6 @@ h1 {
   background-color: #495a3a; /* Darker sage green when hovering */
 }
 
-/* When hovering over the body, show the scrollbar */
-body:hover::-webkit-scrollbar {
-  width: 10px; /* Adjust the width of the scrollbar when hovering */
-  height: 10px; /* For horizontal scrollbar */
-}
-
-body:hover::-webkit-scrollbar-thumb {
-  background-color: #6b7b58; /* Keep the sage green color */
-}
-
-body:hover::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Light background for the track */
-}
-
 .popup-overlay-employee {
   position: fixed;
   top: 0;
