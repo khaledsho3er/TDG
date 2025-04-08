@@ -63,7 +63,7 @@ function Header() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/categories/categoriess"
+          "https://tdg-db.onrender.com/api/categories/categories"
         );
         if (!response.ok) {
           throw new Error("Failed to load categories");
