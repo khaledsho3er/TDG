@@ -67,6 +67,7 @@ const RecentPurchases = () => {
         })
       );
     }
+
     return filtered; // All
   };
 
@@ -80,9 +81,9 @@ const RecentPurchases = () => {
             ? a.cartItems[0]?.name.localeCompare(b.cartItems[0]?.name)
             : b.cartItems[0]?.name.localeCompare(a.cartItems[0]?.name);
         case "Price Ascending":
-          return a.total - b.total;
-        case "Price Descending":
           return b.total - a.total;
+        case "Price Descending":
+          return a.total - b.total;
         default:
           return 0;
       }
