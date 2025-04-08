@@ -79,69 +79,66 @@ const ExploreConcepts = () => {
                   image={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
                   alt={concept.title}
                 />
-
+                {concept.nodes &&
+                  concept.nodes.map((node, idx) => (
+                    <Box
+                      key={idx}
+                      sx={{
+                        position: "absolute",
+                        left: `${node.x * 100}%`,
+                        top: `${node.y * 100}%`,
+                        transform: "translate(-50%, -50%)",
+                      }}
+                      onClick={() => navigate(`/product/${node.productId._id}`)}
+                    >
+                      <Tooltip
+                        title={
+                          <Box
+                            sx={{
+                              padding: 1,
+                              backgroundColor: "#ffffff",
+                              color: "#2d2d2d",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              borderRadius: "8px",
+                            }}
+                          >
+                            <Box>
+                              <Typography variant="body2">
+                                {node.productId.name}
+                              </Typography>
+                              <Typography variant="body2">
+                                E£{node.productId.price}
+                              </Typography>
+                              <Typography variant="body2">
+                                {node.productId.category.name}
+                              </Typography>
+                            </Box>
+                            <Box sx={{ ml: 1 }}>
+                              <MdOutlineArrowForwardIos />
+                            </Box>
+                          </Box>
+                        }
+                        placement="top"
+                      >
+                        <Box
+                          sx={{
+                            backgroundColor: "#ffffff",
+                            width: 12,
+                            height: 12,
+                            borderRadius: "50%",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
+                    </Box>
+                  ))}
                 <CardContent className="concept-card-content">
                   <IconButton className="concept-shopping-icon">
                     <ShoppingBagIcon />
                   </IconButton>
-                  {concept.nodes &&
-                    concept.nodes.map((node, idx) => (
-                      <Box
-                        key={idx}
-                        sx={{
-                          position: "absolute",
-                          left: `${node.x * 100}%`,
-                          top: `${node.y * 100}%`,
-                          transform: "translate(-50%, -50%)",
-                        }}
-                        onClick={() =>
-                          navigate(`/product/${node.productId._id}`)
-                        }
-                      >
-                        <Tooltip
-                          title={
-                            <Box
-                              sx={{
-                                padding: 1,
-                                backgroundColor: "#ffffff",
-                                color: "#2d2d2d",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                flexDirection: "row",
-                                borderRadius: "8px",
-                              }}
-                            >
-                              <Box>
-                                <Typography variant="body2">
-                                  {node.productId.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                  E£{node.productId.price}
-                                </Typography>
-                                <Typography variant="body2">
-                                  {node.productId.category.name}
-                                </Typography>
-                              </Box>
-                              <Box sx={{ ml: 1 }}>
-                                <MdOutlineArrowForwardIos />
-                              </Box>
-                            </Box>
-                          }
-                          placement="top"
-                        >
-                          <Box
-                            sx={{
-                              backgroundColor: "#ffffff",
-                              width: 12,
-                              height: 12,
-                              borderRadius: "50%",
-                              cursor: "pointer",
-                            }}
-                          />
-                        </Tooltip>
-                      </Box>
-                    ))}
                 </CardContent>
               </Card>
             );
