@@ -1518,25 +1518,45 @@ h1 {
   margin-top: 10px;
 }
 
-/* Custom scrollbar for webkit browsers */
-/* Custom scrollbar for webkit browsers */
+/* Initially hide the scrollbar */
 ::-webkit-scrollbar {
   width: 0px; /* Initially hide the scrollbar */
   height: 0px; /* For horizontal scrollbar */
 }
 
+/* Style the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
   background-color: #6b7b58; /* Sage green color */
   border-radius: 10px; /* Rounded corners */
 }
 
+/* Style the scrollbar track */
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Light background for the track */
-  border-radius: 10px; /* Rounded corners for the track */
+  border-radius: 10px; /* Rounded corners */
 }
 
-::-webkit-scrollbar-thumb:hover {
+/* Style the scrollbar when hovered */
+body:hover::-webkit-scrollbar {
+  width: 10px; /* Show the scrollbar when hovering */
+  height: 10px; /* For horizontal scrollbar */
+}
+
+/* Style the scrollbar thumb when hovered */
+body:hover::-webkit-scrollbar-thumb {
   background-color: #495a3a; /* Darker sage green when hovering */
+}
+
+/* Style the scrollbar track when hovered */
+body:hover::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Light background for the track */
+}
+
+/* Make sure the content scrolls and has enough space for scrollbar */
+html,
+body {
+  height: 100%; /* Make sure body has enough height for scrolling */
+  overflow: auto; /* Enable scrolling */
 }
 
 .popup-overlay-employee {
