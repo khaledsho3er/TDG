@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
-import OrderDetails from "./orderDetails"; // Import OrderDetails component
+import OrderDetails from "./orderDetails";
+import { format, subDays, isWithinInterval, parseISO } from "date-fns";
 
 const RecentPurchases = () => {
   const { vendor } = useVendor();
@@ -12,8 +13,8 @@ const RecentPurchases = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortOption, setSortOption] = useState("Date");
   const [sortDirection] = useState("desc");
-  const [dateRange] = useState([null, null]);
-  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [dateFilter, setDateFilter] = useState("All");
 
   const ordersPerPage = 8;
 
@@ -24,62 +25,75 @@ const RecentPurchases = () => {
         const response = await fetch(
           `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
-        }
+        if (!response.ok) throw new Error("Failed to fetch orders");
         const data = await response.json();
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
-
     fetchOrders();
   }, [vendor]);
 
-  // Filter Orders
-  const filteredOrders =
-    filterStatus === "All"
+  const getFilteredByStatus = () => {
+    return filterStatus === "All"
       ? orders
       : orders.filter((order) => order.orderStatus === filterStatus);
+  };
 
-  // Filter Orders by Date Range
-  const dateFilteredOrders =
-    dateRange[0] && dateRange[1]
-      ? filteredOrders.filter(
-          (order) =>
-            new Date(order.orderDate) >= new Date(dateRange[0]) &&
-            new Date(order.orderDate) <= new Date(dateRange[1])
-        )
-      : filteredOrders;
-
-  // Sort Orders
-  const sortedOrders = [...dateFilteredOrders].sort((a, b) => {
-    switch (sortOption) {
-      case "Date":
-        return new Date(b.orderDate) - new Date(a.orderDate); // Ensures newest orders come first
-
-      case "Alphabetical":
-        return sortDirection === "asc"
-          ? a.cartItems[0]?.name.localeCompare(b.cartItems[0]?.name)
-          : b.cartItems[0]?.name.localeCompare(a.cartItems[0]?.name);
-      case "Price Ascending":
-        return sortDirection === "asc" ? a.total - b.total : b.total - a.total;
-      case "Price Descending":
-        return sortDirection === "asc" ? b.total - a.total : a.total - b.total;
-      default:
-        return 0;
+  const getFilteredByDate = (filtered) => {
+    const today = new Date();
+    if (dateFilter === "Today") {
+      return filtered.filter((order) =>
+        isWithinInterval(parseISO(order.orderDate), {
+          start: new Date(today.setHours(0, 0, 0, 0)),
+          end: new Date(today.setHours(23, 59, 59, 999)),
+        })
+      );
     }
-  });
+    if (dateFilter === "Last7Days") {
+      return filtered.filter((order) =>
+        isWithinInterval(parseISO(order.orderDate), {
+          start: subDays(today, 7),
+          end: today,
+        })
+      );
+    }
+    if (dateFilter === "Last30Days") {
+      return filtered.filter((order) =>
+        isWithinInterval(parseISO(order.orderDate), {
+          start: subDays(today, 30),
+          end: today,
+        })
+      );
+    }
+    return filtered; // All
+  };
 
-  // Pagination Logic
+  const sortedOrders = [...getFilteredByDate(getFilteredByStatus())].sort(
+    (a, b) => {
+      switch (sortOption) {
+        case "Date":
+          return new Date(b.orderDate) - new Date(a.orderDate);
+        case "Alphabetical":
+          return sortDirection === "asc"
+            ? a.cartItems[0]?.name.localeCompare(b.cartItems[0]?.name)
+            : b.cartItems[0]?.name.localeCompare(a.cartItems[0]?.name);
+        case "Price Ascending":
+          return a.total - b.total;
+        case "Price Descending":
+          return b.total - a.total;
+        default:
+          return 0;
+      }
+    }
+  );
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
 
-  // If an order is selected, show OrderDetails instead of the table
   if (selectedOrder) {
     return (
       <OrderDetails
@@ -99,22 +113,24 @@ const RecentPurchases = () => {
         <div className="dashboard-date-vendor">
           <SlCalender />
           <span>
-            {dateRange[0] && dateRange[1] ? (
-              <>{`${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`}</>
-            ) : (
-              "Select date range"
-            )}
-            :
-            {dateRange[0] && dateRange[1]
-              ? `${dateRange[0]} - ${dateRange[1]}`
-              : "Select date range"}
+            {dateFilter === "All"
+              ? "All Time"
+              : dateFilter.replace("Last", "Last ").replace("Days", " Days")}
           </span>
         </div>
       </header>
 
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "20px",
+          marginBottom: "1rem",
+        }}
+      >
         <Select
-          sx={{ width: "200px", borderRadius: "5px", color: "#2d2d2d" }}
+          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
         >
@@ -126,12 +142,7 @@ const RecentPurchases = () => {
           <MenuItem value="Cancelled">Cancelled</MenuItem>
         </Select>
         <Select
-          sx={{
-            width: "200px",
-            borderRadius: "5px",
-            color: "#2d2d2d",
-            marginLeft: "20px",
-          }}
+          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
         >
@@ -139,6 +150,16 @@ const RecentPurchases = () => {
           <MenuItem value="Alphabetical">Alphabetical</MenuItem>
           <MenuItem value="Price Ascending">Price: Ascending</MenuItem>
           <MenuItem value="Price Descending">Price: Descending</MenuItem>
+        </Select>
+        <Select
+          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+        >
+          <MenuItem value="All">All Time</MenuItem>
+          <MenuItem value="Today">Today</MenuItem>
+          <MenuItem value="Last7Days">Last 7 Days</MenuItem>
+          <MenuItem value="Last30Days">Last 30 Days</MenuItem>
         </Select>
       </Box>
 
