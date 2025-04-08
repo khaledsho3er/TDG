@@ -1142,7 +1142,7 @@ const AddProduct = () => {
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
                     gap: "10px",
                     marginTop: "10px",
                   }}

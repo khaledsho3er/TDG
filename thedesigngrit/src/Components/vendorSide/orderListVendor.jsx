@@ -120,7 +120,7 @@ const RecentPurchases = () => {
         >
           <MenuItem value="All">Sort By Status</MenuItem>
           <MenuItem value="Pending">Pending</MenuItem>
-          <MenuItem value="Processing">Confirmed</MenuItem>
+          <MenuItem value="Confirmed">Confirmed</MenuItem>
           <MenuItem value="Shipped">Shipped</MenuItem>
           <MenuItem value="Delivered">Delivered</MenuItem>
           <MenuItem value="Cancelled">Cancelled</MenuItem>
