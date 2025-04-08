@@ -49,19 +49,25 @@
 /* Sidebar Styles */
 .sidebar-vendor {
   font-family: Montserrat;
-  width: 250px;
+  width: 60px; /* Sidebar width when minimized */
   background-color: #f8f9fa;
   border-right: 1px solid #ddd;
-  padding: 20px;
+  padding: 20px 0;
   height: 91vh;
+  position: fixed;
+  transition: width 0.3s ease; /* Smooth transition when expanding */
+}
+
+.sidebar-vendor:hover {
+  width: 250px; /* Full width when hovered */
 }
 
 .sidebar-menu-vendor {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 20px;
   flex-direction: column;
+  align-items: center; /* Center the icons */
 }
 
 .sidebar-item-vendor {
@@ -71,20 +77,33 @@
   border-radius: 8px;
   gap: 10px;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-item-vendor:hover {
-  padding: 10px 15px;
-  cursor: pointer;
   background-color: #6a8452;
-  border-radius: 8px;
   color: #fff;
 }
 
 .sidebar-item-vendor.active {
   background-color: #6a8452;
-  border-radius: 14px;
   color: #fff;
+}
+
+.sidebar-item-vendor .sidebar-text {
+  margin-left: 10px;
+  display: none; /* Hide text when sidebar is minimized */
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-vendor:hover .sidebar-item-vendor .sidebar-text {
+  display: inline; /* Show text when sidebar is expanded */
+}
+
+/* Optional: Add transition for the sidebar text visibility */
+.sidebar-vendor:hover .sidebar-item-vendor .sidebar-text {
+  opacity: 1;
 }
 
 /* Content Styles */
