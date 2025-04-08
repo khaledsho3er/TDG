@@ -63,7 +63,7 @@ function Header() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://tdg-db.onrender.com/api/categories/categoriess"
         );
         if (!response.ok) {
           throw new Error("Failed to load categories");
@@ -72,6 +72,15 @@ function Header() {
         setMenuData(data.slice(0, 6)); // Slice the first 6 categories
       } catch (error) {
         console.error("Error fetching categories:", error);
+        // Static fallback categories if fetching fails
+        setMenuData([
+          { _id: "static-1", name: "Furniture" },
+          { _id: "static-2", name: "Kitchen & Dining" },
+          { _id: "static-3", name: "Bath" },
+          { _id: "static-4", name: "Lighting" },
+          { _id: "static-5", name: "Home Decor" },
+          { _id: "static-6", name: "Outdoor" },
+        ]);
       }
     };
 
