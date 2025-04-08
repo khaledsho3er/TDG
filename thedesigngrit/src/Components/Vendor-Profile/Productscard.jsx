@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // ✅ For navigation
-import axios from "axios";
+import { Link } from "react-router-dom"; //
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const VendorProductsCard = ({ vendor }) => {
-  const [relatedProducts, setRelatedProducts] = useState([]);
+const VendorProductsCard = ({ vendor, products }) => {
   const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    const fetchRelatedProducts = async () => {
-      try {
-        const response =
-          await axios.get(`https://tdg-db.onrender.com/api/products/getproducts/brand/${vendor._id}
-`);
-        setRelatedProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching related products:", error);
-      }
-    };
-    if (vendor) fetchRelatedProducts();
-  }, [vendor]);
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -52,7 +37,7 @@ const VendorProductsCard = ({ vendor }) => {
         loop={true}
         className="related-swiper"
       >
-        {relatedProducts.map((product) => {
+        {products.map((product) => {
           // Find category name based on product's cateory
           const category = categories.find(
             (cat) => cat._id === product.categoryId
