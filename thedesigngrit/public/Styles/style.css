@@ -14,7 +14,13 @@ body {
 }
 
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Edge */
+  width: 0px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar:hover {
+  width: 10px;
+  background: rgb(216, 216, 216);
 }
 
 * {
