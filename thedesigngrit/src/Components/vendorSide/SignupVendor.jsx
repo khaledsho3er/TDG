@@ -401,7 +401,28 @@ function Signupvendor() {
       }
     }
   };
-
+  const whiteTextFieldStyles = {
+    "& .MuiInputBase-input": {
+      color: "white", // Text color
+    },
+    "& .MuiInputLabel-root": {
+      color: "white", // Label color
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white", // Outline color
+      },
+      "&:hover fieldset": {
+        borderColor: "white", // Outline color on hover
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "white", // Outline color when focused
+      },
+    },
+    "& .MuiFormHelperText-root": {
+      color: "white", // Helper text color
+    },
+  };
   const renderPhaseContent = () => {
     switch (currentPhase) {
       case 1:
@@ -420,6 +441,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.firstName && !!errors.firstName}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Vendor Last Name"
@@ -434,6 +456,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.lastName && !!errors.lastName}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Vendor Email"
@@ -449,6 +472,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.email && !!errors.email}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Vendor Password"
@@ -464,6 +488,7 @@ function Signupvendor() {
               type="password"
               required
               error={touched.password && !!errors.password}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Vendor Phone Number"
@@ -480,6 +505,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.phoneNumber && !!errors.phoneNumber}
+              sx={whiteTextFieldStyles}
             />
           </>
         );
