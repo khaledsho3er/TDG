@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { Box, Typography } from "@mui/material";
 import "swiper/css";
 import "swiper/css/navigation";
 
 const VendorProductsCard = ({ vendor, products }) => {
   const [categories, setCategories] = useState([]);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -25,6 +25,15 @@ const VendorProductsCard = ({ vendor, products }) => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    if (swiperInstance && products.length === 1) {
+      const wrapper = swiperInstance.el.querySelector(".swiper-wrapper");
+      if (wrapper) {
+        wrapper.style.width = "1000px";
+      }
+    }
+  }, [swiperInstance, products]);
+
   return (
     <div
       className="related-products-container"
@@ -36,8 +45,9 @@ const VendorProductsCard = ({ vendor, products }) => {
           slidesPerView={3}
           spaceBetween={20}
           navigation
-          loop={true}
+          loop={products.length > 1} // disable loop if only one
           className="related-swiper"
+          onSwiper={setSwiperInstance}
         >
           {products.map((product) => {
             const category = categories.find(
@@ -118,22 +128,16 @@ const VendorProductsCard = ({ vendor, products }) => {
           })}
         </Swiper>
       ) : (
-        <Box
-          sx={{
-            padding: "40px 0",
+        <p
+          style={{
+            color: "#888",
+            fontStyle: "italic",
             textAlign: "center",
-            minHeight: "200px",
-            border: "1px dashed #ccc",
-            borderRadius: "12px",
-            width: "100%",
-            margin: "0 auto",
-            marginTop: "20px",
+            padding: "40px 0",
           }}
         >
-          <Typography variant="body1" sx={{ color: "#888" }}>
-            No products available for this vendor yet.
-          </Typography>
-        </Box>
+          No products available for this vendor yet.
+        </p>
       )}
     </div>
   );
