@@ -35,6 +35,9 @@ const VendorCategoriesgrid = ({ vendor }) => {
             minHeight: "200px",
             border: "1px dashed #ccc",
             borderRadius: "12px",
+            width: "100%",
+            margin: "0 auto",
+            marginTop: "20px",
           }}
         >
           <Typography variant="body1" sx={{ color: "#888" }}>
