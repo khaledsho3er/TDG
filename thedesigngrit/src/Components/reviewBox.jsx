@@ -24,6 +24,7 @@ const ReviewBox = ({ reviewsData }) => {
         alignItems: "start",
         justifyContent: "space-between",
         gap: "20px",
+        marginBottom: "20px",
       }}
     >
       {/* Average Rating */}

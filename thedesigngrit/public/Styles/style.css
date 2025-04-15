@@ -4116,7 +4116,6 @@ iframe {
   padding-left: 10rem;
   display: flex;
   flex-direction: column;
-  gap: 50px;
 }
 .reviews-section h2 {
   font-family: Horizon;
