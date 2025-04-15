@@ -562,8 +562,7 @@ function Header() {
                   }}
                   PaperProps={{
                     sx: {
-                      width: "30%",
-                      maxWidth: "300px",
+                      width: "9%",
                       backdropFilter: "blur(10px)",
                       backgroundColor: "rgba(255, 255, 255, 0.1)",
                       borderRadius: 2,
