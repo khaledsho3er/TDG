@@ -162,13 +162,13 @@ const ProductCard = ({ product }) => {
             <span
               style={{ textDecoration: "line-through", marginRight: "5px" }}
             >
-              {product.price}
+              {product.price} E£
             </span>
           ) : (
             product.price
           )}
           {product.salePrice && (
-            <span style={{ color: "red" }}>{product.salePrice}</span>
+            <span style={{ color: "red" }}>{product.salePrice}E£</span>
           )}
         </Typography>
       </CardContent>
