@@ -418,6 +418,10 @@ function Signupvendor() {
       "&.Mui-focused fieldset": {
         borderColor: "white", // Outline color when focused
       },
+      "&.Mui-focused": {
+        color: "white", // Text color when focused
+        borderColor: "white", // Outline color when focused
+      },
     },
     "& .MuiFormHelperText-root": {
       color: "white", // Helper text color
@@ -534,6 +538,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.brandName && !!errors.brandName}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Commercial Register No."
@@ -552,6 +557,7 @@ function Signupvendor() {
               error={
                 touched.commercialRegisterNo && !!errors.commercialRegisterNo
               }
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Tax Number"
@@ -568,6 +574,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.taxNumber && !!errors.taxNumber}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Company Address"
@@ -584,6 +591,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.companyAddress && !!errors.companyAddress}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Phone Number"
@@ -600,6 +608,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.brandPhoneNumber && !!errors.brandPhoneNumber}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Email"
@@ -616,9 +625,36 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.brandEmail && !!errors.brandEmail}
+              sx={whiteTextFieldStyles}
             />
             {/* 🚀 Added Types Selection */}
-            <FormControl fullWidth margin="normal">
+            <FormControl
+              fullWidth
+              margin="normal"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                  color: "white",
+                },
+                "& .MuiSvgIcon-root": {
+                  color: "white", // Dropdown icon color
+                },
+                "& .MuiFormHelperText-root": {
+                  color: "white",
+                },
+              }}
+            >
               <InputLabel>Brand Types</InputLabel>
               <Select
                 multiple
@@ -638,6 +674,22 @@ function Signupvendor() {
                     .map((id) => types.find((type) => type._id === id)?.name)
                     .join(", ")
                 }
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: "#6c7c59", // Match your background color
+                      color: "white",
+                      "& .MuiMenuItem-root": {
+                        "&:hover": {
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        },
+                        "&.Mui-selected": {
+                          backgroundColor: "rgba(255, 255, 255, 0.2)",
+                        },
+                      },
+                    },
+                  },
+                }}
               >
                 {types.map((type) => (
                   <MenuItem key={type._id} value={type._id}>
@@ -663,6 +715,7 @@ function Signupvendor() {
                     type="file"
                     onChange={(e) => handleFileChange(e, 2)}
                     accept="image/*"
+                    sx={{ color: "white" }}
                   />
                   <FormHelperText>
                     Please upload in .png, .jpeg, or .svg format
@@ -678,6 +731,7 @@ function Signupvendor() {
                     type="file"
                     onChange={(e) => handleFileChange(e, 2)}
                     accept="image/*"
+                    sx={{ color: "white" }}
                   />
                   <FormHelperText>
                     Upload image with recommended dimensions of 1920x1080px or
@@ -695,6 +749,7 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 2)}
               fullWidth
               margin="normal"
+              sx={whiteTextFieldStyles}
             />
           </Box>
         );
@@ -727,6 +782,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.shippingPolicy && !!errors.shippingPolicy}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Bank Account Number"
@@ -743,6 +799,7 @@ function Signupvendor() {
               margin="normal"
               required
               error={touched.bankAccountNumber && !!errors.bankAccountNumber}
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Website URL"
@@ -752,6 +809,7 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Instagram URL"
@@ -761,6 +819,7 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="Facebook URL"
@@ -770,6 +829,7 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="TikTok URL"
@@ -779,6 +839,7 @@ function Signupvendor() {
               onChange={(e) => handleInputChange(e, 3)}
               fullWidth
               margin="normal"
+              sx={whiteTextFieldStyles}
             />
             <TextField
               label="LinkedIn URL"
@@ -786,6 +847,7 @@ function Signupvendor() {
               name="linkedinURL"
               value={brandData.linkedinURL || ""}
               onChange={(e) => handleInputChange(e, 3)}
+              sx={whiteTextFieldStyles}
               fullWidth
               margin="normal"
             />
