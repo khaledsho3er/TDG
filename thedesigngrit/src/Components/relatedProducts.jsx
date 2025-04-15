@@ -41,46 +41,61 @@ const RelatedProducts = ({ productId }) => {
   }, []);
   return (
     <div className="related-products-container">
-      <Swiper
-        modules={[Navigation]}
-        slidesPerView={3}
-        spaceBetween={20}
-        navigation
-        loop={true}
-        className="related-swiper"
-      >
-        {relatedProducts.map((product) => {
-          // Find category name based on product's cateory
-          const category = categories.find(
-            (cat) => cat._id === product.categoryId
-          );
-          const categoryName = category ? category.name : "Unknown Category";
+      {relatedProducts.length > 0 ? (
+        <Swiper
+          modules={[Navigation]}
+          slidesPerView={3}
+          spaceBetween={20}
+          navigation
+          loop={true}
+          className="related-swiper"
+        >
+          {relatedProducts.map((product) => {
+            // Find category name based on product's cateory
+            const category = categories.find(
+              (cat) => cat._id === product.categoryId
+            );
+            const categoryName = category ? category.name : "Unknown Category";
 
-          return (
-            <SwiperSlide key={product._id}>
-              <Link
-                to={`/product/${product._id}`}
-                className="related-product-card"
-              >
-                <div className="related-product-card">
-                  <div className="related-product-image-container">
-                    <img
-                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                      alt={product.name}
-                      className="related-img"
-                    />
+            return (
+              <SwiperSlide key={product._id}>
+                <Link
+                  to={`/product/${product._id}`}
+                  className="related-product-card"
+                >
+                  <div className="related-product-card">
+                    <div className="related-product-image-container">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="related-img"
+                      />
+                    </div>
+                    <div className="related-info">
+                      <p className="related-category">{categoryName}</p>
+                      <h3 className="related-name">{product.name}</h3>
+                      <p className="related-price">{product.price} E£</p>
+                    </div>
                   </div>
-                  <div className="related-info">
-                    <p className="related-category">{categoryName}</p>
-                    <h3 className="related-name">{product.name}</h3>
-                    <p className="related-price">{product.price} E£</p>
-                  </div>
-                </div>
-              </Link>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+                </Link>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : (
+        <div className="no-related-products">
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "1.1rem",
+              marginTop: "1rem",
+            }}
+          >
+            No related products yet{" "}
+            <span style={{ fontSize: "1.2rem" }}>😊</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

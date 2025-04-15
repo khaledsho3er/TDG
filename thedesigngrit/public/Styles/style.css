@@ -4325,6 +4325,13 @@ iframe {
   border-radius: 8px;
   margin-bottom: 16px;
 }
+.no-related-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  color: #555;
+}
 
 .related-img {
   width: 100%;
