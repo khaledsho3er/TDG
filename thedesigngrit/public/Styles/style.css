@@ -4390,8 +4390,7 @@ iframe {
   height: 485px;
   font-family: "Montserrat";
   perspective: 1000px;
-  display: flex;
-  flex-direction: column;
+
   align-items: center;
 }
 .carousel-header {
@@ -4504,8 +4503,10 @@ iframe {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 60%;
+  width: 40%;
   transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  margin-top: 32px;
 }
 
 .carousel-item {

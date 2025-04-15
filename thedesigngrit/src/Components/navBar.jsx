@@ -499,7 +499,7 @@ function Header() {
                     {/* Product Image */}
                     {suggestion.mainImage && (
                       <img
-                        src={`https://tdg-db.onrender.com/uploads/${suggestion.mainImage}`}
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.mainImage}`}
                         alt={suggestion.name}
                         className="suggestion-image"
                       />
