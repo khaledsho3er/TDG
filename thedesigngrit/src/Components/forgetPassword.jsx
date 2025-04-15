@@ -115,11 +115,18 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
       sx={{
         zIndex: 1000,
         position: "fixed",
-        backdropFilter: "blur(4px)",
         "& .MuiPaper-root": {
           borderRadius: "16px",
-          backdropFilter: "blur(5px)",
-          backgroundColor: "#fff",
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.15)",
+          backgroundImage: `
+        linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),
+        url("https://www.transparenttextures.com/patterns/asfalt-dark.png")
+      `,
+          backgroundBlendMode: "overlay",
+          color: "#fff",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
         },
       }}
     >
