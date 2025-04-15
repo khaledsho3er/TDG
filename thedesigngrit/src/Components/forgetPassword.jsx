@@ -120,8 +120,8 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           backdropFilter: "blur(10px)",
           backgroundColor: "rgba(255, 255, 255, 0.15)",
           backgroundImage: `
-        linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),
-        url("https://www.transparenttextures.com/patterns/asfalt-dark.png")
+        linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),url('https://www.transparenttextures.com/patterns/asfalt-light.png')
+        
       `,
           backgroundBlendMode: "overlay",
           color: "#fff",
@@ -159,6 +159,13 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{ marginBottom: "20px" }}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              InputProps={{
+                style: {
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                },
+              }}
             />
           </>
         )}
@@ -171,6 +178,13 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               sx={{ marginBottom: "20px" }}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              InputProps={{
+                style: {
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                },
+              }}
             />
           </>
         )}
@@ -184,6 +198,13 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               sx={{ marginBottom: "10px" }}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              InputProps={{
+                style: {
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                },
+              }}
             />
             <TextField
               label="Confirm Password"
@@ -192,6 +213,13 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               sx={{ marginBottom: "20px" }}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              InputProps={{
+                style: {
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  color: "#fff",
+                },
+              }}
             />
           </>
         )}
