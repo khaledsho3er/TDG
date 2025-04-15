@@ -289,8 +289,26 @@ const ProductsPageVendor = ({ setActivePage }) => {
                       />
                       <div className="product-info-vendor">
                         <h3>{product.name}</h3>
-                        <p>{product.typeName}</p>
-                        <p>{product.price}</p>
+                        {/* <p>{product.typeName}</p> */}
+                        <p>
+                          {product.salePrice ? (
+                            <span
+                              style={{
+                                textDecoration: "line-through",
+                                marginRight: "5px",
+                              }}
+                            >
+                              {product.price} E£
+                            </span>
+                          ) : (
+                            product.price
+                          )}
+                          {product.salePrice && (
+                            <span style={{ color: "red" }}>
+                              {product.salePrice}E£
+                            </span>
+                          )}
+                        </p>
                       </div>
                       <div className="menu-container">
                         <BsThreeDotsVertical
