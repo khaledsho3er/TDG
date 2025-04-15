@@ -87,8 +87,8 @@ const RequestQuote = ({ onClose, productId }) => {
               <div className="requestInfo-brand">
                 <div className="requestInfo-brand-info">
                   <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/  ${productId.brandId.brandlogo}`}
-                    alt="Istikbal"
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${productId.brandId.brandlogo}`}
+                    alt={productId.brandId.brandName}
                     className="requestInfo-brand-logo"
                   />
                 </div>
