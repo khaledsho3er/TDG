@@ -4472,8 +4472,8 @@ iframe {
 
 .carousel-button {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 100%;
+  transform: translateY(698%);
   background: white;
   border: none;
   padding: 8px;
@@ -4484,6 +4484,7 @@ iframe {
   height: 35px;
   color: #2d2d2d;
   margin: auto;
+  z-index: 1000;
 }
 
 .carousel-button:hover {
@@ -4491,11 +4492,11 @@ iframe {
 }
 
 .carousel-button.left {
-  left: -109px;
+  left: 137px;
 }
 
 .carousel-button.right {
-  right: -10px;
+  right: -70px;
 }
 
 .carousel-wrapper {
@@ -4512,7 +4513,7 @@ iframe {
 .carousel-item {
   position: absolute;
   width: 215px;
-  height: 276px;
+  height: 230px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
