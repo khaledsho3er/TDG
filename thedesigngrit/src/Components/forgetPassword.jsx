@@ -120,7 +120,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           backdropFilter: "blur(10px)",
           backgroundColor: "rgba(255, 255, 255, 0.15)",
           backgroundImage: `
-        linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%),url('https://www.transparenttextures.com/patterns/asfalt-light.png')
+        linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)
         
       `,
           backgroundBlendMode: "overlay",
