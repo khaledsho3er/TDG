@@ -370,13 +370,22 @@ function Footer() {
               >
                 PAGES
               </Typography>
-              {categories.map((category) => (
+              {[
+                "Furniture",
+                "Kitchen & Dining",
+                "Bath",
+                "Lighting",
+                "Home Decor",
+                "Outdoor",
+              ].map((category) => (
                 <Link
-                  key={category._id}
-                  to={`/category/${category._id}/subcategories`}
+                  key={category}
+                  to={`/category/${category
+                    .toLowerCase()
+                    .replace(/ /g, "-")}/subcategories`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
                 >
-                  <Typography>{category.name}</Typography>
+                  <Typography>{category}</Typography>
                 </Link>
               ))}
             </Grid>
