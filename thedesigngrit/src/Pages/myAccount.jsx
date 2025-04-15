@@ -97,7 +97,11 @@ const MyAccount = () => {
       <Box>
         <div className="hero-job-container">
           <div className="hero-text">
-            <h1 className="hero-title">Hey, {userData.firstName}</h1>
+            <h1 className="hero-title">
+              Hey,{" "}
+              {userData.firstName.charAt(0).toUpperCase() +
+                userData.firstName.slice(1)}
+            </h1>
           </div>
         </div>
         <div className="terms-container">

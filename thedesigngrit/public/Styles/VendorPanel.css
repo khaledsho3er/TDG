@@ -1510,7 +1510,7 @@ h1 {
   height: 50vh; /* Adjust as needed */
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ff9800; /* Warning color */
+  color: #ccc; /* Warning color */
 }
 
 .exclamation {

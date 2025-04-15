@@ -560,10 +560,37 @@ function Header() {
                     vertical: "top",
                     horizontal: "center",
                   }}
+                  PaperProps={{
+                    sx: {
+                      backdropFilter: "blur(10px)",
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      borderRadius: 2,
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+                      overflow: "hidden",
+                      position: "relative",
+                      "::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundImage:
+                          "url('https://www.transparenttextures.com/patterns/asfalt-light.png')",
+                        opacity: 0.2,
+                        zIndex: 0,
+                      },
+                      "& .MuiMenuItem-root": {
+                        position: "relative",
+                        zIndex: 1,
+                        color: "#fff",
+                      },
+                    },
+                  }}
                 >
                   <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
                   <MenuItem onClick={handleLogout}>
-                    {" "}
                     <IoLogOutOutline style={{ marginRight: "10px" }} /> Logout
                   </MenuItem>
                 </Menu>

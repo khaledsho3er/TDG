@@ -64,6 +64,8 @@ function Footer() {
       }
 
       setEmail(email);
+      setIsChecked(false);
+      setEmail("");
       setError("");
       setShowModal(true); // Show modal after successful subscription
     } catch (err) {
