@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { BsExclamationOctagon } from "react-icons/bs";
 
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -83,17 +84,18 @@ const RelatedProducts = ({ productId }) => {
           })}
         </Swiper>
       ) : (
-        <div className="no-related-products">
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "1.1rem",
-              marginTop: "1rem",
-            }}
-          >
-            No related products yet{" "}
-            <span style={{ fontSize: "1.2rem" }}>😊</span>
-          </p>
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <BsExclamationOctagon />
+
+          <p className="no-reviews">No related products yet </p>
         </div>
       )}
     </div>
