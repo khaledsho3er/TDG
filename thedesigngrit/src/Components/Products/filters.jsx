@@ -42,7 +42,6 @@ const FilterSection = ({ onFilterChange, products }) => {
     fetchBrands();
   }, []);
 
-  // Inside the component
   const applyFilters = useCallback(() => {
     let filtered = products.filter((product) => {
       const matchesBrand =
@@ -51,11 +50,11 @@ const FilterSection = ({ onFilterChange, products }) => {
 
       const matchesColor =
         selectedFilters.colors.length === 0 ||
-        product.colors.some((color) => selectedFilters.colors.includes(color));
+        product.colors?.some((color) => selectedFilters.colors.includes(color));
 
       const matchesTag =
         selectedFilters.tags.length === 0 ||
-        product.tags.some((tag) => selectedFilters.tags.includes(tag));
+        product.tags?.some((tag) => selectedFilters.tags.includes(tag));
 
       const matchesPrice =
         product.price >= selectedFilters.priceRange[0] &&
@@ -65,11 +64,11 @@ const FilterSection = ({ onFilterChange, products }) => {
     });
 
     onFilterChange(filtered);
-  }, [products, selectedFilters, onFilterChange]); // Add dependencies
+  }, [products, selectedFilters, onFilterChange]);
 
   useEffect(() => {
     applyFilters();
-  }, [selectedFilters, applyFilters]); // No more ESLint warning ✅
+  }, [selectedFilters, applyFilters]);
 
   const handleFilterChange = (type, value) => {
     setSelectedFilters((prev) => ({
@@ -103,6 +102,9 @@ const FilterSection = ({ onFilterChange, products }) => {
     const allTags = Array.isArray(products)
       ? products.flatMap((p) => (Array.isArray(p.tags) ? p.tags : []))
       : [];
+
+    const getFilterLabel = (label, count) =>
+      count > 0 ? `${label} (${count})` : label;
 
     return (
       <Box sx={{ width: isMobile ? "100%" : 300, padding: 2 }}>
@@ -148,26 +150,11 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Button>
 
         {/* Brand Filter */}
-        <Accordion
-          disableGutters
-          elevation={0}
-          square
-          sx={{
-            "& .MuiAccordionSummary-root": {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-            "& .MuiAccordionSummary-root.Mui-focusVisible": {
-              backgroundColor: "transparent",
-            },
-            "& .MuiAccordionSummary-root.Mui-expanded": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
+        <Accordion disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Brands</Typography>
+            <Typography>
+              {getFilterLabel("Brands", selectedFilters.brands.length)}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             {brands.map((brand) => (
@@ -188,24 +175,7 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Price Filter */}
-        <Accordion
-          disableGutters
-          elevation={0}
-          square
-          sx={{
-            "& .MuiAccordionSummary-root": {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-            "& .MuiAccordionSummary-root.Mui-focusVisible": {
-              backgroundColor: "transparent",
-            },
-            "& .MuiAccordionSummary-root.Mui-expanded": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
+        <Accordion disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Price</Typography>
           </AccordionSummary>
@@ -221,26 +191,11 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Color Filter */}
-        <Accordion
-          disableGutters
-          elevation={0}
-          square
-          sx={{
-            "& .MuiAccordionSummary-root": {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-            "& .MuiAccordionSummary-root.Mui-focusVisible": {
-              backgroundColor: "transparent",
-            },
-            "& .MuiAccordionSummary-root.Mui-expanded": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
+        <Accordion disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Colors</Typography>
+            <Typography>
+              {getFilterLabel("Colors", selectedFilters.colors.length)}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             {Array.from(new Set(allColors)).map((color) => (
@@ -259,26 +214,11 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Tags Filter */}
-        <Accordion
-          disableGutters
-          elevation={0}
-          square
-          sx={{
-            "& .MuiAccordionSummary-root": {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-            "& .MuiAccordionSummary-root.Mui-focusVisible": {
-              backgroundColor: "transparent",
-            },
-            "& .MuiAccordionSummary-root.Mui-expanded": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
+        <Accordion disableGutters elevation={0} square>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Tags</Typography>
+            <Typography>
+              {getFilterLabel("Tags", selectedFilters.tags.length)}
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             {Array.from(new Set(allTags)).map((tag) => (
