@@ -188,6 +188,10 @@ function ProductPage() {
       console.error("Error submitting review:", error);
     }
   };
+  const ratingBreakdown = [5, 4, 3, 2, 1].map((stars) => {
+    const count = reviews.filter((r) => r.rating === stars).length;
+    return { stars, count };
+  });
   return (
     <div className="product-page">
       <Header />
@@ -710,7 +714,7 @@ function ProductPage() {
           )}
 
           <Box className="review-summary">
-            <ReviewBox />
+            <ReviewBox reviewsData={ratingBreakdown} />
           </Box>
 
           {reviews.length > 0 ? (
@@ -735,7 +739,7 @@ function ProductPage() {
                 gap: "16px",
               }}
             >
-              <BsExclamationOctagon size={32} color="#ccc" />
+              <BsExclamationOctagon size={50} color="#ccc" />
 
               <p className="no-reviews">No reviews yet.</p>
             </div>

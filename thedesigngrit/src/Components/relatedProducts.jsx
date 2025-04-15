@@ -94,7 +94,7 @@ const RelatedProducts = ({ productId }) => {
             gap: "16px",
           }}
         >
-          <BsExclamationOctagon size={32} color="#ccc" />
+          <BsExclamationOctagon size={50} color="#ccc" />
 
           <p className="no-reviews">No related products yet </p>
         </div>
