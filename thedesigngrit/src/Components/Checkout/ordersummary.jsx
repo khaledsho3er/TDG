@@ -24,9 +24,9 @@ function SummaryForm({ billData }) {
                 <Box className="product-row" key={product.id}>
                   <Box className="product-info">
                     <h4 className="product-title">{product.name}</h4>
-                    <p className="product-description">{product.description}</p>
+                    {/* <p className="product-description">{product.description}</p> */}
                     <img
-                      src={product.image}
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                       alt={product.name}
                       className="product-image"
                     />
@@ -50,7 +50,7 @@ function SummaryForm({ billData }) {
               <li>Shipping to Egypt</li>
               <li>Ship in 1-2 weeks</li>
               <li>
-                Sold and shipped by <strong>Our Company</strong>
+                Sold and shipped by <strong>{cartItems[0].brandName}</strong>
               </li>
             </ul>
           </Box>
