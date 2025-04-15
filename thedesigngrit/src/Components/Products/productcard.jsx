@@ -101,10 +101,10 @@ const ProductCard = ({ product }) => {
               position: "absolute",
               top: 12,
               left: 12,
-              backgroundColor: "#ff4d4f",
+              backgroundColor: "#DD4A2A",
               color: "#fff",
               padding: "4px 10px",
-              borderRadius: "20px",
+              borderRadius: "6px",
               fontSize: "12px",
               fontWeight: 600,
               fontFamily: "Montserrat",
@@ -113,16 +113,16 @@ const ProductCard = ({ product }) => {
           >
             SOLD OUT
           </Box>
-        ) : product.stock < 5 ? (
+        ) : product.stock <= 5 ? (
           <Box
             sx={{
               position: "absolute",
               top: 12,
               left: 12,
-              backgroundColor: "#ffa500",
+              backgroundColor: "#FFAC1C",
               color: "#fff",
               padding: "4px 10px",
-              borderRadius: "20px",
+              borderRadius: "6px",
               fontSize: "12px",
               fontWeight: 600,
               fontFamily: "Montserrat",
