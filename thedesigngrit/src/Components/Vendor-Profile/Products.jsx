@@ -37,7 +37,16 @@ function VendorsProductsGrid({ vendor }) {
         >
           {vendor.brandName} 's Products
         </Typography>
-        <Button variant="contained">View all</Button>
+        <Button
+          variant="contained"
+          sx={{
+            ":hover": {
+              backgroundColor: "#2d2d2d",
+            },
+          }}
+        >
+          View all
+        </Button>
       </Box>
       <Grid container spacing={3} className="vendorProducts-grid">
         <VendorProductsCard vendor={vendor} products={products} />

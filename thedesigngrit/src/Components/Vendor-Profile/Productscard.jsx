@@ -4,9 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import axios from "axios";
 
 const VendorProductsCard = ({ vendor, products }) => {
   const [categories, setCategories] = useState([]);
+  const [categoryNames, setCategoryNames] = useState({});
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   // Fetch categories
   useEffect(() => {
@@ -24,6 +27,34 @@ const VendorProductsCard = ({ vendor, products }) => {
 
     fetchCategories();
   }, []);
+  useEffect(() => {
+    const fetchCategoryName = async (id) => {
+      try {
+        const res = await axios.get(
+          `https://tdg-db.onrender.com/api/categories/categories/${id}`
+        );
+        return res.data.name;
+      } catch (error) {
+        console.error("Error fetching category name:", error);
+        return "Unknown Category";
+      }
+    };
+
+    const fetchAllCategoryNames = async () => {
+      const namesMap = {};
+      for (const product of relatedProducts) {
+        if (!categoryNames[product.category]) {
+          const name = await fetchCategoryName(product.category);
+          namesMap[product.category] = name;
+        }
+      }
+      setCategoryNames((prev) => ({ ...prev, ...namesMap }));
+    };
+
+    if (relatedProducts.length > 0) {
+      fetchAllCategoryNames();
+    }
+  }, [relatedProducts]);
   return (
     <div
       className="related-products-container"
@@ -39,10 +70,6 @@ const VendorProductsCard = ({ vendor, products }) => {
       >
         {products.map((product) => {
           // Find category name based on product's cateory
-          const category = categories.find(
-            (cat) => cat._id === product.categoryId
-          );
-          const categoryName = category ? category.name : "Unknown Category";
 
           return (
             <SwiperSlide key={product._id}>
@@ -59,7 +86,9 @@ const VendorProductsCard = ({ vendor, products }) => {
                     />
                   </div>
                   <div className="related-info">
-                    <p className="related-category">{categoryName}</p>
+                    <p className="related-category">
+                      {categoryNames[product.category] || "Loading..."}
+                    </p>{" "}
                     <h3 className="related-name">{product.name}</h3>
                     <p className="related-price">{product.price} E£</p>
                   </div>
