@@ -150,7 +150,24 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Button>
 
         {/* Brand Filter */}
-        <Accordion disableGutters elevation={0} square>
+        <Accordion
+          disableGutters
+          elevation={0}
+          square
+          sx={{
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
+              backgroundColor: "transparent",
+            },
+            "& .MuiAccordionSummary-root.Mui-expanded": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>
               {getFilterLabel("Brands", selectedFilters.brands.length)}
@@ -175,7 +192,24 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Price Filter */}
-        <Accordion disableGutters elevation={0} square>
+        <Accordion
+          disableGutters
+          elevation={0}
+          square
+          sx={{
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
+              backgroundColor: "transparent",
+            },
+            "& .MuiAccordionSummary-root.Mui-expanded": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Price</Typography>
           </AccordionSummary>
@@ -191,7 +225,24 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Color Filter */}
-        <Accordion disableGutters elevation={0} square>
+        <Accordion
+          disableGutters
+          elevation={0}
+          square
+          sx={{
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
+              backgroundColor: "transparent",
+            },
+            "& .MuiAccordionSummary-root.Mui-expanded": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>
               {getFilterLabel("Colors", selectedFilters.colors.length)}
@@ -214,7 +265,24 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Tags Filter */}
-        <Accordion disableGutters elevation={0} square>
+        <Accordion
+          disableGutters
+          elevation={0}
+          square
+          sx={{
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
+              backgroundColor: "transparent",
+            },
+            "& .MuiAccordionSummary-root.Mui-expanded": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>
               {getFilterLabel("Tags", selectedFilters.tags.length)}
