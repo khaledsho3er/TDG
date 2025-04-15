@@ -47,6 +47,9 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
               display: "flex",
               justifyContent: "flex-start",
               flexWrap: "row",
+              gap: "60px",
+              marginRight: "20px",
+              margin: "0 auto",
             }}
           >
             {currentProducts.map((product) => {
