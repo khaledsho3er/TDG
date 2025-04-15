@@ -712,38 +712,39 @@ function ProductPage() {
               </div>
             </div>
           )}
+          <div style={{ paddingLeft: "18rem" }}>
+            <Box className="review-summary">
+              <ReviewBox reviewsData={ratingBreakdown} />
+            </Box>
 
-          <Box className="review-summary">
-            <ReviewBox reviewsData={ratingBreakdown} />
-          </Box>
+            {reviews.length > 0 ? (
+              reviews.map((review, index) => (
+                <div key={index} className="review-card">
+                  <Box className="review-subtitle">
+                    <h3>{review.reviewerName}</h3>
+                    <p>{review.reviewDate}</p>
+                  </Box>
+                  <p>{"★".repeat(review.rating)}</p>
+                  <p>{review.comment}</p>
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
+                <BsExclamationOctagon size={50} color="#ccc" />
 
-          {reviews.length > 0 ? (
-            reviews.map((review, index) => (
-              <div key={index} className="review-card">
-                <Box className="review-subtitle">
-                  <h3>{review.reviewerName}</h3>
-                  <p>{review.reviewDate}</p>
-                </Box>
-                <p>{"★".repeat(review.rating)}</p>
-                <p>{review.comment}</p>
+                <p className="no-reviews">No reviews yet.</p>
               </div>
-            ))
-          ) : (
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "16px",
-              }}
-            >
-              <BsExclamationOctagon size={50} color="#ccc" />
-
-              <p className="no-reviews">No reviews yet.</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
       <Footer />
