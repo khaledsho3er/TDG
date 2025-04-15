@@ -653,6 +653,9 @@ function ProductPage() {
                 <button
                   className="close-form-btn"
                   onClick={() => setShowReviewForm(false)}
+                  style={{ backgroundColor: hover ? "transparent" : "" }}
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
                 >
                   <IoMdClose />
                 </button>

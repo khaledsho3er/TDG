@@ -3308,6 +3308,7 @@ select {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   border: 1px solid #ddd;
+  height: 400px;
 }
 
 .thumbnail-container {
@@ -4322,7 +4323,6 @@ iframe {
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  margin-bottom: 16px;
 }
 .no-related-products {
   display: flex;
@@ -4389,7 +4389,7 @@ iframe {
 /*brand carsoul*/
 .carousel-container {
   max-width: 400px;
-  margin: 0;
+  margin: 10px;
   background: white;
   padding: 16px;
   border-radius: 10px;
@@ -4397,6 +4397,7 @@ iframe {
   height: 485px;
   font-family: "Montserrat";
   perspective: 1000px;
+  margin-left: 70px;
 
   align-items: center;
 }
