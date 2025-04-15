@@ -422,7 +422,10 @@ const ResetPasswordForm = () => {
         <p style={{ color: "green", fontFamily: "Montserrat" }}>{success}</p>
       )}
 
-      <div className="reset-form-field" style={{ position: "relative" }}>
+      <div
+        className="reset-form-field"
+        style={{ position: "relative", marginBottom: "1rem" }}
+      >
         <label>Current Password</label>
         <input
           type={showCurrentPassword ? "text" : "password"}
@@ -437,19 +440,25 @@ const ResetPasswordForm = () => {
             position: "absolute",
             transform: "translateY(50%)",
             right: "10px",
+            top: "38px", // adjust based on input height
             cursor: "pointer",
             color: "#6b7b58",
           }}
         >
           {showCurrentPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
         </span>
+
+        <div style={{ textAlign: "right", marginTop: "0.25rem" }}>
+          <span
+            onClick={() => setForgotPasswordDialogOpen(true)}
+            className="forgot-password-link"
+            style={{ fontSize: "0.85rem", cursor: "pointer", color: "#6b7b58" }}
+          >
+            Forgot Password?
+          </span>
+        </div>
       </div>
-      <span
-        onClick={() => setForgotPasswordDialogOpen(true)}
-        className="forgot-password-link"
-      >
-        Forgot Password?
-      </span>
+
       <div className="reset-form-field" style={{ position: "relative" }}>
         <label>New Password</label>
         <input
