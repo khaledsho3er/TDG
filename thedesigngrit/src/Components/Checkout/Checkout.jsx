@@ -7,8 +7,10 @@ import PaymentForm from "./Paymentmethod.jsx";
 import { useCart } from "../../Context/cartcontext.js";
 import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
+  const navigate = useNavigate();
   const { userSession } = useUser();
   const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
@@ -125,6 +127,7 @@ function Checkout() {
 
       // Reset the cart after successful order placement
       resetCart();
+      navigate("/"); // Redirect to home or order confirmation page
       // Redirect or show confirmation
     } catch (error) {
       console.error("Failed to create orders:", error);

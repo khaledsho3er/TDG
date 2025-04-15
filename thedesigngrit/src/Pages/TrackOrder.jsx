@@ -201,7 +201,7 @@ function TrackOrder() {
                     >
                       View Invoice
                     </button>
-                    ;{/* Download Invoice Button */}
+                    {/* Download Invoice Button */}
                     <PDFDownloadLink
                       document={<InvoicePDF order={selectedOrder} />}
                       fileName={`invoice_${selectedOrder._id}.pdf`}
@@ -227,7 +227,23 @@ function TrackOrder() {
                   >
                     <Box>
                       <h2>Order Summary</h2>
-                      <span className="status paid">
+                      <span
+                        className="status paid"
+                        style={{
+                          backgroundColor:
+                            selectedOrder.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : selectedOrder.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            selectedOrder.orderStatus === "Pending"
+                              ? "#721c24"
+                              : selectedOrder.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                        }}
+                      >
                         {selectedOrder.orderStatus}
                       </span>
                     </Box>
@@ -293,7 +309,24 @@ function TrackOrder() {
                     <Box>
                       <h3>Order Item</h3>
                       <h4>{selectedSubOrder.productId.name}</h4>
-                      <span className="status shipped">
+                      <span
+                        className="status shipped"
+                        style={{
+                          marginTop: "10px",
+                          backgroundColor:
+                            selectedOrder.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : selectedOrder.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            selectedOrder.orderStatus === "Pending"
+                              ? "#721c24"
+                              : selectedOrder.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                        }}
+                      >
                         {selectedOrder.orderStatus}
                       </span>
                     </Box>
