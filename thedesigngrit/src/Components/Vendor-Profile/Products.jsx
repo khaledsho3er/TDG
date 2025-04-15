@@ -48,7 +48,6 @@ function VendorsProductsGrid({ vendor }) {
         >
           View all
         </Button>
-        <Button variant="contained">View all</Button>
       </Box>
       <Grid container spacing={3} className="vendorProducts-grid">
         <VendorProductsCard vendor={vendor} products={products} />

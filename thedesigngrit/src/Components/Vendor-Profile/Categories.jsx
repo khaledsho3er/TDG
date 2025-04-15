@@ -4,6 +4,7 @@ import VendorCategoryCard from "./CategoryCard";
 
 const VendorCategoriesgrid = ({ vendor }) => {
   const [types, setTypes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch(`https://tdg-db.onrender.com/api/types/${vendor._id}`)
@@ -14,7 +15,8 @@ const VendorCategoriesgrid = ({ vendor }) => {
         return response.json();
       })
       .then((data) => setTypes(data))
-      .catch((error) => console.error("Error fetching types:", error));
+      .catch((error) => console.error("Error fetching types:", error))
+      .finally(() => setIsLoading(false));
   }, [vendor._id]);
 
   return (
@@ -22,17 +24,26 @@ const VendorCategoriesgrid = ({ vendor }) => {
       <Typography variant="h1" className="vendorcategories-title">
         {vendor.brandName}'s Types
       </Typography>
-      <Grid container spacing={3} className="vendorcategories-grid">
-        {types.slice(0, 3).map((type) => (
-          <Grid item xs={12} sm={6} md={4} key={type._id}>
-            <VendorCategoryCard
-              name={type.name}
-              description={type.description}
-              image={type.image}
-            />
-          </Grid>
-        ))}
-      </Grid>
+
+      {isLoading ? (
+        <Typography sx={{ p: 2, color: "gray" }}>Loading...</Typography>
+      ) : types.length === 0 ? (
+        <Typography sx={{ p: 2, color: "gray" }}>
+          No types found for this vendor.
+        </Typography>
+      ) : (
+        <Grid container spacing={3} className="vendorcategories-grid">
+          {types.slice(0, 3).map((type) => (
+            <Grid item xs={12} sm={6} md={4} key={type._id}>
+              <VendorCategoryCard
+                name={type.name}
+                description={type.description}
+                image={type.image}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };
