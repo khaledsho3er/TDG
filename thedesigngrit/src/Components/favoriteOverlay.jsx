@@ -71,7 +71,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
               <div className="notification-image-vendor">
                 {/* Assuming `product.mainImage` is the image path */}
                 <img
-                  src={`https://tdg-db.onrender.com/uploads/${product.mainImage}`}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                   alt={product.title}
                   className="notification-image-vendor-image"
                 />
@@ -79,7 +79,10 @@ const FavoritesOverlay = ({ open, onClose }) => {
               <div className="notification-details-vendor">
                 <h4>{product.name}</h4>
                 <p>{product.price}</p>
-                <span>{product.description}</span>
+                <span>
+                  {product.description.split(" ").slice(0, 10).join(" ") +
+                    (product.description.split(" ").length > 10 ? "..." : "")}
+                </span>
               </div>
               <div
                 className="notification-status-vendor"
