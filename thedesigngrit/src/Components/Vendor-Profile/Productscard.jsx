@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; //
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import axios from "axios";
 
 const VendorProductsCard = ({ vendor, products }) => {
   const [categories, setCategories] = useState([]);
-  const [categoryNames, setCategoryNames] = useState({});
-  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Fetch categories
+  // Fetch all categories once
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -19,7 +16,7 @@ const VendorProductsCard = ({ vendor, products }) => {
           "https://tdg-db.onrender.com/api/categories/categories/"
         );
         const data = await response.json();
-        setCategories(data); // Store all categories
+        setCategories(data); // Save all categories
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -27,34 +24,7 @@ const VendorProductsCard = ({ vendor, products }) => {
 
     fetchCategories();
   }, []);
-  useEffect(() => {
-    const fetchCategoryName = async (id) => {
-      try {
-        const res = await axios.get(
-          `https://tdg-db.onrender.com/api/categories/categories/${id}`
-        );
-        return res.data.name;
-      } catch (error) {
-        console.error("Error fetching category name:", error);
-        return "Unknown Category";
-      }
-    };
 
-    const fetchAllCategoryNames = async () => {
-      const namesMap = {};
-      for (const product of relatedProducts) {
-        if (!categoryNames[product.category]) {
-          const name = await fetchCategoryName(product.category);
-          namesMap[product.category] = name;
-        }
-      }
-      setCategoryNames((prev) => ({ ...prev, ...namesMap }));
-    };
-
-    if (relatedProducts.length > 0) {
-      fetchAllCategoryNames();
-    }
-  }, [relatedProducts]);
   return (
     <div
       className="related-products-container"
@@ -69,7 +39,10 @@ const VendorProductsCard = ({ vendor, products }) => {
         className="related-swiper"
       >
         {products.map((product) => {
-          // Find category name based on product's cateory
+          const category = categories.find(
+            (cat) => cat._id === product.category
+          );
+          const categoryName = category ? category.name : "Unknown Category";
 
           return (
             <SwiperSlide key={product._id}>
@@ -83,14 +56,43 @@ const VendorProductsCard = ({ vendor, products }) => {
                       src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                       alt={product.name}
                       className="related-img"
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        border: "1px solid #ddd",
+                      }}
                     />
                   </div>
-                  <div className="related-info">
-                    <p className="related-category">
-                      {categoryNames[product.category] || "Loading..."}
-                    </p>{" "}
-                    <h3 className="related-name">{product.name}</h3>
-                    <p className="related-price">{product.price} E£</p>
+                  <div className="related-info" style={{ marginTop: "10px" }}>
+                    <p
+                      className="related-category"
+                      style={{
+                        fontSize: "14px",
+                        color: "#888",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {categoryName}
+                    </p>
+                    <h3
+                      className="related-name"
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        marginBottom: "4px",
+                        color: "#222",
+                      }}
+                    >
+                      {product.name}
+                    </h3>
+                    <p
+                      className="related-price"
+                      style={{ fontSize: "15px", color: "#e91e63" }}
+                    >
+                      {product.price} E£
+                    </p>
                   </div>
                 </div>
               </Link>

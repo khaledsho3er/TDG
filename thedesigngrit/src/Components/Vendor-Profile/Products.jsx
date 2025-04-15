@@ -42,11 +42,14 @@ function VendorsProductsGrid({ vendor }) {
           sx={{
             ":hover": {
               backgroundColor: "#2d2d2d",
+              color: "#fff",
+              border: "1px solid #2d2d2d",
             },
           }}
         >
           View all
         </Button>
+        <Button variant="contained">View all</Button>
       </Box>
       <Grid container spacing={3} className="vendorProducts-grid">
         <VendorProductsCard vendor={vendor} products={products} />
