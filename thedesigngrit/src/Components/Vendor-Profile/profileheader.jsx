@@ -2,7 +2,9 @@ import React from "react";
 import { Box, Typography, Button, CardMedia } from "@mui/material";
 
 function VendorProfileHeader({ vendor }) {
-  const fullImagePath = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${vendor.brandlogo}`; // Full image path for rendering
+  const fullImagePath = vendor.brandlogo
+    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${vendor.brandlogo}` // Full image path for rendering
+    : "/Assets/TDG_Logo_Black.webp"; // Default (static) image if brandlogo isn't available
 
   return (
     <Box
@@ -38,7 +40,7 @@ function VendorProfileHeader({ vendor }) {
       >
         <CardMedia
           component="img"
-          src={fullImagePath || "/Assets/Vendors/default-logo.webp"} // Use dynamic logo or fallback
+          src={fullImagePath || "//Assets/TDG_Logo_Black.webp"} // Use dynamic logo or fallback
           alt="Logo"
           sx={{
             width: { xs: "80px", md: "100px" },

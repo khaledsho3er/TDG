@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { Box, Typography } from "@mui/material";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -117,16 +118,19 @@ const VendorProductsCard = ({ vendor, products }) => {
           })}
         </Swiper>
       ) : (
-        <p
-          style={{
-            color: "#888",
-            fontStyle: "italic",
-            textAlign: "center",
+        <Box
+          sx={{
             padding: "40px 0",
+            textAlign: "center",
+            minHeight: "200px",
+            border: "1px dashed #ccc",
+            borderRadius: "12px",
           }}
         >
-          No products available for this vendor yet.
-        </p>
+          <Typography variant="body1" sx={{ color: "#888" }}>
+            No products available for this vendor yet.
+          </Typography>
+        </Box>
       )}
     </div>
   );

@@ -28,9 +28,19 @@ const VendorCategoriesgrid = ({ vendor }) => {
       {isLoading ? (
         <Typography sx={{ p: 2, color: "gray" }}>Loading...</Typography>
       ) : types.length === 0 ? (
-        <Typography sx={{ p: 2, color: "gray" }}>
-          No types found for this vendor.
-        </Typography>
+        <Box
+          sx={{
+            padding: "40px 0",
+            textAlign: "center",
+            minHeight: "200px",
+            border: "1px dashed #ccc",
+            borderRadius: "12px",
+          }}
+        >
+          <Typography variant="body1" sx={{ color: "#888" }}>
+            No Types available at the moment.
+          </Typography>
+        </Box>
       ) : (
         <Grid container spacing={3} className="vendorcategories-grid">
           {types.slice(0, 3).map((type) => (
