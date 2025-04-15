@@ -130,17 +130,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
             </Typography>
           </Box>
         ) : (
-          <Card
-            sx={{
-              width: "100%",
-              maxWidth: "500px",
-              borderRadius: "16px",
-              background: "rgba(255, 255, 255, 0.15)",
-              backdropFilter: "blur(10px)",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
+          <Card>
             <CardContent>
               <Typography
                 variant="h6"

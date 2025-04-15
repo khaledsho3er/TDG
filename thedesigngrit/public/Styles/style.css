@@ -3560,13 +3560,21 @@ select {
 
 /* Popup container */
 .requestInfo-popup {
-  background: #efeded;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2); /* semi-transparent */
+  backdrop-filter: blur(15px); /* glassy blur effect */
+  -webkit-backdrop-filter: blur(15px); /* Safari support */
+  border-radius: 16px;
   width: 800px;
   height: 600px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    /* soft big glow */ 0 4px 6px rgba(0, 0, 0, 0.1); /* gentle base shadow */
+
+  border: 1px solid rgba(255, 255, 255, 0.18); /* subtle border for glass */
   position: relative;
+  overflow-y: auto;
+  color: #2d2d2d; /* ensure text is visible on the transparent background */
 }
 
 /* Header */
