@@ -66,10 +66,10 @@ const RequestQuote = ({ onClose, productId }) => {
               position: "absolute",
               top: "16px",
               right: "16px",
-              color: "#2d2d2d",
+              color: "#fff",
             }}
           >
-            <IoIosClose size={30} />
+            <IoIosClose size={30} color="#fff" />
           </IconButton>
         </div>
 

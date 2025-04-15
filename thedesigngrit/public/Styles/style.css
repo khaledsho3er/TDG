@@ -3531,7 +3531,7 @@ select {
   font-size: 24px;
   margin-bottom: 10px;
   font-family: Montserrat;
-  color: #2d2d2d;
+  color: #fff;
   padding: 0px 30px 0px 30px;
 }
 .confirmation-message button {
@@ -3678,7 +3678,7 @@ select {
 
 .requestInfo-form-group textarea {
   padding: 10px;
-  width: 97%;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #efeded;
