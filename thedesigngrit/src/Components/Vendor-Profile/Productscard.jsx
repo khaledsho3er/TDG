@@ -91,7 +91,23 @@ const VendorProductsCard = ({ vendor, products }) => {
                       className="related-price"
                       style={{ fontSize: "15px", color: "#e91e63" }}
                     >
-                      {product.price} E£
+                      {product.salePrice ? (
+                        <span
+                          style={{
+                            textDecoration: "line-through",
+                            marginRight: "5px",
+                          }}
+                        >
+                          {product.price} E£
+                        </span>
+                      ) : (
+                        product.price
+                      )}
+                      {product.salePrice && (
+                        <span style={{ color: "red" }}>
+                          {product.salePrice}E£
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>
