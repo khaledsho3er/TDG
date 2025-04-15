@@ -148,7 +148,16 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Button>
 
         {/* Brand Filter */}
-        <Accordion>
+        <Accordion
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+            "&.Mui-expanded:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Brands</Typography>
           </AccordionSummary>
@@ -171,7 +180,16 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Price Filter */}
-        <Accordion>
+        <Accordion
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+            "&.Mui-expanded:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Price</Typography>
           </AccordionSummary>
@@ -187,7 +205,16 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Color Filter */}
-        <Accordion>
+        <Accordion
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+            "&.Mui-expanded:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Colors</Typography>
           </AccordionSummary>
@@ -208,7 +235,16 @@ const FilterSection = ({ onFilterChange, products }) => {
         </Accordion>
 
         {/* Tags Filter */}
-        <Accordion>
+        <Accordion
+          sx={{
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+            "&.Mui-expanded:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Tags</Typography>
           </AccordionSummary>
