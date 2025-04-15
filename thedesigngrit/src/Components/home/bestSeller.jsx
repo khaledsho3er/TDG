@@ -34,7 +34,13 @@ const ProductSlider = () => {
     <div className="slider-container-home">
       <h1 className="slider-title">BEST SELLERS</h1>
 
-      <div className="slider-content">
+      <div
+        className="slider-content"
+        style={{
+          width: products.length === 1 ? "1000px" : "100%",
+          justifyContent: products.length > 3 ? "center" : "flex-start",
+        }}
+      >
         {products.map((product, index) => (
           <div
             key={product._id}
