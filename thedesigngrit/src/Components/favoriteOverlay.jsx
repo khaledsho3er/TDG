@@ -41,7 +41,20 @@ const FavoritesOverlay = ({ open, onClose }) => {
       {/* Header */}
       <div className="overlay-header-vendor">
         <h3>Favorites</h3>
-        <button className="close-button-vendor" onClick={onClose}>
+        <button
+          className="close-button-vendor"
+          onClick={onClose}
+          style={{
+            color: "#2d2d2d",
+            backgroundColor: "transparent",
+            border: "none",
+            cursor: "pointer",
+            ":hover": {
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+            },
+          }}
+        >
           <FaTimes />
         </button>
       </div>

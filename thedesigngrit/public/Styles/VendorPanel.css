@@ -312,11 +312,36 @@
   position: absolute;
   top: 50px;
   right: 0;
-  width: 360px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 360vw;
+  max-width: 360px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   z-index: 10;
+  overflow: hidden;
+}
+
+/* Grainy texture overlay using ::before */
+.overlay-container-vendor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensuring content inside stays above the grain */
+.overlay-container-vendor > * {
+  position: relative;
+  z-index: 1;
+  color: #fff; /* Optional: white text if background is darkish */
 }
 
 .overlay-header-vendor {
