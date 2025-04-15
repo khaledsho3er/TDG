@@ -4126,7 +4126,7 @@ iframe {
   color: #2d2d2d;
 }
 .review-card {
-  width: 80%;
+  width: 90%;
   padding: 15px;
   background-color: #ebe4e5;
   border-radius: 8px;
@@ -4177,7 +4177,7 @@ iframe {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 2rem;
-  padding-right: 353px;
+  padding-right: 177px;
 }
 
 .write-review-btn {
@@ -4333,10 +4333,11 @@ iframe {
 }
 
 .related-img {
-  width: 100%;
+  width: 90%;
   height: 256px;
   object-fit: cover;
   transition: transform 0.3s ease;
+  border-radius: 10px;
 }
 
 .related-product-card:hover .related-img {

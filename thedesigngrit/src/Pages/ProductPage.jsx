@@ -712,7 +712,7 @@ function ProductPage() {
               </div>
             </div>
           )}
-          <div style={{ paddingLeft: "18rem" }}>
+          <div style={{ paddingLeft: "1rem" }}>
             <Box className="review-summary">
               <ReviewBox reviewsData={ratingBreakdown} />
             </Box>

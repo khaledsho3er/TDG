@@ -10,6 +10,7 @@ import { BsExclamationOctagon } from "react-icons/bs";
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [categoryNames, setCategoryNames] = useState({});
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -26,20 +27,33 @@ const RelatedProducts = ({ productId }) => {
   }, [productId]);
   // Fetch categories
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoryName = async (id) => {
       try {
-        const response = await fetch(
-          "https://tdg-db.onrender.com/api/categories/categories/"
+        const res = await axios.get(
+          `https://tdg-db.onrender.com/api/categories/categories/${id}`
         );
-        const data = await response.json();
-        setCategories(data); // Store all categories
+        return res.data.name;
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching category name:", error);
+        return "Unknown Category";
       }
     };
 
-    fetchCategories();
-  }, []);
+    const fetchAllCategoryNames = async () => {
+      const namesMap = {};
+      for (const product of relatedProducts) {
+        if (!categoryNames[product.category]) {
+          const name = await fetchCategoryName(product.category);
+          namesMap[product.category] = name;
+        }
+      }
+      setCategoryNames((prev) => ({ ...prev, ...namesMap }));
+    };
+
+    if (relatedProducts.length > 0) {
+      fetchAllCategoryNames();
+    }
+  }, [relatedProducts]);
   return (
     <div className="related-products-container">
       {relatedProducts.length > 0 ? (
@@ -53,10 +67,10 @@ const RelatedProducts = ({ productId }) => {
         >
           {relatedProducts.map((product) => {
             // Find category name based on product's cateory
-            const category = categories.find(
-              (cat) => cat._id === product.categoryId
-            );
-            const categoryName = category ? category.name : "Unknown Category";
+            // const category = categories.find(
+            //   (cat) => cat._id === product.categoryId
+            // );
+            // const categoryName = category ? category.name : "Unknown Category";
 
             return (
               <SwiperSlide key={product._id}>
@@ -73,7 +87,9 @@ const RelatedProducts = ({ productId }) => {
                       />
                     </div>
                     <div className="related-info">
-                      <p className="related-category">{categoryName}</p>
+                      <p className="related-category">
+                        {categoryNames[product.category] || "Loading..."}
+                      </p>
                       <h3 className="related-name">{product.name}</h3>
                       <p className="related-price">{product.price} E£</p>
                     </div>
