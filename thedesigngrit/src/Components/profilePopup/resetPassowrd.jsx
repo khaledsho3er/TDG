@@ -440,7 +440,7 @@ const ResetPasswordForm = () => {
             position: "absolute",
             transform: "translateY(50%)",
             right: "10px",
-            top: "38px", // adjust based on input height
+            top: "45px", // adjust based on input height
             cursor: "pointer",
             color: "#6b7b58",
           }}
@@ -472,7 +472,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowNewPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            top: "50%",
+            top: "53%",
             transform: "translateY(-50%)",
             right: "10px",
             cursor: "pointer",
@@ -516,7 +516,7 @@ const ResetPasswordForm = () => {
           onClick={() => setShowConfirmPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
-            transform: "translateY(50%)",
+            transform: "translateY(42%)",
             right: "10px",
             cursor: "pointer",
             color: "#6b7b58",

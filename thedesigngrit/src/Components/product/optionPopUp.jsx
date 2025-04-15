@@ -50,6 +50,15 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
         classes={{
           paper: "request-popup-paper",
         }}
+        PaperProps={{
+          sx: {
+            backdropFilter: "blur(12px)",
+            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+            borderRadius: "20px",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+          },
+        }}
       >
         <IconButton
           onClick={onClose}
@@ -62,19 +71,58 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
         >
           <IoIosClose size={50} />
         </IconButton>
-        <DialogTitle className="request-popup-title">
+        <DialogTitle
+          className="request-popup-title"
+          sx={{
+            color: "#fff",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "24px",
+            paddingTop: "32px",
+          }}
+        >
           <h2> Choose an Option</h2>
         </DialogTitle>
-        <DialogContent className="request-popup-content">
+        <DialogContent
+          className="request-popup-content"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: "32px",
+          }}
+        >
           <button
             onClick={handleRequestQuoteClick}
             className="request-popup-button"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              backdropFilter: "blur(6px)",
+              borderRadius: "12px",
+              padding: "12px 24px",
+              color: "#fff",
+              fontWeight: "500",
+              cursor: "pointer",
+            }}
           >
             Request Quote
           </button>
           <button
             onClick={handleViewInStoreClick}
             className="request-popup-button"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              backdropFilter: "blur(6px)",
+              borderRadius: "12px",
+              padding: "12px 24px",
+              color: "#fff",
+              fontWeight: "500",
+              cursor: "pointer",
+            }}
           >
             View in Store
           </button>
