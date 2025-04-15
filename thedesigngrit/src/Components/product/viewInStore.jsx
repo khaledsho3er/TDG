@@ -22,6 +22,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
       new Date().getTime().toString(36)
   ).current;
   const prodId = productId;
+
   const handleSubmit = async () => {
     try {
       const response = await fetch(
@@ -30,7 +31,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            code: code,
+            code,
             productId: prodId,
             userId: userSession.id,
             userName: `${userSession?.firstName || ""} ${
@@ -67,31 +68,26 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
         "& .MuiPaper-root": {
           width: "80%",
           borderRadius: "20px",
-          padding: "20px",
+          padding: "24px",
           position: "relative",
-          overflow: "visible",
-          backgroundColor: "#faf9f6",
-          boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
-        },
-      }}
-      PaperProps={{
-        sx: {
-          backdropFilter: "blur(12px)",
-          backgroundColor: "rgba(255, 255, 255, 0.15)",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
-          borderRadius: "20px",
+          background: "rgba(255, 255, 255, 0.1)",
+          backdropFilter: "blur(15px)",
+          boxShadow: "0 8px 32px rgba(31, 38, 135, 0.2)",
           border: "1px solid rgba(255, 255, 255, 0.18)",
         },
       }}
     >
-      {/* Close Icon */}
       <IconButton
         onClick={onClose}
         sx={{
           position: "absolute",
           top: "16px",
           right: "16px",
-          color: "#6b7b58",
+          color: "#fff",
+          background: "rgba(0,0,0,0.2)",
+          "&:hover": {
+            background: "rgba(0,0,0,0.3)",
+          },
         }}
       >
         <CloseIcon />
@@ -102,7 +98,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           textAlign: "center",
           fontSize: "24px",
           fontWeight: "bold",
-          color: "#2d2d2d",
+          color: "#fff",
         }}
       >
         {confirmationMessage ? "Submission Successful" : "Confirm Your Details"}
@@ -117,38 +113,32 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
         }}
       >
         {confirmationMessage ? (
-          <div>
+          <Box textAlign="center">
             <Typography
               variant="h6"
               sx={{
                 fontWeight: "bold",
-                color: "#2d2d2d",
-                textAlign: "center",
-                left: "16px",
+                color: "#fff",
                 marginBottom: "16px",
               }}
               gutterBottom
             >
               Your Purchase Code: {code}
             </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: "green",
-                textAlign: "center",
-              }}
-            >
+            <Typography variant="h6" sx={{ color: "#a5ffab" }}>
               Your information has been submitted successfully!
             </Typography>
-          </div>
+          </Box>
         ) : (
           <Card
             sx={{
               width: "100%",
               maxWidth: "500px",
               borderRadius: "16px",
-              backgroundColor: "#fff",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+              background: "rgba(255, 255, 255, 0.15)",
+              backdropFilter: "blur(10px)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+              border: "1px solid rgba(255,255,255,0.1)",
             }}
           >
             <CardContent>
@@ -156,9 +146,8 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                 variant="h6"
                 sx={{
                   fontWeight: "bold",
-                  color: "#2d2d2d",
+                  color: "#fff",
                   textAlign: "center",
-                  left: "16px",
                   marginBottom: "16px",
                 }}
                 gutterBottom
@@ -180,18 +169,12 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                 <Grid item xs={8}>
                   <Typography
                     variant="body1"
-                    sx={{ color: "#2d2d2d", fontWeight: "bold" }}
+                    sx={{ color: "#fff", fontWeight: "bold" }}
                   >
                     Product Name: {productId.name}
                   </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "start",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Typography variant="body2" sx={{ color: "#6b7b58" }}>
+                  <Box display="flex" flexDirection="column">
+                    <Typography variant="body2" sx={{ color: "#cce7c9" }}>
                       Vendor: {productId.brandId.brandName}
                     </Typography>
                     <img
@@ -203,21 +186,16 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                 </Grid>
               </Grid>
             </CardContent>
-            <CardContent
-              sx={{
-                textAlign: "center",
-                padding: "16px",
-                borderRadius: "0 0 16px 16px",
-              }}
-            >
+            <CardContent sx={{ textAlign: "center" }}>
               <Button
                 onClick={handleSubmit}
                 variant="contained"
                 sx={{
-                  backgroundColor: "#2d2d2d",
+                  backgroundColor: "#6b7b58",
                   color: "#fff",
+                  fontWeight: "bold",
                   "&:hover": {
-                    backgroundColor: "#6b7b58",
+                    backgroundColor: "#839871",
                   },
                 }}
               >

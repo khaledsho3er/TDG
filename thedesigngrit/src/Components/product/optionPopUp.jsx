@@ -81,7 +81,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
             paddingTop: "32px",
           }}
         >
-          <h2> Choose an Option</h2>
+          <h2 style={{ color: "#fff" }}> Choose an Option</h2>
         </DialogTitle>
         <DialogContent
           className="request-popup-content"
