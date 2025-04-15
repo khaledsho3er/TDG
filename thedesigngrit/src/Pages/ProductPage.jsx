@@ -124,9 +124,9 @@ function ProductPage() {
       }));
     }
   };
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-  };
+  // const handleColorSelect = (color) => {
+  //   setSelectedColor(color);
+  // };
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -327,7 +327,7 @@ function ProductPage() {
                           : "none",
                     }}
                     title={color.name}
-                    onClick={() => handleColorSelect(color.name)}
+                    onClick={() => setSelectedColor(color.name)}
                   ></div>
                 ))}
               </div>
@@ -592,7 +592,7 @@ function ProductPage() {
                 </div>
               ))}
             </div>
-            ;
+
             <div className="brand-cursol">
               <BrandCursol brandId={product.brandId} />
             </div>
