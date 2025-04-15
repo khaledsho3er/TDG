@@ -87,7 +87,7 @@ const RequestQuote = ({ onClose, productId }) => {
               <div className="requestInfo-brand">
                 <div className="requestInfo-brand-info">
                   <img
-                    src={`https://tdg-db.onrender.com/uploads/${productId.brandId.brandlogo}`}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/  ${productId.brandId.brandlogo}`}
                     alt="Istikbal"
                     className="requestInfo-brand-logo"
                   />

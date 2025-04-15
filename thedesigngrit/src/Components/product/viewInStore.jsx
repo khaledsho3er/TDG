@@ -183,7 +183,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                     }}
                   >
                     <Typography variant="body2" sx={{ color: "#6b7b58" }}>
-                      Vendor: {productId.brandName}
+                      Vendor: {productId.brandId.brandName}
                     </Typography>
                     <img
                       src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${productId.brandId.brandlogo}`}

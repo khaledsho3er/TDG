@@ -15,10 +15,33 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import Toast from "../toast";
+
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
   const [vendorId, setVendorId] = useState(null);
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success"); // "success" or "error"
+  const [errors, setErrors] = useState({
+    // Vendor data fields
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+    // Brand data fields
+    brandName: "",
+    commercialRegisterNo: "",
+    taxNumber: "",
+    companyAddress: "",
+    brandPhoneNumber: "",
+    brandEmail: "",
+    // Phase 3 fields
+    shippingPolicy: "",
+    bankAccountNumber: "",
+  });
   const [touched, setTouched] = useState({
     // Vendor data fields
     firstName: false,
@@ -107,134 +130,69 @@ function Signupvendor() {
   useEffect(() => {
     fetchTypes();
   }, []);
-  const handleNext = async (e) => {
-    e.preventDefault();
-    const sanitizedData = sanitizeVendorData();
-    console.log("Sanitized Vendor Data:", sanitizedData); // Log sanitized data
 
-    if (currentPhase === 1) {
-      try {
-        const response = await axios.post(
-          "https://tdg-db.onrender.com/api/vendors/signup",
-          sanitizedData,
-          { headers: { "Content-Type": "application/json" } }
-        );
-
-        if (response.status === 201) {
-          console.log("Vendor data submitted successfully");
-          console.log("Vendor ID:", response.data._id);
-          setVendorId(response.data._id);
-          setCurrentPhase(2);
-        } else {
-          console.log("Failed to submit vendor data");
+  const validateField = (name, value) => {
+    let error = "";
+    switch (name) {
+      case "firstName":
+      case "lastName":
+        if (!value.trim()) {
+          error = "This field is required";
         }
-      } catch (error) {
-        console.error(
-          "Error submitting vendor data:",
-          error.response?.data || error.message
-        );
-      }
-    } else if (currentPhase === 2) {
-      setCurrentPhase(3);
-    } else if (currentPhase === 3) {
-      const formData = new FormData();
-
-      console.log("Brand Data before form submission:", brandData);
-      console.log("Selected Types:", brandData.type);
-
-      Object.keys(brandData).forEach((key) => {
-        if (Array.isArray(brandData[key])) {
-          if (key === "type") {
-            // Send type array as a JSON string
-            formData.append("type", JSON.stringify(brandData[key]));
-            console.log("Appending type array:", brandData[key]);
-          } else {
-            // Append other arrays normally
-            brandData[key].forEach((item, index) => {
-              formData.append(`${key}[${index}]`, item);
-            });
-          }
-        } else {
-          formData.append(key, brandData[key]);
+        break;
+      case "email":
+        if (!value.trim()) {
+          error = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
+          error = "Please enter a valid email address";
         }
-      });
-
-      // Log the FormData contents
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-
-      try {
-        const response = await axios.post(
-          "https://tdg-db.onrender.com/api/brand/brand",
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-
-        if (response.status === 201) {
-          console.log("Brand data submitted successfully");
-          console.log("Brand ID:", response.data._id);
-
-          await axios.put(
-            `https://tdg-db.onrender.com/api/vendors/${vendorId}`,
-            {
-              brandId: response.data._id,
-            }
-          );
-          alert("Signup completed!");
-          // Reset brand data to default state
-          setCurrentPhase(1);
-          setVendorData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            employeeNumber: "001",
-            password: "",
-            phoneNumber: "",
-            tier: "3",
-          });
-          setBrandData({
-            brandName: "",
-            commercialRegisterNo: "",
-            taxNumber: "",
-            companyAddress: "",
-            phoneNumber: "",
-            email: "",
-            bankAccountNumber: "",
-            websiteURL: "",
-            instagramURL: "",
-            facebookURL: "",
-            tiktokURL: "",
-            linkedinURL: "",
-            shippingPolicy: "",
-            brandlogo: "",
-            digitalCopiesLogo: [],
-            coverPhoto: "",
-            catalogues: [],
-            brandDescription: "",
-            type: [], // Reset selected types
-            status: "pending",
-            documents: [],
-            fees: 0,
-            createdAt: "",
-          });
-          navigate("/signin-vendor");
-        } else {
-          console.error("Failed to submit brand data");
+        break;
+      case "password":
+        if (!value) {
+          error = "Password is required";
+        } else if (value.length < 6) {
+          error = "Password must be at least 6 characters long";
         }
-      } catch (error) {
-        console.error(
-          "Error submitting brand data:",
-          error.response?.data || error.message
-        );
-      }
+        break;
+      case "phoneNumber":
+        if (!value.trim()) {
+          error = "Phone number is required";
+        } else if (!/^\+?[\d\s-]{10,}$/.test(value)) {
+          error = "Please enter a valid phone number";
+        }
+        break;
+      case "brandName":
+      case "commercialRegisterNo":
+      case "taxNumber":
+      case "companyAddress":
+      case "brandPhoneNumber":
+      case "brandEmail":
+      case "shippingPolicy":
+      case "bankAccountNumber":
+        if (!value.trim()) {
+          error = "This field is required";
+        }
+        break;
+      default:
+        break;
     }
+    return error;
   };
 
   const handleBlur = (fieldName) => {
     setTouched((prev) => ({
       ...prev,
       [fieldName]: true,
+    }));
+
+    const value = fieldName.includes("brand")
+      ? brandData[fieldName.replace("brand", "").toLowerCase()]
+      : vendorData[fieldName];
+
+    const error = validateField(fieldName, value);
+    setErrors((prev) => ({
+      ...prev,
+      [fieldName]: error,
     }));
   };
 
@@ -246,11 +204,27 @@ function Signupvendor() {
         ...prevState,
         [name]: value,
       }));
+      // Clear error when user starts typing
+      if (touched[name]) {
+        const error = validateField(name, value);
+        setErrors((prev) => ({
+          ...prev,
+          [name]: error,
+        }));
+      }
     } else {
       setBrandData((prevState) => ({
         ...prevState,
         [name]: value,
       }));
+      // Clear error when user starts typing
+      if (touched[name]) {
+        const error = validateField(name, value);
+        setErrors((prev) => ({
+          ...prev,
+          [name]: error,
+        }));
+      }
     }
   };
 
@@ -285,6 +259,149 @@ function Signupvendor() {
     }
   };
 
+  const showToastMessage = (message, type = "success") => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+  };
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+    const sanitizedData = sanitizeVendorData();
+
+    // Validate all fields in the current phase
+    let hasErrors = false;
+    const currentFields =
+      currentPhase === 1
+        ? Object.keys(vendorData)
+        : currentPhase === 2
+        ? Object.keys(brandData)
+        : ["shippingPolicy", "bankAccountNumber"];
+
+    currentFields.forEach((field) => {
+      const value =
+        currentPhase === 1
+          ? vendorData[field]
+          : currentPhase === 2
+          ? brandData[field]
+          : brandData[field];
+
+      const error = validateField(field, value);
+      if (error) {
+        setErrors((prev) => ({
+          ...prev,
+          [field]: error,
+        }));
+        hasErrors = true;
+      }
+    });
+
+    if (hasErrors) {
+      showToastMessage("Please fix the errors before proceeding", "error");
+      return;
+    }
+
+    if (currentPhase === 1) {
+      try {
+        const response = await axios.post(
+          "https://tdg-db.onrender.com/api/vendors/signup",
+          sanitizedData,
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        if (response.status === 201) {
+          setVendorId(response.data._id);
+          setCurrentPhase(2);
+          showToastMessage("Vendor account created successfully!");
+        }
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Failed to create vendor account";
+        showToastMessage(errorMessage, "error");
+      }
+    } else if (currentPhase === 2) {
+      setCurrentPhase(3);
+    } else if (currentPhase === 3) {
+      const formData = new FormData();
+
+      Object.keys(brandData).forEach((key) => {
+        if (Array.isArray(brandData[key])) {
+          if (key === "type") {
+            formData.append("type", JSON.stringify(brandData[key]));
+          } else {
+            brandData[key].forEach((item, index) => {
+              formData.append(`${key}[${index}]`, item);
+            });
+          }
+        } else {
+          formData.append(key, brandData[key]);
+        }
+      });
+
+      try {
+        const response = await axios.post(
+          "https://tdg-db.onrender.com/api/brand/brand",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        if (response.status === 201) {
+          await axios.put(
+            `https://tdg-db.onrender.com/api/vendors/${vendorId}`,
+            {
+              brandId: response.data._id,
+            }
+          );
+          showToastMessage("Signup completed successfully!");
+          // Reset form data
+          setCurrentPhase(1);
+          setVendorData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            employeeNumber: "001",
+            password: "",
+            phoneNumber: "",
+            tier: "3",
+          });
+          setBrandData({
+            brandName: "",
+            commercialRegisterNo: "",
+            taxNumber: "",
+            companyAddress: "",
+            phoneNumber: "",
+            email: "",
+            bankAccountNumber: "",
+            websiteURL: "",
+            instagramURL: "",
+            facebookURL: "",
+            tiktokURL: "",
+            linkedinURL: "",
+            shippingPolicy: "",
+            brandlogo: "",
+            digitalCopiesLogo: [],
+            coverPhoto: "",
+            catalogues: [],
+            brandDescription: "",
+            type: [],
+            status: "pending",
+            documents: [],
+            fees: 0,
+            createdAt: "",
+          });
+          // Navigate after a short delay to show the success message
+          setTimeout(() => {
+            navigate("/signin-vendor");
+          }, 2000);
+        }
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Failed to create brand account";
+        showToastMessage(errorMessage, "error");
+      }
+    }
+  };
+
   const renderPhaseContent = () => {
     switch (currentPhase) {
       case 1:
@@ -292,7 +409,9 @@ function Signupvendor() {
           <>
             <TextField
               label="Vendor First Name"
-              helperText="Enter your first name"
+              helperText={
+                touched.firstName ? errors.firstName : "Enter your first name"
+              }
               name="firstName"
               value={vendorData.firstName}
               onChange={(e) => handleInputChange(e, 1)}
@@ -300,11 +419,13 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.firstName && !vendorData.firstName}
+              error={touched.firstName && !!errors.firstName}
             />
             <TextField
               label="Vendor Last Name"
-              helperText="Enter your last name"
+              helperText={
+                touched.lastName ? errors.lastName : "Enter your last name"
+              }
               name="lastName"
               value={vendorData.lastName}
               onChange={(e) => handleInputChange(e, 1)}
@@ -312,11 +433,13 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.lastName && !vendorData.lastName}
+              error={touched.lastName && !!errors.lastName}
             />
             <TextField
               label="Vendor Email"
-              helperText="Enter a valid business email"
+              helperText={
+                touched.email ? errors.email : "Enter a valid business email"
+              }
               name="email"
               type="email"
               value={vendorData.email}
@@ -325,11 +448,13 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.email && !vendorData.email}
+              error={touched.email && !!errors.email}
             />
             <TextField
               label="Vendor Password"
-              helperText="Choose a strong password"
+              helperText={
+                touched.password ? errors.password : "Choose a strong password"
+              }
               name="password"
               value={vendorData.password}
               onChange={(e) => handleInputChange(e, 1)}
@@ -338,11 +463,15 @@ function Signupvendor() {
               margin="normal"
               type="password"
               required
-              error={touched.password && !vendorData.password}
+              error={touched.password && !!errors.password}
             />
             <TextField
               label="Vendor Phone Number"
-              helperText="Enter a valid phone number"
+              helperText={
+                touched.phoneNumber
+                  ? errors.phoneNumber
+                  : "Enter a valid phone number"
+              }
               name="phoneNumber"
               value={vendorData.phoneNumber}
               onChange={(e) => handleInputChange(e, 1)}
@@ -350,7 +479,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.phoneNumber && !vendorData.phoneNumber}
+              error={touched.phoneNumber && !!errors.phoneNumber}
             />
           </>
         );
@@ -366,7 +495,11 @@ function Signupvendor() {
           >
             <TextField
               label="Brand Name"
-              helperText="Enter the official brand name"
+              helperText={
+                touched.brandName
+                  ? errors.brandName
+                  : "Enter the official brand name"
+              }
               name="brandName"
               value={brandData.brandName || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -374,11 +507,15 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.brandName && !brandData.brandName}
+              error={touched.brandName && !!errors.brandName}
             />
             <TextField
               label="Commercial Register No."
-              helperText="Enter the commercial register number"
+              helperText={
+                touched.commercialRegisterNo
+                  ? errors.commercialRegisterNo
+                  : "Enter the commercial register number"
+              }
               name="commercialRegisterNo"
               value={brandData.commercialRegisterNo || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -387,12 +524,16 @@ function Signupvendor() {
               margin="normal"
               required
               error={
-                touched.commercialRegisterNo && !brandData.commercialRegisterNo
+                touched.commercialRegisterNo && !!errors.commercialRegisterNo
               }
             />
             <TextField
               label="Tax Number"
-              helperText="Enter the tax identification number"
+              helperText={
+                touched.taxNumber
+                  ? errors.taxNumber
+                  : "Enter the tax identification number"
+              }
               name="taxNumber"
               value={brandData.taxNumber || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -400,11 +541,15 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.taxNumber && !brandData.taxNumber}
+              error={touched.taxNumber && !!errors.taxNumber}
             />
             <TextField
               label="Company Address"
-              helperText="Enter the company address"
+              helperText={
+                touched.companyAddress
+                  ? errors.companyAddress
+                  : "Enter the company address"
+              }
               name="companyAddress"
               value={brandData.companyAddress || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -412,11 +557,15 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.companyAddress && !brandData.companyAddress}
+              error={touched.companyAddress && !!errors.companyAddress}
             />
             <TextField
               label="Phone Number"
-              helperText="Enter a valid contact number"
+              helperText={
+                touched.brandPhoneNumber
+                  ? errors.brandPhoneNumber
+                  : "Enter a valid contact number"
+              }
               name="phoneNumber"
               value={brandData.phoneNumber || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -424,11 +573,15 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.brandPhoneNumber && !brandData.phoneNumber}
+              error={touched.brandPhoneNumber && !!errors.brandPhoneNumber}
             />
             <TextField
               label="Email"
-              helperText="Enter the primary business email"
+              helperText={
+                touched.brandEmail
+                  ? errors.brandEmail
+                  : "Enter the primary business email"
+              }
               name="email"
               value={brandData.email || ""}
               onChange={(e) => handleInputChange(e, 2)}
@@ -436,7 +589,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.brandEmail && !brandData.email}
+              error={touched.brandEmail && !!errors.brandEmail}
             />
             {/* 🚀 Added Types Selection */}
             <FormControl fullWidth margin="normal">
@@ -525,17 +678,21 @@ function Signupvendor() {
           <Box
             sx={{
               overflow: "auto",
-              maxHeight: "calc(100vh - 300px)", // Reduced height to account for header and buttons
+              maxHeight: "calc(100vh - 300px)",
               padding: "20px",
               width: "100%",
               "& .MuiTextField-root": {
-                marginBottom: 2, // Add consistent spacing between fields
+                marginBottom: 2,
               },
             }}
           >
             <TextField
               label="Shipping Policy"
-              helperText="Describe your shipping policy and fees"
+              helperText={
+                touched.shippingPolicy
+                  ? errors.shippingPolicy
+                  : "Describe your shipping policy and fees"
+              }
               name="shippingPolicy"
               value={brandData.shippingPolicy || ""}
               onChange={(e) => handleInputChange(e, 3)}
@@ -543,11 +700,15 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.shippingPolicy && !brandData.shippingPolicy}
+              error={touched.shippingPolicy && !!errors.shippingPolicy}
             />
             <TextField
               label="Bank Account Number"
-              helperText="Enter your bank details for payment processing"
+              helperText={
+                touched.bankAccountNumber
+                  ? errors.bankAccountNumber
+                  : "Enter your bank details for payment processing"
+              }
               name="bankAccountNumber"
               value={brandData.bankAccountNumber || ""}
               onChange={(e) => handleInputChange(e, 3)}
@@ -555,7 +716,7 @@ function Signupvendor() {
               fullWidth
               margin="normal"
               required
-              error={touched.bankAccountNumber && !brandData.bankAccountNumber}
+              error={touched.bankAccountNumber && !!errors.bankAccountNumber}
             />
             <TextField
               label="Website URL"
@@ -632,8 +793,8 @@ function Signupvendor() {
           left: 0,
           width: "100%",
           height: "100%",
-          backdropFilter: "blur(5px)", // Adds blur to the background
-          backgroundColor: "rgba(0, 0, 0, 0.4)", // Adds a semi-transparent dark overlay
+          backdropFilter: "blur(5px)",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
           zIndex: 1,
         }}
       ></Box>
@@ -642,12 +803,12 @@ function Signupvendor() {
         sx={{
           width: "80%",
           maxWidth: "600px",
-          backgroundColor: "rgba(108, 124, 89, 0.8)", // Semi-transparent form
+          backgroundColor: "rgba(108, 124, 89, 0.8)",
           padding: 3,
           borderRadius: 2,
           boxShadow: "0 8px 20px rgba(0, 0, 0, 0.13)",
           position: "relative",
-          zIndex: 2, // Ensures the form is above the blur overlay
+          zIndex: 2,
         }}
       >
         <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
@@ -663,7 +824,7 @@ function Signupvendor() {
               color: "white",
               backgroundColor: "#2d2d2d",
               "&:hover": {
-                backgroundColor: "#4a4a4a", // New color on hover
+                backgroundColor: "#4a4a4a",
               },
             }}
           >
@@ -684,6 +845,13 @@ function Signupvendor() {
           </Typography>
         </form>
       </Box>
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          onClose={() => setShowToast(false)}
+          type={toastType}
+        />
+      )}
     </Box>
   );
 }
