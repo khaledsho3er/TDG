@@ -167,13 +167,18 @@ function Header() {
 
     fetchData();
   }, [userSession]);
-
   const handleCartToggle = () => {
-    setCartOpen(!cartOpen);
+    setCartOpen((prev) => {
+      if (!prev) setFavoritesOpen(false); // Close favorites if cart is being opened
+      return !prev;
+    });
   };
 
   const handleFavoritesToggle = () => {
-    setFavoritesOpen(!favoritesOpen);
+    setFavoritesOpen((prev) => {
+      if (!prev) setCartOpen(false); // Close cart if favorites is being opened
+      return !prev;
+    });
   };
 
   const handlePopupToggle = () => {
