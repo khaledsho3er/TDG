@@ -26,7 +26,7 @@ function SummaryForm({ billData }) {
                     <h4 className="product-title">{product.name}</h4>
                     {/* <p className="product-description">{product.description}</p> */}
                     <img
-                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
                       alt={product.name}
                       className="product-image"
                     />
