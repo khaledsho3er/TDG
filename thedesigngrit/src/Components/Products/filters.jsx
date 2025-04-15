@@ -149,11 +149,19 @@ const FilterSection = ({ onFilterChange, products }) => {
 
         {/* Brand Filter */}
         <Accordion
+          disableGutters
+          elevation={0}
+          square
           sx={{
-            "&:hover": {
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
               backgroundColor: "transparent",
             },
-            "&.Mui-expanded:hover": {
+            "& .MuiAccordionSummary-root.Mui-expanded": {
               backgroundColor: "transparent",
             },
           }}
@@ -181,11 +189,19 @@ const FilterSection = ({ onFilterChange, products }) => {
 
         {/* Price Filter */}
         <Accordion
+          disableGutters
+          elevation={0}
+          square
           sx={{
-            "&:hover": {
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
               backgroundColor: "transparent",
             },
-            "&.Mui-expanded:hover": {
+            "& .MuiAccordionSummary-root.Mui-expanded": {
               backgroundColor: "transparent",
             },
           }}
@@ -206,11 +222,19 @@ const FilterSection = ({ onFilterChange, products }) => {
 
         {/* Color Filter */}
         <Accordion
+          disableGutters
+          elevation={0}
+          square
           sx={{
-            "&:hover": {
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
               backgroundColor: "transparent",
             },
-            "&.Mui-expanded:hover": {
+            "& .MuiAccordionSummary-root.Mui-expanded": {
               backgroundColor: "transparent",
             },
           }}
@@ -236,11 +260,19 @@ const FilterSection = ({ onFilterChange, products }) => {
 
         {/* Tags Filter */}
         <Accordion
+          disableGutters
+          elevation={0}
+          square
           sx={{
-            "&:hover": {
+            "& .MuiAccordionSummary-root": {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+            "& .MuiAccordionSummary-root.Mui-focusVisible": {
               backgroundColor: "transparent",
             },
-            "&.Mui-expanded:hover": {
+            "& .MuiAccordionSummary-root.Mui-expanded": {
               backgroundColor: "transparent",
             },
           }}
