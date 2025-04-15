@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
+import axios from "axios";
 
 const VendorCard = ({ vendor, onClick }) => {
-  const { brandlogo, products = [], brandName } = vendor;
+  const { brandlogo, brandName, _id: brandId } = vendor;
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBrandProducts = async () => {
+      try {
+        const response = await axios.get(
+          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+        );
+        // Assuming response.data is an array of products and each has an image URL
+        const productImages = response.data.map((p) => p.image); // Adjust if your image field is named differently
+        setProducts(productImages);
+      } catch (error) {
+        console.error("Error fetching products for brand:", brandName, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (brandId) {
+      fetchBrandProducts();
+    }
+  }, [brandId]);
 
   return (
     <Card
       sx={{
         width: 300,
-        height: 350, // Ensure height is fixed
+        height: 350,
         borderRadius: 4,
         boxShadow: 3,
         overflow: "hidden",
@@ -21,9 +45,8 @@ const VendorCard = ({ vendor, onClick }) => {
       }}
       onClick={onClick}
     >
-      {/* Content Wrapper */}
+      {/* Top: Brand Logo */}
       <Box sx={{ flexGrow: 1 }}>
-        {/* Vendor Logo */}
         <Box
           sx={{
             height: 70,
@@ -41,14 +64,18 @@ const VendorCard = ({ vendor, onClick }) => {
           />
         </Box>
 
-        {/* Product Images */}
+        {/* Product Previews */}
         <Box sx={{ padding: 1 }}>
-          {Array.isArray(products) && products.length > 0 ? (
-            products.slice(0, 4).map((product, index) => (
+          {loading ? (
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              Loading...
+            </Typography>
+          ) : products.length > 0 ? (
+            products.slice(0, 4).map((img, index) => (
               <CardMedia
                 component="img"
                 key={index}
-                image={product}
+                image={img}
                 alt={`Product ${index + 1}`}
                 sx={{
                   height: 100,
@@ -66,12 +93,8 @@ const VendorCard = ({ vendor, onClick }) => {
         </Box>
       </Box>
 
-      {/* Vendor Name - Pushed to Bottom */}
-      <CardContent
-        sx={{
-          padding: 1,
-        }}
-      >
+      {/* Bottom: Brand Name */}
+      <CardContent sx={{ padding: 1 }}>
         <Typography
           variant="h6"
           sx={{
