@@ -16,6 +16,7 @@ import { UserContext } from "../utils/userContext";
 import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
+import { BsExclamationOctagon } from "react-icons/bs";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
@@ -724,7 +725,20 @@ function ProductPage() {
               </div>
             ))
           ) : (
-            <p className="no-reviews">No reviews yet.</p>
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "20px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "16px",
+              }}
+            >
+              <BsExclamationOctagon size={32} color="#ccc" />
+
+              <p className="no-reviews">No reviews yet.</p>
+            </div>
           )}
         </div>
       </div>

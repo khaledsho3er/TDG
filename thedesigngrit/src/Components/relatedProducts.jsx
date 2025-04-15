@@ -91,9 +91,10 @@ const RelatedProducts = ({ productId }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            gap: "16px",
           }}
         >
-          <BsExclamationOctagon />
+          <BsExclamationOctagon size={32} color="#ccc" />
 
           <p className="no-reviews">No related products yet </p>
         </div>
