@@ -272,6 +272,14 @@ const BrandingPage = () => {
 
         <Box sx={{ mt: 3 }}>
           <label>Update Logo</label>
+          <img
+            src={
+              `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.brandLogo}` ||
+              ""
+            }
+            alt="Logo"
+            style={{ width: 100, height: 100, objectFit: "contain" }}
+          />
           <input
             type="file"
             accept="image/*"
@@ -279,6 +287,14 @@ const BrandingPage = () => {
           />
           <br />
           <label>Update Cover Photo</label>
+          <img
+            src={
+              `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.coverPhoto}` ||
+              ""
+            }
+            alt="Logo"
+            style={{ width: 100, height: 100, objectFit: "contain" }}
+          />
           <input
             type="file"
             accept="image/*"
@@ -343,8 +359,7 @@ const BrandingPage = () => {
               accept="application/pdf"
               onChange={(e) => handleFileChange(e, "pdf")}
             />
-          </Box>
-          <Box sx={{ mt: 2 }}>
+            <br />
             <label>Upload Cover Image</label>
             <input
               type="file"
@@ -352,15 +367,13 @@ const BrandingPage = () => {
               onChange={(e) => handleFileChange(e, "image")}
             />
           </Box>
-          <Box sx={{ mt: 3, textAlign: "center" }}>
-            <button className="submit-btn" onClick={handleUpload}>
-              {selectedCatalog ? "Update" : "Upload"}
-            </button>
-          </Box>
+
+          <button className="submit-btn" onClick={handleUpload}>
+            {selectedCatalog ? "Save Changes" : "Upload"}
+          </button>
         </Box>
       </Dialog>
 
-      {/* Catalog Menu */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -370,8 +383,7 @@ const BrandingPage = () => {
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
 
-      {/* Loading Backdrop */}
-      <Backdrop open={loading} sx={{ zIndex: 9999 }}>
+      <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
     </div>
