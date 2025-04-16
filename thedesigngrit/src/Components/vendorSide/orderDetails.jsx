@@ -317,7 +317,7 @@ const OrderDetails = ({ order, onBack }) => {
                 Set Delivery Date
               </button>
             )} */}
-            {order.cartItems.every(
+            {order?.cartItems?.every(
               (item) => item.subOrderStatus === "Confirmed"
             ) && (
               <button className="submit-btn" onClick={handleFileDialogOpen}>
