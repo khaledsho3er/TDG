@@ -128,6 +128,7 @@ const NotificationsPage = () => {
               <tr>
                 <th>Status</th>
                 <th>Type</th>
+                <th>Id</th>
                 <th>Description</th>
                 <th>Date</th>
                 <th>Action</th>
@@ -151,6 +152,7 @@ const NotificationsPage = () => {
                     />
                   </td>
                   <td>{notification.type}</td>
+                  <td>{notification.orderId}</td>
                   <td>{notification.description}</td>
                   <td>{formatDate(notification.date)}</td>{" "}
                   {/* Formatted date */}
@@ -216,9 +218,10 @@ const NotificationsPage = () => {
               <div className="notifiy-overlay-buttons">
                 {selectedNotification.type === "order" ? (
                   <button
-                    onClick={() =>
-                      setSelectedOrder(selectedNotification.selectedOrder)
-                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedOrder(selectedNotification.order); // Make sure this is the correct property name
+                    }}
                   >
                     View Order Details
                   </button>
