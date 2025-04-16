@@ -17,6 +17,10 @@ const ShippingInfoPopup = () => {
   const [newAddress, setNewAddress] = useState({
     address1: "",
     address2: "",
+    label: "",
+    floor: "",
+    apartment: "",
+    landmark: "",
     city: "",
     postalCode: "",
     country: "",
@@ -80,6 +84,10 @@ const ShippingInfoPopup = () => {
     setNewAddress({
       address1: "",
       address2: "",
+      label: "",
+      floor: "",
+      apartment: "",
+      landmark: "",
       city: "",
       postalCode: "",
       country: "",
@@ -290,6 +298,38 @@ const ShippingInfoPopup = () => {
             label="Address 2"
             name="address2"
             value={newAddress.address2}
+            onChange={handleInputChange}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Label"
+            name="label"
+            value={newAddress.label}
+            onChange={handleInputChange}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Apartment"
+            name="apartment"
+            value={newAddress.apartment}
+            onChange={handleInputChange}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Floor"
+            name="floor"
+            value={newAddress.floor}
+            onChange={handleInputChange}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Landmark"
+            name="landmark"
+            value={newAddress.landmark}
             onChange={handleInputChange}
             margin="normal"
           />
