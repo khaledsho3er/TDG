@@ -35,21 +35,21 @@ const OrderDetails = ({ order, onBack }) => {
   const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
   const [showButton, setShowButton] = useState(!!order?.note);
   useEffect(() => {
-    if (order && order.note) {
+    if (order.note) {
       setNote(order.note);
       setNotePostedAt(order.notePostedAt || null);
       setIsReadOnly(true);
       setShowButton(false);
     }
-  }, [order]);
+  }, [order.note, order.notePostedAt]);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
   const brandId =
-    order?.cartItems?.length > 0 ? order.cartItems[0].brandId : null;
+    order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
 
   // Filter products based on brandId
-  const filteredProducts = order?.cartItems?.filter(
+  const filteredProducts = order.cartItems.filter(
     (product) => product.brandId === brandId
   );
   const handleDialogOpen = () => {
@@ -317,7 +317,7 @@ const OrderDetails = ({ order, onBack }) => {
                 Set Delivery Date
               </button>
             )} */}
-            {order?.cartItems?.every(
+            {order.cartItems.every(
               (item) => item.subOrderStatus === "Confirmed"
             ) && (
               <button className="submit-btn" onClick={handleFileDialogOpen}>

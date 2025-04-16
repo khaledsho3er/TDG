@@ -217,7 +217,7 @@ const NotificationsPage = () => {
                 {selectedNotification.type === "order" ? (
                   <button
                     onClick={() =>
-                      setSelectedOrder(selectedNotification.orderId)
+                      setSelectedOrder(selectedNotification.selectedOrder)
                     }
                   >
                     View Order Details
