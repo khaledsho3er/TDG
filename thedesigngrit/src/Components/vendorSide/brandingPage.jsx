@@ -74,23 +74,36 @@ const BrandingPage = () => {
     data.append("model", formData.model);
     data.append("type", formData.type);
     data.append("brandId", brandId);
-    setLoading(true); // Start loading
+    setLoading(true);
+    const url = selectedCatalog
+      ? `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
+      : `https://tdg-db.onrender.com/api/catalogs/upload`;
+
+    const method = selectedCatalog ? "put" : "post";
 
     try {
-      const response = await axios.post(
-        "https://tdg-db.onrender.com/api/catalogs/upload",
+      const response = await axios({
+        method,
+        url,
         data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-      setCatalogs([...catalogs, { ...formData, id: response.data.id }]);
+      if (selectedCatalog) {
+        setCatalogs(
+          catalogs.map((c) =>
+            c.id === selectedCatalog.id ? response.data.catalog : c
+          )
+        );
+      } else {
+        setCatalogs([...catalogs, { ...formData, id: response.data.id }]);
+      }
+
       handleCloseDialog();
     } catch (error) {
       console.error("Upload failed:", error);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -276,10 +289,7 @@ const BrandingPage = () => {
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
+      <Backdrop sx={{ color: "#fff", zIndex: 100000 }} open={loading}>
         <CircularProgress color="inherit" />
       </Backdrop>
     </div>
