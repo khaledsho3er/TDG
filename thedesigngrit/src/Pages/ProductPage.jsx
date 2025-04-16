@@ -139,7 +139,7 @@ function ProductPage() {
     addToCart({
       id: product._id,
       name: product.name,
-      unitPrice: product.salePrice || product.price,
+      unitPrice: product.salePrice || product.price || 0,
       quantity: 1,
       image: product.mainImage,
       brandId: product.brandId,
