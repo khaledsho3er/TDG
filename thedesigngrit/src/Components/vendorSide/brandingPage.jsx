@@ -18,6 +18,10 @@ const BrandingPage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCatalog, setSelectedCatalog] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [brandImages, setBrandImages] = useState({
+    brandlogo: null,
+    coverPhoto: null,
+  });
 
   const [formData, setFormData] = useState({
     title: "",
@@ -56,6 +60,37 @@ const BrandingPage = () => {
     const file = e.target.files[0];
     if (!file) return;
     setFormData((prevData) => ({ ...prevData, [type]: file }));
+  };
+  const handleBrandImageChange = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setBrandImages((prev) => ({ ...prev, [type]: file }));
+  };
+  const handleBrandImageUpload = async () => {
+    if (!brandId) return;
+    const data = new FormData();
+    if (brandImages.brandlogo) data.append("brandlogo", brandImages.brandlogo);
+    if (brandImages.coverPhoto)
+      data.append("coverPhoto", brandImages.coverPhoto);
+
+    setLoading(true);
+    try {
+      const res = await axios.put(
+        `https://tdg-db.onrender.com/api/brand/${brandId}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Brand visuals updated!");
+      window.location.reload(); // or useContext update logic if needed
+    } catch (err) {
+      console.error("Error uploading brand visuals:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -143,6 +178,7 @@ const BrandingPage = () => {
           minHeight: "200px",
         }}
       >
+        <h2 style={{ color: "#2d2d2d", fontFamily: "Horizon" }}>Catalogs</h2>
         <button className="submit-btn" onClick={handleOpenDialog}>
           Upload Catalog
         </button>
@@ -212,6 +248,70 @@ const BrandingPage = () => {
             </div>
           ))}
         </div>
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "10px",
+          marginTop: "20px",
+        }}
+      >
+        <h3 style={{ color: "#2d2d2d", fontFamily: "Horizon" }}>
+          Brand Visuals
+        </h3>
+        <p style={{ fontFamily: "Montserrat", color: "#555" }}>
+          Upload or update your brand logo and cover photo.
+        </p>
+
+        {/* Display Current Images */}
+        <Box sx={{ display: "flex", gap: "20px", mt: 2 }}>
+          {vendor?.brandLogo && (
+            <Box>
+              <p>Brand Logo:</p>
+              <img
+                src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.brandLogo}`}
+                alt="Brand Logo"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
+          )}
+          {vendor?.coverPhoto && (
+            <Box>
+              <p>Cover Photo:</p>
+              <img
+                src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.coverPhoto}`}
+                alt="Cover Photo"
+                style={{ width: "180px", height: "100px", objectFit: "cover" }}
+              />
+            </Box>
+          )}
+        </Box>
+
+        {/* Upload Inputs */}
+        <Box sx={{ mt: 3 }}>
+          <label>Update Brand Logo</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleBrandImageChange(e, "brandlogo")}
+          />
+          <br />
+          <label>Update Cover Photo</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleBrandImageChange(e, "coverPhoto")}
+          />
+          <br />
+          <button className="submit-btn" onClick={handleBrandImageUpload}>
+            Upload Images
+          </button>
+        </Box>
       </Box>
 
       {/* Upload Dialog */}
