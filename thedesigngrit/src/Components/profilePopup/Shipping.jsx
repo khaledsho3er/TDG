@@ -285,105 +285,155 @@ const ShippingInfoPopup = () => {
           <Typography variant="h6" align="center" fontFamily={"Horizon"}>
             {selectedAddressIndex !== null ? "Edit Address" : "New Address"}
           </Typography>
-          <TextField
-            fullWidth
-            label="Address 1"
-            name="address1"
-            value={newAddress.address1}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Address 2"
-            name="address2"
-            value={newAddress.address2}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Label"
-            name="label"
-            value={newAddress.label}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Apartment"
-            name="apartment"
-            value={newAddress.apartment}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Floor"
-            name="floor"
-            value={newAddress.floor}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Landmark"
-            name="landmark"
-            value={newAddress.landmark}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="City"
-            name="city"
-            value={newAddress.city}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <Select
-            options={countries}
-            onChange={handleCountryChange}
-            placeholder="Select your country"
-            isSearchable
-            value={
-              countries.find((c) => c.label === newAddress.country) || null
-            }
-          />
-          <TextField
-            fullWidth
-            label="Postal Code"
-            name="postalCode"
-            value={newAddress.postalCode}
-            onChange={handleInputChange}
-            margin="normal"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={newAddress.isDefault}
-                onChange={(e) => {
-                  setNewAddress((prev) => ({
-                    ...prev,
-                    isDefault: e.target.checked,
-                  }));
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <TextField
+              sx={{ width: "48%" }}
+              label="Address 1"
+              name="address1"
+              value={newAddress.address1}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <TextField
+              sx={{ width: "48%" }}
+              label="Address 2"
+              name="address2"
+              value={newAddress.address2}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <TextField
+              sx={{ width: "48%" }}
+              label="Label"
+              name="label"
+              value={newAddress.label}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <TextField
+              sx={{ width: "48%" }}
+              label="Apartment"
+              name="apartment"
+              value={newAddress.apartment}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <TextField
+              sx={{ width: "48%" }}
+              label="Floor"
+              name="floor"
+              value={newAddress.floor}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <TextField
+              sx={{ width: "48%" }}
+              label="Landmark"
+              name="landmark"
+              value={newAddress.landmark}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <TextField
+              sx={{ width: "48%" }}
+              label="City"
+              name="city"
+              value={newAddress.city}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <Select
+              options={countries}
+              onChange={handleCountryChange}
+              placeholder="Select your country"
+              isSearchable
+              value={
+                countries.find((c) => c.label === newAddress.country) || null
+              }
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "10px 0",
+            }}
+          >
+            <TextField
+              sx={{ width: "48%" }}
+              label="Postal Code"
+              name="postalCode"
+              value={newAddress.postalCode}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={newAddress.isDefault}
+                  onChange={(e) => {
+                    setNewAddress((prev) => ({
+                      ...prev,
+                      isDefault: e.target.checked,
+                    }));
 
-                  if (e.target.checked) {
-                    setUserData((prev) => {
-                      const updatedAddresses = prev.shipmentAddress.map(
-                        (addr) => ({
-                          ...addr,
-                          isDefault: false, // Reset all other addresses
-                        })
-                      );
-                      return { ...prev, shipmentAddress: updatedAddresses };
-                    });
-                  }
-                }}
-              />
-            }
-            label="Set as Default"
-          />
+                    if (e.target.checked) {
+                      setUserData((prev) => {
+                        const updatedAddresses = prev.shipmentAddress.map(
+                          (addr) => ({
+                            ...addr,
+                            isDefault: false, // Reset all other addresses
+                          })
+                        );
+                        return { ...prev, shipmentAddress: updatedAddresses };
+                      });
+                    }
+                  }}
+                />
+              }
+              label="Set as Default"
+            />
+          </Box>
 
           <Box
             sx={{
