@@ -1,9 +1,12 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 import BillSummary from "./billingSummary";
 import { useCart } from "../../Context/cartcontext";
+import { UserContext } from "../../utils/userContext"; // adjust path accordingly
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -38,6 +41,7 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
 
 function BillingForm({ billingData, onChange, billData }) {
   const [selectedOption, setSelectedOption] = useState("new");
+  const { userSession } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +51,41 @@ function BillingForm({ billingData, onChange, billData }) {
 
   const handleCheckboxChange = (option) => {
     setSelectedOption(option);
+
+    if (option === "existing" && userSession) {
+      const defaultAddress =
+        userSession.shipmentAddress?.find((addr) => addr.isDefault) ||
+        userSession.shipmentAddress?.[0]; // fallback to the first one
+      const userCountryCode = defaultAddress?.country?.toLowerCase() || "eg"; // fallback to Egypt
+
+      if (defaultAddress) {
+        const filledData = {
+          firstName: userSession.firstName || "",
+          lastName: userSession.lastName || "",
+          email: userSession.email || "",
+          address: defaultAddress.address1 || "",
+          country: defaultAddress.country || "",
+          city: defaultAddress.city || "",
+          zipCode: defaultAddress.postalCode || "",
+          countryCode: userCountryCode || "+20", // or default based on country
+          phoneNumber: userSession.phoneNumber || "",
+        };
+        onChange(filledData);
+      }
+    } else if (option === "new") {
+      // If the user chooses to enter new data, clear the form
+      onChange({
+        firstName: "",
+        lastName: "",
+        email: "",
+        address: "",
+        countryCode: "+20", // default
+        phoneNumber: "",
+        country: "",
+        city: "",
+        zipCode: "",
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -113,127 +152,121 @@ function BillingForm({ billingData, onChange, billData }) {
         />
       </Box>
 
-      {selectedOption === "new" && (
-        <Box className="billinginfo-form-container">
-          <Box className="Billinginfo-form">
-            <form onSubmit={handleSubmit} className="form-container">
-              <div className="form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={billingData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={billingData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="input-group">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  value={billingData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
+      <Box className="billinginfo-form-container">
+        <Box className="Billinginfo-form">
+          <form onSubmit={handleSubmit} className="form-container">
+            <div className="form-row">
               <div className="input-group">
                 <input
                   type="text"
-                  id="address"
-                  name="address"
-                  placeholder="Address"
-                  value={billingData.address}
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={billingData.firstName}
                   onChange={handleChange}
                   required
                 />
               </div>
-
               <div className="input-group">
-                <div className="phone-number-group">
-                  <select
-                    id="countryCode"
-                    name="countryCode"
-                    value={billingData.countryCode}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                    <option value="+91">+91</option>
-                    {/* Add more country codes */}
-                  </select>
-                  <input
-                    type="tel"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    value={billingData.phoneNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    placeholder="Country"
-                    value={billingData.country}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    placeholder="City"
-                    value={billingData.city}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="input-group half-width">
                 <input
                   type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  placeholder="Zip Code"
-                  value={billingData.zipCode}
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={billingData.lastName}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <button type="submit" style={{ display: "none" }}></button>
-            </form>
-          </Box>
-          <BillSummary cartItems={cartItems} />
+            </div>
+
+            <div className="input-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={billingData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <input
+                type="text"
+                id="address"
+                name="address"
+                placeholder="Address"
+                value={billingData.address}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <PhoneInput
+                country={billingData.userCountryCode || "eg"}
+                value={billingData.phoneNumber}
+                onChange={(phone, countryData) => {
+                  onChange({
+                    ...billingData,
+                    phoneNumber: phone,
+                    userCountryCode: countryData.countryCode,
+                  });
+                }}
+                inputStyle={{
+                  width: "100%",
+                  height: "40px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  paddingLeft: "48px",
+                }}
+                containerStyle={{ marginBottom: "1rem" }}
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="country"
+                  name="country"
+                  placeholder="Country"
+                  value={billingData.country}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="City"
+                  value={billingData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-group half-width">
+              <input
+                type="text"
+                id="zipCode"
+                name="zipCode"
+                placeholder="Zip Code"
+                value={billingData.zipCode}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button type="submit" style={{ display: "none" }}></button>
+          </form>
         </Box>
-      )}
+        <BillSummary cartItems={cartItems} />
+      </Box>
     </Box>
   );
 }
