@@ -46,7 +46,7 @@ const OrderDetails = ({ order, onBack }) => {
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
   const brandId =
-    order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
+    order.cartItems?.length > 0 ? order.cartItems[0]?.brandId : null;
 
   // Filter products based on brandId
   const filteredProducts = order.cartItems.filter(
