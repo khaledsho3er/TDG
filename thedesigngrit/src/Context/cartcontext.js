@@ -39,7 +39,7 @@ export const CartProvider = ({ children }) => {
             quantity: 1,
             unitPrice: product.salePrice
               ? product.salePrice
-              : product.price || 0,
+              : product.price || 10,
           },
         ];
       }
