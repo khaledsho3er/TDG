@@ -178,6 +178,8 @@ const BrandSignup = () => {
                 "__v",
                 "coverPhoto",
                 "digitalCopiesLogo",
+                "catalogues",
+                "documents",
                 "status",
                 "brandlogo",
               ].includes(key)
