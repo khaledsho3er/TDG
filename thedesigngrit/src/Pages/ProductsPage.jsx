@@ -30,8 +30,6 @@ function ProductsPage() {
           `https://tdg-db.onrender.com/api/types/types/${typeId}` // 🔹 Make sure this API returns type details
         );
         setTypeDescription(data.description); // 🔹 Store type description
-        console.log("Type description:", data.description);
-        console.log("Types:", data);
       } catch (error) {
         console.error("Error fetching type details:", error);
       }
@@ -132,17 +130,15 @@ function ProductsPage() {
       );
     });
 
-    console.log("Filtered products after applying filters:", filtered);
     setFilteredProducts(filtered);
   };
 
   useEffect(() => {
     if (products.length > 0) {
       setFilteredProducts(products);
-      console.log("Filtered products initialized:", products);
     }
   }, [products]);
-  console.log("Type Descr", typeDescription);
+
   return (
     <Box>
       <Header />
@@ -158,8 +154,6 @@ function ProductsPage() {
           />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
-          {console.log("Rendering filteredProducts:", filteredProducts)}
-
           {filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
           ) : products.length === 0 ? (
