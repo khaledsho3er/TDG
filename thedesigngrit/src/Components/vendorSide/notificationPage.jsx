@@ -4,11 +4,13 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5"; // For status dots
 import { Link } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Import your vendor context
+import OrderDetails from "./orderDetails";
 
 const NotificationsPage = () => {
   const { vendor } = useVendor(); // Access vendor data from context
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null); // For overlay
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const notificationsPerPage = 8;
@@ -89,6 +91,14 @@ const NotificationsPage = () => {
   const closeOverlay = () => {
     setSelectedNotification(null);
   };
+  if (selectedOrder) {
+    return (
+      <OrderDetails
+        order={selectedOrder}
+        onBack={() => setSelectedOrder(null)}
+      />
+    );
+  }
 
   return (
     <>
@@ -206,9 +216,23 @@ const NotificationsPage = () => {
               {/* Formatted date */}
               <div className="notifiy-overlay-buttons">
                 {selectedNotification.type === "order" ? (
-                  <button>View Order Details</button>
+                  <button
+                    onClick={() => {
+                      setSelectedOrder(selectedNotification.relatedOrder); // assuming relatedOrder is part of the notification
+                      closeOverlay();
+                    }}
+                  >
+                    View Order Details
+                  </button>
                 ) : (
-                  <button>View Quotation Details</button>
+                  <button
+                    onClick={() => {
+                      setSelectedOrder(selectedNotification.relatedQuotation); // for quotations
+                      closeOverlay();
+                    }}
+                  >
+                    View Quotation Details
+                  </button>
                 )}
                 <button onClick={closeOverlay}>Close</button>
               </div>

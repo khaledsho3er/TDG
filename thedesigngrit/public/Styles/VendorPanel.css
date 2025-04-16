@@ -1422,7 +1422,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  justify-content: center;
+  justify-content: start;
 }
 
 .quotation-card {
