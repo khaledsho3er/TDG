@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaBell } from "react-icons/fa";
+// import { FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Adjust the import path
 import NotificationOverlayVendor from "./notificationOverlay";

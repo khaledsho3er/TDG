@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5"; // For status dots
 import { Link } from "react-router-dom";
-import VendorPageLayout from "./VendorLayout";
 import { useVendor } from "../../utils/vendorContext"; // Import your vendor context
 
 const NotificationsPage = () => {
@@ -92,7 +91,7 @@ const NotificationsPage = () => {
   };
 
   return (
-    <VendorPageLayout>
+    <>
       <div className="dashboard-vendor">
         <header className="dashboard-header-vendor">
           <div className="dashboard-header-title">
@@ -217,7 +216,7 @@ const NotificationsPage = () => {
           </div>
         )}
       </div>
-    </VendorPageLayout>
+    </>
   );
 };
 
