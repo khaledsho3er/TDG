@@ -50,17 +50,31 @@ const ProductSlider = () => {
             }}
             onClick={() => navigate(`/product/${product._id}`)} // Navigate on click
           >
-            <div className="product-image-home">
+            <div className="product-image-home" style={{ width: "348px" }}>
               <img
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                 alt={product.name}
               />
             </div>
 
-            <div className="product-info">
+            <div className="product-info" style={{ width: "245px" }}>
               <h3 className="product-title-bestseller">{product.name}</h3>
               <div className="product-price-bestseller">
-                {product.price.toFixed(2)} E£
+                {product.salePrice ? (
+                  <span
+                    style={{
+                      textDecoration: "line-through",
+                      marginRight: "5px",
+                    }}
+                  >
+                    {product.price} E£
+                  </span>
+                ) : (
+                  product.price
+                )}
+                {product.salePrice && (
+                  <span style={{ color: "red" }}>{product.salePrice}E£</span>
+                )}{" "}
               </div>
             </div>
           </div>

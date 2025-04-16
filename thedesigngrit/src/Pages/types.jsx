@@ -22,7 +22,6 @@ function TypesPage() {
           `https://tdg-db.onrender.com/api/subcategories/${subCategoryId}`
         );
         setSubcategory(data);
-        console.log("Subcategory:", data);
       } catch (error) {
         console.error("Error fetching subcategory:", error);
       }
@@ -33,7 +32,6 @@ function TypesPage() {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/types/subcategories/${subCategoryId}/types`
         );
-        console.log("Fetched Types:", data); // Debugging
         setTypes(data);
       } catch (error) {
         setError(error.response?.data?.message || "Error fetching types");
