@@ -5579,6 +5579,17 @@ select {
   font-size: 14px;
   width: 100%;
 }
+.custom-phone-input .selected-flag {
+  border-radius: 0px !important;
+}
+.react-tel-input .selected-flag {
+  border-radius: 0px !important;
+}
+
+.react-tel-input .flag-dropdown {
+  background-color: transparent !important;
+  border-radius: 0px !important;
+}
 
 .phone-number-group {
   display: flex;

@@ -216,7 +216,6 @@ function BillingForm({ billingData, onChange, billData }) {
                   });
                 }}
                 inputStyle={{
-                  padding: "8px",
                   border: "1px solid #000",
                   borderRadius: "8px",
                   fontSize: "14px",
@@ -225,7 +224,6 @@ function BillingForm({ billingData, onChange, billData }) {
                 containerStyle={{ marginBottom: "1rem", width: "100%" }}
                 buttonStyle={{
                   border: "none",
-                  borderRadius: "8px 0 0 8px",
                 }}
               />
             </div>
