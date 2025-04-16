@@ -44,6 +44,7 @@ function ShippingForm({ shippingData, onChange }) {
 
     if (option === "existing" && user?.shipmentAddress?.length > 0) {
       let defaultAddress = user.shipmentAddress.find((addr) => addr.isDefault);
+      console.log("Default Address:", defaultAddress);
 
       // Fallback to first address if no default found
       if (!defaultAddress) {
