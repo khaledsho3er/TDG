@@ -82,7 +82,7 @@ function Checkout() {
       acc[brandId].push({
         productId: item.id,
         name: item.name,
-        price: item.unitPrice,
+        price: item.salePrice,
         quantity: item.quantity,
         totalPrice: item.unitPrice * item.quantity,
       });
