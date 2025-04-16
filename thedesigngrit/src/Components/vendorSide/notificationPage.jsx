@@ -152,7 +152,7 @@ const NotificationsPage = () => {
                     />
                   </td>
                   <td>{notification.type}</td>
-                  <td>{notification.orderId}</td>
+                  <td>{notification.orderId || notification._id}</td>
                   <td>{notification.description}</td>
                   <td>{formatDate(notification.date)}</td>{" "}
                   {/* Formatted date */}
@@ -219,6 +219,7 @@ const NotificationsPage = () => {
                 {selectedNotification.type === "order" ? (
                   <button
                     onClick={(e) => {
+                      console.log("Order ID:", selectedNotification.orderId);
                       e.stopPropagation();
                       setSelectedOrder(selectedNotification.orderId); // Make sure this is the correct property name
                     }}
