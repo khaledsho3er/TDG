@@ -12,9 +12,27 @@ import {
 
 const BrandSignup = () => {
   const { vendor } = useVendor();
-  const [formData, setFormData] = useState({});
-  const [originalData, setOriginalData] = useState({});
+  const [formData, setFormData] = useState({
+    brandName: "",
+    commercialRegisterNo: "",
+    taxNumber: "",
+    companyAddress: "",
+    phoneNumber: "",
+    email: "",
+    bankAccountNumber: "",
+    websiteURL: "",
+    instagramURL: "",
+    facebookURL: "",
+    linkedinURL: "",
+    tiktokURL: "",
+    shippingPolicy: "",
+    brandlogo: "",
+    type: [], // Updated: now an array for multiple selections
+    status: "",
+  });
+
   const [isEditing, setIsEditing] = useState(false);
+  const [originalData, setOriginalData] = useState({});
   const [types, setTypes] = useState([]);
 
   const platformIcons = {
@@ -45,11 +63,16 @@ const BrandSignup = () => {
 
   const fetchBrandData = async (brandId) => {
     try {
-      const { data } = await axios.get(
+      const response = await axios.get(
         `https://tdg-db.onrender.com/api/brand/${brandId}`
       );
-      setFormData(data);
-      setOriginalData(data);
+      setFormData({
+        ...response.data,
+        type: Array.isArray(response.data.type)
+          ? response.data.type
+          : [response.data.type].filter(Boolean),
+      });
+      setOriginalData(response.data);
     } catch (error) {
       console.error("Error fetching brand data:", error);
     }
@@ -57,37 +80,45 @@ const BrandSignup = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "types") {
-      setFormData((prev) => ({ ...prev, types: [value] }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTypeChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (opt) => opt.value
+    );
+    setFormData((prev) => ({ ...prev, type: selectedOptions }));
   };
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
-    setFormData(originalData);
+    setFormData({
+      ...originalData,
+      type: Array.isArray(originalData.type)
+        ? originalData.type
+        : [originalData.type].filter(Boolean),
+    });
     setIsEditing(false);
   };
 
   const handleSave = async () => {
     try {
       const dataToSend = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key === "types" && Array.isArray(value)) {
-          dataToSend.append("types", value[0] || "");
+      Object.keys(formData).forEach((key) => {
+        if (key === "type") {
+          formData.type.forEach((item) => dataToSend.append("type", item)); // send as multiple values
         } else {
-          dataToSend.append(key, value);
+          dataToSend.append(key, formData[key]);
         }
       });
 
-      const { data } = await axios.put(
+      const response = await axios.put(
         `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`,
         dataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      setOriginalData(data);
+      setOriginalData(response.data);
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating brand data:", error);
@@ -111,11 +142,15 @@ const BrandSignup = () => {
     <div className="brand-signup-form">
       <div className="brand-header">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <div className="status paid" style={getStatusStyle(formData.status)}>
-            {formData.status || "Status not set"}
-          </div>
+          <Box>
+            <div
+              className="status paid"
+              style={getStatusStyle(formData.status)}
+            >
+              {formData.status || "Status not set"}
+            </div>
+          </Box>
         </Box>
-
         <Box>
           <h2>{formData.brandName || "Brand Information"}</h2>
           <div className="brand-logo">
@@ -133,9 +168,9 @@ const BrandSignup = () => {
       </div>
 
       <div className="brand-info">
-        {Object.entries(formData)
+        {Object.keys(formData)
           .filter(
-            ([key]) =>
+            (key) =>
               ![
                 "_id",
                 "createdAt",
@@ -145,11 +180,9 @@ const BrandSignup = () => {
                 "digitalCopiesLogo",
                 "status",
                 "brandlogo",
-                "catalogues",
-                "documents",
               ].includes(key)
           )
-          .map(([key, value]) => (
+          .map((key) => (
             <div className="form-field" key={key}>
               <label>{key.replace(/([A-Z])/g, " $1")}</label>
               {key.endsWith("URL") ? (
@@ -157,29 +190,28 @@ const BrandSignup = () => {
                   <input
                     type="text"
                     name={key}
-                    value={value || ""}
+                    value={formData[key]}
                     onChange={handleInputChange}
                   />
                 ) : (
                   <div className="display-content">
                     <a
-                      href={value}
+                      href={formData[key]}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: "blue", textDecoration: "underline" }}
                     >
-                      {platformIcons[key]} {value || "No URL provided"}
+                      {platformIcons[key]} {formData[key] || "No URL provided"}
                     </a>
                   </div>
                 )
-              ) : key === "types" ? (
+              ) : key === "type" ? (
                 isEditing ? (
                   <select
-                    name="types"
-                    value={formData.types?.[0] || ""}
-                    onChange={handleInputChange}
+                    multiple
+                    value={formData.type}
+                    onChange={handleTypeChange}
                   >
-                    <option value="">Select Type</option>
                     {types.map((type) => (
                       <option key={type._id} value={type._id}>
                         {type.name}
@@ -187,20 +219,26 @@ const BrandSignup = () => {
                     ))}
                   </select>
                 ) : (
-                  <p>
-                    {types.find((t) => t._id === formData.types?.[0])?.name ||
-                      "Not Selected"}
-                  </p>
+                  <ul>
+                    {formData.type.length > 0 ? (
+                      formData.type.map((id) => {
+                        const type = types.find((t) => t._id === id);
+                        return <li key={id}>{type ? type.name : id}</li>;
+                      })
+                    ) : (
+                      <li>Not Selected</li>
+                    )}
+                  </ul>
                 )
               ) : isEditing ? (
                 <input
                   type="text"
                   name={key}
-                  value={value || ""}
+                  value={formData[key]}
                   onChange={handleInputChange}
                 />
               ) : (
-                <p>{value || "N/A"}</p>
+                <p>{formData[key] || "N/A"}</p>
               )}
             </div>
           ))}

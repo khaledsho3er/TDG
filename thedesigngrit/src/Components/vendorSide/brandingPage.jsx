@@ -10,12 +10,15 @@ import {
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCatalog, setSelectedCatalog] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     year: "",
@@ -71,6 +74,7 @@ const BrandingPage = () => {
     data.append("model", formData.model);
     data.append("type", formData.type);
     data.append("brandId", brandId);
+    setLoading(true); // Start loading
 
     try {
       const response = await axios.post(
@@ -85,6 +89,8 @@ const BrandingPage = () => {
       handleCloseDialog();
     } catch (error) {
       console.error("Upload failed:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -270,6 +276,12 @@ const BrandingPage = () => {
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 };

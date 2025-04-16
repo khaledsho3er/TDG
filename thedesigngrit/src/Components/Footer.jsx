@@ -163,7 +163,6 @@ function Footer() {
                   padding: "5px 25px",
                   backgroundColor: "rgba(0, 0, 0, 0.5)",
                   borderRadius: "4px",
-                  border: "1px solid #2d2d2d",
                   fontFamily: "Montserrat",
                   letterSpacing: "0.5px",
                   "&:hover": { backgroundColor: "#2D2D2D" },
