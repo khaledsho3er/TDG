@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
+import { UserContext } from "../../utils/userContext"; // adjust path accordingly
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -36,9 +37,47 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
 
 function ShippingForm({ shippingData, onChange }) {
   const [selectedOption, setSelectedOption] = useState("new");
+  const { user } = useContext(UserContext);
 
   const handleCheckboxChange = (option) => {
     setSelectedOption(option);
+
+    if (option === "existing" && user?.shipmentAddress?.length > 0) {
+      let defaultAddress = user.shipmentAddress.find((addr) => addr.isDefault);
+
+      // Fallback to first address if no default found
+      if (!defaultAddress) {
+        defaultAddress = user.shipmentAddress[0];
+      }
+
+      if (defaultAddress) {
+        onChange({
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          address: defaultAddress.address1 || "",
+          label: "Home", // Optional
+          apartment: defaultAddress.address2 || "",
+          floor: "1", // Optional
+          country: defaultAddress.country || "",
+          city: defaultAddress.city || "",
+          zipCode: defaultAddress.postalCode || "",
+        });
+      }
+    }
+
+    if (option === "new") {
+      onChange({
+        firstName: "",
+        lastName: "",
+        address: "",
+        label: "",
+        apartment: "",
+        floor: "",
+        country: "",
+        city: "",
+        zipCode: "",
+      });
+    }
   };
 
   const handleChange = (e) => {
