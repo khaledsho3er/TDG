@@ -11,6 +11,7 @@ const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null); // For overlay
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const notificationsPerPage = 8;
   const fetchNotifications = useCallback(async () => {
@@ -90,7 +91,14 @@ const NotificationsPage = () => {
   const closeOverlay = () => {
     setSelectedNotification(null);
   };
-
+  if (selectedOrder) {
+    return (
+      <OrderDetails
+        order={selectedOrder}
+        onBack={() => setSelectedOrder(null)}
+      />
+    );
+  }
   return (
     <>
       <div className="dashboard-vendor">
@@ -197,14 +205,7 @@ const NotificationsPage = () => {
             </button>
           ))}
         </div>
-        {selectedOrderId && (
-          <div className="order-details-wrapper">
-            <OrderDetails
-              orderId={selectedOrderId}
-              onClose={() => setSelectedOrderId(null)} // if your OrderDetails supports closing
-            />
-          </div>
-        )}
+
         {selectedNotification && (
           <div className="notifiy-overlay-popup">
             <div className="notifiy-overlay-content">
@@ -213,17 +214,17 @@ const NotificationsPage = () => {
               <p>Date: {formatDate(selectedNotification.date)}</p>{" "}
               {/* Formatted date */}
               <div className="notifiy-overlay-buttons">
-                {selectedNotification.type === "order" &&
-                  selectedNotification.orderId && (
-                    <button
-                      onClick={() => {
-                        setSelectedOrderId(selectedNotification.orderId);
-                        closeOverlay(); // Close the overlay when opening OrderDetails
-                      }}
-                    >
-                      View Order Details
-                    </button>
-                  )}
+                {selectedNotification.type === "order" ? (
+                  <button
+                    onClick={() =>
+                      setSelectedOrder(selectedNotification.orderId)
+                    }
+                  >
+                    View Order Details
+                  </button>
+                ) : (
+                  <button>View Quotation Details</button>
+                )}
                 <button onClick={closeOverlay}>Close</button>
               </div>
             </div>
