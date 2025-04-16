@@ -21,7 +21,12 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     console.log("Adding product to cart:", product); // Debug log
-
+    console.log(
+      "Current sale Price:",
+      product.salePrice,
+      ">>> price normal:",
+      product.price
+    ); // Debug log
     setCartItems((prev) => {
       const existingProduct = prev.find((item) => item.id === product.id);
       if (existingProduct) {
@@ -37,7 +42,7 @@ export const CartProvider = ({ children }) => {
             ...product,
             brandId: product.brandId || 1,
             quantity: 1,
-            unitPrice: product.salePrice || product.price || 0,
+            unitPrice: product.unitPrice,
           },
         ];
       }
