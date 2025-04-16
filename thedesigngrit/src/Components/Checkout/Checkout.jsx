@@ -130,6 +130,7 @@ function Checkout() {
       navigate("/"); // Redirect to home or order confirmation page
       // Redirect or show confirmation
     } catch (error) {
+      console.log("Error creating orders:", error);
       console.error("Failed to create orders:", error);
     }
   };
