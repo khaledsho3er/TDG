@@ -37,36 +37,48 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
 
 function ShippingForm({ shippingData, onChange }) {
   const [selectedOption, setSelectedOption] = useState("new");
-  const { user } = useContext(UserContext);
+  const { userSession } = useContext(UserContext);
 
   const handleCheckboxChange = (option) => {
+    console.log("Checkbox clicked:", option);
+    console.log("User data:", userSession);
+
     setSelectedOption(option);
 
-    if (option === "existing" && user?.shipmentAddress?.length > 0) {
-      let defaultAddress = user.shipmentAddress.find((addr) => addr.isDefault);
-      console.log("Default Address:", defaultAddress);
+    if (option === "existing") {
+      console.log("Shipment Addresses:", userSession?.shipmentAddress);
 
-      // Fallback to first address if no default found
-      if (!defaultAddress) {
-        defaultAddress = user.shipmentAddress[0];
-      }
+      if (userSession?.shipmentAddress?.length > 0) {
+        let defaultAddress = userSession.shipmentAddress.find(
+          (addr) => addr.isDefault
+        );
+        console.log("Default Address Found:", defaultAddress);
 
-      if (defaultAddress) {
-        onChange({
-          firstName: user.firstName || "",
-          lastName: user.lastName || "",
-          address: defaultAddress.address1 || "",
-          label: "Home", // Optional
-          apartment: defaultAddress.address2 || "",
-          floor: "1", // Optional
-          country: defaultAddress.country || "",
-          city: defaultAddress.city || "",
-          zipCode: defaultAddress.postalCode || "",
-        });
+        if (!defaultAddress) {
+          defaultAddress = userSession.shipmentAddress[0];
+          console.log("No default, using first address:", defaultAddress);
+        }
+
+        if (defaultAddress) {
+          onChange({
+            firstName: userSession.firstName || "",
+            lastName: userSession.lastName || "",
+            address: defaultAddress.address1 || "",
+            label: "Home", // Optional
+            apartment: defaultAddress.address2 || "",
+            floor: "1", // Optional
+            country: defaultAddress.country || "",
+            city: defaultAddress.city || "",
+            zipCode: defaultAddress.postalCode || "",
+          });
+        }
+      } else {
+        console.log("No shipment addresses found!");
       }
     }
 
     if (option === "new") {
+      console.log("Switching to empty new address.");
       onChange({
         firstName: "",
         lastName: "",
