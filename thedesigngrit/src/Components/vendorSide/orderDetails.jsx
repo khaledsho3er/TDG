@@ -49,7 +49,7 @@ const OrderDetails = ({ order, onBack }) => {
     order?.cartItems?.length > 0 ? order.cartItems[0].brandId : null;
 
   // Filter products based on brandId
-  const filteredProducts = order.cartItems.filter(
+  const filteredProducts = order?.cartItems?.filter(
     (product) => product.brandId === brandId
   );
   const handleDialogOpen = () => {
