@@ -35,13 +35,13 @@ const OrderDetails = ({ order, onBack }) => {
   const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
   const [showButton, setShowButton] = useState(!!order?.note);
   useEffect(() => {
-    if (order.note) {
+    if (order && order.note) {
       setNote(order.note);
       setNotePostedAt(order.notePostedAt || null);
       setIsReadOnly(true);
       setShowButton(false);
     }
-  }, [order.note, order.notePostedAt]);
+  }, [order]);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
