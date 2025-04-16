@@ -197,6 +197,22 @@ const ShippingInfoPopup = () => {
             <p>{addr.address2 || "N/A"}</p>
           </div>{" "}
           <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Label:</label>
+            <p>{addr.label || "N/A"}</p>
+          </div>{" "}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Apartment:</label>
+            <p>{addr.apartment || "N/A"}</p>
+          </div>{" "}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>Floor:</label>
+            <p>{addr.floor || "N/A"}</p>
+          </div>{" "}
+          <div className="profile-form-field" style={{ width: "48%" }}>
+            <label>LandMark:</label>
+            <p>{addr.landmark || "N/A"}</p>
+          </div>{" "}
+          <div className="profile-form-field" style={{ width: "48%" }}>
             <label>City:</label>
 
             <p>{addr.city}</p>

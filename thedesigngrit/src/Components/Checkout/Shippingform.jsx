@@ -145,137 +145,132 @@ function ShippingForm({ shippingData, onChange }) {
         />
       </Box>
 
-      {selectedOption === "new" && (
-        <Box className="shipping-form-container">
-          <Box className="shipping-form">
-            <form
-              onSubmit={handleSubmit}
-              className="shippingform-form-container"
-            >
-              {/* Row 1 */}
-              <div className="shippingform-form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={shippingData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={shippingData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+      <Box className="shipping-form-container">
+        <Box className="shipping-form">
+          <form onSubmit={handleSubmit} className="shippingform-form-container">
+            {/* Row 1 */}
+            <div className="shippingform-form-row">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={shippingData.firstName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-
-              {/* Row 2 */}
-              <div className="shippingform-form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    placeholder="Address"
-                    value={shippingData.address}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="label"
-                    name="label"
-                    placeholder="Label"
-                    value={shippingData.label}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={shippingData.lastName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
+            </div>
 
-              {/* Row 3 */}
-              <div className="shippingform-form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="apartment"
-                    name="apartment"
-                    placeholder="Apartment"
-                    value={shippingData.apartment}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="floor"
-                    name="floor"
-                    placeholder="Floor"
-                    value={shippingData.floor}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+            {/* Row 2 */}
+            <div className="shippingform-form-row">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="Address"
+                  value={shippingData.address}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-
-              {/* Row 4 */}
-              <div className="shippingform-form-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    placeholder="Country"
-                    value={shippingData.country}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    placeholder="City"
-                    value={shippingData.city}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="label"
+                  name="label"
+                  placeholder="Label"
+                  value={shippingData.label}
+                  onChange={handleChange}
+                  required
+                />
               </div>
+            </div>
 
-              {/* Row 5 */}
-              <div className="shippingform-form-row-zip">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="zipCode"
-                    name="zipCode"
-                    placeholder="Zip Code"
-                    value={shippingData.zipCode}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+            {/* Row 3 */}
+            <div className="shippingform-form-row">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="apartment"
+                  name="apartment"
+                  placeholder="Apartment"
+                  value={shippingData.apartment}
+                  onChange={handleChange}
+                  required
+                />
               </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="floor"
+                  name="floor"
+                  placeholder="Floor"
+                  value={shippingData.floor}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-              <button type="submit" style={{ display: "none" }}></button>
-            </form>
-          </Box>
+            {/* Row 4 */}
+            <div className="shippingform-form-row">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="country"
+                  name="country"
+                  placeholder="Country"
+                  value={shippingData.country}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  placeholder="City"
+                  value={shippingData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Row 5 */}
+            <div className="shippingform-form-row-zip">
+              <div className="input-group">
+                <input
+                  type="text"
+                  id="zipCode"
+                  name="zipCode"
+                  placeholder="Zip Code"
+                  value={shippingData.zipCode}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" style={{ display: "none" }}></button>
+          </form>
         </Box>
-      )}
+      </Box>
     </Box>
   );
 }
