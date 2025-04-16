@@ -19,10 +19,10 @@ const BrandingPage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCatalog, setSelectedCatalog] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [brandImages, setBrandImages] = useState({
-    brandlogo: null,
-    coverPhoto: null,
-  });
+  // const [brandImages, setBrandImages] = useState({
+  //   brandlogo: null,
+  //   coverPhoto: null,
+  // });
 
   const [formData, setFormData] = useState({
     title: "",
@@ -63,34 +63,34 @@ const BrandingPage = () => {
     setFormData((prevData) => ({ ...prevData, [type]: file }));
   };
 
-  const handleBrandImageChange = (e, type) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setBrandImages((prev) => ({ ...prev, [type]: file }));
-  };
+  // const handleBrandImageChange = (e, type) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
+  //   setBrandImages((prev) => ({ ...prev, [type]: file }));
+  // };
 
-  const handleBrandImageUpload = async () => {
-    if (!brandId) return;
-    const data = new FormData();
-    if (brandImages.brandlogo) data.append("brandlogo", brandImages.brandlogo);
-    if (brandImages.coverPhoto)
-      data.append("coverPhoto", brandImages.coverPhoto);
+  // const handleBrandImageUpload = async () => {
+  //   if (!brandId) return;
+  //   const data = new FormData();
+  //   if (brandImages.brandlogo) data.append("brandlogo", brandImages.brandlogo);
+  //   if (brandImages.coverPhoto)
+  //     data.append("coverPhoto", brandImages.coverPhoto);
 
-    setLoading(true);
-    try {
-      await axios.put(
-        `https://tdg-db.onrender.com/api/brand/${brandId}`,
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      alert("Brand visuals updated!");
-      window.location.reload();
-    } catch (err) {
-      console.error("Error uploading brand visuals:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   setLoading(true);
+  //   try {
+  //     await axios.put(
+  //       `https://tdg-db.onrender.com/api/brand/${brandId}`,
+  //       data,
+  //       { headers: { "Content-Type": "multipart/form-data" } }
+  //     );
+  //     alert("Brand visuals updated!");
+  //     window.location.reload();
+  //   } catch (err) {
+  //     console.error("Error uploading brand visuals:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //};
 
   const handleInputChange = (e) => {
     setFormData((prevData) => ({
@@ -231,7 +231,7 @@ const BrandingPage = () => {
         </div>
       </Box>
 
-      {/* Logo & Cover Photo Section */}
+      {/* Logo & Cover Photo Section
       <Box
         sx={{
           backgroundColor: "#fff",
@@ -305,7 +305,7 @@ const BrandingPage = () => {
             Upload Images
           </button>
         </Box>
-      </Box>
+      </Box> */}
 
       {/* Upload/Edit Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
