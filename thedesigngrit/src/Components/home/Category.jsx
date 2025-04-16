@@ -29,7 +29,6 @@ const ShopByCategory = () => {
           "https://tdg-db.onrender.com/api/categories/categories"
         );
         const data = await response.json();
-        console.log(data);
         setCategories(data.slice(0, 6)); // Slice the first 6 categories
       } catch (error) {
         console.error("Error fetching categories:", error);

@@ -116,6 +116,7 @@ const BrandSignup = () => {
       setOriginalData(response.data);
       setIsEditing(false);
     } catch (error) {
+      console.error("Error saving brand data:", error);
       console.error("Error updating brand data:", error);
     }
   };
