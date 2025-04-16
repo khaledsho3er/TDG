@@ -220,7 +220,7 @@ const NotificationsPage = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedOrder(selectedNotification.order); // Make sure this is the correct property name
+                      setSelectedOrder(selectedNotification.orderId); // Make sure this is the correct property name
                     }}
                   >
                     View Order Details
