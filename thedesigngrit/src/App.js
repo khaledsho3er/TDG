@@ -93,7 +93,7 @@ const VendorRoutes = () => (
       <Route path="/update-product" element={<UpdateProductForm />} />
       <Route path="/adminpanel" element={<AdminHome />} />
       <Route path="/verify-partner" element={<VerifyPartners />} />
-      <Route path="/notificationspage" element={<NotificationsPage />} />
+      <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="/signin-vendor" element={<SigninVendor />} />
       <Route path="/signupvendor" element={<SignupVendor />} />
       <Route path="/addbrand" element={<BrandForm />} />

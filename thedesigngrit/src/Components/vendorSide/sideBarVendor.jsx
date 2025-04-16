@@ -6,9 +6,9 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { FaMoneyBill } from "react-icons/fa6";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { MdAccountBalance } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
-import { FaWpforms } from "react-icons/fa";
+import { FaWpforms, FaBell, FaUsers } from "react-icons/fa";
+
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
 const SidebarVendor = ({ setActivePage, activePage }) => {
@@ -51,6 +51,13 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         >
           <RiDashboard3Fill size={20} style={{ marginRight: "5px" }} />
           Dashboard
+        </li>
+        <li
+          onClick={() => setActivePage("notifications")}
+          className={getActiveClass("notifications")}
+        >
+          <FaBell size={20} style={{ marginRight: "5px" }} />
+          Notifications
         </li>
         <li
           onClick={() => setActivePage("allProducts")}
