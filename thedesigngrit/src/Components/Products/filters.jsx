@@ -116,8 +116,27 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
       </Button>
 
       {/* Accordion Filters */}
-      <Accordion disableGutters elevation={0} square>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion
+        disableGutters
+        elevation={0}
+        square
+        sx={{
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          mb: 2,
+          "&:before": { display: "none" }, // removes default divider line
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{
+            backgroundColor: "#f5f5f5",
+            "& .MuiAccordionSummary-content": {
+              fontWeight: "bold",
+              color: "#333",
+            },
+          }}
+        >
           <Typography>
             {getFilterLabel("Brands", selectedFilters.brands.length)}
           </Typography>
@@ -138,8 +157,27 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion disableGutters elevation={0} square>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion
+        disableGutters
+        elevation={0}
+        square
+        sx={{
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          mb: 2,
+          "&:before": { display: "none" }, // removes default divider line
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{
+            backgroundColor: "#f5f5f5",
+            "& .MuiAccordionSummary-content": {
+              fontWeight: "bold",
+              color: "#333",
+            },
+          }}
+        >
           <Typography>Price</Typography>
         </AccordionSummary>
         <AccordionDetails>
