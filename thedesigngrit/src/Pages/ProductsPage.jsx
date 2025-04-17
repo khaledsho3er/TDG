@@ -19,7 +19,7 @@ function ProductsPage() {
     brands: [],
     colors: [],
     tags: [],
-    priceRange: [349, 61564],
+    priceRange: [0, 1000000], // Wider range initially
   });
 
   // Fetch Type Details
@@ -45,6 +45,8 @@ function ProductsPage() {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/types/${typeId}/${typeName}`
         );
+        console.log("Raw API response:", data); // Add this line
+
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -59,7 +61,18 @@ function ProductsPage() {
   useEffect(() => {
     const applyFiltersAndSorting = () => {
       let filtered = [...products];
-
+      console.log("Initial products:", products); // Add this
+      products.forEach((product, index) => {
+        console.log(`Product ${index}:`, {
+          name: product.name,
+          brand: product.brand,
+          colors: product.colors,
+          tags: product.tags,
+          price: product.price,
+          salePrice: product.salePrice,
+          createdAt: product.createdAt,
+        });
+      });
       // Brand filter
       if (filters.brands.length > 0) {
         filtered = filtered.filter((product) =>
@@ -113,6 +126,7 @@ function ProductsPage() {
         default:
           break;
       }
+      console.log("Filtered products:", filtered); // Add this
 
       setFilteredProducts(filtered);
     };
