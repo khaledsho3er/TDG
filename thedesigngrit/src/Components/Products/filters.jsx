@@ -84,8 +84,25 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
     const getFilterLabel = (label, count) =>
       count > 0 ? `${label} (${count})` : label;
 
+    const FilterBlock = ({ title, children }) => (
+      <Box
+        sx={{
+          border: "1px solid #D3D3D3",
+          borderRadius: "10px",
+          mb: 2,
+          px: 2,
+          py: 1,
+        }}
+      >
+        <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
+          {title}
+        </Typography>
+        {children}
+      </Box>
+    );
+
     return (
-      <Box sx={{ width: isMobile ? "100%" : 300, padding: 2 }}>
+      <Box sx={{ width: isMobile ? "100%" : 300, p: 2 }}>
         {isMobile && (
           <IconButton
             onClick={() => setDrawerOpen(false)}
@@ -94,50 +111,34 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
             <CloseIcon />
           </IconButton>
         )}
-        <Typography variant="h6" fontWeight="bold">
-          Filters:
+
+        <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
+          Filters: (
+          {[...selectedFilters.brands, ...selectedFilters.tags].length})
         </Typography>
 
         {/* Selected Filters */}
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", my: 1 }}>
-          {selectedFilters.brands.map((filter) => (
-            <Chip
-              key={filter}
-              label={filter}
-              onDelete={() => handleFilterChange("brands", filter)}
-            />
-          ))}
-          {selectedFilters.colors.map((filter) => (
-            <Chip
-              key={filter}
-              label={filter}
-              onDelete={() => handleFilterChange("colors", filter)}
-            />
-          ))}
-          {selectedFilters.tags.map((filter) => (
-            <Chip
-              key={filter}
-              label={filter}
-              onDelete={() => handleFilterChange("tags", filter)}
-            />
-          ))}
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
+          {["brands", "colors", "tags"].flatMap((type) =>
+            selectedFilters[type].map((filter) => (
+              <Chip
+                key={filter}
+                label={filter}
+                onDelete={() => handleFilterChange(type, filter)}
+              />
+            ))
+          )}
+          <Button onClick={clearFilters} size="small" color="error">
+            Clear All
+          </Button>
         </Box>
 
-        <Button onClick={clearFilters} size="small" color="error">
-          Clear All
-        </Button>
-
-        {/* Brand Filter */}
-        <Accordion disableGutters elevation={0} square>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
-              {getFilterLabel("Brands", selectedFilters.brands.length)}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
+        {/* Categories – Add more blocks like this */}
+        <FilterBlock title="Brands">
+          <Box sx={{ maxHeight: 150, overflowY: "auto" }}>
             {brands.map((brand) => (
               <FormControlLabel
-                key={brand._id} // Use brand._id as key since it's unique
+                key={brand._id}
                 control={
                   <Checkbox
                     checked={selectedFilters.brands.includes(brand.brandName)}
@@ -149,33 +150,60 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
                 label={brand.brandName}
               />
             ))}
-          </AccordionDetails>
-        </Accordion>
+          </Box>
+        </FilterBlock>
 
-        {/* Price Filter */}
-        <Accordion disableGutters elevation={0} square>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Price</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Slider
-              value={selectedFilters.priceRange}
-              onChange={handlePriceChange}
-              valueLabelDisplay="auto"
+        <FilterBlock title="Price">
+          <Slider
+            value={selectedFilters.priceRange}
+            onChange={handlePriceChange}
+            valueLabelDisplay="off"
+            min={349}
+            max={61564}
+            sx={{ mb: 2 }}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <input
+              type="number"
+              value={selectedFilters.priceRange[0]}
               min={349}
-              max={61564}
+              max={selectedFilters.priceRange[1]}
+              onChange={(e) =>
+                handlePriceChange(null, [
+                  Number(e.target.value),
+                  selectedFilters.priceRange[1],
+                ])
+              }
+              style={{
+                width: "45%",
+                padding: "6px",
+                borderRadius: 6,
+                border: "1px solid #ccc",
+              }}
             />
-          </AccordionDetails>
-        </Accordion>
+            <input
+              type="number"
+              value={selectedFilters.priceRange[1]}
+              min={selectedFilters.priceRange[0]}
+              max={61564}
+              onChange={(e) =>
+                handlePriceChange(null, [
+                  selectedFilters.priceRange[0],
+                  Number(e.target.value),
+                ])
+              }
+              style={{
+                width: "45%",
+                padding: "6px",
+                borderRadius: 6,
+                border: "1px solid #ccc",
+              }}
+            />
+          </Box>
+        </FilterBlock>
 
-        {/* Color Filter */}
-        <Accordion disableGutters elevation={0} square>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
-              {getFilterLabel("Colors", selectedFilters.colors.length)}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
+        <FilterBlock title="Colors">
+          <Box sx={{ maxHeight: 120, overflowY: "auto" }}>
             {Array.from(new Set(allColors)).map((color) => (
               <FormControlLabel
                 key={color}
@@ -188,17 +216,11 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
                 label={color}
               />
             ))}
-          </AccordionDetails>
-        </Accordion>
+          </Box>
+        </FilterBlock>
 
-        {/* Tags Filter */}
-        <Accordion disableGutters elevation={0} square>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
-              {getFilterLabel("Tags", selectedFilters.tags.length)}
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
+        <FilterBlock title="Tags">
+          <Box sx={{ maxHeight: 120, overflowY: "auto" }}>
             {Array.from(new Set(allTags)).map((tag) => (
               <FormControlLabel
                 key={tag}
@@ -211,26 +233,11 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
                 label={tag}
               />
             ))}
-          </AccordionDetails>
-        </Accordion>
+          </Box>
+        </FilterBlock>
       </Box>
     );
   };
-
-  return isMobile ? (
-    <>
-      <Button onClick={() => setDrawerOpen(true)}>Show Filters</Button>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        {renderFilters()}
-      </Drawer>
-    </>
-  ) : (
-    renderFilters()
-  );
 };
 
 export default FilterSection;
