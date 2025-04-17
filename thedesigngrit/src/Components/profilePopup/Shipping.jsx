@@ -309,7 +309,7 @@ const ShippingInfoPopup = () => {
             margin: "auto",
             backgroundColor: "white",
             borderRadius: "10px",
-            marginTop: "5%",
+            marginTop: "8%",
             alignItems: "center",
             zIndex: 1000,
           }}

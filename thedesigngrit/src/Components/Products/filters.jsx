@@ -155,16 +155,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontWeight: "normal",
               color: "#2d2d2d",
             },
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              color: "#fff",
-              "& .MuiAccordionSummary-content": {
-                color: "#fff",
-              },
-              "& .MuiSvgIcon-root": {
-                color: "#fff",
-              },
-            },
+            // "&:hover": {
+            //   backgroundColor: "#2d2d2d",
+            //   color: "#fff",
+            //   "& .MuiAccordionSummary-content": {
+            //     color: "#fff",
+            //   },
+            //   "& .MuiSvgIcon-root": {
+            //     color: "#fff",
+            //   },
+            // },
           }}
         >
           <Typography>
@@ -221,16 +221,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontWeight: "normal",
               color: "#2d2d2d",
             },
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              color: "#fff",
-              "& .MuiAccordionSummary-content": {
-                color: "#fff",
-              },
-              "& .MuiSvgIcon-root": {
-                color: "#fff",
-              },
-            },
+            // "&:hover": {
+            //   backgroundColor: "#2d2d2d",
+            //   color: "#fff",
+            //   "& .MuiAccordionSummary-content": {
+            //     color: "#fff",
+            //   },
+            //   "& .MuiSvgIcon-root": {
+            //     color: "#fff",
+            //   },
+            // },
           }}
         >
           <Typography>Price</Typography>
@@ -295,16 +295,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontWeight: "normal",
               color: "#2d2d2d",
             },
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              color: "#fff",
-              "& .MuiAccordionSummary-content": {
-                color: "#fff",
-              },
-              "& .MuiSvgIcon-root": {
-                color: "#fff",
-              },
-            },
+            // "&:hover": {
+            //   backgroundColor: "#2d2d2d",
+            //   color: "#fff",
+            //   "& .MuiAccordionSummary-content": {
+            //     color: "#fff",
+            //   },
+            //   "& .MuiSvgIcon-root": {
+            //     color: "#fff",
+            //   },
+            // },
           }}
         >
           <Typography>
@@ -361,16 +361,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontWeight: "normal",
               color: "#2d2d2d",
             },
-            "&:hover": {
-              backgroundColor: "#2d2d2d",
-              color: "#fff",
-              "& .MuiAccordionSummary-content": {
-                color: "#fff",
-              },
-              "& .MuiSvgIcon-root": {
-                color: "#fff",
-              },
-            },
+            // "&:hover": {
+            //   backgroundColor: "#2d2d2d",
+            //   color: "#fff",
+            //   "& .MuiAccordionSummary-content": {
+            //     color: "#fff",
+            //   },
+            //   "& .MuiSvgIcon-root": {
+            //     color: "#fff",
+            //   },
+            // },
           }}
         >
           <Typography>
