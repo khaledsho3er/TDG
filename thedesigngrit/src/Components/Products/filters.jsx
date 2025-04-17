@@ -130,6 +130,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
+          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
@@ -201,6 +202,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
+          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
@@ -299,6 +301,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
+          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
@@ -370,6 +373,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
+          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
