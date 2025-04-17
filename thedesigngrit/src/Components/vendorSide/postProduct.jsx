@@ -560,14 +560,20 @@ const AddProduct = () => {
 
       // Append the actual variant image files
       // Variant images
-      variants.forEach((variant) => {
-        variant.images.forEach((img) => {
-          formData.append("variantImages", img);
+      // 4. Append variants CORRECTLY
+      if (hasVariants && variants.length > 0) {
+        variants.forEach((variant, vIndex) => {
+          // Append variant images
+          variant.images.forEach((file, imgIndex) => {
+            formData.append("variantImages", file); // Simple field name
+          });
+
+          // Append variant main image if exists
+          if (variant.mainImage) {
+            formData.append("variantMainImages", variant.mainImage);
+          }
         });
-        if (variant.mainImage) {
-          formData.append("variantMainImages", variant.mainImage);
-        }
-      });
+      }
     }
 
     // Log FormData for debugging
