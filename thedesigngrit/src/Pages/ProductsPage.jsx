@@ -78,6 +78,14 @@ function ProductsPage() {
           createdAt: product.createdAt,
         });
       });
+      if (filters.hasCAD) {
+        filtered = filtered.filter((product) => product.cadFile);
+      }
+
+      // Sale Price filter
+      if (filters.hasSalePrice) {
+        filtered = filtered.filter((product) => product.salePrice);
+      }
       // Brand filter
       if (filters.brands.length > 0) {
         filtered = filtered.filter(
@@ -147,12 +155,26 @@ function ProductsPage() {
     setFilters(newFilters);
   };
 
+  // Handle CAD filter toggle
+  const handleCADFilterChange = (value) => {
+    setFilters((prev) => ({ ...prev, hasCAD: value }));
+  };
+
+  // Handle Sale Price filter toggle
+  const handleSalePriceFilterChange = (value) => {
+    setFilters((prev) => ({ ...prev, hasSalePrice: value }));
+  };
   return (
     <Box>
       <Header />
       <PageDescription name={typeName} description={typeDescription} />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
+        <TopFilter
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onCADFilterChange={handleCADFilterChange}
+          onSalePriceFilterChange={handleSalePriceFilterChange}
+        />{" "}
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>

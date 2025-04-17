@@ -11,9 +11,27 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
-const TopFilter = ({ sortOption, setSortOption }) => {
+const TopFilter = ({
+  sortOption,
+  setSortOption,
+  onCADFilterChange,
+  onSalePriceFilterChange,
+}) => {
   const [forSaleChecked, setForSaleChecked] = React.useState(false);
   const [bimCadChecked, setBimCadChecked] = React.useState(false);
+
+  // Update the button handlers
+  const handleForSaleToggle = () => {
+    const newValue = !forSaleChecked;
+    setForSaleChecked(newValue);
+    onSalePriceFilterChange(newValue);
+  };
+
+  const handleBimCadToggle = () => {
+    const newValue = !bimCadChecked;
+    setBimCadChecked(newValue);
+    onCADFilterChange(newValue);
+  };
 
   return (
     <Box
@@ -60,7 +78,7 @@ const TopFilter = ({ sortOption, setSortOption }) => {
                 color: "white",
               },
             }}
-            onClick={() => setForSaleChecked(!forSaleChecked)}
+            onClick={handleForSaleToggle}
           >
             {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
             For Sale
@@ -84,7 +102,7 @@ const TopFilter = ({ sortOption, setSortOption }) => {
                 color: "white",
               },
             }}
-            onClick={() => setBimCadChecked(!bimCadChecked)}
+            onClick={handleBimCadToggle}
           >
             {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
             BIM/CAD
