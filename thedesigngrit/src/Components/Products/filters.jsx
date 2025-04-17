@@ -137,7 +137,7 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
           <AccordionDetails>
             {brands.map((brand) => (
               <FormControlLabel
-                key={brand.brandName}
+                key={brand._id} // Use brand._id as key since it's unique
                 control={
                   <Checkbox
                     checked={selectedFilters.brands.includes(brand.brandName)}
