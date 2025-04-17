@@ -1563,7 +1563,7 @@ h1 {
   padding-left: 20px;
   margin-top: 5px;
 }
-/* Variant Modal Styles */
+/* Variant Modal Styles
 .variant-modal-overlay {
   position: fixed;
   top: 0;
@@ -1662,7 +1662,7 @@ h1 {
   background-color: #4caf50;
   color: white;
 }
-/* Variant Image Upload Styles */
+
 .variant-image-upload {
   margin-top: 20px;
   padding: 15px;
@@ -1759,4 +1759,4 @@ h1 {
   max-height: 200px;
   border: 2px solid #4caf50;
   border-radius: 4px;
-}
+} */
