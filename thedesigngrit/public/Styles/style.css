@@ -6515,7 +6515,11 @@ input:focus {
   height: 100%;
   object-fit: cover;
 }
-
+.subcategory-image-container {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
 .subcategory-content {
   width: 50%;
   padding: 40px;
@@ -6541,6 +6545,8 @@ input:focus {
   color: #555;
   margin-bottom: 20px;
   font-family: "Montserrat";
+  text-align: justify;
+  padding: 0px 15px;
 }
 
 .subcategory-button {
