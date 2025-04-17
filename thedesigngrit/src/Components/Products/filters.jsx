@@ -1,46 +1,28 @@
 import React from "react";
 import {
-  Box,
-  FormGroup,
-  FormControlLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Checkbox,
+  FormControlLabel,
+  FormGroup,
   Typography,
   Slider,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function FilterSection({ products, setFilters }) {
-  // Extract unique values
   const uniqueBrands = [...new Set(products.map((p) => p.brand))];
   const uniqueColors = [...new Set(products.flatMap((p) => p.colors || []))];
   const uniqueTags = [...new Set(products.flatMap((p) => p.tags || []))];
 
-  const handleBrandChange = (brand) => {
+  const handleCheckboxChange = (type, value) => {
     setFilters((prev) => {
-      const isSelected = prev.brands.includes(brand);
+      const isSelected = prev[type].includes(value);
       const updated = isSelected
-        ? prev.brands.filter((b) => b !== brand)
-        : [...prev.brands, brand];
-      return { ...prev, brands: updated };
-    });
-  };
-
-  const handleColorChange = (color) => {
-    setFilters((prev) => {
-      const isSelected = prev.colors.includes(color);
-      const updated = isSelected
-        ? prev.colors.filter((c) => c !== color)
-        : [...prev.colors, color];
-      return { ...prev, colors: updated };
-    });
-  };
-
-  const handleTagChange = (tag) => {
-    setFilters((prev) => {
-      const isSelected = prev.tags.includes(tag);
-      const updated = isSelected
-        ? prev.tags.filter((t) => t !== tag)
-        : [...prev.tags, tag];
-      return { ...prev, tags: updated };
+        ? prev[type].filter((item) => item !== value)
+        : [...prev[type], value];
+      return { ...prev, [type]: updated };
     });
   };
 
@@ -49,55 +31,85 @@ function FilterSection({ products, setFilters }) {
   };
 
   return (
-    <Box>
-      <Typography variant="h6">Brands</Typography>
-      <FormGroup>
-        {uniqueBrands.map((brand) => (
-          <FormControlLabel
-            key={brand}
-            control={<Checkbox onChange={() => handleBrandChange(brand)} />}
-            label={brand}
-          />
-        ))}
-      </FormGroup>
+    <div>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Brands</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FormGroup>
+            {uniqueBrands.map((brand) => (
+              <FormControlLabel
+                key={brand}
+                control={
+                  <Checkbox
+                    onChange={() => handleCheckboxChange("brands", brand)}
+                  />
+                }
+                label={brand}
+              />
+            ))}
+          </FormGroup>
+        </AccordionDetails>
+      </Accordion>
 
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Colors
-      </Typography>
-      <FormGroup>
-        {uniqueColors.map((color) => (
-          <FormControlLabel
-            key={color}
-            control={<Checkbox onChange={() => handleColorChange(color)} />}
-            label={color}
-          />
-        ))}
-      </FormGroup>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Colors</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FormGroup>
+            {uniqueColors.map((color) => (
+              <FormControlLabel
+                key={color}
+                control={
+                  <Checkbox
+                    onChange={() => handleCheckboxChange("colors", color)}
+                  />
+                }
+                label={color}
+              />
+            ))}
+          </FormGroup>
+        </AccordionDetails>
+      </Accordion>
 
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Tags
-      </Typography>
-      <FormGroup>
-        {uniqueTags.map((tag) => (
-          <FormControlLabel
-            key={tag}
-            control={<Checkbox onChange={() => handleTagChange(tag)} />}
-            label={tag}
-          />
-        ))}
-      </FormGroup>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Tags</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FormGroup>
+            {uniqueTags.map((tag) => (
+              <FormControlLabel
+                key={tag}
+                control={
+                  <Checkbox
+                    onChange={() => handleCheckboxChange("tags", tag)}
+                  />
+                }
+                label={tag}
+              />
+            ))}
+          </FormGroup>
+        </AccordionDetails>
+      </Accordion>
 
-      <Typography variant="h6" sx={{ mt: 2 }}>
-        Price Range
-      </Typography>
-      <Slider
-        valueLabelDisplay="auto"
-        min={0}
-        max={100000}
-        step={50}
-        onChangeCommitted={handlePriceChange}
-      />
-    </Box>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Price Range</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Slider
+            valueLabelDisplay="auto"
+            min={0}
+            max={100000}
+            step={50}
+            onChangeCommitted={handlePriceChange}
+          />
+        </AccordionDetails>
+      </Accordion>
+    </div>
   );
 }
 

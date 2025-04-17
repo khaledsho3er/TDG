@@ -11,24 +11,25 @@ import PageDescription from "../Components/Topheader";
 
 function ProductsPage() {
   const { typeId, typeName } = useParams();
-  const [typeDescription, setTypeDescription] = useState(""); // 🔹 State to store type description
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [typeDescription, setTypeDescription] = useState("");
   const [sortOption, setSortOption] = useState("Newest");
   const [filters, setFilters] = useState({
-    brands: [], // قائمة الـ ObjectId للماركات المختارة
+    brands: [],
     colors: [],
     tags: [],
-    priceRange: [349, 61564],
+    priceRange: [0, 100000],
   });
-  // 🟢 Fetch Type Details
+  const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     const fetchTypeDetails = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/types/types/${typeId}` // 🔹 Make sure this API returns type details
+          `https://tdg-db.onrender.com/api/types/types/${typeId}`
         );
-        setTypeDescription(data.description); // 🔹 Store type description
+        setTypeDescription(data.description);
       } catch (error) {
         console.error("Error fetching type details:", error);
       }
@@ -36,16 +37,15 @@ function ProductsPage() {
 
     if (typeId) fetchTypeDetails();
   }, [typeId]);
-  // 🟢 جلب المنتجات من الـ API مع استخدام المسار الصحيح
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/types/${typeId}/${typeName}`
         );
-
         setProducts(data);
-        setFilteredProducts(data); // المنتجات المفلترة بالبداية هي كل المنتجات
+        setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -53,74 +53,57 @@ function ProductsPage() {
 
     fetchProducts();
   }, [typeId, typeName]);
-  // 🟢 تطبيق الفلاتر عند التحديث
-  useEffect(() => {
-    const applyFilters = () => {
-      let filtered = [...products];
-
-      if (filters.brands.length > 0) {
-        filtered = filtered.filter((product) =>
-          filters.brands.includes(product.brand)
-        );
-      }
-
-      if (filters.colors.length > 0) {
-        filtered = filtered.filter((product) =>
-          product.colors?.some((color) => filters.colors.includes(color))
-        );
-      }
-
-      if (filters.tags.length > 0) {
-        filtered = filtered.filter((product) =>
-          product.tags?.some((tag) => filters.tags.includes(tag))
-        );
-      }
-
-      filtered = filtered.filter((product) => {
-        const price = product.salePrice || product.price;
-        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-      });
-
-      switch (sortOption) {
-        case "Newest":
-          filtered.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          );
-          break;
-        case "Price: Low to High":
-          filtered.sort(
-            (a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)
-          );
-          break;
-        case "Price: High to Low":
-          filtered.sort(
-            (a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)
-          );
-          break;
-        case "Alphabetical: A-Z":
-          filtered.sort((a, b) => a.name.localeCompare(b.name));
-          break;
-        case "Alphabetical: Z-A":
-          filtered.sort((a, b) => b.name.localeCompare(a.name));
-          break;
-        default:
-          break;
-      }
-
-      setFilteredProducts(filtered);
-    };
-
-    applyFilters();
-  }, [filters, sortOption, products]);
-
-  // 🟢 تحديث الفلاتر عند التغيير
 
   useEffect(() => {
-    if (products.length > 0) {
-      setFilteredProducts(products);
+    let filtered = [...products];
+
+    if (filters.brands.length > 0) {
+      filtered = filtered.filter((product) =>
+        filters.brands.includes(product.brand)
+      );
     }
-  }, [products]);
-  const [favorites, setFavorites] = useState([]);
+    if (filters.colors.length > 0) {
+      filtered = filtered.filter((product) =>
+        product.colors?.some((color) => filters.colors.includes(color))
+      );
+    }
+    if (filters.tags.length > 0) {
+      filtered = filtered.filter((product) =>
+        product.tags?.some((tag) => filters.tags.includes(tag))
+      );
+    }
+
+    filtered = filtered.filter((product) => {
+      const price = product.salePrice || product.price;
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
+
+    switch (sortOption) {
+      case "Newest":
+        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      case "Price: Low to High":
+        filtered.sort(
+          (a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)
+        );
+        break;
+      case "Price: High to Low":
+        filtered.sort(
+          (a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)
+        );
+        break;
+      case "Alphabetical: A-Z":
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "Alphabetical: Z-A":
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    setFilteredProducts(filtered);
+  }, [filters, sortOption, products]);
 
   const handleFavoriteToggle = (product) => {
     setFavorites((prev) =>
@@ -129,7 +112,6 @@ function ProductsPage() {
         : [...prev, product]
     );
   };
-
   return (
     <Box>
       <Header />
