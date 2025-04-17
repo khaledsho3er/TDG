@@ -134,7 +134,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
             backgroundColor: "transparent",
-            color: "#fff",
+            color: "#2d2d2d",
           },
           "&.Mui-expanded": {
             backgroundColor: "transparent",
@@ -205,7 +205,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
             backgroundColor: "transparent",
-            color: "#fff",
+            color: "#2d2d2d",
           },
           "&.Mui-expanded": {
             backgroundColor: "transparent",
@@ -303,7 +303,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
             backgroundColor: "transparent",
-            color: "#fff",
+            color: "#2d2d2d",
           },
           "&.Mui-expanded": {
             backgroundColor: "transparent",
@@ -374,7 +374,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
             backgroundColor: "transparent",
-            color: "#fff",
+            color: "#2d2d2d",
           },
           "&.Mui-expanded": {
             backgroundColor: "transparent",
