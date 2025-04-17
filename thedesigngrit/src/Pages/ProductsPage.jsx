@@ -70,7 +70,7 @@ function ProductsPage() {
       products.forEach((product, index) => {
         console.log(`Product ${index}:`, {
           name: product.name,
-          brand: product.brandId ? product.brandId.brandName : "No brand",
+          brand: product.brandId.brandName,
           colors: product.colors,
           tags: product.tags,
           price: product.price,
@@ -82,7 +82,9 @@ function ProductsPage() {
       if (filters.brands.length > 0) {
         filtered = filtered.filter(
           (product) =>
-            product.brandId.brandName && filters.brands.includes(product.brand)
+            product.brandId &&
+            product.brandId.brandName &&
+            filters.brands.includes(product.brandId.brandName)
         );
       }
 
