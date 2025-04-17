@@ -130,12 +130,10 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
-          color: "#fff",
-
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
-            backgroundColor: "#2d2d2d",
+            backgroundColor: "transparent",
             color: "#fff",
           },
           "&.Mui-expanded": {
@@ -202,12 +200,11 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
-          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
-            backgroundColor: "#2d2d2d",
+            backgroundColor: "transparent",
             color: "#fff",
           },
           "&.Mui-expanded": {
@@ -301,12 +298,11 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
-          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
-            backgroundColor: "#2d2d2d",
+            backgroundColor: "transparent",
             color: "#fff",
           },
           "&.Mui-expanded": {
@@ -373,12 +369,11 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           borderRadius: "10px",
           backgroundColor: "transparent",
           fontFamily: "Montserrat",
-          color: "#fff",
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
           "&:hover": {
-            backgroundColor: "#2d2d2d",
+            backgroundColor: "transparent",
             color: "#fff",
           },
           "&.Mui-expanded": {
