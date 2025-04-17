@@ -434,7 +434,7 @@ const ResetPasswordForm = () => {
           style={passwordFieldStyle(true)}
           className="reset-popup-form-full-width"
         />
-        <span
+        {/* <span
           onClick={() => setShowCurrentPassword((prevState) => !prevState)}
           style={{
             position: "absolute",
@@ -446,7 +446,7 @@ const ResetPasswordForm = () => {
           }}
         >
           {showCurrentPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-        </span>
+        </span> */}
 
         <div style={{ textAlign: "right", marginTop: "0.25rem" }}>
           <span

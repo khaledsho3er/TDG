@@ -312,6 +312,8 @@ const ShippingInfoPopup = () => {
             marginTop: "10%",
             alignItems: "center",
             zIndex: 1000,
+            overflowY: "auto", // Make the modal content scrollable
+            maxHeight: "80vh", // Limit height for scrolling
           }}
         >
           <Typography variant="h6" align="center" fontFamily={"Horizon"}>
@@ -420,6 +422,7 @@ const ShippingInfoPopup = () => {
               value={
                 countries.find((c) => c.label === newAddress.country) || null
               }
+              styles={{ container: (base) => ({ ...base, width: "48%" }) }}
             />
           </Box>
           <Box
