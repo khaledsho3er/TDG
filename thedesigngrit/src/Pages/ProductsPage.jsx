@@ -19,8 +19,9 @@ function ProductsPage() {
     brands: [],
     colors: [],
     tags: [],
-    priceRange: [0, 1000000], // Wider range initially
+    priceRange: [0, 100000000], // Wider range initially
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch Type Details
   useEffect(() => {
@@ -41,6 +42,8 @@ function ProductsPage() {
   // Fetch Products
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
+
       try {
         const { data } = await axios.get(
           `https://tdg-db.onrender.com/api/products/types/${typeId}/${typeName}`
@@ -51,6 +54,8 @@ function ProductsPage() {
         setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -75,8 +80,8 @@ function ProductsPage() {
       });
       // Brand filter
       if (filters.brands.length > 0) {
-        filtered = filtered.filter((product) =>
-          filters.brands.includes(product.brand)
+        filtered = filtered.filter(
+          (product) => product.brand && filters.brands.includes(product.brand)
         );
       }
 
@@ -155,7 +160,11 @@ function ProductsPage() {
           />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
-          {filteredProducts.length > 0 ? (
+          {isLoading ? (
+            <Grid item xs={12}>
+              <Typography>Loading...</Typography>
+            </Grid>
+          ) : filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
           ) : products.length === 0 ? (
             <Grid item xs={12}>
