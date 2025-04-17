@@ -550,7 +550,7 @@ const AddProduct = () => {
             price: v.price,
             salePrice: v.salePrice,
             leadTime: v.leadTime,
-            images: (v.images || []).map(
+            images: v.images.map(
               (_, i) => `variant_${variants.indexOf(v)}_${i}`
             ),
             mainImage: v.mainImage ? `variant_${variants.indexOf(v)}_main` : "",
@@ -558,13 +558,16 @@ const AddProduct = () => {
         )
       );
 
-      // Append variant image files
+      // Append the actual variant image files
       variants.forEach((variant, vIndex) => {
-        (variant.images || []).forEach((file, imgIndex) => {
-          data.append(`variantImages[${vIndex}][${imgIndex}]`, file);
+        // Append each variant's images
+        variant.images.forEach((file, imgIndex) => {
+          data.append(`variantImages[${vIndex}]`, file); // Field name must match Multer config
         });
+
+        // Append variant's main image if exists
         if (variant.mainImage) {
-          data.append(`variantMainImages[${vIndex}]`, variant.mainImage);
+          data.append(`variantMainImages[${vIndex}]`, variant.mainImage); // Field name must match Multer config
         }
       });
     }
@@ -668,8 +671,8 @@ const AddProduct = () => {
 
     setCurrentVariant((prev) => ({
       ...prev,
-      images: [...(prev.images || []), ...files],
-      imagePreviews: [...(prev.imagePreviews || []), ...previews],
+      images: [...prev.images, ...files],
+      imagePreviews: [...prev.imagePreviews, ...previews],
       mainImage: prev.mainImage || files[0],
       mainImagePreview: prev.mainImagePreview || previews[0],
     }));
@@ -737,8 +740,8 @@ const AddProduct = () => {
       size: currentVariant.size || "",
       price: currentVariant.price,
       salePrice: currentVariant.salePrice || "",
-      images: currentVariant.images || [],
-      mainImage: currentVariant.mainImage || currentVariant.images?.[0] || null,
+      images: currentVariant.images, // Array of File objects
+      mainImage: currentVariant.mainImage, // Single File object
       leadTime: currentVariant.leadTime || "",
     };
 
