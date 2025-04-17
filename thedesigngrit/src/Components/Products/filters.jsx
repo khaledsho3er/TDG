@@ -67,7 +67,7 @@ const FilterSection = ({ onFilterChange, products, currentFilters }) => {
       brands: [],
       colors: [],
       tags: [],
-      priceRange: [349, 61564],
+      priceRange: [0, 100000000],
     };
     setSelectedFilters(newFilters);
     onFilterChange(newFilters);
