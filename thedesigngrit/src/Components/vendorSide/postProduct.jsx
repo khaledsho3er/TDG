@@ -1536,200 +1536,253 @@ const AddProduct = () => {
               )}
             </div>
             {showVariantModal && (
-              <div className="variant-modal">
-                <div className="modal-content">
-                  <h3>Add Product Variant</h3>
-                  <button
-                    className="close-modal"
-                    onClick={() => setShowVariantModal(false)}
-                  >
-                    &times;
-                  </button>
+              <div className="variant-modal-overlay">
+                <div className="variant-modal-container">
+                  <div className="variant-modal-header">
+                    <h3>Add Product Variant</h3>
+                    <button
+                      className="variant-modal-close"
+                      onClick={() => {
+                        setShowVariantModal(false);
+                        setCurrentVariant({
+                          color: "",
+                          material: "",
+                          size: "",
+                          price: "",
+                          salePrice: "",
+                          images: [],
+                          imagePreviews: [],
+                          mainImage: null,
+                          mainImagePreview: null,
+                          leadTime: "",
+                        });
+                      }}
+                    >
+                      &times;
+                    </button>
+                  </div>
 
-                  <div className="variant-form">
-                    <div className="form-group">
-                      <label>Color:</label>
-                      <input
-                        type="text"
-                        value={currentVariant.color}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            color: e.target.value,
-                          })
-                        }
-                        placeholder="Red, Blue, etc."
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Material:</label>
-                      <input
-                        type="text"
-                        value={currentVariant.material}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            material: e.target.value,
-                          })
-                        }
-                        placeholder="Wood, Metal, etc."
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Size:</label>
-                      <input
-                        type="text"
-                        value={currentVariant.size}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            size: e.target.value,
-                          })
-                        }
-                        placeholder="Small, Medium, etc."
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Price:</label>
-                      <input
-                        type="number"
-                        value={currentVariant.price}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            price: e.target.value,
-                          })
-                        }
-                        placeholder="Regular price"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Sale Price:</label>
-                      <input
-                        type="number"
-                        value={currentVariant.salePrice}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            salePrice: e.target.value,
-                          })
-                        }
-                        placeholder="Optional sale price"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Lead Time:</label>
-                      <input
-                        type="text"
-                        value={currentVariant.leadTime}
-                        onChange={(e) =>
-                          setCurrentVariant({
-                            ...currentVariant,
-                            leadTime: e.target.value,
-                          })
-                        }
-                        placeholder="Optional lead time"
-                      />
-                    </div>
-
-                    <div className="variant-image-upload">
-                      <label>Variant Images:</label>
-                      <input
-                        type="file"
-                        id="variantImageUpload"
-                        multiple
-                        accept="image/*"
-                        onChange={handleVariantImageUpload}
-                        style={{ display: "none" }}
-                      />
-                      <label
-                        htmlFor="variantImageUpload"
-                        className="upload-label"
-                      >
-                        Select Images
-                      </label>
-
-                      {/* Image Previews */}
-                      <div className="variant-image-previews">
-                        {currentVariant.imagePreviews.map((preview, index) => (
-                          <div
-                            key={index}
-                            className={`variant-thumbnail ${
-                              currentVariant.mainImagePreview === preview
-                                ? "main-thumbnail"
-                                : ""
-                            }`}
-                            onClick={() => handleSetVariantMainImage(index)}
-                          >
-                            <img
-                              src={preview}
-                              alt={`Variant Preview ${index}`}
-                            />
-                            <button
-                              type="button"
-                              className="remove-image-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleRemoveVariantImage(index);
-                              }}
-                            >
-                              ✖
-                            </button>
-                            {currentVariant.mainImagePreview === preview && (
-                              <div className="main-image-badge">Main</div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Main Image Selection Display */}
-                      {currentVariant.mainImagePreview && (
-                        <div className="main-image-selection">
-                          <p>Main Image Selected:</p>
-                          <img
-                            src={currentVariant.mainImagePreview}
-                            alt="Main Variant Preview"
-                            className="main-image-preview"
+                  <div className="variant-modal-body">
+                    <div className="variant-form-grid">
+                      {/* Left Column - Variant Attributes */}
+                      <div className="variant-attributes">
+                        <div className="form-group">
+                          <label>Color:</label>
+                          <input
+                            type="text"
+                            value={currentVariant.color}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                color: e.target.value,
+                              })
+                            }
+                            placeholder="e.g., Red, Blue"
                           />
                         </div>
-                      )}
-                    </div>
-                    <div className="modal-actions">
-                      <button
-                        type="button"
-                        className="btn add-variant"
-                        onClick={handleAddVariant}
-                      >
-                        Add Variant
-                      </button>
+
+                        <div className="form-group">
+                          <label>Material:</label>
+                          <input
+                            type="text"
+                            value={currentVariant.material}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                material: e.target.value,
+                              })
+                            }
+                            placeholder="e.g., Wood, Leather"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Size:</label>
+                          <input
+                            type="text"
+                            value={currentVariant.size}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                size: e.target.value,
+                              })
+                            }
+                            placeholder="e.g., Small, Medium"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Price ($):</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={currentVariant.price}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                price: e.target.value,
+                              })
+                            }
+                            placeholder="0.00"
+                            required
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Sale Price ($):</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={currentVariant.salePrice}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                salePrice: e.target.value,
+                              })
+                            }
+                            placeholder="Optional"
+                          />
+                        </div>
+
+                        <div className="form-group">
+                          <label>Lead Time:</label>
+                          <input
+                            type="text"
+                            value={currentVariant.leadTime}
+                            onChange={(e) =>
+                              setCurrentVariant({
+                                ...currentVariant,
+                                leadTime: e.target.value,
+                              })
+                            }
+                            placeholder="e.g., 2-3 weeks"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Right Column - Image Handling */}
+                      <div className="variant-images-section">
+                        <div className="image-upload-container">
+                          <label>Variant Images</label>
+                          <p className="upload-hint">
+                            Upload high-quality images (min 800x800px)
+                          </p>
+
+                          <input
+                            type="file"
+                            id="variantImageUpload"
+                            multiple
+                            accept="image/jpeg, image/png, image/webp"
+                            onChange={handleVariantImageUpload}
+                            style={{ display: "none" }}
+                          />
+                          <label
+                            htmlFor="variantImageUpload"
+                            className="upload-button"
+                          >
+                            <span>+ Select Images</span>
+                          </label>
+
+                          {/* Image Previews */}
+                          <div className="image-previews-grid">
+                            {currentVariant.imagePreviews.length > 0 ? (
+                              currentVariant.imagePreviews.map(
+                                (preview, index) => (
+                                  <div
+                                    key={index}
+                                    className={`image-preview-item ${
+                                      currentVariant.mainImagePreview ===
+                                      preview
+                                        ? "main-image-selected"
+                                        : ""
+                                    }`}
+                                    onClick={() =>
+                                      handleSetVariantMainImage(index)
+                                    }
+                                  >
+                                    <img
+                                      src={preview}
+                                      alt={`Variant preview ${index + 1}`}
+                                    />
+                                    <div className="image-actions">
+                                      <button
+                                        type="button"
+                                        className="remove-image-btn"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleRemoveVariantImage(index);
+                                        }}
+                                      >
+                                        Remove
+                                      </button>
+                                      {currentVariant.mainImagePreview ===
+                                        preview && (
+                                        <span className="main-image-badge">
+                                          Main
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              )
+                            ) : (
+                              <div className="no-images-placeholder">
+                                <div className="placeholder-icon">
+                                  <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                  >
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                  </svg>
+                                </div>
+                                <p>No images uploaded yet</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Main Image Preview */}
+                        {currentVariant.mainImagePreview && (
+                          <div className="main-image-display">
+                            <label>Main Image Preview</label>
+                            <div className="main-image-container">
+                              <img
+                                src={currentVariant.mainImagePreview}
+                                alt="Main variant preview"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
-                  {variants.length > 0 && (
-                    <div className="variant-list">
-                      <h4>Current Variants:</h4>
-                      <ul>
-                        {variants.map((variant, index) => (
-                          <li key={index}>
-                            {`${variant.color || ""} ${
-                              variant.material || ""
-                            } ${variant.size || ""}`}
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveVariant(index)}
-                            >
-                              Remove
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <div className="variant-modal-footer">
+                    <button
+                      type="button"
+                      className="cancel-button"
+                      onClick={() => setShowVariantModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="add-variant-button"
+                      onClick={handleAddVariant}
+                      disabled={
+                        !currentVariant.price ||
+                        currentVariant.images.length === 0
+                      }
+                    >
+                      Add Variant
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
