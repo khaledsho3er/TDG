@@ -83,6 +83,8 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
             </>
           ) : null}
         </div>
+      </div>
+      <div>
         <div style={{ width: "100%", height: "100%", objectFit: "cover" }}>
           {selectedDetail && (
             <img
