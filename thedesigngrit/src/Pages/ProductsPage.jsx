@@ -16,7 +16,7 @@ function ProductsPage() {
   const [products, setProducts] = useState([]); // جميع المنتجات
   const [filteredProducts, setFilteredProducts] = useState([]); // المنتجات بعد الفلترة
   const [sortOption, setSortOption] = useState("Newest");
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     brands: [], // قائمة الـ ObjectId للماركات المختارة
     colors: [],
     tags: [],
@@ -59,35 +59,29 @@ function ProductsPage() {
     const applyFilters = () => {
       let filtered = [...products];
 
-      // ✅ فلترة حسب الـ Brand (ObjectId)
       if (filters.brands.length > 0) {
         filtered = filtered.filter((product) =>
-          filters.brands.includes(product.brandId)
+          filters.brands.includes(product.brand)
         );
       }
 
-      // ✅ فلترة حسب اللون (مصفوفة)
       if (filters.colors.length > 0) {
         filtered = filtered.filter((product) =>
-          product.colors.some((color) => filters.colors.includes(color))
+          product.colors?.some((color) => filters.colors.includes(color))
         );
       }
 
-      // ✅ فلترة حسب التاجز (مصفوفة)
       if (filters.tags.length > 0) {
         filtered = filtered.filter((product) =>
-          product.tags.some((tag) => filters.tags.includes(tag))
+          product.tags?.some((tag) => filters.tags.includes(tag))
         );
       }
 
-      // ✅ فلترة حسب السعر (لو فيه Sale Price نستخدمه)
-      filtered = filtered.filter(
-        (product) =>
-          (product.salePrice || product.price) >= filters.priceRange[0] &&
-          (product.salePrice || product.price) <= filters.priceRange[1]
-      );
+      filtered = filtered.filter((product) => {
+        const price = product.salePrice || product.price;
+        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+      });
 
-      // ✅ ترتيب المنتجات بعد التصفية
       switch (sortOption) {
         case "Newest":
           filtered.sort(
@@ -122,15 +116,7 @@ function ProductsPage() {
 
   // 🟢 تحديث الفلاتر عند التغيير
   const handleFilterChange = (selectedFilters) => {
-    const filtered = products.filter((product) => {
-      return (
-        (!selectedFilters.color ||
-          product.colors.includes(selectedFilters.color)) &&
-        (!selectedFilters.size || product.sizes.includes(selectedFilters.size))
-      );
-    });
-
-    setFilteredProducts(filtered);
+    setFilters(selectedFilters);
   };
 
   useEffect(() => {
@@ -162,9 +148,7 @@ function ProductsPage() {
             </Grid>
           ) : (
             <Grid item xs={12}>
-              <Typography>
-                All products are shown. Use filters to refine your search.
-              </Typography>
+              <Typography>No products match the selected filters.</Typography>
             </Grid>
           )}
         </Grid>
