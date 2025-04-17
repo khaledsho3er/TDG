@@ -114,36 +114,7 @@ function ProductsPage() {
   }, [filters, sortOption, products]);
 
   // 🟢 تحديث الفلاتر عند التغيير
-  const handleFilterChange = (filters) => {
-    let updated = products;
 
-    if (filters.brands.length > 0) {
-      updated = updated.filter((product) =>
-        filters.brands.includes(product.brand)
-      );
-    }
-
-    if (filters.colors.length > 0) {
-      updated = updated.filter((product) =>
-        filters.colors.includes(product.color)
-      );
-    }
-
-    if (filters.tags.length > 0) {
-      updated = updated.filter((product) =>
-        product.tags.some((tag) => filters.tags.includes(tag))
-      );
-    }
-
-    if (filters.priceRange.length === 2) {
-      const [min, max] = filters.priceRange;
-      updated = updated.filter(
-        (product) => product.price >= min && product.price <= max
-      );
-    }
-
-    setFilteredProducts(updated);
-  };
   useEffect(() => {
     if (products.length > 0) {
       setFilteredProducts(products);
@@ -168,10 +139,7 @@ function ProductsPage() {
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>
-          <FilterSection
-            products={products}
-            onFilterChange={handleFilterChange}
-          />
+          <FilterSection products={products} setFilters={setFilters} />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
           {filteredProducts.length > 0 ? (
