@@ -19,7 +19,7 @@ function ProductsPage() {
     brands: [],
     colors: [],
     tags: [],
-    priceRange: [0, 100000000], // Wider range initially
+    priceRange: [0, 1000000], // Wider range initially
   });
   const [isLoading, setIsLoading] = useState(true);
 
