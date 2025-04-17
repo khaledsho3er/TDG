@@ -1563,3 +1563,102 @@ h1 {
   padding-left: 20px;
   margin-top: 5px;
 }
+/* Variant Modal Styles */
+.variant-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.variant-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.variant-images {
+  grid-column: span 2;
+}
+
+.variant-image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.variant-thumbnail {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.variant-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-thumbnail button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.variant-list {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.variant-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.variant-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.add-variant-btn {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: white;
+}

@@ -5,7 +5,6 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
-import VariantsModal from "./variantModal";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -25,8 +24,6 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
-  const [variants, setVariants] = useState([]);
-
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -68,11 +65,22 @@ const AddProduct = () => {
     Additionaldetails: "",
     Additionalcosts: "",
     cadFile: null, // Add CAD field
-    variants: [],
     // claimProcess: "",
   });
-  const [showVariantsModal, setShowVariantsModal] = useState(false); // State to show/hide variants modal
-
+  const [showVariantModal, setShowVariantModal] = useState(false);
+  const [variants, setVariants] = useState([]);
+  const [currentVariant, setCurrentVariant] = useState({
+    color: "",
+    material: "",
+    size: "",
+    price: "",
+    salePrice: "",
+    images: [],
+    mainImage: "",
+    leadTime: "",
+  });
+  const [variantImagePreviews, setVariantImagePreviews] = useState([]);
+  const [hasVariants, setHasVariants] = useState(false);
   // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
@@ -255,29 +263,6 @@ const AddProduct = () => {
       });
     }
   };
-
-  // // Handle adding new tags
-  // const handleAddTag = (e) => {
-  //   if (e.key === "Enter" && e.target.value.trim() !== "") {
-  //     const newTag = e.target.value.trim();
-  //     setTags([...tags, newTag]); // Update local tags state
-  //     setFormData({
-  //       ...formData,
-  //       tags: [...formData.tags, newTag], // Update formData tags
-  //     });
-  //     e.target.value = ""; // Clear input
-  //   }
-  // };
-
-  // // Function to remove a tag by index
-  // const handleRemoveTag = (index) => {
-  //   const newTags = tags.filter((_, i) => i !== index);
-  //   setTags(newTags); // Update local tags state
-  //   setFormData({
-  //     ...formData,
-  //     tags: newTags, // Update formData tags
-  //   });
-  // };
   // Handles adding a tag from the input field (Press Enter)
   useEffect(() => {
     const fetchTags = async () => {
@@ -480,11 +465,7 @@ const AddProduct = () => {
       [name]: checked,
     }));
   };
-  const handleCheckboxVariantsChange = (e) => {
-    const { checked } = e.target;
-    setShowVariantsModal(checked); // Show the variants modal when checked
-    setFormData({ ...formData, hasVariants: checked });
-  };
+
   // Update handleSubmit to include readyToShip
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -547,23 +528,25 @@ const AddProduct = () => {
     formData.images.forEach((file) => {
       data.append("images", file);
     });
-    formData.variants.forEach((variant, index) => {
-      // Append variant data
-      data.append(`variants[${index}][name]`, variant.name);
-      data.append(`variants[${index}][price]`, variant.price);
-      data.append(`variants[${index}][color]`, variant.color);
-      data.append(`variants[${index}][size]`, variant.size);
-      // Add variant images
-      variant.images.forEach((file, imgIndex) => {
-        data.append(`variants[${index}][images][${imgIndex}]`, file);
-      });
-    });
+
     // Append CAD file if exists
     if (formData.cadFile) {
       // Changed from 'cad' to 'cadFile'
       data.append("cadFile", formData.cadFile);
     }
+    if (hasVariants && variants.length > 0) {
+      data.append("hasVariants", true);
+      data.append("variations", JSON.stringify(variants));
 
+      // Append variant images
+      variants.forEach((variant, vIndex) => {
+        variant.images.forEach((file, fIndex) => {
+          data.append(`variantImages[${vIndex}][${fIndex}]`, file);
+        });
+      });
+    } else {
+      data.append("hasVariants", false);
+    }
     // Log FormData for debugging
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
@@ -616,7 +599,6 @@ const AddProduct = () => {
         images: [],
         mainImage: "",
         readyToShip: false,
-        variants: [],
       });
     } catch (error) {
       console.error("Error creating product:", error.response?.data || error);
@@ -648,7 +630,64 @@ const AddProduct = () => {
       };
     });
   };
+  const handleVariantImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const previews = files.map((file) => URL.createObjectURL(file));
 
+    setCurrentVariant((prev) => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+
+    setVariantImagePreviews((prev) => [...prev, ...previews]);
+  };
+
+  const handleRemoveVariantImage = (index) => {
+    const updatedImages = [...currentVariant.images];
+    updatedImages.splice(index, 1);
+
+    const updatedPreviews = [...variantImagePreviews];
+    updatedPreviews.splice(index, 1);
+
+    setCurrentVariant((prev) => ({
+      ...prev,
+      images: updatedImages,
+    }));
+
+    setVariantImagePreviews(updatedPreviews);
+  };
+
+  const handleAddVariant = () => {
+    if (
+      !currentVariant.color &&
+      !currentVariant.size &&
+      !currentVariant.material
+    ) {
+      alert(
+        "Please specify at least one variant attribute (color, size, or material)"
+      );
+      return;
+    }
+
+    setVariants([...variants, currentVariant]);
+    setCurrentVariant({
+      color: "",
+      material: "",
+      size: "",
+      price: "",
+      salePrice: "",
+      images: [],
+      mainImage: "",
+      leadTime: "",
+    });
+    setVariantImagePreviews([]);
+  };
+
+  const handleRemoveVariant = (index) => {
+    const updatedVariants = [...variants];
+    updatedVariants.splice(index, 1);
+    setVariants(updatedVariants);
+  };
   return (
     <>
       <header className="dashboard-header-vendor">
@@ -1358,23 +1397,7 @@ const AddProduct = () => {
                 ))}
               </div>
             </div>
-            <label>
-              Has Variants
-              <input
-                type="checkbox"
-                checked={formData.hasVariants || false}
-                onChange={handleCheckboxVariantsChange}
-              />
-            </label>
 
-            {/* Variants Modal trigger */}
-            {showVariantsModal && (
-              <VariantsModal
-                formData={formData}
-                setFormData={setFormData}
-                handleClose={() => setShowVariantsModal(false)}
-              />
-            )}
             {/* Update CAD Upload Section */}
             <div className="cad-upload-section">
               <label>CAD File Upload</label>
@@ -1417,6 +1440,192 @@ const AddProduct = () => {
                 </div>
               )}
             </div>
+            <div className="form-group">
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={hasVariants}
+                  onChange={(e) => {
+                    setHasVariants(e.target.checked);
+                    setFormData({ ...formData, hasVariants: e.target.checked });
+                  }}
+                />
+                This product has variants
+              </label>
+
+              {hasVariants && (
+                <button
+                  type="button"
+                  className="btn add-variant-btn"
+                  onClick={() => setShowVariantModal(true)}
+                >
+                  + Add Variants
+                </button>
+              )}
+            </div>
+            {showVariantModal && (
+              <div className="variant-modal">
+                <div className="modal-content">
+                  <h3>Add Product Variant</h3>
+                  <button
+                    className="close-modal"
+                    onClick={() => setShowVariantModal(false)}
+                  >
+                    &times;
+                  </button>
+
+                  <div className="variant-form">
+                    <div className="form-group">
+                      <label>Color:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.color}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            color: e.target.value,
+                          })
+                        }
+                        placeholder="Red, Blue, etc."
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Material:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.material}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            material: e.target.value,
+                          })
+                        }
+                        placeholder="Wood, Metal, etc."
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Size:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.size}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            size: e.target.value,
+                          })
+                        }
+                        placeholder="Small, Medium, etc."
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Price:</label>
+                      <input
+                        type="number"
+                        value={currentVariant.price}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            price: e.target.value,
+                          })
+                        }
+                        placeholder="Regular price"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Sale Price:</label>
+                      <input
+                        type="number"
+                        value={currentVariant.salePrice}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            salePrice: e.target.value,
+                          })
+                        }
+                        placeholder="Optional sale price"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Lead Time:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.leadTime}
+                        onChange={(e) =>
+                          setCurrentVariant({
+                            ...currentVariant,
+                            leadTime: e.target.value,
+                          })
+                        }
+                        placeholder="Optional lead time"
+                      />
+                    </div>
+
+                    <div className="variant-images">
+                      <label>Variant Images:</label>
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleVariantImageUpload}
+                        className="file-input"
+                      />
+
+                      <div className="variant-image-previews">
+                        {variantImagePreviews.map((preview, index) => (
+                          <div key={index} className="variant-thumbnail">
+                            <img src={preview} alt={`Variant ${index}`} />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveVariantImage(index)}
+                            >
+                              ✖
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="btn add-variant"
+                        onClick={handleAddVariant}
+                      >
+                        Add Variant
+                      </button>
+                    </div>
+                  </div>
+
+                  {variants.length > 0 && (
+                    <div className="variant-list">
+                      <h4>Current Variants:</h4>
+                      <ul>
+                        {variants.map((variant, index) => (
+                          <li key={index}>
+                            {`${variant.color || ""} ${
+                              variant.material || ""
+                            } ${variant.size || ""}`}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveVariant(index)}
+                            >
+                              Remove
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="form-actions">
