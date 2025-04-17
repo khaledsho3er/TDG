@@ -136,12 +136,10 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:hover": {
             backgroundColor: "#2d2d2d",
             color: "#fff",
-            // "& .MuiAccordionSummary-content": {
-            //   color: "#fff",
-            // },
-            // "& .MuiSvgIcon-root": {
-            //   color: "#fff",
-            // },
+          },
+          "&.Mui-expanded": {
+            backgroundColor: "transparent",
+            color: "#2d2d2d",
           },
         }}
       >
@@ -158,12 +156,19 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             "&:hover": {
               backgroundColor: "#2d2d2d",
               color: "#fff",
-              // "& .MuiAccordionSummary-content": {
-              //   color: "#fff",
-              // },
-              // "& .MuiSvgIcon-root": {
-              //   color: "#fff",
-              // },
+            },
+            "&.Mui-expanded": {
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#2d2d2d",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+            "&.Mui-expanded .MuiSvgIcon-root": {
+              color: "#2d2d2d",
             },
           }}
         >
@@ -202,12 +207,10 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
           "&:hover": {
             backgroundColor: "#2d2d2d",
             color: "#fff",
-            // "& .MuiAccordionSummary-content": {
-            //   color: "#fff",
-            // },
-            // "& .MuiSvgIcon-root": {
-            //   color: "#fff",
-            // },
+          },
+          "&.Mui-expanded": {
+            backgroundColor: "transparent",
+            color: "#2d2d2d",
           },
         }}
       >
@@ -224,12 +227,19 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             "&:hover": {
               backgroundColor: "#2d2d2d",
               color: "#fff",
-              // "& .MuiAccordionSummary-content": {
-              //   color: "#fff",
-              // },
-              // "& .MuiSvgIcon-root": {
-              //   color: "#fff",
-              // },
+            },
+            "&.Mui-expanded": {
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#2d2d2d",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+            "&.Mui-expanded .MuiSvgIcon-root": {
+              color: "#2d2d2d",
             },
           }}
         >
@@ -292,16 +302,14 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
-          // "&:hover": {
-          //   backgroundColor: "#2d2d2d",
-          //   color: "#fff",
-          //   "& .MuiAccordionSummary-content": {
-          //     color: "#fff",
-          //   },
-          //   "& .MuiSvgIcon-root": {
-          //     color: "#fff",
-          //   },
-          // },
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+          },
+          "&.Mui-expanded": {
+            backgroundColor: "transparent",
+            color: "#2d2d2d",
+          },
         }}
       >
         <AccordionSummary
@@ -317,12 +325,19 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             "&:hover": {
               backgroundColor: "#2d2d2d",
               color: "#fff",
-              // "& .MuiAccordionSummary-content": {
-              //   color: "#fff",
-              // },
-              // "& .MuiSvgIcon-root": {
-              //   color: "#fff",
-              // },
+            },
+            "&.Mui-expanded": {
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#2d2d2d",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+            "&.Mui-expanded .MuiSvgIcon-root": {
+              color: "#2d2d2d",
             },
           }}
         >
@@ -358,16 +373,14 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
-          // "&:hover": {
-          //   backgroundColor: "#2d2d2d",
-          //   color: "#fff",
-          //   "& .MuiAccordionSummary-content": {
-          //     color: "#fff",
-          //   },
-          //   "& .MuiSvgIcon-root": {
-          //     color: "#fff",
-          //   },
-          // },
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+          },
+          "&.Mui-expanded": {
+            backgroundColor: "transparent",
+            color: "#2d2d2d",
+          },
         }}
       >
         <AccordionSummary
@@ -383,12 +396,19 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             "&:hover": {
               backgroundColor: "#2d2d2d",
               color: "#fff",
-              // "& .MuiAccordionSummary-content": {
-              //   color: "#fff",
-              // },
-              // "& .MuiSvgIcon-root": {
-              //   color: "#fff",
-              // },
+            },
+            "&.Mui-expanded": {
+              backgroundColor: "transparent",
+              color: "#2d2d2d",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#2d2d2d",
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+            "&.Mui-expanded .MuiSvgIcon-root": {
+              color: "#2d2d2d",
             },
           }}
         >
