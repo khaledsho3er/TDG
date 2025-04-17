@@ -559,15 +559,13 @@ const AddProduct = () => {
       );
 
       // Append the actual variant image files
-      variants.forEach((variant, vIndex) => {
-        // Append each variant's images
-        variant.images.forEach((file, imgIndex) => {
-          data.append(`variantImages[${vIndex}]`, file); // Field name must match Multer config
+      // Variant images
+      variants.forEach((variant) => {
+        variant.images.forEach((img) => {
+          formData.append("variantImages", img);
         });
-
-        // Append variant's main image if exists
         if (variant.mainImage) {
-          data.append(`variantMainImages[${vIndex}]`, variant.mainImage); // Field name must match Multer config
+          formData.append("variantMainImages", variant.mainImage);
         }
       });
     }
