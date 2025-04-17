@@ -506,6 +506,8 @@ body::-webkit-scrollbar:hover {
   transition: all 0.3s ease; /* Smooth transition for all changes */
   justify-content: flex-start;
   text-align: left;
+  font-family: "Montserrat";
+  font-weight: 400;
 }
 
 .category.highlighted {
