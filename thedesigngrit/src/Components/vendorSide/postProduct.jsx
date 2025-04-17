@@ -535,17 +535,36 @@ const AddProduct = () => {
       data.append("cadFile", formData.cadFile);
     }
     if (hasVariants && variants.length > 0) {
-      data.append("hasVariants", true);
-      data.append("variations", JSON.stringify(variants));
+      formData.append("hasVariants", "true");
+      formData.append(
+        "variations",
+        JSON.stringify(
+          variants.map((v) => ({
+            color: v.color,
+            material: v.material,
+            size: v.size,
+            price: v.price,
+            salePrice: v.salePrice,
+            leadTime: v.leadTime,
+            // We'll only send references to images, not the files themselves
+            // The actual files will be appended separately
+            images: v.images.map(
+              (_, i) => `variant_${variants.indexOf(v)}_${i}`
+            ),
+            mainImage: v.mainImage ? `variant_${variants.indexOf(v)}_main` : "",
+          }))
+        )
+      );
 
-      // Append variant images
+      // Append variant image files
       variants.forEach((variant, vIndex) => {
-        variant.images.forEach((file, fIndex) => {
-          data.append(`variantImages[${vIndex}][${fIndex}]`, file);
+        variant.images.forEach((file, imgIndex) => {
+          formData.append(`variantImages[${vIndex}][${imgIndex}]`, file);
         });
+        if (variant.mainImage) {
+          formData.append(`variantMainImages[${vIndex}]`, variant.mainImage);
+        }
       });
-    } else {
-      data.append("hasVariants", false);
     }
     // Log FormData for debugging
     for (let [key, value] of data.entries()) {
@@ -601,6 +620,7 @@ const AddProduct = () => {
         readyToShip: false,
       });
     } catch (error) {
+      console.log("Error creating product:", error);
       console.error("Error creating product:", error.response?.data || error);
       alert("Failed to add product. Please try again.");
     }
@@ -632,32 +652,58 @@ const AddProduct = () => {
   };
   const handleVariantImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    // Create preview URLs
     const previews = files.map((file) => URL.createObjectURL(file));
 
     setCurrentVariant((prev) => ({
       ...prev,
       images: [...prev.images, ...files],
+      imagePreviews: [...prev.imagePreviews, ...previews],
+      // Set first image as main if none is selected
+      mainImage: prev.mainImage || files[0],
+      mainImagePreview: prev.mainImagePreview || previews[0],
     }));
-
-    setVariantImagePreviews((prev) => [...prev, ...previews]);
   };
 
   const handleRemoveVariantImage = (index) => {
     const updatedImages = [...currentVariant.images];
-    updatedImages.splice(index, 1);
+    const updatedPreviews = [...currentVariant.imagePreviews];
 
-    const updatedPreviews = [...variantImagePreviews];
+    // Check if we're removing the main image
+    const isMainImage =
+      currentVariant.mainImage === currentVariant.images[index];
+
+    updatedImages.splice(index, 1);
     updatedPreviews.splice(index, 1);
 
     setCurrentVariant((prev) => ({
       ...prev,
       images: updatedImages,
+      imagePreviews: updatedPreviews,
+      // Reset main image if it was removed
+      mainImage: isMainImage
+        ? updatedImages.length > 0
+          ? updatedImages[0]
+          : null
+        : prev.mainImage,
+      mainImagePreview: isMainImage
+        ? updatedPreviews.length > 0
+          ? updatedPreviews[0]
+          : null
+        : prev.mainImagePreview,
     }));
-
-    setVariantImagePreviews(updatedPreviews);
   };
-
+  const handleSetVariantMainImage = (index) => {
+    setCurrentVariant((prev) => ({
+      ...prev,
+      mainImage: prev.images[index],
+      mainImagePreview: prev.imagePreviews[index],
+    }));
+  };
   const handleAddVariant = () => {
+    // Validate at least one distinguishing feature
     if (
       !currentVariant.color &&
       !currentVariant.size &&
@@ -669,7 +715,28 @@ const AddProduct = () => {
       return;
     }
 
-    setVariants([...variants, currentVariant]);
+    // Validate at least one image
+    if (currentVariant.images.length === 0) {
+      alert("Please add at least one image for the variant");
+      return;
+    }
+
+    // Create the variant object to store
+    const variantToAdd = {
+      color: currentVariant.color,
+      material: currentVariant.material,
+      size: currentVariant.size,
+      price: currentVariant.price,
+      salePrice: currentVariant.salePrice,
+      images: currentVariant.images,
+      mainImage: currentVariant.mainImage,
+      leadTime: currentVariant.leadTime,
+    };
+
+    // Add to variants list
+    setVariants([...variants, variantToAdd]);
+
+    // Reset the current variant form
     setCurrentVariant({
       color: "",
       material: "",
@@ -677,12 +744,15 @@ const AddProduct = () => {
       price: "",
       salePrice: "",
       images: [],
-      mainImage: "",
+      imagePreviews: [],
+      mainImage: null,
+      mainImagePreview: null,
       leadTime: "",
     });
-    setVariantImagePreviews([]);
-  };
 
+    // Close the modal
+    setShowVariantModal(false);
+  };
   const handleRemoveVariant = (index) => {
     const updatedVariants = [...variants];
     updatedVariants.splice(index, 1);
@@ -1567,31 +1637,68 @@ const AddProduct = () => {
                       />
                     </div>
 
-                    <div className="variant-images">
+                    <div className="variant-image-upload">
                       <label>Variant Images:</label>
                       <input
                         type="file"
+                        id="variantImageUpload"
                         multiple
                         accept="image/*"
                         onChange={handleVariantImageUpload}
-                        className="file-input"
+                        style={{ display: "none" }}
                       />
+                      <label
+                        htmlFor="variantImageUpload"
+                        className="upload-label"
+                      >
+                        Select Images
+                      </label>
 
+                      {/* Image Previews */}
                       <div className="variant-image-previews">
-                        {variantImagePreviews.map((preview, index) => (
-                          <div key={index} className="variant-thumbnail">
-                            <img src={preview} alt={`Variant ${index}`} />
+                        {currentVariant.imagePreviews.map((preview, index) => (
+                          <div
+                            key={index}
+                            className={`variant-thumbnail ${
+                              currentVariant.mainImagePreview === preview
+                                ? "main-thumbnail"
+                                : ""
+                            }`}
+                            onClick={() => handleSetVariantMainImage(index)}
+                          >
+                            <img
+                              src={preview}
+                              alt={`Variant Preview ${index}`}
+                            />
                             <button
                               type="button"
-                              onClick={() => handleRemoveVariantImage(index)}
+                              className="remove-image-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveVariantImage(index);
+                              }}
                             >
                               ✖
                             </button>
+                            {currentVariant.mainImagePreview === preview && (
+                              <div className="main-image-badge">Main</div>
+                            )}
                           </div>
                         ))}
                       </div>
-                    </div>
 
+                      {/* Main Image Selection Display */}
+                      {currentVariant.mainImagePreview && (
+                        <div className="main-image-selection">
+                          <p>Main Image Selected:</p>
+                          <img
+                            src={currentVariant.mainImagePreview}
+                            alt="Main Variant Preview"
+                            className="main-image-preview"
+                          />
+                        </div>
+                      )}
+                    </div>
                     <div className="modal-actions">
                       <button
                         type="button"
