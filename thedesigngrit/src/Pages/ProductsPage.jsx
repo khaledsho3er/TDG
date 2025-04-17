@@ -11,18 +11,18 @@ import PageDescription from "../Components/Topheader";
 
 function ProductsPage() {
   const { typeId, typeName } = useParams();
+  const [typeDescription, setTypeDescription] = useState("");
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [typeDescription, setTypeDescription] = useState("");
   const [sortOption, setSortOption] = useState("Newest");
   const [filters, setFilters] = useState({
     brands: [],
     colors: [],
     tags: [],
-    priceRange: [0, 100000],
+    priceRange: [349, 61564],
   });
-  const [favorites, setFavorites] = useState([]);
 
+  // Fetch Type Details
   useEffect(() => {
     const fetchTypeDetails = async () => {
       try {
@@ -38,6 +38,7 @@ function ProductsPage() {
     if (typeId) fetchTypeDetails();
   }, [typeId]);
 
+  // Fetch Products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -54,64 +55,76 @@ function ProductsPage() {
     fetchProducts();
   }, [typeId, typeName]);
 
+  // Apply filters and sorting
   useEffect(() => {
-    let filtered = [...products];
+    const applyFiltersAndSorting = () => {
+      let filtered = [...products];
 
-    if (filters.brands.length > 0) {
-      filtered = filtered.filter((product) =>
-        filters.brands.includes(product.brand)
-      );
-    }
-    if (filters.colors.length > 0) {
-      filtered = filtered.filter((product) =>
-        product.colors?.some((color) => filters.colors.includes(color))
-      );
-    }
-    if (filters.tags.length > 0) {
-      filtered = filtered.filter((product) =>
-        product.tags?.some((tag) => filters.tags.includes(tag))
-      );
-    }
-
-    filtered = filtered.filter((product) => {
-      const price = product.salePrice || product.price;
-      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-    });
-
-    switch (sortOption) {
-      case "Newest":
-        filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        break;
-      case "Price: Low to High":
-        filtered.sort(
-          (a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)
+      // Brand filter
+      if (filters.brands.length > 0) {
+        filtered = filtered.filter((product) =>
+          filters.brands.includes(product.brand)
         );
-        break;
-      case "Price: High to Low":
-        filtered.sort(
-          (a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)
+      }
+
+      // Color filter
+      if (filters.colors.length > 0) {
+        filtered = filtered.filter((product) =>
+          product.colors?.some((color) => filters.colors.includes(color))
         );
-        break;
-      case "Alphabetical: A-Z":
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "Alphabetical: Z-A":
-        filtered.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      default:
-        break;
-    }
+      }
 
-    setFilteredProducts(filtered);
-  }, [filters, sortOption, products]);
+      // Tags filter
+      if (filters.tags.length > 0) {
+        filtered = filtered.filter((product) =>
+          product.tags?.some((tag) => filters.tags.includes(tag))
+        );
+      }
 
-  const handleFavoriteToggle = (product) => {
-    setFavorites((prev) =>
-      prev.some((fav) => fav._id === product._id)
-        ? prev.filter((fav) => fav._id !== product._id)
-        : [...prev, product]
-    );
+      // Price filter
+      filtered = filtered.filter((product) => {
+        const price = product.salePrice || product.price;
+        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+      });
+
+      // Sorting
+      switch (sortOption) {
+        case "Newest":
+          filtered.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          break;
+        case "Price: Low to High":
+          filtered.sort(
+            (a, b) => (a.salePrice || a.price) - (b.salePrice || b.price)
+          );
+          break;
+        case "Price: High to Low":
+          filtered.sort(
+            (a, b) => (b.salePrice || b.price) - (a.salePrice || a.price)
+          );
+          break;
+        case "Alphabetical: A-Z":
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "Alphabetical: Z-A":
+          filtered.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        default:
+          break;
+      }
+
+      setFilteredProducts(filtered);
+    };
+
+    applyFiltersAndSorting();
+  }, [products, filters, sortOption]);
+
+  // Handle filter changes from FilterSection
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
+
   return (
     <Box>
       <Header />
@@ -121,21 +134,24 @@ function ProductsPage() {
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>
-          <FilterSection products={products} setFilters={setFilters} />
+          <FilterSection
+            onFilterChange={handleFilterChange}
+            products={products}
+            currentFilters={filters}
+          />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
           {filteredProducts.length > 0 ? (
-            <ProductCards
-              products={filteredProducts}
-              onToggleFavorite={handleFavoriteToggle}
-            />
+            <ProductCards products={filteredProducts} />
           ) : products.length === 0 ? (
             <Grid item xs={12}>
               <Typography>No products available.</Typography>
             </Grid>
           ) : (
             <Grid item xs={12}>
-              <Typography>No products match the selected filters.</Typography>
+              <Typography>
+                No products match your filters. Try adjusting your criteria.
+              </Typography>
             </Grid>
           )}
         </Grid>
