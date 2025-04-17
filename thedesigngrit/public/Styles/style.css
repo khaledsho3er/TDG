@@ -6202,7 +6202,7 @@ input:focus {
 }
 
 .menu-right {
-  width: 50%;
+  width: 54%;
   display: flex;
   flex-direction: column;
   gap: 6px;

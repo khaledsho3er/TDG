@@ -67,7 +67,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
       brands: [],
       colors: [],
       tags: [],
-      priceRange: [0, 1000000],
+      priceRange: [0, 600000],
     };
     setSelectedFilters(reset);
     onFilterChange(reset);
@@ -133,6 +133,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+            "& .MuiAccordionSummary-content": {
+              color: "#fff",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+          },
         }}
       >
         <AccordionSummary
@@ -144,6 +154,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontFamily: "Montserrat",
               fontWeight: "normal",
               color: "#2d2d2d",
+            },
+            "&:hover": {
+              backgroundColor: "#2d2d2d",
+              color: "#fff",
+              "& .MuiAccordionSummary-content": {
+                color: "#fff",
+              },
+              "& .MuiSvgIcon-root": {
+                color: "#fff",
+              },
             },
           }}
         >
@@ -179,6 +199,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+            "& .MuiAccordionSummary-content": {
+              color: "#fff",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+          },
         }}
       >
         <AccordionSummary
@@ -191,6 +221,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontWeight: "normal",
               color: "#2d2d2d",
             },
+            "&:hover": {
+              backgroundColor: "#2d2d2d",
+              color: "#fff",
+              "& .MuiAccordionSummary-content": {
+                color: "#fff",
+              },
+              "& .MuiSvgIcon-root": {
+                color: "#fff",
+              },
+            },
           }}
         >
           <Typography>Price</Typography>
@@ -200,26 +240,24 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            flexDirection: "column",
+            gap: 1,
           }}
         >
           <Typography variant="body2">
             Range:
-            {selectedFilters.priceRange[0].toLocaleString()} -{" "}
-            {selectedFilters.priceRange[1].toLocaleString()}
+            {selectedFilters.priceRange[0].toLocaleString()} E£ -{" "}
+            {selectedFilters.priceRange[1].toLocaleString()}E£
           </Typography>
-          <Typography variant="body2">
-            ${selectedFilters.priceRange[0].toLocaleString()}
-          </Typography>
+
           <Slider
             value={selectedFilters.priceRange}
             onChange={handlePriceChange}
             valueLabelDisplay="auto"
             min={0}
-            max={1000000}
+            max={600000}
+            sx={{ width: "100%", color: "#2d2d2d" }}
           />
-          <Typography variant="body2">
-            ${selectedFilters.priceRange[1].toLocaleString()}
-          </Typography>
         </AccordionDetails>
       </Accordion>
 
@@ -235,6 +273,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+            "& .MuiAccordionSummary-content": {
+              color: "#fff",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+          },
         }}
       >
         <AccordionSummary
@@ -246,6 +294,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontFamily: "Montserrat",
               fontWeight: "normal",
               color: "#2d2d2d",
+            },
+            "&:hover": {
+              backgroundColor: "#2d2d2d",
+              color: "#fff",
+              "& .MuiAccordionSummary-content": {
+                color: "#fff",
+              },
+              "& .MuiSvgIcon-root": {
+                color: "#fff",
+              },
             },
           }}
         >
@@ -281,6 +339,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
           mb: 2,
           "&:before": { display: "none" }, // removes default divider line
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "#fff",
+            "& .MuiAccordionSummary-content": {
+              color: "#fff",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#fff",
+            },
+          },
         }}
       >
         <AccordionSummary
@@ -292,6 +360,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               fontFamily: "Montserrat",
               fontWeight: "normal",
               color: "#2d2d2d",
+            },
+            "&:hover": {
+              backgroundColor: "#2d2d2d",
+              color: "#fff",
+              "& .MuiAccordionSummary-content": {
+                color: "#fff",
+              },
+              "& .MuiSvgIcon-root": {
+                color: "#fff",
+              },
             },
           }}
         >
