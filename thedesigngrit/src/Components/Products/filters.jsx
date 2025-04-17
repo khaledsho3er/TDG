@@ -153,7 +153,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               color: "#2d2d2d",
             },
             "&:hover": {
-              backgroundColor: "#2d2d2d",
+              backgroundColor: "transparent",
               color: "#fff",
             },
             "&.Mui-expanded": {
@@ -224,7 +224,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               color: "#2d2d2d",
             },
             "&:hover": {
-              backgroundColor: "#2d2d2d",
+              backgroundColor: "transparent",
               color: "#fff",
             },
             "&.Mui-expanded": {
@@ -322,7 +322,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               color: "#2d2d2d",
             },
             "&:hover": {
-              backgroundColor: "#2d2d2d",
+              backgroundColor: "transparent",
               color: "#fff",
             },
             "&.Mui-expanded": {
@@ -393,7 +393,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
               color: "#2d2d2d",
             },
             "&:hover": {
-              backgroundColor: "#2d2d2d",
+              backgroundColor: "transparent",
               color: "#fff",
             },
             "&.Mui-expanded": {
