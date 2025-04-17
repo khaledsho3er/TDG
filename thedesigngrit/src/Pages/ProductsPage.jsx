@@ -12,8 +12,8 @@ import PageDescription from "../Components/Topheader";
 function ProductsPage() {
   const { typeId, typeName } = useParams();
   const [typeDescription, setTypeDescription] = useState(""); // 🔹 State to store type description
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [products, setProducts] = useState([]); // جميع المنتجات
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
   const [filters, setFilters] = useState({
     brands: [], // قائمة الـ ObjectId للماركات المختارة
