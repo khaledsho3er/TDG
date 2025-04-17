@@ -5,6 +5,7 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
+import VariantsModal from "./variantModal";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -24,6 +25,8 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
+  const [variants, setVariants] = useState([]);
+
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -65,8 +68,10 @@ const AddProduct = () => {
     Additionaldetails: "",
     Additionalcosts: "",
     cadFile: null, // Add CAD field
+    variants: [],
     // claimProcess: "",
   });
+  const [showVariantsModal, setShowVariantsModal] = useState(false); // State to show/hide variants modal
 
   // Fetch categories on mount
   useEffect(() => {
@@ -475,7 +480,11 @@ const AddProduct = () => {
       [name]: checked,
     }));
   };
-
+  const handleCheckboxVariantsChange = (e) => {
+    const { checked } = e.target;
+    setShowVariantsModal(checked); // Show the variants modal when checked
+    setFormData({ ...formData, hasVariants: checked });
+  };
   // Update handleSubmit to include readyToShip
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -538,7 +547,17 @@ const AddProduct = () => {
     formData.images.forEach((file) => {
       data.append("images", file);
     });
-
+    formData.variants.forEach((variant, index) => {
+      // Append variant data
+      data.append(`variants[${index}][name]`, variant.name);
+      data.append(`variants[${index}][price]`, variant.price);
+      data.append(`variants[${index}][color]`, variant.color);
+      data.append(`variants[${index}][size]`, variant.size);
+      // Add variant images
+      variant.images.forEach((file, imgIndex) => {
+        data.append(`variants[${index}][images][${imgIndex}]`, file);
+      });
+    });
     // Append CAD file if exists
     if (formData.cadFile) {
       // Changed from 'cad' to 'cadFile'
@@ -597,6 +616,7 @@ const AddProduct = () => {
         images: [],
         mainImage: "",
         readyToShip: false,
+        variants: [],
       });
     } catch (error) {
       console.error("Error creating product:", error.response?.data || error);
@@ -1338,7 +1358,23 @@ const AddProduct = () => {
                 ))}
               </div>
             </div>
+            <label>
+              Has Variants
+              <input
+                type="checkbox"
+                checked={formData.hasVariants || false}
+                onChange={handleCheckboxVariantsChange}
+              />
+            </label>
 
+            {/* Variants Modal trigger */}
+            {showVariantsModal && (
+              <VariantsModal
+                formData={formData}
+                setFormData={setFormData}
+                handleClose={() => setShowVariantsModal(false)}
+              />
+            )}
             {/* Update CAD Upload Section */}
             <div className="cad-upload-section">
               <label>CAD File Upload</label>
