@@ -76,11 +76,13 @@ const AddProduct = () => {
     price: "",
     salePrice: "",
     images: [],
-    mainImage: "",
+    imagePreviews: [],
+    mainImage: null,
+    mainImagePreview: null,
     leadTime: "",
   });
-  const [variantImagePreviews, setVariantImagePreviews] = useState([]);
   const [hasVariants, setHasVariants] = useState(false);
+
   // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
@@ -523,6 +525,7 @@ const AddProduct = () => {
       JSON.stringify(formData.technicalDimensions)
     );
     data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
+    data.append("hasVariants", formData.hasVariants);
 
     // Append images
     formData.images.forEach((file) => {
@@ -534,9 +537,10 @@ const AddProduct = () => {
       // Changed from 'cad' to 'cadFile'
       data.append("cadFile", formData.cadFile);
     }
-    if (hasVariants && variants.length > 0) {
-      formData.append("hasVariants", "true");
-      formData.append(
+
+    // Handle variants if they exist
+    if (formData.hasVariants && variants.length > 0) {
+      data.append(
         "variations",
         JSON.stringify(
           variants.map((v) => ({
@@ -546,9 +550,7 @@ const AddProduct = () => {
             price: v.price,
             salePrice: v.salePrice,
             leadTime: v.leadTime,
-            // We'll only send references to images, not the files themselves
-            // The actual files will be appended separately
-            images: v.images.map(
+            images: (v.images || []).map(
               (_, i) => `variant_${variants.indexOf(v)}_${i}`
             ),
             mainImage: v.mainImage ? `variant_${variants.indexOf(v)}_main` : "",
@@ -558,14 +560,15 @@ const AddProduct = () => {
 
       // Append variant image files
       variants.forEach((variant, vIndex) => {
-        variant.images.forEach((file, imgIndex) => {
-          formData.append(`variantImages[${vIndex}][${imgIndex}]`, file);
+        (variant.images || []).forEach((file, imgIndex) => {
+          data.append(`variantImages[${vIndex}][${imgIndex}]`, file);
         });
         if (variant.mainImage) {
-          formData.append(`variantMainImages[${vIndex}]`, variant.mainImage);
+          data.append(`variantMainImages[${vIndex}]`, variant.mainImage);
         }
       });
     }
+
     // Log FormData for debugging
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
@@ -618,7 +621,14 @@ const AddProduct = () => {
         images: [],
         mainImage: "",
         readyToShip: false,
+        hasVariants: false,
       });
+      setVariants([]);
+      setHasVariants(false);
+      setImages([]);
+      setImagePreviews([]);
+      setMainImage(null);
+      setMainImagePreview(null);
     } catch (error) {
       console.log("Error creating product:", error);
       console.error("Error creating product:", error.response?.data || error);
@@ -626,7 +636,6 @@ const AddProduct = () => {
     }
     setPendingSubmission(false);
   };
-
   // Add this new function near your other handlers
   const handleWarrantyCoverageChange = (coverage) => {
     setFormData((prevState) => {
@@ -650,93 +659,93 @@ const AddProduct = () => {
       };
     });
   };
+  // Variant image handlers
   const handleVariantImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    if (files.length === 0) return;
+    if (!files.length) return;
 
-    // Create preview URLs
     const previews = files.map((file) => URL.createObjectURL(file));
 
     setCurrentVariant((prev) => ({
       ...prev,
-      images: [...prev.images, ...files],
-      imagePreviews: [...prev.imagePreviews, ...previews],
-      // Set first image as main if none is selected
+      images: [...(prev.images || []), ...files],
+      imagePreviews: [...(prev.imagePreviews || []), ...previews],
       mainImage: prev.mainImage || files[0],
       mainImagePreview: prev.mainImagePreview || previews[0],
     }));
   };
 
   const handleRemoveVariantImage = (index) => {
-    const updatedImages = [...currentVariant.images];
-    const updatedPreviews = [...currentVariant.imagePreviews];
+    setCurrentVariant((prev) => {
+      const currentImages = prev.images || [];
+      const currentPreviews = prev.imagePreviews || [];
 
-    // Check if we're removing the main image
-    const isMainImage =
-      currentVariant.mainImage === currentVariant.images[index];
+      if (index >= currentImages.length || index >= currentPreviews.length) {
+        return prev;
+      }
 
-    updatedImages.splice(index, 1);
-    updatedPreviews.splice(index, 1);
+      const newImages = [...currentImages];
+      const newPreviews = [...currentPreviews];
 
-    setCurrentVariant((prev) => ({
-      ...prev,
-      images: updatedImages,
-      imagePreviews: updatedPreviews,
-      // Reset main image if it was removed
-      mainImage: isMainImage
-        ? updatedImages.length > 0
-          ? updatedImages[0]
-          : null
-        : prev.mainImage,
-      mainImagePreview: isMainImage
-        ? updatedPreviews.length > 0
-          ? updatedPreviews[0]
-          : null
-        : prev.mainImagePreview,
-    }));
+      const isMainImage = prev.mainImage === currentImages[index];
+
+      newImages.splice(index, 1);
+      newPreviews.splice(index, 1);
+
+      return {
+        ...prev,
+        images: newImages,
+        imagePreviews: newPreviews,
+        mainImage: isMainImage
+          ? newImages.length > 0
+            ? newImages[0]
+            : null
+          : prev.mainImage,
+        mainImagePreview: isMainImage
+          ? newPreviews.length > 0
+            ? newPreviews[0]
+            : null
+          : prev.mainImagePreview,
+      };
+    });
   };
+
   const handleSetVariantMainImage = (index) => {
     setCurrentVariant((prev) => ({
       ...prev,
-      mainImage: prev.images[index],
-      mainImagePreview: prev.imagePreviews[index],
+      mainImage: prev.images?.[index] || null,
+      mainImagePreview: prev.imagePreviews?.[index] || null,
     }));
   };
+
   const handleAddVariant = () => {
-    // Validate at least one distinguishing feature
-    if (
-      !currentVariant.color &&
-      !currentVariant.size &&
-      !currentVariant.material
-    ) {
-      alert(
-        "Please specify at least one variant attribute (color, size, or material)"
-      );
+    // Validate required fields
+    if (!currentVariant.price) {
+      alert("Price is required");
       return;
     }
 
-    // Validate at least one image
-    if (currentVariant.images.length === 0) {
-      alert("Please add at least one image for the variant");
+    if (!currentVariant.images?.length) {
+      alert("Please upload at least one image");
       return;
     }
 
-    // Create the variant object to store
+    // Create variant object
     const variantToAdd = {
-      color: currentVariant.color,
-      material: currentVariant.material,
-      size: currentVariant.size,
+      color: currentVariant.color || "",
+      material: currentVariant.material || "",
+      size: currentVariant.size || "",
       price: currentVariant.price,
-      salePrice: currentVariant.salePrice,
-      images: currentVariant.images,
-      mainImage: currentVariant.mainImage,
-      leadTime: currentVariant.leadTime,
+      salePrice: currentVariant.salePrice || "",
+      images: currentVariant.images || [],
+      mainImage: currentVariant.mainImage || currentVariant.images?.[0] || null,
+      leadTime: currentVariant.leadTime || "",
     };
 
     // Add to variants list
     setVariants([...variants, variantToAdd]);
 
-    // Reset the current variant form
+    // Reset form
     setCurrentVariant({
       color: "",
       material: "",
@@ -750,9 +759,10 @@ const AddProduct = () => {
       leadTime: "",
     });
 
-    // Close the modal
+    // Close modal
     setShowVariantModal(false);
   };
+
   const handleRemoveVariant = (index) => {
     const updatedVariants = [...variants];
     updatedVariants.splice(index, 1);
@@ -1519,273 +1529,50 @@ const AddProduct = () => {
                   checked={hasVariants}
                   onChange={(e) => {
                     setHasVariants(e.target.checked);
-                    setFormData({ ...formData, hasVariants: e.target.checked });
+                    setFormData((prev) => ({
+                      ...prev,
+                      hasVariants: e.target.checked,
+                    }));
                   }}
                 />
                 This product has variants
               </label>
 
               {hasVariants && (
-                <button
-                  type="button"
-                  className="btn add-variant-btn"
-                  onClick={() => setShowVariantModal(true)}
-                >
-                  + Add Variants
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className="btn add-variant-btn"
+                    onClick={() => setShowVariantModal(true)}
+                  >
+                    + Add Variants
+                  </button>
+
+                  {/* Display added variants */}
+                  {variants.length > 0 && (
+                    <div className="variants-list">
+                      <h4>Added Variants:</h4>
+                      <ul>
+                        {variants.map((variant, index) => (
+                          <li key={index}>
+                            {`${variant.color || ""} ${
+                              variant.material || ""
+                            } ${variant.size || ""} - $${variant.price}`}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveVariant(index)}
+                              className="remove-variant-btn"
+                            >
+                              Remove
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
               )}
             </div>
-            {showVariantModal && (
-              <div className="variant-modal-overlay">
-                <div className="variant-modal-container">
-                  <div className="variant-modal-header">
-                    <h3>Add Product Variant</h3>
-                    <button
-                      className="variant-modal-close"
-                      onClick={() => {
-                        setShowVariantModal(false);
-                        setCurrentVariant({
-                          color: "",
-                          material: "",
-                          size: "",
-                          price: "",
-                          salePrice: "",
-                          images: [],
-                          imagePreviews: [],
-                          mainImage: null,
-                          mainImagePreview: null,
-                          leadTime: "",
-                        });
-                      }}
-                    >
-                      &times;
-                    </button>
-                  </div>
-
-                  <div className="variant-modal-body">
-                    <div className="variant-form-grid">
-                      {/* Left Column - Variant Attributes */}
-                      <div className="variant-attributes">
-                        <div className="form-group">
-                          <label>Color:</label>
-                          <input
-                            type="text"
-                            value={currentVariant.color}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                color: e.target.value,
-                              })
-                            }
-                            placeholder="e.g., Red, Blue"
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Material:</label>
-                          <input
-                            type="text"
-                            value={currentVariant.material}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                material: e.target.value,
-                              })
-                            }
-                            placeholder="e.g., Wood, Leather"
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Size:</label>
-                          <input
-                            type="text"
-                            value={currentVariant.size}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                size: e.target.value,
-                              })
-                            }
-                            placeholder="e.g., Small, Medium"
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Price ($):</label>
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={currentVariant.price}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                price: e.target.value,
-                              })
-                            }
-                            placeholder="0.00"
-                            required
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Sale Price ($):</label>
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={currentVariant.salePrice}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                salePrice: e.target.value,
-                              })
-                            }
-                            placeholder="Optional"
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Lead Time:</label>
-                          <input
-                            type="text"
-                            value={currentVariant.leadTime}
-                            onChange={(e) =>
-                              setCurrentVariant({
-                                ...currentVariant,
-                                leadTime: e.target.value,
-                              })
-                            }
-                            placeholder="e.g., 2-3 weeks"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Right Column - Image Handling */}
-                      <div className="variant-images-section">
-                        <div className="image-upload-container">
-                          <label>Variant Images</label>
-                          <p className="upload-hint">
-                            Upload high-quality images (min 800x800px)
-                          </p>
-
-                          <input
-                            type="file"
-                            id="variantImageUpload"
-                            multiple
-                            accept="image/jpeg, image/png, image/webp"
-                            onChange={handleVariantImageUpload}
-                            style={{ display: "none" }}
-                          />
-                          <label
-                            htmlFor="variantImageUpload"
-                            className="upload-button"
-                          >
-                            <span>+ Select Images</span>
-                          </label>
-
-                          {/* Image Previews */}
-                          <div className="image-previews-grid">
-                            {currentVariant.imagePreviews.length > 0 ? (
-                              currentVariant.imagePreviews.map(
-                                (preview, index) => (
-                                  <div
-                                    key={index}
-                                    className={`image-preview-item ${
-                                      currentVariant.mainImagePreview ===
-                                      preview
-                                        ? "main-image-selected"
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleSetVariantMainImage(index)
-                                    }
-                                  >
-                                    <img
-                                      src={preview}
-                                      alt={`Variant preview ${index + 1}`}
-                                    />
-                                    <div className="image-actions">
-                                      <button
-                                        type="button"
-                                        className="remove-image-btn"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleRemoveVariantImage(index);
-                                        }}
-                                      >
-                                        Remove
-                                      </button>
-                                      {currentVariant.mainImagePreview ===
-                                        preview && (
-                                        <span className="main-image-badge">
-                                          Main
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                )
-                              )
-                            ) : (
-                              <div className="no-images-placeholder">
-                                <div className="placeholder-icon">
-                                  <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                  >
-                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                    <circle cx="12" cy="13" r="4"></circle>
-                                  </svg>
-                                </div>
-                                <p>No images uploaded yet</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Main Image Preview */}
-                        {currentVariant.mainImagePreview && (
-                          <div className="main-image-display">
-                            <label>Main Image Preview</label>
-                            <div className="main-image-container">
-                              <img
-                                src={currentVariant.mainImagePreview}
-                                alt="Main variant preview"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="variant-modal-footer">
-                    <button
-                      type="button"
-                      className="cancel-button"
-                      onClick={() => setShowVariantModal(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="add-variant-button"
-                      onClick={handleAddVariant}
-                      disabled={
-                        !currentVariant.price ||
-                        currentVariant.images.length === 0
-                      }
-                    >
-                      Add Variant
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
         <div className="form-actions">
@@ -1800,6 +1587,254 @@ const AddProduct = () => {
           <button className="btn delete">DELETE</button>
           <button className="btn cancel">CANCEL</button>
         </div>{" "}
+        {/* Variant modal */}
+        {showVariantModal && (
+          <div className="variant-modal-overlay">
+            <div className="variant-modal-container">
+              <div className="variant-modal-header">
+                <h3>Add Product Variant</h3>
+                <button
+                  className="variant-modal-close"
+                  onClick={() => {
+                    setShowVariantModal(false);
+                    setCurrentVariant({
+                      color: "",
+                      material: "",
+                      size: "",
+                      price: "",
+                      salePrice: "",
+                      images: [],
+                      imagePreviews: [],
+                      mainImage: null,
+                      mainImagePreview: null,
+                      leadTime: "",
+                    });
+                  }}
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div className="variant-modal-body">
+                <div className="variant-form-grid">
+                  {/* Variant attributes */}
+                  <div className="variant-attributes">
+                    <div className="form-group">
+                      <label>Color:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.color}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            color: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Red, Blue"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Material:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.material}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            material: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Wood, Leather"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Size:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.size}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            size: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Small, Medium"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Price ($):</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={currentVariant.price}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            price: e.target.value,
+                          }))
+                        }
+                        placeholder="0.00"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Sale Price ($):</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={currentVariant.salePrice}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            salePrice: e.target.value,
+                          }))
+                        }
+                        placeholder="Optional"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Lead Time:</label>
+                      <input
+                        type="text"
+                        value={currentVariant.leadTime}
+                        onChange={(e) =>
+                          setCurrentVariant((prev) => ({
+                            ...prev,
+                            leadTime: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., 2-3 weeks"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Variant images */}
+                  <div className="variant-images-section">
+                    <div className="image-upload-container">
+                      <label>Variant Images</label>
+                      <p className="upload-hint">
+                        Upload high-quality images (min 800x800px)
+                      </p>
+
+                      <input
+                        type="file"
+                        id="variantImageUpload"
+                        multiple
+                        accept="image/jpeg, image/png, image/webp"
+                        onChange={handleVariantImageUpload}
+                        style={{ display: "none" }}
+                      />
+                      <label
+                        htmlFor="variantImageUpload"
+                        className="upload-button"
+                      >
+                        <span>+ Select Images</span>
+                      </label>
+
+                      {/* Image previews */}
+                      <div className="image-previews-grid">
+                        {(currentVariant.imagePreviews || []).length > 0 ? (
+                          (currentVariant.imagePreviews || []).map(
+                            (preview, index) => (
+                              <div
+                                key={index}
+                                className={`image-preview-item ${
+                                  currentVariant.mainImagePreview === preview
+                                    ? "main-image-selected"
+                                    : ""
+                                }`}
+                                onClick={() => handleSetVariantMainImage(index)}
+                              >
+                                <img
+                                  src={preview}
+                                  alt={`Variant preview ${index + 1}`}
+                                />
+                                <div className="image-actions">
+                                  <button
+                                    type="button"
+                                    className="remove-image-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleRemoveVariantImage(index);
+                                    }}
+                                  >
+                                    Remove
+                                  </button>
+                                  {currentVariant.mainImagePreview ===
+                                    preview && (
+                                    <span className="main-image-badge">
+                                      Main
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          )
+                        ) : (
+                          <div className="no-images-placeholder">
+                            <div className="placeholder-icon">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                              >
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                              </svg>
+                            </div>
+                            <p>No images uploaded yet</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Main image preview */}
+                    {currentVariant.mainImagePreview && (
+                      <div className="main-image-display">
+                        <label>Main Image Preview</label>
+                        <div className="main-image-container">
+                          <img
+                            src={currentVariant.mainImagePreview}
+                            alt="Main variant preview"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="variant-modal-footer">
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => setShowVariantModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="add-variant-button"
+                  onClick={handleAddVariant}
+                  disabled={
+                    !currentVariant.price || !currentVariant.images?.length
+                  }
+                >
+                  Add Variant
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Confirmation Dialog */}
         <ConfirmationDialog
           open={isDialogOpen}
