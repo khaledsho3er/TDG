@@ -309,11 +309,9 @@ const ShippingInfoPopup = () => {
             margin: "auto",
             backgroundColor: "white",
             borderRadius: "10px",
-            marginTop: "10%",
+            marginTop: "5%",
             alignItems: "center",
             zIndex: 1000,
-            overflowY: "auto", // Make the modal content scrollable
-            maxHeight: "80vh", // Limit height for scrolling
           }}
         >
           <Typography variant="h6" align="center" fontFamily={"Horizon"}>
