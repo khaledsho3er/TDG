@@ -3,10 +3,11 @@ import axios from "axios";
 import { Card, CardContent, Typography, Grid, CardMedia } from "@mui/material";
 import UpdateCategory from "./editcategories";
 import { CiCirclePlus } from "react-icons/ci";
-const CategoryListPage = ({ setActivePage }) => {
+import CategoryForm from "./createCategory";
+const CategoryListPage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-
+  const [addCategory, setAddCategory] = useState(false);
   // Fetch all categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -22,12 +23,14 @@ const CategoryListPage = ({ setActivePage }) => {
 
     fetchCategories();
   }, []);
-
+  if (addCategory === true) {
+    return <CategoryForm />;
+  }
   return (
     <>
       <div className="dashboard-date-vendor">
         <button
-          onClick={() => setActivePage("AddCategory")}
+          onClick={() => setAddCategory(true)}
           style={{
             display: "flex",
             alignItems: "center",
@@ -41,7 +44,7 @@ const CategoryListPage = ({ setActivePage }) => {
             fontSize: "14px",
           }}
         >
-          <CiCirclePlus /> Add Product
+          <CiCirclePlus /> Add Category
         </button>
       </div>
       <div>
