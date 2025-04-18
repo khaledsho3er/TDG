@@ -13,10 +13,12 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/admin/login", { email, password });
+      const res = await axios.post(
+        "https://tdg-db.onrender.com/api/admin/login",
+        { email, password }
+      );
       localStorage.setItem("adminToken", res.data.token);
       login(res.data.admin); // Assuming `res.data.admin` is the object
-
       navigate("/adminpanel");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

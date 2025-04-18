@@ -7,6 +7,7 @@ import ScrollToTop from "./Context/scrollToTop";
 import { Analytics } from "@vercel/analytics/react";
 import LoadingScreen from "./Pages/loadingScreen";
 import ReadyToShip from "./Pages/ReadyToship";
+import { AdminProvider } from "./utils/adminContext";
 
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
@@ -116,14 +117,16 @@ function App() {
   return (
     <UserProvider>
       <VendorProvider>
-        <CartProvider>
-          <Router>
-            <ScrollToTop />
-            <PublicRoutes />
-            <VendorRoutes />
-            <Analytics />
-          </Router>
-        </CartProvider>
+        <AdminProvider>
+          <CartProvider>
+            <Router>
+              <ScrollToTop />
+              <PublicRoutes />
+              <VendorRoutes />
+              <Analytics />
+            </Router>
+          </CartProvider>
+        </AdminProvider>
       </VendorProvider>
     </UserProvider>
   );
