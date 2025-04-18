@@ -206,13 +206,13 @@ const RecentPurchasesAdmin = () => {
           <tbody>
             {currentOrders.map((order) => (
               <tr
-                onClick={() => navigate(`/orderDetail/${order.id}`)}
+                onClick={() => navigate(`/orderDetail/${order._id}`)}
                 style={{ cursor: "pointer" }}
                 key={order.id}
               >
                 <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
-                <td>{order.orderId}</td>
-                <td>{order.date}</td>
+                <td>{order._id}</td>
+                <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                 <td>
                   {order.customerId.firstName}
                   {order.customerId.lastName}
@@ -244,7 +244,7 @@ const RecentPurchasesAdmin = () => {
                     {order.orderStatus}
                   </span>
                 </td>
-                <td>{order.total}</td>
+                <td>{order.total} EGP</td>
               </tr>
             ))}
           </tbody>
