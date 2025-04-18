@@ -1352,4 +1352,8 @@
   .divider {
     display: none; /* Hide the divider on small screens */
   }
+  .partners-section {
+    flex-direction: column;
+    padding: 20px;
+  }
 }

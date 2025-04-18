@@ -30,7 +30,8 @@ const TypesPage = lazy(() => import("./Pages/types"));
 const TermsOfService = lazy(() => import("./Pages/Policy"));
 const JobDesc = lazy(() => import("./Pages/JobDescription"));
 const PartnersApplication = lazy(() => import("./Pages/Partners"));
-
+const AdminLogin = lazy(() => import("./Components/adminSide/AdminLogin"));
+const PrivateRouteAdmin = lazy(() => import("./utils/PrivateRouteAdmin"));
 // Lazy Load Pages (Vendor)
 const VendorHome = lazy(() => import("./Pages/vendorSide/VendorHome"));
 const OrderDetails = lazy(() => import("./Components/vendorSide/orderDetails"));
@@ -91,7 +92,15 @@ const VendorRoutes = () => (
       <Route path="/vendor-dashboard/:vendorId" element={<VendorHome />} />
       <Route path="/orderDetail/:id" element={<OrderDetails />} />
       <Route path="/update-product" element={<UpdateProductForm />} />
-      <Route path="/adminpanel" element={<AdminHome />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route
+        path="/adminpanel"
+        element={
+          <PrivateRouteAdmin>
+            <AdminHome />
+          </PrivateRouteAdmin>
+        }
+      />{" "}
       <Route path="/verify-partner" element={<VerifyPartners />} />
       <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="/signin-vendor" element={<SigninVendor />} />
