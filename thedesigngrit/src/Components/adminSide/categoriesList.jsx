@@ -3,7 +3,6 @@ import axios from "axios";
 import { Card, CardContent, Typography, Grid, CardMedia } from "@mui/material";
 import UpdateCategory from "./editcategories";
 import { CiCirclePlus } from "react-icons/ci";
-
 const CategoryListPage = ({ setActivePage }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
