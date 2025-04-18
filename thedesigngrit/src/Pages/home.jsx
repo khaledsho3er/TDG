@@ -7,7 +7,6 @@ import { Box } from "@mui/material";
 import PartnersSection from "../Components/home/partners";
 import ProductSlider from "../Components/home/bestSeller";
 import Footer from "../Components/Footer";
-import ScrollAnimation from "../Context/scrollingAnimation"; // Import the animation wrapper
 
 const videos = [
   "/Assets/Video-hero/herovideo.webm",
@@ -110,32 +109,20 @@ function Home() {
       </div>
 
       {/* Apply Scroll Animation to Sections */}
-      <ScrollAnimation>
-        <Box className="concept-title">
-          <ExploreConcepts />
-        </Box>
-      </ScrollAnimation>
+      <Box className="concept-title">
+        <ExploreConcepts />
+      </Box>
 
-      <ScrollAnimation>
-        <ShopByCategory />
-      </ScrollAnimation>
+      <ShopByCategory />
 
-      <ScrollAnimation>
-        <Box sx={{ width: "100%" }}>
-          <ProductSlider />
-        </Box>
-      </ScrollAnimation>
+      <Box sx={{ width: "100%" }}>
+        <ProductSlider />
+      </Box>
 
-      <ScrollAnimation>
-        <SustainabilitySection />
-      </ScrollAnimation>
+      <SustainabilitySection />
 
-      <ScrollAnimation>
-        <PartnersSection />
-      </ScrollAnimation>
-      <ScrollAnimation>
-        <Footer />
-      </ScrollAnimation>
+      <PartnersSection />
+      <Footer />
     </div>
   );
 }
