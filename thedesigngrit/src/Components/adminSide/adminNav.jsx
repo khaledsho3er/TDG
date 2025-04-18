@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 import { useAdmin } from "../../utils/adminContext";
+import { useNavigate } from "react-router-dom"; // Import useHistory for navigation
+
 const NavbarAdmin = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [requests, setRequests] = useState([]); // State for partner requests
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { admin, logout } = useAdmin(); // Access admin data from context
-  console.log("admin in NavbarAdmin:", admin); // Log admin data for debugging
+  const { admin, logout } = useAdmin(); // Access admin data and logout function from context
+  const navigate = useNavigate(); // Get history for navigation
 
   // Function to fetch data (partner requests)
   const fetchRequests = async () => {
@@ -33,9 +35,20 @@ const NavbarAdmin = () => {
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
+
+  // Handle logout
   const handleLogout = () => {
-    logout(); // Logout function from adminContext
+    logout(); // Call logout function from context
+    navigate("/admin-login"); // Redirect to login page
   };
+
+  // Handle select change (Logout)
+  const handleSelectChange = (event) => {
+    if (event.target.value === "Logout") {
+      handleLogout(); // Call handleLogout when "Logout" is selected
+    }
+  };
+
   return (
     <nav className="navbar-vendor" style={{ position: "relative" }}>
       {/* Logo */}
@@ -51,9 +64,11 @@ const NavbarAdmin = () => {
           style={{ cursor: "pointer" }}
           onClick={toggleNotifications} // Toggle notifications on click
         />
-        <select>
+        <select onChange={handleSelectChange}>
+          {" "}
+          {/* Added onChange handler */}
           <option>Admin</option>
-          <option onClick={handleLogout}>Logout</option>
+          <option>Logout</option>
         </select>
       </div>
 
