@@ -27,7 +27,7 @@ const CategoryListPage = ({ setActivePage }) => {
     <>
       <div className="dashboard-date-vendor">
         <button
-          onClick={() => setActivePage("")}
+          onClick={() => setActivePage("AddCategory")}
           style={{
             display: "flex",
             alignItems: "center",
