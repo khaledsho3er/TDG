@@ -6142,18 +6142,15 @@ input:focus {
   gap: 200px;
 }
 
-.menu-left-container.no-animation {
+.menu-left-container {
   display: flex;
   flex-direction: column;
   width: 50%;
   height: 100%;
   padding: 0.8rem;
   background-color: #ffffff;
-  transition: none !important;
-  animation: none !important;
-  opacity: 1 !important;
-  transform: none !important;
 }
+
 .topcategory-title {
   font-family: Horizon;
   font-weight: bold;
