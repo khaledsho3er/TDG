@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import NavbarAdmin from "../../Components/adminSide/adminNav";
 import SidebarAdmin from "../../Components/adminSide/adminSideBar";
 import DashboardAdmin from "../../Components/adminSide/dashboardAdmin";
@@ -10,8 +12,15 @@ import CategoryListPage from "../../Components/adminSide/categoriesList";
 import TagsTable from "../../Components/adminSide/tags";
 import ConceptManager from "../../Components/adminSide/concepts";
 const AdminHome = () => {
+  const navigate = useNavigate();
   const [activePage, setActivePage] = useState("dashboard");
+  useEffect(() => {
+    const admin = localStorage.getItem("admin");
 
+    if (!admin) {
+      navigate("/admin-login"); // redirect to login page if no admin found
+    }
+  }, [navigate]);
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":

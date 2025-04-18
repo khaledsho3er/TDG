@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaBell } from "react-icons/fa";
-
+import { useAdmin } from "../../utils/adminContext";
 const NavbarAdmin = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [requests, setRequests] = useState([]); // State for partner requests
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { admin, logout } = useAdmin(); // Access admin data from context
+  console.log("admin in NavbarAdmin:", admin); // Log admin data for debugging
 
   // Function to fetch data (partner requests)
   const fetchRequests = async () => {
@@ -31,7 +33,9 @@ const NavbarAdmin = () => {
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
-
+  const handleLogout = () => {
+    logout(); // Logout function from adminContext
+  };
   return (
     <nav className="navbar-vendor" style={{ position: "relative" }}>
       {/* Logo */}
@@ -49,7 +53,7 @@ const NavbarAdmin = () => {
         />
         <select>
           <option>Admin</option>
-          <option>Logout</option>
+          <option onClick={handleLogout}>Logout</option>
         </select>
       </div>
 
