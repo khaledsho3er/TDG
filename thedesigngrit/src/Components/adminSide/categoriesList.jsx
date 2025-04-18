@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardContent, Typography, Grid, CardMedia } from "@mui/material";
 import UpdateCategory from "./editcategories";
+import { CiCirclePlus } from "react-icons/ci";
 
-const CategoryListPage = () => {
+const CategoryListPage = ({ setActivePage }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -24,48 +25,69 @@ const CategoryListPage = () => {
   }, []);
 
   return (
-    <div>
-      {selectedCategory ? (
-        <UpdateCategory
-          category={selectedCategory}
-          onBack={() => setSelectedCategory(null)}
-        />
-      ) : (
-        <Grid container spacing={2}>
-          {categories.map((category) => (
-            <Grid item key={category._id} xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  maxWidth: 345,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                }}
-                onClick={() => setSelectedCategory(category)}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={
-                    category.image
-                      ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${category.image}`
-                      : ""
-                  }
-                  alt={category.name}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {category.name}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-    </div>
+    <>
+      <div className="dashboard-date-vendor">
+        <button
+          onClick={() => setActivePage("")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+            backgroundColor: "#2d2d2d",
+            color: "white",
+            padding: "15px 15px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          <CiCirclePlus /> Add Product
+        </button>
+      </div>
+      <div>
+        {selectedCategory ? (
+          <UpdateCategory
+            category={selectedCategory}
+            onBack={() => setSelectedCategory(null)}
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {categories.map((category) => (
+              <Grid item key={category._id} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{
+                    maxWidth: 345,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={
+                      category.image
+                        ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${category.image}`
+                        : ""
+                    }
+                    alt={category.name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {category.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </div>
+    </>
   );
 };
 

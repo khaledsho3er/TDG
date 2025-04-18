@@ -39,6 +39,8 @@ const AdminHome = () => {
         return <TagsTable />;
       case "concepts":
         return <ConceptManager />;
+      case "AddCategory":
+        return <CategoryForm />;
       default:
         return "DashboardVendor";
     }
