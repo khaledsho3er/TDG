@@ -1521,8 +1521,8 @@ h1 {
 
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
-  width: 8px; /* Adjust the width of the scrollbar */
-  height: 10px; /* For horizontal scrollbar */
+  width: 0px; /* Hide the scrollbar */
+  height: 0px; /* Hide the horizontal scrollbar */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -1535,8 +1535,9 @@ h1 {
   border-radius: 10px; /* Rounded corners for the track */
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: #495a3a; /* Darker sage green when hovering */
+::-webkit-scrollbar:hover {
+  width: 8px; /* Reveal scrollbar on hover */
+  height: 10px; /* Reveal horizontal scrollbar on hover */
 }
 .popup-overlay-employee {
   position: fixed;

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { IconButton } from "@mui/material";
 import { IoMdEye, IoMdArrowBack } from "react-icons/io";
 
 import AdminPageLayout from "./adminLayout";
@@ -35,9 +36,9 @@ const VerifyPartners = ({ partner, onBack }) => {
 
   return (
     <>
-      <button className="back-btn" onClick={onBack}>
+      <IconButton className="back-btn" onClick={onBack}>
         <IoMdArrowBack />
-      </button>
+      </IconButton>
       <div className="verify-partners">
         <h2>Request Partnership</h2>
         <div className="partner-card">
