@@ -51,7 +51,7 @@ const VerifyPartners = () => {
         <div className="partner-card">
           <div className="partner-info">
             <img
-              src={`https://tdg-db.onrender.com/uploads/${partner.brandlogo}`}
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${partner.brandlogo}`}
               alt={`${partner.brand} Logo`}
             />
             <div>

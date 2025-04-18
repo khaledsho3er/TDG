@@ -59,7 +59,7 @@ const RequestsPartners = () => {
           <div className="product-card-request" key={partner._id}>
             <div className="product-card-header">
               <img
-                src={`https://tdg-db.onrender.com/uploads/${partner.brandlogo}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${partner.brandlogo}`}
                 alt={`Logo`}
                 className="request-image"
               />
