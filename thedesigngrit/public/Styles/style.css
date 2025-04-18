@@ -6567,22 +6567,22 @@ input:focus {
   transform: scale(1.02);
 }
 
-.full-page-menu {
+/* .full-page-menu {
   position: fixed;
   font-family: "Montserrat";
   top: 0;
-  left: -100%; /* Start off-screen to the left */
+  left: -100%; 
   width: 100%;
   height: 100%;
   background-color: white;
   z-index: 1000;
   transition: left 1s ease, opacity 0.5s ease;
-  opacity: 0; /* Start with 0 opacity for fade effect */
+  opacity: 0; 
 }
 
 .full-page-menu.open {
-  left: 0; /* Slide in to the left */
-  opacity: 1; /* Fade in */
+  left: 0; 
+  opacity: 1; 
 }
 .backdrop {
   position: fixed;
@@ -6590,16 +6590,16 @@ input:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  z-index: 999; /* Below the menu */
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999; 
   opacity: 0;
   transition: opacity 0.5s ease;
-  pointer-events: none; /* Prevent clicks when hidden */
+  pointer-events: none; 
 }
 
 .backdrop.open {
   opacity: 1;
-  pointer-events: auto; /* Allow clicks when visible */
+  pointer-events: auto; 
 }
 .menu-header {
   display: flex;
@@ -6609,7 +6609,7 @@ input:focus {
 }
 
 .menu-logo {
-  width: 120px; /* Adjust the size as needed */
+  width: 120px; 
   height: auto;
 }
 
@@ -6622,7 +6622,7 @@ input:focus {
   flex-direction: column;
   gap: 20px;
   align-items: center;
-  margin-top: 50px; /* Add space below the logo */
+  margin-top: 50px; 
 }
 
 .menu-item {
@@ -6696,7 +6696,7 @@ input:focus {
 .menu-category-item {
   font-size: 20px;
   font-weight: 500;
-  opacity: 0; /* Start hidden */
+  opacity: 0; 
   transform: translateY(-30px);
   animation: dropIn 0.5s ease forwards;
 }
@@ -6719,6 +6719,88 @@ input:focus {
 
 .menu-category-item:nth-child(5) {
   animation-delay: 0.5s;
+} */
+.full-page-menu.open {
+  left: 0; /* Slide in to the left */
+  opacity: 1; /* Fade in */
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 999; /* Below the menu */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none; /* Prevent clicks when hidden */
+}
+
+.backdrop.open {
+  opacity: 1;
+  pointer-events: auto; /* Allow clicks when visible */
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-logo {
+  width: 120px; /* Adjust the size as needed */
+  height: auto;
+}
+
+.close-button {
+  color: #2d2d2d;
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 50px; /* Add space below the logo */
+}
+
+.menu-item {
+  font-size: 24px;
+  font-weight: 500;
+  font-family: "Montserrat";
+  color: #2d2d2d;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* Remove animation to prevent the sliding effect */
+  opacity: 1; /* Ensure they are visible */
+  transform: none; /* Prevent any transformation */
+  transition: transform 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+  transform: scale(1.1);
+  color: #2d2d2d;
+}
+
+.menu-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.menu-category-item {
+  font-size: 20px;
+  font-weight: 500;
+  opacity: 1; /* Ensure they are visible */
+  transform: none; /* Prevent any transformation */
+  /* Remove animation to prevent the dropping effect */
 }
 
 /* Adjust based on how many categories you have */
