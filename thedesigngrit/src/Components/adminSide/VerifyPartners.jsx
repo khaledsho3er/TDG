@@ -3,19 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdEye } from "react-icons/io";
 
 import AdminPageLayout from "./adminLayout";
-const VerifyPartners = () => {
-  const location = useLocation();
+const VerifyPartners = ({ partner, onBack }) => {
   const navigate = useNavigate();
-  const partner = location.state?.partner; // Get partner data from state
-
-  if (!partner) {
-    return (
-      <div>
-        <p>No partner data available. Please go back and select a partner.</p>
-        <button onClick={() => navigate(-1)}>Go Back</button>
-      </div>
-    );
-  }
 
   const updateStatus = async (newStatus) => {
     try {
@@ -56,7 +45,7 @@ const VerifyPartners = () => {
             />
             <div>
               <h3>Brand:</h3>
-              <p>{partner.brandName}</p>
+              <p>{partner.brandName || "Unknown"}</p>
             </div>
             <div
               style={{
@@ -67,16 +56,16 @@ const VerifyPartners = () => {
             >
               <div>
                 <h4>Requestor Name:</h4>
-                <p>{partner.brandName}</p>
+                <p>{partner.brandName || "Unknown"}</p>
               </div>
               <div>
                 <h4>Email:</h4>
-                <p>{partner.email}</p>
+                <p>{partner.email || "Unknown"}</p>
               </div>
             </div>
             <div>
               <h4>Phone Number:</h4>
-              <p>{partner.phoneNumber}</p>
+              <p>{partner.phoneNumber || "Unknown"}</p>
             </div>
             <div
               style={{
@@ -86,17 +75,17 @@ const VerifyPartners = () => {
               }}
             >
               <div>
-                <h4>Country:</h4>
-                <p>{partner.country}</p>
+                <h4>Website:</h4>
+                <p>{partner.websiteURL || "Unknown"}</p>
               </div>
               <div>
-                <h4>City:</h4>
-                <p>{partner.city}</p>
+                <h4>Instagram:</h4>
+                <p>{partner.instagramURL || "Unknown"}</p>
               </div>
             </div>
             <div>
               <h4>Notes:</h4>
-              <p>{partner.brandDescription}</p>
+              <p>{partner.brandDescription || "Unknown"}</p>
             </div>
             <div>
               <h4>Documents:</h4>

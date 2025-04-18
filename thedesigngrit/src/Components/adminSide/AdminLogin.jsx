@@ -4,10 +4,13 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../../utils/adminContext";
 import * as Yup from "yup";
+import { IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useAdmin(); // Access the login function from context
@@ -96,20 +99,33 @@ const AdminLogin = () => {
               border: "1px solid #ccc",
             }}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            className="input-field"
-            onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "20px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-            }}
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              className="input-field"
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginBottom: "20px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <IconButton
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </div>
           <button
             type="submit"
             className="btn signin-btn"

@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import VerifyPartners from "./VerifyPartners";
 
 const RequestsPartners = () => {
   const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
   const [status] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedPartner, setSelectedPartner] = useState(null);
   const partnersPerPage = 12; // Number of partners per page
 
   // استخدام useCallback لتثبيت الدالة
@@ -45,6 +47,14 @@ const RequestsPartners = () => {
   const handleMoreDetails = (partner) => {
     navigate("/verify-partner", { state: { partner } }); // Pass the selected partner
   };
+  if (selectedPartner) {
+    return (
+      <VerifyPartners
+        partner={selectedPartner}
+        onBack={() => setSelectedPartner(null)}
+      />
+    );
+  }
   return (
     <div className="product-list-page-vendor">
       <header className="dashboard-header-vendor">
@@ -84,7 +94,7 @@ const RequestsPartners = () => {
                 {partner.brandDescription.substring(0, 100)}...
               </p>
               <button
-                onClick={() => handleMoreDetails(partner)}
+                onClick={() => setSelectedPartner(partner)}
                 style={{
                   padding: "10px 20px",
                   backgroundColor: "#2d2d2d",

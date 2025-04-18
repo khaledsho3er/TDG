@@ -991,6 +991,7 @@ textarea {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
+  margin-top: 2rem;
 }
 .request-info-vendor {
   display: flex;
