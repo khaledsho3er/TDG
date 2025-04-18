@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//as
-const CategoryForm = () => {
+import { IconButton } from "@mui/material";
+import { IoMdArrowBack } from "react-icons/io";
+const CategoryForm = ({ onBack }) => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryDescription, setCategoryDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState(null);
@@ -169,6 +170,9 @@ const CategoryForm = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Montserrat" }}>
+      <IconButton className="back-btn" onClick={onBack}>
+        <IoMdArrowBack />
+      </IconButton>
       <header className="dashboard-header-vendor">
         <h2>Create Category</h2>
         <p>

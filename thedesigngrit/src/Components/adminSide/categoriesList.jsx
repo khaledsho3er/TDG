@@ -24,29 +24,35 @@ const CategoryListPage = () => {
     fetchCategories();
   }, []);
   if (addCategory === true) {
-    return <CategoryForm />;
+    return <CategoryForm onBack={() => setAddCategory(false)} />;
   }
   return (
     <>
-      <div className="dashboard-date-vendor">
-        <button
-          onClick={() => setAddCategory(true)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-            backgroundColor: "#2d2d2d",
-            color: "white",
-            padding: "15px 15px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          <CiCirclePlus /> Add Category
-        </button>
-      </div>
+      <header className="dashboard-header-vendor">
+        <div className="dashboard-header-title">
+          <h2>All Products</h2>
+          <p>Home &gt; All Products</p>
+        </div>
+        <div className="dashboard-date-vendor">
+          <button
+            onClick={() => setAddCategory(true)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              padding: "15px 15px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            <CiCirclePlus /> Add Category
+          </button>
+        </div>
+      </header>
       <div>
         {selectedCategory ? (
           <UpdateCategory

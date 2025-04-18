@@ -241,7 +241,7 @@ const ProductPageAdmin = () => {
             <div className="all-product-card" key={product.id}>
               <div className="product-card-header">
                 <img
-                  src={`https://tdg-db.onrender.com${
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
                     product.mainImage.startsWith("/")
                       ? product.mainImage
                       : "/" + product.mainImage
@@ -298,7 +298,7 @@ const ProductPageAdmin = () => {
                   <div className="product-remaining">
                     <span>Remaining Products</span>
                     <span className="remaining-value">
-                      {product.reviewsCount}
+                      {product.stock} left
                     </span>
                   </div>
                 </div>

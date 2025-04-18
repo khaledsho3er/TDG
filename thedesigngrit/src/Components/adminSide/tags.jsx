@@ -84,26 +84,32 @@ const TagsTable = () => {
   };
 
   return (
-    <div style={{ padding: "70px" }}>
-      <div className="dashboard-date-vendor">
-        <button
-          onClick={() => setOpenAddDialog(true)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-            backgroundColor: "#2d2d2d",
-            color: "white",
-            padding: "15px 15px",
-            borderRadius: "8px",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          <CiCirclePlus /> Add Tag
-        </button>
-      </div>
+    <div>
+      <header className="dashboard-header-vendor">
+        <div className="dashboard-header-title">
+          <h2>Tags</h2>
+          <p>Home &gt; Tags</p>
+        </div>
+        <div className="dashboard-date-vendor">
+          <button
+            onClick={() => setOpenAddDialog(true)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              padding: "15px 15px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            <CiCirclePlus /> Add Tag
+          </button>
+        </div>
+      </header>
 
       <section className="dashboard-lists-vendor">
         <div className="recent-orders-vendor">

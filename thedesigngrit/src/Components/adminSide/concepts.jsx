@@ -172,9 +172,10 @@ export default function ConceptManager() {
           marginBottom: "24px",
         }}
       >
-        <Typography variant="h4" style={{ fontFamily: "Montserrat" }}>
-          Concepts
-        </Typography>
+        <div className="dashboard-header-title">
+          <h2>Concepts</h2>
+          <p>Home &gt; Concepts</p>
+        </div>
         <Button
           variant="contained"
           onClick={() => setOpen(true)}
