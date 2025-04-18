@@ -146,7 +146,7 @@ const ExploreConcepts = () => {
                     className="concept-shopping-icon"
                     onClick={() =>
                       navigate(
-                        `/category/${concept.nodes[0].productId.category._id}/subcategories`
+                        `/category/${concept.nodes[0].productId.category}/subcategories`
                       )
                     }
                   >
