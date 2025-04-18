@@ -67,23 +67,31 @@ const AdminLogin = () => {
         <img
           src="https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/TDG_Icon_Black.webp"
           alt="Logo"
-          style={{ maxWidth: "200px", marginBottom: "20px" }}
+          style={{ maxWidth: "200px", marginTop: "30px" }}
         />
       </h1>
       <Box
         className="login-form"
         sx={{
-          height: "auto",
+          height: "500px",
           padding: "30px",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          maxWidth: "400px",
+          width: "500px",
           margin: "auto",
           textAlign: "center",
         }}
       >
-        <h1>Admin Login</h1>
+        <h1
+          style={{
+            fontFamily: "Montserrat",
+            color: "#2d2d2d",
+            fontWeight: "normal",
+          }}
+        >
+          Admin Login
+        </h1>
         <form onSubmit={handleLogin}>
           <input
             type="email"

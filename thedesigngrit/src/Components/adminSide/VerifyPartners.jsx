@@ -23,7 +23,7 @@ const VerifyPartners = ({ partner, onBack }) => {
 
       if (response.ok) {
         alert(`Partner status updated to: ${newStatus}`);
-        navigate(-1); // Go back after updating
+        onBack();
       } else {
         alert(`Error updating status: ${data.message}`);
       }
@@ -34,87 +34,85 @@ const VerifyPartners = ({ partner, onBack }) => {
   };
 
   return (
-    <AdminPageLayout>
-      <div className="verify-partners">
-        <h2>Request Partnership</h2>
-        <div className="partner-card">
-          <div className="partner-info">
-            <img
-              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${partner.brandlogo}`}
-              alt={`${partner.brand} Logo`}
-            />
+    <div className="verify-partners">
+      <h2>Request Partnership</h2>
+      <div className="partner-card">
+        <div className="partner-info">
+          <img
+            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${partner.brandlogo}`}
+            alt={`${partner.brand} Logo`}
+          />
+          <div>
+            <h3>Brand:</h3>
+            <p>{partner.brandName || "Unknown"}</p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <div>
-              <h3>Brand:</h3>
+              <h4>Requestor Name:</h4>
               <p>{partner.brandName || "Unknown"}</p>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <h4>Requestor Name:</h4>
-                <p>{partner.brandName || "Unknown"}</p>
-              </div>
-              <div>
-                <h4>Email:</h4>
-                <p>{partner.email || "Unknown"}</p>
-              </div>
-            </div>
             <div>
-              <h4>Phone Number:</h4>
-              <p>{partner.phoneNumber || "Unknown"}</p>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <h4>Website:</h4>
-                <p>{partner.websiteURL || "Unknown"}</p>
-              </div>
-              <div>
-                <h4>Instagram:</h4>
-                <p>{partner.instagramURL || "Unknown"}</p>
-              </div>
-            </div>
-            <div>
-              <h4>Notes:</h4>
-              <p>{partner.brandDescription || "Unknown"}</p>
-            </div>
-            <div>
-              <h4>Documents:</h4>
-              <ul>
-                {partner.documents.map((doc, index) => (
-                  <li key={index}>
-                    {doc} <IoMdEye />
-                  </li>
-                ))}
-              </ul>
+              <h4>Email:</h4>
+              <p>{partner.email || "Unknown"}</p>
             </div>
           </div>
-          <div className="action-buttons">
-            <button
-              className="approve-btn"
-              onClick={() => updateStatus("active")}
-            >
-              Approve
-            </button>
-            <button
-              className="reject-btn"
-              onClick={() => updateStatus("rejected")}
-            >
-              Reject
-            </button>
+          <div>
+            <h4>Phone Number:</h4>
+            <p>{partner.phoneNumber || "Unknown"}</p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <h4>Website:</h4>
+              <p>{partner.websiteURL || "Unknown"}</p>
+            </div>
+            <div>
+              <h4>Instagram:</h4>
+              <p>{partner.instagramURL || "Unknown"}</p>
+            </div>
+          </div>
+          <div>
+            <h4>Notes:</h4>
+            <p>{partner.brandDescription || "Unknown"}</p>
+          </div>
+          <div>
+            <h4>Documents:</h4>
+            <ul>
+              {partner.documents.map((doc, index) => (
+                <li key={index}>
+                  {doc} <IoMdEye />
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+        <div className="action-buttons">
+          <button
+            className="approve-btn"
+            onClick={() => updateStatus("active")}
+          >
+            Approve
+          </button>
+          <button
+            className="reject-btn"
+            onClick={() => updateStatus("rejected")}
+          >
+            Reject
+          </button>
+        </div>
       </div>
-    </AdminPageLayout>
+    </div>
   );
 };
 
