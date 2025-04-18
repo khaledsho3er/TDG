@@ -93,7 +93,9 @@ const ExploreConcepts = () => {
                         top: `${node.y * 100}%`,
                         transform: "translate(-50%, -50%)",
                       }}
-                      onClick={() => navigate(`/product/${node.productId._id}`)}
+                      onClick={() =>
+                        navigate(`/category/${node.productId.category._id}`)
+                      }
                     >
                       <Tooltip
                         title={
@@ -140,7 +142,14 @@ const ExploreConcepts = () => {
                     </Box>
                   ))}
                 <CardContent className="concept-card-content">
-                  <IconButton className="concept-shopping-icon">
+                  <IconButton
+                    className="concept-shopping-icon"
+                    onClick={() =>
+                      navigate(
+                        `/category/${concept.nodes[0].productId.category._id}/subcategories`
+                      )
+                    }
+                  >
                     <ShoppingBagIcon />
                   </IconButton>
                 </CardContent>
