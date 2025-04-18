@@ -17,7 +17,9 @@ const RecentPurchasesAdmin = () => {
   // Fetch order data from JSON
   const fetchOrders = async () => {
     try {
-      const response = await fetch("/json/adminOrdersData.json");
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/orders/admin-orders"
+      );
       const data = await response.json();
       setOrders(data);
     } catch (error) {
@@ -208,11 +210,14 @@ const RecentPurchasesAdmin = () => {
                 style={{ cursor: "pointer" }}
                 key={order.id}
               >
-                <td>{order.product}</td>
+                <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
                 <td>{order.orderId}</td>
                 <td>{order.date}</td>
-                <td>{order.customerName}</td>
-                <td>{order.vendorBrandName}</td>
+                <td>
+                  {order.customerId.firstName}
+                  {order.customerId.lastName}
+                </td>
+                <td>{order.cartItems[0]?.brandId.brandName}</td>
                 <td>
                   <span
                     style={{
@@ -220,18 +225,26 @@ const RecentPurchasesAdmin = () => {
                       padding: "4px 12px",
                       borderRadius: "5px",
                       backgroundColor:
-                        order.status === "Delivered" ? "#d4edda" : "#f8d7da",
+                        order.orderStatus === "Pending"
+                          ? "#f8d7da"
+                          : order.orderStatus === "Delivered"
+                          ? "#d4edda"
+                          : "#FFE5B4",
                       color:
-                        order.status === "Delivered" ? "#155724" : "#721c24",
+                        order.orderStatus === "Pending"
+                          ? "#721c24"
+                          : order.orderStatus === "Delivered"
+                          ? "#155724"
+                          : "#FF7518",
                       fontWeight: "500",
                       textAlign: "center",
                       minWidth: "80px",
                     }}
                   >
-                    {order.status}
+                    {order.orderStatus}
                   </span>
                 </td>
-                <td>{order.amount}</td>
+                <td>{order.total}</td>
               </tr>
             ))}
           </tbody>

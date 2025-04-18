@@ -30,8 +30,8 @@ const CategoryListPage = () => {
     <>
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
-          <h2>All Products</h2>
-          <p>Home &gt; All Products</p>
+          <h2>Categories</h2>
+          <p>Home &gt; Categories</p>
         </div>
         <div className="dashboard-date-vendor">
           <button
