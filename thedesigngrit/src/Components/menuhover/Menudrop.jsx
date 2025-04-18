@@ -35,6 +35,7 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   const handleTypeClick = (type) => {
     navigate(`/products/${type._id}/${type.name}`);
   };
+  const isDesktop = window.innerWidth >= 1024;
 
   return (
     <div
@@ -43,7 +44,7 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
       onMouseLeave={onMouseLeave}
     >
       {/* Left Section */}
-      <div className="menu-left-container">
+      <div className={`menu-left-container ${isDesktop ? "no-animation" : ""}`}>
         <h2 className="topcategory-title">{category.name}</h2>
         <div className="menu-left">
           <div className="menu-item">
