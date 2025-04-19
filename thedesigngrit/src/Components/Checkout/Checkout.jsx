@@ -8,6 +8,7 @@ import { useCart } from "../../Context/cartcontext.js";
 import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom";
+import OrderSentPopup from "../successMsgs/orderSubmit.jsx";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function Checkout() {
   const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
   const validateCheckboxRef = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
   const [billingData, setBillingData] = useState({
     firstName: "",
     lastName: "",
@@ -181,6 +183,7 @@ function Checkout() {
 
       // Reset the cart after successful order placement
       resetCart();
+      setShowPopup(true); // Show the popup
       navigate("/"); // Redirect to home or order confirmation page
       // Redirect or show confirmation
     } catch (error) {
@@ -270,6 +273,7 @@ function Checkout() {
           )}
         </div>
       </div>
+      <OrderSentPopup show={showPopup} closePopup={() => setShowPopup(false)} />
     </div>
   );
 }
