@@ -8,7 +8,7 @@ function BillSummary({ cartItems }) {
     (total, item) => total + item.unitPrice * item.quantity,
     0
   );
-  const shipping = 600; // Example fixed shipping cost
+  const shipping = 100; // Example fixed shipping cost
   const total = subtotal + shipping;
 
   return (

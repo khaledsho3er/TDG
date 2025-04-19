@@ -102,7 +102,7 @@ function Checkout() {
     paymentMethod: "card",
   });
 
-  const shippingFee = 0;
+  const shippingFee = 100;
 
   const handleBillingChange = (data) => {
     setBillingData(data);

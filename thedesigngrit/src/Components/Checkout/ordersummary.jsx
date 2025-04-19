@@ -108,6 +108,7 @@ function SummaryForm({ billData }) {
               textAlign: "left",
             },
           }}
+          required
         />
       </Box>
     </Box>
