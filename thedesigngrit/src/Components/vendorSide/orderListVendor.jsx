@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "./orderDetails";
-import { format, subDays, isWithinInterval, parseISO } from "date-fns";
+import { subDays, isWithinInterval, parseISO } from "date-fns";
 
 const RecentPurchases = () => {
   const { vendor } = useVendor();

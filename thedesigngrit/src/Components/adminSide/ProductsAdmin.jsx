@@ -5,22 +5,24 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PromotionModal from "../vendorSide/promotionProduct"; // Import the PromotionModal component
-import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow icons
+import UpdateProduct from "../vendorSide/UpdateProduct";
 
 const ProductPageAdmin = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [setSubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
   const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
-
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
-  const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for the promotion
-
+  const [showFalseStatus, setShowFalseStatus] = useState(false);
+  const [showTrueStatus, setShowTrueStatus] = useState(true);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -76,7 +78,7 @@ const ProductPageAdmin = () => {
     };
 
     fetchCategories();
-  }, [selectedCategory]); // Runs when category selection changes
+  }, [selectedCategory, subCategories]); // Runs when category selection changes
 
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
@@ -106,7 +108,12 @@ const ProductPageAdmin = () => {
     }
     return true; // No filter applied
   });
-
+  const falseStatusProducts = filteredProducts.filter(
+    (product) => product.status === false
+  );
+  const trueStatusProducts = filteredProducts.filter(
+    (product) => product.status === true
+  );
   const toggleMenu = (productId) => {
     setMenuOpen((prevState) => ({
       ...prevState,
@@ -122,9 +129,22 @@ const ProductPageAdmin = () => {
     navigate("/update-product", { state: { product } }); // Navigate with product data
   };
 
-  const handleDelete = (product) => {
-    console.log("Delete", product);
-    // Add your delete functionality here
+  const handleDelete = async (product) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (confirmDelete) {
+      try {
+        await axios.delete(
+          `https://tdg-db.onrender.com/api/products/${product._id}`
+        ); // Use the correct endpoint
+        setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
+        alert("Product deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Failed to delete product. Please try again.");
+      }
+    }
   };
 
   const handleInsights = (product) => {
@@ -138,12 +158,12 @@ const ProductPageAdmin = () => {
     setPromotionModalOpen(false); // Close the modal after saving
   };
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = filteredProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -158,6 +178,14 @@ const ProductPageAdmin = () => {
       document.removeEventListener("click", handleClickOutside); // Cleanup
     };
   }, []);
+  if (showUpdate) {
+    return (
+      <UpdateProduct
+        existingProduct={selectedProduct} // Pass the selected product data
+        onBack={() => setShowUpdate(false)} // Function to go back to the product list
+      />
+    );
+  }
 
   return (
     <div className="product-list-page-vendor">
@@ -215,98 +243,220 @@ const ProductPageAdmin = () => {
           </Select>
         </FormControl>
       </div>
-
       {/* Product List or No Products Message */}
-      {filteredProducts.length === 0 ? (
+      <div>
         <div
+          onClick={() => setShowFalseStatus((prev) => !prev)}
           style={{
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
-            marginTop: "50px",
-            gap: "10px",
+            cursor: "pointer",
+            padding: "10px",
+            backgroundColor: "transparent",
+            border: "1px solid #ddd",
+            borderRadius: "5px",
+            marginBottom: "30px",
           }}
         >
-          <ProductionQuantityLimitsIcon
-            style={{ fontSize: "48px", color: "#666" }}
-          />
-          <p style={{ fontSize: "18px", color: "#666" }}>
-            No products found in this category.
-          </p>
+          <span>Products without approval</span>
+          {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
         </div>
-      ) : (
-        <div className="vendor-products-list-grid">
-          {currentProducts.map((product) => (
-            <div className="all-product-card" key={product.id}>
-              <div className="product-card-header">
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                    product.mainImage
-                      ? product.mainImage
-                      : "/" + product.mainImage
-                  }`}
-                  alt={product.name}
-                  className="all-product-image"
-                />
+        {showFalseStatus && (
+          <div className="false-status-section">
+            {falseStatusProducts.length === 0 ? (
+              <p>No products Not approval.</p>
+            ) : (
+              <div className="product-grid">
+                {falseStatusProducts.map((product) => (
+                  <div className="all-product-card" key={product.id}>
+                    <div className="product-card-header">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="all-product-image"
+                      />
+                      <div className="product-info-vendor">
+                        <h3>{product.name}</h3>
+                        {/* <p>{product.typeName}</p> */}
+                        <p>
+                          {product.salePrice ? (
+                            <span
+                              style={{
+                                textDecoration: "line-through",
+                                marginRight: "5px",
+                              }}
+                            >
+                              {product.price} E£
+                            </span>
+                          ) : (
+                            product.price
+                          )}
+                          {product.salePrice && (
+                            <span style={{ color: "red" }}>
+                              {product.salePrice}E£
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                      <div className="menu-container">
+                        <BsThreeDotsVertical
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
+                            toggleMenu(product.id);
+                          }}
+                          className="three-dots-icon"
+                        />
+                        {menuOpen[product.id] && (
+                          <div className="menu-dropdown">
+                            <button onClick={() => handleEdit(product)}>
+                              Edit
+                            </button>
+                            <button onClick={() => handleDelete(product)}>
+                              Delete
+                            </button>
+                            <button onClick={() => handleInsights(product)}>
+                              Promotion
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="product-card-body">
+                      <h5>Summary</h5>
+                      <p className="product-summary">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                      <div className="product-stats">
+                        <div className="product-sales">
+                          <span>Sales</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.sales ? product.sales : "No yet sales"}
+                            </span>
+                          </div>
+                        </div>
+                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                        <div className="product-remaining">
+                          <span>Remaining Products</span>
+                          <span className="remaining-value">
+                            {product.stock}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
-                <div className="product-info-vendor">
-                  <h3>{product.name}</h3>
-                  <p>{product.typeName}</p>
-                  <p>{product.price}</p>
-                </div>
-                <div className="menu-container">
-                  <BsThreeDotsVertical
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent the click from triggering the document listener
-                      toggleMenu(product.id);
-                    }}
-                    className="three-dots-icon"
-                  />
-                  {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
-                    <div className="menu-dropdown">
-                      <button onClick={() => handleEdit(product)}>Edit</button>
-                      <button onClick={() => handleDelete(product)}>
-                        Delete
-                      </button>
-                      <button onClick={() => handleInsights(product)}>
-                        Promotion
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="product-card-body">
-                <h5>Summary</h5>
-                <p className="product-summary">
-                  {product.description.substring(0, 100)}...
-                </p>
-                <div className="product-stats">
-                  <div className="product-sales">
-                    <span>Sales</span>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <span className="sales-value">{product.rating}</span>
-                    </div>
-                  </div>
-                  <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                  <div className="product-remaining">
-                    <span>Remaining Products</span>
-                    <span className="remaining-value">
-                      {product.stock} left
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* Section for products with status true */}
+      <div>
+        <div
+          onClick={() => setShowTrueStatus((prev) => !prev)}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            padding: "10px",
+            backgroundColor: "transparent",
+            border: "1px solid #ddd",
+            borderRadius: "5px",
+            marginBottom: "15px",
+            marginTop: "30px",
+          }}
+        >
+          <span>Products with approval</span>
+          {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
         </div>
-      )}
+        {showTrueStatus && (
+          <div className="true-status-section">
+            {trueStatusProducts.length === 0 ? (
+              <p>No products with approval.</p>
+            ) : (
+              <div className="product-grid">
+                {trueStatusProducts.map((product) => (
+                  <div className="all-product-card" key={product.id}>
+                    <div className="product-card-header">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="all-product-image"
+                      />
+                      <div className="product-info-vendor">
+                        <h3>{product.name}</h3>
+                        <p>{product.typeName}</p>
+                        <p>{product.price}</p>
+                      </div>
+                      <div className="menu-container">
+                        <BsThreeDotsVertical
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent the click from triggering the document listener
+                            toggleMenu(product.id);
+                          }}
+                          className="three-dots-icon"
+                        />
+                        {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
+                          <div className="menu-dropdown">
+                            <button onClick={() => handleEdit(product)}>
+                              Edit
+                            </button>
+                            <button onClick={() => handleDelete(product)}>
+                              Delete
+                            </button>
+                            <button onClick={() => handleInsights(product)}>
+                              Promotion
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="product-card-body">
+                      <h5>Summary</h5>
+                      <p className="product-summary">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                      <div className="product-stats">
+                        <div className="product-sales">
+                          <span>Sales</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                            }}
+                          >
+                            <span className="sales-value">
+                              {product.rating}
+                            </span>
+                          </div>
+                        </div>
+                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                        <div className="product-remaining">
+                          <span>Remaining Products</span>
+                          <span className="remaining-value">
+                            {product.stock}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Pagination */}
       <div className="pagination">
