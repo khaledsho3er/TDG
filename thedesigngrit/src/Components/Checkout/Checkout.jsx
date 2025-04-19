@@ -26,6 +26,33 @@ function Checkout() {
     city: "",
     zipCode: "",
   });
+  const validateBillingData = () => {
+    const {
+      firstName,
+      lastName,
+      email,
+      address,
+      phoneNumber,
+      country,
+      city,
+      zipCode,
+    } = billingData;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !address ||
+      !phoneNumber ||
+      !country ||
+      !city ||
+      !zipCode
+    ) {
+      alert("Please fill in all required billing fields.");
+      return false;
+    }
+    return true;
+  };
 
   const [shippingData, setShippingData] = useState({
     firstName: "",
@@ -38,7 +65,34 @@ function Checkout() {
     city: "",
     zipCode: "",
   });
-
+  const validateShippingData = () => {
+    const {
+      firstName,
+      lastName,
+      address,
+      label,
+      apartment,
+      floor,
+      country,
+      city,
+      zipCode,
+    } = shippingData;
+    if (
+      !firstName ||
+      !lastName ||
+      !address ||
+      !label ||
+      !apartment ||
+      !floor ||
+      !country ||
+      !city ||
+      !zipCode
+    ) {
+      alert("Please fill in all required shipping fields.");
+      return false;
+    }
+    return true;
+  };
   const [paymentData, setPaymentData] = useState({
     cardNumber: "",
     expiry: "",
@@ -204,7 +258,13 @@ function Checkout() {
         })}
         <div className="form-navigation">
           {currentStep < steps.length && (
-            <button onClick={() => setCurrentStep(currentStep + 1)}>
+            <button
+              onClick={() => {
+                if (currentStep === 1 && !validateBillingData()) return;
+                if (currentStep === 2 && !validateShippingData()) return;
+                setCurrentStep(currentStep + 1);
+              }}
+            >
               Next
             </button>
           )}

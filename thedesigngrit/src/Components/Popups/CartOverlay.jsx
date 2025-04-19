@@ -16,7 +16,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
     (sum, item) => sum + item.unitPrice * item.quantity,
     0
   );
-  const shippingFee = 5.99; // Example static shipping fee
+  const shippingFee = 0; // Example static shipping fee
   const total = subtotal + shippingFee;
 
   const handleCheckoutClick = () => {
