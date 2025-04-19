@@ -49,7 +49,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           >
             {currentProducts.map((product) => {
               return (
-                <Grid item xs={12} sm={6} md={4} mr={2} key={product._id}>
+                <Grid item xs={12} sm={6} md={4} key={product._id}>
                   <ProductCard
                     product={product}
                     onToggleFavorite={onToggleFavorite}
