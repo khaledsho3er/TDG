@@ -163,7 +163,11 @@ function OnSale() {
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
           {filteredProducts.length > 0 ? (
-            <ProductCards products={filteredProducts} />
+            filteredProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={4} key={product._id}>
+                <ProductCards product={product} />
+              </Grid>
+            ))
           ) : (
             <Grid item xs={12}>
               <Typography>No ready-to-ship products available.</Typography>
