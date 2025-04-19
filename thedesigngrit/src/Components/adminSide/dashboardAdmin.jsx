@@ -9,11 +9,9 @@ import {
   FaChartLine,
 } from "react-icons/fa"; // React Icons
 import { BsThreeDotsVertical } from "react-icons/bs";
-import LoadingScreen from "../../Pages/loadingScreen";
 
 const DashboardAdmin = () => {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [bestSellers, setBestSellers] = useState([]);
 
   // Fetch order data from JSON
@@ -28,8 +26,6 @@ const DashboardAdmin = () => {
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
   const fetchBestSellers = async () => {
@@ -48,10 +44,6 @@ const DashboardAdmin = () => {
     fetchOrders();
     fetchBestSellers();
   }, []);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
 
   return (
     <div className="dashboard-vendor">
