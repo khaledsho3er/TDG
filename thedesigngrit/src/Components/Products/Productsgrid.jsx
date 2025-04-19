@@ -41,13 +41,9 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           {/* Grid Layout for Product Cards */}
           <Grid
             container
-            spacing={2}
+            spacing={3}
+            justifyContent="flex-start"
             sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              flexWrap: "row",
-              gap: "60px",
-              marginRight: "20px",
               margin: "0 auto",
             }}
           >
