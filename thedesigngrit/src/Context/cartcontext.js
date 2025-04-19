@@ -39,6 +39,7 @@ export const CartProvider = ({ children }) => {
             quantity: 1,
             unitPrice:
               product.unitPrice || product.salePrice || product.price || 0,
+            shippingFee: product.brandId.fees || 0,
           },
         ];
       }

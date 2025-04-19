@@ -102,7 +102,7 @@ function Checkout() {
     paymentMethod: "card",
   });
 
-  const shippingFee = 200;
+  const shippingFee = 0;
 
   const handleBillingChange = (data) => {
     setBillingData(data);
@@ -141,6 +141,7 @@ function Checkout() {
         price: item.unitPrice,
         quantity: item.quantity,
         totalPrice: item.unitPrice * item.quantity,
+        shippingFee: item.shippingFee,
       });
       return acc;
     }, {});
