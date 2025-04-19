@@ -278,6 +278,7 @@ const ProductPageAdmin = () => {
                       />
                       <div className="product-info-vendor">
                         <h3>{product.name}</h3>
+                        <h5>{product.brandId.brandName}</h5>
                         {/* <p>{product.typeName}</p> */}
                         <p>
                           {product.salePrice ? (
