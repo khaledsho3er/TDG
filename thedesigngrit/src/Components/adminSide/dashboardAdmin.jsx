@@ -164,7 +164,7 @@ const DashboardAdmin = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {orders.slice(0, 8).map((order) => (
                 <tr key={order._id}>
                   <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
                   <td>{order._id}</td>
