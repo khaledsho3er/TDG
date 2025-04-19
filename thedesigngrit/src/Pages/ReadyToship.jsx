@@ -12,13 +12,12 @@ function ReadyToShip() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
-  const [filters] = useState({
+  const [filters, setFilters] = useState({
     brands: [],
     colors: [],
     tags: [],
-    priceRange: [349, 61564],
+    priceRange: [0, 600000], // Wider range initially
   });
-
   // 🟢 Fetch ready-to-ship products
   useEffect(() => {
     const fetchReadyToShipProducts = async () => {
@@ -37,34 +36,61 @@ function ReadyToShip() {
   }, []);
 
   // 🟢 Apply filters and sorting
+  // Apply filters and sorting
   useEffect(() => {
-    const applyFilters = () => {
+    const applyFiltersAndSorting = () => {
       let filtered = [...products];
+      console.log("Initial products:", products); // Add this
+      products.forEach((product, index) => {
+        console.log(`Product ${index}:`, {
+          name: product.name,
+          brand: product.brandId.brandName,
+          colors: product.colors,
+          tags: product.tags,
+          price: product.price,
+          salePrice: product.salePrice,
+          createdAt: product.createdAt,
+        });
+      });
+      if (filters.hasCAD) {
+        filtered = filtered.filter((product) => product.cadFile);
+      }
 
+      // Sale Price filter
+      if (filters.hasSalePrice) {
+        filtered = filtered.filter((product) => product.salePrice);
+      }
+      // Brand filter
       if (filters.brands.length > 0) {
-        filtered = filtered.filter((product) =>
-          filters.brands.includes(product.brandId)
+        filtered = filtered.filter(
+          (product) =>
+            product.brandId &&
+            product.brandId.brandName &&
+            filters.brands.includes(product.brandId.brandName)
         );
       }
 
+      // Color filter
       if (filters.colors.length > 0) {
         filtered = filtered.filter((product) =>
-          product.colors.some((color) => filters.colors.includes(color))
+          product.colors?.some((color) => filters.colors.includes(color))
         );
       }
 
+      // Tags filter
       if (filters.tags.length > 0) {
         filtered = filtered.filter((product) =>
-          product.tags.some((tag) => filters.tags.includes(tag))
+          product.tags?.some((tag) => filters.tags.includes(tag))
         );
       }
 
-      filtered = filtered.filter(
-        (product) =>
-          (product.salePrice || product.price) >= filters.priceRange[0] &&
-          (product.salePrice || product.price) <= filters.priceRange[1]
-      );
+      // Price filter
+      filtered = filtered.filter((product) => {
+        const price = product.salePrice || product.price;
+        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+      });
 
+      // Sorting
       switch (sortOption) {
         case "Newest":
           filtered.sort(
@@ -90,25 +116,26 @@ function ReadyToShip() {
         default:
           break;
       }
+      console.log("Filtered products:", filtered); // Add this
 
       setFilteredProducts(filtered);
     };
 
-    applyFilters();
-  }, [filters, sortOption, products]);
+    applyFiltersAndSorting();
+  }, [products, filters, sortOption]);
 
-  const handleFilterChange = (selectedFilters) => {
-    const filtered = products.filter((product) => {
-      return (
-        (!selectedFilters.color ||
-          product.colors.includes(selectedFilters.color)) &&
-        (!selectedFilters.size || product.sizes.includes(selectedFilters.size))
-      );
-    });
-
-    setFilteredProducts(filtered);
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
+  const handleCADFilterChange = (value) => {
+    setFilters((prev) => ({ ...prev, hasCAD: value }));
+  };
+
+  // Handle Sale Price filter toggle
+  const handleSalePriceFilterChange = (value) => {
+    setFilters((prev) => ({ ...prev, hasSalePrice: value }));
+  };
   return (
     <Box>
       <Header />
@@ -117,13 +144,19 @@ function ReadyToShip() {
         description="Discover products that are in stock and ready to ship immediately!"
       />
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <TopFilter sortOption={sortOption} setSortOption={setSortOption} />
+        <TopFilter
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onCADFilterChange={handleCADFilterChange}
+          onSalePriceFilterChange={handleSalePriceFilterChange}
+        />{" "}
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
         <Grid item xs={12} sm={4} md={3}>
           <FilterSection
             onFilterChange={handleFilterChange}
             products={products}
+            currentFilters={filters}
           />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
