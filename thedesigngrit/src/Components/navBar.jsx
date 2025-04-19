@@ -405,6 +405,12 @@ function Header() {
                     >
                       Ready To Ship
                     </Typography>
+                    <Typography
+                      className="category"
+                      onClick={() => navigate("/products/onsale")}
+                    >
+                      On Sale
+                    </Typography>
                   </Box>
 
                   <Typography
@@ -648,6 +654,12 @@ function Header() {
               onClick={() => navigate("/products/readytoship")}
             >
               Ready To Ship
+            </Typography>
+            <Typography
+              className="category"
+              onClick={() => navigate("/products/onsale")}
+            >
+              On Sale
             </Typography>
           </Fragment>
         )}

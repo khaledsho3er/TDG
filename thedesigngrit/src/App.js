@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import LoadingScreen from "./Pages/loadingScreen";
 import ReadyToShip from "./Pages/ReadyToship";
 import { AdminProvider } from "./utils/adminContext";
+import OnSale from "./Pages/onSale";
 
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
@@ -72,6 +73,7 @@ const PublicRoutes = () => (
       <Route path="/policy/:section" element={<TermsOfService />} />
       <Route path="/products/:typeId/:typeName" element={<ProductsPage />} />
       <Route path="/products/readytoship" element={<ReadyToShip />} />
+      <Route path="/products/onsale" element={<OnSale />} />
       <Route exact path="/partners" element={<PartnersApplication />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/faqs" element={<FAQs />} />
