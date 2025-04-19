@@ -28,7 +28,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   return (
     <Box
       sx={{
-        padding: { xs: "20px", sm: "30px", md: "40px 10px" },
+        padding: { xs: "20px", sm: "30px", md: "40px 15px" },
       }}
     >
       {/* If there are no products, display a message */}
@@ -39,7 +39,12 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
       ) : (
         <>
           {/* Grid Layout for Product Cards */}
-          <Grid container spacing={3} justifyContent="flex-start">
+          <Grid
+            container
+            spacing={3}
+            justifyContent="flex-start"
+            gap={currentProducts.length < 3 ? "60px" : "0px"}
+          >
             {currentProducts.map((product) => {
               return (
                 <Grid item xs={12} sm={6} md={4} key={product._id}>
