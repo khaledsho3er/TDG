@@ -2,7 +2,7 @@ import { Box, Select, MenuItem, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
-import { useNavigate } from "react-router-dom";
+import OrderDetails from "../vendorSide/orderDetails";
 
 const RecentPurchasesAdmin = () => {
   const [orders, setOrders] = useState([]);
@@ -11,8 +11,8 @@ const RecentPurchasesAdmin = () => {
   const [sortOption, setSortOption] = useState("Date");
   const [sortDirection, setSortDirection] = useState("asc");
   const [dateRange, setDateRange] = useState([null, null]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const ordersPerPage = 8;
-  const navigate = useNavigate();
 
   // Fetch order data from JSON
   const fetchOrders = async () => {
@@ -104,7 +104,14 @@ const RecentPurchasesAdmin = () => {
   const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
-
+  if (selectedOrder) {
+    return (
+      <OrderDetails
+        order={selectedOrder}
+        onBack={() => setSelectedOrder(null)}
+      />
+    );
+  }
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -206,7 +213,7 @@ const RecentPurchasesAdmin = () => {
           <tbody>
             {currentOrders.map((order) => (
               <tr
-                onClick={() => navigate(`/orderDetail/${order._id}`)}
+                onClick={() => setSelectedOrder(order)}
                 style={{ cursor: "pointer" }}
                 key={order.id}
               >
