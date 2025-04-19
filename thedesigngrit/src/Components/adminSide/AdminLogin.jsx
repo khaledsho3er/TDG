@@ -73,7 +73,7 @@ const AdminLogin = () => {
       <Box
         className="login-form"
         sx={{
-          height: "500px",
+          height: "300px",
           padding: "30px",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           borderRadius: "8px",
@@ -126,8 +126,8 @@ const AdminLogin = () => {
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",
-                right: "10px",
-                top: "50%",
+                right: "2px",
+                top: "43%",
                 transform: "translateY(-50%)",
               }}
             >

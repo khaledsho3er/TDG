@@ -4,9 +4,12 @@ import Box from "@mui/material/Box";
 import { useNavigate, Link } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext";
 import * as Yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { login } = useVendor(); // Access the login function from the context
 
@@ -79,7 +82,7 @@ const SignIn = () => {
           alt="Logo"
         />
       </h1>
-      <Box className="login-form" sx={{ height: "50%" }}>
+      <Box className="login-form" sx={{ height: "55%" }}>
         <h1>Sign In</h1>
         <h1>Vendor Portal</h1>
         <form onSubmit={handleSubmit}>
@@ -90,13 +93,21 @@ const SignIn = () => {
             className="input-field"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            className="input-field"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="password-input">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="input-field"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
+          </div>
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>
