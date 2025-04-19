@@ -14,6 +14,8 @@ import LoadingScreen from "../../Pages/loadingScreen";
 const DashboardAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [bestSellers, setBestSellers] = useState([]);
+
   // Fetch order data from JSON
   const fetchOrders = async () => {
     try {
@@ -30,10 +32,23 @@ const DashboardAdmin = () => {
       setIsLoading(false);
     }
   };
+  const fetchBestSellers = async () => {
+    try {
+      const response = await fetch(
+        "https://tdg-db.onrender.com/api/orders/bestsellers"
+      );
+      const data = await response.json();
+      setBestSellers(data);
+    } catch (error) {
+      console.error("Error fetching best sellers:", error);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
+    fetchBestSellers();
   }, []);
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -126,20 +141,20 @@ const DashboardAdmin = () => {
           </Box>
           <hr></hr>
           <ul>
-            <li>
-              <img src="Assets/sofabrown.webp" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
-            <li>
-              {" "}
-              <img src="Assets/sofabrown.webp" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
-            <li>
-              {" "}
-              <img src="Assets/sofabrown.webp" alt="sofa" />
-              Lorem Ipsum - LE 126,500 (999 sales)
-            </li>
+            {bestSellers.length > 0 ? (
+              bestSellers.map((product, index) => (
+                <li key={index}>
+                  <img
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                    alt={product.name}
+                  />
+                  {product.name}({product.brandId.brandName || "N/A"})- LE{" "}
+                  {product.price} ({product.totalSold} sales)
+                </li>
+              ))
+            ) : (
+              <li>No best sellers available.</li>
+            )}
           </ul>
         </div>
       </section>
