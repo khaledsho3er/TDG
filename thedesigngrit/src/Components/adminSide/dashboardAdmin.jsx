@@ -140,8 +140,7 @@ const DashboardAdmin = () => {
                     src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                     alt={product.name}
                   />
-                  {product.name}({product.brandId.brandName || "N/A"})- LE{" "}
-                  {product.price} ({product.totalSold} sales)
+                  {product.name}- LE {product.price} ({product.totalSold} sales)
                 </li>
               ))
             ) : (
