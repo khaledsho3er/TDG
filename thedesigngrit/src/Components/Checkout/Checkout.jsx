@@ -266,7 +266,14 @@ function Checkout() {
               onClick={() => {
                 if (currentStep === 1 && !validateBillingData()) return;
                 if (currentStep === 2 && !validateShippingData()) return;
-                if (currentStep === 3 && !validateCheckboxRef.current()) return;
+                if (
+                  currentStep === 3 &&
+                  validateCheckboxRef.current &&
+                  !validateCheckboxRef.current()
+                ) {
+                  alert("Please agree to the terms before proceeding.");
+                  return;
+                }
                 setCurrentStep(currentStep + 1);
               }}
             >
