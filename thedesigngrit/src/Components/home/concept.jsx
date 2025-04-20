@@ -112,6 +112,11 @@ const ExploreConcepts = () => {
                             }}
                           >
                             <Box>
+                              <img
+                                src={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${node.productId.mainImage}`}
+                                alt="product"
+                                style={{ width: "100px", height: "100px" }}
+                              />
                               <Typography variant="body2">
                                 {node.productId.name}
                               </Typography>
