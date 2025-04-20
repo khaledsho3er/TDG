@@ -610,9 +610,6 @@
   .product-price-bestseller {
     font-size: 14px;
   }
-  .product-card {
-    flex: 0 0 33.33%;
-  }
 }
 
 @media (max-width: 760px) and (min-width: 320px) {
@@ -1409,7 +1406,7 @@
   }
 
   .content {
-    width: 100%; /* Full width */
+    width: 80%; /* Full width */
     padding: 25px;
   }
   /*shiping*/
