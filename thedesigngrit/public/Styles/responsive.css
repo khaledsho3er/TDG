@@ -506,6 +506,9 @@
     width: 100%;
     padding-left: 1rem;
   }
+  .product-card {
+    flex: 0 0 50%;
+  }
 }
 /*careers responsive*/
 /* General styles are unchanged from the original */
@@ -606,6 +609,9 @@
 
   .product-price-bestseller {
     font-size: 14px;
+  }
+  .product-card {
+    flex: 0 0 33.33%;
   }
 }
 

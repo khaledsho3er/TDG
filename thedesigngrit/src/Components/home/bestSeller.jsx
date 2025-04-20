@@ -41,54 +41,53 @@ const ProductSlider = () => {
     <div className="slider-container-home">
       <h1 className="slider-title">BEST SELLERS</h1>
 
-      <div
-        className="slider-content"
-        style={{
-          width: products.length === 1 ? "1000px" : "100%",
-          justifyContent: products.length > 3 ? "center" : "flex-start",
-        }}
-      >
-        {products.map((product, index) => (
-          <div
-            key={product._id}
-            className="product-card"
-            style={{
-              transform: `translateX(-${currentSlide * 100}%)`,
-              cursor: "pointer",
-            }}
-            onClick={() => navigate(`/product/${product._id}`)} // Navigate on click
-          >
-            <div className="product-image-home" style={{ width: "348px" }}>
-              <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                alt={product.name}
-              />
-            </div>
+      <div className="slider-wrapper">
+        <div
+          className="slider-track"
+          style={{
+            transform: `translateX(-${currentSlide * 100}%)`,
+            width: `${products.length * 100}%`,
+          }}
+        >
+          {products.map((product) => (
+            <div
+              key={product._id}
+              className="product-card"
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
+              <div className="product-image-home">
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                  alt={product.name}
+                />
+              </div>
 
-            <div className="product-info" style={{ width: "245px" }}>
-              <h3 className="product-title-bestseller">{product.name}</h3>
-              <div className="product-price-bestseller">
-                {product.salePrice ? (
-                  <span
-                    style={{
-                      textDecoration: "line-through",
-                      marginRight: "5px",
-                    }}
-                  >
-                    {product.price} E£
-                  </span>
-                ) : (
-                  product.price
-                )}
-                {product.salePrice && (
-                  <span style={{ color: "red" }}>{product.salePrice}E£</span>
-                )}{" "}
+              <div className="product-info">
+                <h3 className="product-title-bestseller">{product.name}</h3>
+                <div className="product-price-bestseller">
+                  {product.salePrice ? (
+                    <>
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          marginRight: "5px",
+                        }}
+                      >
+                        {product.price} E£
+                      </span>
+                      <span style={{ color: "red" }}>
+                        {product.salePrice} E£
+                      </span>
+                    </>
+                  ) : (
+                    `${product.price} E£`
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
       <div className="slider-controls-home">
         <div className="dots">
           {products.map((_, index) => (

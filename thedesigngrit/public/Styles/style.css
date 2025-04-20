@@ -1464,6 +1464,7 @@ body::-webkit-scrollbar:hover {
   background-color: #fff;
   margin-bottom: 3rem;
   box-sizing: border-box;
+  position: relative;
 }
 
 .slider-title {
