@@ -351,7 +351,12 @@ export default function ConceptManager() {
               <IconButton
                 aria-label="settings"
                 onClick={(e) => handleMenuClick(e, concept._id)}
-                style={{ position: "absolute", top: 8, right: 8 }}
+                style={{
+                  position: "absolute",
+                  top: "28px",
+                  right: "8px",
+                  backgroundColor: "#fff",
+                }}
               >
                 <MoreVertIcon />
               </IconButton>
