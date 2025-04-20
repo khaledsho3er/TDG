@@ -13,6 +13,8 @@ const RecentPurchasesAdmin = () => {
   const [sortDirection] = useState("desc");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [dateFilter, setDateFilter] = useState("All");
+  const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
   const ordersPerPage = 8;
 
   // Fetch order data from JSON
@@ -27,15 +29,31 @@ const RecentPurchasesAdmin = () => {
       console.error("Error fetching orders:", error);
     }
   };
-
+  const fetchBrands = async () => {
+    try {
+      const response = await fetch("https://tdg-db.onrender.com/api/brand");
+      const data = await response.json();
+      setBrands(data); // Assuming brands are returned as an array
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+    }
+  };
   useEffect(() => {
     fetchOrders();
+    fetchBrands();
   }, []);
 
   const getFilteredByStatus = () => {
     return filterStatus === "All"
       ? orders
       : orders.filter((order) => order.orderStatus === filterStatus);
+  };
+  const getFilteredByBrand = (filtered) => {
+    return selectedBrand
+      ? filtered.filter(
+          (order) => order.cartItems[0]?.brandId._id === selectedBrand
+        )
+      : filtered;
   };
 
   const getFilteredByDate = (filtered) => {
@@ -68,8 +86,9 @@ const RecentPurchasesAdmin = () => {
     return filtered; // All
   };
 
-  const sortedOrders = [...getFilteredByDate(getFilteredByStatus())].sort(
-    (a, b) => {
+  const sortedOrders = [...getFilteredByDate(getFilteredByStatus())]
+    .filter((order) => getFilteredByBrand([order]).length > 0)
+    .sort((a, b) => {
       switch (sortOption) {
         case "Date":
           return new Date(b.orderDate) - new Date(a.orderDate);
@@ -84,8 +103,7 @@ const RecentPurchasesAdmin = () => {
         default:
           return 0;
       }
-    }
-  );
+    });
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -155,6 +173,18 @@ const RecentPurchasesAdmin = () => {
           <MenuItem value="Today">Today</MenuItem>
           <MenuItem value="Last7Days">Last 7 Days</MenuItem>
           <MenuItem value="Last30Days">Last 30 Days</MenuItem>
+        </Select>
+        <Select
+          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+        >
+          <MenuItem value="">Filter By Brand</MenuItem>
+          {brands.map((brand) => (
+            <MenuItem key={brand._id} value={brand._id}>
+              {brand.brandName}
+            </MenuItem>
+          ))}
         </Select>
       </Box>
       <div className="recent-purchases">
