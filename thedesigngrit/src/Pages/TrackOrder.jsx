@@ -368,7 +368,7 @@ function TrackOrder() {
                           gap: "10px",
                           flexDirection: "row",
                           justifyContent: "space-between",
-                          alignItems: "baseline",
+                          alignItems: "center",
                           marginTop: "10px",
                           margin: "auto",
                         }}
