@@ -1,6 +1,12 @@
 // RequestInfoPopup.js
 import React, { useState, useContext } from "react";
-import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  useMediaQuery,
+} from "@mui/material";
 import { IoIosClose } from "react-icons/io";
 import ViewInStorePopup from "./viewInStore";
 import RequestQuote from "./RequestInfo";
@@ -8,6 +14,7 @@ import { UserContext } from "../../utils/userContext";
 import { useNavigate } from "react-router-dom";
 const RequestInfoPopup = ({ open, onClose, productId }) => {
   const { userSession } = useContext(UserContext);
+  const isMobile = useMediaQuery("(max-width:768px)");
   const navigate = useNavigate();
   // Add productId here
   const [isViewInStoreOpen, setIsViewInStoreOpen] = useState(false);
@@ -81,7 +88,10 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
             paddingTop: "32px",
           }}
         >
-          <h2 style={{ color: "#fff" }}> Choose an Option</h2>
+          <h2 style={{ color: "#fff", fontSize: isMobile ? "16px" : "24px" }}>
+            {" "}
+            Choose an Option
+          </h2>
         </DialogTitle>
         <DialogContent
           className="request-popup-content"
@@ -106,6 +116,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
               color: "#fff",
               fontWeight: "500",
               cursor: "pointer",
+              width: isMobile ? "100%" : "40%",
             }}
           >
             Request Quote
@@ -122,6 +133,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
               color: "#fff",
               fontWeight: "500",
               cursor: "pointer",
+              width: isMobile ? "100%" : "40%",
             }}
           >
             View in Store

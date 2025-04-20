@@ -14,7 +14,7 @@ const ReviewBox = ({ reviewsData }) => {
   return (
     <Box
       sx={{
-        width: isMobile ? "100%" : "30%",
+        width: isMobile ? "90%" : "30%",
         padding: "20px",
         border: "0.5px solid #777",
         borderRadius: "10px",

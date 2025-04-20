@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import { useCart } from "../../Context/cartcontext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { UserContext } from "../../utils/userContext";
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
   const { cartItems, removeFromCart } = useCart(); // Use cartItems from context
+  const isMobile = useMediaQuery("(max-width:768px)");
   const navigate = useNavigate();
   const { userSession } = useContext(UserContext); // Access user session from context
   if (!open) return null; // Don't render if overlay is closed
@@ -35,7 +36,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
       sx={{
         position: "fixed",
         top: 50,
-        right: 28,
+        right: isMobile ? 0 : 20,
         width: "360px",
         height: "55%",
         backgroundColor: "white",

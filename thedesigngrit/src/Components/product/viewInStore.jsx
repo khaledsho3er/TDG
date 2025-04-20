@@ -10,6 +10,7 @@ import {
   Typography,
   Grid,
   IconButton,
+  useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { UserContext } from "../../utils/userContext";
@@ -17,6 +18,7 @@ import { UserContext } from "../../utils/userContext";
 const ViewInStorePopup = ({ open, onClose, productId }) => {
   const [confirmationMessage, setConfirmationMessage] = useState(false);
   const { userSession } = useContext(UserContext);
+  const isMobile = useMediaQuery("(max-width:768px)");
   const code = useRef(
     Math.random().toString(36).substring(2, 10) +
       new Date().getTime().toString(36)
@@ -66,9 +68,9 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
       sx={{
         zIndex: 1000,
         "& .MuiPaper-root": {
-          width: "80%",
+          width: isMobile ? "100%" : "80%",
           borderRadius: "20px",
-          padding: "24px",
+          padding: isMobile ? "16px" : "24px",
           position: "relative",
           background: "rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(15px)",
@@ -109,7 +111,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "24px",
+          padding: isMobile ? "0px" : "24px",
         }}
       >
         {confirmationMessage ? (
