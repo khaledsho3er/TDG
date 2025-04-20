@@ -8,7 +8,7 @@ const NavbarAdmin = () => {
   const [requests, setRequests] = useState([]); // State for partner requests
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { admin, logout } = useAdmin(); // Access admin data and logout function from context
+  const { logout } = useAdmin(); // Access admin data and logout function from context
   const navigate = useNavigate(); // Get history for navigation
 
   // Function to fetch data (partner requests)

@@ -10,9 +10,6 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const theme = createTheme();
 
 const ShippingInfoPopup = () => {
   const [isEditing, setIsEditing] = useState(false);

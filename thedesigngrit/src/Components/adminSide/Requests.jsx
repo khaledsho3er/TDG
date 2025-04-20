@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import VerifyPartners from "./VerifyPartners";
 
 const RequestsPartners = () => {
-  const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
   const [status] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,10 +41,6 @@ const RequestsPartners = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Navigate to the details page with selected partner data
-  const handleMoreDetails = (partner) => {
-    navigate("/verify-partner", { state: { partner } }); // Pass the selected partner
-  };
   if (selectedPartner) {
     return (
       <VerifyPartners
