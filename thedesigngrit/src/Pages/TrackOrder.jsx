@@ -210,7 +210,12 @@ function TrackOrder() {
                         loading ? (
                           "Loading..."
                         ) : (
-                          <button className="submit-btn">
+                          <button
+                            className="submit-btn"
+                            style={{
+                              width: "100%",
+                            }}
+                          >
                             Download Invoice
                           </button>
                         )
@@ -307,7 +312,9 @@ function TrackOrder() {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Box>
-                      <h3>Order Item</h3>
+                      <h3 style={{ fontFamily: "Horizon", fontWeight: "bold" }}>
+                        Order Item
+                      </h3>
                       <h4>{selectedSubOrder.productId.name}</h4>
                       <span
                         className="status shipped"
@@ -343,10 +350,8 @@ function TrackOrder() {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
+                          textAlign: "right",
                           color: "#6b7b58",
-                          padding: "10px",
-                          borderRadius: "5px",
-                          alignItems: "end",
                         }}
                       >
                         Get Support?
@@ -368,7 +373,7 @@ function TrackOrder() {
                           margin: "auto",
                         }}
                       >
-                        {/* <img
+                        <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
                           alt={selectedSubOrder.productId.name}
                           style={{
@@ -376,7 +381,7 @@ function TrackOrder() {
                             height: "80px",
                             borderRadius: "5px",
                           }}
-                        /> */}
+                        />
                         <h5>{selectedSubOrder.productId.name}</h5>
                         <p>{selectedSubOrder.totalPrice} LE</p>
                         <p>Quantity: {selectedSubOrder.quantity}</p>
