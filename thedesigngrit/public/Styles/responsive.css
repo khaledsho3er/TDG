@@ -50,6 +50,7 @@
   }
   .content-container {
     padding: 5% 5%;
+    flex-direction: column;
   }
 
   .Contant-caption h3 {

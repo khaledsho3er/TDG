@@ -12,7 +12,7 @@ function PartnersApplication() {
         <HeroAbout
           title="Our Partners"
           subtitle="Join our network of trusted vendors and partners driving innovation and excellence in the world of furniture"
-          image={"Assets/Partners.jpg"}
+          image={"Assets/Partners.webp"}
         />
       </Box>
       <Box className="partner-Caption">
