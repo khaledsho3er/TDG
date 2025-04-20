@@ -93,9 +93,7 @@ const ExploreConcepts = () => {
                         top: `${node.y * 100}%`,
                         transform: "translate(-50%, -50%)",
                       }}
-                      onClick={() =>
-                        navigate(`/category/${node.productId.category._id}`)
-                      }
+                      onClick={() => navigate(`/product/${node.productId._id}`)}
                     >
                       <Tooltip
                         title={
@@ -115,8 +113,8 @@ const ExploreConcepts = () => {
                               {/* beside teh name of the prodct in the node */}
                               <img
                                 src={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${node.productId.mainImage}`}
-                                alt="product"
-                                style={{ width: "100px", height: "100px" }}
+                                alt={node.productId.name}
+                                style={{ width: "80px", height: "80px" }}
                               />
                               <Typography variant="body2">
                                 {node.productId.name}
