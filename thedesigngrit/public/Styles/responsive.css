@@ -1452,13 +1452,15 @@
   }
   .Ordersummary-firstrow-firstcolumn {
     width: 90%;
-    margin: auto;
+    margin: 10px auto;
   }
   .Ordersummary-thirdrow {
     width: 90%;
     margin: auto;
   }
-
+  .Ordersummary-firstrow {
+    flex-direction: column;
+  }
   .paymentmethod-container {
     flex-direction: column;
   }
