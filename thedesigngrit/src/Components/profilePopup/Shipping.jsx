@@ -10,6 +10,9 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme();
 
 const ShippingInfoPopup = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -177,6 +180,9 @@ const ShippingInfoPopup = () => {
             padding: "22px",
             margin: "auto",
             marginBottom: "15px",
+            [theme.breakpoints.down("md")]: {
+              width: "100%",
+            },
           }}
         >
           {addr.isDefault === "Default" && (
