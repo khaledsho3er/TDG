@@ -1,8 +1,8 @@
 import { Box, FormControlLabel, Checkbox, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "../../Context/cartcontext"; // Import CartContext
 import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
-function SummaryForm({ billData }) {
+function SummaryForm({ billData, onValidate }) {
   const { cartItems } = useCart(); // Get cart items from context
   const { subtotal, shippingFee, total } = billData;
   const [isChecked, setIsChecked] = useState(false);
