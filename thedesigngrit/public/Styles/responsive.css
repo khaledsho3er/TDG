@@ -1216,6 +1216,27 @@
     width: 89%;
     margin: auto;
   }
+  .checkout-form {
+    width: 100%;
+  }
+  /*cgheckout billing */
+  .Billinginfo_checkbox {
+    width: 100%;
+    margin-left: 0;
+  }
+  .billinginfo-form-container {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: column;
+  }
+  .form-navigation button {
+    margin: 10px auto;
+    border-radius: 10px;
+  }
+  .Ordersummary-firstrow-secondcolumn-secondrow {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 /* Responsive Design */
@@ -1346,6 +1367,23 @@
     height: 100%; /* Makes the content take the full height */
     overflow-y: auto; /* Allows scrolling if content exceeds height */
   }
+  .checkout-form {
+    width: 100%;
+  }
+  /*cgheckout billing */
+  .Billinginfo_checkbox {
+    width: 100%;
+    margin-left: 0;
+  }
+  .billinginfo-form-container {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: column;
+  }
+  .form-navigation button {
+    margin: 10px auto;
+    border-radius: 10px;
+  }
 }
 
 /* For mobile devices */
@@ -1392,5 +1430,26 @@
   .partners-section {
     flex-direction: column;
     padding: 20px;
+  }
+  .checkout-form {
+    width: 100%;
+  }
+  /*cgheckout billing */
+  .Billinginfo_checkbox {
+    width: 100%;
+    margin-left: 0;
+  }
+  .billinginfo-form-container {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: column;
+  }
+  .form-navigation button {
+    margin: 10px auto;
+    border-radius: 10px;
+  }
+  .Ordersummary-firstrow-secondcolumn-secondrow {
+    width: 100%;
+    margin-left: 0;
   }
 }
