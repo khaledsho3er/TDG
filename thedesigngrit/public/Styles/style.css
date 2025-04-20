@@ -4866,7 +4866,16 @@ iframe {
   position: relative;
   width: 500px;
 }
-
+/*Shipping page*/
+.shipping-container {
+  width: 80%;
+  margin: auto;
+  padding: 22px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 15px;
+}
 /* Progress Step Styles */
 .progress-step-track {
   position: relative;

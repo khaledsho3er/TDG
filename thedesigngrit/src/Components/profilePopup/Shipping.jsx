@@ -170,21 +170,7 @@ const ShippingInfoPopup = () => {
     >
       <h2>Shipping Addresses</h2>
       {userData.shipmentAddress.map((addr, index) => (
-        <div
-          key={index}
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            width: "80%",
-            textAlign: "left",
-            padding: "22px",
-            margin: "auto",
-            marginBottom: "15px",
-            [theme.breakpoints.down("md")]: {
-              width: "100%",
-            },
-          }}
-        >
+        <div key={index} className="shipping-container">
           {addr.isDefault === "Default" && (
             <label
               style={{

@@ -1352,6 +1352,9 @@
     margin-left: 19px;
     align-self: baseline;
   }
+  .shipping-container {
+    width: 100%;
+  }
   .divider {
     display: none; /* Hide the divider on small screens */
   }
