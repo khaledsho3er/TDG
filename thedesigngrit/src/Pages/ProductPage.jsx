@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, useMediaQuery } from "@mui/material";
 import { FaStar, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -24,7 +24,7 @@ function ProductPage() {
   const { userSession } = useContext(UserContext);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-
+  const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -406,25 +406,41 @@ function ProductPage() {
                   <div className="collapsible-content">
                     {section === "Overview" && (
                       <div className="product-contents">
-                        <h5 style={{ fontSize: "25px", marginLeft: "0px" }}>
+                        <h5
+                          style={{
+                            fontSize: isMobile ? "20px" : "25px",
+                            marginLeft: "0px",
+                          }}
+                        >
                           Manufacturer :{product.brandName}
                         </h5>
                         <div className="product-details">
-                          <p style={{ fontSize: "20px" }}>
+                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
                             <span className="label">Collection:</span>{" "}
-                            {product.collection}
+                            <p
+                              style={{
+                                fontSize: isMobile ? "13px" : "20px",
+                              }}
+                            >
+                              {product.collection}
+                            </p>
                           </p>
                           {/* <p style={{ fontSize: "20px" }}>
                             <span className="label">Type:</span> 2 Seater Fabric
                             Sofa
                           </p> */}
-                          <p style={{ fontSize: "20px" }}>
+                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
                             <span className="label">Manufacturer Year:</span>{" "}
                             {product.manufactureYear}
                           </p>
                         </div>
 
-                        <p style={{ fontSize: "20px", textAlign: "justify" }}>
+                        <p
+                          style={{
+                            fontSize: isMobile ? "13px" : "20px",
+                            textAlign: "justify",
+                          }}
+                        >
                           {product.description}
                         </p>
                       </div>

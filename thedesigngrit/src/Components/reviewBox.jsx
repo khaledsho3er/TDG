@@ -4,7 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const ReviewBox = ({ reviewsData }) => {
-  const isMobile = useMediaQuery("(max-width:450px)");
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   const totalCount = reviewsData.reduce((sum, r) => sum + r.count, 0);
   const averageRating = (
