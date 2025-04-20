@@ -23,6 +23,9 @@ const ProductPageAdmin = () => {
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
+  const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -79,7 +82,23 @@ const ProductPageAdmin = () => {
 
     fetchCategories();
   }, [selectedCategory, subCategories]); // Runs when category selection changes
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await axios.get(
+          "https://tdg-db.onrender.com/api/brand"
+        );
+        setBrands(response.data); // Assuming the API returns an array of brand objects
+      } catch (error) {
+        console.error("Error fetching brands:", error);
+      }
+    };
 
+    fetchBrands();
+  }, []);
+  const handleBrandChange = (e) => {
+    setSelectedBrand(e.target.value);
+  };
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
     setSelectedCategory(selectedCategoryId); // Save the selected category ID
@@ -100,11 +119,14 @@ const ProductPageAdmin = () => {
   };
 
   const filteredProducts = products.filter((product) => {
+    if (selectedBrand && product.brandId) {
+      return product.brandId._id === selectedBrand;
+    }
     if (selectedSubCategory) {
       return product.subCategoryId === selectedSubCategory;
     }
     if (selectedCategory) {
-      return product.category === selectedCategory; // Match product.category with selectedCategory ID
+      return product.category === selectedCategory;
     }
     return true; // No filter applied
   });
@@ -223,6 +245,23 @@ const ProductPageAdmin = () => {
           marginBottom: "20px",
         }}
       >
+        <FormControl sx={{ m: 1 }}>
+          <InputLabel id="brand-select-label">Brand</InputLabel>
+          <Select
+            labelId="brand-select-label"
+            value={selectedBrand}
+            onChange={handleBrandChange}
+            sx={{ width: "200px", color: "#2d2d2d", backgroundColor: "#fff" }}
+          >
+            <MenuItem value="">Select Brand</MenuItem>
+            {brands.map((brand) => (
+              <MenuItem key={brand._id} value={brand._id}>
+                {brand.brandName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <FormControl sx={{ m: 1 }}>
           <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
           <Select
