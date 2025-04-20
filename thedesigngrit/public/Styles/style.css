@@ -1464,6 +1464,7 @@ body::-webkit-scrollbar:hover {
   background-color: #fff;
   margin-bottom: 3rem;
   box-sizing: border-box;
+  position: relative;
 }
 
 .slider-title {
@@ -1477,18 +1478,24 @@ body::-webkit-scrollbar:hover {
   color: #2d2d2d;
 }
 
+.slider-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
 .slider-content {
   display: flex;
-  gap: 1rem; /* Controls space between product cards */
-  transition: all 0.3s ease-in-out;
-  overflow-x: hidden;
-  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  transition: transform 0.3s ease-in-out;
+  will-change: transform;
 }
 
 .product-card {
-  flex: 0 0 250px; /* Fixed width instead of percentage */
-  transition: transform 0.3s ease-in-out;
+  flex: 0 0 calc((100% - 2rem) / 3); /* 3 cards per view, minus gaps */
   box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .product-image-home {
@@ -1507,13 +1514,13 @@ body::-webkit-scrollbar:hover {
 .product-badge {
   font-size: 0.5rem;
   color: #2d2d2d;
-  background-color: #ffffff; /* Background color for the rectangle */
-  border: 1px solid #2d2d2d; /* White border */
-  border-radius: 4px; /* Slightly rounded corners */
-  padding: 4px 8px; /* Padding around the text */
-  display: inline-block; /* Ensure the rectangle wraps around the text */
-  margin-bottom: 8px; /* Space below the badge */
-  text-transform: uppercase; /* Optional: make the badge text uppercase */
+  background-color: #ffffff;
+  border: 1px solid #2d2d2d;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: inline-block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
   font-family: Montserrat;
 }
 
@@ -1531,7 +1538,7 @@ body::-webkit-scrollbar:hover {
 .product-title-bestseller {
   font-size: 0.8rem;
   margin: 0.5rem 0;
-  font-family: "Montserrat,san-sarif";
+  font-family: "Montserrat", sans-serif;
 }
 
 .product-price-bestseller {
@@ -1544,7 +1551,7 @@ body::-webkit-scrollbar:hover {
 .slider-controls-home {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Align controls centrally */
+  align-items: center;
   margin-top: 1rem;
 }
 

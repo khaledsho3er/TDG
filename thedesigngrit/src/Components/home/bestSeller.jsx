@@ -1,18 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const ProductSlider = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [products, setProducts] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(3); // Start from first real slide
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
   const navigate = useNavigate();
+  const sliderRef = useRef(null);
+  const visibleCount = 3;
+
   useEffect(() => {
     const fetchBestSellers = async () => {
       try {
         const response = await axios.get(
           "https://tdg-db.onrender.com/api/orders/bestsellers"
         );
-        setProducts(response.data);
+        const data = response.data;
+        if (data.length > 0) {
+          const clonedStart = data.slice(-visibleCount);
+          const clonedEnd = data.slice(0, visibleCount);
+          const fullSlides = [...clonedStart, ...data, ...clonedEnd];
+          setProducts(fullSlides);
+        }
       } catch (error) {
         console.error("Error fetching bestsellers:", error);
       }
@@ -21,77 +31,99 @@ const ProductSlider = () => {
     fetchBestSellers();
   }, []);
 
+  const slideTo = (index) => {
+    setTransitionEnabled(true);
+    setCurrentIndex(index);
+  };
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1));
+    slideTo(currentIndex + 1);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1));
+    slideTo(currentIndex - 1);
   };
+
+  // Loop jump logic
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    const totalLength = products.length;
+    const realLength = totalLength - visibleCount * 2;
+
+    if (currentIndex === totalLength - visibleCount) {
+      setTimeout(() => {
+        setTransitionEnabled(false);
+        setCurrentIndex(visibleCount);
+      }, 300);
+    }
+
+    if (currentIndex === 0) {
+      setTimeout(() => {
+        setTransitionEnabled(false);
+        setCurrentIndex(realLength);
+      }, 300);
+    }
+  }, [currentIndex, products]);
+
+  const getSlideStyle = () => ({
+    transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
+    transition: transitionEnabled ? "transform 0.3s ease-in-out" : "none",
+    width: `${(products.length * 100) / visibleCount}%`,
+    display: "flex",
+  });
 
   return (
     <div className="slider-container-home">
       <h1 className="slider-title">BEST SELLERS</h1>
 
-      <div
-        className="slider-content"
-        style={{
-          width: products.length === 1 ? "1000px" : "100%",
-          justifyContent: products.length > 3 ? "center" : "flex-start",
-        }}
-      >
-        {products.map((product, index) => (
-          <div
-            key={product._id}
-            className="product-card"
-            style={{
-              transform: `translateX(-${currentSlide * 100}%)`,
-              cursor: "pointer",
-            }}
-            onClick={() => navigate(`/product/${product._id}`)} // Navigate on click
-          >
-            <div className="product-image-home" style={{ width: "348px" }}>
-              <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                alt={product.name}
-              />
-            </div>
+      <div className="slider-wrapper" style={{ overflow: "hidden" }}>
+        <div className="slider-content" style={getSlideStyle()} ref={sliderRef}>
+          {products.map((product, index) => (
+            <div
+              key={index}
+              className="product-card"
+              style={{
+                width: `${100 / products.length}%`,
+                flexShrink: 0,
+                cursor: "pointer",
+              }}
+              onClick={() => navigate(`/product/${product._id}`)}
+            >
+              <div className="product-image-home" style={{ width: "100%" }}>
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                  alt={product.name}
+                  style={{ width: "100%" }}
+                />
+              </div>
 
-            <div className="product-info" style={{ width: "245px" }}>
-              <h3 className="product-title-bestseller">{product.name}</h3>
-              <div className="product-price-bestseller">
-                {product.salePrice ? (
-                  <span
-                    style={{
-                      textDecoration: "line-through",
-                      marginRight: "5px",
-                    }}
-                  >
-                    {product.price} E£
-                  </span>
-                ) : (
-                  product.price
-                )}
-                {product.salePrice && (
-                  <span style={{ color: "red" }}>{product.salePrice}E£</span>
-                )}{" "}
+              <div className="product-info" style={{ padding: "10px" }}>
+                <h3 className="product-title-bestseller">{product.name}</h3>
+                <div className="product-price-bestseller">
+                  {product.salePrice ? (
+                    <span
+                      style={{
+                        textDecoration: "line-through",
+                        marginRight: "5px",
+                      }}
+                    >
+                      {product.price} E£
+                    </span>
+                  ) : (
+                    product.price
+                  )}
+                  {product.salePrice && (
+                    <span style={{ color: "red" }}>{product.salePrice} E£</span>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="slider-controls-home">
-        <div className="dots">
-          {products.map((_, index) => (
-            <button
-              key={index}
-              className={`dot ${currentSlide === index ? "active" : ""}`}
-              onClick={() => setCurrentSlide(index)}
-            />
           ))}
         </div>
+      </div>
 
+      <div className="slider-controls-home" style={{ marginTop: "20px" }}>
         <div className="arrows-home">
           <button className="arrow-home prev" onClick={prevSlide}>
             ←
