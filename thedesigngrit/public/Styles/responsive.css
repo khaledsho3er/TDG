@@ -1449,7 +1449,23 @@
     border-radius: 10px;
   }
   .Ordersummary-firstrow-secondcolumn-secondrow {
-    width: 100%;
+    width: 90%;
     margin-left: 0;
+    margin: auto;
+  }
+  .Ordersummary-firstrow-firstcolumn {
+    width: 90%;
+    margin: auto;
+  }
+  .Ordersummary-thirdrow {
+    width: 90%;
+    margin: auto;
+  }
+
+  .paymentmethod-container {
+    flex-direction: column;
+  }
+  .paymentmethod-firstrow-firstcolumn {
+    margin-bottom: 20px;
   }
 }
