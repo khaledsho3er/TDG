@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Box, Pagination } from "@mui/material";
+import { Grid, Box, Pagination, useMediaQuery } from "@mui/material";
 import ProductCard from "./productcard"; // Import the ProductCard component
 
 const ProductCards = ({ products = [], onToggleFavorite }) => {
@@ -8,6 +8,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   const productsPerPage = 12; // Limit to 12 products per page
   // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -44,6 +45,10 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             spacing={3}
             justifyContent="flex-start"
             gap={currentProducts.length < 3 ? "60px" : "0px"}
+            sx={{
+              width: isMobile ? "100%" : "100%",
+              margin: isMobile ? "auto" : "auto",
+            }}
           >
             {currentProducts.map((product) => {
               return (

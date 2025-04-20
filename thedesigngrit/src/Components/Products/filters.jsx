@@ -84,7 +84,14 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
 
   // UI Section for all filters
   const renderFilterContent = () => (
-    <Box sx={{ width: isMobile ? "100vw" : 300, p: 2, position: "relative" }}>
+    <Box
+      sx={{
+        width: isMobile ? "100vw" : 300,
+        p: 2,
+        position: "relative",
+        paddingRight: "55px ",
+      }}
+    >
       {isMobile && (
         <IconButton
           onClick={() => setDrawerOpen(false)}
@@ -439,7 +446,13 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
       <Button
         onClick={() => setDrawerOpen(true)}
         variant="outlined"
-        sx={{ mb: 2 }}
+        sx={{
+          mb: 2,
+          color: "#2d2d2d",
+          backgroundColor: "transparent",
+          border: "1px solid #2d2d2d",
+          "&:hover": { backgroundColor: "#2d2d2d", color: "#fff" },
+        }}
       >
         Show Filters
       </Button>
