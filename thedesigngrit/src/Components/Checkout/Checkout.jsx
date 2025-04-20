@@ -274,6 +274,7 @@ function Checkout() {
                   alert("Please agree to the terms before proceeding.");
                   return;
                 }
+
                 setCurrentStep(currentStep + 1);
               }}
             >

@@ -5,6 +5,14 @@ import BillSummary from "./billingSummary"; // Assuming you have a BillSummary c
 function SummaryForm({ billData }) {
   const { cartItems } = useCart(); // Get cart items from context
   const { subtotal, shippingFee, total } = billData;
+  const [isChecked, setIsChecked] = useState(false);
+
+  // ✅ Pass checkbox validation function to parent
+  useEffect(() => {
+    if (onValidate) {
+      onValidate(() => isChecked);
+    }
+  }, [isChecked, onValidate]);
 
   return (
     <Box className="Ordersummary-bigcontainer">
@@ -68,7 +76,12 @@ function SummaryForm({ billData }) {
       {/* Terms and Conditions */}
       <Box className="Ordersummary-thirdrow">
         <FormControlLabel
-          control={<Checkbox />}
+          control={
+            <Checkbox
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+            />
+          }
           label={
             <Typography
               variant="body2"
