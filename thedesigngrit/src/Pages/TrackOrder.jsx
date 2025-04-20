@@ -377,14 +377,19 @@ function TrackOrder() {
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
                           alt={selectedSubOrder.productId.name}
                           style={{
-                            width: "80px",
-                            height: "80px",
+                            width: " 96px",
+                            height: "93px",
                             borderRadius: "5px",
                           }}
                         />
-                        <h5>{selectedSubOrder.productId.name}</h5>
-                        <p>{selectedSubOrder.totalPrice} LE</p>
-                        <p>Quantity: {selectedSubOrder.quantity}</p>
+                        <div className="trackorder-suborder-item-details">
+                          <h5>{selectedSubOrder.productId.name}</h5>
+                          <p>{selectedSubOrder.totalPrice} LE</p>
+                          <p>
+                            <strong>Quantity: </strong>
+                            {selectedSubOrder.quantity}
+                          </p>
+                        </div>
                       </Box>
                     </div>
                   </div>
