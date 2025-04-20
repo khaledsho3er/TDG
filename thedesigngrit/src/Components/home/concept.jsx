@@ -112,7 +112,7 @@ const ExploreConcepts = () => {
                             <Box>
                               {/* beside teh name of the prodct in the node */}
                               <img
-                                src={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${node.productId.mainImage}`}
+                                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
                                 alt={node.productId.name}
                                 style={{ width: "80px", height: "80px" }}
                               />
