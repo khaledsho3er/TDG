@@ -21,8 +21,16 @@ const ProductSlider = () => {
     fetchBestSellers();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval); // Clear on unmount
+  }, [products, currentSlide]);
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === products.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev + 1) % products.length);
   };
 
   const prevSlide = () => {
