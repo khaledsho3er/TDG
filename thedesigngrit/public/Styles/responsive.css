@@ -1368,6 +1368,10 @@
     width: 80%; /* Full width */
     padding: 25px;
   }
+  /*shiping*/
+  .shipping-container {
+    width: 100%;
+  }
 
   .divider {
     display: none; /* Hide the divider on small screens */
