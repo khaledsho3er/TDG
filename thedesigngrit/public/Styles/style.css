@@ -4761,7 +4761,13 @@ iframe {
   padding: 20px 120px 20px 100px;
   overflow-y: auto;
 }
-
+.trackorder-suborder-item-details {
+  width: "100%";
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "space-between";
+  gap: "10px";
+}
 .order-card {
   background: #fff;
   padding: 20px 40px;

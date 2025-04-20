@@ -382,16 +382,7 @@ function TrackOrder() {
                             borderRadius: "5px",
                           }}
                         />
-                        <div
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            gap: "10px",
-                          }}
-                          className="trackorder-suborder-item-details"
-                        >
+                        <div className="trackorder-suborder-item-details">
                           <h5>{selectedSubOrder.productId.name}</h5>
                           <p>{selectedSubOrder.totalPrice} LE</p>
                           <p>
