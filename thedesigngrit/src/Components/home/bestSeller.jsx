@@ -69,7 +69,6 @@ const ProductSlider = () => {
   const getSlideStyle = () => ({
     transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
     transition: transitionEnabled ? "transform 0.3s ease-in-out" : "none",
-    width: `${(products.length * 100) / visibleCount}%`,
     display: "flex",
   });
 
