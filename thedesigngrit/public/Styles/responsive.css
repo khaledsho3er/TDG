@@ -1345,10 +1345,13 @@
   }
 
   .content {
-    width: 80%; /* Full width */
-    padding: 25px;
+    width: 100%; /* Full width */
+    padding: 0px;
   }
-
+  .trackorder-suborder-item-details {
+    margin-left: 19px;
+    align-self: baseline;
+  }
   .divider {
     display: none; /* Hide the divider on small screens */
   }

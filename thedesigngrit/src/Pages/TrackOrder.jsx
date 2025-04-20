@@ -390,6 +390,7 @@ function TrackOrder() {
                             justifyContent: "space-between",
                             gap: "10px",
                           }}
+                          className="trackorder-suborder-item-details"
                         >
                           <h5>{selectedSubOrder.productId.name}</h5>
                           <p>{selectedSubOrder.totalPrice} LE</p>
