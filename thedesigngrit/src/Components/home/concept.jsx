@@ -109,22 +109,35 @@ const ExploreConcepts = () => {
                               borderRadius: "8px",
                             }}
                           >
-                            <Box>
-                              {/* beside teh name of the prodct in the node */}
-                              <img
-                                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
-                                alt={node.productId.name}
-                                style={{ width: "80px", height: "80px" }}
-                              />
-                              <Typography variant="body2">
-                                {node.productId.name}
-                              </Typography>
-                              <Typography variant="body2">
-                                E£{node.productId.price}
-                              </Typography>
-                              <Typography variant="body2">
-                                {node.productId.category.name}
-                              </Typography>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                flexDirection: "row",
+                              }}
+                            >
+                              <Box sx={{ mr: 1 }}>
+                                {/* beside teh name of the prodct in the node */}
+                                <img
+                                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
+                                  alt={node.productId.name}
+                                  style={{ width: "80px", height: "80px" }}
+                                />
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  marginLeft: "5px",
+                                }}
+                              >
+                                <Typography variant="body2">
+                                  {node.productId.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                  E£{node.productId.price}
+                                </Typography>
+                              </Box>
                             </Box>
                             <Box sx={{ ml: 1 }}>
                               <MdOutlineArrowForwardIos />
