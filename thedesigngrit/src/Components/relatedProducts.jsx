@@ -9,7 +9,7 @@ import { BsExclamationOctagon } from "react-icons/bs";
 
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const RelatedProducts = ({ productId }) => {
     if (relatedProducts.length > 0) {
       fetchAllCategoryNames();
     }
-  }, [relatedProducts]);
+  }, [relatedProducts, categoryNames]);
   return (
     <div className="related-products-container">
       {relatedProducts.length > 0 ? (

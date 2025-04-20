@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  Grid,
-} from "@mui/material";
+import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
 import axios from "axios";
 
 const VendorCard = ({ vendor, onClick }) => {
