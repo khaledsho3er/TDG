@@ -266,7 +266,7 @@ function ShippingForm({ shippingData, onChange }) {
             </div>
 
             {/* Row 5 */}
-            <div className="shippingform-form-row-zip">
+            <div className="shippingform-form-row">
               <div className="input-group">
                 <input
                   type="text"
