@@ -266,6 +266,7 @@ function Checkout() {
               onClick={() => {
                 if (currentStep === 1 && !validateBillingData()) return;
                 if (currentStep === 2 && !validateShippingData()) return;
+                if (currentStep === 3 && !validateCheckboxRef.current()) return;
                 setCurrentStep(currentStep + 1);
               }}
             >
