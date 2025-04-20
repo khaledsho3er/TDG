@@ -248,16 +248,16 @@ function ProductPage() {
             {product.stock === 0 ? (
               <Box
                 sx={{
-                  position: "absolute",
-                  top: 12,
-                  left: 12,
+                  display: "inline-block",
+                  padding: "4px 12px",
+                  border: "1px solid #2d2d2d",
+                  borderRadius: "4px",
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                  fontSize: "14px",
+                  fontFamily: "Montserrat",
                   backgroundColor: "#DD4A2A",
                   color: "#fff",
-                  padding: "4px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  fontFamily: "Montserrat",
                   boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
                 }}
               >
@@ -266,16 +266,16 @@ function ProductPage() {
             ) : product.stock <= 5 ? (
               <Box
                 sx={{
-                  position: "absolute",
-                  top: 12,
-                  left: 12,
+                  display: "inline-block",
+                  padding: "4px 12px",
+                  border: "1px solid #2d2d2d",
+                  borderRadius: "4px",
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                  fontSize: "14px",
+                  fontFamily: "Montserrat",
                   backgroundColor: "#FFAC1C",
                   color: "#fff",
-                  padding: "4px 10px",
-                  borderRadius: "6px",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  fontFamily: "Montserrat",
                   boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
                   animation: "pulse 1.5s infinite",
                   "@keyframes pulse": {
