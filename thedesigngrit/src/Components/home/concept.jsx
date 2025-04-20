@@ -112,6 +112,7 @@ const ExploreConcepts = () => {
                             }}
                           >
                             <Box>
+                              {/* beside teh name of the prodct in the node */}
                               <img
                                 src={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${node.productId.mainImage}`}
                                 alt="product"
