@@ -111,6 +111,7 @@ const ProductSlider = () => {
                       >
                         {product.price} E£
                       </span>
+                      <br />
                       <span style={{ color: "red" }}>
                         {product.salePrice} E£
                       </span>
