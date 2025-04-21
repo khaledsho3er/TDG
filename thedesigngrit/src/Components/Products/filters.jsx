@@ -152,10 +152,6 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           sx={{
-            display: "inline-grid",
-            height: "253px",
-            overflow: "auto",
-            width: "96%",
             backgroundColor: "transparent",
             borderRadius: "10px",
             "& .MuiAccordionSummary-content": {
@@ -186,7 +182,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             {getFilterLabel("Brands", selectedFilters.brands.length)}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            display: "inline-grid",
+            height: "253px",
+            overflow: "auto",
+            width: "96%",
+            fontFamily: "Montserrat",
+            fontWeight: "normal",
+          }}
+        >
           {brands.map((brand) => (
             <FormControlLabel
               key={brand._id}
@@ -355,7 +360,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             {getFilterLabel("Colors", selectedFilters.colors.length)}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            display: "inline-grid",
+            height: "253px",
+            overflow: "auto",
+            width: "96%",
+            fontFamily: "Montserrat",
+            fontWeight: "normal",
+          }}
+        >
           {allColors.map((color) => (
             <FormControlLabel
               key={color}
@@ -426,7 +440,16 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
             {getFilterLabel("Tags", selectedFilters.tags.length)}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            display: "inline-grid",
+            height: "253px",
+            overflow: "auto",
+            width: "96%",
+            fontFamily: "Montserrat",
+            fontWeight: "normal",
+          }}
+        >
           {allTags.map((tag) => (
             <FormControlLabel
               key={tag}
