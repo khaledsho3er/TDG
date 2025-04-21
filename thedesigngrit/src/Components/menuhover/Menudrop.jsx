@@ -96,7 +96,7 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
         <div style={{ width: "100%", height: "100%", objectFit: "cover" }}>
           {selectedDetail && (
             <img
-              src="/Assets/concept1.webp"
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev${category.image}`}
               alt={category.name}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
