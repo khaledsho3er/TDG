@@ -184,6 +184,7 @@ const EmployeePage = () => {
             <VendorSignup
               open={signupPopupVisible}
               onClose={handleCloseSignup}
+              refreshList={fetchVendors}
             />
           </>
         )}

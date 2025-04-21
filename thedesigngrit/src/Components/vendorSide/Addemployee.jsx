@@ -17,7 +17,7 @@ import {
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
 import * as Yup from "yup"; // Import Yup
 
-const VendorSignup = ({ open, onClose }) => {
+const VendorSignup = ({ open, onClose, refreshList }) => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
   const [formData, setFormData] = useState({
     firstname: "",
@@ -121,6 +121,7 @@ const VendorSignup = ({ open, onClose }) => {
 
       console.log("Employee added successfully.");
       onClose(); // Close modal after successful submission
+      refreshList(); // Refresh the employee list
     } catch (err) {
       console.error("Error:", err);
       setErrors((prev) => ({
