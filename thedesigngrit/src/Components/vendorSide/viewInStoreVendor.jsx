@@ -165,8 +165,9 @@ const ViewInStoreVendor = () => {
                 alt={entry.productId?.name || "Product"}
                 className="quotation-popup-img"
                 width={"100%"}
+                style={{ marginBottom: "0px" }}
               />
-              <div className="quotation-card-info">
+              <div className="quotation-card-info" style={{ padding: "10px" }}>
                 <h2>{entry.productId?.name || "Product Name Not Available"}</h2>
                 <p>User: {entry.userName}</p>
                 <p>Code: {entry.code}</p>
