@@ -109,7 +109,9 @@ const EmployeePage = () => {
               alignItems: "center",
             }}
           >
-            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>Vendor List</h2>
+            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>
+              Employees List
+            </h2>
             <table>
               <thead style={{ backgroundColor: "#f2f2f2", color: "#2d2d2d" }}>
                 <tr>

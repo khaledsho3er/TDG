@@ -282,7 +282,7 @@ const BrandForm = () => {
         </div>
 
         <div>
-          <label htmlFor="fees">Fees:</label>
+          <label htmlFor="fees">Shipping Fees:</label>
           <input
             type="number"
             id="fees"

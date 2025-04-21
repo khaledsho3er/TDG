@@ -548,7 +548,12 @@ function Header() {
                 <Avatar
                   className="avatar"
                   onClick={handleAvatarClick}
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    width: "35px",
+                    height: "35px",
+                    marginTop: "4px",
+                  }}
                 >
                   {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
                 </Avatar>
