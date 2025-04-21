@@ -100,20 +100,22 @@ const ProductSlider = () => {
               <div className="product-info" style={{ padding: "10px" }}>
                 <h3 className="product-title-bestseller">{product.name}</h3>
                 <div className="product-price-bestseller">
-                  {product.salePrice ? (
-                    <span
-                      style={{
-                        textDecoration: "line-through",
-                        marginRight: "5px",
-                      }}
-                    >
-                      {product.price} E£
+                  {product.salePrice != null ? (
+                    <span>
+                      <span
+                        style={{
+                          textDecoration: "line-through",
+                          marginRight: "5px",
+                        }}
+                      >
+                        {product.price} E£
+                      </span>
+                      <span style={{ color: "red" }}>
+                        {product.salePrice} E£
+                      </span>
                     </span>
                   ) : (
-                    product.price
-                  )}
-                  {product.salePrice && (
-                    <span style={{ color: "red" }}>{product.salePrice} E£</span>
+                    <span>{product.price} E£</span>
                   )}
                 </div>
               </div>
