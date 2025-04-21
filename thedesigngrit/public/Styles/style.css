@@ -6139,7 +6139,6 @@ input:focus {
   backdrop-filter: blur(10px); /* Apply blur effect to the background */
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 5000;
-
   overflow-y: hidden;
   display: flex;
   flex-direction: row;

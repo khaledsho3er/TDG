@@ -199,10 +199,15 @@ function Header() {
   };
 
   const handleMenuLeave = () => {
-    setIsMenuHovered(false);
-    if (!hoveredCategory) {
-      setHoveredCategory(null);
-    }
+    // setIsMenuHovered(false);
+    // if (!hoveredCategory) {
+    //   setHoveredCategory(null);
+    // }
+    setTimeout(() => {
+      if (!isMenuHovered) {
+        setHoveredCategory(null);
+      }
+    }, 200); // short delay
   };
 
   const toggleMenu = () => {
@@ -670,22 +675,13 @@ function Header() {
         )}
       </Box>
 
-      <div
-        onMouseEnter={handleMenuHover}
-        onMouseLeave={handleMenuLeave}
-        style={{ position: "relative" }}
-      >
-        <div className="nav-item">
-          {/* This is your category hover trigger */}
-          <span>{/* Category Name */}</span>
-        </div>
-
-        {hoveredCategory && (
-          <Menudrop
-            category={menuData.find((item) => item._id === hoveredCategory)}
-          />
-        )}
-      </div>
+      {hoveredCategory && (
+        <Menudrop
+          category={menuData.find((item) => item._id === hoveredCategory)}
+          onMouseEnter={handleMenuHover}
+          onMouseLeave={handleMenuLeave}
+        />
+      )}
 
       {/* <FloatingButton />
       <Stickedbutton className="moodboard-btn" /> */}
