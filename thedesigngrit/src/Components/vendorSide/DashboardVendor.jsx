@@ -369,7 +369,7 @@ const DashboardVendor = () => {
       {/* Sales Chart Section */}
       <section className="dashboard-chart-vendor">
         <div className="chart-header-vendor">
-          <h3>Sales Graph</h3>
+          <h3 style={{ margin: "10px auto" }}>Sales Graph</h3>
           <div className="chart-tabs-vendor">
             <button
               className={`chart-tab-vendor ${

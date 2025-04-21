@@ -175,6 +175,9 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 20px;
+  width: auto;
+  align-items: center;
+  height: 392px;
 }
 
 .chart-header-vendor {
@@ -187,7 +190,7 @@
   border-radius: 15px;
   border: 2px solid #ddd;
   width: 70%;
-  height: 100%;
+  height: 395px;
 }
 
 .chart-header-title-vendor {
@@ -276,11 +279,13 @@
   border-radius: 15px;
   border: 2px solid #ddd;
   width: 30%;
+  height: 392px;
 }
 
 .best-sellers-vendor ul {
   list-style: none;
   padding: 0;
+  margin: auto;
 }
 
 .best-sellers-vendor li {
@@ -502,7 +507,7 @@
 .all-product-card {
   display: flex;
   flex-direction: column;
-
+  gap: 10px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -609,7 +614,7 @@
 
 .product-stats {
   border: 1px solid #ddd;
-  margin-top: 15px;
+  margin-top: 30px;
   padding: 10px;
   border-radius: 8px;
 }
