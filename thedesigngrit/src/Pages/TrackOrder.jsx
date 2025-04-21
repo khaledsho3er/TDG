@@ -82,11 +82,14 @@ function TrackOrder() {
               setSelectedSubOrder(order?.cartItems[0] || null);
             }}
           >
-            {ordersData.map((order) => (
-              <MenuItem key={order._id} value={order._id}>
-                Order No. : {order._id}
-              </MenuItem>
-            ))}
+            {ordersData
+              .slice()
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((order) => (
+                <MenuItem key={order._id} value={order._id}>
+                  Order No. : {order._id}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
 
