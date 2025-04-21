@@ -493,7 +493,7 @@ const DashboardVendor = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {orders.slice(0, 5).map((order) => (
                   <tr
                     key={order._id}
                     onClick={() => setSelectedOrder(order)}
