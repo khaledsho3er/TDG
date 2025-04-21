@@ -324,6 +324,7 @@ function TrackOrder() {
                         className="status shipped"
                         style={{
                           marginTop: "10px",
+                          marginBottom: "10px",
                           backgroundColor:
                             selectedOrder.orderStatus === "Pending"
                               ? "#f8d7da"
@@ -397,16 +398,16 @@ function TrackOrder() {
                       </Box>
                     </div>
                   </div>
+                  {shouldShowReturnButton && (
+                    <button className="submit-btn return-btn">
+                      <CiUndo />
+                      Return Order
+                    </button>
+                  )}{" "}
                 </div>
               </>
             )}
           </div>
-          {shouldShowReturnButton && (
-            <button className="submit-btn return-btn">
-              <CiUndo />
-              Return Order
-            </button>
-          )}{" "}
         </div>
       </Box>
       {/* Show Invoice in Modal or Full Screen */}
