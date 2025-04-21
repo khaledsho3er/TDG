@@ -115,7 +115,7 @@ const ProductSlider = () => {
                       <span style={{ color: "red" }}>
                         {product.salePrice} E£
                       </span>
-                      <span>
+                      {/* <span>
                         {product.stock <= 5 && product.stock > 0 ? (
                           <span style={{ color: "red" }}>
                             Hurry up! Only {product.stock} left!
@@ -125,7 +125,7 @@ const ProductSlider = () => {
                         ) : (
                           <span>{product.stock}</span>
                         )}
-                      </span>
+                      </span> */}
                     </span>
                   ) : (
                     <span>{product.price} E£</span>
