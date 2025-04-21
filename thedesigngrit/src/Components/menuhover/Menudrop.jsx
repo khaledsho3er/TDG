@@ -39,8 +39,8 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   return (
     <div
       className="menu-overlay"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      // onMouseEnter={onMouseEnter}
+      // onMouseLeave={onMouseLeave}
     >
       {/* Left Section */}
       <div className="menu-left-container">

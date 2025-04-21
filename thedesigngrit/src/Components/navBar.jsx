@@ -670,13 +670,22 @@ function Header() {
         )}
       </Box>
 
-      {hoveredCategory && (
-        <Menudrop
-          category={menuData.find((item) => item._id === hoveredCategory)}
-          onMouseEnter={handleMenuHover}
-          onMouseLeave={handleMenuLeave}
-        />
-      )}
+      <div
+        onMouseEnter={handleMenuHover}
+        onMouseLeave={handleMenuLeave}
+        style={{ position: "relative" }}
+      >
+        <div className="nav-item">
+          {/* This is your category hover trigger */}
+          <span>{/* Category Name */}</span>
+        </div>
+
+        {hoveredCategory && (
+          <Menudrop
+            category={menuData.find((item) => item._id === hoveredCategory)}
+          />
+        )}
+      </div>
 
       {/* <FloatingButton />
       <Stickedbutton className="moodboard-btn" /> */}
