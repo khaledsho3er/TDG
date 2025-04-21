@@ -49,9 +49,7 @@ const DashboardVendor = () => {
 
   // Add date calculation
   const getCurrentDateRange = () => {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setMonth(endDate.getMonth() - 6);
+    const today = new Date();
 
     const formatDate = (date) => {
       const months = [
@@ -73,7 +71,7 @@ const DashboardVendor = () => {
       } ${date.getDate()}, ${date.getFullYear()}`;
     };
 
-    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    return formatDate(today);
   };
 
   // Fetch best sellers
@@ -401,7 +399,10 @@ const DashboardVendor = () => {
           <div className="chart-content-vendor">
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData}>
+                <LineChart
+                  data={chartData}
+                  margin={{ top: 20, right: 30, left: 40, bottom: 40 }} // Add this line
+                >
                   <XAxis
                     dataKey={
                       activeTab === "weekly"
@@ -410,6 +411,9 @@ const DashboardVendor = () => {
                         ? "month"
                         : "year"
                     }
+                    angle={-30} // Optional: tilt labels for better fit
+                    textAnchor="end"
+                    interval={0} // Show all labels
                   />
                   <YAxis />
                   <Tooltip />
