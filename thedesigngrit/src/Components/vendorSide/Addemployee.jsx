@@ -119,10 +119,8 @@ const VendorSignup = ({ open, onClose }) => {
       // Log the API response for debugging
       console.log("API Response:", response);
 
-      if (response.status === 200) {
-        console.log("Employee added successfully.");
-        onClose(); // Close modal after successful submission
-      }
+      console.log("Employee added successfully.");
+      onClose(); // Close modal after successful submission
     } catch (err) {
       console.error("Error:", err);
       setErrors((prev) => ({
