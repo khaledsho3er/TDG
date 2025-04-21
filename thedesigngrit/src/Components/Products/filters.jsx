@@ -152,6 +152,10 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           sx={{
+            display: "inline-grid",
+            height: "253px",
+            overflow: "auto",
+            width: "96%",
             backgroundColor: "transparent",
             borderRadius: "10px",
             "& .MuiAccordionSummary-content": {

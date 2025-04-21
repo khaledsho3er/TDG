@@ -199,15 +199,10 @@ function Header() {
   };
 
   const handleMenuLeave = () => {
-    // setIsMenuHovered(false);
-    // if (!hoveredCategory) {
-    //   setHoveredCategory(null);
-    // }
-    setTimeout(() => {
-      if (!isMenuHovered) {
-        setHoveredCategory(null);
-      }
-    }, 200); // short delay
+    setIsMenuHovered(false);
+    if (!hoveredCategory) {
+      setHoveredCategory(null);
+    }
   };
 
   const toggleMenu = () => {
