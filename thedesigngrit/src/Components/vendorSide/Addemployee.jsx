@@ -225,12 +225,14 @@ const VendorSignup = ({ open, onClose }) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth error={!!errors.tier}>
-                <InputLabel>Authority Level (Tier)</InputLabel>
+              <FormControl fullWidth error={!!errors.tier} variant="outlined">
+                <InputLabel id="tier-label">Authority Level (Tier)</InputLabel>
                 <Select
+                  id="tier-label"
                   name="tier"
                   value={formData.tier}
                   onChange={handleChange}
+                  label="Authority Level (Tier)"
                 >
                   <MenuItem value="1">
                     Tier 1 - Notification Page, Orders List

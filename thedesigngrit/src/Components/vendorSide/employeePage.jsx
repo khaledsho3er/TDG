@@ -109,7 +109,13 @@ const EmployeePage = () => {
               alignItems: "center",
             }}
           >
-            <h2 style={{ color: "#2d2d2d", textAlign: "left" }}>
+            <h2
+              style={{
+                color: "#2d2d2d",
+                textAlign: "left",
+                marginBottom: "20px",
+              }}
+            >
               Employees List
             </h2>
             <table>
