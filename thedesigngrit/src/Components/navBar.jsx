@@ -200,9 +200,7 @@ function Header() {
 
   const handleMenuLeave = () => {
     setIsMenuHovered(false);
-    if (!hoveredCategory) {
-      setHoveredCategory(null);
-    }
+    setHoveredCategory(null); // Always close when leaving menu
   };
 
   const toggleMenu = () => {

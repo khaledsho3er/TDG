@@ -40,7 +40,17 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
     <div
       className="menu-overlay"
       onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseLeave={(e) => {
+        // Ensure we're leaving to an element outside the menu
+        const relatedTarget = e.relatedTarget;
+        const isLeavingToChild =
+          relatedTarget && this.menuRef.current?.contains(relatedTarget);
+
+        if (!isLeavingToChild) {
+          onMouseLeave();
+        }
+      }}
+      ref={this.menuRef}
     >
       {/* Left Section */}
       <div className="menu-left-container">
