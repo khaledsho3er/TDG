@@ -1492,7 +1492,7 @@ body::-webkit-scrollbar:hover {
 }
 
 .product-card {
-  flex: 0 0 calc((100% - 2rem) / 3); /* 3 cards per view, minus gaps */
+  flex: 0 0 calc((100% - 2rem) / 5); /* 3 cards per view, minus gaps */
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;

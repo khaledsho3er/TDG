@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 const ProductSlider = () => {
   const [products, setProducts] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(3); // Start from first real slide
+  const [currentIndex, setCurrentIndex] = useState(5); // Start from first real slide
   const [transitionEnabled, setTransitionEnabled] = useState(true);
   const navigate = useNavigate();
   const sliderRef = useRef(null);
-  const visibleCount = 3;
+  const visibleCount = 5;
 
   useEffect(() => {
     const fetchBestSellers = async () => {
