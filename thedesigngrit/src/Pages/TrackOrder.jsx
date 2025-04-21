@@ -401,12 +401,20 @@ function TrackOrder() {
                       </Box>
                     </div>
                   </div>
-                  {shouldShowReturnButton && (
-                    <button className="submit-btn return-btn">
-                      <CiUndo />
-                      Return Order
-                    </button>
-                  )}{" "}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "end",
+                      alignItems: "end",
+                    }}
+                  >
+                    {shouldShowReturnButton && (
+                      <button className="submit-btn return-btn">
+                        <CiUndo />
+                        Return Order
+                      </button>
+                    )}{" "}
+                  </div>
                 </div>
               </>
             )}
