@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
   const navigate = useNavigate();
   const [selectedDetail, setSelectedDetail] = useState(null);
+  const menuRef = useRef(); // Create a ref for the menu
 
   useEffect(() => {
     if (category?.subCategories?.length > 0) {
@@ -41,16 +42,15 @@ const Menudrop = ({ category, onMouseEnter, onMouseLeave }) => {
       className="menu-overlay"
       onMouseEnter={onMouseEnter}
       onMouseLeave={(e) => {
-        // Ensure we're leaving to an element outside the menu
         const relatedTarget = e.relatedTarget;
         const isLeavingToChild =
-          relatedTarget && this.menuRef.current?.contains(relatedTarget);
+          relatedTarget && menuRef.current?.contains(relatedTarget);
 
         if (!isLeavingToChild) {
           onMouseLeave();
         }
       }}
-      ref={this.menuRef}
+      ref={menuRef} // Attach the ref here
     >
       {/* Left Section */}
       <div className="menu-left-container">

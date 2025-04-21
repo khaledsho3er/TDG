@@ -490,6 +490,8 @@ body::-webkit-scrollbar:hover {
 }
 
 .header-bottom {
+  position: relative; /* Needed for proper dropdown positioning */
+
   display: flex;
   justify-content: center;
   gap: 35px;
@@ -6145,6 +6147,7 @@ input:focus {
   justify-content: space-between;
   border-radius: 20px;
   gap: 200px;
+  pointer-events: auto; /* Ensure it captures mouse events */
 }
 
 .menu-left-container {
