@@ -22,6 +22,7 @@ const ProductSlider = () => {
           const clonedEnd = data.slice(0, visibleCount);
           const fullSlides = [...clonedStart, ...data, ...clonedEnd];
           setProducts(fullSlides);
+          console.log("bestsellers: ", data);
         }
       } catch (error) {
         console.error("Error fetching bestsellers:", error);
