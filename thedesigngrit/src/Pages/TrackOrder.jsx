@@ -9,6 +9,7 @@ import LoadingScreen from "./loadingScreen";
 import { GiConfirmed } from "react-icons/gi";
 import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
 import InvoicePDF from "../Components/invoiceOrderCustomer";
+import { CiUndo } from "react-icons/ci";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -52,6 +53,10 @@ function TrackOrder() {
     window.open(blobUrl, "_blank");
   };
   if (loading) return <LoadingScreen />;
+  const shouldShowReturnButton =
+    selectedOrder &&
+    new Date(selectedOrder.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000 >
+      new Date().getTime();
   return (
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
@@ -87,7 +92,6 @@ function TrackOrder() {
 
         <div className="terms-container">
           {/* Sidebar */}
-
           {/* Content Section */}
           <div className="order-details">
             {selectedOrder && selectedSubOrder && (
@@ -397,6 +401,12 @@ function TrackOrder() {
               </>
             )}
           </div>
+          {shouldShowReturnButton && (
+            <button className="submit-btn return-btn">
+              <CiUndo />
+              Return Order
+            </button>
+          )}{" "}
         </div>
       </Box>
       {/* Show Invoice in Modal or Full Screen */}
