@@ -14,7 +14,7 @@ const ProductSlider = () => {
     const fetchBestSellers = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/orders/bestsellers"
+          "http://91.99.79.25:5000/api/orders/bestsellers"
         );
         const data = response.data;
         if (data.length > 0) {
