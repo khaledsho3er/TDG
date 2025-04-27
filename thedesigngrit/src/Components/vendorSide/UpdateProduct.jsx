@@ -67,7 +67,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         setCategories(response.data); // Assuming the response contains categories
       } catch (error) {
@@ -84,7 +84,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       const fetchBrandName = async () => {
         try {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`
+            `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`
           );
           setBrandName(response.data.brandName); // Set the brand name in state
           setFormData((prevData) => ({
@@ -123,12 +123,12 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       const fetchSubCategoriesAndTypes = async () => {
         try {
           const subCategoryResponse = await axios.get(
-            `https://tdg-db.onrender.com/api/subcategories/byCategory/${existingProduct.category}`
+            `https://api.thedesigngrit.com/api/subcategories/byCategory/${existingProduct.category}`
           );
           setSubCategories(subCategoryResponse.data);
 
           const typeResponse = await axios.get(
-            `https://tdg-db.onrender.com/api/subcategories/bySubcategory/${existingProduct.subcategory}`
+            `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${existingProduct.subcategory}`
           );
           setTypes(typeResponse.data);
         } catch (error) {
@@ -153,7 +153,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     try {
       // Fetch subcategories for the selected category
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
+        `https://api.thedesigngrit.com/api/subcategories/byCategory/${selectedCategoryId}`
       );
       setSubCategories(response.data);
     } catch (error) {
@@ -175,7 +175,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     try {
       // Fetch types that are associated with the selected subcategory
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/subcategories/bySubcategory/${selectedSubCategoryId}`
+        `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${selectedSubCategoryId}`
       );
       setTypes(response.data); // Set types based on the fetched data
     } catch (error) {
@@ -324,7 +324,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
     // Send files to the backend
     axios
-      .post("https://tdg-db.onrender.com/api/products/upload", formData, {
+      .post("https://api.thedesigngrit.com/api/products/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -419,7 +419,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     try {
       // Send the form data to the backend
       const response = await axios.put(
-        `https://tdg-db.onrender.com/api/products/${formData._id}`, // Use the product ID for updating
+        `https://api.thedesigngrit.com/api/products/${formData._id}`, // Use the product ID for updating
         data,
         {
           headers: {

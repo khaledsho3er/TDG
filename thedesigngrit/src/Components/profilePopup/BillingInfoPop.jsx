@@ -119,7 +119,7 @@ const BillingInfoPopup = ({
 
     try {
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/cards/add",
+        "https://api.thedesigngrit.com/api/cards/add",
         cardData
       );
 

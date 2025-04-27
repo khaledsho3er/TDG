@@ -71,10 +71,13 @@ const ApplicationForm = () => {
     });
 
     try {
-      const response = await fetch("https://tdg-db.onrender.com/api/jobforms", {
-        method: "POST",
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        "https://api.thedesigngrit.com/api/jobforms",
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to submit the form.");
 

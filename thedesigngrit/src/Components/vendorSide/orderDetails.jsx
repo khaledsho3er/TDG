@@ -91,7 +91,7 @@ const OrderDetails = ({ order, onBack }) => {
     console.log("Sub-delivery date:", subDeliveryDate);
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/orders/${parentOrderId}/cart-items/${cartItemId}/delivery-date`,
+        `https://api.thedesigngrit.com/api/orders/orders/${parentOrderId}/cart-items/${cartItemId}/delivery-date`,
         {
           method: "PUT",
           headers: {
@@ -119,7 +119,7 @@ const OrderDetails = ({ order, onBack }) => {
     try {
       // Replace with your API call
       await fetch(
-        `https://tdg-db.onrender.com/api/orders/update-delivery/${order._id}`,
+        `https://api.thedesigngrit.com/api/orders/update-delivery/${order._id}`,
         {
           method: "PUT",
           headers: {
@@ -146,7 +146,7 @@ const OrderDetails = ({ order, onBack }) => {
 
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/orders/upload-file/${order._id}`, // ✅ Use the correct API endpoint
+        `https://api.thedesigngrit.com/api/orders/upload-file/${order._id}`, // ✅ Use the correct API endpoint
         {
           method: "PUT",
           body: formData,
@@ -175,7 +175,7 @@ const OrderDetails = ({ order, onBack }) => {
   const handlePostNote = async () => {
     try {
       await axios.put(
-        `https://tdg-db.onrender.com/api/orders/orders/${order._id}/note`,
+        `https://api.thedesigngrit.com/api/orders/orders/${order._id}/note`,
         {
           note,
         }

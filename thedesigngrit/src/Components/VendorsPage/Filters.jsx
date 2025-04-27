@@ -8,7 +8,7 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         const data = await response.json();
         setCategories(data);

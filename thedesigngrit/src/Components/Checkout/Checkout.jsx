@@ -172,7 +172,10 @@ function Checkout() {
         };
         console.log("Creating order:", orderData);
 
-        return axios.post("https://tdg-db.onrender.com/api/orders/", orderData);
+        return axios.post(
+          "https://api.thedesigngrit.com/api/orders/",
+          orderData
+        );
       });
 
       // Wait for all orders to be sent

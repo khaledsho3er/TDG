@@ -37,7 +37,7 @@ const ShippingInfoPopup = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/getUserById/${userSession.id}`,
+          `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
           { withCredentials: true }
         );
         setUserData(response.data);
@@ -107,7 +107,7 @@ const ShippingInfoPopup = () => {
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://tdg-db.onrender.com/api/removeAddress/${userSession.id}/${selectedAddressId}`,
+        `https://api.thedesigngrit.com/api/removeAddress/${userSession.id}/${selectedAddressId}`,
         { withCredentials: true }
       );
 
@@ -133,7 +133,7 @@ const ShippingInfoPopup = () => {
       }
 
       await axios.put(
-        `https://tdg-db.onrender.com/api/updateUser/${userSession.id}`,
+        `https://api.thedesigngrit.com/api/updateUser/${userSession.id}`,
         { shipmentAddress: updatedAddresses },
         { withCredentials: true }
       );

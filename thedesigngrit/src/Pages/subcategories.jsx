@@ -17,7 +17,7 @@ function Subcategories() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/subcategories/categories/${categoryId}/subcategories`
+          `https://api.thedesigngrit.com/api/subcategories/categories/${categoryId}/subcategories`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch subcategories");
@@ -38,7 +38,7 @@ function Subcategories() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         const data = await response.json();
         setCategories(data.slice(0, 6));

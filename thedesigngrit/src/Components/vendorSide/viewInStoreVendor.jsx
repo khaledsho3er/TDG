@@ -17,7 +17,7 @@ const ViewInStoreVendor = () => {
     const fetchViewInStores = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/view-in-store/brand/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/view-in-store/brand/${vendor.brandId}`
         );
         setViewInStores(response.data);
         setLoading(false);
@@ -67,7 +67,7 @@ const ViewInStoreVendor = () => {
 
     try {
       await axios.put(
-        `https://tdg-db.onrender.com/api/view-in-store/${selectedViewInStore._id}`,
+        `https://api.thedesigngrit.com/api/view-in-store/${selectedViewInStore._id}`,
         { status: newStatus }
       );
 

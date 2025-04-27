@@ -56,7 +56,7 @@ function ContactUs() {
 
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/contactus/contact",
+        "https://api.thedesigngrit.com/api/contactus/contact",
         {
           method: "POST",
           headers: {

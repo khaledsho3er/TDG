@@ -16,7 +16,7 @@ const EditEmployee = () => {
     const fetchEmployee = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/employee/getAll/${id}`
+          `https://api.thedesigngrit.com/api/employee/getAll/${id}`
         );
         setEmployee(response.data);
         setName(response.data.name);
@@ -35,13 +35,16 @@ const EditEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://tdg-db.onrender.com/api/employee/update/${id}`, {
-        name,
-        employeeNumber,
-        email,
-        phoneNumber,
-        tier,
-      });
+      await axios.put(
+        `https://api.thedesigngrit.com/api/employee/update/${id}`,
+        {
+          name,
+          employeeNumber,
+          email,
+          phoneNumber,
+          tier,
+        }
+      );
       navigate.push("/edit-employee");
     } catch (error) {
       console.error("Error updating employee", error);

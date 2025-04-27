@@ -10,7 +10,7 @@ const ProductAnalyticsGraph = ({ products, selectedProducts, timeframe }) => {
       const data = await Promise.all(
         selectedProducts.map(async (productId) => {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/products/sales/${productId}`,
+            `https://api.thedesigngrit.com/products/sales/${productId}`,
             {
               params: {
                 timeframe: timeframe,

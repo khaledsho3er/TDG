@@ -26,7 +26,7 @@ function TrackOrder() {
 
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/orders/customer/${userSession.id}`
+          `https://api.thedesigngrit.com/api/orders/orders/customer/${userSession.id}`
         ); // Adjust API endpoint as needed
         const data = await response.json();
 

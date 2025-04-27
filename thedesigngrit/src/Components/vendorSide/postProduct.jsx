@@ -73,7 +73,7 @@ const AddProduct = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         setCategories(response.data); // Assuming the response contains categories
       } catch (error) {
@@ -89,7 +89,7 @@ const AddProduct = () => {
       const fetchBrandName = async () => {
         try {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`
+            `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`
           );
           setBrandName(response.data.brandName); // Set the brand name in state
           setFormData((prevData) => ({
@@ -127,7 +127,7 @@ const AddProduct = () => {
     try {
       // Fetch subcategories for the selected category
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
+        `https://api.thedesigngrit.com/api/subcategories/byCategory/${selectedCategoryId}`
       );
       setSubCategories(response.data);
     } catch (error) {
@@ -150,7 +150,7 @@ const AddProduct = () => {
     try {
       // Fetch types that are associated with the selected subcategory
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/subcategories/bySubcategory/${selectedSubCategoryId}`
+        `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${selectedSubCategoryId}`
       );
       setTypes(response.data); // Set types based on the fetched data
     } catch (error) {
@@ -290,7 +290,7 @@ const AddProduct = () => {
         const fetchedTags = {};
         for (const category of categories) {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/tags/tags/${category}`
+            `https://api.thedesigngrit.com/api/tags/tags/${category}`
           );
           fetchedTags[category] = response.data.map((tag) => tag.name);
         }
@@ -552,7 +552,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/products/addproduct",
+        "https://api.thedesigngrit.com/api/products/addproduct",
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

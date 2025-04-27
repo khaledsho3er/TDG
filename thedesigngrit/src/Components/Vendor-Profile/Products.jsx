@@ -9,7 +9,7 @@ function VendorsProductsGrid({ vendor }) {
     if (!vendor?._id) return; // Ensure vendor._id is available before fetching
 
     fetch(
-      `https://tdg-db.onrender.com/api/products/getproducts/brand/${vendor._id}`
+      `https://api.thedesigngrit.com/api/products/getproducts/brand/${vendor._id}`
     )
       .then((response) => {
         if (!response.ok) {

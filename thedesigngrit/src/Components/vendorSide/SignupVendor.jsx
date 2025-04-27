@@ -117,7 +117,7 @@ function Signupvendor() {
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
-        "https://tdg-db.onrender.com/api/types/getAll"
+        "https://api.thedesigngrit.com/api/types/getAll"
       );
       if (response.status === 200) {
         setTypes(response.data); // Assuming response.data is an array of types
@@ -304,7 +304,7 @@ function Signupvendor() {
     if (currentPhase === 1) {
       try {
         const response = await axios.post(
-          "https://tdg-db.onrender.com/api/vendors/signup",
+          "https://api.thedesigngrit.com/api/vendors/signup",
           sanitizedData,
           { headers: { "Content-Type": "application/json" } }
         );
@@ -340,14 +340,14 @@ function Signupvendor() {
 
       try {
         const response = await axios.post(
-          "https://tdg-db.onrender.com/api/brand/brand",
+          "https://api.thedesigngrit.com/api/brand/brand",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
         if (response.status === 201) {
           await axios.put(
-            `https://tdg-db.onrender.com/api/vendors/${vendorId}`,
+            `https://api.thedesigngrit.com/api/vendors/${vendorId}`,
             {
               brandId: response.data._id,
             }

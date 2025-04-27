@@ -40,7 +40,7 @@ const SetDeliveryDialog = ({ open, handleClose, orderId, cartItems }) => {
       }
 
       const response = await axios.put(
-        `https://tdg-db.onrender.com/api/orders/${orderId}/product/${selectedProductId}/update-sub-delivery`,
+        `https://api.thedesigngrit.com/api/orders/${orderId}/product/${selectedProductId}/update-sub-delivery`,
         {
           subDeliveryDate,
           subOrderStatus: "Confirmed", // You can set this dynamically

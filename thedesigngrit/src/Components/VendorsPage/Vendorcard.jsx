@@ -11,7 +11,7 @@ const VendorCard = ({ vendor, onClick }) => {
     const fetchBrandProducts = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+          `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId}`
         );
 
         // Only take the first 4 products with mainImage

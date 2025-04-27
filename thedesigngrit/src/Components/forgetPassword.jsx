@@ -28,7 +28,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/forget-password/send-otp",
+        "https://api.thedesigngrit.com/api/forget-password/send-otp",
         {
           email,
         }
@@ -56,7 +56,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/forget-password/verify-otp",
+        "https://api.thedesigngrit.com/api/forget-password/verify-otp",
         { email, otp }
       );
 
@@ -77,7 +77,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/forget-password/reset-password",
+        "https://api.thedesigngrit.com/api/forget-password/reset-password",
         {
           email,
           newPassword,

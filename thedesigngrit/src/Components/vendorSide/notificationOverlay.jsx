@@ -19,7 +19,7 @@ const NotificationOverlayVendor = ({ onClose, setActivePage }) => {
           return;
         }
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/notifications/notifications?brandId=${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/notifications/notifications?brandId=${vendor.brandId}`
         );
         const data = await response.json();
         setNotifications(data);

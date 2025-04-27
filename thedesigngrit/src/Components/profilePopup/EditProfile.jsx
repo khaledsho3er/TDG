@@ -23,7 +23,7 @@ function EditProfile() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/getUser",
+          "https://api.thedesigngrit.com/api/getUser",
           {
             withCredentials: true,
           }
@@ -59,7 +59,7 @@ function EditProfile() {
     if (dialogAction === "save") {
       try {
         const response = await axios.put(
-          "https://tdg-db.onrender.com/api/updateUser",
+          "https://api.thedesigngrit.com/api/updateUser",
           userData,
           { withCredentials: true }
         );

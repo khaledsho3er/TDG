@@ -16,7 +16,7 @@ const RelatedProducts = ({ productId }) => {
     const fetchRelatedProducts = async () => {
       try {
         const response =
-          await axios.get(`https://tdg-db.onrender.com/api/related-products/related/${productId}
+          await axios.get(`https://api.thedesigngrit.com/api/related-products/related/${productId}
 `);
         setRelatedProducts(response.data);
       } catch (error) {
@@ -30,7 +30,7 @@ const RelatedProducts = ({ productId }) => {
     const fetchCategoryName = async (id) => {
       try {
         const res = await axios.get(
-          `https://tdg-db.onrender.com/api/categories/categories/${id}`
+          `https://api.thedesigngrit.com/api/categories/categories/${id}`
         );
         return res.data.name;
       } catch (error) {

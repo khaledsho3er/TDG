@@ -15,7 +15,7 @@ function VendorCatalogs({ vendorID }) {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/catalogs/${vendorID}`
+          `https://api.thedesigngrit.com/api/catalogs/${vendorID}`
         );
         if (!response.ok) throw new Error("Failed to fetch catalogs");
         const data = await response.json();

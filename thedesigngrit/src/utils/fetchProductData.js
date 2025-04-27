@@ -1,7 +1,7 @@
 export async function fetchProductData(id) {
   try {
     const response = await fetch(
-      `https://tdg-db.onrender.com/api/products/getsingle/${id}`
+      `https://api.thedesigngrit.com/api/products/getsingle/${id}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch product data");

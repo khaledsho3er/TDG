@@ -18,7 +18,7 @@ export default function BrandCursol({ brandId }) {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId._id}`
+          `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId._id}`
         );
 
         if (!response.ok) {

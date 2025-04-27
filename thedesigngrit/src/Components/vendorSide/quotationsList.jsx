@@ -13,7 +13,7 @@ const QuotationsPage = () => {
     const fetchQuotations = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/quotation/quotations/brand/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/quotation/quotations/brand/${vendor.brandId}`
         );
         setQuotations(response.data);
       } catch (err) {

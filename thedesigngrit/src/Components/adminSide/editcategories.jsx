@@ -25,7 +25,7 @@ const UpdateCategory = ({ category, onBack }) => {
     const fetchCategory = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/categories/categories/${category._id}`
+          `https://api.thedesigngrit.com/api/categories/categories/${category._id}`
         );
         const fetchedCategory = response.data;
 
@@ -33,7 +33,7 @@ const UpdateCategory = ({ category, onBack }) => {
         setCategoryDescription(fetchedCategory.description || "");
         setImagePreview(
           fetchedCategory.image
-            ? `https://tdg-db.onrender.com/uploads/${fetchedCategory.image}`
+            ? `https://api.thedesigngrit.com/uploads/${fetchedCategory.image}`
             : null
         );
 
@@ -41,7 +41,7 @@ const UpdateCategory = ({ category, onBack }) => {
           fetchedCategory.subCategories.map((subCat) => ({
             ...subCat,
             imagePreviews: subCat.image
-              ? [`https://tdg-db.onrender.com/uploads/${subCat.image}`]
+              ? [`https://api.thedesigngrit.com/uploads/${subCat.image}`]
               : [],
             types: subCat.types || [],
           }))
@@ -60,7 +60,7 @@ const UpdateCategory = ({ category, onBack }) => {
 
     try {
       await axios.delete(
-        `https://tdg-db.onrender.com/api/categories/categories/${category._id}`
+        `https://api.thedesigngrit.com/api/categories/categories/${category._id}`
       );
       alert("Category deleted successfully!");
       onBack(); // الرجوع بعد الحذف
@@ -159,7 +159,7 @@ const UpdateCategory = ({ category, onBack }) => {
     });
 
     const response = await axios.put(
-      `https://tdg-db.onrender.com/api/categories/categories/${category._id}`,
+      `https://api.thedesigngrit.com/api/categories/categories/${category._id}`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );

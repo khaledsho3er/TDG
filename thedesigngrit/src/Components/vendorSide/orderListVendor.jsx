@@ -23,7 +23,7 @@ const RecentPurchases = () => {
       if (!vendor?.brandId) return;
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/orders/orders/brand/${vendor.brandId}`
         );
         if (!response.ok) throw new Error("Failed to fetch orders");
         const data = await response.json();

@@ -30,7 +30,7 @@ const ProductPageAdmin = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/products/getproducts",
+          "https://api.thedesigngrit.com/api/products/getproducts",
           {
             params: {
               category: selectedCategory, // Still allowing category filtering if needed
@@ -46,7 +46,7 @@ const ProductPageAdmin = () => {
             if (product.type) {
               try {
                 const typeResponse = await axios.get(
-                  `https://tdg-db.onrender.com/api/types/types/${product.type}`
+                  `https://api.thedesigngrit.com/api/types/types/${product.type}`
                 );
                 product.typeName = typeResponse.data.name || "Unknown"; // Set type name
               } catch (error) {
@@ -72,7 +72,7 @@ const ProductPageAdmin = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         setCategories(response.data);
       } catch (error) {
@@ -86,7 +86,7 @@ const ProductPageAdmin = () => {
     const fetchBrands = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/brand"
+          "https://api.thedesigngrit.com/api/brand"
         );
         setBrands(response.data); // Assuming the API returns an array of brand objects
       } catch (error) {
@@ -109,7 +109,7 @@ const ProductPageAdmin = () => {
     if (selectedCategoryId) {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
+          `https://api.thedesigngrit.com/api/subcategories/byCategory/${selectedCategoryId}`
         );
         setSubCategories(response.data);
       } catch (error) {
@@ -158,7 +158,7 @@ const ProductPageAdmin = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://tdg-db.onrender.com/api/products/${product._id}`
+          `https://api.thedesigngrit.com/api/products/${product._id}`
         ); // Use the correct endpoint
         setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
         alert("Product deleted successfully!");

@@ -15,7 +15,7 @@ const NavbarVendor = ({ setActivePage }) => {
     const fetchBrandData = async () => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`, // Replace with your backend endpoint
+          `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`, // Replace with your backend endpoint
           {
             method: "GET",
             credentials: "include", // Include credentials for session handling
@@ -47,7 +47,7 @@ const NavbarVendor = ({ setActivePage }) => {
   const handleLogout = async () => {
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/vendors/logout",
+        "https://api.thedesigngrit.com/api/vendors/logout",
         {
           method: "POST",
           credentials: "include",

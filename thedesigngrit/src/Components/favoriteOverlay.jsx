@@ -13,7 +13,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
 
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/favorites/${userSession.id}`
+          `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
         );
         if (response.ok) {
           const favoritesData = await response.json();

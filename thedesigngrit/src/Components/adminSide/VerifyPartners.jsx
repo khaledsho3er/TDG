@@ -6,7 +6,7 @@ const VerifyPartners = ({ partner, onBack }) => {
   const updateStatus = async (newStatus) => {
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/brand/partners/${partner._id}/status`,
+        `https://api.thedesigngrit.com/api/brand/partners/${partner._id}/status`,
         {
           method: "PUT",
           headers: {

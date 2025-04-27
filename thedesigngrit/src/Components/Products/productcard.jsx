@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
       if (!userSession) return; // Make sure userSession is available
 
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/favorites/${userSession.id}`
+        `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
       );
       if (response.ok) {
         const favoritesData = await response.json();
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
 
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/favorites${endpoint}`,
+        `https://api.thedesigngrit.com/api/favorites${endpoint}`,
         {
           method: "POST",
           headers: {

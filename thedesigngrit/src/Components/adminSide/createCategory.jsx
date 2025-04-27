@@ -138,7 +138,7 @@ const CategoryForm = ({ onBack }) => {
 
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/categories/categories",
+        "https://api.thedesigngrit.com/api/categories/categories",
         {
           method: "POST",
           body: formData,

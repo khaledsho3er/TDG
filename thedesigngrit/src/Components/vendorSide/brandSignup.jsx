@@ -53,7 +53,7 @@ const BrandSignup = () => {
   const fetchTypes = async () => {
     try {
       const { data } = await axios.get(
-        "https://tdg-db.onrender.com/api/types/getAll"
+        "https://api.thedesigngrit.com/api/types/getAll"
       );
       setTypes(data);
     } catch (error) {
@@ -64,7 +64,7 @@ const BrandSignup = () => {
   const fetchBrandData = async (brandId) => {
     try {
       const response = await axios.get(
-        `https://tdg-db.onrender.com/api/brand/${brandId}`
+        `https://api.thedesigngrit.com/api/brand/${brandId}`
       );
       setFormData({
         ...response.data,
@@ -113,7 +113,7 @@ const BrandSignup = () => {
       });
 
       const response = await axios.put(
-        `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`,
+        `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`,
         dataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

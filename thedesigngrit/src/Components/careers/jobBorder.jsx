@@ -9,7 +9,9 @@ const CareerOpportunities = () => {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const response = await fetch("https://tdg-db.onrender.com/api/jobdesc"); // Update this URL as needed
+        const response = await fetch(
+          "https://api.thedesigngrit.com/api/jobdesc"
+        ); // Update this URL as needed
         const data = await response.json();
         setJobs(data);
       } catch (error) {

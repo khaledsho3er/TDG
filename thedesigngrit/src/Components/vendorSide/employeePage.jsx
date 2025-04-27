@@ -26,7 +26,7 @@ const EmployeePage = () => {
     try {
       if (vendor?.brandId) {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/vendors/vendors/byBrand/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/vendors/vendors/byBrand/${vendor.brandId}`
         );
         setVendors(response.data);
       } else {
@@ -56,7 +56,7 @@ const EmployeePage = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`,
+        `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`,
         currentVendor
       );
       setEditPopupVisible(false);
@@ -69,7 +69,7 @@ const EmployeePage = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `https://tdg-db.onrender.com/api/vendors/${currentVendor._id}`
+        `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`
       );
       setEditPopupVisible(false);
       fetchVendors();

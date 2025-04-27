@@ -52,7 +52,7 @@ const SignUpForm = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/signup",
+        "https://api.thedesigngrit.com/api/signup",
         data
       );
       alert(response.data.message);

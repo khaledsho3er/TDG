@@ -31,7 +31,7 @@ export default function ConceptManager() {
   const [currentCoords, setCurrentCoords] = useState(null);
   const [products, setProducts] = useState([]);
   const { data: concepts, mutate } = useSWR(
-    "https://tdg-db.onrender.com/api/concepts/concepts",
+    "https://api.thedesigngrit.com/api/concepts/concepts",
     fetcher
   );
   const [anchorEl, setAnchorEl] = useState(null);
@@ -45,7 +45,7 @@ export default function ConceptManager() {
   const imageRef = useRef();
 
   useEffect(() => {
-    fetch("https://tdg-db.onrender.com/api/products/getproducts")
+    fetch("https://api.thedesigngrit.com/api/products/getproducts")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
@@ -102,8 +102,8 @@ export default function ConceptManager() {
     formData.append("nodes", JSON.stringify(nodes));
 
     const url = isEditMode
-      ? `https://tdg-db.onrender.com/api/concepts/concepts/${editingConcept._id}`
-      : "https://tdg-db.onrender.com/api/concepts/concepts";
+      ? `https://api.thedesigngrit.com/api/concepts/concepts/${editingConcept._id}`
+      : "https://api.thedesigngrit.com/api/concepts/concepts";
 
     const method = isEditMode ? "PUT" : "POST";
 
@@ -126,7 +126,7 @@ export default function ConceptManager() {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/concepts/concepts/${id}`,
+        `https://api.thedesigngrit.com/api/concepts/concepts/${id}`,
         {
           method: "DELETE",
         }

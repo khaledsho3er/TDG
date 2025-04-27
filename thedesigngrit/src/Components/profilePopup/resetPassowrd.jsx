@@ -45,7 +45,7 @@ const ResetPasswordForm = () => {
 
     try {
       const response = await axios.put(
-        `https://tdg-db.onrender.com/api/changePassword/${userSession.id}`,
+        `https://api.thedesigngrit.com/api/changePassword/${userSession.id}`,
         { currentPassword, newPassword },
         {
           withCredentials: true,

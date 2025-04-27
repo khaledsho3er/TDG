@@ -25,7 +25,7 @@ const PromotionsPage = () => {
       const fetchProducts = async () => {
         try {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+            `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId}`
           );
           setProducts(response.data); // Set fetched products
           // Separate current and past promotions
@@ -57,7 +57,7 @@ const PromotionsPage = () => {
       const fetchPromotionMetrics = async () => {
         try {
           const response = await axios.get(
-            "https://tdg-db.onrender.com/api/products/past-promotions/metrics"
+            "https://api.thedesigngrit.com/api/products/past-promotions/metrics"
           );
           setPastPromotionMetrics(response.data);
         } catch (error) {

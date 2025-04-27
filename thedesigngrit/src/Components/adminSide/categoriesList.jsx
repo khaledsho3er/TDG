@@ -13,7 +13,7 @@ const CategoryListPage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://tdg-db.onrender.com/api/categories/categories"
+          "https://api.thedesigngrit.com/api/categories/categories"
         );
         setCategories(response.data);
       } catch (error) {

@@ -19,7 +19,7 @@ function TypesPage() {
     const fetchSubcategory = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/subcategories/${subCategoryId}`
+          `https://api.thedesigngrit.com/api/subcategories/${subCategoryId}`
         );
         setSubcategory(data);
       } catch (error) {
@@ -30,7 +30,7 @@ function TypesPage() {
       try {
         setLoading(true);
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/types/subcategories/${subCategoryId}/types`
+          `https://api.thedesigngrit.com/api/types/subcategories/${subCategoryId}/types`
         );
         setTypes(data);
       } catch (error) {

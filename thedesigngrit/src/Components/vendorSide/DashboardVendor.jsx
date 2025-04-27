@@ -83,7 +83,7 @@ const DashboardVendor = () => {
       }
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/vendor/best-sellers/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/orders/vendor/best-sellers/${vendor.brandId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch best sellers");
@@ -107,7 +107,7 @@ const DashboardVendor = () => {
       }
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/orders/brand/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/orders/orders/brand/${vendor.brandId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
@@ -135,7 +135,7 @@ const DashboardVendor = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/statistics/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/orders/statistics/${vendor.brandId}`
         );
         const data = await response.json();
 
@@ -217,7 +217,7 @@ const DashboardVendor = () => {
 
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/orders/sales-graph/${vendor.brandId}`
+          `https://api.thedesigngrit.com/api/orders/sales-graph/${vendor.brandId}`
         );
         const data = await response.json();
 

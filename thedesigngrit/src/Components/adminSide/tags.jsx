@@ -39,7 +39,9 @@ const TagsTable = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await axios.get("https://tdg-db.onrender.com/api/tags");
+      const response = await axios.get(
+        "https://api.thedesigngrit.com/api/tags"
+      );
       setTags(response.data);
     } catch (error) {
       console.error("Error fetching tags:", error);
@@ -72,7 +74,7 @@ const TagsTable = () => {
     }
 
     try {
-      await axios.post("https://tdg-db.onrender.com/api/tags", {
+      await axios.post("https://api.thedesigngrit.com/api/tags", {
         name: tagName,
         category: selectedCategory,
       });

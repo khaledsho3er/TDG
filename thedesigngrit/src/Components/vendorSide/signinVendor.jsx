@@ -38,7 +38,7 @@ const SignIn = () => {
 
       // Proceed with the axios request if validation passes
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/vendors/login",
+        "https://api.thedesigngrit.com/api/vendors/login",
         {
           email,
           password,

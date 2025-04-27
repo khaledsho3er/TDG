@@ -12,7 +12,7 @@ const OrdersPopUp = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/orders/orders/customer/${userSession.id}`
+          `https://api.thedesigngrit.com/api/orders/orders/customer/${userSession.id}`
         ); // Make API call to fetch orders
         setOrderData(response.data); // Set the fetched orders in state
       } catch (error) {

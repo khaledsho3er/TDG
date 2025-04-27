@@ -28,7 +28,7 @@ function ProductsPage() {
     const fetchTypeDetails = async () => {
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/types/types/${typeId}`
+          `https://api.thedesigngrit.com/api/types/types/${typeId}`
         );
         setTypeDescription(data.description);
       } catch (error) {
@@ -46,7 +46,7 @@ function ProductsPage() {
 
       try {
         const { data } = await axios.get(
-          `https://tdg-db.onrender.com/api/products/types/${typeId}/${typeName}`
+          `https://api.thedesigngrit.com/api/products/types/${typeId}/${typeName}`
         );
         console.log("Raw API response:", data); // Add this line
 

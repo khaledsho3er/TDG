@@ -18,7 +18,7 @@ const DashboardAdmin = () => {
   const fetchOrders = async () => {
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/orders/admin-orders"
+        "https://api.thedesigngrit.com/api/orders/admin-orders"
       );
       const data = await response.json();
       // Sort orders by date (latest to earliest)
@@ -31,7 +31,7 @@ const DashboardAdmin = () => {
   const fetchBestSellers = async () => {
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/orders/bestsellers"
+        "https://api.thedesigngrit.com/api/orders/bestsellers"
       );
       const data = await response.json();
       setBestSellers(data);

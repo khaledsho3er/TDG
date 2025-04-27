@@ -13,7 +13,7 @@ const RequestsPartners = () => {
   const fetchPartners = useCallback(async () => {
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/brand/status/${status}`
+        `https://api.thedesigngrit.com/api/brand/status/${status}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");

@@ -37,7 +37,7 @@ const AdminLogin = () => {
 
       // Proceed with the axios request if validation passes
       const res = await axios.post(
-        "https://tdg-db.onrender.com/api/admin/login",
+        "https://api.thedesigngrit.com/api/admin/login",
         { email, password }
       );
 

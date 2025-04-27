@@ -49,7 +49,7 @@ function ProductPage() {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/products/getsingle/${id}`
+          `https://api.thedesigngrit.com/api/products/getsingle/${id}`
         ); // Make an API call to fetch the product by ID
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
@@ -70,7 +70,7 @@ function ProductPage() {
     const fetchReviews = async (productId) => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/reviews/reviews/${productId}`
+          `https://api.thedesigngrit.com/api/reviews/reviews/${productId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch reviews");
@@ -156,7 +156,7 @@ function ProductPage() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/reviews/createreviews/${product._id}`,
+        `https://api.thedesigngrit.com/api/reviews/createreviews/${product._id}`,
         {
           method: "POST",
           headers: {

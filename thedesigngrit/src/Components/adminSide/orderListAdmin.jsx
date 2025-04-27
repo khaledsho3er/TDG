@@ -21,7 +21,7 @@ const RecentPurchasesAdmin = () => {
   const fetchOrders = async () => {
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/orders/admin-orders"
+        "https://api.thedesigngrit.com/api/orders/admin-orders"
       );
       const data = await response.json();
       setOrders(data);
@@ -31,7 +31,7 @@ const RecentPurchasesAdmin = () => {
   };
   const fetchBrands = async () => {
     try {
-      const response = await fetch("https://tdg-db.onrender.com/api/brand");
+      const response = await fetch("https://api.thedesigngrit.com/api/brand");
       const data = await response.json();
       setBrands(data); // Assuming brands are returned as an array
     } catch (error) {

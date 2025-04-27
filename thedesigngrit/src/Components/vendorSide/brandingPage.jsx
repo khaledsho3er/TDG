@@ -38,7 +38,7 @@ const BrandingPage = () => {
 
   useEffect(() => {
     axios
-      .get(`https://tdg-db.onrender.com/api/catalogs/${brandId}`)
+      .get(`https://api.thedesigngrit.com/api/catalogs/${brandId}`)
       .then((res) => setCatalogs(res.data))
       .catch((err) => console.error("Error fetching catalogs:", err));
   }, [brandId]);
@@ -79,7 +79,7 @@ const BrandingPage = () => {
   //   setLoading(true);
   //   try {
   //     await axios.put(
-  //       `https://tdg-db.onrender.com/api/brand/${brandId}`,
+  //       `https://api.thedesigngrit.com/api/brand/${brandId}`,
   //       data,
   //       { headers: { "Content-Type": "multipart/form-data" } }
   //     );
@@ -111,8 +111,8 @@ const BrandingPage = () => {
     setLoading(true);
 
     const url = selectedCatalog
-      ? `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
-      : `https://tdg-db.onrender.com/api/catalogs/upload`;
+      ? `https://api.thedesigngrit.com/api/catalogs/${selectedCatalog.id}`
+      : `https://api.thedesigngrit.com/api/catalogs/upload`;
 
     const method = selectedCatalog ? "put" : "post";
 
@@ -158,7 +158,7 @@ const BrandingPage = () => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `https://tdg-db.onrender.com/api/catalogs/${selectedCatalog.id}`
+        `https://api.thedesigngrit.com/api/catalogs/${selectedCatalog.id}`
       );
       setCatalogs(catalogs.filter((c) => c.id !== selectedCatalog.id));
     } catch (error) {

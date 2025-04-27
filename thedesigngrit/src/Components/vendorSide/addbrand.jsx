@@ -99,7 +99,7 @@ const BrandForm = () => {
     try {
       // Send POST request to backend
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/brand/brand",
+        "https://api.thedesigngrit.com/api/brand/brand",
         {
           method: "POST",
           body: formDataToSend,

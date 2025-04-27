@@ -17,7 +17,7 @@ function VendorProfile() {
     const fetchVendor = async () => {
       try {
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/brand/${id}`
+          `https://api.thedesigngrit.com/api/brand/${id}`
         );
         const data = await response.json();
         console.log(data); // Log the data to check if it's correct

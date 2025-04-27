@@ -16,7 +16,7 @@ function JobDesc() {
       try {
         console.log("Fetching job details for jobId:", jobId); // Debug log to see the jobId
         const response = await fetch(
-          `https://tdg-db.onrender.com/api/jobdesc/${jobId}`
+          `https://api.thedesigngrit.com/api/jobdesc/${jobId}`
         );
 
         if (!response.ok) {

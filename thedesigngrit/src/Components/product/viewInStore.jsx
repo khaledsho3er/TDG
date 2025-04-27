@@ -28,7 +28,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        "https://tdg-db.onrender.com/api/view-in-store/",
+        "https://api.thedesigngrit.com/api/view-in-store/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -18,7 +18,7 @@ const BillingInfo = () => {
   const userId = userSession.id;
   // Fetch saved cards from the API
   useEffect(() => {
-    fetch(`https://tdg-db.onrender.com/api/cards/user/${userId}`)
+    fetch(`https://api.thedesigngrit.com/api/cards/user/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         setSavedCards(
@@ -39,7 +39,7 @@ const BillingInfo = () => {
   };
 
   const confirmSetDefault = () => {
-    fetch(`https://tdg-db.onrender.com/api/cards/set-default`, {
+    fetch(`https://api.thedesigngrit.com/api/cards/set-default`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const BillingInfo = () => {
 
     try {
       const response = await axios.delete(
-        `https://tdg-db.onrender.com/api/cards/${cardToDelete}`
+        `https://api.thedesigngrit.com/api/cards/${cardToDelete}`
       );
       console.log(response.data.message);
       setSavedCards((prev) => prev.filter((card) => card.id !== cardToDelete));

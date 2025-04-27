@@ -22,7 +22,7 @@ const CreatePromotionDialog = ({
     if (brandId && open) {
       axios
         .get(
-          `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`
+          `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId}`
         )
         .then((res) => setProducts(res.data))
         .catch((err) => console.error("Error loading products:", err));
@@ -52,7 +52,7 @@ const CreatePromotionDialog = ({
     if (!validateFields()) return;
     try {
       const res = await axios.put(
-        `https://tdg-db.onrender.com/api/products/promotion/${selectedProduct._id}`,
+        `https://api.thedesigngrit.com/api/products/promotion/${selectedProduct._id}`,
         {
           salePrice,
           discountPercentage,

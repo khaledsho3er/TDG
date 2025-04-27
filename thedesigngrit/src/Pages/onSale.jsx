@@ -23,7 +23,7 @@ function OnSale() {
     const fetchReadyToShipProducts = async () => {
       try {
         const { data } = await axios.get(
-          "https://tdg-db.onrender.com/api/products/getproducts/"
+          "https://api.thedesigngrit.com/api/products/getproducts/"
         );
         // Filter products that have salePrice
         const onSaleProducts = data.filter((product) => product.salePrice);

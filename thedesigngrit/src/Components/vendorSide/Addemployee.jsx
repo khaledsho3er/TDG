@@ -55,7 +55,7 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
       const fetchBrandName = async () => {
         try {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/brand/${vendor.brandId}`
+            `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`
           );
           setBrandName(response.data.brandName); // Set the brand name in the state
         } catch (error) {
@@ -112,7 +112,7 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
 
     try {
       const response = await axios.post(
-        "https://tdg-db.onrender.com/api/vendors/signup",
+        "https://api.thedesigngrit.com/api/vendors/signup",
         dataToSend
       );
 

@@ -21,7 +21,7 @@ const NotificationsPage = () => {
       }
       const brandId = vendor.brandId;
       const response = await fetch(
-        `https://tdg-db.onrender.com/api/notifications/notifications?brandId=${brandId}`
+        `https://api.thedesigngrit.com/api/notifications/notifications?brandId=${brandId}`
       );
       const data = await response.json();
       setNotifications(data);
@@ -58,7 +58,7 @@ const NotificationsPage = () => {
 
       // Send request to the backend to persist the change
       await fetch(
-        `https://tdg-db.onrender.com/api/notifications/${id}/mark-as-read`,
+        `https://api.thedesigngrit.com/api/notifications/${id}/mark-as-read`,
         {
           method: "PATCH",
         }

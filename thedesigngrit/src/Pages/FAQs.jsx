@@ -12,7 +12,7 @@ function FAQs() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("https://tdg-db.onrender.com/api/faqs/");
+        const response = await fetch("https://api.thedesigngrit.com/api/faqs/");
         if (!response.ok) {
           throw new Error("Failed to fetch FAQs");
         }

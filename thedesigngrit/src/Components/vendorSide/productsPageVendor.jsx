@@ -34,7 +34,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
       const fetchProducts = async () => {
         try {
           const response = await axios.get(
-            `https://tdg-db.onrender.com/api/products/getproducts/brand/${brandId}`,
+            `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId}`,
             {
               params: {
                 category: selectedCategory,
@@ -49,7 +49,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
               if (product.type) {
                 try {
                   const typeResponse = await axios.get(
-                    `https://tdg-db.onrender.com/api/types/types/${product.type}`
+                    `https://api.thedesigngrit.com/api/types/types/${product.type}`
                   );
                   product.typeName = typeResponse.data.name || "Unknown"; // Set type name
                 } catch (error) {
@@ -71,7 +71,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
       const fetchCategories = async () => {
         try {
           const response = await axios.get(
-            "https://tdg-db.onrender.com/api/categories/categories"
+            "https://api.thedesigngrit.com/api/categories/categories"
           );
           setCategories(response.data); // Set the fetched categories
         } catch (error) {
@@ -94,7 +94,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
     if (selectedCategoryId) {
       try {
         const response = await axios.get(
-          `https://tdg-db.onrender.com/api/subcategories/byCategory/${selectedCategoryId}`
+          `https://api.thedesigngrit.com/api/subcategories/byCategory/${selectedCategoryId}`
         );
         setSubCategories(response.data);
       } catch (error) {
@@ -143,7 +143,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://tdg-db.onrender.com/api/products/${product._id}`
+          `https://api.thedesigngrit.com/api/products/${product._id}`
         ); // Use the correct endpoint
         setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
         alert("Product deleted successfully!");
