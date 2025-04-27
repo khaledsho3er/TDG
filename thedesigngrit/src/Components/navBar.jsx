@@ -34,7 +34,14 @@ function Header() {
   const [favoritesOpen, setFavoritesOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false); // State to toggle categories visibility
-  const [menuData, setMenuData] = useState([]);
+  const [menuData, setMenuData] = useState([
+    { _id: "static-1", name: "Furniture" },
+    { _id: "static-2", name: "Kitchen & Dining" },
+    { _id: "static-3", name: "Bath" },
+    { _id: "static-4", name: "Lighting" },
+    { _id: "static-5", name: "Home Decor" },
+    { _id: "static-6", name: "Outdoor" },
+  ]);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
@@ -69,18 +76,10 @@ function Header() {
           throw new Error("Failed to load categories");
         }
         const data = await response.json();
-        setMenuData(data.slice(0, 6)); // Slice the first 6 categories
+        setMenuData(data.slice(0, 6)); // Update with real categories
       } catch (error) {
         console.error("Error fetching categories:", error);
-        // Static fallback categories if fetching fails
-        setMenuData([
-          { _id: "static-1", name: "Furniture" },
-          { _id: "static-2", name: "Kitchen & Dining" },
-          { _id: "static-3", name: "Bath" },
-          { _id: "static-4", name: "Lighting" },
-          { _id: "static-5", name: "Home Decor" },
-          { _id: "static-6", name: "Outdoor" },
-        ]);
+        // No need to set static categories here anymore, because it's already initialized
       }
     };
 
