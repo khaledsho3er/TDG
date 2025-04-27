@@ -23,7 +23,7 @@ const ExploreConcepts = () => {
     const fetchConcepts = async () => {
       try {
         const response = await fetch(
-          "https://tdg-db.onrender.com/api/concepts/concepts"
+          "https://api.thedesigngrit.com/api/concepts/concepts"
         );
         const data = await response.json();
         setConcepts(data.concepts);
