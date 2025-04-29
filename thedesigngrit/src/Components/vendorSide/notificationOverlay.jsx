@@ -6,10 +6,7 @@ const NotificationOverlayVendor = ({ onClose, setActivePage }) => {
   // const [showAll, setShowAll] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { vendor } = useVendor(); // Get vendor data
-  // const handleOpenPage = () => {
-  //   setActivePage("notifications"); // This will render the NotificationsPage in the main content
-  //   onClose(); // Close the overlay
-  // };
+
   // Fetch notifications from the API
   useEffect(() => {
     const fetchNotifications = async () => {

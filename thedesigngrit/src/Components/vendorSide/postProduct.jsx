@@ -251,28 +251,6 @@ const AddProduct = () => {
     }
   };
 
-  // // Handle adding new tags
-  // const handleAddTag = (e) => {
-  //   if (e.key === "Enter" && e.target.value.trim() !== "") {
-  //     const newTag = e.target.value.trim();
-  //     setTags([...tags, newTag]); // Update local tags state
-  //     setFormData({
-  //       ...formData,
-  //       tags: [...formData.tags, newTag], // Update formData tags
-  //     });
-  //     e.target.value = ""; // Clear input
-  //   }
-  // };
-
-  // // Function to remove a tag by index
-  // const handleRemoveTag = (index) => {
-  //   const newTags = tags.filter((_, i) => i !== index);
-  //   setTags(newTags); // Update local tags state
-  //   setFormData({
-  //     ...formData,
-  //     tags: newTags, // Update formData tags
-  //   });
-  // };
   // Handles adding a tag from the input field (Press Enter)
   useEffect(() => {
     const fetchTags = async () => {

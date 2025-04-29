@@ -60,10 +60,6 @@ const VendorHome = () => {
           user={vendor} // The user object should contain role and tier information
         />
         <div className="content-vendor">{renderContent()}</div>
-        {/* <div className="content-vendor">
-          {renderContent()}
-          <NotificationsPage setActivePage={setActivePage} />
-        </div> */}
       </div>
     </div>
   );

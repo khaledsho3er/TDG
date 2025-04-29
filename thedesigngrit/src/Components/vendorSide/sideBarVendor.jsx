@@ -87,15 +87,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           <HiBuildingStorefront size={20} style={{ marginRight: "5px" }} />
           View In Store
         </li>
-        {/* Render "Add Product" only if vendor tier is 3 or higher */}
-        {/* {vendor?.tier >= 3 && (
-          <li
-            onClick={() => setActivePage("AddProduct")}
-            className={getActiveClass("AddProduct")}
-          >
-            Add Product
-          </li>
-        )} */}
+
         <li
           onClick={() => setActivePage("promotionsPage")}
           className={getActiveClass("promotionsPage")}
@@ -103,15 +95,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
           Promotions
         </li>
-        {/* {vendor?.tier >= 3 && (
-          <li
-            onClick={() => setActivePage("posPage")}
-            className={getActiveClass("posPage")}
-          >
-            <RiFileExcel2Fill size={20} style={{ marginRight: "5px" }} />
-            Pos Page
-          </li>
-        )} */}
+
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
@@ -142,15 +126,6 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             Accounting
           </li>
         )}
-        {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-        {/* {vendor?.tier >= 3 && (
-          <li
-            onClick={() => setActivePage("EmployeeSignup")}
-            className={getActiveClass("EmployeeSignup")}
-          >
-            Add Employee
-          </li>
-        )} */}
 
         {/* Render "Employee Page" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (

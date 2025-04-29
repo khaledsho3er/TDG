@@ -312,11 +312,7 @@ const OrderDetails = ({ order, onBack }) => {
             >
               <IoMdPrint style={{ color: "#fff", fontSize: "20px" }} />
             </InvoiceDownload>
-            {/* {order.orderStatus === "Pending" && (
-              <button className="submit-btn" onClick={handleDialogOpen}>
-                Set Delivery Date
-              </button>
-            )} */}
+
             {order.cartItems.every(
               (item) => item.subOrderStatus === "Confirmed"
             ) && (

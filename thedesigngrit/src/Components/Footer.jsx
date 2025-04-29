@@ -171,16 +171,7 @@ function Footer() {
                 Subscribe
               </Button>
             </Box>
-            {/* <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: "1px",
-                backgroundColor: "rgba(0, 0, 0, 0.42)",
-              }}
-            /> */}
+
             {/* Checkbox */}
             <FormControlLabel
               control={

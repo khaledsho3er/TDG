@@ -93,18 +93,6 @@ function AboutUsPage() {
           </p>
         </Box>
       </Box>
-      {/* <Box className="ourStory-Section-typo">
-        <h2> Our Story</h2>
-        <p>
-          TheDesignGrit began with a vision: to revive Egypt’s rich design
-          heritage while paving the way for its global future. Inspired by a
-          lack of resources for Egyptian designers, our founders created a
-          platform to elevate local brands, connecting their craft with global
-          audiences. We aim to bridge the gap between timeless artistry and
-          modern innovation, empowering brands and creating an ecosystem where
-          craftsmanship thrives.
-        </p>
-      </Box> */}
       <Box className="ourStory-Section-typo">
         <hr className="line-between" />
       </Box>

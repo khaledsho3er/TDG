@@ -66,12 +66,6 @@ const RelatedProducts = ({ productId }) => {
           className="related-swiper"
         >
           {relatedProducts.map((product) => {
-            // Find category name based on product's cateory
-            // const category = categories.find(
-            //   (cat) => cat._id === product.categoryId
-            // );
-            // const categoryName = category ? category.name : "Unknown Category";
-
             return (
               <SwiperSlide key={product._id}>
                 <Link
