@@ -81,7 +81,10 @@ const ExploreConcepts = () => {
                       ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`
                       : "path/to/default-image.jpg" // Provide a default image if imageUrl is not available
                   }
-                  alt={concept.title || "Concept image"} // Default alt text
+                  sizes="(max-width: 600px) 400px, (max-width: 960px) 800px, 1200px"
+                  alt={concept.title || "Concept image"}
+                  style={{ width: "100%", height: "auto" }}
+                  loading="lazy"
                 />
                 {concept.nodes &&
                   concept.nodes.map((node, idx) => (

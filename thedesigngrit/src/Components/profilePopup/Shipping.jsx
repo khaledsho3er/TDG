@@ -69,16 +69,6 @@ const ShippingInfoPopup = () => {
     setNewAddress(userData.shipmentAddress[index]);
     setIsEditing(true);
   };
-  // const handleDefaultChange = (index) => {
-  //   setUserData((prev) => {
-  //     const updatedAddresses = prev.shipmentAddress.map((addr, i) => ({
-  //       ...addr,
-  //       isDefault: i === index, // Only the selected address is default
-  //     }));
-
-  //     return { ...prev, shipmentAddress: updatedAddresses };
-  //   });
-  // };
 
   const handleAddNewAddress = () => {
     setNewAddress({
