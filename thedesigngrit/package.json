@@ -38,6 +38,7 @@
     "react-slick": "^0.30.2",
     "recharts": "^2.15.1",
     "slick-carousel": "^1.8.1",
+    "source-map-explorer": "^2.5.3",
     "swiper": "^11.2.5",
     "swr": "^2.3.3",
     "web-vitals": "^2.1.4",
@@ -47,7 +48,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
+
   },
   "eslintConfig": {
     "extends": [
