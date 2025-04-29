@@ -19,8 +19,7 @@ import axios from "axios";
 import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-import InvoiceDownload from "./invoice";
-
+const InvoiceDownload = React.lazy(() => import("./invoice"));
 const OrderDetails = ({ order, onBack }) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");

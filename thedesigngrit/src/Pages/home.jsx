@@ -7,7 +7,9 @@ import { Box } from "@mui/material";
 import PartnersSection from "../Components/home/partners";
 import ProductSlider from "../Components/home/bestSeller";
 import Footer from "../Components/Footer";
-import ScrollAnimation from "../Context/scrollingAnimation"; // Import the animation wrapper
+const ScrollAnimation = React.lazy(() =>
+  import("../Context/scrollingAnimation")
+);
 
 const videos = [
   "/Assets/Video-hero/herovideo.webm",
