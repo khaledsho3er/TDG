@@ -65,6 +65,7 @@ const PartnersSection = () => {
               src={partner.logo}
               alt={`${partner.name} logo`}
               className="partner-logo"
+              style={{ width: "100%", height: "100%" }}
             />
           </a>
         ))}
