@@ -83,11 +83,9 @@ const ExploreConcepts = () => {
                   }
                   sizes="(max-width: 600px) 400px, (max-width: 960px) 800px, 1200px"
                   alt={concept.title || "Concept image"}
-                  // style={{ width: "100%", height: "auto", aspectRatio: "3/2 " }}
                   loading="lazy"
-                  fetchPriority="high"
-                  width="1200"
-                  height="600"
+                  width={"100%"}
+                  height={"100%"}
                 />
                 {concept.nodes &&
                   concept.nodes.map((node, idx) => (
