@@ -10,16 +10,16 @@ import {
 } from "@mui/material";
 import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
+import { useNavigate } from "react-router-dom";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Fetch the concept data from the backend
     const fetchConcepts = async () => {
       try {
         const response = await fetch(
@@ -44,19 +44,16 @@ const ExploreConcepts = () => {
     setCurrentCard((prev) => (prev - 1 + concepts.length) % concepts.length);
   };
 
-  // Calculate left position for the progress fill
   const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
   return (
     <Box className="concept-explore-container">
-      {/* Title */}
       <Box className="concept-title-container">
         <Typography variant="h4" className="concept-title">
           Explore Our Concepts
         </Typography>
       </Box>
 
-      {/* Cards */}
       <Box className="concept-cards-container">
         {loading ? (
           <Typography>Loading...</Typography>
@@ -67,10 +64,11 @@ const ExploreConcepts = () => {
             (currentCard + 2) % concepts.length,
           ].map((index, position) => {
             const concept = concepts[index];
+            const isMainCard = position === 1;
             let className = "concept-card";
-            if (position === 1) className += " middle-card"; // Middle card
-            if (position === 0) className += " left-card"; // Left card
-            if (position === 2) className += " right-card"; // Right card
+            if (position === 0) className += " left-card";
+            if (position === 1) className += " middle-card";
+            if (position === 2) className += " right-card";
 
             return (
               <Card key={concept._id} className={className}>
@@ -79,89 +77,74 @@ const ExploreConcepts = () => {
                   image={
                     concept.imageUrl
                       ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`
-                      : "path/to/default-image.jpg" // Provide a default image if imageUrl is not available
+                      : "/default-image.jpg"
                   }
-                  sizes="(max-width: 600px) 400px, (max-width: 960px) 800px, 1200px"
                   alt={concept.title || "Concept image"}
-                  loading="lazy"
-                  width={"100%"}
-                  height={"100%"}
+                  width="400"
+                  height="300"
+                  style={{ width: "100%", height: "auto" }}
+                  loading={isMainCard ? "eager" : "lazy"}
+                  fetchpriority={isMainCard ? "high" : "auto"}
+                  decoding="async"
                 />
-                {concept.nodes &&
-                  concept.nodes.map((node, idx) => (
-                    <Box
-                      key={idx}
-                      sx={{
-                        position: "absolute",
-                        left: `${node.x * 100}%`,
-                        top: `${node.y * 100}%`,
-                        transform: "translate(-50%, -50%)",
-                      }}
-                      onClick={() => navigate(`/product/${node.productId._id}`)}
-                    >
-                      <Tooltip
-                        title={
-                          <Box
-                            sx={{
-                              padding: 1,
-                              backgroundColor: "#ffffff",
-                              color: "#2d2d2d",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              flexDirection: "row",
-                              borderRadius: "8px",
-                            }}
-                          >
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexDirection: "row",
-                              }}
-                            >
-                              <Box sx={{ mr: 1 }}>
-                                {/* beside teh name of the prodct in the node */}
-                                <img
-                                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
-                                  alt={node.productId.name}
-                                  style={{ width: "80px", height: "80px" }}
-                                />
-                              </Box>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  marginLeft: "5px",
-                                }}
-                              >
-                                <Typography variant="body2">
-                                  {node.productId.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                  E£{node.productId.price}
-                                </Typography>
-                              </Box>
-                            </Box>
-                            <Box sx={{ ml: 1 }}>
-                              <MdOutlineArrowForwardIos />
-                            </Box>
-                          </Box>
-                        }
-                        placement="top"
-                      >
+
+                {concept.nodes?.map((node, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      position: "absolute",
+                      left: `${node.x * 100}%`,
+                      top: `${node.y * 100}%`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    onClick={() => navigate(`/product/${node.productId._id}`)}
+                  >
+                    <Tooltip
+                      title={
                         <Box
                           sx={{
-                            backgroundColor: "#ffffff",
-                            width: 12,
-                            height: 12,
-                            borderRadius: "50%",
-                            cursor: "pointer",
+                            padding: 1,
+                            backgroundColor: "#fff",
+                            color: "#2d2d2d",
+                            borderRadius: "8px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
                           }}
-                        />
-                      </Tooltip>
-                    </Box>
-                  ))}
+                        >
+                          <img
+                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
+                            alt={node.productId.name}
+                            width="80"
+                            height="80"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <Box>
+                            <Typography variant="body2">
+                              {node.productId.name}
+                            </Typography>
+                            <Typography variant="body2">
+                              E£{node.productId.price}
+                            </Typography>
+                          </Box>
+                          <MdOutlineArrowForwardIos />
+                        </Box>
+                      }
+                      placement="top"
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor: "#fff",
+                          width: 12,
+                          height: 12,
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </Tooltip>
+                  </Box>
+                ))}
+
                 <CardContent className="concept-card-content">
                   <IconButton
                     className="concept-shopping-icon"
@@ -180,7 +163,6 @@ const ExploreConcepts = () => {
         )}
       </Box>
 
-      {/* Subtitle */}
       <Box className="concept-subtitle">
         <Typography variant="h4" className="concept-subtitle-title">
           Like <br />
@@ -190,7 +172,6 @@ const ExploreConcepts = () => {
         <p className="concept-subtitle-text">Click on it.</p>
       </Box>
 
-      {/* Progress */}
       <Box className="concept-controls">
         <Box className="concept-progress-container">
           <Typography>{currentCard + 1}</Typography>
