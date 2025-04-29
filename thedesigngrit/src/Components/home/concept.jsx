@@ -12,7 +12,7 @@ import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useNavigate } from "react-router-dom"; // Assuming you're using React Router
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-
+import { Helmet } from "react-helmet";
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
@@ -74,6 +74,13 @@ const ExploreConcepts = () => {
 
             return (
               <Card key={concept._id} className={className}>
+                <Helmet>
+                  <link
+                    rel="preload"
+                    as="image"
+                    href={`https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`}
+                  />
+                </Helmet>
                 <CardMedia
                   component="img"
                   image={
@@ -84,7 +91,7 @@ const ExploreConcepts = () => {
                   sizes="(max-width: 600px) 400px, (max-width: 960px) 800px, 1200px"
                   alt={concept.title || "Concept image"}
                   style={{ width: "100%", height: "auto" }}
-                  loading="lazy"
+                  loading="eager"
                 />
                 {concept.nodes &&
                   concept.nodes.map((node, idx) => (
