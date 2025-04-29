@@ -76,7 +76,7 @@ const ExploreConcepts = () => {
                   component="img"
                   image={
                     concept.imageUrl
-                      ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}`
+                      ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}?width=400&height=300&format=webp`
                       : "/default-image.jpg"
                   }
                   alt={concept.title || "Concept image"}

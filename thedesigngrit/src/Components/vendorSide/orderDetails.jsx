@@ -51,9 +51,9 @@ const OrderDetails = ({ order, onBack }) => {
   const filteredProducts = order.cartItems.filter(
     (product) => product.brandId === brandId
   );
-  const handleDialogOpen = () => {
-    setOpenDialog(true);
-  };
+  // const handleDialogOpen = () => {
+  //   setOpenDialog(true);
+  // };
 
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -74,7 +74,7 @@ const OrderDetails = ({ order, onBack }) => {
   };
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleProductChange = (event) => setSelectedProduct(event.target.value);
+  // const handleProductChange = (event) => setSelectedProduct(event.target.value);
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
 
   const handleSaveSubDeliveryDate = async () => {
