@@ -92,7 +92,7 @@ const ProductSlider = () => {
             >
               <div className="product-image-home" style={{ width: "100%" }}>
                 <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp`}
                   alt={product.name}
                   style={{ width: "100%" }}
                 />
@@ -115,17 +115,6 @@ const ProductSlider = () => {
                       <span style={{ color: "red" }}>
                         {product.salePrice} E£
                       </span>
-                      {/* <span>
-                        {product.stock <= 5 && product.stock > 0 ? (
-                          <span style={{ color: "red" }}>
-                            Hurry up! Only {product.stock} left!
-                          </span>
-                        ) : product.stock === 0 ? (
-                          <span style={{ color: "red" }}>SOLD OUT</span>
-                        ) : (
-                          <span>{product.stock}</span>
-                        )}
-                      </span> */}
                     </span>
                   ) : (
                     <span>{product.price} E£</span>
