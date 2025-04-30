@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Chart from "./Chart";
-import DateRangePicker from "./DateRangePicker";
-import PayoutHistoryTable from "./PayoutHistoryTable";
-import RefundTable from "./RefundTable";
-import PaymentMethod from "./PaymentMethod";
+import Chart from "./Accounting/Chart";
+import DateRangePicker from "./Accounting/DateRangePicker";
+import PayoutHistoryTable from "./Accounting/PayoutHistoryTable";
+import RefundTable from "./Accounting/RefundTable";
+import PaymentMethod from "./Accounting/PaymentMethod";
 import axios from "axios";
 
 const AccountingPage = () => {
