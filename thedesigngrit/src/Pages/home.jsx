@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
-import LoadingScreen from "./loadingScreen";
 const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
 const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
 const SustainabilitySection = React.lazy(() =>
@@ -26,7 +25,6 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-  const [deferLoad, setDeferLoad] = useState(false);
 
   useEffect(() => {
     // Defer video rendering to reduce LCP impact
@@ -127,34 +125,33 @@ function Home() {
           </div>
         </div>
       </div>
-      {deferLoad && (
-        <Suspense fallback={<LoadingScreen />}>
-          <ScrollAnimation>
-            <Box className="concept-title">
-              <ExploreConcepts />
-            </Box>
-          </ScrollAnimation>
 
-          <ScrollAnimation>
-            <ShopByCategory />
-          </ScrollAnimation>
+      <Suspense fallback={null}>
+        <ScrollAnimation>
+          <Box className="concept-title">
+            <ExploreConcepts />
+          </Box>
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <Box sx={{ width: "100%" }}>
-              <ProductSlider />
-            </Box>
-          </ScrollAnimation>
+        <ScrollAnimation>
+          <ShopByCategory />
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <SustainabilitySection />
-          </ScrollAnimation>
+        <ScrollAnimation>
+          <Box sx={{ width: "100%" }}>
+            <ProductSlider />
+          </Box>
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <PartnersSection />
-          </ScrollAnimation>
-          <Footer />
-        </Suspense>
-      )}
+        <ScrollAnimation>
+          <SustainabilitySection />
+        </ScrollAnimation>
+
+        <ScrollAnimation>
+          <PartnersSection />
+        </ScrollAnimation>
+        <Footer />
+      </Suspense>
     </div>
   );
 }
