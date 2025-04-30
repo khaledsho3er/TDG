@@ -298,12 +298,7 @@ function Header() {
           {/* Logo */}
           <Link to="/home" style={{ textDecoration: "none", color: "#2d2d2d" }}>
             <Typography className="logo" variant="h4">
-              <img
-                src="/Assets/TDG_Logo_Black.webp"
-                alt="Logo"
-                width={69}
-                height={69}
-              />
+              <img src="/Assets/TDG_Logo_Black.webp" alt="Logo" />
             </Typography>
           </Link>
 

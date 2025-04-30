@@ -90,6 +90,9 @@ const SustainabilitySection = () => {
               height: "100%",
               objectFit: "cover",
             }}
+            loading="lazy"
+            width={isSmallScreen ? "100%" : "100%"}
+            height={isSmallScreen ? "auto" : "100%"}
           />
         </CardMedia>
       </Card>
