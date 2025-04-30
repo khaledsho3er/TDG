@@ -7217,51 +7217,27 @@ input:focus {
 /* Accounting Page */
 .accounting-page {
   padding: 20px;
-  font-family: "Montserrat", sans-serif;
 }
 
-.stats-section {
+.dashboard-header-vendor {
+  margin-bottom: 20px;
+}
+
+.accounting-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.graph-container {
   display: flex;
   gap: 20px;
-  margin: 20px 0;
-  flex-wrap: wrap;
 }
 
-.stat-box {
-  background: #f2f2f2;
-  padding: 20px;
-  border-radius: 10px;
-  min-width: 180px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.table-container {
-  margin: 20px 0;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th,
-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-.payment-method {
-  margin: 20px 0;
-}
-
-.payment-method input {
-  padding: 8px;
-  margin-right: 10px;
-}
-
-.date-picker-container {
-  margin-bottom: 20px;
+.graph {
+  flex: 1;
+  height: 200px;
+  background-color: #f0f0f0;
 }
 
 @keyframes slideIn {
