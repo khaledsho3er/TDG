@@ -160,20 +160,20 @@ function Home() {
 
   return (
     <div className="home">
-      <div className="background-layer">
-        <video
-          ref={videoRef}
-          className="hero-video-element"
-          src={videoSources[currentVideoIndex]}
-          autoPlay
-          muted
-          playsInline
-        ></video>
-      </div>
       <Header />
 
       {/* Hero Section */}
       <div className="hero-home-section">
+        <div className="background-layer">
+          <video
+            ref={videoRef}
+            className="hero-video-element"
+            src={videoSources[currentVideoIndex]}
+            autoPlay
+            muted
+            playsInline
+          ></video>
+        </div>
         <div className="hero-video">
           {isMobile ? (
             <HeroImageFallback />
@@ -192,7 +192,9 @@ function Home() {
                     {currentVideoIndex === index && (
                       <div
                         className="video-progress-bar"
-                        style={{ width: `${progress}%` }}
+                        style={{
+                          width: `${progress}%`,
+                        }}
                       ></div>
                     )}
                   </div>
