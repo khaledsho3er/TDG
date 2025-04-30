@@ -26,25 +26,26 @@ function Home() {
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  // Detect mobile once at startup and on resize
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768); // or use a more specific breakpoint
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
-
-    checkIfMobile();
-    window.addEventListener("resize", checkIfMobile);
-    return () => window.removeEventListener("resize", checkIfMobile);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Defer video rendering
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
-    } else {
-      setTimeout(() => setShowVideo(true), 2000);
+    if (!isMobile) {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => setShowVideo(true));
+      } else {
+        setTimeout(() => setShowVideo(true), 2000);
+      }
     }
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -86,42 +87,33 @@ function Home() {
 
   return (
     <div className="home">
-      <div className="background-layer">
-        <video
-          ref={videoRef}
-          className="hero-video-element"
-          src={videos[currentVideoIndex]}
-          autoPlay
-          muted
-          playsInline
-        ></video>
-      </div>
+      {!isMobile && showVideo && (
+        <div className="background-layer">
+          <video
+            ref={videoRef}
+            className="hero-video-element"
+            src={videos[currentVideoIndex]}
+            poster={posterImage}
+            preload="metadata"
+            autoPlay
+            muted
+            playsInline
+          />
+        </div>
+      )}
       {/* Header and Sections */}
       <Header />
       {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
-          {showVideo ? (
-            isMobile ? (
-              <img
-                src={posterImage}
-                alt="Hero Poster"
-                className="hero-poster-image"
-                style={{ width: "100%", height: "auto" }}
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                className="hero-video-element"
-                src={videos[currentVideoIndex]}
-                poster={posterImage}
-                preload="metadata"
-                autoPlay
-                muted
-                playsInline
-              />
-            )
-          ) : null}
+          {isMobile && (
+            <img
+              src={posterImage}
+              alt="Hero"
+              className="hero-poster-image"
+              style={{ width: "100%", height: "auto" }}
+            />
+          )}
 
           {!isMobile && (
             <div className="video-progress-container">
