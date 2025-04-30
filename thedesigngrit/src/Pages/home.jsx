@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
-
+import LoadingScreen from "./loadingScreen";
 const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
 const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
 const SustainabilitySection = React.lazy(() =>
@@ -18,35 +18,31 @@ const videos = [
   "/Assets/Video-hero/herovideo3.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.webp";
+const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
 
 function Home() {
   const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
-  const [autoplay, setAutoplay] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const [deferLoad, setDeferLoad] = useState(false);
 
   useEffect(() => {
+    // Defer video rendering to reduce LCP impact
     if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => {
-        setAutoplay(true);
-        setDeferLoad(true);
-      });
+      requestIdleCallback(() => setShowVideo(true));
     } else {
-      setTimeout(() => {
-        setAutoplay(true);
-        setDeferLoad(true);
-      }, 2000);
+      setTimeout(() => setShowVideo(true), 2000);
     }
   }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
 
-    const handleLoadedMetadata = () => setVideoDuration(video.duration);
+    const handleLoadedMetadata = () => {
+      setVideoDuration(video.duration);
+    };
 
     const handleTimeUpdate = () => {
       if (videoDuration) {
@@ -59,14 +55,18 @@ function Home() {
       setProgress(0);
     };
 
-    video.addEventListener("loadedmetadata", handleLoadedMetadata);
-    video.addEventListener("timeupdate", handleTimeUpdate);
-    video.addEventListener("ended", handleEnded);
+    if (video) {
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      video.addEventListener("timeupdate", handleTimeUpdate);
+      video.addEventListener("ended", handleEnded);
+    }
 
     return () => {
-      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
-      video.removeEventListener("ended", handleEnded);
+      if (video) {
+        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        video.removeEventListener("timeupdate", handleTimeUpdate);
+        video.removeEventListener("ended", handleEnded);
+      }
     };
   }, [videoDuration, currentVideoIndex]);
 
@@ -78,23 +78,35 @@ function Home() {
   return (
     <div className="home">
       <div className="background-layer">
-        {/* Always render video with poster image, defer autoplay */}
         <video
           ref={videoRef}
           className="hero-video-element"
           src={videos[currentVideoIndex]}
-          poster={posterImage}
-          preload="auto"
-          autoPlay={autoplay}
+          autoPlay
           muted
           playsInline
-        />
+        ></video>
       </div>
-
+      {/* Header and Sections */}
       <Header />
-
+      {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              className="hero-video-element"
+              src={videos[currentVideoIndex]}
+              poster={posterImage}
+              preload="metadata"
+              autoPlay
+              muted
+              playsInline
+            />
+          ) : (
+            <></>
+          )}
+
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
@@ -108,16 +120,15 @@ function Home() {
                   <div
                     className="video-progress-bar"
                     style={{ width: `${progress}%` }}
-                  />
+                  ></div>
                 )}
               </div>
             ))}
           </div>
         </div>
       </div>
-
       {deferLoad && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingScreen />}>
           <ScrollAnimation>
             <Box className="concept-title">
               <ExploreConcepts />
@@ -141,7 +152,6 @@ function Home() {
           <ScrollAnimation>
             <PartnersSection />
           </ScrollAnimation>
-
           <Footer />
         </Suspense>
       )}
