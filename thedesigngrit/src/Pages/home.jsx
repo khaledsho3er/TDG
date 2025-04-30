@@ -1,30 +1,38 @@
-import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
+import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import Header from "../Components/navBar";
-import Footer from "../Components/Footer";
+import ShopByCategory from "../Components/home/Category";
+import ExploreConcepts from "../Components/home/concept";
+import SustainabilitySection from "../Components/home/Sustainability";
 import { Box } from "@mui/material";
+import PartnersSection from "../Components/home/partners";
+import ProductSlider from "../Components/home/bestSeller";
+import Footer from "../Components/Footer";
 
-const ShopByCategory = lazy(() => import("../Components/home/Category"));
-const ExploreConcepts = lazy(() => import("../Components/home/concept"));
-const SustainabilitySection = lazy(() => import("../Components/home/Sustainability"));
-const PartnersSection = lazy(() => import("../Components/home/partners"));
-const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
-// Preloaded poster image path
-const posterImage = "/Assets/Video-hero/poster.webp";
-
-// Your WebM videos (make sure they are compressed properly)
 const videos = [
   "/Assets/Video-hero/herovideo.webm",
   "/Assets/Video-hero/herovideo2.webm",
   "/Assets/Video-hero/herovideo3.webm",
 ];
 
+const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
+
 function Home() {
   const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    // Defer video rendering to reduce LCP impact
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => setShowVideo(true));
+    } else {
+      setTimeout(() => setShowVideo(true), 2000);
+    }
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -66,22 +74,29 @@ function Home() {
 
   return (
     <div className="home">
-      <Header />
-
+      {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
-          <video
-            ref={videoRef}
-            className="hero-video-element"
-            src={videos[currentVideoIndex]}
-            poster={posterImage}
-            preload="metadata"
-            autoPlay
-            muted
-            playsInline
-          ></video>
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              className="hero-video-element"
+              src={videos[currentVideoIndex]}
+              poster={posterImage}
+              preload="metadata"
+              autoPlay
+              muted
+              playsInline
+            />
+          ) : (
+            <img
+              src={posterImage}
+              alt="Hero Poster"
+              className="hero-video-poster"
+              style={{ width: "100%", height: "auto" }}
+            />
+          )}
 
-          {/* Progress Dots & Circles */}
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
@@ -103,8 +118,10 @@ function Home() {
         </div>
       </div>
 
-      {/* Lazy-loaded sections */}
-      <Suspense fallback={<div>Loading...</div>}>
+      {/* Header and Sections */}
+      <Header />
+
+      <Suspense fallback={null}>
         <ScrollAnimation>
           <Box className="concept-title">
             <ExploreConcepts />
