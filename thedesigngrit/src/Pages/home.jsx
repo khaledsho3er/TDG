@@ -12,12 +12,12 @@ const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
 const videos = [
-  "/Assets/Video-hero/herovideo.webm",
+  "/Assets/Video-hero/herovideo4.webm",
   "/Assets/Video-hero/herovideo2.webm",
-  "/Assets/Video-hero/herovideo3.webm",
+  "/Assets/Video-hero/herovideo5.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
+const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
 
 function Home() {
   const videoRef = useRef(null);
@@ -94,12 +94,13 @@ function Home() {
             <video
               ref={videoRef}
               className="hero-video-element"
-              src={videos[currentVideoIndex]}
               poster={posterImage}
               preload="metadata"
               autoPlay
               muted
+              loop
               playsInline
+              src={videos[currentVideoIndex]} // Load one only
             />
           ) : (
             <></>
