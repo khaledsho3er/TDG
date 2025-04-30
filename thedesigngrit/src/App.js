@@ -9,6 +9,7 @@ import LoadingScreen from "./Pages/loadingScreen";
 import ReadyToShip from "./Pages/ReadyToship";
 import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
+import Test1 from "./Pages/test1";
 
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
@@ -55,7 +56,7 @@ const VerifyPartners = lazy(() =>
 const PublicRoutes = () => (
   <Suspense fallback={<LoadingScreen />}>
     <Routes>
-      <Route exact path="/" element={<LoadingScreen />} />
+      <Route exact path="/" element={<Test1 />} />
       <Route exact path="/home" element={<Home />} />
       <Route exact path="/login" element={<LoginPage />} />
       <Route exact path="/signup" element={<SignUpPage />} />
