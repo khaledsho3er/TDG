@@ -25,27 +25,15 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  // Detect mobile once at startup and on resize
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
-  // Defer video rendering
   useEffect(() => {
-    if (!isMobile) {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(() => setShowVideo(true));
-      } else {
-        setTimeout(() => setShowVideo(true), 2000);
-      }
+    // Defer video rendering to reduce LCP impact
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => setShowVideo(true));
+    } else {
+      setTimeout(() => setShowVideo(true), 2000);
     }
-  }, [isMobile]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -87,54 +75,54 @@ function Home() {
 
   return (
     <div className="home">
-      {!isMobile && showVideo && (
-        <div className="background-layer">
-          <video
-            ref={videoRef}
-            className="hero-video-element"
-            src={videos[currentVideoIndex]}
-            poster={posterImage}
-            preload="metadata"
-            autoPlay
-            muted
-            playsInline
-          />
-        </div>
-      )}
+      <div className="background-layer">
+        <video
+          ref={videoRef}
+          className="hero-video-element"
+          src={videos[currentVideoIndex]}
+          autoPlay
+          muted
+          playsInline
+        ></video>
+      </div>
       {/* Header and Sections */}
       <Header />
       {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
-          {isMobile && (
-            <img
-              src={posterImage}
-              alt="Hero"
-              className="hero-poster-image"
-              style={{ width: "100%", height: "auto" }}
+          {showVideo ? (
+            <video
+              ref={videoRef}
+              className="hero-video-element"
+              src={videos[currentVideoIndex]}
+              poster={posterImage}
+              preload="metadata"
+              autoPlay
+              muted
+              playsInline
             />
+          ) : (
+            <></>
           )}
 
-          {!isMobile && (
-            <div className="video-progress-container">
-              {videos.map((_, index) => (
-                <div
-                  key={index}
-                  className={`video-progress-dot ${
-                    currentVideoIndex === index ? "active" : "circle"
-                  }`}
-                  onClick={() => handleDotClick(index)}
-                >
-                  {currentVideoIndex === index && (
-                    <div
-                      className="video-progress-bar"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="video-progress-container">
+            {videos.map((_, index) => (
+              <div
+                key={index}
+                className={`video-progress-dot ${
+                  currentVideoIndex === index ? "active" : "circle"
+                }`}
+                onClick={() => handleDotClick(index)}
+              >
+                {currentVideoIndex === index && (
+                  <div
+                    className="video-progress-bar"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
