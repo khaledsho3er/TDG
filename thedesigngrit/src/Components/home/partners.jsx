@@ -62,10 +62,17 @@ const PartnersSection = () => {
             rel="noopener noreferrer"
           >
             <img
-              src={partner.logo}
+              src={`Assets/PartnersLogos/${partner.logo}-300.webp`}
+              srcSet={`
+    Assets/PartnersLogos/${partner.logo}-150.webp 150w,
+    Assets/PartnersLogos/${partner.logo}-300.webp 300w,
+    Assets/PartnersLogos/${partner.logo}-500.webp 500w
+  `}
+              sizes="(max-width: 768px) 50vw, 150px"
               alt={`${partner.name} logo`}
-              className="partner-logo"
-              style={{ width: "100%", height: "100%" }}
+              loading="lazy"
+              width="150"
+              height="auto"
             />
           </a>
         ))}
