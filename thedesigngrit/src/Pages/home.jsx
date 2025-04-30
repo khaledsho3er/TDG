@@ -103,27 +103,16 @@ function Home() {
               playsInline
             />
           ) : (
-            <picture>
-              <source
-                srcSet="/Assets/Video-hero/poster.avif"
-                type="image/avif"
-                media="(min-width: 600px)"
-              />
-              <source
-                srcSet="/Assets/Video-hero/poster.webp"
-                type="image/webp"
-              />
-              <img
-                src="/Assets/Video-hero/poster.webp"
-                width="1000"
-                height="500"
-                alt="Hero preview"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-                style={{ width: "100%", height: "auto", objectFit: "cover" }}
-              />
-            </picture>
+            <img
+              src={posterImage}
+              alt="Hero preview"
+              width="1000"
+              height="500"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
           )}
 
           <div className="video-progress-container">
