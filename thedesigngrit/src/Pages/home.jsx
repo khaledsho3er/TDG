@@ -100,7 +100,7 @@ function Home() {
       video.removeEventListener("timeupdate", handleTimeUpdate);
       video.removeEventListener("ended", handleEnded);
     };
-  }, [videoDuration, currentVideoIndex, videoSources.length]);
+  }, [videoDuration, currentVideoIndex, videoLoaded]);
 
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);

@@ -55,7 +55,7 @@ const VerifyPartners = lazy(() =>
 const PublicRoutes = () => (
   <Suspense fallback={<LoadingScreen />}>
     <Routes>
-      <Route exact path="/" element={<Home />} />
+      <Route exact path="/" element={<LoadingScreen />} />
       <Route exact path="/home" element={<Home />} />
       <Route exact path="/login" element={<LoginPage />} />
       <Route exact path="/signup" element={<SignUpPage />} />

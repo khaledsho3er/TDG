@@ -1,10 +1,18 @@
-@font-face {
+/* @font-face {
   font-family: "Horizon";
-  src: url("../fonts/horizon/horizon.otf") format("opentype"); /* Path to the font */
+  src: url("../fonts/horizon/horizon.otf") format("opentype"); 
   font-weight: bold;
   font-style: normal;
+} */
+@font-face {
+  font-family: "Horizon";
+  src: url("../fonts/horizon/horizon.woff2") format("woff2"),
+    url("../fonts/horizon/horizon.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin character subset */
 }
-
 /* Login.css */
 body {
   margin: 0;

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoadingScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -9,10 +11,11 @@ const LoadingScreen = ({ onComplete }) => {
       if (onComplete) {
         onComplete();
       }
+      navigate("/home"); // Navigate to /home after timeout
     }, 10000);
 
     return () => clearTimeout(timer);
-  }, [onComplete]); // Added onComplete as a dependency
+  }, [onComplete, navigate]); // Added navigate as a dependency
 
   return (
     isVisible && (
@@ -38,7 +41,10 @@ const LoadingScreen = ({ onComplete }) => {
           playsInline
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
-          onEnded={() => setIsVisible(false)}
+          onEnded={() => {
+            setIsVisible(false);
+            navigate("/home"); // Navigate to /home after video ends
+          }}
           style={{
             width: "100vw",
             height: "100vh",
