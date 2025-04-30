@@ -74,6 +74,8 @@ function Home() {
 
   return (
     <div className="home">
+      {/* Header and Sections */}
+      <Header />
       {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
@@ -117,9 +119,6 @@ function Home() {
           </div>
         </div>
       </div>
-
-      {/* Header and Sections */}
-      <Header />
 
       <Suspense fallback={null}>
         <ScrollAnimation>
