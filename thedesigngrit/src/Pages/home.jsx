@@ -1,16 +1,19 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
 import Header from "../Components/navBar";
-import ShopByCategory from "../Components/home/Category";
-import ExploreConcepts from "../Components/home/concept";
-import SustainabilitySection from "../Components/home/Sustainability";
-import { Box } from "@mui/material";
-import PartnersSection from "../Components/home/partners";
-import ProductSlider from "../Components/home/bestSeller";
 import Footer from "../Components/Footer";
-const ScrollAnimation = React.lazy(() =>
-  import("../Context/scrollingAnimation")
-);
+import { Box } from "@mui/material";
 
+const ShopByCategory = lazy(() => import("../Components/home/Category"));
+const ExploreConcepts = lazy(() => import("../Components/home/concept"));
+const SustainabilitySection = lazy(() => import("../Components/home/Sustainability"));
+const PartnersSection = lazy(() => import("../Components/home/partners"));
+const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
+const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
+
+// Preloaded poster image path
+const posterImage = "/Assets/Video-hero/poster.webp";
+
+// Your WebM videos (make sure they are compressed properly)
 const videos = [
   "/Assets/Video-hero/herovideo.webm",
   "/Assets/Video-hero/herovideo2.webm",
@@ -56,7 +59,6 @@ function Home() {
     };
   }, [videoDuration, currentVideoIndex]);
 
-  // Handle clicking on dots
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
@@ -64,16 +66,6 @@ function Home() {
 
   return (
     <div className="home">
-      <div className="background-layer">
-        <video
-          ref={videoRef}
-          className="hero-video-element"
-          src={videos[currentVideoIndex]}
-          autoPlay
-          muted
-          playsInline
-        ></video>
-      </div>
       <Header />
 
       <div className="hero-home-section">
@@ -82,6 +74,8 @@ function Home() {
             ref={videoRef}
             className="hero-video-element"
             src={videos[currentVideoIndex]}
+            poster={posterImage}
+            preload="metadata"
             autoPlay
             muted
             playsInline
@@ -100,9 +94,7 @@ function Home() {
                 {currentVideoIndex === index && (
                   <div
                     className="video-progress-bar"
-                    style={{
-                      width: `${progress}%`,
-                    }}
+                    style={{ width: `${progress}%` }}
                   ></div>
                 )}
               </div>
@@ -111,30 +103,32 @@ function Home() {
         </div>
       </div>
 
-      {/* Apply Scroll Animation to Sections */}
-      <ScrollAnimation>
-        <Box className="concept-title">
-          <ExploreConcepts />
-        </Box>
-      </ScrollAnimation>
+      {/* Lazy-loaded sections */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <ScrollAnimation>
+          <Box className="concept-title">
+            <ExploreConcepts />
+          </Box>
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <ShopByCategory />
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <ShopByCategory />
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <Box sx={{ width: "100%" }}>
-          <ProductSlider />
-        </Box>
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <Box sx={{ width: "100%" }}>
+            <ProductSlider />
+          </Box>
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <SustainabilitySection />
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <SustainabilitySection />
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <PartnersSection />
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <PartnersSection />
+        </ScrollAnimation>
+      </Suspense>
 
       <Footer />
     </div>
