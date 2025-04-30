@@ -12,9 +12,9 @@ const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
 const videos = [
-  "/Assets/Video-hero/herovideo4.webm",
   "/Assets/Video-hero/herovideo2.webm",
   "/Assets/Video-hero/herovideo5.webm",
+  "/Assets/Video-hero/herovideo4.webm",
 ];
 
 const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
