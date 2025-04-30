@@ -74,6 +74,16 @@ function Home() {
 
   return (
     <div className="home">
+      <div className="background-layer">
+        <video
+          ref={videoRef}
+          className="hero-video-element"
+          src={videos[currentVideoIndex]}
+          autoPlay
+          muted
+          playsInline
+        ></video>
+      </div>
       {/* Header and Sections */}
       <Header />
       {/* Hero Section */}
