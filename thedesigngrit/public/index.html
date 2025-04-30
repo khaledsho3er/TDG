@@ -94,6 +94,14 @@
     <!-- Preload Logo for Faster LCP -->
     <!-- Preload Critical Hero Poster -->
     <link rel="preload" as="image" href="/Assets/Video-hero/poster.webp" />
+    <link
+      rel="preload"
+      as="image"
+      href="/Assets/Video-hero/poster.avif"
+      fetchpriority="high"
+    />
+    <script src="some-non-critical.js" defer></script>
+
     <!-- <link rel="preload" href="/Assets/TDG_Logo_Black.webp" as="image" /> -->
     <!-- App Metadata -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.ico" />

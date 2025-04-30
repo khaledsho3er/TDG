@@ -1,13 +1,14 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
-import Header from "../Components/navBar";
-import ShopByCategory from "../Components/home/Category";
-import ExploreConcepts from "../Components/home/concept";
-import SustainabilitySection from "../Components/home/Sustainability";
 import { Box } from "@mui/material";
-import PartnersSection from "../Components/home/partners";
-import ProductSlider from "../Components/home/bestSeller";
-import Footer from "../Components/Footer";
-
+import Header from "../Components/navBar";
+const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
+const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
+const SustainabilitySection = React.lazy(() =>
+  import("../Components/home/Sustainability")
+);
+const PartnersSection = React.lazy(() => import("../Components/home/partners"));
+const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
+const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
 const videos = [
@@ -16,7 +17,7 @@ const videos = [
   "/Assets/Video-hero/herovideo3.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
+const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
 
 function Home() {
   const videoRef = useRef(null);
@@ -103,9 +104,13 @@ function Home() {
           ) : (
             <img
               src={posterImage}
-              alt="Hero Poster"
-              className="hero-video-poster"
-              style={{ width: "100%", height: "auto" }}
+              alt="Hero preview"
+              width="1000"
+              height="500"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
             />
           )}
 
@@ -130,33 +135,29 @@ function Home() {
         </div>
       </div>
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<div className="lazy-loader" />}>
+        {" "}
         <ScrollAnimation>
           <Box className="concept-title">
             <ExploreConcepts />
           </Box>
         </ScrollAnimation>
-
         <ScrollAnimation>
           <ShopByCategory />
         </ScrollAnimation>
-
         <ScrollAnimation>
           <Box sx={{ width: "100%" }}>
             <ProductSlider />
           </Box>
         </ScrollAnimation>
-
         <ScrollAnimation>
           <SustainabilitySection />
         </ScrollAnimation>
-
         <ScrollAnimation>
           <PartnersSection />
         </ScrollAnimation>
+        <Footer />
       </Suspense>
-
-      <Footer />
     </div>
   );
 }
