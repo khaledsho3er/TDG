@@ -25,6 +25,17 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768); // or use a more specific breakpoint
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   useEffect(() => {
     // Defer video rendering to reduce LCP impact
@@ -91,38 +102,47 @@ function Home() {
       <div className="hero-home-section">
         <div className="hero-video">
           {showVideo ? (
-            <video
-              ref={videoRef}
-              className="hero-video-element"
-              src={videos[currentVideoIndex]}
-              poster={posterImage}
-              preload="metadata"
-              autoPlay
-              muted
-              playsInline
-            />
-          ) : (
-            <></>
-          )}
+            isMobile ? (
+              <img
+                src={posterImage}
+                alt="Hero Poster"
+                className="hero-poster-image"
+                style={{ width: "100%", height: "auto" }}
+              />
+            ) : (
+              <video
+                ref={videoRef}
+                className="hero-video-element"
+                src={videos[currentVideoIndex]}
+                poster={posterImage}
+                preload="metadata"
+                autoPlay
+                muted
+                playsInline
+              />
+            )
+          ) : null}
 
-          <div className="video-progress-container">
-            {videos.map((_, index) => (
-              <div
-                key={index}
-                className={`video-progress-dot ${
-                  currentVideoIndex === index ? "active" : "circle"
-                }`}
-                onClick={() => handleDotClick(index)}
-              >
-                {currentVideoIndex === index && (
-                  <div
-                    className="video-progress-bar"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                )}
-              </div>
-            ))}
-          </div>
+          {!isMobile && (
+            <div className="video-progress-container">
+              {videos.map((_, index) => (
+                <div
+                  key={index}
+                  className={`video-progress-dot ${
+                    currentVideoIndex === index ? "active" : "circle"
+                  }`}
+                  onClick={() => handleDotClick(index)}
+                >
+                  {currentVideoIndex === index && (
+                    <div
+                      className="video-progress-bar"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
