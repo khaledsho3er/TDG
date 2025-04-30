@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
+
 const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
 const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
 const SustainabilitySection = React.lazy(() =>
@@ -17,31 +18,35 @@ const videos = [
   "/Assets/Video-hero/herovideo3.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
+const posterImage = "/Assets/Video-hero/poster.webp";
 
 function Home() {
   const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [autoplay, setAutoplay] = useState(false);
   const [deferLoad, setDeferLoad] = useState(false);
 
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
     if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
+      requestIdleCallback(() => {
+        setAutoplay(true);
+        setDeferLoad(true);
+      });
     } else {
-      setTimeout(() => setShowVideo(true), 2000);
+      setTimeout(() => {
+        setAutoplay(true);
+        setDeferLoad(true);
+      }, 2000);
     }
   }, []);
 
   useEffect(() => {
     const video = videoRef.current;
+    if (!video) return;
 
-    const handleLoadedMetadata = () => {
-      setVideoDuration(video.duration);
-    };
+    const handleLoadedMetadata = () => setVideoDuration(video.duration);
 
     const handleTimeUpdate = () => {
       if (videoDuration) {
@@ -54,18 +59,14 @@ function Home() {
       setProgress(0);
     };
 
-    if (video) {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      video.addEventListener("timeupdate", handleTimeUpdate);
-      video.addEventListener("ended", handleEnded);
-    }
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleEnded);
 
     return () => {
-      if (video) {
-        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        video.removeEventListener("timeupdate", handleTimeUpdate);
-        video.removeEventListener("ended", handleEnded);
-      }
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleEnded);
     };
   }, [videoDuration, currentVideoIndex]);
 
@@ -77,31 +78,23 @@ function Home() {
   return (
     <div className="home">
       <div className="background-layer">
+        {/* Always render video with poster image, defer autoplay */}
         <video
           ref={videoRef}
           className="hero-video-element"
           src={videos[currentVideoIndex]}
-          autoPlay
+          poster={posterImage}
+          preload="auto"
+          autoPlay={autoplay}
           muted
           playsInline
-        ></video>
+        />
       </div>
-      {/* Header and Sections */}
+
       <Header />
-      {/* Hero Section */}
+
       <div className="hero-home-section">
         <div className="hero-video">
-          <video
-            ref={videoRef}
-            className="hero-video-element"
-            src={videos[currentVideoIndex]}
-            poster={posterImage}
-            preload="metadata"
-            autoPlay
-            muted
-            playsInline
-          />
-
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
@@ -115,13 +108,14 @@ function Home() {
                   <div
                     className="video-progress-bar"
                     style={{ width: `${progress}%` }}
-                  ></div>
+                  />
                 )}
               </div>
             ))}
           </div>
         </div>
       </div>
+
       {deferLoad && (
         <Suspense fallback={null}>
           <ScrollAnimation>
@@ -147,6 +141,7 @@ function Home() {
           <ScrollAnimation>
             <PartnersSection />
           </ScrollAnimation>
+
           <Footer />
         </Suspense>
       )}
