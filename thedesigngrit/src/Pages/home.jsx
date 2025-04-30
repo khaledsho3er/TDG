@@ -1,24 +1,23 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
-
-// Lazy-loaded components
-const ShopByCategory = lazy(() => import("../Components/home/Category"));
-const ExploreConcepts = lazy(() => import("../Components/home/concept"));
-const SustainabilitySection = lazy(() =>
+const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
+const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
+const SustainabilitySection = React.lazy(() =>
   import("../Components/home/Sustainability")
 );
-const PartnersSection = lazy(() => import("../Components/home/partners"));
-const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
-const Footer = lazy(() => import("../Components/Footer"));
+const PartnersSection = React.lazy(() => import("../Components/home/partners"));
+const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
+const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
+
 const videos = [
   "/Assets/Video-hero/herovideo.webm",
   "/Assets/Video-hero/herovideo2.webm",
   "/Assets/Video-hero/herovideo3.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
+const posterImage = "/Assets/Video-hero/poster.webp"; // Preloaded in HTML head
 
 function Home() {
   const videoRef = useRef(null);
@@ -26,14 +25,14 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-
   const [deferLoad, setDeferLoad] = useState(false);
 
   useEffect(() => {
+    // Defer video rendering to reduce LCP impact
     if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setDeferLoad(true));
+      requestIdleCallback(() => setShowVideo(true));
     } else {
-      setTimeout(() => setDeferLoad(true), 2000);
+      setTimeout(() => setShowVideo(true), 2000);
     }
   }, []);
 
@@ -92,29 +91,16 @@ function Home() {
       {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
-          {showVideo ? (
-            <video
-              ref={videoRef}
-              className="hero-video-element"
-              src={videos[currentVideoIndex]}
-              poster={posterImage}
-              preload="metadata"
-              autoPlay
-              muted
-              playsInline
-            />
-          ) : (
-            <img
-              src={posterImage}
-              alt="Hero preview"
-              width="1000"
-              height="500"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-            />
-          )}
+          <video
+            ref={videoRef}
+            className="hero-video-element"
+            src={videos[currentVideoIndex]}
+            poster={posterImage}
+            preload="metadata"
+            autoPlay
+            muted
+            playsInline
+          />
 
           <div className="video-progress-container">
             {videos.map((_, index) => (
@@ -137,24 +123,27 @@ function Home() {
         </div>
       </div>
       {deferLoad && (
-        <Suspense fallback={<div className="lazy-loader" />}>
-          {" "}
+        <Suspense fallback={null}>
           <ScrollAnimation>
             <Box className="concept-title">
               <ExploreConcepts />
             </Box>
           </ScrollAnimation>
+
           <ScrollAnimation>
             <ShopByCategory />
           </ScrollAnimation>
+
           <ScrollAnimation>
             <Box sx={{ width: "100%" }}>
               <ProductSlider />
             </Box>
           </ScrollAnimation>
+
           <ScrollAnimation>
             <SustainabilitySection />
           </ScrollAnimation>
+
           <ScrollAnimation>
             <PartnersSection />
           </ScrollAnimation>
