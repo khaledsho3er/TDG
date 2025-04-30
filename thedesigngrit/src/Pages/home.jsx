@@ -26,12 +26,13 @@ function Home() {
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
 
+  const [deferLoad, setDeferLoad] = useState(false);
+
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
     if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
+      requestIdleCallback(() => setDeferLoad(true));
     } else {
-      setTimeout(() => setShowVideo(true), 2000);
+      setTimeout(() => setDeferLoad(true), 2000);
     }
   }, []);
 
@@ -134,30 +135,31 @@ function Home() {
           </div>
         </div>
       </div>
-
-      <Suspense fallback={<div className="lazy-loader" />}>
-        {" "}
-        <ScrollAnimation>
-          <Box className="concept-title">
-            <ExploreConcepts />
-          </Box>
-        </ScrollAnimation>
-        <ScrollAnimation>
-          <ShopByCategory />
-        </ScrollAnimation>
-        <ScrollAnimation>
-          <Box sx={{ width: "100%" }}>
-            <ProductSlider />
-          </Box>
-        </ScrollAnimation>
-        <ScrollAnimation>
-          <SustainabilitySection />
-        </ScrollAnimation>
-        <ScrollAnimation>
-          <PartnersSection />
-        </ScrollAnimation>
-        <Footer />
-      </Suspense>
+      {deferLoad && (
+        <Suspense fallback={<div className="lazy-loader" />}>
+          {" "}
+          <ScrollAnimation>
+            <Box className="concept-title">
+              <ExploreConcepts />
+            </Box>
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <ShopByCategory />
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <Box sx={{ width: "100%" }}>
+              <ProductSlider />
+            </Box>
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <SustainabilitySection />
+          </ScrollAnimation>
+          <ScrollAnimation>
+            <PartnersSection />
+          </ScrollAnimation>
+          <Footer />
+        </Suspense>
+      )}
     </div>
   );
 }
