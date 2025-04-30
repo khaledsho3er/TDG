@@ -164,21 +164,21 @@ function Home() {
 
       {/* Hero Section */}
       <div className="hero-home-section">
-        <div className="background-layer">
-          <video
-            ref={videoRef}
-            className="hero-video-element"
-            src={videoSources[currentVideoIndex]}
-            autoPlay
-            muted
-            playsInline
-          ></video>
-        </div>
         <div className="hero-video">
           {isMobile ? (
             <HeroImageFallback />
           ) : (
             <>
+              <div className="background-layer">
+                <video
+                  ref={videoRef}
+                  className="hero-video-element"
+                  src={videoSources[currentVideoIndex]}
+                  autoPlay
+                  muted
+                  playsInline
+                ></video>
+              </div>
               <VideoPlayer />
               <div className="video-progress-container">
                 {videoSources.map((_, index) => (
