@@ -10,7 +10,7 @@ import AddProduct from "../../Components/vendorSide/postProduct";
 import BrandingPage from "../../Components/vendorSide/brandingPage";
 import EmployeeSignup from "../../Components/vendorSide/Addemployee";
 import EmployeePage from "../../Components/vendorSide/employeePage";
-import AccountingPage from "../../Components/vendorSide/Accounting";
+import AccountingPage from "../../Components/vendorSide/Accounting/AccountingPage";
 import { useVendor } from "../../utils/vendorContext";
 import OrderDetails from "../../Components/vendorSide/orderDetails";
 import QuotationsPage from "../../Components/vendorSide/quotationsList";
