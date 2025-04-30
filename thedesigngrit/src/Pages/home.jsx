@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense, useRef } from "react";
+import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
 
@@ -13,237 +13,199 @@ const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
 const Footer = lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
-// Video configuration with all formats
-const VIDEO_SOURCES = [
+// Video sources - now with multiple formats and mobile variants
+const videoSources = [
   {
-    id: 1,
     mp4: "/Assets/Video-hero/herovideo.mp4",
     webm: "/Assets/Video-hero/herovideo.webm",
-    poster: {
-      avif: "/Assets/Video-hero/poster.avif",
-      webp: "/Assets/Video-hero/poster.webp",
-      jpg: "/Assets/Video-hero/poster.jpg",
-    },
-    mobile: {
-      avif: "/Assets/Video-hero/herovideo-mobile.avif",
-      webp: "/Assets/Video-hero/herovideo-mobile.webp",
-      jpg: "/Assets/Video-hero/herovideo-mobile.jpg",
-    },
+    mobile: "/Assets/Video-hero/herovideo-mobile.avif", // Shorter, lower resolution version
   },
   {
-    id: 2,
     mp4: "/Assets/Video-hero/herovideo2.mp4",
     webm: "/Assets/Video-hero/herovideo2.webm",
-    poster: {
-      avif: "/Assets/Video-hero/poster.avif",
-      webp: "/Assets/Video-hero/poster.webp",
-      jpg: "/Assets/Video-hero/poster.jpg",
-    },
-    mobile: {
-      avif: "/Assets/Video-hero/herovideo2-mobile.avif",
-      webp: "/Assets/Video-hero/herovideo2-mobile.webp",
-      jpg: "/Assets/Video-hero/herovideo2-mobile.jpg",
-    },
+    mobile: "/Assets/Video-hero/herovideo2-mobile.avif",
   },
   {
-    id: 3,
     mp4: "/Assets/Video-hero/herovideo3.mp4",
     webm: "/Assets/Video-hero/herovideo3.webm",
-    poster: {
-      avif: "/Assets/Video-hero/poster.avif",
-      webp: "/Assets/Video-hero/poster.webp",
-      jpg: "/Assets/Video-hero/poster.jpg",
-    },
-    mobile: {
-      avif: "/Assets/Video-hero/herovideo3-mobile.avif",
-      webp: "/Assets/Video-hero/herovideo3-mobile.webp",
-      jpg: "/Assets/Video-hero/herovideo3-mobile.jpg",
-    },
+    mobile: "/Assets/Video-hero/herovideo3-mobile.avif",
   },
 ];
 
+// Optimized poster images
+const posterImages = {
+  desktop: "/Assets/Video-hero/poster.avif",
+  mobile: "/Assets/Video-hero/poster.avif", // Smaller, optimized version
+  fallback: "/Assets/Video-hero/poster.jpg", // For browsers that don't support AVIF
+};
+
 function Home() {
+  const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [deferLoad, setDeferLoad] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
-  const videoRef = useRef(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
-  // Detect mobile viewport
+  // Detect mobile and handle resize
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      return mobile;
+    const checkIfMobile = () => {
+      const isMobileView = window.innerWidth < 768;
+      setIsMobile(isMobileView);
+      return isMobileView;
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    checkIfMobile();
+    const resizeHandler = () => checkIfMobile();
+    window.addEventListener("resize", resizeHandler);
+    return () => window.removeEventListener("resize", resizeHandler);
   }, []);
 
-  // Delay non-critical content
+  // Delay loading of non-critical components
   useEffect(() => {
-    const timer = setTimeout(() => setDeferLoad(true), isMobile ? 3000 : 1500);
+    const timer = setTimeout(() => setDeferLoad(true), isMobile ? 3000 : 2000);
     return () => clearTimeout(timer);
   }, [isMobile]);
 
-  // Video controls and progress
+  // Video event handlers
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || isMobile) return;
+    if (!video) return;
 
-    const updateProgress = () => {
-      if (video.duration) {
-        setProgress((video.currentTime / video.duration) * 100);
+    const handleLoadedMetadata = () => {
+      setVideoDuration(video.duration);
+      setVideoLoaded(true);
+    };
+
+    const handleTimeUpdate = () => {
+      if (videoDuration) {
+        setProgress((video.currentTime / videoDuration) * 100);
       }
     };
 
     const handleEnded = () => {
-      setCurrentVideoIndex((prev) => (prev + 1) % VIDEO_SOURCES.length);
+      setCurrentVideoIndex(
+        (prevIndex) => (prevIndex + 1) % videoSources.length
+      );
       setProgress(0);
     };
 
-    const handleReady = () => setVideoReady(true);
-
-    video.addEventListener("timeupdate", updateProgress);
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("ended", handleEnded);
-    video.addEventListener("loadeddata", handleReady);
 
     return () => {
-      video.removeEventListener("timeupdate", updateProgress);
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
       video.removeEventListener("ended", handleEnded);
-      video.removeEventListener("loadeddata", handleReady);
     };
-  }, [currentVideoIndex, isMobile]);
+  }, [videoDuration, currentVideoIndex, videoLoaded]);
 
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
-    setVideoReady(false);
   };
 
-  const HeroMedia = () => {
-    if (isMobile) {
-      return (
-        <picture className="hero-image">
-          <source
-            srcSet={VIDEO_SOURCES[currentVideoIndex].mobile.avif}
-            type="image/avif"
-          />
-          <source
-            srcSet={VIDEO_SOURCES[currentVideoIndex].mobile.webp}
-            type="image/webp"
-          />
-          <img
-            src={VIDEO_SOURCES[currentVideoIndex].mobile.jpg}
-            alt={`Hero ${currentVideoIndex + 1}`}
-            width={1600}
-            height={900}
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </picture>
-      );
-    }
+  const VideoPlayer = () => (
+    <video
+      ref={videoRef}
+      className="hero-video-element"
+      poster={isMobile ? posterImages.mobile : posterImages.desktop}
+      preload={isMobile ? "none" : "metadata"}
+      autoPlay
+      muted
+      playsInline
+      disablePictureInPicture
+      disableRemotePlayback
+    >
+      <source
+        src={
+          isMobile
+            ? videoSources[currentVideoIndex].mobile
+            : videoSources[currentVideoIndex].mp4
+        }
+        type="video/mp4"
+      />
+      <source src={videoSources[currentVideoIndex].webm} type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
+  );
 
-    return (
-      <>
-        <video
-          ref={videoRef}
-          key={`video-${VIDEO_SOURCES[currentVideoIndex].id}`}
-          className="hero-video-element"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="none"
-          poster={VIDEO_SOURCES[currentVideoIndex].poster.avif}
-          style={{ opacity: videoReady ? 1 : 0 }}
-        >
-          <source src={VIDEO_SOURCES[currentVideoIndex].mp4} type="video/mp4" />
-          <source
-            src={VIDEO_SOURCES[currentVideoIndex].webm}
-            type="video/webm"
-          />
-        </video>
-        {!videoReady && (
-          <picture className="hero-video-poster">
-            <source
-              srcSet={VIDEO_SOURCES[currentVideoIndex].poster.avif}
-              type="image/avif"
-            />
-            <source
-              srcSet={VIDEO_SOURCES[currentVideoIndex].poster.webp}
-              type="image/webp"
-            />
-            <img
-              src={VIDEO_SOURCES[currentVideoIndex].poster.jpg}
-              alt={`Video loading ${currentVideoIndex + 1}`}
-              width={1600}
-              height={900}
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        )}
-      </>
-    );
-  };
+  const HeroImageFallback = () => (
+    <picture>
+      <source
+        srcSet={posterImages.mobile}
+        media="(max-width: 767px)"
+        type="image/avif"
+      />
+      <source
+        srcSet={posterImages.desktop}
+        media="(min-width: 768px)"
+        type="image/avif"
+      />
+      <source srcSet={posterImages.fallback} type="image/jpeg" />
+      <img
+        src={posterImages.fallback}
+        alt="Hero preview"
+        width="1000"
+        height="500"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+        style={{ width: "100%", height: "auto", objectFit: "cover" }}
+      />
+    </picture>
+  );
 
   return (
     <div className="home">
-      {/* Background blur layer */}
-      <div className="background-layer"></div>
-
+      <div className="background-layer">
+        <video
+          ref={videoRef}
+          className="hero-video-element"
+          src={videoSources[currentVideoIndex]}
+          autoPlay
+          muted
+          playsInline
+        ></video>
+      </div>
       <Header />
 
       {/* Hero Section */}
-      <section className="hero-home-section">
+      <div className="hero-home-section">
         <div className="hero-video">
-          <HeroMedia />
-          {/* Video Navigation Dots */}
-          {!isMobile && (
-            <div className="slider-navigation">
-              {VIDEO_SOURCES.map((_, index) => (
-                <div
-                  key={index}
-                  className={`slider-dot ${
-                    currentVideoIndex === index ? "active" : ""
-                  }`}
-                  onClick={() => handleDotClick(index)}
-                />
-              ))}
-            </div>
-          )}
-          <div className="video-progress-container">
-            {VIDEO_SOURCES.map((_, index) => (
-              <div
-                key={index}
-                className={`video-progress-dot ${
-                  currentVideoIndex === index ? "active" : "circle"
-                }`}
-                onClick={() => handleDotClick(index)}
-              >
-                {currentVideoIndex === index && (
+          {isMobile ? (
+            <HeroImageFallback />
+          ) : (
+            <>
+              <VideoPlayer />
+              <div className="video-progress-container">
+                {videoSources.map((_, index) => (
                   <div
-                    className="video-progress-bar"
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                  ></div>
-                )}
+                    key={index}
+                    className={`video-progress-dot ${
+                      currentVideoIndex === index ? "active" : "circle"
+                    }`}
+                    onClick={() => handleDotClick(index)}
+                  >
+                    {currentVideoIndex === index && (
+                      <div
+                        className="video-progress-bar"
+                        style={{ width: `${progress}%` }}
+                      ></div>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </div>
-      </section>
+      </div>
 
-      {/* Lazy-loaded Content */}
+      {/* Lazy-loaded sections */}
       {deferLoad && (
-        <Suspense fallback={<div style={{ minHeight: "100vh" }}></div>}>
+        <Suspense fallback={<div className="lazy-loader" />}>
           <ScrollAnimation>
             <Box className="concept-title">
               <ExploreConcepts />
@@ -266,164 +228,6 @@ function Home() {
           <Footer />
         </Suspense>
       )}
-
-      {/* CSS Styles */}
-      <style jsx global>{`
-        .home {
-          display: block;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          margin: auto;
-          width: 100%;
-          position: relative;
-        }
-
-        .background-layer {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-size: cover;
-          background-position: center;
-          filter: blur(20px);
-          z-index: 1;
-        }
-
-        .hero-home-section {
-          position: relative;
-          width: 70%;
-          height: auto;
-          overflow: hidden;
-          border-radius: 20px;
-          margin-top: 1rem;
-          z-index: 2;
-          margin: auto;
-        }
-
-        .hero-video {
-          position: relative;
-          width: 100%;
-          height: 70vh;
-          overflow: hidden;
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          margin-bottom: 50px;
-          margin-top: 30px;
-        }
-
-        .hero-video-element,
-        .hero-video-poster img,
-        .hero-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: opacity 0.5s ease;
-        }
-
-        .hero-video-poster,
-        .hero-image {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-
-        .hero-text-overlay {
-          position: absolute;
-          top: 50%;
-          left: 30%;
-          transform: translate(-50%, -50%);
-          color: #ffffff;
-          text-align: left;
-          z-index: 3;
-        }
-
-        .hero-text-overlay h1 {
-          font-size: 3rem;
-          font-weight: bold;
-          margin-bottom: 10px;
-          color: #ffffff;
-          text-align: left;
-        }
-
-        .hero-text-overlay p {
-          font-size: 1.2rem;
-          max-width: 600px;
-          line-height: 1.5;
-          font-family: Montserrat;
-        }
-
-        .btn-hero-section {
-          border: 1px solid #6c7c59;
-          background-color: #6c7c59;
-          padding: 10px;
-          border-radius: 10px;
-          margin-top: 20px;
-          cursor: pointer;
-          color: white;
-          font-weight: bold;
-          transition: all 0.3s ease;
-        }
-
-        .btn-hero-section:hover {
-          background-color: #5a6a48;
-        }
-
-        .slider-navigation {
-          position: absolute;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 10px;
-          z-index: 4;
-        }
-
-        .slider-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background-color: #fff;
-          opacity: 0.5;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .slider-dot.active {
-          opacity: 1;
-          background-color: #6c7c59;
-          transform: scale(1.2);
-        }
-
-        @media (max-width: 768px) {
-          .hero-home-section {
-            width: 90%;
-          }
-
-          .hero-video {
-            height: 50vh;
-            margin-bottom: 30px;
-            margin-top: 15px;
-          }
-
-          .hero-text-overlay {
-            left: 50%;
-            text-align: center;
-            width: 90%;
-          }
-
-          .hero-text-overlay h1 {
-            font-size: 2rem;
-          }
-
-          .hero-text-overlay p {
-            font-size: 1rem;
-          }
-        }
-      `}</style>
     </div>
   );
 }
