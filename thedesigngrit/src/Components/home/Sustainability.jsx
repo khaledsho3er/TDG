@@ -83,16 +83,20 @@ const SustainabilitySection = () => {
 
         <CardMedia sx={{ flex: 1 }}>
           <img
-            src="Assets/susSection.webp"
-            alt="Green Bowl Beach, Bali, Indonesia_2AGYRXP 1"
+            src="Assets/susSection-768.webp"
+            srcSet="
+      Assets/susSection-480.webp 480w,
+      Assets/susSection-768.webp 768w,
+      Assets/susSection-1200.webp 1200w
+    "
+            sizes="(max-width: 600px) 480px, (max-width: 960px) 768px, 1200px"
+            alt="Green Bowl Beach, Bali, Indonesia"
             style={{
               width: "100%",
               height: "100%",
               objectFit: "cover",
             }}
             loading="lazy"
-            width={isSmallScreen ? "100%" : "100%"}
-            height={isSmallScreen ? "auto" : "100%"}
           />
         </CardMedia>
       </Card>
