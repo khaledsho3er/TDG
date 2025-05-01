@@ -1,69 +1,72 @@
-import React, { useRef, useState, useEffect } from "react";
-import Header from "../Components/navBar";
-import ShopByCategory from "../Components/home/Category";
-import ExploreConcepts from "../Components/home/concept";
-import SustainabilitySection from "../Components/home/Sustainability";
+import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
-import PartnersSection from "../Components/home/partners";
-import ProductSlider from "../Components/home/bestSeller";
-import Footer from "../Components/Footer";
-import ScrollAnimation from "../Context/scrollingAnimation";
+import Header from "../Components/navBar";
+const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
+const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
+const SustainabilitySection = React.lazy(() =>
+  import("../Components/home/Sustainability")
+);
+const PartnersSection = React.lazy(() => import("../Components/home/partners"));
+const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
+const Footer = React.lazy(() => import("../Components/Footer"));
+const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
-// Hero video files
 const videos = [
-  "/Assets/Video-hero/herovideo.webm",
   "/Assets/Video-hero/herovideo2.webm",
-  "/Assets/Video-hero/herovideo3.webm",
+  "/Assets/Video-hero/herovideo5.webm",
+  "/Assets/Video-hero/herovideo4.webm",
 ];
 
-// Mobile detection hook
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-  return isMobile;
-};
+const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
 
 function Home() {
-  const isMobile = useIsMobile();
-
-  const bgVideoRef = useRef(null);
-  const fgVideoRef = useRef(null);
-
+  const videoRef = useRef(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
-    if (!isMobile && fgVideoRef.current) {
-      const video = fgVideoRef.current;
+    // Defer video rendering to reduce LCP impact
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => setShowVideo(true));
+    } else {
+      setTimeout(() => setShowVideo(true), 2000);
+    }
+  }, []);
 
-      const handleLoadedMetadata = () => setVideoDuration(video.duration);
-      const handleTimeUpdate = () => {
-        if (videoDuration) {
-          setProgress((video.currentTime / videoDuration) * 100);
-        }
-      };
-      const handleEnded = () => {
-        setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-        setProgress(0);
-      };
+  useEffect(() => {
+    const video = videoRef.current;
 
+    const handleLoadedMetadata = () => {
+      setVideoDuration(video.duration);
+    };
+
+    const handleTimeUpdate = () => {
+      if (videoDuration) {
+        setProgress((video.currentTime / videoDuration) * 100);
+      }
+    };
+
+    const handleEnded = () => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+      setProgress(0);
+    };
+
+    if (video) {
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
       video.addEventListener("timeupdate", handleTimeUpdate);
       video.addEventListener("ended", handleEnded);
+    }
 
-      return () => {
+    return () => {
+      if (video) {
         video.removeEventListener("loadedmetadata", handleLoadedMetadata);
         video.removeEventListener("timeupdate", handleTimeUpdate);
         video.removeEventListener("ended", handleEnded);
-      };
-    }
-  }, [videoDuration, currentVideoIndex, isMobile]);
+      }
+    };
+  }, [videoDuration, currentVideoIndex]);
 
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
@@ -72,101 +75,84 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Background layer */}
       <div className="background-layer">
-        {isMobile ? (
-          <img
-            src="/Assets/Video-hero/poster.avif"
-            alt="Hero background"
-            className="hero-video-element"
-          />
-        ) : (
-          <video
-            ref={bgVideoRef}
-            className="hero-video-element"
-            src={videos[currentVideoIndex]}
-            autoPlay
-            muted
-            playsInline
-            preload="none"
-            poster="/Assets/Video-hero/poster.avif"
-          />
-        )}
+        <video
+          ref={videoRef}
+          className="hero-video-element"
+          src={videos[currentVideoIndex]}
+          autoPlay
+          muted
+          playsInline
+        ></video>
       </div>
-
+      {/* Header and Sections */}
       <Header />
-
-      {/* Foreground video + controls */}
+      {/* Hero Section */}
       <div className="hero-home-section">
         <div className="hero-video">
-          {isMobile ? (
-            <img
-              src="/Assets/Video-hero/poster.avif"
-              alt="Hero foreground"
-              className="hero-video-element"
-            />
-          ) : (
+          {showVideo ? (
             <video
-              ref={fgVideoRef}
+              ref={videoRef}
               className="hero-video-element"
-              src={videos[currentVideoIndex]}
+              poster={posterImage}
+              preload="metadata"
               autoPlay
               muted
+              loop
               playsInline
-              preload="none"
-              poster="/Assets/Video-hero/poster.avif"
+              src={videos[currentVideoIndex]} // Load one only
             />
+          ) : (
+            <></>
           )}
 
-          {!isMobile && (
-            <div className="video-progress-container">
-              {videos.map((_, index) => (
-                <div
-                  key={index}
-                  className={`video-progress-dot ${
-                    currentVideoIndex === index ? "active" : "circle"
-                  }`}
-                  onClick={() => handleDotClick(index)}
-                >
-                  {currentVideoIndex === index && (
-                    <div
-                      className="video-progress-bar"
-                      style={{ width: `${progress}%` }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="video-progress-container">
+            {videos.map((_, index) => (
+              <div
+                key={index}
+                className={`video-progress-dot ${
+                  currentVideoIndex === index ? "active" : "circle"
+                }`}
+                onClick={() => handleDotClick(index)}
+              >
+                {currentVideoIndex === index && (
+                  <div
+                    className="video-progress-bar"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Content Sections */}
-      <ScrollAnimation>
-        <Box className="concept-title">
-          <ExploreConcepts />
-        </Box>
-      </ScrollAnimation>
+      <Suspense fallback={null}>
+        <ScrollAnimation>
+          <Box className="concept-title">
+            <ExploreConcepts />
+          </Box>
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <ShopByCategory />
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <ShopByCategory />
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <Box sx={{ width: "100%" }}>
-          <ProductSlider />
-        </Box>
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <Box sx={{ width: "100%" }}>
+            <ProductSlider />
+          </Box>
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <SustainabilitySection />
-      </ScrollAnimation>
+        <ScrollAnimation>
+          <SustainabilitySection />
+        </ScrollAnimation>
 
-      <ScrollAnimation>
-        <PartnersSection />
-      </ScrollAnimation>
-
-      <Footer />
+        <ScrollAnimation>
+          <PartnersSection />
+        </ScrollAnimation>
+        <Footer />
+      </Suspense>
     </div>
   );
 }
