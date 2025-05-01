@@ -1,72 +1,69 @@
-import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
-import { Box } from "@mui/material";
+import React, { useRef, useState, useEffect } from "react";
 import Header from "../Components/navBar";
-const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
-const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
-const SustainabilitySection = React.lazy(() =>
-  import("../Components/home/Sustainability")
-);
-const PartnersSection = React.lazy(() => import("../Components/home/partners"));
-const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
-const Footer = React.lazy(() => import("../Components/Footer"));
-const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
+import ShopByCategory from "../Components/home/Category";
+import ExploreConcepts from "../Components/home/concept";
+import SustainabilitySection from "../Components/home/Sustainability";
+import { Box } from "@mui/material";
+import PartnersSection from "../Components/home/partners";
+import ProductSlider from "../Components/home/bestSeller";
+import Footer from "../Components/Footer";
+import ScrollAnimation from "../Context/scrollingAnimation";
 
+// Hero video files
 const videos = [
+  "/Assets/Video-hero/herovideo.webm",
   "/Assets/Video-hero/herovideo2.webm",
-  "/Assets/Video-hero/herovideo5.webm",
-  "/Assets/Video-hero/herovideo4.webm",
+  "/Assets/Video-hero/herovideo3.webm",
 ];
 
-const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+};
 
 function Home() {
-  const videoRef = useRef(null);
+  const isMobile = useIsMobile();
+
+  const bgVideoRef = useRef(null);
+  const fgVideoRef = useRef(null);
+
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
-    } else {
-      setTimeout(() => setShowVideo(true), 2000);
-    }
-  }, []);
+    if (!isMobile && fgVideoRef.current) {
+      const video = fgVideoRef.current;
 
-  useEffect(() => {
-    const video = videoRef.current;
+      const handleLoadedMetadata = () => setVideoDuration(video.duration);
+      const handleTimeUpdate = () => {
+        if (videoDuration) {
+          setProgress((video.currentTime / videoDuration) * 100);
+        }
+      };
+      const handleEnded = () => {
+        setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+        setProgress(0);
+      };
 
-    const handleLoadedMetadata = () => {
-      setVideoDuration(video.duration);
-    };
-
-    const handleTimeUpdate = () => {
-      if (videoDuration) {
-        setProgress((video.currentTime / videoDuration) * 100);
-      }
-    };
-
-    const handleEnded = () => {
-      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-      setProgress(0);
-    };
-
-    if (video) {
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
       video.addEventListener("timeupdate", handleTimeUpdate);
       video.addEventListener("ended", handleEnded);
-    }
 
-    return () => {
-      if (video) {
+      return () => {
         video.removeEventListener("loadedmetadata", handleLoadedMetadata);
         video.removeEventListener("timeupdate", handleTimeUpdate);
         video.removeEventListener("ended", handleEnded);
-      }
-    };
-  }, [videoDuration, currentVideoIndex]);
+      };
+    }
+  }, [videoDuration, currentVideoIndex, isMobile]);
 
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
@@ -75,84 +72,101 @@ function Home() {
 
   return (
     <div className="home">
+      {/* Background layer */}
       <div className="background-layer">
-        <video
-          ref={videoRef}
-          className="hero-video-element"
-          src={videos[currentVideoIndex]}
-          autoPlay
-          muted
-          playsInline
-        ></video>
+        {isMobile ? (
+          <img
+            src="/Assets/Video-hero/poster.avif"
+            alt="Hero background"
+            className="hero-video-element"
+          />
+        ) : (
+          <video
+            ref={bgVideoRef}
+            className="hero-video-element"
+            src={videos[currentVideoIndex]}
+            autoPlay
+            muted
+            playsInline
+            preload="none"
+            poster="/Assets/Video-hero/poster.avif"
+          />
+        )}
       </div>
-      {/* Header and Sections */}
+
       <Header />
-      {/* Hero Section */}
+
+      {/* Foreground video + controls */}
       <div className="hero-home-section">
         <div className="hero-video">
-          {showVideo ? (
-            <video
-              ref={videoRef}
+          {isMobile ? (
+            <img
+              src="/Assets/Video-hero/poster.avif"
+              alt="Hero foreground"
               className="hero-video-element"
-              poster={posterImage}
-              preload="metadata"
-              autoPlay
-              muted
-              loop
-              playsInline
-              src={videos[currentVideoIndex]} // Load one only
             />
           ) : (
-            <></>
+            <video
+              ref={fgVideoRef}
+              className="hero-video-element"
+              src={videos[currentVideoIndex]}
+              autoPlay
+              muted
+              playsInline
+              preload="none"
+              poster="/Assets/Video-hero/poster.avif"
+            />
           )}
 
-          <div className="video-progress-container">
-            {videos.map((_, index) => (
-              <div
-                key={index}
-                className={`video-progress-dot ${
-                  currentVideoIndex === index ? "active" : "circle"
-                }`}
-                onClick={() => handleDotClick(index)}
-              >
-                {currentVideoIndex === index && (
-                  <div
-                    className="video-progress-bar"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                )}
-              </div>
-            ))}
-          </div>
+          {!isMobile && (
+            <div className="video-progress-container">
+              {videos.map((_, index) => (
+                <div
+                  key={index}
+                  className={`video-progress-dot ${
+                    currentVideoIndex === index ? "active" : "circle"
+                  }`}
+                  onClick={() => handleDotClick(index)}
+                >
+                  {currentVideoIndex === index && (
+                    <div
+                      className="video-progress-bar"
+                      style={{ width: `${progress}%` }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      <Suspense fallback={null}>
-        <ScrollAnimation>
-          <Box className="concept-title">
-            <ExploreConcepts />
-          </Box>
-        </ScrollAnimation>
+      {/* Content Sections */}
+      <ScrollAnimation>
+        <Box className="concept-title">
+          <ExploreConcepts />
+        </Box>
+      </ScrollAnimation>
 
-        <ScrollAnimation>
-          <ShopByCategory />
-        </ScrollAnimation>
+      <ScrollAnimation>
+        <ShopByCategory />
+      </ScrollAnimation>
 
-        <ScrollAnimation>
-          <Box sx={{ width: "100%" }}>
-            <ProductSlider />
-          </Box>
-        </ScrollAnimation>
+      <ScrollAnimation>
+        <Box sx={{ width: "100%" }}>
+          <ProductSlider />
+        </Box>
+      </ScrollAnimation>
 
-        <ScrollAnimation>
-          <SustainabilitySection />
-        </ScrollAnimation>
+      <ScrollAnimation>
+        <SustainabilitySection />
+      </ScrollAnimation>
 
-        <ScrollAnimation>
-          <PartnersSection />
-        </ScrollAnimation>
-        <Footer />
-      </Suspense>
+      <ScrollAnimation>
+        <PartnersSection />
+      </ScrollAnimation>
+
+      <Footer />
     </div>
   );
 }
