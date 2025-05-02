@@ -18,7 +18,18 @@ const videos = [
 ];
 
 const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return isMobile;
+};
 function Home() {
   const bgVideoRef = useRef(null);
   const fgVideoRef = useRef(null);
@@ -27,19 +38,6 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-
-  const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-      const check = () => setIsMobile(window.innerWidth <= 768);
-      check();
-      window.addEventListener("resize", check);
-      return () => window.removeEventListener("resize", check);
-    }, []);
-
-    return isMobile;
-  };
 
   useEffect(() => {
     // Defer video rendering to reduce LCP impact
