@@ -12,12 +12,25 @@ const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
 const videos = [
-  "/Assets/Video-hero/herovideo2.webm",
-  "/Assets/Video-hero/herovideo5.webm",
-  "/Assets/Video-hero/herovideo4.webm",
+  {
+    webm: "/Assets/Video-hero/herovideo2.webm",
+    mp4: "/Assets/Video-hero/herovideo2.mp4",
+  },
+  {
+    webm: "/Assets/Video-hero/herovideo5.webm",
+    mp4: "/Assets/Video-hero/herovideo5.mp4",
+  },
+  {
+    webm: "/Assets/Video-hero/herovideo4.webm",
+    mp4: "/Assets/Video-hero/herovideo4.mp4",
+  },
 ];
 
-const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const posterImage = isSafari
+  ? "/Assets/Video-hero/poster.jpg"
+  : "/Assets/Video-hero/poster.avif";
+
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -100,13 +113,16 @@ function Home() {
           <video
             ref={bgVideoRef}
             className="hero-video-element"
-            src={videos[currentVideoIndex]}
+            poster={posterImage}
             autoPlay
             muted
+            loop
             playsInline
             preload="none"
-            poster={posterImage}
-          />
+          >
+            <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
+            <source src={videos[currentVideoIndex].webm} type="video/webm" />
+          </video>
         )}
       </div>
       {/* Header and Sections */}
@@ -127,13 +143,18 @@ function Home() {
                 ref={fgVideoRef}
                 className="hero-video-element"
                 poster={posterImage}
-                preload="metadata"
                 autoPlay
                 muted
                 loop
                 playsInline
-                src={videos[currentVideoIndex]}
-              />
+                preload="none"
+              >
+                <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
+                <source
+                  src={videos[currentVideoIndex].webm}
+                  type="video/webm"
+                />
+              </video>
             )
           ) : (
             <img
