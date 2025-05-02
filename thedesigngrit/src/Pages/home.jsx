@@ -20,11 +20,26 @@ const videos = [
 const posterImage = "/Assets/Video-hero/poster.avif"; // Preloaded in HTML head
 
 function Home() {
-  const videoRef = useRef(null);
+  const bgVideoRef = useRef(null);
+  const fgVideoRef = useRef(null);
+  const isMobile = useIsMobile();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const check = () => setIsMobile(window.innerWidth <= 768);
+      check();
+      window.addEventListener("resize", check);
+      return () => window.removeEventListener("resize", check);
+    }, []);
+
+    return isMobile;
+  };
 
   useEffect(() => {
     // Defer video rendering to reduce LCP impact
@@ -36,7 +51,7 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    const video = videoRef.current;
+    const video = fgVideoRef.current;
 
     const handleLoadedMetadata = () => {
       setVideoDuration(video.duration);
@@ -76,14 +91,25 @@ function Home() {
   return (
     <div className="home">
       <div className="background-layer">
-        <video
-          ref={videoRef}
-          className="hero-video-element"
-          src={videos[currentVideoIndex]}
-          autoPlay
-          muted
-          playsInline
-        ></video>
+        {isMobile ? (
+          <img
+            src={posterImage}
+            alt="Hero background"
+            className="hero-video-element"
+            loading="eager"
+          />
+        ) : (
+          <video
+            ref={bgVideoRef}
+            className="hero-video-element"
+            src={videos[currentVideoIndex]}
+            autoPlay
+            muted
+            playsInline
+            preload="none"
+            poster={posterImage}
+          />
+        )}
       </div>
       {/* Header and Sections */}
       <Header />
@@ -91,21 +117,34 @@ function Home() {
       <div className="hero-home-section">
         <div className="hero-video">
           {showVideo ? (
-            <video
-              ref={videoRef}
-              className="hero-video-element"
-              poster={posterImage}
-              preload="metadata"
-              autoPlay
-              muted
-              loop
-              playsInline
-              src={videos[currentVideoIndex]} // Load one only
-            />
+            isMobile ? (
+              <img
+                src={posterImage}
+                alt="Hero poster"
+                className="hero-video-element"
+                loading="eager"
+              />
+            ) : (
+              <video
+                ref={fgVideoRef}
+                className="hero-video-element"
+                poster={posterImage}
+                preload="metadata"
+                autoPlay
+                muted
+                loop
+                playsInline
+                src={videos[currentVideoIndex]}
+              />
+            )
           ) : (
-            <></>
+            <img
+              src={posterImage}
+              alt="Hero placeholder"
+              className="hero-video-element"
+              loading="eager"
+            />
           )}
-
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
