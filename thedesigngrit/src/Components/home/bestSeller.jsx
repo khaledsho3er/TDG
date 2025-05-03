@@ -92,8 +92,13 @@ const ProductSlider = () => {
             >
               <div className="product-image-home" style={{ width: "100%" }}>
                 <img
+                  srcSet={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp 300w, 
+                    https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=600&height=400&format=webp 600w, 
+                    https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=900&height=600&format=webp 900w`}
+                  sizes="(max-width: 600px) 300px, (max-width: 900px) 600px, 900px"
                   src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp`}
                   alt={product.name}
+                  loading="lazy"
                   style={{ width: "100%" }}
                 />
               </div>
