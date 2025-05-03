@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaEdit } from "react-icons/fa";
 
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
@@ -24,6 +25,10 @@ const BrandingPage = () => {
   const [brandData, setBrandData] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
+  const [openLogoModal, setOpenLogoModal] = useState(false);
+  const [openCoverModal, setOpenCoverModal] = useState(false);
+  const [previewLogo, setPreviewLogo] = useState(null);
+  const [previewCover, setPreviewCover] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     year: "",
@@ -44,7 +49,19 @@ const BrandingPage = () => {
     // Fetch brand data (logo and cover)
     axios
       .get(`https://api.thedesigngrit.com/api/brand/${brandId}`)
-      .then((res) => setBrandData(res.data))
+      .then((res) => {
+        setBrandData(res.data);
+        if (res.data.brandLogo) {
+          setPreviewLogo(
+            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.brandLogo}`
+          );
+        }
+        if (res.data.coverPhoto) {
+          setPreviewCover(
+            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.coverPhoto}`
+          );
+        }
+      })
       .catch((err) => console.error("Error fetching brand data:", err));
   }, [brandId]);
 
@@ -61,7 +78,48 @@ const BrandingPage = () => {
       image: null,
     });
   };
+  const handleOpenLogoModal = () => setOpenLogoModal(true);
+  const handleCloseLogoModal = () => setOpenLogoModal(false);
+  const handleOpenCoverModal = () => setOpenCoverModal(true);
+  const handleCloseCoverModal = () => setOpenCoverModal(false);
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setLogoFile(file);
+    setPreviewLogo(URL.createObjectURL(file));
+  };
 
+  const handleCoverChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setCoverFile(file);
+    setPreviewCover(URL.createObjectURL(file));
+  };
+  const handleBrandImageUpload = async () => {
+    if (!logoFile && !coverFile) return;
+
+    const formData = new FormData();
+    if (logoFile) formData.append("brandLogo", logoFile);
+    if (coverFile) formData.append("coverPhoto", coverFile);
+
+    try {
+      setLoading(true);
+      const res = await axios.put(
+        `https://api.thedesigngrit.com/api/brand/brands/${brandId}/update-images`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      setBrandData(res.data);
+      setLogoFile(null);
+      setCoverFile(null);
+      handleCloseLogoModal();
+      handleCloseCoverModal();
+    } catch (error) {
+      console.error("Failed to update brand images:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -142,89 +200,127 @@ const BrandingPage = () => {
     handleMenuClose();
   };
 
-  const handleBrandImageUpload = async () => {
-    if (!logoFile && !coverFile) return;
-
-    const formData = new FormData();
-    if (logoFile) formData.append("brandLogo", logoFile);
-    if (coverFile) formData.append("coverPhoto", coverFile);
-
-    try {
-      setLoading(true);
-      const res = await axios.put(
-        `https://api.thedesigngrit.com/api/brand/brands/${brandId}/update-images`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      setBrandData(res.data);
-      setLogoFile(null);
-      setCoverFile(null);
-    } catch (error) {
-      console.error("Failed to update brand images:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="branding-page-form">
       <h2>Branding Page</h2>
       {/* Brand Logo and Cover */}
+      {/* Brand Logo and Cover - Facebook Style */}
       <Box sx={{ backgroundColor: "#fff", p: 3, mb: 3, borderRadius: "10px" }}>
-        <Typography variant="h5" sx={{ fontFamily: "Horizon" }}>
+        <Typography variant="h5" sx={{ fontFamily: "Horizon", mb: 2 }}>
           Brand Logo & Cover
         </Typography>
 
-        <Box sx={{ display: "flex", gap: 4, mt: 2 }}>
-          <Box>
-            <Typography>Current Logo</Typography>
-            {brandData?.brandLogo && (
-              <img
-                src={brandData.brandLogo}
-                alt="Logo"
-                style={{ width: "120px", height: "auto", borderRadius: 8 }}
-              />
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, "logo")}
-              style={{ marginTop: 8 }}
+        <Box
+          sx={{
+            position: "relative",
+            height: "300px",
+            width: "100%",
+            borderRadius: "8px",
+            overflow: "hidden",
+            mb: 8,
+          }}
+        >
+          {/* Cover Photo */}
+          {previewCover ? (
+            <img
+              src={previewCover}
+              alt="Cover"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
             />
-          </Box>
+          ) : (
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#f0f2f5",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography>No cover photo</Typography>
+            </Box>
+          )}
 
-          <Box>
-            <Typography>Current Cover</Typography>
-            {brandData?.coverPhoto && (
+          {/* Edit Cover Button */}
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: 16,
+              right: 16,
+              backgroundColor: "rgba(255,255,255,0.8)",
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,1)",
+              },
+            }}
+            onClick={handleOpenCoverModal}
+          >
+            <FaEdit />
+          </IconButton>
+
+          {/* Logo */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: -64,
+              left: 24,
+              width: 128,
+              height: 128,
+              borderRadius: "50%",
+              border: "4px solid white",
+              backgroundColor: "white",
+            }}
+          >
+            {previewLogo ? (
               <img
-                src={brandData.coverPhoto}
-                alt="Cover"
+                src={previewLogo}
+                alt="Logo"
                 style={{
-                  width: "200px",
-                  height: "auto",
-                  borderRadius: 8,
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
                   objectFit: "cover",
                 }}
               />
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#f0f2f5",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography>No logo</Typography>
+              </Box>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, "cover")}
-              style={{ marginTop: 8 }}
-            />
+
+            {/* Edit Logo Button */}
+            <IconButton
+              sx={{
+                position: "absolute",
+                bottom: 8,
+                right: 8,
+                backgroundColor: "rgba(255,255,255,0.8)",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,1)",
+                },
+              }}
+              onClick={handleOpenLogoModal}
+            >
+              <FaEdit />
+            </IconButton>
           </Box>
         </Box>
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleBrandImageUpload}
-          sx={{ mt: 3 }}
-        >
-          Save Brand Images
-        </Button>
       </Box>
+
       {/* Catalogs Section */}
       <Box sx={{ backgroundColor: "#fff", p: 3, borderRadius: "10px" }}>
         <h2 style={{ fontFamily: "Horizon", color: "#2d2d2d" }}>Catalogs</h2>
@@ -351,7 +447,87 @@ const BrandingPage = () => {
           </button>
         </Box>
       </Dialog>
+      {/* Logo Edit Modal */}
+      <Dialog open={openLogoModal} onClose={handleCloseLogoModal}>
+        <Box sx={{ p: 3, width: "400px" }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Edit Brand Logo
+          </Typography>
 
+          {previewLogo && (
+            <img
+              src={previewLogo}
+              alt="Current Logo"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "300px",
+                objectFit: "contain",
+                marginBottom: "16px",
+              }}
+            />
+          )}
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleLogoChange}
+            style={{ marginBottom: "16px" }}
+          />
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+            <Button onClick={handleCloseLogoModal}>Cancel</Button>
+            <Button
+              variant="contained"
+              onClick={handleBrandImageUpload}
+              disabled={!logoFile || loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Save"}
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
+
+      {/* Cover Edit Modal */}
+      <Dialog open={openCoverModal} onClose={handleCloseCoverModal}>
+        <Box sx={{ p: 3, width: "400px" }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Edit Cover Photo
+          </Typography>
+
+          {previewCover && (
+            <img
+              src={previewCover}
+              alt="Current Cover"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "300px",
+                objectFit: "contain",
+                marginBottom: "16px",
+              }}
+            />
+          )}
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleCoverChange}
+            style={{ marginBottom: "16px" }}
+          />
+
+          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+            <Button onClick={handleCloseCoverModal}>Cancel</Button>
+            <Button
+              variant="contained"
+              onClick={handleBrandImageUpload}
+              disabled={!coverFile || loading}
+            >
+              {loading ? <CircularProgress size={24} /> : "Save"}
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
