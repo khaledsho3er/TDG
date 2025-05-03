@@ -195,7 +195,11 @@ const BrandSignup = () => {
               className="status paid"
               style={getStatusStyle(formData.status)}
             >
-              {formData.status || "Status not set"}
+              {formData.status
+                ? `${formData.status
+                    .charAt(0)
+                    .toUpperCase()}${formData.status.slice(1)}`
+                : "Status not set"}
             </div>
           </Box>
         </Box>
