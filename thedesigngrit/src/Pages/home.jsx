@@ -107,7 +107,7 @@ function Home() {
             src={posterImage}
             alt="Hero background"
             className="hero-video-element"
-            loading="eager"
+            loading="lazy"
           />
         ) : (
           <video
@@ -136,7 +136,7 @@ function Home() {
                 src={posterImage}
                 alt="Hero poster"
                 className="hero-video-element"
-                loading="eager"
+                loading="lazy"
               />
             ) : (
               <video
@@ -161,7 +161,7 @@ function Home() {
               src={posterImage}
               alt="Hero placeholder"
               className="hero-video-element"
-              loading="eager"
+              loading="lazy"
             />
           )}
           <div className="video-progress-container">

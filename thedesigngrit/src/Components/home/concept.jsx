@@ -12,12 +12,14 @@ import { BsArrowRightCircle, BsArrowLeftCircle } from "react-icons/bs";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ExploreConcepts = () => {
   const [concepts, setConcepts] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     const fetchConcepts = async () => {
@@ -46,6 +48,14 @@ const ExploreConcepts = () => {
 
   const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
+  const visibleCards = isMobile
+    ? [currentCard]
+    : [
+        currentCard,
+        (currentCard + 1) % concepts.length,
+        (currentCard + 2) % concepts.length,
+      ];
+
   return (
     <Box className="concept-explore-container">
       <Box className="concept-title-container">
@@ -58,17 +68,16 @@ const ExploreConcepts = () => {
         {loading ? (
           <Typography>Loading...</Typography>
         ) : (
-          [
-            currentCard,
-            (currentCard + 1) % concepts.length,
-            (currentCard + 2) % concepts.length,
-          ].map((index, position) => {
+          visibleCards.map((index, position) => {
             const concept = concepts[index];
-            const isMainCard = position === 1;
             let className = "concept-card";
-            if (position === 0) className += " left-card";
-            if (position === 1) className += " middle-card";
-            if (position === 2) className += " right-card";
+            if (isMobile) {
+              className += " middle-card"; // only "middle-card" for mobile
+            } else {
+              if (position === 0) className += " left-card";
+              if (position === 1) className += " middle-card";
+              if (position === 2) className += " right-card";
+            }
 
             return (
               <Card key={concept._id} className={className}>
@@ -83,8 +92,8 @@ const ExploreConcepts = () => {
                   width="400"
                   height="300"
                   style={{ width: "100%", height: "auto" }}
-                  loading={isMainCard ? "eager" : "lazy"}
-                  fetchpriority={isMainCard ? "high" : "auto"}
+                  loading={position === 1 ? "eager" : "lazy"}
+                  fetchpriority={position === 1 ? "high" : "auto"}
                   decoding="async"
                 />
 
