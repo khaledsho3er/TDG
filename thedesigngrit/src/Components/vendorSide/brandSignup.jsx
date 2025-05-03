@@ -86,13 +86,29 @@ const BrandSignup = () => {
       const response = await axios.get(
         `https://api.thedesigngrit.com/api/brand/${brandId}`
       );
+      const data = response.data;
+
+      // Convert the concatenated type IDs string to an array
+      let typeArray = [];
+      if (data.type) {
+        // If it's already an array, use it directly
+        if (Array.isArray(data.type)) {
+          typeArray = data.type;
+        }
+        // If it's a string of concatenated IDs (24 chars each)
+        else if (typeof data.type === "string" && data.type.length > 0) {
+          typeArray = data.type.match(/.{24}/g) || [];
+        }
+      }
+
       setFormData({
-        ...response.data,
-        type: Array.isArray(response.data.type)
-          ? response.data.type
-          : [response.data.type].filter(Boolean),
+        ...data,
+        type: typeArray,
       });
-      setOriginalData(response.data);
+      setOriginalData({
+        ...data,
+        type: typeArray,
+      });
     } catch (error) {
       console.error("Error fetching brand data:", error);
     }
@@ -104,13 +120,19 @@ const BrandSignup = () => {
   };
 
   const handleTypeChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setFormData((prev) => ({
-      ...prev,
-      type: typeof value === "string" ? value.split(",") : value,
-    }));
+    const { value } = event.target;
+    // Limit to maximum 3 types
+    if (value.length <= 3) {
+      setFormData((prev) => ({
+        ...prev,
+        type: value,
+      }));
+    }
+  };
+
+  const getTypeName = (typeId) => {
+    const type = types.find((t) => t._id === typeId);
+    return type ? type.name : typeId;
   };
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
