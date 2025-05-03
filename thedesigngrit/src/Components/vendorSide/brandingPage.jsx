@@ -7,6 +7,8 @@ import {
   TextField,
   IconButton,
   Backdrop,
+  Typography,
+  Button,
   CircularProgress,
 } from "@mui/material";
 import axios from "axios";
@@ -19,11 +21,9 @@ const BrandingPage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCatalog, setSelectedCatalog] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [brandImages, setBrandImages] = useState({
-  //   brandlogo: null,
-  //   coverPhoto: null,
-  // });
-
+  const [brandData, setBrandData] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     year: "",
@@ -41,6 +41,11 @@ const BrandingPage = () => {
       .get(`https://api.thedesigngrit.com/api/catalogs/${brandId}`)
       .then((res) => setCatalogs(res.data))
       .catch((err) => console.error("Error fetching catalogs:", err));
+    // Fetch brand data (logo and cover)
+    axios
+      .get(`https://api.thedesigngrit.com/api/brand/${brandId}`)
+      .then((res) => setBrandData(res.data))
+      .catch((err) => console.error("Error fetching brand data:", err));
   }, [brandId]);
 
   const handleOpenDialog = () => setOpenDialog(true);
@@ -62,36 +67,6 @@ const BrandingPage = () => {
     if (!file) return;
     setFormData((prevData) => ({ ...prevData, [type]: file }));
   };
-
-  // const handleBrandImageChange = (e, type) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
-  //   setBrandImages((prev) => ({ ...prev, [type]: file }));
-  // };
-
-  // const handleBrandImageUpload = async () => {
-  //   if (!brandId) return;
-  //   const data = new FormData();
-  //   if (brandImages.brandlogo) data.append("brandlogo", brandImages.brandlogo);
-  //   if (brandImages.coverPhoto)
-  //     data.append("coverPhoto", brandImages.coverPhoto);
-
-  //   setLoading(true);
-  //   try {
-  //     await axios.put(
-  //       `https://api.thedesigngrit.com/api/brand/${brandId}`,
-  //       data,
-  //       { headers: { "Content-Type": "multipart/form-data" } }
-  //     );
-  //     alert("Brand visuals updated!");
-  //     window.location.reload();
-  //   } catch (err) {
-  //     console.error("Error uploading brand visuals:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //};
-
   const handleInputChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -167,10 +142,89 @@ const BrandingPage = () => {
     handleMenuClose();
   };
 
+  const handleBrandImageUpload = async () => {
+    if (!logoFile && !coverFile) return;
+
+    const formData = new FormData();
+    if (logoFile) formData.append("brandLogo", logoFile);
+    if (coverFile) formData.append("coverPhoto", coverFile);
+
+    try {
+      setLoading(true);
+      const res = await axios.put(
+        `https://api.thedesigngrit.com/api/brand/brands/${brandId}/update-images`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      setBrandData(res.data);
+      setLogoFile(null);
+      setCoverFile(null);
+    } catch (error) {
+      console.error("Failed to update brand images:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="branding-page-form">
       <h2>Branding Page</h2>
+      {/* Brand Logo and Cover */}
+      <Box sx={{ backgroundColor: "#fff", p: 3, mb: 3, borderRadius: "10px" }}>
+        <Typography variant="h5" sx={{ fontFamily: "Horizon" }}>
+          Brand Logo & Cover
+        </Typography>
 
+        <Box sx={{ display: "flex", gap: 4, mt: 2 }}>
+          <Box>
+            <Typography>Current Logo</Typography>
+            {brandData?.brandLogo && (
+              <img
+                src={brandData.brandLogo}
+                alt="Logo"
+                style={{ width: "120px", height: "auto", borderRadius: 8 }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e, "logo")}
+              style={{ marginTop: 8 }}
+            />
+          </Box>
+
+          <Box>
+            <Typography>Current Cover</Typography>
+            {brandData?.coverPhoto && (
+              <img
+                src={brandData.coverPhoto}
+                alt="Cover"
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  borderRadius: 8,
+                  objectFit: "cover",
+                }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e, "cover")}
+              style={{ marginTop: 8 }}
+            />
+          </Box>
+        </Box>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleBrandImageUpload}
+          sx={{ mt: 3 }}
+        >
+          Save Brand Images
+        </Button>
+      </Box>
       {/* Catalogs Section */}
       <Box sx={{ backgroundColor: "#fff", p: 3, borderRadius: "10px" }}>
         <h2 style={{ fontFamily: "Horizon", color: "#2d2d2d" }}>Catalogs</h2>
@@ -230,82 +284,6 @@ const BrandingPage = () => {
           ))}
         </div>
       </Box>
-
-      {/* Logo & Cover Photo Section
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "10px",
-          marginTop: "20px",
-        }}
-      >
-        <h3 style={{ fontFamily: "Horizon", color: "#2d2d2d" }}>
-          Brand Visuals
-        </h3>
-        <p style={{ fontFamily: "Montserrat", color: "#555" }}>
-          Upload or update your brand logo and cover photo.
-        </p>
-
-        <Box sx={{ display: "flex", gap: 4, mt: 2 }}>
-          {vendor?.brandLogo && (
-            <Box>
-              <p>Current Logo:</p>
-              <img
-                src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.brandLogo}`}
-                alt="Logo"
-                style={{ width: 100, height: 100, objectFit: "contain" }}
-              />
-            </Box>
-          )}
-          {vendor?.coverPhoto && (
-            <Box>
-              <p>Current Cover:</p>
-              <img
-                src={`https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.coverPhoto}`}
-                alt="Cover"
-                style={{ width: 180, height: 100, objectFit: "cover" }}
-              />
-            </Box>
-          )}
-        </Box>
-
-        <Box sx={{ mt: 3 }}>
-          <label>Update Logo</label>
-          <img
-            src={
-              `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.brandLogo}` ||
-              ""
-            }
-            alt="Logo"
-            style={{ width: 100, height: 100, objectFit: "contain" }}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleBrandImageChange(e, "brandlogo")}
-          />
-          <br />
-          <label>Update Cover Photo</label>
-          <img
-            src={
-              `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${vendor.coverPhoto}` ||
-              ""
-            }
-            alt="Logo"
-            style={{ width: 100, height: 100, objectFit: "contain" }}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleBrandImageChange(e, "coverPhoto")}
-          />
-          <br />
-          <button className="submit-btn" onClick={handleBrandImageUpload}>
-            Upload Images
-          </button>
-        </Box>
-      </Box> */}
 
       {/* Upload/Edit Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
