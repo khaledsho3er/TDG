@@ -389,6 +389,20 @@ body::-webkit-scrollbar:hover {
   overflow: hidden;
 }
 
+/* For desktop (multiple cards in a row) */
+.desktop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* For mobile (single card in a row) */
+.mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
 .logo img {
   position: relative;
   width: 230px;

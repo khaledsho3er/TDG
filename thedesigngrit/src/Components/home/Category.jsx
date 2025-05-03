@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CategoryCard = ({ title, image, buttonText, link }) => {
   const fullImagePath = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`; // Full image path for rendering
@@ -20,6 +21,7 @@ const CategoryCard = ({ title, image, buttonText, link }) => {
 
 const ShopByCategory = () => {
   const [categories, setCategories] = useState([]);
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   // Fetch categories
   useEffect(() => {
@@ -41,7 +43,9 @@ const ShopByCategory = () => {
   return (
     <div className="shop-by-category">
       <h2>Shop by Category</h2>
-      <div className="category-grid">
+      <div
+        className={`category-grid ${isMobile ? "mobile-grid" : "desktop-grid"}`}
+      >
         {categories.map((category) => (
           <CategoryCard
             key={category._id}
