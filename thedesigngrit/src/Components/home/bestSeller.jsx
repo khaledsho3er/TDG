@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ const ProductSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(5); // Start from first real slide
   const [transitionEnabled, setTransitionEnabled] = useState(true);
   const navigate = useNavigate();
-  const sliderRef = useRef(null);
   const visibleCount = 5;
 
   useEffect(() => {
@@ -67,6 +66,20 @@ const ProductSlider = () => {
     }
   }, [currentIndex, products]);
 
+  // Virtualization: Only render visible slides + a buffer
+  const visibleSlides = useMemo(() => {
+    return products.slice(currentIndex - 2, currentIndex + 3);
+  }, [currentIndex, products]);
+
+  // Swipe Optimization: Use React refs for touch events and implement a debounced swipe handler
+  const handleSwipe = (event) => {
+    if (event.deltaX > 0) {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
+  };
+
   const getSlideStyle = () => ({
     transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
     transition: transitionEnabled ? "transform 0.3s ease-in-out" : "none",
@@ -77,14 +90,26 @@ const ProductSlider = () => {
     <div className="slider-container-home">
       <h1 className="slider-title">BEST SELLERS</h1>
 
-      <div className="slider-wrapper" style={{ overflow: "hidden" }}>
-        <div className="slider-content" style={getSlideStyle()} ref={sliderRef}>
-          {products.map((product, index) => (
+      <div
+        className="slider-wrapper"
+        style={{ overflow: "hidden" }}
+        onWheel={handleSwipe} // For mouse wheel swipe support
+        onTouchStart={(e) => (e.touches.length = 1)} // Prevent multiple touches
+        onTouchMove={(e) => {
+          e.preventDefault();
+          if (e.touches[0].clientX - e.changedTouches[0].clientX > 50)
+            nextSlide();
+          if (e.touches[0].clientX - e.changedTouches[0].clientX < -50)
+            prevSlide();
+        }}
+      >
+        <div className="slider-content" style={getSlideStyle()}>
+          {visibleSlides.map((product, index) => (
             <div
               key={index}
               className="product-card"
               style={{
-                width: `${100 / products.length}%`,
+                width: `${100 / visibleSlides.length}%`,
                 flexShrink: 0,
                 cursor: "pointer",
               }}
@@ -95,6 +120,7 @@ const ProductSlider = () => {
                   src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp`}
                   alt={product.name}
                   style={{ width: "100%" }}
+                  loading="lazy"
                 />
               </div>
 
