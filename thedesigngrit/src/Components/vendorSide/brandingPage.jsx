@@ -51,9 +51,9 @@ const BrandingPage = () => {
       .get(`https://api.thedesigngrit.com/api/brand/${brandId}`)
       .then((res) => {
         setBrandData(res.data);
-        if (res.data.brandLogo) {
+        if (res.data.brandlogo) {
           setPreviewLogo(
-            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.brandLogo}`
+            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.brandlogo}`
           );
         }
         if (res.data.coverPhoto) {
@@ -99,7 +99,7 @@ const BrandingPage = () => {
     if (!logoFile && !coverFile) return;
 
     const formData = new FormData();
-    if (logoFile) formData.append("brandLogo", logoFile);
+    if (logoFile) formData.append("brandlogo", logoFile);
     if (coverFile) formData.append("coverPhoto", coverFile);
 
     try {
@@ -216,7 +216,6 @@ const BrandingPage = () => {
             height: "300px",
             width: "100%",
             borderRadius: "8px",
-            overflow: "hidden",
             mb: 8,
           }}
         >
