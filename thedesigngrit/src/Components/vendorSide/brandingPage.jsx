@@ -63,7 +63,7 @@ const BrandingPage = () => {
         }
       })
       .catch((err) => console.error("Error fetching brand data:", err));
-  }, [brandId]);
+  }, [brandId, brandData]);
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => {
@@ -202,9 +202,13 @@ const BrandingPage = () => {
 
   return (
     <div className="branding-page-form">
-      <h2>Branding Page</h2>
+      <Typography
+        variant="h5"
+        sx={{ fontFamily: "Montserrat", mb: 2, textAlign: "left" }}
+      >
+        Branding Page
+      </Typography>
       {/* Brand Logo and Cover */}
-      {/* Brand Logo and Cover - Facebook Style */}
       <Box sx={{ backgroundColor: "#fff", p: 3, mb: 3, borderRadius: "10px" }}>
         <Typography variant="h5" sx={{ fontFamily: "Horizon", mb: 2 }}>
           Brand Logo & Cover
@@ -321,8 +325,10 @@ const BrandingPage = () => {
       </Box>
 
       {/* Catalogs Section */}
-      <Box sx={{ backgroundColor: "#fff", p: 3, borderRadius: "10px" }}>
-        <h2 style={{ fontFamily: "Horizon", color: "#2d2d2d" }}>Catalogs</h2>
+      <Box sx={{ backgroundColor: "#fff", p: 3, mb: 3, borderRadius: "10px" }}>
+        <Typography variant="h5" sx={{ fontFamily: "Horizon", mb: 2 }}>
+          Catalogs
+        </Typography>
         <button className="submit-btn" onClick={handleOpenDialog}>
           Upload Catalog
         </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useVendor } from "../../utils/vendorContext";
-import { Box } from "@mui/material";
+import { Box, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import axios from "axios";
 import {
   FaInstagram,
@@ -34,6 +34,7 @@ const BrandSignup = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState({});
   const [types, setTypes] = useState([]);
+  const [selectedTypeNames, setSelectedTypeNames] = useState([]);
 
   const platformIcons = {
     instagramURL: (
@@ -49,7 +50,16 @@ const BrandSignup = () => {
     fetchTypes();
     if (vendor?.brandId) fetchBrandData(vendor.brandId);
   }, [vendor]);
-
+  useEffect(() => {
+    // Update selected type names whenever types or formData.type changes
+    if (types.length > 0 && formData.type) {
+      const names = formData.type.map((id) => {
+        const type = types.find((t) => t._id === id);
+        return type ? type.name : id;
+      });
+      setSelectedTypeNames(names);
+    }
+  }, [types, formData.type]);
   const fetchTypes = async () => {
     try {
       const { data } = await axios.get(
@@ -209,28 +219,41 @@ const BrandSignup = () => {
                 )
               ) : key === "type" ? (
                 isEditing ? (
-                  <select
-                    multiple
-                    value={formData.type}
-                    onChange={handleTypeChange}
-                  >
-                    {types.map((type) => (
-                      <option key={type._id} value={type._id}>
-                        {type.name}
-                      </option>
-                    ))}
-                  </select>
+                  <FormControl fullWidth>
+                    <InputLabel>Types</InputLabel>
+                    <Select
+                      multiple
+                      value={formData.type}
+                      onChange={handleTypeChange}
+                      label="Types"
+                      renderValue={(selected) =>
+                        selected
+                          .map((id) => {
+                            const type = types.find((t) => t._id === id);
+                            return type ? type.name : id;
+                          })
+                          .join(", ")
+                      }
+                    >
+                      {types.map((type) => (
+                        <MenuItem key={type._id} value={type._id}>
+                          {type.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 ) : (
-                  <ul>
-                    {formData.type.length > 0 ? (
-                      formData.type.map((id) => {
-                        const type = types.find((t) => t._id === id);
-                        return <li key={id}>{type ? type.name : id}</li>;
-                      })
+                  <div>
+                    {selectedTypeNames.length > 0 ? (
+                      <ul style={{ listStyle: "none", padding: 0 }}>
+                        {selectedTypeNames.map((name, index) => (
+                          <li key={index}>{name}</li>
+                        ))}
+                      </ul>
                     ) : (
-                      <li>Not Selected</li>
+                      <p>Not Selected</p>
                     )}
-                  </ul>
+                  </div>
                 )
               ) : isEditing ? (
                 <input
