@@ -161,8 +161,6 @@ function Home() {
               src={posterImage}
               alt="Hero placeholder"
               className="hero-video-element"
-              loading="eager"
-              fetchpriority="high"
             />
           )}
           <div className="video-progress-container">
