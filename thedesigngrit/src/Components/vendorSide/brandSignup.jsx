@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useVendor } from "../../utils/vendorContext";
-import { Box, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Box,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Chip,
+  OutlinedInput,
+} from "@mui/material";
 import axios from "axios";
 import {
   FaInstagram,
@@ -53,10 +61,12 @@ const BrandSignup = () => {
   useEffect(() => {
     // Update selected type names whenever types or formData.type changes
     if (types.length > 0 && formData.type) {
-      const names = formData.type.map((id) => {
-        const type = types.find((t) => t._id === id);
-        return type ? type.name : id;
-      });
+      const names = formData.type
+        .map((id) => {
+          const type = types.find((t) => t._id === id);
+          return type ? type.name : id;
+        })
+        .filter((name) => name); // Filter out any undefined names
       setSelectedTypeNames(names);
     }
   }, [types, formData.type]);
@@ -93,13 +103,15 @@ const BrandSignup = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTypeChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map(
-      (opt) => opt.value
-    );
-    setFormData((prev) => ({ ...prev, type: selectedOptions }));
+  const handleTypeChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFormData((prev) => ({
+      ...prev,
+      type: typeof value === "string" ? value.split(",") : value,
+    }));
   };
-
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
     setFormData({
@@ -220,20 +232,29 @@ const BrandSignup = () => {
               ) : key === "type" ? (
                 isEditing ? (
                   <FormControl fullWidth>
-                    <InputLabel>Types</InputLabel>
+                    <InputLabel id="type-select-label">Types</InputLabel>
                     <Select
+                      labelId="type-select-label"
                       multiple
                       value={formData.type}
                       onChange={handleTypeChange}
-                      label="Types"
-                      renderValue={(selected) =>
-                        selected
-                          .map((id) => {
-                            const type = types.find((t) => t._id === id);
-                            return type ? type.name : id;
-                          })
-                          .join(", ")
-                      }
+                      input={<OutlinedInput label="Types" />}
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => {
+                            const type = types.find((t) => t._id === value);
+                            return (
+                              <Chip
+                                key={value}
+                                label={type ? type.name : value}
+                                sx={{ backgroundColor: "#e0e0e0" }}
+                              />
+                            );
+                          })}
+                        </Box>
+                      )}
                     >
                       {types.map((type) => (
                         <MenuItem key={type._id} value={type._id}>
@@ -245,11 +266,15 @@ const BrandSignup = () => {
                 ) : (
                   <div>
                     {selectedTypeNames.length > 0 ? (
-                      <ul style={{ listStyle: "none", padding: 0 }}>
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                         {selectedTypeNames.map((name, index) => (
-                          <li key={index}>{name}</li>
+                          <Chip
+                            key={index}
+                            label={name}
+                            sx={{ backgroundColor: "#e0e0e0" }}
+                          />
                         ))}
-                      </ul>
+                      </Box>
                     ) : (
                       <p>Not Selected</p>
                     )}
