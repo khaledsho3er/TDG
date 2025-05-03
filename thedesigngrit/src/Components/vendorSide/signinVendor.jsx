@@ -83,8 +83,16 @@ const SignIn = () => {
         />
       </h1>
       <Box className="login-form" sx={{ height: "55%" }}>
-        <h1>Sign In</h1>
-        <h1>Vendor Portal</h1>
+        {/* <h1 style={{ textAlign: "center", fontFamily: "" }}>Sign In</h1> */}
+        <h1
+          style={{
+            textAlign: "center",
+            fontFamily: "Horizon",
+            fontWeight: "bold",
+          }}
+        >
+          Vendor Portal
+        </h1>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
