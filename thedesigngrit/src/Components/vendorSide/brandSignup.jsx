@@ -129,6 +129,10 @@ const BrandSignup = () => {
       Object.keys(formData).forEach((key) => {
         if (key === "type") {
           formData.type.forEach((item) => dataToSend.append("type", item)); // send as multiple values
+        } else if (key === "types") {
+          formData.type.forEach((typeId) => {
+            dataToSend.append("types", typeId); // Note plural "types" to match API
+          });
         } else {
           dataToSend.append(key, formData[key]);
         }
