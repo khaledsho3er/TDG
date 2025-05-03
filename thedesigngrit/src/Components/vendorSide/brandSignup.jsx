@@ -213,23 +213,6 @@ const BrandSignup = () => {
             )}
           </div>
         </Box>
-        <Box>
-          <h2>{formData.types || "Brand Types"}</h2>
-          {/* brand types by names insted of ids */}
-          {selectedTypeNames.length > 0 ? (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {selectedTypeNames.map((name, index) => (
-                <Chip
-                  key={index}
-                  label={name}
-                  sx={{ backgroundColor: "#e0e0e0", fontWeight: "bold" }}
-                />
-              ))}
-            </Box>
-          ) : (
-            <p>No types selected</p>
-          )}
-        </Box>
       </div>
 
       <div className="brand-info">
