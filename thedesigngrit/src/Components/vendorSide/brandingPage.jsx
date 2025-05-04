@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaEdit } from "react-icons/fa";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
@@ -255,14 +255,14 @@ const BrandingPage = () => {
               position: "absolute",
               top: 16,
               right: 16,
-              backgroundColor: "rgba(255,255,255,0.8)",
+              backgroundColor: "transparent",
               "&:hover": {
                 backgroundColor: "rgba(255,255,255,1)",
               },
             }}
             onClick={handleOpenCoverModal}
           >
-            <FaEdit />
+            <MdOutlineModeEdit color="#ccc" />
           </IconButton>
 
           {/* Logo */}
@@ -311,14 +311,14 @@ const BrandingPage = () => {
                 position: "absolute",
                 bottom: 8,
                 right: 8,
-                backgroundColor: "rgba(255,255,255,0.8)",
+                backgroundColor: "transparent",
                 "&:hover": {
                   backgroundColor: "rgba(255,255,255,1)",
                 },
               }}
               onClick={handleOpenLogoModal}
             >
-              <FaEdit />
+              <MdOutlineModeEdit color="#ccc" />
             </IconButton>
           </Box>
         </Box>
