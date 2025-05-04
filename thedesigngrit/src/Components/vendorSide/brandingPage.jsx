@@ -329,7 +329,15 @@ const BrandingPage = () => {
         <Typography variant="h5" sx={{ fontFamily: "Horizon", mb: 2 }}>
           Catalogs
         </Typography>
-        <button className="submit-btn" onClick={handleOpenDialog}>
+        <button
+          className="submit-btn"
+          onClick={handleOpenDialog}
+          style={{
+            "&:hover": {
+              backgroundColor: "#2d2d2d !important",
+            },
+          }}
+        >
           Upload Catalog
         </button>
         <div
