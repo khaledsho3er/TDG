@@ -455,18 +455,12 @@ function ProductPage() {
                             marginLeft: "0px",
                           }}
                         >
-                          Manufacturer :{product.brandName}
+                          Manufacturer :{product.brandId.brandName}
                         </h5>
                         <div className="product-details">
                           <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
-                            <span className="label">Collection:</span>{" "}
-                            <p
-                              style={{
-                                fontSize: isMobile ? "13px" : "20px",
-                              }}
-                            >
-                              {product.collection}
-                            </p>
+                            <span className="label">Collection:</span>
+                            {product.collection}
                           </p>
                           {/* <p style={{ fontSize: "20px" }}>
                             <span className="label">Type:</span> 2 Seater Fabric
