@@ -7,6 +7,25 @@ const AccountingPage = () => {
   const [payoutHistory, setPayoutHistory] = useState([]);
   const [refundRecords, setRefundRecords] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.thedesgingrit.com/api/orders/sales"
+        );
+        setSalesData(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSalesData();
+  }, []);
 
   useEffect(() => {
     // Fetch data from the backend
