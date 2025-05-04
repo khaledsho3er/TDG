@@ -29,7 +29,7 @@ const videos = [
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const posterImage = isSafari
   ? "/Assets/Video-hero/poster.jpg"
-  : "/Assets/Video-hero/poster.avif";
+  : "/Assets/Video-hero/poster.webp";
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -143,8 +143,9 @@ function Home() {
                 src={posterImage}
                 alt="Hero poster"
                 className="hero-video-element"
-                loading="eager"
-                fetchpriority="high"
+                width="100%"
+                height="auto"
+                style={{ aspectRatio: "16/9", width: "100%", height: "auto" }}
               />
             ) : (
               <video
