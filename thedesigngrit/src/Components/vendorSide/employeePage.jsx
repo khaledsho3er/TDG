@@ -5,6 +5,7 @@ import { IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
 import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
+import { Link } from "react-router-dom";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
 const EmployeePage = () => {
@@ -80,6 +81,22 @@ const EmployeePage = () => {
 
   return (
     <div style={{ padding: "70px" }}>
+      <div className="dashboard-header-title">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: "10px",
+          }}
+        >
+          <h2>Employees</h2>
+        </div>
+        <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
+          <Link to={`/vendor-dashboard/${vendor.brandId}`}>Home</Link> &gt;
+          Employees
+        </p>
+      </div>
       <div className="dashboard-date-vendor">
         <button
           onClick={handleOpenSignup} // Show popup on click

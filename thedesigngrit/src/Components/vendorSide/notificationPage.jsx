@@ -105,7 +105,8 @@ const NotificationsPage = () => {
           <div className="dashboard-header-title">
             <h2>Notifications</h2>
             <p>
-              <Link to="/vendorpanel">Home</Link> &gt; Notifications
+              <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt;
+              Notifications
             </p>
           </div>
         </header>

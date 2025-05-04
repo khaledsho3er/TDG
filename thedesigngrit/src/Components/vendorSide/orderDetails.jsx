@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { IoMdPrint } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import axios from "axios";
 // import { MdOutlineShoppingBag } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
@@ -206,7 +207,10 @@ const OrderDetails = ({ order, onBack }) => {
             <h2>Order List</h2>
           </div>
           <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
-            Home &gt; Order List &gt; Order Details
+            <Link to={`/vendor-dashboard/${order.cartItems[0].brandId}`}>
+              Home
+            </Link>{" "}
+            &gt; Order List &gt; Order Details
           </p>
         </div>
       </header>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext";
 import { FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ViewInStoreVendor = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -97,7 +98,22 @@ const ViewInStoreVendor = () => {
 
   return (
     <div className="quotations-page">
-      <h1>View In Store</h1>
+      <div className="dashboard-header-title">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: "10px",
+          }}
+        >
+          <h2>View In Store</h2>
+        </div>
+        <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
+          <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt; View In
+          Store
+        </p>
+      </div>{" "}
       <Box
         className="view-in-store-search"
         sx={{
@@ -144,7 +160,6 @@ const ViewInStoreVendor = () => {
           ))}
         </div>
       )}
-
       {viewInStores.length > 0 ? (
         <div
           className="quotations-list"
@@ -178,7 +193,6 @@ const ViewInStoreVendor = () => {
       ) : (
         <div>No View In Store entries available for this brand.</div>
       )}
-
       {/* Popup for displaying entry details */}
       {selectedViewInStore && (
         <div className="quotation-popup">
