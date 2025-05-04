@@ -9,9 +9,7 @@ import LoadingScreen from "./loadingScreen";
 import { GiConfirmed } from "react-icons/gi";
 import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
 import { CiUndo } from "react-icons/ci";
-const InvoicePDF = React.lazy(() =>
-  import("../Components/invoiceOrderCustomer")
-);
+import InvoicePDF from "../Components/invoiceOrderCustomer";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
