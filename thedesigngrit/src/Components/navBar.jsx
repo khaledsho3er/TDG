@@ -301,8 +301,7 @@ function Header() {
               <img
                 src="/Assets/TDG_Logo_Black.webp"
                 alt="Logo"
-                width={"121px"}
-                height={"85px"}
+                style={{ width: "134px", height: "89px" }}
               />
             </Typography>
           </Link>
