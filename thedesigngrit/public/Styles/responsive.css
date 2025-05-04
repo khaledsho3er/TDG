@@ -875,10 +875,6 @@
   .subcategory-description {
     display: none;
   }
-  .partners-logo-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1044,6 +1040,10 @@
   }
   .image-preview-container {
     grid-template-columns: repeat(1, 1fr); /* 1 image per row */
+  }
+  .partners-logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0rem;
   }
 }
 /* Responsive Design */
