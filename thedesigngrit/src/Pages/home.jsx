@@ -109,47 +109,69 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Header should come first */}
-      <Header />
-
-      {/* Hero Section comes after Header */}
-      <div className="hero-home-section">
-        <div className="hero-video">
+      <div className="background-layer">
+        {isMobile ? (
           <img
             src={posterImage}
-            alt="Hero poster"
+            alt="Hero background"
             className="hero-video-element"
-            width="100%"
-            height="auto"
-            style={{ aspectRatio: "16/9", width: "100%", height: "auto" }}
-            fetchpriority="high"
-            loading="eager"
           />
-          {showVideo && !isMobile && (
-            <video
-              key={currentVideoIndex}
-              ref={fgVideoRef}
-              className={`hero-video-element ${isFading ? "fade-out" : ""}`}
-              poster={posterImage}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            >
-              <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
-              <source src={videos[currentVideoIndex].webm} type="video/webm" />
-            </video>
+        ) : (
+          <video
+            key={currentVideoIndex} // ✅ Force remount on video index change
+            ref={bgVideoRef}
+            className={`hero-video-element ${isFading ? "fade-out" : ""}`}
+            poster={posterImage}
+            autoPlay
+            muted
+            playsInline
+            preload="none"
+          >
+            <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
+            <source src={videos[currentVideoIndex].webm} type="video/webm" />
+          </video>
+        )}
+      </div>
+      {/* Header and Sections */}
+      <Header />
+      {/* Hero Section */}
+      <div className="hero-home-section">
+        <div className="hero-video">
+          {showVideo ? (
+            isMobile ? (
+              <img
+                src={posterImage}
+                alt="Hero poster"
+                className="hero-video-element"
+                width="100%"
+                height="auto"
+                style={{ aspectRatio: "16/9", width: "100%", height: "auto" }}
+              />
+            ) : (
+              <video
+                key={currentVideoIndex} // ✅ Force remount on video index change
+                ref={fgVideoRef}
+                className={`hero-video-element ${isFading ? "fade-out" : ""}`}
+                poster={posterImage}
+                autoPlay
+                muted
+                playsInline
+                preload="none"
+              >
+                <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
+                <source
+                  src={videos[currentVideoIndex].webm}
+                  type="video/webm"
+                />
+              </video>
+            )
+          ) : (
+            <img
+              src={posterImage}
+              alt="Hero placeholder"
+              className="hero-video-element"
+            />
           )}
-
-          {/* Progress Dots */}
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
@@ -171,36 +193,32 @@ function Home() {
         </div>
       </div>
 
-      {/* Other sections */}
-      {showSections && (
-        <Suspense fallback={null}>
-          <ScrollAnimation>
-            <Box className="concept-title">
-              <ExploreConcepts />
-            </Box>
-          </ScrollAnimation>
+      <Suspense fallback={null}>
+        <ScrollAnimation>
+          <Box className="concept-title">
+            <ExploreConcepts />
+          </Box>
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <ShopByCategory />
-          </ScrollAnimation>
+        <ScrollAnimation>
+          <ShopByCategory />
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <Box sx={{ width: "100%" }}>
-              <ProductSlider />
-            </Box>
-          </ScrollAnimation>
+        <ScrollAnimation>
+          <Box sx={{ width: "100%" }}>
+            <ProductSlider />
+          </Box>
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <SustainabilitySection />
-          </ScrollAnimation>
+        <ScrollAnimation>
+          <SustainabilitySection />
+        </ScrollAnimation>
 
-          <ScrollAnimation>
-            <PartnersSection />
-          </ScrollAnimation>
-
-          <Footer />
-        </Suspense>
-      )}
+        <ScrollAnimation>
+          <PartnersSection />
+        </ScrollAnimation>
+        <Footer />
+      </Suspense>
     </div>
   );
 }
