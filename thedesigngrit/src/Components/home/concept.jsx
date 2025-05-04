@@ -80,7 +80,7 @@ const ExploreConcepts = () => {
             }
 
             return (
-              <Card key={concept._id} className={className}>
+              <Card key={concept?._id} className={className}>
                 <CardMedia
                   component="img"
                   image={
@@ -88,7 +88,7 @@ const ExploreConcepts = () => {
                       ? `https://pub-8aa8289e571a4ef1a067e89c0e294837.r2.dev/${concept.imageUrl}?width=400&height=300&format=webp`
                       : "/default-image.jpg"
                   }
-                  alt={concept.title || "Concept image"}
+                  alt={concept?.title || "Concept image"}
                   width="400"
                   height="300"
                   style={{ width: "100%", height: "auto" }}
@@ -97,7 +97,7 @@ const ExploreConcepts = () => {
                   decoding="async"
                 />
 
-                {concept.nodes?.map((node, idx) => (
+                {concept?.nodes?.map((node, idx) => (
                   <Box
                     key={idx}
                     sx={{

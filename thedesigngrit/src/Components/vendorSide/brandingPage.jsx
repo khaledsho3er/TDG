@@ -257,7 +257,7 @@ const BrandingPage = () => {
               right: 16,
               backgroundColor: "rgba(255,255,255,0.8)",
               "&:hover": {
-                backgroundColor: "rgba(255,255,255,1)",
+                backgroundColor: "#2d2d2d !important",
               },
             }}
             onClick={handleOpenCoverModal}
@@ -313,7 +313,7 @@ const BrandingPage = () => {
                 right: 8,
                 backgroundColor: "rgba(255,255,255,0.8)",
                 "&:hover": {
-                  backgroundColor: "rgba(255,255,255,1)",
+                  backgroundColor: "#2d2d2d !important",
                 },
               }}
               onClick={handleOpenLogoModal}
@@ -376,7 +376,14 @@ const BrandingPage = () => {
                 </div>
               </a>
               <IconButton
-                sx={{ position: "absolute", top: 5, right: 5 }}
+                sx={{
+                  position: "absolute",
+                  top: 5,
+                  right: 5,
+                  "&:hover": {
+                    backgroundColor: "#2d2d2d !important",
+                  },
+                }}
                 onClick={(e) => handleMenuOpen(e, catalog)}
               >
                 <BsThreeDotsVertical />
