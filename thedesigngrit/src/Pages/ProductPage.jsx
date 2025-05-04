@@ -427,7 +427,7 @@ function ProductPage() {
         <div className="page-container">
           {/* Collapsible Info Section */}
           <div className="collapsible-container">
-            {["Overview", "Dimensions", "BIM/CAD", "Videos", "Tags"].map(
+            {["Overview", "Dimensions", "BIM/CAD", "Tags"].map(
               (section, index) => (
                 <div
                   key={index}
@@ -563,7 +563,7 @@ function ProductPage() {
                         </Button>
                       </div>
                     )}
-                    {section === "Videos" && (
+                    {/* {section === "Videos" && (
                       <div className="product-contents">
                         <iframe
                           width="560"
@@ -575,7 +575,7 @@ function ProductPage() {
                           allowFullScreen
                         ></iframe>
                       </div>
-                    )}
+                    )} */}
                     {section === "Tags" && product.tags && (
                       <div className="span-container">
                         {product.tags.length > 0 ? (

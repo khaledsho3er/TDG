@@ -255,15 +255,14 @@ const BrandingPage = () => {
               position: "absolute",
               top: 16,
               right: 16,
-              backgroundColor: "rgba(255,255,255,0.2)!important",
-              backdropFilter: "blur(2px)!important",
+              backgroundColor: "rgba(255,255,255,0.8)",
               "&:hover": {
-                backgroundColor: "#2D2D2D43",
+                backgroundColor: "rgba(255,255,255,1)",
               },
             }}
             onClick={handleOpenCoverModal}
           >
-            <MdOutlineModeEdit color="#ccc" />
+            <MdOutlineModeEdit color="white" />
           </IconButton>
 
           {/* Logo */}
@@ -312,15 +311,14 @@ const BrandingPage = () => {
                 position: "absolute",
                 bottom: 8,
                 right: 8,
-                backgroundColor: "rgba(255,255,255,0.2) !important",
-                backdropFilter: "blur(2px) !important",
+                backgroundColor: "rgba(255,255,255,0.8)",
                 "&:hover": {
-                  backgroundColor: "#2D2D2D43",
+                  backgroundColor: "rgba(255,255,255,1)",
                 },
               }}
               onClick={handleOpenLogoModal}
             >
-              <MdOutlineModeEdit color="#ccc" />
+              <MdOutlineModeEdit color="white" />
             </IconButton>
           </Box>
         </Box>
