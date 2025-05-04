@@ -64,45 +64,47 @@ function Home() {
 
   useEffect(() => {
     const video = fgVideoRef.current;
+    if (!video) return;
 
     const handleLoadedMetadata = () => {
       setVideoDuration(video.duration);
     };
 
     const handleTimeUpdate = () => {
-      if (videoDuration) {
-        setProgress((video.currentTime / videoDuration) * 100);
+      if (video.duration) {
+        setProgress((video.currentTime / video.duration) * 100);
       }
     };
 
     const handleEnded = () => {
       setIsFading(true);
-
       setTimeout(() => {
         setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
         setProgress(0);
-        setIsFading(false); // Reset after new video is set
-      }, 800); // match CSS transition duration
+        setIsFading(false);
+      }, 800); // match fade duration
     };
 
-    if (video) {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      video.addEventListener("timeupdate", handleTimeUpdate);
-      video.addEventListener("ended", handleEnded);
-    }
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("ended", handleEnded);
 
     return () => {
-      if (video) {
-        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        video.removeEventListener("timeupdate", handleTimeUpdate);
-        video.removeEventListener("ended", handleEnded);
-      }
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("ended", handleEnded);
     };
-  }, [videoDuration, currentVideoIndex]);
+  }, [currentVideoIndex]); // ✅ dependency: change event bindings on index change
 
   const handleDotClick = (index) => {
-    setCurrentVideoIndex(index);
-    setProgress(0);
+    if (index !== currentVideoIndex) {
+      setIsFading(true);
+      setTimeout(() => {
+        setCurrentVideoIndex(index);
+        setProgress(0);
+        setIsFading(false);
+      }, 800);
+    }
   };
 
   return (
@@ -116,6 +118,7 @@ function Home() {
           />
         ) : (
           <video
+            key={currentVideoIndex} // ✅ Force remount on video index change
             ref={bgVideoRef}
             className={`hero-video-element ${isFading ? "fade-out" : ""}`}
             poster={posterImage}
@@ -145,6 +148,7 @@ function Home() {
               />
             ) : (
               <video
+                key={currentVideoIndex} // ✅ Force remount on video index change
                 ref={fgVideoRef}
                 className={`hero-video-element ${isFading ? "fade-out" : ""}`}
                 poster={posterImage}
