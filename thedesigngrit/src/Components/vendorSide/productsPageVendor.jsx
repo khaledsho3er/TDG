@@ -7,7 +7,6 @@ import axios from "axios";
 import PromotionModal from "./promotionProduct"; // Import the PromotionModal component
 import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
-import { Link } from "react-router-dom"; // Import Link for navigation
 // import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
 const ProductsPageVendor = ({ setActivePage }) => {
@@ -201,11 +200,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <h2>All Products</h2>
-          <p>
-            {" "}
-            <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt; All
-            Products
-          </p>
+          <p> Home &gt; All Products</p>
         </div>
         <div className="dashboard-date-vendor">
           <button

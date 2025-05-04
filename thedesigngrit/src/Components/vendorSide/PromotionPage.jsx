@@ -5,7 +5,6 @@ import axios from "axios";
 import { useVendor } from "../../utils/vendorContext"; // Vendor context for brandId
 import EditPromotionModal from "./EditPromotionModal"; // adjust path as needed
 import CreatePromotionDialog from "./CreatePromotionDialog"; // adjust path
-import { Link } from "react-router-dom";
 const PromotionsPage = () => {
   const { vendor } = useVendor(); // Access vendor context for brandId
   const [products, setProducts] = useState([]);
@@ -94,11 +93,7 @@ const PromotionsPage = () => {
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <h2>Promotions</h2>
-          <p>
-            {" "}
-            <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt;
-            Promotions
-          </p>
+          <p> Home &gt; Promotions</p>
         </div>
         <div className="dashboard-date-vendor">
           <button

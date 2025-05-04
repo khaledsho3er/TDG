@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { IconButton } from "@mui/material";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
-import { Link } from "react-router-dom";
 const QuotationsPage = () => {
   const { vendor } = useVendor(); // Access vendor data from context
   const [quotations, setQuotations] = useState([]);
@@ -42,7 +39,7 @@ const QuotationsPage = () => {
 
   return (
     <div className="quotations-page">
-      <div className="dashboard-header-title">
+      <div className="dashboard-header-title" style={{ marginBottom: "20px" }}>
         <div
           style={{
             display: "flex",
@@ -54,8 +51,7 @@ const QuotationsPage = () => {
           <h2>Quotations</h2>
         </div>
         <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
-          <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt;
-          Quotations Requests
+          Home &gt; Quotations Requests
         </p>
       </div>
 

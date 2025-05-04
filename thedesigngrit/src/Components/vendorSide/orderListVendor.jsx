@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { useVendor } from "../../utils/vendorContext";
-import { Link } from "react-router-dom";
 import OrderDetails from "./orderDetails";
 import { subDays, isWithinInterval, parseISO } from "date-fns";
 
@@ -110,11 +109,7 @@ const RecentPurchases = () => {
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <h2>Order List</h2>
-          <p>
-            {" "}
-            <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt; Order
-            List
-          </p>
+          <p> Home &gt; Order List</p>
         </div>
         <div className="dashboard-date-vendor">
           <SlCalender />

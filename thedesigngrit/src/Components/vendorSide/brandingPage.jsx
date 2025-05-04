@@ -15,7 +15,6 @@ import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineModeEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -202,7 +201,7 @@ const BrandingPage = () => {
 
   return (
     <div className="branding-page-form">
-      <div className="dashboard-header-title">
+      <div className="dashboard-header-title" style={{ marginBottom: "20px" }}>
         <div
           style={{
             display: "flex",
@@ -214,7 +213,7 @@ const BrandingPage = () => {
           <h2>Branding</h2>
         </div>
         <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
-          <Link to={`/vendor-dashboard/${brandId}`}>Home</Link> &gt; Branding
+          Home &gt; Branding
         </p>
       </div>
       {/* Brand Logo and Cover */}

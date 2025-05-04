@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5"; // For status dots
-import { Link } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Import your vendor context
 import OrderDetails from "./orderDetails";
 
@@ -104,10 +103,7 @@ const NotificationsPage = () => {
         <header className="dashboard-header-vendor">
           <div className="dashboard-header-title">
             <h2>Notifications</h2>
-            <p>
-              <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt;
-              Notifications
-            </p>
+            <p>Home &gt; Notifications</p>
           </div>
         </header>
 

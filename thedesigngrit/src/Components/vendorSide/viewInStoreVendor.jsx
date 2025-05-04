@@ -3,7 +3,6 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext";
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 const ViewInStoreVendor = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -98,7 +97,7 @@ const ViewInStoreVendor = () => {
 
   return (
     <div className="quotations-page">
-      <div className="dashboard-header-title">
+      <div className="dashboard-header-title" style={{ marginBottom: "20px" }}>
         <div
           style={{
             display: "flex",
@@ -110,8 +109,7 @@ const ViewInStoreVendor = () => {
           <h2>View In Store</h2>
         </div>
         <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
-          <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt; View In
-          Store
+          Home &gt; View In Store
         </p>
       </div>{" "}
       <Box

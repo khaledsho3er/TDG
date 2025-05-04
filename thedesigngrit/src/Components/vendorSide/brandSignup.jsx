@@ -9,7 +9,6 @@ import {
   Chip,
   OutlinedInput,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   FaInstagram,
@@ -189,22 +188,6 @@ const BrandSignup = () => {
 
   return (
     <div className="brand-signup-form">
-      <div className="dashboard-header-title">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: "10px",
-          }}
-        >
-          <h2>Brand Info</h2>
-        </div>
-        <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
-          <Link to={`/vendor-dashboard/${vendor._id}`}>Home</Link> &gt; Brand
-          Info
-        </p>
-      </div>
       <div className="brand-header">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
