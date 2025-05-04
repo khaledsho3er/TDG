@@ -18,39 +18,6 @@ import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
 import { BsExclamationOctagon } from "react-icons/bs";
 
-const groupImagesByBase = (images) => {
-  const groups = {};
-  const standalone = [];
-
-  images.forEach((img) => {
-    const match = img.match(/^(.*?)-(thumb|medium|large)\.webp$/);
-    if (match) {
-      const base = match[1];
-      const size = match[2];
-
-      if (!groups[base]) groups[base] = {};
-      groups[base][size] = img;
-    } else {
-      // It's a standalone image (from older products)
-      standalone.push({
-        base: img,
-        thumb: img,
-        medium: img,
-        large: img,
-        isStandalone: true,
-      });
-    }
-  });
-
-  // Convert groups to array and merge with standalone images
-  const groupedArray = Object.entries(groups).map(([base, sizes]) => ({
-    base,
-    ...sizes,
-  }));
-
-  return [...groupedArray, ...standalone];
-};
-
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
@@ -76,7 +43,6 @@ function ProductPage() {
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewerName, setReviewerName] = useState("");
-  const [groupedImages, setGroupedImages] = useState([]);
 
   // Fetch product details by ID
   useEffect(() => {
@@ -119,15 +85,31 @@ function ProductPage() {
 
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
-  // Ensure this useEffect is always called unconditionally
-  useEffect(() => {
-    if (product.images) {
-      const grouped = groupImagesByBase(product.images);
-      setGroupedImages(grouped);
-    }
-  }, [product.images]); // Dependency array ensures it runs when product.images changes
+
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
   if (!product) return <div>Product not found</div>;
+  const groupImagesByBase = (images) => {
+    const groups = {};
+
+    images.forEach((img) => {
+      const base = img.replace(/-(thumb|medium|large)\.webp$/, "");
+      const size = img.includes("-thumb")
+        ? "thumb"
+        : img.includes("-medium")
+        ? "medium"
+        : "large";
+
+      if (!groups[base]) groups[base] = {};
+      groups[base][size] = img;
+    });
+
+    return Object.entries(groups).map(([base, sizes]) => ({
+      base,
+      ...sizes,
+    }));
+  };
+
+  const groupedImages = groupImagesByBase(product.images || []);
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
