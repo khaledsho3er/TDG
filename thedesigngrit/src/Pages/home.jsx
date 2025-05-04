@@ -51,6 +51,7 @@ function Home() {
   const [progress, setProgress] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
+  const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
     // Defer video rendering to reduce LCP impact
@@ -75,8 +76,13 @@ function Home() {
     };
 
     const handleEnded = () => {
-      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-      setProgress(0);
+      setIsFading(true);
+
+      setTimeout(() => {
+        setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+        setProgress(0);
+        setIsFading(false); // Reset after new video is set
+      }, 800); // match CSS transition duration
     };
 
     if (video) {
@@ -111,11 +117,10 @@ function Home() {
         ) : (
           <video
             ref={bgVideoRef}
-            className="hero-video-element"
+            className={`hero-video-element ${isFading ? "fade-out" : ""}`}
             poster={posterImage}
             autoPlay
             muted
-            loop
             playsInline
             preload="none"
           >
@@ -141,11 +146,10 @@ function Home() {
             ) : (
               <video
                 ref={fgVideoRef}
-                className="hero-video-element"
+                className={`hero-video-element ${isFading ? "fade-out" : ""}`}
                 poster={posterImage}
                 autoPlay
                 muted
-                loop
                 playsInline
                 preload="none"
               >
