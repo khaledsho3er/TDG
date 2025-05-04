@@ -92,9 +92,9 @@ const ProductSlider = () => {
             >
               <div className="product-image-home" style={{ width: "100%" }}>
                 <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp`}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                   alt={product.name}
-                  style={{ width: "100%" }}
+                  style={{ width: "80%" }}
                 />
               </div>
 
