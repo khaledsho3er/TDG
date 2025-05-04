@@ -217,12 +217,7 @@ function TrackOrder() {
                         </option>
                       ))}
                     </select>
-                    <button
-                      onClick={openInvoiceInNewTab}
-                      className="submit-btn"
-                    >
-                      View Invoice
-                    </button>
+
                     {/* Download Invoice Button */}
                     <button
                       className="submit-btn"
