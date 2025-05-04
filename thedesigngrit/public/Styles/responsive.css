@@ -875,6 +875,10 @@
   .subcategory-description {
     display: none;
   }
+  .partners-logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0rem;
+  }
 }
 
 @media (max-width: 480px) {
