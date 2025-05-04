@@ -7,7 +7,7 @@ import InteractiveStarRating from "../Components/rating";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "./loadingScreen";
 import { GiConfirmed } from "react-icons/gi";
-import { PDFDownloadLink, PDFViewer, pdf } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import { CiUndo } from "react-icons/ci";
 import InvoicePDF from "../Components/invoiceOrderCustomer";
 
@@ -47,6 +47,21 @@ function TrackOrder() {
 
     fetchOrders();
   }, [userSession]);
+  const handleLazyInvoiceDownload = async () => {
+    try {
+      const [{ pdf }, { default: InvoicePDF }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("../Components/invoiceOrderCustomer"),
+      ]);
+
+      const doc = <InvoicePDF order={selectedOrder} />;
+      const blob = await pdf(doc).toBlob();
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, "_blank");
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+    }
+  };
   const openInvoiceInNewTab = async () => {
     const blob = await pdf(<InvoicePDF order={selectedOrder} />).toBlob();
     const blobUrl = URL.createObjectURL(blob);
@@ -209,25 +224,12 @@ function TrackOrder() {
                       View Invoice
                     </button>
                     {/* Download Invoice Button */}
-                    <PDFDownloadLink
-                      document={<InvoicePDF order={selectedOrder} />}
-                      fileName={`invoice_${selectedOrder._id}.pdf`}
+                    <button
+                      className="submit-btn"
+                      onClick={handleLazyInvoiceDownload}
                     >
-                      {({ loading }) =>
-                        loading ? (
-                          "Loading..."
-                        ) : (
-                          <button
-                            className="submit-btn"
-                            style={{
-                              width: "100%",
-                            }}
-                          >
-                            Download Invoice
-                          </button>
-                        )
-                      }
-                    </PDFDownloadLink>
+                      Download Invoice
+                    </button>
                   </Box>
                 </Box>
 
@@ -409,7 +411,11 @@ function TrackOrder() {
                     }}
                   >
                     {shouldShowReturnButton && (
-                      <button className="submit-btn return-btn">
+                      <button
+                        className="submit-btn return-btn"
+                        aria-label="Return order"
+                        title="Return order"
+                      >
                         <CiUndo />
                         Return Order
                       </button>
@@ -424,9 +430,8 @@ function TrackOrder() {
       {/* Show Invoice in Modal or Full Screen */}
       {showInvoice && (
         <div className="invoice-modal">
-          <PDFViewer width="600" height="700">
-            <InvoicePDF order={selectedOrder} />
-          </PDFViewer>
+          <p>Preparing your invoice...</p>
+          <button onClick={openInvoiceInNewTab}>Open PDF</button>
           <button onClick={() => setShowInvoice(false)}>Close</button>
         </div>
       )}
