@@ -255,8 +255,8 @@ const BrandingPage = () => {
               position: "absolute",
               top: 16,
               right: 16,
-              backgroundColor: "rgba(255,255,255,0.2)",
-              backdropFilter: "blur(2px)",
+              backgroundColor: "rgba(255,255,255,0.2)!important",
+              backdropFilter: "blur(2px)!important",
               "&:hover": {
                 backgroundColor: "#2D2D2D43",
               },
@@ -312,8 +312,8 @@ const BrandingPage = () => {
                 position: "absolute",
                 bottom: 8,
                 right: 8,
-                backgroundColor: "rgba(255,255,255,0.2)",
-                backdropFilter: "blur(2px)",
+                backgroundColor: "rgba(255,255,255,0.2) !important",
+                backdropFilter: "blur(2px) !important",
                 "&:hover": {
                   backgroundColor: "#2D2D2D43",
                 },
