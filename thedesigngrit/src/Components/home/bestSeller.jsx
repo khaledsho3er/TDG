@@ -45,6 +45,7 @@ const ProductSlider = () => {
     slideTo(currentIndex - 1);
   };
 
+  // Loop jump logic
   useEffect(() => {
     if (products.length === 0) return;
 
@@ -92,16 +93,8 @@ const ProductSlider = () => {
               <div className="product-image-home" style={{ width: "100%" }}>
                 <img
                   src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&height=200&format=webp`}
-                  srcSet={`
-                    https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=200&format=webp 200w,
-                    https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=300&format=webp 300w,
-                    https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=400&format=webp 400w
-                  `}
-                  sizes="(max-width: 600px) 80vw, (max-width: 1024px) 40vw, 20vw"
                   alt={product.name}
-                  style={{ width: "100%", height: "auto" }}
-                  loading="lazy"
-                  decoding="async"
+                  style={{ width: "100%" }}
                 />
               </div>
 
