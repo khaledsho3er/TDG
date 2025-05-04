@@ -255,9 +255,10 @@ const BrandingPage = () => {
               position: "absolute",
               top: 16,
               right: 16,
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(255,255,255,0.2)",
+              backdropFilter: "blur(2px)",
               "&:hover": {
-                backgroundColor: "rgba(255,255,255,1)",
+                backgroundColor: "#2D2D2D43",
               },
             }}
             onClick={handleOpenCoverModal}
@@ -311,9 +312,10 @@ const BrandingPage = () => {
                 position: "absolute",
                 bottom: 8,
                 right: 8,
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(2px)",
                 "&:hover": {
-                  backgroundColor: "rgba(255,255,255,1)",
+                  backgroundColor: "#2D2D2D43",
                 },
               }}
               onClick={handleOpenLogoModal}
