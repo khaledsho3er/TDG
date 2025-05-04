@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
 import { FaBox, FaTruck, FaCheckCircle, FaRedo } from "react-icons/fa"; // React Icons
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useVendor } from "../../utils/vendorContext";
 import {
   LineChart,
   Line,
@@ -11,10 +13,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import LoadingScreen from "../../Pages/loadingScreen";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { useVendor } from "../../utils/vendorContext";
-import OrderDetails from "./orderDetails"; // Import OrderDetails component
+const OrderDetails = lazy(() => import("./orderDetails"));
+const LoadingScreen = lazy(() => import("../../Pages/loadingScreen"));
 
 const DashboardVendor = () => {
   const { vendor } = useVendor();
@@ -271,15 +271,21 @@ const DashboardVendor = () => {
 
   if (selectedOrder) {
     return (
-      <OrderDetails
-        order={selectedOrder}
-        onBack={() => setSelectedOrder(null)}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <OrderDetails
+          order={selectedOrder}
+          onBack={() => setSelectedOrder(null)}
+        />
+      </Suspense>
     );
   }
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoadingScreen />
+      </Suspense>
+    );
   }
 
   if (error) {
