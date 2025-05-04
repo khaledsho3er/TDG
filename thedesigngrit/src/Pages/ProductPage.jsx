@@ -86,8 +86,31 @@ function ProductPage() {
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading]); // Refetch if the ID in the URL changes
 
-  if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />; // Show loading screen while fetching product
+  if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
   if (!product) return <div>Product not found</div>;
+  const groupImagesByBase = (images) => {
+    const groups = {};
+
+    images.forEach((img) => {
+      const base = img.replace(/-(thumb|medium|large)\.webp$/, "");
+      const size = img.includes("-thumb")
+        ? "thumb"
+        : img.includes("-medium")
+        ? "medium"
+        : "large";
+
+      if (!groups[base]) groups[base] = {};
+      groups[base][size] = img;
+    });
+
+    return Object.entries(groups).map(([base, sizes]) => ({
+      base,
+      ...sizes,
+    }));
+  };
+
+  const groupedImages = groupImagesByBase(product.images || []);
+
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
     setIsTransitioning(true);
@@ -104,12 +127,12 @@ function ProductPage() {
 
   const handlePrevImage = () => {
     setSelectedImageIndex(
-      (prev) => (prev - 1 + product.images.length) % product.images.length
+      (prev) => (prev - 1 + groupedImages.length) % groupedImages.length
     );
   };
 
   const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
+    setSelectedImageIndex((prev) => (prev + 1) % groupedImages.length);
   };
 
   const handleToggleSection = (index, type = "general") => {
@@ -209,11 +232,13 @@ function ProductPage() {
               onClick={() => handleImageClick(0)} // Main image click opens modal
             />
             <div className="thumbnail-container">
-              {product.images?.length ? (
-                product.images.map((image, index) => (
+              {groupedImages.length ? (
+                groupedImages.map((imageSet, index) => (
                   <img
                     key={index}
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                      imageSet.thumb || imageSet.medium
+                    }`}
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -666,17 +691,26 @@ function ProductPage() {
               <button className="modal-prev" onClick={handlePrevImage}>
                 <IoIosArrowBack size={30} color="#fff" />
               </button>
+
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
-                alt={`${selectedImageIndex + 1}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                  window.innerWidth >= 768
+                    ? groupedImages[selectedImageIndex]?.large ||
+                      groupedImages[selectedImageIndex]?.medium
+                    : groupedImages[selectedImageIndex]?.medium ||
+                      groupedImages[selectedImageIndex]?.thumb
+                }`}
+                alt={`Image ${selectedImageIndex + 1}`}
                 className="modal-image"
               />
+
               <button className="modal-next" onClick={handleNextImage}>
                 <IoIosArrowForward size={30} color="#fff" />
               </button>
             </div>
           </div>
         )}
+
         <hr
           style={{
             width: "90%",
