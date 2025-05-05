@@ -113,7 +113,7 @@ const ProductSlider = () => {
                 />
               </div>
 
-              <div className="product-info" style={{ padding: "10px" }}>
+              <div className="product-info" style={{ padding: "10px 0px" }}>
                 <h3 className="product-title-bestseller">{product.name}</h3>
                 <div className="product-price-bestseller">
                   {product.salePrice != null ? (
