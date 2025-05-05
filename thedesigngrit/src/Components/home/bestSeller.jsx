@@ -11,7 +11,7 @@ const ProductSlider = () => {
   const sliderRef = useRef(null);
   const visibleCount =
     window.innerWidth <= 768 ? 1 : window.innerWidth <= 1024 ? 3 : 5;
-
+  //khaled cimit
   const fetchBestSellers = useCallback(async () => {
     try {
       setIsLoading(true);
