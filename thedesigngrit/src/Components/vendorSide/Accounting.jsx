@@ -33,6 +33,7 @@ const AccountingPage = () => {
         `https://api.thedesigngrit.com/api/brands/${brandId}/financial`
       );
       setFinancialData(response.data);
+      console.log(response.data);
       return response.data;
     } catch (err) {
       console.error("Error fetching financial data:", err);
