@@ -1126,9 +1126,6 @@
     width: 89%;
     margin: auto;
   }
-  .footer-pages {
-    margin-top: -162px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1195,9 +1192,6 @@
   .product-badge,
   .product-metadata {
     font-size: 0.4rem;
-  }
-  .footer-pages {
-    margin-top: -162px;
   }
   .slider-controls-home {
     flex-direction: column;

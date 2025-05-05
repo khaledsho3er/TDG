@@ -19,7 +19,16 @@ function Footer() {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkIfMobile = () => {
+      return window.innerWidth < 600; // MUI's 'sm' breakpoint is 600px
+    };
+    setIsMobile(checkIfMobile());
+    window.addEventListener("resize", () => setIsMobile(checkIfMobile()));
+    return () =>
+      window.removeEventListener("resize", () => setIsMobile(checkIfMobile()));
+  }, []);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -355,7 +364,14 @@ function Footer() {
             </Grid>
 
             {/* Pages Section */}
-            <Grid item xs={6} sm={4} className="footer-pages">
+            <Grid
+              item
+              xs={6}
+              sm={4}
+              sx={{
+                marginTop: isMobile ? "-162px" : 0, // Conditional margin
+              }}
+            >
               <Typography
                 variant="h6"
                 sx={{
