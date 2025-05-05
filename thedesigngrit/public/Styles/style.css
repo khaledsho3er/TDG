@@ -7012,6 +7012,11 @@ input:focus {
 .loading-screen.fade-out {
   animation: fadeOut 0.5s ease-in-out forwards;
 }
+.fade-and-scale {
+  opacity: 0;
+  transform: scale(0.95); /* Slightly zoom out */
+}
+
 @keyframes fadeOut {
   from {
     opacity: 1;
