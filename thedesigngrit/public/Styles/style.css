@@ -1042,11 +1042,13 @@ body::-webkit-scrollbar:hover {
 }
 
 .concept-progress-fill {
-  width: 20%; /* Adjust the filled progress */
   height: 100%;
   background: #6b7b58;
   position: absolute;
-  transition: width 0.3s ease-in-out;
+  top: 0;
+  left: 0;
+  width: 0%; /* Start empty */
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .concept-navigation {

@@ -46,7 +46,7 @@ const ExploreConcepts = () => {
     setCurrentCard((prev) => (prev - 1 + concepts.length) % concepts.length);
   };
 
-  const progressLeft = ((currentCard + 1) / concepts.length) * 100;
+  const progressLeft = (currentCard / (concepts.length - 1)) * 100;
 
   const visibleCards = isMobile
     ? [currentCard]
@@ -187,10 +187,7 @@ const ExploreConcepts = () => {
           <Box className="concept-progress-bar">
             <Box
               className="concept-progress-fill"
-              style={{
-                left: `${progressLeft}%`,
-                transition: "width 0.3s ease",
-              }}
+              style={{ width: `${progressLeft}%` }}
             ></Box>
           </Box>
           <Typography>{concepts.length}</Typography>
