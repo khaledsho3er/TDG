@@ -71,7 +71,7 @@ const ProductSlider = () => {
   }, [currentIndex, products, visibleCount]);
 
   const getSlideStyle = () => ({
-    transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
+    transform: `translateX(-${currentIndex * (100 / visibleCount) + 18}%)`,
     transition: transitionEnabled ? "transform 0.3s ease-in-out" : "none",
     display: "flex",
   });
@@ -87,7 +87,7 @@ const ProductSlider = () => {
 
   return (
     <div className="slider-container-home">
-      <h1 className="slider-title">BEST SELLERS</h1>
+      <h2 className="slider-title">BEST SELLERS</h2>
 
       <div className="slider-wrapper" style={{ overflow: "hidden" }}>
         <div className="slider-content" style={getSlideStyle()} ref={sliderRef}>
