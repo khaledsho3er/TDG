@@ -9,6 +9,7 @@ import LoadingScreen from "./Pages/loadingScreen";
 import ReadyToShip from "./Pages/ReadyToship";
 import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
+import { WebSocketProvider } from "./Context/WebSocketContext";
 
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
@@ -117,20 +118,24 @@ const VendorRoutes = () => (
 
 function App() {
   return (
-    <UserProvider>
-      <VendorProvider>
-        <AdminProvider>
-          <CartProvider>
-            <Router>
-              <ScrollToTop />
-              <PublicRoutes />
-              <VendorRoutes />
-              <Analytics />
-            </Router>
-          </CartProvider>
-        </AdminProvider>
-      </VendorProvider>
-    </UserProvider>
+    <WebSocketProvider>
+      {" "}
+      {/* Wrap your app in WebSocketProvider */}
+      <UserProvider>
+        <VendorProvider>
+          <AdminProvider>
+            <CartProvider>
+              <Router>
+                <ScrollToTop />
+                <PublicRoutes />
+                <VendorRoutes />
+                <Analytics />
+              </Router>
+            </CartProvider>
+          </AdminProvider>
+        </VendorProvider>
+      </UserProvider>
+    </WebSocketProvider>
   );
 }
 

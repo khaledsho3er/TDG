@@ -113,19 +113,21 @@ const LoadingScreen = ({ onComplete }) => {
               />
 
               {/* Percentage Text (Optional) */}
-              <div
+              {/* <div
                 style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
+                  position: "relative",
+                  // position: "absolute",
+                  // top: "50%",
+                  // left: "50%",
+                  // transform: "translate(-50%, -50%)",
                   color: "#6c7c59",
                   fontSize: "16px",
                   fontWeight: "bold",
+                  marginTop: "25px",
                 }}
               >
                 {progress}%
-              </div>
+              </div> */}
             </div>
           </div>
         ) : (
