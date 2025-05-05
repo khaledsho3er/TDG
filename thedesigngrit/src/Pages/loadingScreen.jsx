@@ -2,62 +2,51 @@ import React, { useState, useEffect } from "react";
 
 const LoadingScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsFadingOut(true); // Start fade + scale
-    }, 9500); // Slightly before 10s
-
-    const hideTimer = setTimeout(() => {
-      setIsVisible(false); // Fully hide after fade
+      setIsVisible(false);
       if (onComplete) {
         onComplete();
       }
     }, 10000);
 
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(hideTimer);
-    };
-  }, [onComplete]);
-
-  if (!isVisible) return null;
+    return () => clearTimeout(timer);
+  }, [onComplete]); // Added onComplete as a dependency
 
   return (
-    <div
-      className="loading-screen"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "black",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 9999,
-        overflow: "hidden",
-      }}
-    >
-      <video
-        src="/Assets/TDGLoadingScreen.webm"
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        disablePictureInPicture
-        controlsList="nodownload nofullscreen noremoteplayback"
-        className={isFadingOut ? "fade-and-scale" : ""}
+    isVisible && (
+      <div
+        className="loading-screen"
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
           width: "100vw",
           height: "100vh",
-          objectFit: "cover",
-          transition: "transform 0.8s ease, opacity 0.8s ease", // smooth transitions
+          backgroundColor: "black",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999, // Ensure it's above everything
         }}
-      />
-    </div>
+      >
+        <video
+          src="/Assets/TDGLoadingScreen.webm"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          style={{
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+          }}
+        />
+      </div>
+    )
   );
 };
 
