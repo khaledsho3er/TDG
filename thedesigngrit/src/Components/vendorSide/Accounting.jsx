@@ -30,10 +30,9 @@ const AccountingPage = () => {
   const fetchFinancialData = async (brandId) => {
     try {
       const response = await axios.get(
-        `https://api.thedesigngrit.com/api/brands/${brandId}/financial`
+        `https://api.thedesigngrit.com/api/brand/${brandId}/financial`
       );
       setFinancialData(response.data);
-      console.log(response.data);
       return response.data;
     } catch (err) {
       console.error("Error fetching financial data:", err);
