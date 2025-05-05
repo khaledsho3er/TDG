@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 const AccountingPage = () => {
   const { vendor } = useVendor();
@@ -297,7 +306,27 @@ const AccountingPage = () => {
                       overflowY: "auto",
                     }}
                   >
-                    {formatDataForDisplay(getCurrentData())}
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={getCurrentData()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="date"
+                          tickFormatter={(tick) =>
+                            new Date(tick).toLocaleDateString()
+                          }
+                        />
+                        <YAxis />
+                        <Tooltip
+                          formatter={(value) => `${value.toFixed(2)} E£`}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="amount"
+                          stroke="#007bff"
+                          strokeWidth={2}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                 )}
               </div>
