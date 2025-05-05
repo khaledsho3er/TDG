@@ -9,10 +9,10 @@ const LoadingScreen = ({ onComplete }) => {
       if (onComplete) {
         onComplete();
       }
-    }, 10000);
+    }, 10000); // 10 seconds
 
     return () => clearTimeout(timer);
-  }, [onComplete]); // Added onComplete as a dependency
+  }, [onComplete]);
 
   return (
     isVisible && (
@@ -28,17 +28,12 @@ const LoadingScreen = ({ onComplete }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: 9999, // Ensure it's above everything
+          zIndex: 9999,
         }}
       >
-        <video
-          src="/Assets/TDGLoadingScreen.webm"
-          autoPlay
-          muted
-          playsInline
-          disablePictureInPicture
-          controlsList="nodownload nofullscreen noremoteplayback"
-          onEnded={() => setIsVisible(false)}
+        <img
+          src="/Assets/TDG Loading Screen_02.gif"
+          alt="Loading..."
           style={{
             width: "100vw",
             height: "100vh",
