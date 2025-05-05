@@ -97,11 +97,11 @@ const LoadingScreen = ({ onComplete }) => {
                   width: "100%",
                   height: "100%",
                   borderRadius: "50%",
-                  border: "8px solid #6c7b45",
+                  border: "8px solid #6c7c59",
                   borderTopColor: "transparent",
                   borderRightColor: "transparent",
                   boxSizing: "border-box",
-                  transform: `rotate(${progress * 3.6}deg)`, // 360deg / 100%
+                  transform: `rotate(${progress * 3.6}deg)`, // 360ssdeg / 100%
                   transition: "transform 0.1s linear",
                 }}
               />
