@@ -4,42 +4,155 @@ import axios from "axios";
 const AccountingPage = () => {
   const [salesData, setSalesData] = useState([]);
   const [commissionsData, setCommissionsData] = useState([]);
+  const [taxRateData, setTaxRateData] = useState([]);
   const [netEarningsData, setNetEarningsData] = useState([]);
+  const [financialData, setFinancialData] = useState({
+    commissionRate: 0,
+    taxRate: 0,
+    fees: 0,
+  });
+  const [calculatedData, setCalculatedData] = useState({
+    totalSales: 0,
+    commissionAmount: 0,
+    taxAmount: 0,
+    netEarnings: 0,
+  });
   const [payoutHistory, setPayoutHistory] = useState([]);
   const [refundRecords, setRefundRecords] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeGraph, setActiveGraph] = useState("sales"); // 'sales', 'commissions', or 'netEarnings'
+  const [activeGraph, setActiveGraph] = useState("sales");
+
+  // Function to fetch financial data
+  const fetchFinancialData = async (brandId) => {
+    try {
+      const response = await axios.get(`/api/brands/${brandId}/financial`);
+      setFinancialData(response.data);
+      return response.data;
+    } catch (err) {
+      console.error("Error fetching financial data:", err);
+      throw err;
+    }
+  };
+
+  // Function to calculate financial metrics
+  const calculateFinancialMetrics = (salesData, financialData) => {
+    const totalSales = salesData.reduce((sum, item) => sum + item.amount, 0);
+    const commissionAmount = totalSales * financialData.commissionRate;
+    const taxAmount = totalSales * financialData.taxRate;
+    const netEarnings =
+      totalSales - commissionAmount - taxAmount - financialData.fees;
+
+    return {
+      totalSales,
+      commissionAmount,
+      taxAmount,
+      netEarnings,
+    };
+  };
 
   useEffect(() => {
-    const fetchSalesData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://api.thedesgingrit.com/api/orders/sales"
+        setLoading(true);
+
+        // Fetch sales data
+        const salesResponse = await axios.get(
+          "https://api.thedesigngrit.com/api/orders/sales"
         );
-        setSalesData(response.data);
+        setSalesData(salesResponse.data);
+
+        // Fetch financial data (assuming brand ID is 1 for now)
+        const financialResponse = await fetchFinancialData(1);
+
+        // Calculate metrics
+        const metrics = calculateFinancialMetrics(
+          salesResponse.data,
+          financialResponse
+        );
+        setCalculatedData(metrics);
+
+        // Set the calculated data for each category
+        setCommissionsData([
+          {
+            date: new Date().toISOString(),
+            amount: metrics.commissionAmount,
+          },
+        ]);
+
+        setTaxRateData([
+          {
+            date: new Date().toISOString(),
+            amount: metrics.taxAmount,
+          },
+        ]);
+
+        setNetEarningsData([
+          {
+            date: new Date().toISOString(),
+            amount: metrics.netEarnings,
+          },
+        ]);
       } catch (err) {
         setError(err.message);
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSalesData();
+    fetchData();
   }, []);
 
   const getGraphTitle = () => {
     switch (activeGraph) {
       case "sales":
-        return "Sales Overview";
+        return `Sales Overview (Total: ${calculatedData.totalSales.toFixed(
+          2
+        )} E£)`;
       case "commissions":
-        return "Commissions Overview";
+        return `Commissions Overview (Total: ${calculatedData.commissionAmount.toFixed(
+          2
+        )} E£)`;
+      case "taxRate":
+        return `Tax Rate Overview (Total: ${calculatedData.taxAmount.toFixed(
+          2
+        )} E£)`;
       case "netEarnings":
-        return "Net Earnings Overview";
+        return `Net Earnings Overview (Total: ${calculatedData.netEarnings.toFixed(
+          2
+        )} E£)`;
       default:
         return "Sales Overview";
     }
+  };
+
+  const getCurrentData = () => {
+    switch (activeGraph) {
+      case "sales":
+        return salesData;
+      case "commissions":
+        return commissionsData;
+      case "taxRate":
+        return taxRateData;
+      case "netEarnings":
+        return netEarningsData;
+      default:
+        return salesData;
+    }
+  };
+
+  const formatDataForDisplay = (data) => {
+    if (!data || data.length === 0) return "No data available";
+
+    return data.map((item) => (
+      <div key={item.date} style={{ marginBottom: "10px" }}>
+        <strong>Date:</strong> {new Date(item.date).toLocaleDateString()}
+        <br />
+        <strong>Amount:</strong> {item.amount.toFixed(2)} E£
+      </div>
+    ));
   };
 
   return (
@@ -109,6 +222,21 @@ const AccountingPage = () => {
                   Commissions
                 </button>
                 <button
+                  onClick={() => setActiveGraph("taxRate")}
+                  style={{
+                    backgroundColor:
+                      activeGraph === "taxRate" ? "#007bff" : "#f8f9fa",
+                    color: activeGraph === "taxRate" ? "white" : "black",
+                    border: "1px solid #dee2e6",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  Tax Rate
+                </button>
+                <button
                   onClick={() => setActiveGraph("netEarnings")}
                   style={{
                     backgroundColor:
@@ -159,16 +287,15 @@ const AccountingPage = () => {
                   <div
                     style={{
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
+                      width: "100%",
+                      overflowY: "auto",
                     }}
                   >
-                    {activeGraph === "sales" && "Sales Graph Placeholder"}
-                    {activeGraph === "commissions" &&
-                      "Commissions Graph Placeholder"}
-                    {activeGraph === "netEarnings" &&
-                      "Net Earnings Graph Placeholder"}
+                    {formatDataForDisplay(getCurrentData())}
                   </div>
                 )}
               </div>
