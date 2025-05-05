@@ -39,8 +39,8 @@ const AccountingPage = () => {
   };
 
   // Function to calculate financial metrics
-  const calculateFinancialMetrics = (salesData, financialData) => {
-    const totalSales = salesData.reduce((sum, item) => sum + item.amount, 0);
+  const calculateFinancialMetrics = (financialData) => {
+    const totalSales = financialData.totalSales || 0;
     const commissionAmount = totalSales * financialData.commissionRate;
     const taxAmount = totalSales * financialData.taxRate;
     const netEarnings =
@@ -59,23 +59,21 @@ const AccountingPage = () => {
       try {
         setLoading(true);
 
-        // Fetch sales data
-        const salesResponse = await axios.get(
-          "https://api.thedesigngrit.com/api/orders/sales"
-        );
-        setSalesData(salesResponse.data);
-
         // Fetch financial data (assuming brand ID is 1 for now)
         const financialResponse = await fetchFinancialData(1);
 
         // Calculate metrics
-        const metrics = calculateFinancialMetrics(
-          salesResponse.data,
-          financialResponse
-        );
+        const metrics = calculateFinancialMetrics(financialResponse);
         setCalculatedData(metrics);
 
         // Set the calculated data for each category
+        setSalesData([
+          {
+            date: new Date().toISOString(),
+            amount: metrics.totalSales,
+          },
+        ]);
+
         setCommissionsData([
           {
             date: new Date().toISOString(),
