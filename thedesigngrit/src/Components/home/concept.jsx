@@ -46,7 +46,7 @@ const ExploreConcepts = () => {
     setCurrentCard((prev) => (prev - 1 + concepts.length) % concepts.length);
   };
 
-  const progressLeft = ((currentCard + 1) / (concepts.length - 1)) * 100;
+  const progressLeft = ((currentCard + 1) / concepts.length) * 100;
 
   const visibleCards = isMobile
     ? [currentCard]
