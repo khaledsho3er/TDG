@@ -1047,7 +1047,7 @@ body::-webkit-scrollbar:hover {
   position: absolute;
   top: 0;
   left: 0;
-  width: 0%; /* Start empty */
+  width: 20%; /* Start empty */
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
