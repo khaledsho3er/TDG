@@ -76,6 +76,12 @@ const LoadingScreen = ({ onComplete }) => {
                 width: "50px",
                 height: "50px",
                 position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "20px",
+                gap: "25px",
               }}
             >
               {/* Background Circle (Gray) */}
@@ -113,7 +119,7 @@ const LoadingScreen = ({ onComplete }) => {
                   top: "50%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
-                  color: "white",
+                  color: "#6c7c59",
                   fontSize: "16px",
                   fontWeight: "bold",
                 }}
