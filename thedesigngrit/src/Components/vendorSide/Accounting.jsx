@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useVendor } from "../../utils/vendorContext";
 
 const AccountingPage = () => {
+  const { vendor } = useVendor();
   const [salesData, setSalesData] = useState([]);
   const [commissionsData, setCommissionsData] = useState([]);
   const [taxRateData, setTaxRateData] = useState([]);
@@ -60,7 +62,7 @@ const AccountingPage = () => {
         setLoading(true);
 
         // Fetch financial data (assuming brand ID is 1 for now)
-        const financialResponse = await fetchFinancialData(1);
+        const financialResponse = await fetchFinancialData(vendor.brandId);
 
         // Calculate metrics
         const metrics = calculateFinancialMetrics(financialResponse);
