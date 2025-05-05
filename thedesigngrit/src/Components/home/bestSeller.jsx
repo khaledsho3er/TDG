@@ -71,7 +71,7 @@ const ProductSlider = () => {
   }, [currentIndex, products, visibleCount]);
 
   const getSlideStyle = () => ({
-    transform: `translateX(-${currentIndex * (100 / visibleCount) + 18}%)`,
+    transform: `translateX(-${currentIndex * (100 / visibleCount) + 16}%)`,
     transition: transitionEnabled ? "transform 0.3s ease-in-out" : "none",
     display: "flex",
   });
