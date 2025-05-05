@@ -355,14 +355,7 @@ function Footer() {
             </Grid>
 
             {/* Pages Section */}
-            <Grid
-              item
-              xs={6}
-              sm={4}
-              sx={{
-                mt: { xs: -160, md: 0 }, // Apply negative margin top on mobile only
-              }}
-            >
+            <Grid item xs={6} sm={4} className="footer-pages">
               <Typography
                 variant="h6"
                 sx={{
