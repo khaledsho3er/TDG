@@ -124,7 +124,7 @@ function Home() {
           </video>
         )}
       </div>
-      {/* Header and Sections */}
+      {/* Header and Sectionss */}
       <Header />
       {/* Hero Section */}
       <div className="hero-home-section">
