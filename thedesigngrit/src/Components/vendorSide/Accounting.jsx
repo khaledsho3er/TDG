@@ -34,6 +34,7 @@ const AccountingPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeGraph, setActiveGraph] = useState("sales");
+  const [chartType, setChartType] = useState("line");
 
   // Function to fetch financial data
   const fetchFinancialData = async (brandId) => {
@@ -263,6 +264,29 @@ const AccountingPage = () => {
                   Net Earnings
                 </button>
               </div>
+              <div className="flex justify-end gap-2 mb-4">
+                <button
+                  className={`px-3 py-1 rounded ${
+                    chartType === "line"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => setChartType("line")}
+                >
+                  Line Chart
+                </button>
+                <button
+                  className={`px-3 py-1 rounded ${
+                    chartType === "bar"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => setChartType("bar")}
+                >
+                  Bar Chart
+                </button>
+              </div>
+
               <div
                 style={{
                   flex: 1,
