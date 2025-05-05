@@ -227,7 +227,22 @@ function ProductPage() {
           <div className="product-image-container">
             <img
               src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+              srcSet={`
+                https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage.replace(
+                  "-medium",
+                  "-thumb"
+                )} 150w,
+               https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                 product.mainImage
+               } 500w,
+                https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage.replace(
+                  "-medium",
+                  "-large"
+                )} 1000w
+              `}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 40vw"
               alt={product.name}
+              loading="lazy"
               className="product-main-image"
               onClick={() => handleImageClick(0)} // Main image click opens modal
             />
@@ -237,8 +252,14 @@ function ProductPage() {
                   <img
                     key={index}
                     src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                      imageSet.thumb || imageSet.medium
+                      imageSet.medium || imageSet.thumb
                     }`}
+                    srcSet={`
+                      https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${imageSet.thumb} 150w,
+                      https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${imageSet.medium} 500w,
+                      https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${imageSet.large} 1000w
+                    `}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     alt={`Thumbnail ${index + 1}`}
                     className="thumbnail-image"
                     onClick={() => handleImageClick(index)}
@@ -692,7 +713,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} color="#fff" />
               </button>
 
-              <img
+              {/* <img
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
                   window.innerWidth >= 768
                     ? groupedImages[selectedImageIndex]?.large ||
@@ -702,8 +723,21 @@ function ProductPage() {
                 }`}
                 alt={`Image ${selectedImageIndex + 1}`}
                 className="modal-image"
-              />
-
+              /> */}
+              {groupedImages[selectedImageIndex] && (
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${groupedImages[selectedImageIndex].medium}`}
+                  srcSet={`
+            https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${groupedImages[selectedImageIndex].thumb} 150w,
+            https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${groupedImages[selectedImageIndex].medium} 500w,
+            https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${groupedImages[selectedImageIndex].large} 1000w
+          `}
+                  sizes="(max-width: 768px) 90vw, 70vw"
+                  alt={`Image ${selectedImageIndex + 1}`}
+                  className="modal-image"
+                  loading="lazy"
+                />
+              )}
               <button className="modal-next" onClick={handleNextImage}>
                 <IoIosArrowForward size={30} color="#fff" />
               </button>
