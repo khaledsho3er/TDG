@@ -2,22 +2,31 @@ import React, { useState, useEffect } from "react";
 
 const LoadingScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false);
+      setIsFadingOut(true); // Start fade-out first
+    }, 9500); // Slightly earlier than full 10 seconds
+
+    const hideTimer = setTimeout(() => {
+      setIsVisible(false); // Then fully hide
       if (onComplete) {
         onComplete();
       }
-    }, 10000); // 10 seconds
+    }, 10000); // 10 seconds to completely remove
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(hideTimer);
+    };
   }, [onComplete]);
+  if (!isVisible) return null;
 
   return (
     isVisible && (
       <div
-        className="loading-screen"
+        className={`loading-screen ${isFadingOut ? "fade-out" : ""}`}
         style={{
           position: "fixed",
           top: 0,
@@ -28,12 +37,18 @@ const LoadingScreen = ({ onComplete }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: 9999,
+          zIndex: 9999, // Ensure it's above everything
+          overflow: "hidden",
         }}
       >
-        <img
-          src="/Assets/TDG Loading Screen_02.gif"
-          alt="Loading..."
+        <video
+          src="/Assets/TDGLoadingScreen.webm"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
           style={{
             width: "100vw",
             height: "100vh",
