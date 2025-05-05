@@ -1,28 +1,39 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
+
+// Prioritize critical components
 const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
+const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
+
+// Defer less critical components
 const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
 const SustainabilitySection = React.lazy(() =>
   import("../Components/home/Sustainability")
 );
 const PartnersSection = React.lazy(() => import("../Components/home/partners"));
-const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
 const Footer = React.lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
+// Optimize video sources with proper formats and sizes
 const videos = [
   {
     webm: "/Assets/Video-hero/herovideo2.webm",
     mp4: "/Assets/Video-hero/herovideo2.mp4",
+    poster: "/Assets/Video-hero/poster.avif",
+    mobilePoster: "/Assets/Video-hero/poster-mobile.avif",
   },
   {
     webm: "/Assets/Video-hero/herovideo5.webm",
     mp4: "/Assets/Video-hero/herovideo5.mp4",
+    poster: "/Assets/Video-hero/poster.avif",
+    mobilePoster: "/Assets/Video-hero/poster-mobile.avif",
   },
   {
     webm: "/Assets/Video-hero/herovideo4.webm",
     mp4: "/Assets/Video-hero/herovideo4.mp4",
+    poster: "/Assets/Video-hero/poster.avif",
+    mobilePoster: "/Assets/Video-hero/poster-mobile.avif",
   },
 ];
 
@@ -43,6 +54,7 @@ const useIsMobile = () => {
 
   return isMobile;
 };
+
 function Home() {
   const bgVideoRef = useRef(null);
   const fgVideoRef = useRef(null);
@@ -52,16 +64,23 @@ function Home() {
   const [videoDuration, setVideoDuration] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const [isFading, setIsFading] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
+  // Preload the first video and poster
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
+    if (!isMobile) {
+      const preloadVideo = new Image();
+      preloadVideo.src = videos[0].mp4;
+      preloadVideo.onload = () => {
+        setIsVideoLoaded(true);
+        setShowVideo(true);
+      };
     } else {
-      setTimeout(() => setShowVideo(true), 2000);
+      setShowVideo(true);
     }
-  }, []);
+  }, [isMobile]);
 
+  // Optimize video loading
   useEffect(() => {
     const video = fgVideoRef.current;
     if (!video) return;
@@ -112,20 +131,26 @@ function Home() {
       <div className="background-layer">
         {isMobile ? (
           <img
-            src={posterImage}
+            src={videos[currentVideoIndex].mobilePoster}
             alt="Hero background"
             className="hero-video-element"
+            loading="eager"
+            fetchpriority="high"
+            width="100%"
+            height="auto"
           />
         ) : (
           <video
             key={currentVideoIndex} // ✅ Force remount on video index change
             ref={bgVideoRef}
             className={`hero-video-element ${isFading ? "fade-out" : ""}`}
-            poster={posterImage}
+            poster={videos[currentVideoIndex].poster}
             autoPlay
             muted
             playsInline
-            preload="none"
+            preload="auto"
+            loading="eager"
+            fetchpriority="high"
           >
             <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
             <source src={videos[currentVideoIndex].webm} type="video/webm" />
@@ -140,23 +165,26 @@ function Home() {
           {showVideo ? (
             isMobile ? (
               <img
-                src={posterImage}
+                src={videos[currentVideoIndex].mobilePoster}
                 alt="Hero poster"
                 className="hero-video-element"
+                loading="eager"
+                fetchpriority="high"
                 width="100%"
                 height="auto"
-                style={{ aspectRatio: "16/9", width: "100%", height: "auto" }}
               />
             ) : (
               <video
                 key={currentVideoIndex} // ✅ Force remount on video index change
                 ref={fgVideoRef}
                 className={`hero-video-element ${isFading ? "fade-out" : ""}`}
-                poster={posterImage}
+                poster={videos[currentVideoIndex].poster}
                 autoPlay
                 muted
                 playsInline
-                preload="none"
+                preload="auto"
+                loading="eager"
+                fetchpriority="high"
               >
                 <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
                 <source
@@ -167,9 +195,13 @@ function Home() {
             )
           ) : (
             <img
-              src={posterImage}
+              src={videos[currentVideoIndex].poster}
               alt="Hero placeholder"
               className="hero-video-element"
+              loading="eager"
+              fetchpriority="high"
+              width="100%"
+              height="auto"
             />
           )}
           <div className="video-progress-container">
@@ -193,30 +225,41 @@ function Home() {
         </div>
       </div>
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<div className="loading-placeholder" />}>
         <ScrollAnimation>
           <Box className="concept-title">
             <ExploreConcepts />
           </Box>
         </ScrollAnimation>
+      </Suspense>
 
+      <Suspense fallback={<div className="loading-placeholder" />}>
         <ScrollAnimation>
           <ShopByCategory />
         </ScrollAnimation>
+      </Suspense>
 
+      <Suspense fallback={<div className="loading-placeholder" />}>
         <ScrollAnimation>
           <Box sx={{ width: "100%" }}>
             <ProductSlider />
           </Box>
         </ScrollAnimation>
+      </Suspense>
 
+      <Suspense fallback={null}>
         <ScrollAnimation>
           <SustainabilitySection />
         </ScrollAnimation>
+      </Suspense>
 
+      <Suspense fallback={null}>
         <ScrollAnimation>
           <PartnersSection />
         </ScrollAnimation>
+      </Suspense>
+
+      <Suspense fallback={null}>
         <Footer />
       </Suspense>
     </div>
