@@ -27,7 +27,9 @@ const AccountingPage = () => {
   // Function to fetch financial data
   const fetchFinancialData = async (brandId) => {
     try {
-      const response = await axios.get(`/api/brands/${brandId}/financial`);
+      const response = await axios.get(
+        `https://api.thedesigngrit.com/api/brands/${brandId}/financial`
+      );
       setFinancialData(response.data);
       return response.data;
     } catch (err) {
