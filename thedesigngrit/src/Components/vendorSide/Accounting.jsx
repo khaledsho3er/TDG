@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { BarChart, Bar } from "recharts";
 
 const AccountingPage = () => {
   const { vendor } = useVendor();
@@ -331,25 +332,42 @@ const AccountingPage = () => {
                     }}
                   >
                     <ResponsiveContainer width="100%" height={300}>
-                      <LineChart data={getCurrentData()}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis
-                          dataKey="date"
-                          tickFormatter={(tick) =>
-                            new Date(tick).toLocaleDateString()
-                          }
-                        />
-                        <YAxis />
-                        <Tooltip
-                          formatter={(value) => `${value.toFixed(2)} E£`}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="amount"
-                          stroke="#007bff"
-                          strokeWidth={2}
-                        />
-                      </LineChart>
+                      {chartType === "line" ? (
+                        <LineChart data={getCurrentData()}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis
+                            dataKey="date"
+                            tickFormatter={(tick) =>
+                              new Date(tick).toLocaleDateString()
+                            }
+                          />
+                          <YAxis />
+                          <Tooltip
+                            formatter={(value) => `${value.toFixed(2)} E£`}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="amount"
+                            stroke="#007bff"
+                            strokeWidth={2}
+                          />
+                        </LineChart>
+                      ) : (
+                        <BarChart data={getCurrentData()}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis
+                            dataKey="date"
+                            tickFormatter={(tick) =>
+                              new Date(tick).toLocaleDateString()
+                            }
+                          />
+                          <YAxis />
+                          <Tooltip
+                            formatter={(value) => `${value.toFixed(2)} E£`}
+                          />
+                          <Bar dataKey="amount" fill="#007bff" />
+                        </BarChart>
+                      )}
                     </ResponsiveContainer>
                   </div>
                 )}
