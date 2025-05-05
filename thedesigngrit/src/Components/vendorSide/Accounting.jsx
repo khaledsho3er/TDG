@@ -57,52 +57,6 @@ const AccountingPage = () => {
         <section className="graphs">
           <h3>{getGraphTitle()}</h3>
           <div className="graph-container">
-            <div className="graph-buttons" style={{ marginBottom: "20px" }}>
-              <button
-                onClick={() => setActiveGraph("sales")}
-                style={{
-                  backgroundColor:
-                    activeGraph === "sales" ? "#007bff" : "#f8f9fa",
-                  color: activeGraph === "sales" ? "white" : "black",
-                  border: "1px solid #dee2e6",
-                  padding: "8px 16px",
-                  marginRight: "10px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Sales
-              </button>
-              <button
-                onClick={() => setActiveGraph("commissions")}
-                style={{
-                  backgroundColor:
-                    activeGraph === "commissions" ? "#007bff" : "#f8f9fa",
-                  color: activeGraph === "commissions" ? "white" : "black",
-                  border: "1px solid #dee2e6",
-                  padding: "8px 16px",
-                  marginRight: "10px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Commissions
-              </button>
-              <button
-                onClick={() => setActiveGraph("netEarnings")}
-                style={{
-                  backgroundColor:
-                    activeGraph === "netEarnings" ? "#007bff" : "#f8f9fa",
-                  color: activeGraph === "netEarnings" ? "white" : "black",
-                  border: "1px solid #dee2e6",
-                  padding: "8px 16px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Net Earnings
-              </button>
-            </div>
             <div
               className="graph"
               style={{
@@ -111,48 +65,113 @@ const AccountingPage = () => {
                 borderRadius: "4px",
                 padding: "20px",
                 backgroundColor: "#fff",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              {/* Graph will be rendered here based on activeGraph state */}
-              {loading ? (
-                <div
+              <div
+                className="graph-buttons"
+                style={{
+                  marginBottom: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <button
+                  onClick={() => setActiveGraph("sales")}
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
+                    backgroundColor:
+                      activeGraph === "sales" ? "#007bff" : "#f8f9fa",
+                    color: activeGraph === "sales" ? "white" : "black",
+                    border: "1px solid #dee2e6",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
                   }}
                 >
-                  Loading...
-                </div>
-              ) : error ? (
-                <div
+                  Sales
+                </button>
+                <button
+                  onClick={() => setActiveGraph("commissions")}
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
-                    color: "red",
+                    backgroundColor:
+                      activeGraph === "commissions" ? "#007bff" : "#f8f9fa",
+                    color: activeGraph === "commissions" ? "white" : "black",
+                    border: "1px solid #dee2e6",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
                   }}
                 >
-                  {error}
-                </div>
-              ) : (
-                <div
+                  Commissions
+                </button>
+                <button
+                  onClick={() => setActiveGraph("netEarnings")}
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
+                    backgroundColor:
+                      activeGraph === "netEarnings" ? "#007bff" : "#f8f9fa",
+                    color: activeGraph === "netEarnings" ? "white" : "black",
+                    border: "1px solid #dee2e6",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
                   }}
                 >
-                  {activeGraph === "sales" && "Sales Graph Placeholder"}
-                  {activeGraph === "commissions" &&
-                    "Commissions Graph Placeholder"}
-                  {activeGraph === "netEarnings" &&
-                    "Net Earnings Graph Placeholder"}
-                </div>
-              )}
+                  Net Earnings
+                </button>
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {loading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
+                    Loading...
+                  </div>
+                ) : error ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                      color: "red",
+                    }}
+                  >
+                    {error}
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
+                    {activeGraph === "sales" && "Sales Graph Placeholder"}
+                    {activeGraph === "commissions" &&
+                      "Commissions Graph Placeholder"}
+                    {activeGraph === "netEarnings" &&
+                      "Net Earnings Graph Placeholder"}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
