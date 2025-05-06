@@ -207,7 +207,7 @@ const ProductPageAdmin = () => {
     try {
       await axios.put(
         `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
-        { status: "accepted" }
+        { status: true }
       );
       console.log("Product accepted successfully");
       // Optionally, refetch or update state
@@ -221,7 +221,7 @@ const ProductPageAdmin = () => {
       await axios.put(
         `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
         {
-          status: "rejected",
+          status: false,
           rejectionNote: note,
         }
       );
