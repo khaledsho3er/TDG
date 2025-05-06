@@ -463,25 +463,41 @@ const AccountingPage = () => {
           <div className="report-options">
             <button
               onClick={handleDownloadSales}
-              style={{ backgroundColor: "#6a8452", color: "white" }}
+              style={{
+                backgroundColor: "#6a8452",
+                color: "white",
+                marginLeft: "20px",
+              }}
             >
               Download Sales Report
             </button>
             <button
               onClick={handleDownloadCommissions}
-              style={{ backgroundColor: "#6a8452", color: "white" }}
+              style={{
+                backgroundColor: "#6a8452",
+                color: "white",
+                marginLeft: "20px",
+              }}
             >
               Download Commissions Report
             </button>
             <button
               onClick={handleDownloadNetEarnings}
-              style={{ backgroundColor: "#6a8452", color: "white" }}
+              style={{
+                backgroundColor: "#6a8452",
+                color: "white",
+                marginLeft: "20px",
+              }}
             >
               Download Net Earnings Report
             </button>
             <button
               onClick={handleDownloadTaxAmounts}
-              style={{ backgroundColor: "#6a8452", color: "white" }}
+              style={{
+                backgroundColor: "#6a8452",
+                color: "white",
+                marginLeft: "20px",
+              }}
             >
               Download Tax Amounts Report
             </button>
