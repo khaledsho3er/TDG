@@ -222,7 +222,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("sales")}
                   style={{
                     backgroundColor:
-                      activeGraph === "sales" ? "#007bff" : "#f8f9fa",
+                      activeGraph === "sales" ? "#6a8452" : "#f8f9fa",
                     color: activeGraph === "sales" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -237,7 +237,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("commissions")}
                   style={{
                     backgroundColor:
-                      activeGraph === "commissions" ? "#6a8452" : "#6a8452",
+                      activeGraph === "commissions" ? "#6a8452" : "#f8f9fa",
                     color: activeGraph === "commissions" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -252,7 +252,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("taxRate")}
                   style={{
                     backgroundColor:
-                      activeGraph === "taxRate" ? "#6a8452" : "#6a8452",
+                      activeGraph === "taxRate" ? "#6a8452" : "#f8f9fa",
                     color: activeGraph === "taxRate" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -267,7 +267,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("netEarnings")}
                   style={{
                     backgroundColor:
-                      activeGraph === "netEarnings" ? "#6a8452" : "#6a8452",
+                      activeGraph === "netEarnings" ? "#6a8452" : "#f8f9fa",
                     color: activeGraph === "netEarnings" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -278,9 +278,9 @@ const AccountingPage = () => {
                 >
                   Net Earnings
                 </button>
-                <div className="flex justify-end gap-2 mb-4">
+                <div className="flex justify-end gap-3 mb-4">
                   <button
-                    className={`px-3 py-1 rounded ${
+                    className={`px-2 py-1 rounded ${
                       chartType === "line"
                         ? "bg-#6a8452-600 text-white"
                         : "bg-gray-200"
@@ -379,7 +379,7 @@ const AccountingPage = () => {
                           <Tooltip
                             formatter={(value) => `${value.toFixed(2)} E£`}
                           />
-                          <Bar dataKey="amount" fill="#007bff" />
+                          <Bar dataKey="amount" fill="#6a8452" />
                         </BarChart>
                       )}
                     </ResponsiveContainer>
