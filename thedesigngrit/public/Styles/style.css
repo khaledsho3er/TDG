@@ -7227,6 +7227,10 @@ input:focus {
   background-color: #f0f0f0;
 }
 
+.report-options {
+  gap: 20px;
+}
+
 @keyframes slideIn {
   from {
     transform: translateX(100%);
