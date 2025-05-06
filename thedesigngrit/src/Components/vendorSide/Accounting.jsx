@@ -362,7 +362,7 @@ const AccountingPage = () => {
                           <Line
                             type="monotone"
                             dataKey="amount"
-                            stroke="#007bff"
+                            stroke="#6a8452"
                             strokeWidth={2}
                           />
                         </LineChart>
