@@ -103,6 +103,9 @@ function Home() {
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
+    if (fgVideoRef.current) {
+      fgVideoRef.current.load();
+    }
   };
 
   return (
@@ -155,6 +158,7 @@ function Home() {
               />
             ) : (
               <video
+                key={currentVideoIndex} // This forces React to remount the video element
                 ref={fgVideoRef}
                 className="hero-video-element"
                 poster={posterImages[currentVideoIndex]}

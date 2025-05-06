@@ -43,9 +43,7 @@ const OrderSentPopup = ({ show, closePopup }) => {
         <button
           className="Job-sent-popup-button"
           onClick={() => {
-            setTimeout(() => {
-              navigate("/");
-            }, 3000); // Redirect or show confirmation
+            navigate("/");
             closePopup();
           }}
         >
