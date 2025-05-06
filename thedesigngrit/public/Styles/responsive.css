@@ -1494,8 +1494,8 @@
 }
 /* Hide navigation buttons on screens smaller than 1024px */
 @media (max-width: 1023px) {
-  .swiper-button-next,
-  .swiper-button-prev {
+  .related-swiper .swiper-button-next,
+  .related-swiper .swiper-button-prev {
     display: none !important;
   }
 }

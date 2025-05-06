@@ -110,7 +110,7 @@ export default function BrandCursol({ brandId }) {
               <button className="carousel-button left" onClick={prevSlide}>
                 <HiOutlineChevronLeft
                   style={{
-                    position: "absolute",
+                    position: "relative",
                     left: "50%",
                     top: "50%",
                     transform: "translate(-50%, -50%)",
@@ -120,7 +120,7 @@ export default function BrandCursol({ brandId }) {
               <button className="carousel-button right" onClick={nextSlide}>
                 <HiOutlineChevronRight
                   style={{
-                    position: "absolute",
+                    position: "relative",
                     left: "50%",
                     top: "50%",
                     transform: "translate(-50%, -50%)",

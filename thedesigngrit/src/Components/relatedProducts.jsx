@@ -11,6 +11,7 @@ const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   // const [categories, setCategories] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
+  const isMobile = window.innerWidth < 1024;
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -60,7 +61,7 @@ const RelatedProducts = ({ productId }) => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={20}
-          navigation
+          navigation={!isMobile}
           loop={true}
           breakpoints={{
             // When window width is >= 0px
