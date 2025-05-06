@@ -113,11 +113,18 @@ const AllEmployees = () => {
               All Employees List
             </h2>
             {/* Brand Filter and Search Input */}
-            <div style={{ display: "flex", marginBottom: "20px", gap: "20px" }}>
+            <div
+              style={{
+                display: "flex",
+                marginBottom: "20px",
+                gap: "20px",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <p style={{ marginRight: "10px" }}>Filter by Brand:</p>
+
               <div>
-                <label htmlFor="brandFilter" style={{ marginRight: "10px" }}>
-                  Filter by Brand:
-                </label>
                 <select
                   id="brandFilter"
                   value={selectedBrand}
@@ -146,7 +153,7 @@ const AllEmployees = () => {
                   value={searchQuery}
                   onChange={handleSearchChange}
                   style={{
-                    padding: "5px",
+                    padding: "6px",
                     borderRadius: "4px",
                     border: "1px solid #ccc",
                     width: "250px",
