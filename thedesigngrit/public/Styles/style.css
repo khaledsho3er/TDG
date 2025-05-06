@@ -14,7 +14,6 @@ html {
   font-family: "Horizon", Montserrat;
   overflow-y: scroll; /* Ensures the page scrolls vertically */
   scrollbar-width: none; /* Firefox */
-  overflow: hidden;
 }
 
 body::-webkit-scrollbar {
