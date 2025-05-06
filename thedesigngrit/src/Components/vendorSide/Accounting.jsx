@@ -510,19 +510,6 @@ const AccountingPage = () => {
           </table>
         </section>
 
-        <section className="payment-method-setup">
-          <h3>Payment Method Setup</h3>
-          <div className="payment-methods">
-            {paymentMethods.map((method) => (
-              <div key={method.id} className="payment-method">
-                <p>{method.name}</p>
-                <button>Edit</button>
-              </div>
-            ))}
-            <button>Add New Payment Method</button>
-          </div>
-        </section>
-
         <section className="refund-records">
           <h3>Refund Records</h3>
           <table>
