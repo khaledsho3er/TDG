@@ -7,6 +7,7 @@ import axios from "axios";
 import PromotionModal from "../vendorSide/promotionProduct"; // Import the PromotionModal component
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow icons
 import UpdateProduct from "../vendorSide/UpdateProduct";
+import ProductReviewDialog from "./reviewPopup";
 
 const ProductPageAdmin = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const ProductPageAdmin = () => {
   const [showTrueStatus, setShowTrueStatus] = useState(true);
   const [brands, setBrands] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [productToReview, setProductToReview] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -179,14 +182,6 @@ const ProductPageAdmin = () => {
     // Save promotion details (e.g., send to API or update state)
     setPromotionModalOpen(false); // Close the modal after saving
   };
-
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = filteredProducts.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
-
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -200,6 +195,11 @@ const ProductPageAdmin = () => {
       document.removeEventListener("click", handleClickOutside); // Cleanup
     };
   }, []);
+  const handleOpenReviewDialog = (product) => {
+    setProductToReview(product);
+    setReviewDialogOpen(true);
+  };
+
   if (showUpdate) {
     return (
       <UpdateProduct
@@ -457,6 +457,11 @@ const ProductPageAdmin = () => {
                             <button onClick={() => handleInsights(product)}>
                               Promotion
                             </button>
+                            <button
+                              onClick={() => handleOpenReviewDialog(product)}
+                            >
+                              Review Product
+                            </button>
                           </div>
                         )}
                       </div>
@@ -526,6 +531,13 @@ const ProductPageAdmin = () => {
           onClose={() => setPromotionModalOpen(false)}
           onSave={handleSavePromotion}
           product={selectedProduct}
+        />
+      )}
+      {productToReview && (
+        <ProductReviewDialog
+          open={reviewDialogOpen}
+          onClose={() => setReviewDialogOpen(false)}
+          product={productToReview}
         />
       )}
     </div>
