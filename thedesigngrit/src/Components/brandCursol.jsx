@@ -112,7 +112,7 @@ export default function BrandCursol({ brandId }) {
                   style={{
                     position: "relative",
                     left: "50%",
-                    top: "50%",
+                    top: "100%",
                     transform: "translate(-50%, -50%)",
                   }}
                 />
@@ -122,7 +122,7 @@ export default function BrandCursol({ brandId }) {
                   style={{
                     position: "relative",
                     left: "50%",
-                    top: "50%",
+                    top: "100%",
                     transform: "translate(-50%, -50%)",
                   }}
                 />
