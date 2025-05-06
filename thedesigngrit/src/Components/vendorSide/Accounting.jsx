@@ -182,6 +182,74 @@ const AccountingPage = () => {
     ));
   };
 
+  const downloadCSV = (filename, headers, rows) => {
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => headers.map((h) => row[h]).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownloadSales = () => {
+    const headers = ["date", "gross_amount"];
+    const rows = salesData.map((entry) => ({
+      date: new Date(entry.date).toLocaleDateString(),
+      gross_amount: entry.amount.toFixed(2),
+    }));
+    downloadCSV("sales_report.csv", headers, rows);
+  };
+
+  const handleDownloadCommissions = () => {
+    const headers = ["date", "commission_rate", "commission_amount"];
+    const rows = commissionsData.map((entry) => ({
+      date: new Date(entry.date).toLocaleDateString(),
+      commission_rate: financialData.commissionRate.toFixed(2),
+      commission_amount: entry.amount.toFixed(2),
+    }));
+    downloadCSV("commissions_report.csv", headers, rows);
+  };
+
+  const handleDownloadNetEarnings = () => {
+    const headers = [
+      "date",
+      "gross_amount",
+      "commission_amount",
+      "tax_amount",
+      "net_earnings",
+    ];
+    const rows = salesData.map((entry) => {
+      const gross = entry.amount;
+      const commission = gross * financialData.commissionRate;
+      const tax = gross * financialData.taxRate;
+      const net = gross - commission - tax;
+      return {
+        date: new Date(entry.date).toLocaleDateString(),
+        gross_amount: gross.toFixed(2),
+        commission_amount: commission.toFixed(2),
+        tax_amount: tax.toFixed(2),
+        net_earnings: net.toFixed(2),
+      };
+    });
+    downloadCSV("net_earnings_report.csv", headers, rows);
+  };
+
+  const handleDownloadTaxAmounts = () => {
+    const headers = ["date", "tax_rate", "tax_amount"];
+    const rows = taxRateData.map((entry) => ({
+      date: new Date(entry.date).toLocaleDateString(),
+      tax_rate: financialData.taxRate.toFixed(2),
+      tax_amount: entry.amount.toFixed(2),
+    }));
+    downloadCSV("tax_amounts_report.csv", headers, rows);
+  };
+
   return (
     <div className="accounting-page">
       <header className="dashboard-header-vendor">
@@ -393,10 +461,30 @@ const AccountingPage = () => {
         <section className="downloadable-reports">
           <h3>Downloadable Reports</h3>
           <div className="report-options">
-            <button>Download Sales Report</button>
-            <button>Download Commissions Report</button>
-            <button>Download Net Earnings Report</button>
-            <button>Download Tax Amounts Report</button>
+            <button
+              onClick={handleDownloadSales}
+              style={{ backgroundColor: "#6a8452", color: "white" }}
+            >
+              Download Sales Report
+            </button>
+            <button
+              onClick={handleDownloadCommissions}
+              style={{ backgroundColor: "#6a8452", color: "white" }}
+            >
+              Download Commissions Report
+            </button>
+            <button
+              onClick={handleDownloadNetEarnings}
+              style={{ backgroundColor: "#6a8452", color: "white" }}
+            >
+              Download Net Earnings Report
+            </button>
+            <button
+              onClick={handleDownloadTaxAmounts}
+              style={{ backgroundColor: "#6a8452", color: "white" }}
+            >
+              Download Tax Amounts Report
+            </button>
           </div>
         </section>
 
