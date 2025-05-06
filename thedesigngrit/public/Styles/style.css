@@ -2281,7 +2281,7 @@ textarea {
 
 /* Popup container styling */
 .Job-sent-popup-container {
-  background: #b2b9a3; /* Light greenish background */
+  background: #6b7b58; /* Light greenish background */
   border-radius: 10px;
   width: 600px;
   text-align: center;
@@ -2294,7 +2294,7 @@ textarea {
 .Job-sent-popup-container h1 {
   font-size: 20px;
   font-weight: bold;
-  color: #2d2d2d;
+  color: #ffffff;
   margin: 20px 0;
 }
 
@@ -2303,7 +2303,7 @@ textarea {
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
-  color: #2d2d2d;
+  color: #ffffff;
   font-family: Montserrat;
   padding: 0 40px 0 40px;
 }

@@ -13,15 +13,17 @@ const OrderSentPopup = ({ show, closePopup }) => {
         <div className="Job-sent-popup-close-icon" onClick={closePopup}>
           <IoClose />
         </div>
-        <div className="mail-icon">
-          <FontAwesomeIcon icon={faEnvelope} className="animated-mail-icon" />
-        </div>
+        <div style={{ textAlign: "center" }}>
+          <div className="mail-icon">
+            <FontAwesomeIcon icon={faEnvelope} className="animated-mail-icon" />
+          </div>
 
-        <h1>YOUR ORDER HAS BEEN SUBMITTED SUCCESSFULLY!</h1>
-        <p>
-          <strong>THANKS,</strong> For Chosing us.
-          <br />
-        </p>
+          <h1>YOUR ORDER HAS BEEN SUBMITTED SUCCESSFULLY!</h1>
+          <p>
+            <strong>THANKS,</strong> For Chosing us.
+            <br />
+          </p>
+        </div>
         <button
           className="Job-sent-popup-button"
           onClick={() => {
