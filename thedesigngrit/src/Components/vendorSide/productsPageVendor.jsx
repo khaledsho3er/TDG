@@ -22,7 +22,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
-
+  const [product, setProduct] = useState(null);
   // State for toggling sections
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
@@ -41,6 +41,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
               },
             }
           );
+          setProduct(response.data);
           const fetchedProducts = response.data;
 
           // Map products and fetch type name by type ID
@@ -220,6 +221,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
           >
             <CiCirclePlus /> Add Product
           </button>
+          <Button
+            onClick={() => setOpenVariantDialog(true)}
+            variant="contained"
+          >
+            Add Variant
+          </Button>
         </div>
       </header>
       {/* <ProductAnalyticsGraph products={products} /> */}
@@ -489,7 +496,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
           </button>
         ))}
       </div>
-
+      <VariantDialog
+        open={openVariantDialog}
+        onClose={() => setOpenVariantDialog(false)}
+        onSubmit={handleVariantSubmit}
+        sku={product?.sku}
+      />
       {/* Promotion Modal */}
       {promotionModalOpen && (
         <PromotionModal
