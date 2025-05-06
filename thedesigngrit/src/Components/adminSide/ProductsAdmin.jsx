@@ -569,7 +569,7 @@ const ProductPageAdmin = () => {
         <ProductReviewDialog
           open={handleOpenReviewDialog}
           onClose={handleClose}
-          product={selectedProduct}
+          product={productToReview}
           onAccept={handleAccept}
           onReject={handleReject}
         />
