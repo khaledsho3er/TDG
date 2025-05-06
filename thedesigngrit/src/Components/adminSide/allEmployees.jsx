@@ -34,6 +34,10 @@ const AllEmployees = () => {
     indexOfLastEmployee
   );
   const totalPages = Math.ceil(vendors.length / employeesPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
     <div style={{ padding: "70px" }}>
       <div className="dashboard-header-title">
@@ -93,7 +97,7 @@ const AllEmployees = () => {
                 </tbody>
               ) : (
                 <tbody>
-                  {vendors.map((vendor) => (
+                  {currentEmployees.map((vendor) => (
                     <tr key={vendor._id}>
                       <td>{vendor.firstName}</td>
                       <td>{vendor.lastName}</td>
