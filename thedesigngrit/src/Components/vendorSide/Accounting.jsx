@@ -237,7 +237,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("commissions")}
                   style={{
                     backgroundColor:
-                      activeGraph === "commissions" ? "#007bff" : "#f8f9fa",
+                      activeGraph === "commissions" ? "#6a8452" : "#6a8452",
                     color: activeGraph === "commissions" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -252,7 +252,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("taxRate")}
                   style={{
                     backgroundColor:
-                      activeGraph === "taxRate" ? "#007bff" : "#f8f9fa",
+                      activeGraph === "taxRate" ? "#6a8452" : "#6a8452",
                     color: activeGraph === "taxRate" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -267,7 +267,7 @@ const AccountingPage = () => {
                   onClick={() => setActiveGraph("netEarnings")}
                   style={{
                     backgroundColor:
-                      activeGraph === "netEarnings" ? "#007bff" : "#f8f9fa",
+                      activeGraph === "netEarnings" ? "#6a8452" : "#6a8452",
                     color: activeGraph === "netEarnings" ? "white" : "black",
                     border: "1px solid #dee2e6",
                     padding: "8px 16px",
@@ -282,7 +282,7 @@ const AccountingPage = () => {
                   <button
                     className={`px-3 py-1 rounded ${
                       chartType === "line"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-#6a8452-600 text-white"
                         : "bg-gray-200"
                     }`}
                     onClick={() => setChartType("line")}

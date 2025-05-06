@@ -8,11 +8,13 @@
   unicode-range: U+000-5FF; /* Latin character subset */
 }
 /* Login.css */
-body {
+body,
+html {
   margin: 0;
   font-family: "Horizon", Montserrat;
   overflow-y: scroll; /* Ensures the page scrolls vertically */
   scrollbar-width: none; /* Firefox */
+  overflow: hidden;
 }
 
 body::-webkit-scrollbar {
