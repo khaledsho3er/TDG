@@ -718,22 +718,6 @@
 /* Media Queries for Responsive Design */
 @media (max-width: 1024px) {
   /* For tablets and small-screen laptops */
-  /* .hero-job-container {
-    flex-direction: row; 
-    height: auto; 
-    padding: 30px;
-    text-align: center; 
-  }
-
-  .hero-text h1 {
-    font-size: 24px; 
-    text-align: left;
-  }
-
-  .hero-text p {
-    font-size: 16px;
-  } */
-
   .Description {
     padding: 30px;
   }
@@ -827,7 +811,7 @@
   }
   .MuiPaper-root {
     width: 100%;
-    padding: 16px;
+    padding: 0px;
   }
 
   .product-image-home img {
