@@ -242,6 +242,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
             <Button
               onClick={() => setOpenVariantDialog(true)}
               variant="contained"
+              style={{
+                backgroundColor: "#2d2d2d",
+                color: "white",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
             >
               Add Variant
             </Button>
