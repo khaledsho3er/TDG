@@ -37,7 +37,6 @@ const TopFilter = ({
     <Box
       sx={{
         display: "flex",
-        alignItems: "center",
         width: "100%",
         justifyContent: "space-between",
         padding: { xs: "15px", sm: "20px", md: "25px 70px" },

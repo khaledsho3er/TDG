@@ -1,7 +1,5 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
-import { TbTruckDelivery } from "react-icons/tb";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const OrderSentPopup = ({ show, closePopup }) => {

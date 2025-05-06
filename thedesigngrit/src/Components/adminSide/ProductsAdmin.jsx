@@ -200,6 +200,35 @@ const ProductPageAdmin = () => {
     setReviewDialogOpen(true);
   };
 
+  const handleAccept = async (productId) => {
+    try {
+      await axios.put(
+        `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
+        { status: "accepted" }
+      );
+      console.log("Product accepted successfully");
+      // Optionally, refetch or update state
+    } catch (error) {
+      console.error("Failed to accept product", error);
+    }
+  };
+
+  const handleReject = async (productId, note) => {
+    try {
+      await axios.put(
+        `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
+        {
+          status: "rejected",
+          rejectionNote: note,
+        }
+      );
+      console.log("Product rejected successfully");
+      // Optionally, refetch or update state
+    } catch (error) {
+      console.error("Failed to reject product", error);
+    }
+  };
+
   if (showUpdate) {
     return (
       <UpdateProduct
@@ -358,6 +387,11 @@ const ProductPageAdmin = () => {
                             <button onClick={() => handleInsights(product)}>
                               Promotion
                             </button>
+                            <button
+                              onClick={() => handleOpenReviewDialog(product)}
+                            >
+                              Review Product
+                            </button>
                           </div>
                         )}
                       </div>
@@ -457,11 +491,6 @@ const ProductPageAdmin = () => {
                             <button onClick={() => handleInsights(product)}>
                               Promotion
                             </button>
-                            <button
-                              onClick={() => handleOpenReviewDialog(product)}
-                            >
-                              Review Product
-                            </button>
                           </div>
                         )}
                       </div>
@@ -535,9 +564,11 @@ const ProductPageAdmin = () => {
       )}
       {productToReview && (
         <ProductReviewDialog
-          open={reviewDialogOpen}
-          onClose={() => setReviewDialogOpen(false)}
-          product={productToReview}
+          open={dialogOpen}
+          onClose={handleClose}
+          product={selectedProduct}
+          onAccept={handleAccept}
+          onReject={handleReject}
         />
       )}
     </div>
