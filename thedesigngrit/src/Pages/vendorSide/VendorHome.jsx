@@ -25,6 +25,7 @@ const VendorHome = () => {
   const { vendor } = useVendor(); // Access vendor data from context
   console.log("vendor in VendorHome:", vendor);
   const [activePage, setActivePage] = useState("dashboard");
+  const [collapsed, setCollapsed] = useState(false);
 
   // Object for rendering content based on activepage
   const pageComponents = {
@@ -58,6 +59,7 @@ const VendorHome = () => {
           setActivePage={setActivePage}
           activePage={activePage}
           user={vendor} // The user object should contain role and tier information
+          collapsed={collapsed}
         />
         <div className="content-vendor">{renderContent()}</div>
       </div>

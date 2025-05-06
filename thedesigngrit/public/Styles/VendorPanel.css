@@ -1765,3 +1765,35 @@ h1 {
   border: 2px solid #4caf50;
   border-radius: 4px;
 } */
+@media (max-width: 1024px) {
+  .sidebar-vendor {
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+}
+@media (max-width: 768px) {
+  .hamburger-icon {
+    display: block;
+  }
+
+  .navbar-actions-vendor {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 1rem;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    z-index: 10;
+  }
+
+  .navbar-actions-vendor.open {
+    display: flex;
+  }
+}
