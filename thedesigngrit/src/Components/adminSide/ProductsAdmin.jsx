@@ -202,6 +202,9 @@ const ProductPageAdmin = () => {
     setProductToReview(product);
     setReviewDialogOpen(true);
   };
+  const handleCloseReviewDialog = () => {
+    setReviewDialogOpen(false);
+  };
 
   const handleAccept = async (productId) => {
     try {
@@ -209,7 +212,7 @@ const ProductPageAdmin = () => {
         `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
         { status: true }
       );
-      handleClose(); // Close the review dialog
+      handleCloseReviewDialog(); // Close the review dialog
       console.log("Product accepted successfully");
       // Optionally, refetch or update state
     } catch (error) {
@@ -226,7 +229,7 @@ const ProductPageAdmin = () => {
           rejectionNote: note,
         }
       );
-      handleClose(); // Close the review dialog
+      handleCloseReviewDialog(); // Close the review dialog
       console.log("Product rejected successfully");
       // Optionally, refetch or update state
     } catch (error) {
@@ -569,8 +572,8 @@ const ProductPageAdmin = () => {
       )}
       {productToReview && (
         <ProductReviewDialog
-          open={handleOpenReviewDialog}
-          onClose={handleClose}
+          open={reviewDialogOpen}
+          onClose={handleCloseReviewDialog}
           product={productToReview}
           onAccept={handleAccept}
           onReject={handleReject}
