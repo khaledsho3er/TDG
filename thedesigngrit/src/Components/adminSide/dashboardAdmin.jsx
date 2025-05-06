@@ -132,21 +132,29 @@ const DashboardAdmin = () => {
             <BsThreeDotsVertical />
           </Box>
           <hr></hr>
-          <ul>
-            {bestSellers.length > 0 ? (
-              bestSellers.map((product, index) => (
-                <li key={index}>
-                  <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                    alt={product.name}
-                  />
-                  {product.name}- LE {product.price} ({product.totalSold} sales)
-                </li>
-              ))
-            ) : (
-              <li>No best sellers available.</li>
-            )}
-          </ul>
+          <div
+            style={{
+              overflowY: "scroll",
+              height: "300px",
+            }}
+          >
+            <ul>
+              {bestSellers.length > 0 ? (
+                bestSellers.map((product, index) => (
+                  <li key={index}>
+                    <img
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                      alt={product.name}
+                    />
+                    {product.name}- LE {product.price} ({product.totalSold}{" "}
+                    sales)
+                  </li>
+                ))
+              ) : (
+                <li>No best sellers available.</li>
+              )}
+            </ul>
+          </div>
         </div>
       </section>
 
