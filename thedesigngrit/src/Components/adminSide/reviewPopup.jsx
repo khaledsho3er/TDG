@@ -41,6 +41,18 @@ const ProductReviewDialog = ({
     <>
       {/* Main Product Dialog */}
       <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogTitle>Product Review</DialogTitle>
         <DialogContent>
           <Box display="flex" flexDirection="column" gap={2}>
