@@ -1317,6 +1317,9 @@
   .carousel-wrapper {
     width: 28%;
   }
+  .related-img {
+    width: 100%;
+  }
 }
 /* For tablets and small laptops */
 /* For small laptops and tablets */
@@ -1487,5 +1490,12 @@
   }
   .paymentmethod-firstrow-firstcolumn {
     margin-bottom: 20px;
+  }
+}
+/* Hide navigation buttons on screens smaller than 1024px */
+@media (max-width: 1023px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
   }
 }

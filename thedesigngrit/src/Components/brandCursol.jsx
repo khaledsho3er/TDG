@@ -108,10 +108,24 @@ export default function BrandCursol({ brandId }) {
           {products.length > 1 && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <button className="carousel-button left" onClick={prevSlide}>
-                <HiOutlineChevronLeft />
+                <HiOutlineChevronLeft
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
               </button>
               <button className="carousel-button right" onClick={nextSlide}>
-                <HiOutlineChevronRight />
+                <HiOutlineChevronRight
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                />
               </button>
             </Box>
           )}

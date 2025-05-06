@@ -4544,25 +4544,6 @@ iframe {
   object-fit: cover;
   border-radius: 10px 10px 0 0;
 }
-
-/* .carousel-button {
-  position: absolute;
-  top: 50%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2rem;
-  transform: translateY(-50%);
-}
-
-.left {
-  left: 10px;
-}
-
-.right {
-  right: 10px;
-} */
-
 /*careers page*/
 .careers-page {
   font-family: Montserrat;
