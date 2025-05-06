@@ -188,8 +188,10 @@ function Checkout() {
       // Reset the cart after successful order placement
       resetCart();
       setShowPopup(true); // Show the popup
-      navigate("/"); // Redirect to home or order confirmation page
-      // Redirect or show confirmation
+      // Delay navigation by 3 seconds to show the popup
+      setTimeout(() => {
+        navigate("/");
+      }, 3000); // Redirect or show confirmation
     } catch (error) {
       console.log("Error creating orders:", error);
       console.error("Failed to create orders:", error);
