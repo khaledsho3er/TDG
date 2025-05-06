@@ -28,7 +28,6 @@ const AddProduct = () => {
   const [pendingSubmission, setPendingSubmission] = useState(false);
   const [openVariantDialog, setOpenVariantDialog] = useState(false);
   const [variants, setVariants] = useState([]);
-  const [product, setProduct] = useState(null);
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -641,12 +640,7 @@ const AddProduct = () => {
         <div className="product-form">
           <div className="form-left">
             <h1>Add Product</h1>
-            <Button
-              onClick={() => setOpenVariantDialog(true)}
-              variant="contained"
-            >
-              Add Variant
-            </Button>
+
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
