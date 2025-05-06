@@ -34,6 +34,21 @@ const AllEmployees = () => {
     indexOfLastEmployee
   );
   const totalPages = Math.ceil(vendors.length / employeesPerPage);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this employee?"))
+      return;
+
+    try {
+      await axios.delete(`https://api.thedesigngrit.com/api/vendors/${id}`);
+      setVendors((prevVendors) =>
+        prevVendors.filter((vendor) => vendor._id !== id)
+      );
+      alert("Employee deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting vendor:", error);
+      alert("Failed to delete employee. Please try again.");
+    }
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -85,6 +100,7 @@ const AllEmployees = () => {
                   <th>Phone Number</th>
                   <th>Tier</th>
                   <th>Brand</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               {vendors.length === 0 ? (
@@ -106,6 +122,21 @@ const AllEmployees = () => {
                       <td>{vendor.phoneNumber}</td>
                       <td>{vendor.tier}</td>
                       <td>{vendor.brandId?.brandName}</td>
+                      <td>
+                        <button
+                          onClick={() => handleDelete(vendor._id)}
+                          style={{
+                            backgroundColor: "#d9534f",
+                            color: "white",
+                            border: "none",
+                            padding: "5px 10px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
