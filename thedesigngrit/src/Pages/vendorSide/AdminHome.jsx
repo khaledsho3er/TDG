@@ -11,6 +11,7 @@ import CategoryForm from "../../Components/adminSide/createCategory";
 import CategoryListPage from "../../Components/adminSide/categoriesList";
 import TagsTable from "../../Components/adminSide/tags";
 import ConceptManager from "../../Components/adminSide/concepts";
+import AllEmployees from "../../Components/adminSide/allEmployees";
 const AdminHome = () => {
   const navigate = useNavigate();
   const [activePage, setActivePage] = useState("dashboard");
@@ -41,6 +42,8 @@ const AdminHome = () => {
         return <ConceptManager />;
       case "AddCategory":
         return <CategoryForm />;
+      case "AllEmployees":
+        return <AllEmployees />;
       default:
         return "DashboardVendor";
     }
