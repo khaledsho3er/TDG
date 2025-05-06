@@ -482,16 +482,6 @@ const AccountingPage = () => {
               Download Commissions Report
             </button>
             <button
-              onClick={handleDownloadNetEarnings}
-              style={{
-                backgroundColor: "#6a8452",
-                color: "white",
-                marginLeft: "20px",
-              }}
-            >
-              Download Net Earnings Report
-            </button>
-            <button
               onClick={handleDownloadTaxAmounts}
               style={{
                 backgroundColor: "#6a8452",
@@ -500,6 +490,16 @@ const AccountingPage = () => {
               }}
             >
               Download Tax Amounts Report
+            </button>
+            <button
+              onClick={handleDownloadNetEarnings}
+              style={{
+                backgroundColor: "#6a8452",
+                color: "white",
+                marginLeft: "20px",
+              }}
+            >
+              Download Net Earnings Report
             </button>
           </div>
         </section>
