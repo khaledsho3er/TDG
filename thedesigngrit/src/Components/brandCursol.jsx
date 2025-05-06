@@ -112,8 +112,9 @@ export default function BrandCursol({ brandId }) {
                   style={{
                     position: "relative",
                     left: "50%",
-                    top: "100%",
+                    top: "50%",
                     transform: "translate(-50%, -50%)",
+                    top: "calc(50% - 10px)", // Adjust icon position for better centering
                   }}
                 />
               </button>
@@ -122,8 +123,9 @@ export default function BrandCursol({ brandId }) {
                   style={{
                     position: "relative",
                     left: "50%",
-                    top: "100%",
+                    top: "50%",
                     transform: "translate(-50%, -50%)",
+                    top: "calc(50% - 10px)", // Adjust icon position for better centering
                   }}
                 />
               </button>
