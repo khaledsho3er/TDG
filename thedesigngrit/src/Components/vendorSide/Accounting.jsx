@@ -36,13 +36,19 @@ const AccountingPage = () => {
   const [error, setError] = useState(null);
   const [activeGraph, setActiveGraph] = useState("sales");
   const [chartType, setChartType] = useState("line");
-
+  const [summary, setSummary] = useState({});
   // Function to fetch financial data
   const fetchFinancialData = async (brandId) => {
     try {
       const response = await axios.get(
         `https://api.thedesigngrit.com/api/brand/${brandId}/financial`
       );
+      setSalesData(response.data.salesByDate); // Time-based array
+      setSummary({
+        commissionRate: response.data.commissionRate,
+        taxRate: response.data.taxRate,
+        fees: response.data.fees,
+      });
       setFinancialData(response.data);
       return response.data;
     } catch (err) {
@@ -80,12 +86,7 @@ const AccountingPage = () => {
         setCalculatedData(metrics);
 
         // Set the calculated data for each category
-        setSalesData([
-          {
-            date: new Date().toISOString(),
-            amount: metrics.totalSales,
-          },
-        ]);
+        setSalesData(financialResponse.salesByDate);
 
         setCommissionsData([
           {
