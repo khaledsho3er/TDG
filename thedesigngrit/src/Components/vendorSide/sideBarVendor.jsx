@@ -11,7 +11,7 @@ import { FaWpforms, FaBell, FaUsers } from "react-icons/fa";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
-const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
+const SidebarVendor = ({ setActivePage, activePage }) => {
   // Get vendor data (including tier) from the useVendor hook
   const { vendor } = useVendor();
 
@@ -43,75 +43,57 @@ const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
   }
 
   return (
-    <aside className={`sidebar-vendor ${collapsed ? "collapsed" : ""}`}>
+    <aside className="sidebar-vendor">
       <ul className="sidebar-menu-vendor">
         <li
           onClick={() => setActivePage("dashboard")}
           className={getActiveClass("dashboard")}
-          title="Dashboard" // Tooltip
         >
           <RiDashboard3Fill size={20} style={{ marginRight: "5px" }} />
-          {!collapsed && <span style={{ marginLeft: "8px" }}>Dashboard</span>}
+          Dashboard
         </li>
         <li
           onClick={() => setActivePage("notifications")}
           className={getActiveClass("notifications")}
-          title="Notifications" // Tooltip
         >
           <FaBell size={20} style={{ marginRight: "5px" }} />
-
-          {!collapsed && (
-            <span style={{ marginLeft: "8px" }}>Notifications</span>
-          )}
+          Notifications
         </li>
         <li
           onClick={() => setActivePage("allProducts")}
           className={getActiveClass("allProducts")}
-          title="All Products" // Tooltip
         >
           <LuPackageOpen size={20} style={{ marginRight: "5px" }} />
-          {!collapsed && (
-            <span style={{ marginLeft: "8px" }}>All Products</span>
-          )}
+          All Products
         </li>
         <li
           onClick={() => setActivePage("orderList")}
           className={getActiveClass("orderList")}
-          title="Order List" // Tooltip
         >
           <TbTruckDelivery size={20} style={{ marginRight: "5px" }} />
           Order List
-          {!collapsed && <span style={{ marginLeft: "8px" }}>Order List</span>}
         </li>
         <li
           onClick={() => setActivePage("quotationsList")}
           className={getActiveClass("quotationsList")}
-          title="Quotations List" // Tooltip
         >
           <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
-          {!collapsed && (
-            <span style={{ marginLeft: "8px" }}>Quotation List</span>
-          )}
+          Quotation List
         </li>
         <li
           onClick={() => setActivePage("ViewInStoreVendor")}
           className={getActiveClass("ViewInStoreVendor")}
-          title="View In Store" // Tooltip
         >
           <HiBuildingStorefront size={20} style={{ marginRight: "5px" }} />
-
-          {!collapsed && (
-            <span style={{ marginLeft: "8px" }}>View In Store</span>
-          )}
+          View In Store
         </li>
 
         <li
           onClick={() => setActivePage("promotionsPage")}
           className={getActiveClass("promotionsPage")}
-          title="Promotions" // Tooltip
         >
           <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
-          {!collapsed && <span style={{ marginLeft: "8px" }}>Promotions</span>}
+          Promotions
         </li>
 
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
@@ -119,12 +101,9 @@ const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
           <li
             onClick={() => setActivePage("BrandForm")}
             className={getActiveClass("BrandForm")}
-            title="Brand Form" // Tooltip
           >
             <FaWpforms size={20} style={{ marginRight: "5px" }} />
-            {!collapsed && (
-              <span style={{ marginLeft: "8px" }}>Brand Form</span>
-            )}
+            Brand Form
           </li>
         )}
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
@@ -132,12 +111,9 @@ const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
           <li
             onClick={() => setActivePage("BrandingPage")}
             className={getActiveClass("BrandingPage")}
-            title="Branding Page" // Tooltip
           >
             <ImProfile size={20} style={{ marginRight: "5px" }} />
-            {!collapsed && (
-              <span style={{ marginLeft: "8px" }}>Brand Profile</span>
-            )}
+            Brand Profile
           </li>
         )}
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
@@ -145,12 +121,9 @@ const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
           <li
             onClick={() => setActivePage("Accounting")}
             className={getActiveClass("Accounting")}
-            title="Accounting" // Tooltip
           >
             <MdAccountBalance size={20} style={{ marginRight: "5px" }} />
-            {!collapsed && (
-              <span style={{ marginLeft: "8px" }}>Accounting</span>
-            )}
+            Accounting
           </li>
         )}
 
@@ -159,10 +132,9 @@ const SidebarVendor = ({ setActivePage, activePage, collapsed }) => {
           <li
             onClick={() => setActivePage("EmployeePage")}
             className={getActiveClass("EmployeePage")}
-            title="Employee Page" // Tooltip
           >
             <FaUsers size={20} style={{ marginRight: "5px" }} />
-            {!collapsed && <span style={{ marginLeft: "8px" }}>Employees</span>}
+            Employees
           </li>
         )}
       </ul>

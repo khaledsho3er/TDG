@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
+// import { FaBell } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useVendor } from "../../utils/vendorContext";
+import { useVendor } from "../../utils/vendorContext"; // Adjust the import path
 import NotificationOverlayVendor from "./notificationOverlay";
-import { FaBars, FaTimes } from "react-icons/fa";
 
 const NavbarVendor = ({ setActivePage }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Hamburger toggle
-  const [brandData, setBrandData] = useState(null);
-  const { vendor, logout } = useVendor();
+  const [brandData, setBrandData] = useState(null); // State for brand data
+  const { vendor, logout } = useVendor(); // Access vendor and logout from context
   const navigate = useNavigate();
 
+  // Fetch brand data based on vendor.brandId
   useEffect(() => {
     const fetchBrandData = async () => {
       try {
         const response = await fetch(
-          `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`,
+          `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`, // Replace with your backend endpoint
           {
             method: "GET",
-            credentials: "include",
+            credentials: "include", // Include credentials for session handling
           }
         );
+
         if (response.ok) {
           const data = await response.json();
-          setBrandData(data);
+          setBrandData(data); // Store the fetched brand data
         } else {
           console.error("Failed to fetch brand data:", response.statusText);
         }
@@ -33,14 +34,16 @@ const NavbarVendor = ({ setActivePage }) => {
     };
 
     if (vendor?.brandId) {
-      fetchBrandData();
+      fetchBrandData(); // Call the fetch function if brandId exists
     }
   }, [vendor]);
 
+  // Toggle the overlay visibility
   const toggleOverlay = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
 
+  // Handle logout
   const handleLogout = async () => {
     try {
       const response = await fetch(
@@ -52,6 +55,7 @@ const NavbarVendor = ({ setActivePage }) => {
       );
 
       if (response.ok) {
+        console.log("Logout successful");
         logout();
         navigate("/signin-vendor");
       } else {
@@ -70,25 +74,12 @@ const NavbarVendor = ({ setActivePage }) => {
           alt="Vendor Logo"
         />
       </div>
-
-      {/* Hamburger icon for small screens */}
-      <div
-        className="hamburger-icon"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        {isMenuOpen ? <FaTimes /> : <FaBars />}
-      </div>
-
-      {/* Menu */}
-      <div className={`navbar-actions-vendor ${isMenuOpen ? "open" : ""}`}>
+      <div className="navbar-actions-vendor">
+        {/* <FaBell className="icon-vendor-bar" onClick={toggleOverlay} /> */}
         <select onChange={(e) => e.target.value === "Logout" && handleLogout()}>
           <option>Profile</option>
           <option>Logout</option>
         </select>
-
-        {/* Uncomment when notification is needed */}
-        {/* <FaBell className="icon-vendor-bar" onClick={toggleOverlay} /> */}
-
         {isOverlayOpen && (
           <NotificationOverlayVendor
             onClose={toggleOverlay}
