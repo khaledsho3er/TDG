@@ -278,11 +278,11 @@ const AccountingPage = () => {
                 >
                   Net Earnings
                 </button>
-                <div className="flex justify-end gap-3 mb-4">
+                <div className="flex justify-end gap-6 mb-4">
                   <button
                     className={`px-2 py-1 rounded ${
                       chartType === "line"
-                        ? "bg-#6a8452-600 text-white"
+                        ? "bg-[#6a8452] text-white"
                         : "bg-gray-200"
                     }`}
                     onClick={() => setChartType("line")}
@@ -290,9 +290,9 @@ const AccountingPage = () => {
                     Line Chart
                   </button>
                   <button
-                    className={`px-3 py-1 rounded ${
+                    className={`px-2 py-1 rounded ${
                       chartType === "bar"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-[#6a8452] text-white"
                         : "bg-gray-200"
                     }`}
                     onClick={() => setChartType("bar")}
