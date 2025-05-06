@@ -47,7 +47,12 @@ const ProductReviewDialog = ({
             <img
               src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
               alt={product?.name}
-              style={{ width: "100%", height: "auto", borderRadius: 8 }}
+              style={{
+                width: "100%",
+                height: "240px",
+                objectFit: "cover",
+                borderRadius: 8,
+              }}
             />
 
             <Typography variant="h6">Name:{product.name}</Typography>

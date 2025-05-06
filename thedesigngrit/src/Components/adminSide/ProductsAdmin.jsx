@@ -205,7 +205,7 @@ const ProductPageAdmin = () => {
 
   const handleAccept = async (productId) => {
     try {
-      await axios.patch(
+      await axios.put(
         `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
         { status: "accepted" }
       );
@@ -218,7 +218,7 @@ const ProductPageAdmin = () => {
 
   const handleReject = async (productId, note) => {
     try {
-      await axios.patch(
+      await axios.put(
         `https://api.thedesigngrit.com/api/products/product/status/${productId}`,
         {
           status: "rejected",
