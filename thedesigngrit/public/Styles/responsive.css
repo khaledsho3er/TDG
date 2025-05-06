@@ -1307,6 +1307,16 @@
     flex-direction: column;
     padding: 20px;
   }
+  .carousel-button.left {
+    left: 100px;
+  }
+
+  .carousel-button.right {
+    right: -100px;
+  }
+  .carousel-wrapper {
+    width: 28%;
+  }
 }
 /* For tablets and small laptops */
 /* For small laptops and tablets */

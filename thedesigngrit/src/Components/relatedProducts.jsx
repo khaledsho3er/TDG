@@ -59,10 +59,23 @@ const RelatedProducts = ({ productId }) => {
       {relatedProducts.length > 0 ? (
         <Swiper
           modules={[Navigation]}
-          slidesPerView={3}
           spaceBetween={20}
           navigation
           loop={true}
+          breakpoints={{
+            // When window width is >= 0px
+            0: {
+              slidesPerView: 1,
+            },
+            // When window width is >= 768px (tablet and above)
+            768: {
+              slidesPerView: 2,
+            },
+            // When window width is >= 1024px (desktop)
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
           className="related-swiper"
         >
           {relatedProducts.map((product) => {
