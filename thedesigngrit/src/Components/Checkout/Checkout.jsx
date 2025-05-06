@@ -7,11 +7,9 @@ import PaymentForm from "./Paymentmethod.jsx";
 import { useCart } from "../../Context/cartcontext.js";
 import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
-import { useNavigate } from "react-router-dom";
 import OrderSentPopup from "../successMsgs/orderSubmit.jsx";
 
 function Checkout() {
-  const navigate = useNavigate();
   const { userSession } = useUser();
   const { cartItems, resetCart } = useCart(); //  Get cart items from CartContexts
   const [currentStep, setCurrentStep] = useState(1);
@@ -189,9 +187,6 @@ function Checkout() {
       resetCart();
       setShowPopup(true); // Show the popup
       // Delay navigation by 3 seconds to show the popup
-      setTimeout(() => {
-        navigate("/");
-      }, 3000); // Redirect or show confirmation
     } catch (error) {
       console.log("Error creating orders:", error);
       console.error("Failed to create orders:", error);

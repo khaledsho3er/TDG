@@ -2,8 +2,10 @@ import React from "react";
 import { IoClose } from "react-icons/io5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const OrderSentPopup = ({ show, closePopup }) => {
+  const navigate = useNavigate();
   if (!show) return null;
   return (
     <div className="Job-sent-popup-overlay">
@@ -20,7 +22,15 @@ const OrderSentPopup = ({ show, closePopup }) => {
           <strong>THANKS,</strong> For Chosing us.
           <br />
         </p>
-        <button className="Job-sent-popup-button" onClick={closePopup}>
+        <button
+          className="Job-sent-popup-button"
+          onClick={() => {
+            setTimeout(() => {
+              navigate("/");
+            }, 3000); // Redirect or show confirmation
+            closePopup();
+          }}
+        >
           Done
         </button>
       </div>
