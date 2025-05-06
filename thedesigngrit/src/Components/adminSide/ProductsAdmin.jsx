@@ -171,6 +171,9 @@ const ProductPageAdmin = () => {
       }
     }
   };
+  const handleClose = () => {
+    setReviewDialogOpen(false);
+  };
 
   const handleInsights = (product) => {
     setSelectedProduct(product); // Set the selected product
@@ -564,7 +567,7 @@ const ProductPageAdmin = () => {
       )}
       {productToReview && (
         <ProductReviewDialog
-          open={dialogOpen}
+          open={handleOpenReviewDialog}
           onClose={handleClose}
           product={selectedProduct}
           onAccept={handleAccept}
