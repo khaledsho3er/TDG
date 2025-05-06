@@ -42,17 +42,17 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
           {/* Grid Layout for Product Cards */}
           <Grid
             container
-            spacing={3}
+            spacing={isMobile ? 2 : 3}
             justifyContent="flex-start"
             gap={currentProducts.length < 3 ? "60px" : "0px"}
             sx={{
-              width: isMobile ? "100%" : "100%",
-              margin: isMobile ? "auto" : "auto",
+              width: "100%",
+              margin: "auto",
             }}
           >
             {currentProducts.map((product) => {
               return (
-                <Grid item xs={12} sm={6} md={4} key={product._id}>
+                <Grid item xs={6} sm={6} md={4} key={product._id}>
                   <ProductCard
                     product={product}
                     onToggleFavorite={onToggleFavorite}

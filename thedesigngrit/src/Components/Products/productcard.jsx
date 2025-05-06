@@ -77,7 +77,7 @@ const ProductCard = ({ product }) => {
     <Box style={{ cursor: "pointer" }}>
       <Card
         sx={{
-          width: 250,
+          width: { xs: "100%", sm: 250 },
           borderRadius: "16px",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
@@ -162,7 +162,7 @@ const ProductCard = ({ product }) => {
       </Card>
 
       {/* Product Information */}
-      <CardContent sx={{ padding: "10px", width: "250px" }}>
+      <CardContent sx={{ padding: "10px", width: { xs: "100%", sm: "250px" } }}>
         <Typography
           variant="h6"
           sx={{

@@ -88,10 +88,10 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
   const renderFilterContent = () => (
     <Box
       sx={{
-        width: isMobile ? "100vw" : 300,
-        p: 2,
+        width: isMobile ? "90vw" : 300,
+        p: isMobile ? 0 : 2,
         position: "relative",
-        paddingRight: "55px ",
+        paddingRight: isMobile ? 0 : "55px",
       }}
     >
       {isMobile && (

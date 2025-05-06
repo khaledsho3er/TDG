@@ -43,6 +43,7 @@ const TopFilter = ({
         padding: { xs: "15px", sm: "20px", md: "25px 70px" },
         flexDirection: { xs: "column", sm: "row" },
         gap: { xs: 2, sm: 3 },
+        alignItems: { xs: "flex-end", sm: "flex-end", md: "center" },
       }}
     >
       {/* Toggle Buttons */}
@@ -116,7 +117,7 @@ const TopFilter = ({
           alignItems: "center",
           gap: 2,
           justifyContent: "flex-end",
-          flexDirection: { xs: "column", sm: "row" },
+          flexDirection: { xs: "row", sm: "row" },
         }}
       >
         <Typography
