@@ -13,12 +13,23 @@ const OrderSentPopup = ({ show, closePopup }) => {
         <div className="Job-sent-popup-close-icon" onClick={closePopup}>
           <IoClose />
         </div>
-        <div style={{ textAlign: "center" }}>
-          <div className="mail-icon">
+        <div
+          style={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div
+            className="mail-icon"
+            style={{ width: "100px", height: "100px" }}
+          >
             <img
-              src={"Assets/orderIcon.gif"}
+              src={"Assets/orderIconCycle.gif"}
               alt="animated delivery icon"
               className="animated-mail-icon"
+              style={{ width: "100%", height: "100%" }}
             />
             {/* <TbTruckDelivery className="animated-mail-icon" /> */}
           </div>
