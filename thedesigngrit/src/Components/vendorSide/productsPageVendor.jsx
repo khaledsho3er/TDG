@@ -246,7 +246,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                 backgroundColor: "#2d2d2d",
                 color: "white",
                 marginLeft: "10px",
-                marginTop: "10px",
+                marginTop: "20px",
               }}
             >
               Add Variant
