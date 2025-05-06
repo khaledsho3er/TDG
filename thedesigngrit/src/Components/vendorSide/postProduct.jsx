@@ -5,8 +5,6 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
-import VariantDialog from "./VariantDialog";
-import { Button } from "@mui/material";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -26,7 +24,6 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
-  const [openVariantDialog, setOpenVariantDialog] = useState(false);
   const [variants, setVariants] = useState([]);
 
   // Form data state
@@ -552,7 +549,6 @@ const AddProduct = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       console.log("Product created successfully:", response.data);
-      setProduct(response.data);
       alert("Product added successfully!");
       setFormData({
         name: "",
@@ -1399,12 +1395,6 @@ const AddProduct = () => {
           content="Are you sure you want to add this product?"
           onConfirm={handleSubmit}
           onCancel={handleCloseDialog}
-        />
-        <VariantDialog
-          open={openVariantDialog}
-          onClose={() => setOpenVariantDialog(false)}
-          onSubmit={handleVariantSubmit}
-          sku={product?.sku}
         />
       </form>
     </>
