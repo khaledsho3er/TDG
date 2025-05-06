@@ -1320,6 +1320,9 @@
   .related-img {
     width: 100%;
   }
+  .carsousel-item {
+    width: 207px;
+  }
 }
 /* For tablets and small laptops */
 /* For small laptops and tablets */

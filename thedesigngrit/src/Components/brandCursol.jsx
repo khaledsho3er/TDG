@@ -83,7 +83,9 @@ export default function BrandCursol({ brandId }) {
                   key={product._id}
                   className="carousel-item"
                   style={{
-                    transform: `rotateY(${rotation}deg) translateZ(200px)`,
+                    transform: `rotateY(${rotation}deg) translateZ(${
+                      window.innerWidth <= 767 ? 153 : 200
+                    }px)`,
                     opacity: isCenter ? 1 : 0.3,
                     filter: isCenter ? "blur(0)" : "blur(4px)",
                     zIndex: isCenter ? 3 : 1,
