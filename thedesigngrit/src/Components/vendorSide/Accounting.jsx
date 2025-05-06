@@ -86,28 +86,41 @@ const AccountingPage = () => {
         setCalculatedData(metrics);
 
         // Set the calculated data for each category
-        setSalesData(financialResponse.salesByDate);
+        // Prepare dynamic time-based data for all charts
+        const timeSeriesSales = financialResponse.salesByDate.map((entry) => ({
+          date: entry.date,
+          amount: entry.amount,
+        }));
 
-        setCommissionsData([
-          {
-            date: new Date().toISOString(),
-            amount: metrics.commissionAmount,
-          },
-        ]);
+        const timeSeriesCommissions = financialResponse.salesByDate.map(
+          (entry) => ({
+            date: entry.date,
+            amount: entry.amount * financialResponse.commissionRate,
+          })
+        );
 
-        setTaxRateData([
-          {
-            date: new Date().toISOString(),
-            amount: metrics.taxAmount,
-          },
-        ]);
+        const timeSeriesTax = financialResponse.salesByDate.map((entry) => ({
+          date: entry.date,
+          amount: entry.amount * financialResponse.taxRate,
+        }));
 
-        setNetEarningsData([
-          {
-            date: new Date().toISOString(),
-            amount: metrics.netEarnings,
-          },
-        ]);
+        const timeSeriesNetEarnings = financialResponse.salesByDate.map(
+          (entry) => {
+            const gross = entry.amount;
+            const commission = gross * financialResponse.commissionRate;
+            const tax = gross * financialResponse.taxRate;
+            const net = gross - commission - tax;
+            return {
+              date: entry.date,
+              amount: net,
+            };
+          }
+        );
+
+        setSalesData(timeSeriesSales);
+        setCommissionsData(timeSeriesCommissions);
+        setTaxRateData(timeSeriesTax);
+        setNetEarningsData(timeSeriesNetEarnings);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching data:", err);
