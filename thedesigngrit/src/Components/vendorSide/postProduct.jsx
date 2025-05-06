@@ -1406,23 +1406,12 @@ const AddProduct = () => {
           onConfirm={handleSubmit}
           onCancel={handleCloseDialog}
         />
-        {product && (
-          <>
-            <Button
-              variant="contained"
-              onClick={() => setOpenVariantDialog(true)}
-            >
-              Add Variant
-            </Button>
-
-            <VariantDialog
-              open={openVariantDialog}
-              onClose={() => setOpenVariantDialog(false)}
-              onSubmit={handleVariantSubmit}
-              sku={product?.sku}
-            />
-          </>
-        )}
+        <VariantDialog
+          open={openVariantDialog}
+          onClose={() => setOpenVariantDialog(false)}
+          onSubmit={handleVariantSubmit}
+          sku={product?.sku}
+        />
       </form>
     </>
   );
