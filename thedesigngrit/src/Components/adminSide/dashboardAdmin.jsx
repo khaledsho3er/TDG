@@ -22,7 +22,7 @@ const DashboardAdmin = () => {
       );
       const data = await response.json();
       // Sort orders by date (latest to earliest)
-      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      data.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -129,13 +129,13 @@ const DashboardAdmin = () => {
             }}
           >
             <h3>Best Sellers</h3>
-            <BsThreeDotsVertical />
           </Box>
           <hr></hr>
           <div
             style={{
               overflowY: "scroll",
               height: "300px",
+              margin: "8px 0px",
             }}
           >
             <ul>
