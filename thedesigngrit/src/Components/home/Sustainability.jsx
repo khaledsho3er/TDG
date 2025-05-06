@@ -9,8 +9,10 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SustainabilitySection = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Mobile-friendly
 
@@ -75,6 +77,7 @@ const SustainabilitySection = () => {
                 fontSize: isSmallScreen ? "0.875rem" : "1rem", // Button text responsive
                 padding: isSmallScreen ? "0.5rem 1rem" : "0.75rem 1.5rem",
               }}
+              onClick={() => navigate("/about")}
             >
               Find more
             </button>
