@@ -1,6 +1,6 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TbTruckDelivery } from "react-icons/tb";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,12 @@ const OrderSentPopup = ({ show, closePopup }) => {
         </div>
         <div style={{ textAlign: "center" }}>
           <div className="mail-icon">
-            <FontAwesomeIcon icon={faEnvelope} className="animated-mail-icon" />
+            <img
+              src={"Assets/orderIcon.gif"}
+              alt="animated delivery icon"
+              className="animated-mail-icon"
+            />
+            {/* <TbTruckDelivery className="animated-mail-icon" /> */}
           </div>
 
           <h1>YOUR ORDER HAS BEEN SUBMITTED SUCCESSFULLY!</h1>
