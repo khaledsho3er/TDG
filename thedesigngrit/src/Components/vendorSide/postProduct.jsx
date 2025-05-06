@@ -6,6 +6,7 @@ import { useVendor } from "../../utils/vendorContext";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
 import VariantDialog from "./VariantDialog";
+import { Button } from "@mui/material";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -27,6 +28,8 @@ const AddProduct = () => {
   const [pendingSubmission, setPendingSubmission] = useState(false);
   const [openVariantDialog, setOpenVariantDialog] = useState(false);
   const [variants, setVariants] = useState([]);
+  const [product, setProduct] = useState(null);
+
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -550,6 +553,7 @@ const AddProduct = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       console.log("Product created successfully:", response.data);
+      setProduct(response.data);
       alert("Product added successfully!");
       setFormData({
         name: "",
