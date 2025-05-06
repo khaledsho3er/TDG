@@ -5,8 +5,8 @@ import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 const AllEmployees = () => {
   const [vendors, setVendors] = useState([]);
-
-  // Pagination states
+  const [selectedBrand, setSelectedBrand] = useState(""); // "" = All brands
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 10;
   // Define fetchVendors function and memoize it
@@ -25,15 +25,6 @@ const AllEmployees = () => {
   useEffect(() => {
     fetchVendors();
   }, [fetchVendors]); // Include fetchVendors in dependency array
-
-  // Pagination Logic
-  const indexOfLastEmployee = currentPage * employeesPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentEmployees = vendors.slice(
-    indexOfFirstEmployee,
-    indexOfLastEmployee
-  );
-  const totalPages = Math.ceil(vendors.length / employeesPerPage);
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this employee?"))
       return;
@@ -49,10 +40,42 @@ const AllEmployees = () => {
       alert("Failed to delete employee. Please try again.");
     }
   };
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+  const handleBrandChange = (e) => {
+    setSelectedBrand(e.target.value);
+    setCurrentPage(1); // Reset to page 1 when brand changes
+  };
+
+  // Filter vendors
+  const filteredVendors = vendors.filter((vendor) => {
+    if (selectedBrand && vendor.brandId?.brandName !== selectedBrand) {
+      return false;
+    }
+    const fullName = `${vendor.firstName} ${vendor.lastName}`.toLowerCase();
+    const email = vendor.email?.toLowerCase() || "";
+    const query = searchQuery.toLowerCase();
+
+    return (
+      fullName.includes(query) ||
+      vendor.firstName?.toLowerCase().includes(query) ||
+      vendor.lastName?.toLowerCase().includes(query) ||
+      email.includes(query)
+    );
+  });
+
+  const indexOfLastEmployee = currentPage * employeesPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+  const currentEmployees = filteredVendors.slice(
+    indexOfFirstEmployee,
+    indexOfLastEmployee
+  );
+  const totalPages = Math.ceil(filteredVendors.length / employeesPerPage);
   return (
     <div style={{ padding: "70px" }}>
       <div className="dashboard-header-title">
@@ -70,7 +93,6 @@ const AllEmployees = () => {
           Home &gt; All Employees
         </p>
       </div>
-      <div className="dashboard-date-vendor"></div>
       <section className="dashboard-lists-vendor">
         <div className="recent-orders-vendor">
           <Box
@@ -90,6 +112,48 @@ const AllEmployees = () => {
             >
               All Employees List
             </h2>
+            {/* Brand Filter and Search Input */}
+            <div style={{ display: "flex", marginBottom: "20px", gap: "20px" }}>
+              <div>
+                <label htmlFor="brandFilter" style={{ marginRight: "10px" }}>
+                  Filter by Brand:
+                </label>
+                <select
+                  id="brandFilter"
+                  value={selectedBrand}
+                  onChange={handleBrandChange}
+                  style={{
+                    padding: "5px",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc",
+                  }}
+                >
+                  <option value="">All Brands</option>
+                  {Array.from(new Set(vendors.map((v) => v.brandId?.brandName)))
+                    .filter(Boolean)
+                    .map((brandName, index) => (
+                      <option key={index} value={brandName}>
+                        {brandName}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <input
+                  type="text"
+                  placeholder="Search by name or email..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  style={{
+                    padding: "5px",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc",
+                    width: "250px",
+                  }}
+                />
+              </div>
+            </div>
             <table>
               <thead style={{ backgroundColor: "#f2f2f2", color: "#2d2d2d" }}>
                 <tr>
