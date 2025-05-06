@@ -5,6 +5,7 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
+import VariantDialog from "./VariantDialog";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -24,6 +25,8 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
+  const [openVariantDialog, setOpenVariantDialog] = useState(false);
+  const [variants, setVariants] = useState([]);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -224,6 +227,18 @@ const AddProduct = () => {
         [name]: value,
       },
     });
+  };
+
+  const handleVariantSubmit = async (variantData) => {
+    try {
+      const res = await axios.post(
+        "http://api.thedesigngrit.com/api/products/variants",
+        variantData
+      );
+      setVariants((prev) => [...prev, res.data]);
+    } catch (err) {
+      console.error("Error creating variant:", err);
+    }
   };
 
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
@@ -622,6 +637,12 @@ const AddProduct = () => {
         <div className="product-form">
           <div className="form-left">
             <h1>Add Product</h1>
+            <Button
+              onClick={() => setOpenVariantDialog(true)}
+              variant="contained"
+            >
+              Add Variant
+            </Button>
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
@@ -1381,6 +1402,23 @@ const AddProduct = () => {
           onConfirm={handleSubmit}
           onCancel={handleCloseDialog}
         />
+        {product && (
+          <>
+            <Button
+              variant="contained"
+              onClick={() => setOpenVariantDialog(true)}
+            >
+              Add Variant
+            </Button>
+
+            <VariantDialog
+              open={openVariantDialog}
+              onClose={() => setOpenVariantDialog(false)}
+              onSubmit={handleVariantSubmit}
+              sku={product?.sku}
+            />
+          </>
+        )}
       </form>
     </>
   );
