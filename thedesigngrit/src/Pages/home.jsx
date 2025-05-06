@@ -113,6 +113,10 @@ function Home() {
             src={posterImages[currentVideoIndex]}
             alt={`Hero background ${currentVideoIndex}`}
             className="hero-video-element"
+            onLoad={() => {
+              const nextIndex = (currentVideoIndex + 1) % posterImages.length;
+              setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
+            }}
           />
         ) : (
           <video
@@ -143,6 +147,11 @@ function Home() {
                 className="hero-video-element"
                 loading="eager"
                 fetchpriority="high"
+                onLoad={() => {
+                  const nextIndex =
+                    (currentVideoIndex + 1) % posterImages.length;
+                  setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
+                }}
               />
             ) : (
               <video
@@ -167,6 +176,10 @@ function Home() {
               src={posterImages[currentVideoIndex]}
               alt="Hero placeholder"
               className="hero-video-element"
+              onLoad={() => {
+                const nextIndex = (currentVideoIndex + 1) % posterImages.length;
+                setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
+              }}
             />
           )}
           <div className="video-progress-container">
