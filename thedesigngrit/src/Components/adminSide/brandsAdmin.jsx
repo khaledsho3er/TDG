@@ -453,7 +453,16 @@ const BrandManagement = () => {
         Brand Management
       </Typography>
 
-      <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 3 }}>
+      <Tabs
+        value={tabValue}
+        onChange={handleTabChange}
+        sx={{
+          mb: 3,
+          "& .MuiTab-root:hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
         <Tab label={`Active Brands (${getActiveBrands().length})`} />
         <Tab label={`Pending Brands (${getPendingBrands().length})`} />
         <Tab label={`Deactivated Brands (${getDeactiveBrands().length})`} />
