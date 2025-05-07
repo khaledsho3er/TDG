@@ -385,8 +385,14 @@ const ProductPageAdmin = () => {
                       </div>
                       <p className="brand-name">{product.brandId?.brandName}</p>
                       <div className="price-container">
-                        <span className="original-price">${product.price}</span>
-                        <span className="sale-price">${product.salePrice}</span>
+                        <span className="original-price">
+                          E£{product.price}
+                        </span>
+                        {product.salePrice > 0 && (
+                          <span className="sale-price">
+                            E£{product.salePrice}
+                          </span>
+                        )}{" "}
                       </div>
                       <p className="product-summary">
                         {product.description.substring(0, 100)}...
@@ -497,8 +503,14 @@ const ProductPageAdmin = () => {
                       </div>
                       <p className="brand-name">{product.brandId?.brandName}</p>
                       <div className="price-container">
-                        <span className="original-price">${product.price}</span>
-                        <span className="sale-price">${product.salePrice}</span>
+                        <span className="original-price">
+                          E£{product.price}
+                        </span>
+                        {product.salePrice > 0 && (
+                          <span className="sale-price">
+                            E£{product.salePrice}
+                          </span>
+                        )}
                       </div>
                       <p className="product-summary">
                         {product.description.substring(0, 100)}...

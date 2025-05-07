@@ -350,11 +350,13 @@ const ProductsPageVendor = ({ setActivePage }) => {
 
                         <div className="price-container">
                           <span className="original-price">
-                            ${product.price}
+                            E£{product.price}
                           </span>
-                          <span className="sale-price">
-                            ${product.salePrice}
-                          </span>
+                          {product.salePrice > 0 && (
+                            <span className="sale-price">
+                              E£{product.salePrice}
+                            </span>
+                          )}
                         </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...
@@ -463,11 +465,13 @@ const ProductsPageVendor = ({ setActivePage }) => {
 
                         <div className="price-container">
                           <span className="original-price">
-                            ${product.price}
+                            E£{product.price}
                           </span>
-                          <span className="sale-price">
-                            ${product.salePrice}
-                          </span>
+                          {product.salePrice > 0 && (
+                            <span className="sale-price">
+                              E£{product.salePrice}
+                            </span>
+                          )}
                         </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...

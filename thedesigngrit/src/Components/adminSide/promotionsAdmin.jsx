@@ -120,8 +120,8 @@ const PromotionsPageAdmin = () => {
           <h3>{product.name}</h3>
           <p className="brand-name">{product.brandId?.brandName}</p>
           <div className="price-container">
-            <span className="original-price">${product.price}</span>
-            <span className="sale-price">${product.salePrice}</span>
+            <span className="original-price">E£{product.price}</span>
+            <span className="sale-price">E£{product.salePrice}</span>
           </div>
 
           {showMetrics && metrics && (
