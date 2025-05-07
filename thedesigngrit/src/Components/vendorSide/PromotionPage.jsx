@@ -136,69 +136,65 @@ const PromotionsPage = () => {
               <div className="product-grid">
                 {currentPromotions.map((product) => (
                   <div
-                    className="all-product-card"
+                    className="promotion-card"
                     onClick={() => {
                       setSelectedProduct(product);
                       setEditModalOpen(true);
                     }}
                     key={product.id}
                   >
-                    <div className="product-card-header">
+                    <div className="promotion-image-container">
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                         alt={product.name}
-                        className="all-product-image"
+                        className="promotion-image"
                       />
-                      <div className="product-info-vendor">
-                        <h3>{product.name}</h3>
-                        <p>{product.typeName}</p>
-                        <p
-                          style={{
-                            textDecoration: product.salePrice
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          {product.price}
-                        </p>{" "}
-                        <p>{product.salePrice}</p>
+                      <div className="discount-badge">
+                        {product.discountPercentage}% OFF
                       </div>
                     </div>
+                    <h3>{product.name}</h3>
+                    <div className="price-container">
+                      <span className="original-price">E£{product.price}</span>
+                      <span className="sale-price">E£{product.salePrice}</span>
+                    </div>
+                    <p className="product-summary">
+                      {product.description.substring(0, 5)}...
+                    </p>
                     <div className="product-card-body">
                       <h5>Summary</h5>
-                      <p className="product-summary">
-                        {product.description.substring(0, 5)}...
-                      </p>
-                      <div className="product-stats">
-                        <div className="product-sales">
-                          <span>Discount</span>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "5px",
-                            }}
-                          >
-                            <span className="sales-value">
-                              {product.discountPercentage
-                                ? product.discountPercentage
-                                : "No yet Discount"}{" "}
-                              %
+                      <div className="metrics-container">
+                        <div className="product-stats">
+                          <div className="metric">
+                            <span className="metric-label">Discount</span>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px",
+                              }}
+                            >
+                              <span className="metric-value">
+                                {product.discountPercentage
+                                  ? product.discountPercentage
+                                  : "No yet Discount"}{" "}
+                                %
+                              </span>
+                            </div>
+                          </div>
+                          <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                          <div className="metric">
+                            <span className="metric-label">Date</span>
+                            <span className="metric-value">
+                              {new Date(
+                                product.promotionStartDate
+                              ).toLocaleDateString()}{" "}
+                              -{" "}
+                              {new Date(
+                                product.promotionEndDate
+                              ).toLocaleDateString()}
                             </span>
                           </div>
-                        </div>
-                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                        <div className="product-remaining">
-                          <span>Date</span>
-                          <span className="remaining-value">
-                            {new Date(
-                              product.promotionStartDate
-                            ).toLocaleDateString()}{" "}
-                            -{" "}
-                            {new Date(
-                              product.promotionEndDate
-                            ).toLocaleDateString()}
-                          </span>
                         </div>
                       </div>
                     </div>
