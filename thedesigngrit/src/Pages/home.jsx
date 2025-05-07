@@ -116,7 +116,6 @@ function Home() {
                 poster={posterImages[currentVideoIndex]}
                 autoPlay
                 muted
-                loop
                 playsInline
                 preload="auto"
                 onLoadedMetadata={handleLoadedMetadata}
