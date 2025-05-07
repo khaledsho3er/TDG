@@ -163,6 +163,14 @@ const PromotionsPageAdmin = () => {
       (product) => product.brandId?.brandName === selectedBrand
     );
   };
+  const uniqueBrands = Array.from(
+    new Map(
+      [...currentPromotions, ...futurePromotions, ...pastPromotions]
+        .filter((product) => product.brandId) // Make sure brand exists
+        .map((product) => [product.brandId._id, product.brandId])
+    ).values()
+  );
+
   return (
     <div className="promotions-page-container">
       <div className="promotions-content">
@@ -189,26 +197,11 @@ const PromotionsPageAdmin = () => {
                 }}
               >
                 <MenuItem value="">All Brands</MenuItem>
-                {Array.from(
-                  new Set(
-                    [
-                      ...currentPromotions,
-                      ...futurePromotions,
-                      ...pastPromotions,
-                    ]
-                      .map((product) => ({
-                        id: product.brandId?._id,
-                        name: product.brandId?.brandName,
-                      }))
-                      .filter((brand) => brand.id && brand.name)
-                  )
-                )
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((brand) => (
-                    <MenuItem key={brand.id} value={brand.name}>
-                      {brand.name}
-                    </MenuItem>
-                  ))}
+                {uniqueBrands.map((brand) => (
+                  <MenuItem key={brand._id} value={brand.brandName}>
+                    {brand.brandName}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>

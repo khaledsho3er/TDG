@@ -54,7 +54,7 @@ function Home() {
   const isMobile = useIsMobile();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [showVideo, setShowVideo] = useState(true);
+  const [showVideo] = useState(true);
   const [isHeroVisible, setIsHeroVisible] = useState(true); // 👈 track visibility
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,11 +63,17 @@ function Home() {
       },
       { threshold: 0.3 } // 30% of hero must be visible to be "active"
     );
-    if (heroSectionRef.current) {
-      observer.observe(heroSectionRef.current);
+    const currentHeroRef = heroSectionRef.current;
+
+    if (currentHeroRef) {
+      observer.observe(currentHeroRef);
     }
+
     return () => {
-      if (heroSectionRef.current) observer.unobserve(heroSectionRef.current);
+      // Use the stored variable in cleanup
+      if (currentHeroRef) {
+        observer.unobserve(currentHeroRef);
+      }
     };
   }, []);
   useEffect(() => {
