@@ -122,9 +122,9 @@ const PromotionsPageAdmin = () => {
   // Handle approve action
   const handleApprove = async () => {
     try {
-      await axios.post(
+      await axios.put(
         `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
-        { promtoionApproved: true }
+        { promotionApproved: true }
       );
 
       // Close dialog and refresh data
@@ -153,10 +153,7 @@ const PromotionsPageAdmin = () => {
     try {
       await axios.put(
         `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
-        {
-          promtoionApproved: false,
-          promotionRejectedNote: rejectionReason,
-        }
+        { promotionApproved: false, promotionRejectedNote: rejectionReason }
       );
 
       // Close dialog, reset form and refresh data
