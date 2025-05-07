@@ -1913,7 +1913,7 @@ h1 {
 .metric {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .metric-label {
@@ -1924,6 +1924,7 @@ h1 {
 .metric-value {
   font-weight: bold;
   font-size: 16px;
+  padding: 4px 0px;
 }
 
 .no-promotions {
