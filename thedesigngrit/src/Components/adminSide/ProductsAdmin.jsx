@@ -342,9 +342,11 @@ const ProductPageAdmin = () => {
                         alt={product.name}
                         className="promotion-image"
                       />
-                      <div className="discount-badge">
-                        {product.discountPercentage}% OFF
-                      </div>
+                      {product.discountPercentage && (
+                        <div className="discount-badge">
+                          {product.discountPercentage}% OFF
+                        </div>
+                      )}
                     </div>
                     <div className="promotion-details">
                       <div
@@ -385,7 +387,14 @@ const ProductPageAdmin = () => {
                       </div>
                       <p className="brand-name">{product.brandId?.brandName}</p>
                       <div className="price-container">
-                        <span className="original-price">
+                        <span
+                          className="original-price"
+                          style={{
+                            textDecoration: product.salePrice
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
                           E£{product.price}
                         </span>
                         {product.salePrice > 0 && (
@@ -460,9 +469,11 @@ const ProductPageAdmin = () => {
                         alt={product.name}
                         className="promotion-image"
                       />
-                      <div className="discount-badge">
-                        {product.discountPercentage}% OFF
-                      </div>
+                      {product.discountPercentage && (
+                        <div className="discount-badge">
+                          {product.discountPercentage}% OFF
+                        </div>
+                      )}
                     </div>
                     <div className="promotion-details">
                       <div
@@ -503,7 +514,14 @@ const ProductPageAdmin = () => {
                       </div>
                       <p className="brand-name">{product.brandId?.brandName}</p>
                       <div className="price-container">
-                        <span className="original-price">
+                        <span
+                          className="original-price"
+                          style={{
+                            textDecoration: product.salePrice
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
                           E£{product.price}
                         </span>
                         {product.salePrice > 0 && (
