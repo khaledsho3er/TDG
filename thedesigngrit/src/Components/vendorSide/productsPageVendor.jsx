@@ -304,67 +304,69 @@ const ProductsPageVendor = ({ setActivePage }) => {
               ) : (
                 <div className="product-grid">
                   {falseStatusProducts.map((product) => (
-                    <div className="all-product-card" key={product.id}>
-                      <div className="product-card-header">
+                    <div className="promotion-card" key={product.id}>
+                      <div className="promotion-image-container">
                         <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                           alt={product.name}
-                          className="all-product-image"
+                          className="promotion-image"
                         />
-                        <div className="product-info-vendor">
-                          <h3>{product.name}</h3>
-                          {/* <p>{product.typeName}</p> */}
-                          <p>
-                            {product.salePrice ? (
-                              <span
-                                style={{
-                                  textDecoration: "line-through",
-                                  marginRight: "5px",
-                                }}
-                              >
-                                {product.price} E£
-                              </span>
-                            ) : (
-                              product.price
-                            )}
-                            {product.salePrice && (
-                              <span style={{ color: "red" }}>
-                                {product.salePrice}E£
-                              </span>
-                            )}
-                          </p>
-                        </div>
-                        <div className="menu-container">
-                          <BsThreeDotsVertical
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent the click from triggering the document listener
-                              toggleMenu(product.id);
-                            }}
-                            className="three-dots-icon"
-                          />
-                          {menuOpen[product.id] && (
-                            <div className="menu-dropdown">
-                              <button onClick={() => handleEdit(product)}>
-                                Edit
-                              </button>
-                              <button onClick={() => handleDelete(product)}>
-                                Delete
-                              </button>
-                              <button onClick={() => handleInsights(product)}>
-                                Promotion
-                              </button>
-                            </div>
-                          )}
+                        <div className="discount-badge">
+                          {product.discountPercentage}% OFF
                         </div>
                       </div>
-                      <div className="product-card-body">
-                        <h5>Summary</h5>
+                      <div className="promotion-details">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                          }}
+                        >
+                          <h3 className="promotion-details">{product.name}</h3>
+                          <div className="menu-container">
+                            <BsThreeDotsVertical
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent the click from triggering the document listener
+                                toggleMenu(product.id);
+                              }}
+                              className="three-dots-icon"
+                            />
+                            {menuOpen[product.id] && (
+                              <div className="menu-dropdown">
+                                <button onClick={() => handleEdit(product)}>
+                                  Edit
+                                </button>
+                                <button onClick={() => handleDelete(product)}>
+                                  Delete
+                                </button>
+                                <button onClick={() => handleInsights(product)}>
+                                  Promotion
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="price-container">
+                          <span className="original-price">
+                            ${product.price}
+                          </span>
+                          <span className="sale-price">
+                            ${product.salePrice}
+                          </span>
+                        </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...
                         </p>
-                        <div className="product-stats">
-                          <div className="product-sales">
-                            <span>Sales</span>
+                      </div>
+
+                      <div className="product-card-body">
+                        <h5>Summary</h5>
+
+                        <div className="metrics-container">
+                          <div className="metric">
+                            <span className="metric-label">Sales</span>
                             <div
                               style={{
                                 display: "flex",
@@ -372,15 +374,17 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                 gap: "5px",
                               }}
                             >
-                              <span className="sales-value">
+                              <span className="metric-value">
                                 {product.sales ? product.sales : "No yet sales"}
                               </span>
                             </div>
                           </div>
                           <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                          <div className="product-remaining">
-                            <span>Remaining Products</span>
-                            <span className="remaining-value">
+                          <div className="metric">
+                            <span className="metric-label">
+                              Semaining Products
+                            </span>
+                            <span className="metric-value">
                               {product.stock}
                             </span>
                           </div>
@@ -413,49 +417,69 @@ const ProductsPageVendor = ({ setActivePage }) => {
               ) : (
                 <div className="product-grid">
                   {trueStatusProducts.map((product) => (
-                    <div className="all-product-card" key={product.id}>
-                      <div className="product-card-header">
+                    <div className="promotion-card" key={product.id}>
+                      <div className="promotion-image-container">
                         <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                           alt={product.name}
-                          className="all-product-image"
+                          className="promotion-image"
                         />
-                        <div className="product-info-vendor">
-                          <h3>{product.name}</h3>
-                          <p>{product.typeName}</p>
-                          <p>{product.price}</p>
-                        </div>
-                        <div className="menu-container">
-                          <BsThreeDotsVertical
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent the click from triggering the document listener
-                              toggleMenu(product.id);
-                            }}
-                            className="three-dots-icon"
-                          />
-                          {menuOpen[product.id] && ( // Check if menuOpen for this product ID is true
-                            <div className="menu-dropdown">
-                              <button onClick={() => handleEdit(product)}>
-                                Edit
-                              </button>
-                              <button onClick={() => handleDelete(product)}>
-                                Delete
-                              </button>
-                              <button onClick={() => handleInsights(product)}>
-                                Promotion
-                              </button>
-                            </div>
-                          )}
+                        <div className="discount-badge">
+                          {product.discountPercentage}% OFF
                         </div>
                       </div>
-                      <div className="product-card-body">
-                        <h5>Summary</h5>
+                      <div className="promotion-details">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                          }}
+                        >
+                          <h3 className="promotion-details">{product.name}</h3>
+                          <div className="menu-container">
+                            <BsThreeDotsVertical
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent the click from triggering the document listener
+                                toggleMenu(product.id);
+                              }}
+                              className="three-dots-icon"
+                            />
+                            {menuOpen[product.id] && (
+                              <div className="menu-dropdown">
+                                <button onClick={() => handleEdit(product)}>
+                                  Edit
+                                </button>
+                                <button onClick={() => handleDelete(product)}>
+                                  Delete
+                                </button>
+                                <button onClick={() => handleInsights(product)}>
+                                  Promotion
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="price-container">
+                          <span className="original-price">
+                            ${product.price}
+                          </span>
+                          <span className="sale-price">
+                            ${product.salePrice}
+                          </span>
+                        </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...
                         </p>
-                        <div className="product-stats">
-                          <div className="product-sales">
-                            <span>Sales</span>
+                      </div>
+
+                      <div className="product-card-body">
+                        <h5>Summary</h5>
+
+                        <div className="metrics-container">
+                          <div className="metric">
+                            <span className="metric-label">Sales</span>
                             <div
                               style={{
                                 display: "flex",
@@ -463,15 +487,17 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                 gap: "5px",
                               }}
                             >
-                              <span className="sales-value">
-                                {product.rating}
+                              <span className="metric-value">
+                                {product.sales ? product.sales : "No yet sales"}
                               </span>
                             </div>
                           </div>
                           <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                          <div className="product-remaining">
-                            <span>Remaining Products</span>
-                            <span className="remaining-value">
+                          <div className="metric">
+                            <span className="metric-label">
+                              Semaining Products
+                            </span>
+                            <span className="metric-value">
                               {product.stock}
                             </span>
                           </div>
