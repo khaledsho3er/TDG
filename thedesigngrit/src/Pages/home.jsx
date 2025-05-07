@@ -122,19 +122,28 @@ function Home() {
             }}
           />
         ) : (
-          <video
-            ref={bgVideoRef}
+          // <video
+          //   ref={bgVideoRef}
+          //   className="hero-video-element"
+          //   poster={posterImages[currentVideoIndex]}
+          //   autoPlay
+          //   muted
+          //   loop
+          //   playsInline
+          //   preload="none"
+          // >
+          //   <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
+          //   <source src={videos[currentVideoIndex].webm} type="video/webm" />
+          // </video>
+          <img
+            src={posterImages[currentVideoIndex]}
+            alt={`Hero background ${currentVideoIndex}`}
             className="hero-video-element"
-            poster={posterImages[currentVideoIndex]}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-          >
-            <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
-            <source src={videos[currentVideoIndex].webm} type="video/webm" />
-          </video>
+            onLoad={() => {
+              const nextIndex = (currentVideoIndex + 1) % posterImages.length;
+              setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
+            }}
+          />
         )}
       </div>
       {/* Header and Sectionss */}
