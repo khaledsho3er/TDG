@@ -189,7 +189,7 @@ const PromotionsPageAdmin = () => {
           <div className="discount-badge">{discountPercent}% OFF</div>
           {product.promotionApproved && (
             <div
-              className={`approval-status ${product.promtoionApproved}`}
+              className={`approval-status ${product.promotionApproved}`}
               style={{
                 position: "absolute",
                 top: "10px",
@@ -199,21 +199,21 @@ const PromotionsPageAdmin = () => {
                 fontSize: "12px",
                 fontWeight: "bold",
                 backgroundColor:
-                  product.promtoionApproved === "approved"
+                  product.promotionApproved === "approved"
                     ? "#4CAF50"
-                    : product.promtoionApproved === "rejected"
+                    : product.promotionApproved === "rejected"
                     ? "#F44336"
                     : "#FFC107",
                 color: "white",
                 zIndex: 2,
               }}
             >
-              {product.promtoionApproved.toUpperCase()}
+              {product.promotionApproved.toUpperCase()}
             </div>
           )}
           {/* Review button for pending promotions */}
-          {(!product.promtoionApproved ||
-            product.promtoionApproved === false) && (
+          {(!product.promotionApproved ||
+            product.promotionApproved === false) && (
             <button
               onClick={(e) => handleOpenApprovalDialog(product, e)}
               style={{
@@ -253,7 +253,7 @@ const PromotionsPageAdmin = () => {
             <div>
               <div
                 style={{
-                  backgroundColor: product.promotionApprove
+                  backgroundColor: product.promotionApproved
                     ? "#2ecc71"
                     : "#e74c3c",
                   padding: "4px 8px",
@@ -262,7 +262,7 @@ const PromotionsPageAdmin = () => {
                   fontWeight: "bold",
                 }}
               >
-                {product.promotionApprove ? "Approved" : "Rejected"}
+                {product.promotionApproved ? "Approved" : "Rejected"}
               </div>
             </div>
           </div>
