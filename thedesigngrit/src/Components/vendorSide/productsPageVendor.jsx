@@ -288,17 +288,10 @@ const ProductsPageVendor = ({ setActivePage }) => {
         {/* Section for products with status false */}
         <div>
           <div
+            className="section-header"
             onClick={() => setShowFalseStatus((prev) => !prev)}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              cursor: "pointer",
-              padding: "10px",
-              backgroundColor: "transparent",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              marginBottom: "30px",
+              margin: "30px 0",
             }}
           >
             <span>Products without approval</span>
@@ -404,18 +397,10 @@ const ProductsPageVendor = ({ setActivePage }) => {
         {/* Section for products with status true */}
         <div>
           <div
+            className="section-header"
             onClick={() => setShowTrueStatus((prev) => !prev)}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              cursor: "pointer",
-              padding: "10px",
-              backgroundColor: "transparent",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              marginBottom: "15px",
-              marginTop: "30px",
+              margin: "30px 0",
             }}
           >
             <span>Products with approval</span>
