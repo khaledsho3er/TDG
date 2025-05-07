@@ -11,6 +11,9 @@ const PromotionsPageAdmin = () => {
   const [showPastSection, setShowPastSection] = useState(false);
   const [showFutureSection, setShowFutureSection] = useState(false);
   const [promotionMetrics, setPromotionMetrics] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState(""); // NEW
+  const [allBrands, setAllBrands] = useState([]); // NEW
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -154,13 +157,32 @@ const PromotionsPageAdmin = () => {
       </div>
     );
   };
-
+  const filterPromotions = (promotions) => {
+    if (!selectedBrand) return promotions;
+    return promotions.filter(
+      (product) => product.brandId?.brandName === selectedBrand
+    );
+  };
   return (
     <div className="promotions-page-container">
       <div className="promotions-content">
         <div className="promotions-header">
-          <h1>Special Promotions</h1>
-          <p>Discover amazing deals and discounts on our products</p>
+          <h1>Promotions</h1>
+          <div className="brand-filter">
+            <label htmlFor="brand">Filter by Brand:</label>
+            <select
+              id="brand"
+              value={selectedBrand}
+              onChange={(e) => setSelectedBrand(e.target.value)}
+            >
+              <option value="">All Brands</option>
+              {allBrands.map((brand) => (
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Current Promotions Section */}
@@ -177,12 +199,14 @@ const PromotionsPageAdmin = () => {
 
           {showCurrentSection && (
             <div className="promotion-grid">
-              {currentPromotions.length === 0 ? (
+              {filterPromotions(currentPromotions).length === 0 ? (
                 <p className="no-promotions">
-                  No active promotions at the moment.
+                  {selectedBrand
+                    ? "No active promotions for this brand."
+                    : "No active promotions."}
                 </p>
               ) : (
-                currentPromotions.map((product) =>
+                filterPromotions(currentPromotions).map((product) =>
                   renderPromotionCard(product, true)
                 )
               )}
@@ -204,12 +228,16 @@ const PromotionsPageAdmin = () => {
 
           {showFutureSection && (
             <div className="promotion-grid">
-              {futurePromotions.length === 0 ? (
+              {filterPromotions(futurePromotions).length === 0 ? (
                 <p className="no-promotions">
-                  No upcoming promotions scheduled.
+                  {selectedBrand
+                    ? "No upcoming promotions for this brand."
+                    : "No upcoming promotions."}{" "}
                 </p>
               ) : (
-                futurePromotions.map((product) => renderPromotionCard(product))
+                filterPromotions(futurePromotions).map((product) =>
+                  renderPromotionCard(product)
+                )
               )}
             </div>
           )}
@@ -229,10 +257,10 @@ const PromotionsPageAdmin = () => {
 
           {showPastSection && (
             <div className="promotion-grid">
-              {pastPromotions.length === 0 ? (
+              {filterPromotions(pastPromotions).length === 0 ? (
                 <p className="no-promotions">No past promotions available.</p>
               ) : (
-                pastPromotions.map((product) =>
+                filterPromotions(pastPromotions).map((product) =>
                   renderPromotionCard(product, true)
                 )
               )}
