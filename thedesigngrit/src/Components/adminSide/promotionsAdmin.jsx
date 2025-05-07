@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Grid,
+  Divider,
+  IconButton,
+} from "@mui/material";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,59 +30,61 @@ const PromotionsPageAdmin = () => {
   const [showFutureSection, setShowFutureSection] = useState(false);
   const [promotionMetrics, setPromotionMetrics] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState(""); // NEW
-
+  // Approval related states
+  const [approvalDialogOpen, setApprovalDialogOpen] = useState(false);
+  const [rejectionDialogOpen, setRejectionDialogOpen] = useState(false);
+  const [selectedPromotion, setSelectedPromotion] = useState(null);
+  const [rejectionReason, setRejectionReason] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPromotions = async () => {
-      try {
-        // Fetch all products with promotions
-        const response = await axios.get(
-          "https://api.thedesigngrit.com/api/products/admin/products-promotions"
-        );
-
-        // Separate current, past, and future promotions
-        const now = new Date();
-
-        const current = response.data.filter(
-          (product) =>
-            product.promotionStartDate &&
-            product.promotionEndDate &&
-            new Date(product.promotionStartDate) <= now &&
-            new Date(product.promotionEndDate) >= now
-        );
-
-        const past = response.data.filter(
-          (product) =>
-            product.promotionStartDate &&
-            product.promotionEndDate &&
-            new Date(product.promotionEndDate) < now
-        );
-
-        const future = response.data.filter(
-          (product) =>
-            product.promotionStartDate &&
-            product.promotionEndDate &&
-            new Date(product.promotionStartDate) > now
-        );
-
-        setCurrentPromotions(current);
-        setPastPromotions(past);
-        setFuturePromotions(future);
-
-        // Fetch promotion metrics
-        const metricsResponse = await axios.get(
-          "https://api.thedesigngrit.com/api/products/admin/products-promotion-metrics"
-        );
-        setPromotionMetrics(metricsResponse.data);
-      } catch (error) {
-        console.error("Error fetching promotions:", error);
-      }
-    };
-
     fetchPromotions();
   }, []);
+  const fetchPromotions = async () => {
+    try {
+      // Fetch all products with promotions
+      const response = await axios.get(
+        "https://api.thedesigngrit.com/api/products/admin/products-promotions"
+      );
 
+      // Separate current, past, and future promotions
+      const now = new Date();
+
+      const current = response.data.filter(
+        (product) =>
+          product.promotionStartDate &&
+          product.promotionEndDate &&
+          new Date(product.promotionStartDate) <= now &&
+          new Date(product.promotionEndDate) >= now
+      );
+
+      const past = response.data.filter(
+        (product) =>
+          product.promotionStartDate &&
+          product.promotionEndDate &&
+          new Date(product.promotionEndDate) < now
+      );
+
+      const future = response.data.filter(
+        (product) =>
+          product.promotionStartDate &&
+          product.promotionEndDate &&
+          new Date(product.promotionStartDate) > now
+      );
+
+      setCurrentPromotions(current);
+      setPastPromotions(past);
+      setFuturePromotions(future);
+
+      // Fetch promotion metrics
+      const metricsResponse = await axios.get(
+        "https://api.thedesigngrit.com/api/products/admin/products-promotion-metrics"
+      );
+      setPromotionMetrics(metricsResponse.data);
+    } catch (error) {
+      console.error("Error fetching promotions:", error);
+    }
+  };
   const calculatePromotionMetrics = (product) => {
     const metrics = promotionMetrics.find(
       (metric) => metric.productId === (product._id || product.productId)
@@ -93,6 +112,63 @@ const PromotionsPageAdmin = () => {
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
+  // Open approval dialog
+  const handleOpenApprovalDialog = (product, e) => {
+    e.stopPropagation(); // Prevent navigation to product page
+    setSelectedPromotion(product);
+    setApprovalDialogOpen(true);
+  };
+
+  // Handle approve action
+  const handleApprove = async () => {
+    try {
+      await axios.post(
+        `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
+        { status: "approved" }
+      );
+
+      // Close dialog and refresh data
+      setApprovalDialogOpen(false);
+      fetchPromotions();
+      alert("Promotion approved successfully");
+    } catch (error) {
+      console.error("Error approving promotion:", error);
+      alert("Failed to approve promotion");
+    }
+  };
+
+  // Open rejection dialog
+  const handleOpenRejectionDialog = () => {
+    setApprovalDialogOpen(false);
+    setRejectionDialogOpen(true);
+  };
+
+  // Handle reject action
+  const handleReject = async () => {
+    if (!rejectionReason.trim()) {
+      alert("Please provide a reason for rejection");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
+        {
+          status: "rejected",
+          rejectionReason: rejectionReason,
+        }
+      );
+
+      // Close dialog, reset form and refresh data
+      setRejectionDialogOpen(false);
+      setRejectionReason("");
+      fetchPromotions();
+      alert("Promotion rejected successfully");
+    } catch (error) {
+      console.error("Error rejecting promotion:", error);
+      alert("Failed to reject promotion");
+    }
+  };
 
   const renderPromotionCard = (product, showMetrics = false) => {
     const metrics = showMetrics ? calculatePromotionMetrics(product) : null;
@@ -114,6 +190,51 @@ const PromotionsPageAdmin = () => {
             className="promotion-image"
           />
           <div className="discount-badge">{discountPercent}% OFF</div>
+          {product.approvalStatus && (
+            <div
+              className={`approval-status ${product.approvalStatus}`}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                padding: "4px 8px",
+                borderRadius: "4px",
+                fontSize: "12px",
+                fontWeight: "bold",
+                backgroundColor:
+                  product.approvalStatus === "approved"
+                    ? "#4CAF50"
+                    : product.approvalStatus === "rejected"
+                    ? "#F44336"
+                    : "#FFC107",
+                color: "white",
+                zIndex: 2,
+              }}
+            >
+              {product.approvalStatus.toUpperCase()}
+            </div>
+          )}
+          {/* Review button for pending promotions */}
+          {(!product.approvalStatus ||
+            product.approvalStatus === "pending") && (
+            <button
+              onClick={(e) => handleOpenApprovalDialog(product, e)}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                padding: "4px 8px",
+                borderRadius: "4px",
+                backgroundColor: "#2d2d2d",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+                zIndex: 2,
+              }}
+            >
+              Review
+            </button>
+          )}
         </div>
 
         <div className="promotion-details">
@@ -290,6 +411,222 @@ const PromotionsPageAdmin = () => {
           )}
         </div>
       </div>
+      {/* Promotion Approval Dialog */}
+      <Dialog
+        open={approvalDialogOpen}
+        onClose={() => setApprovalDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          Review Promotion
+          <IconButton
+            aria-label="close"
+            onClick={() => setApprovalDialogOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          {selectedPromotion && (
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <img
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedPromotion.mainImage}`}
+                  alt={selectedPromotion.name}
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={8}>
+                <Typography variant="h6" gutterBottom>
+                  {selectedPromotion.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Brand: {selectedPromotion.brandId?.brandName}
+                </Typography>
+
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Promotion Details:
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">Original Price:</Typography>
+                    <Typography variant="body2" fontWeight="bold">
+                      E£{selectedPromotion.price}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">Sale Price:</Typography>
+                    <Typography variant="body2" fontWeight="bold" color="error">
+                      E£{selectedPromotion.salePrice}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">Discount:</Typography>
+                    <Typography variant="body2" fontWeight="bold" color="error">
+                      {selectedPromotion.discountPercentage ||
+                        Math.round(
+                          ((selectedPromotion.price -
+                            selectedPromotion.salePrice) /
+                            selectedPromotion.price) *
+                            100
+                        )}
+                      %
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Box>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Promotion Period:
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">Start Date:</Typography>
+                    <Typography variant="body2">
+                      {new Date(
+                        selectedPromotion.promotionStartDate
+                      ).toLocaleDateString()}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">End Date:</Typography>
+                    <Typography variant="body2">
+                      {new Date(
+                        selectedPromotion.promotionEndDate
+                      ).toLocaleDateString()}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
+                    <Typography variant="body2">Duration:</Typography>
+                    <Typography variant="body2">
+                      {Math.ceil(
+                        (new Date(selectedPromotion.promotionEndDate) -
+                          new Date(selectedPromotion.promotionStartDate)) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      days
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleOpenRejectionDialog}
+          >
+            Reject
+          </Button>
+          <Button variant="contained" color="success" onClick={handleApprove}>
+            Approve
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Rejection Reason Dialog */}
+      <Dialog
+        open={rejectionDialogOpen}
+        onClose={() => setRejectionDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          Provide Rejection Reason
+          <IconButton
+            aria-label="close"
+            onClick={() => setRejectionDialogOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Please provide a reason for rejecting this promotion. This will be
+            sent to the vendor.
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="rejection-reason"
+            label="Rejection Reason"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions sx={{ p: 2 }}>
+          <Button
+            variant="outlined"
+            onClick={() => setRejectionDialogOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleReject}
+            disabled={!rejectionReason.trim()}
+          >
+            Reject Promotion
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
