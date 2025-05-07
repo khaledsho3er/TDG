@@ -13,6 +13,7 @@ import TagsTable from "../../Components/adminSide/tags";
 import ConceptManager from "../../Components/adminSide/concepts";
 import AllEmployees from "../../Components/adminSide/allEmployees";
 import PromotionsPageAdmin from "../../Components/adminSide/promotionsAdmin";
+import BrandManagement from "../../Components/adminSide/brandsAdmin";
 const AdminHome = () => {
   const navigate = useNavigate();
   const [activePage, setActivePage] = useState("dashboard");
@@ -47,6 +48,8 @@ const AdminHome = () => {
         return <AllEmployees />;
       case "promotions":
         return <PromotionsPageAdmin />;
+      case "brandsManagement":
+        return <BrandManagement />;
       default:
         return "DashboardVendor";
     }
