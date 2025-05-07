@@ -153,7 +153,10 @@ const PromotionsPageAdmin = () => {
     try {
       await axios.put(
         `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
-        { promotionApproved: false, promotionRejectedNote: rejectionReason }
+        {
+          promotionApproved: false,
+          promotionRejectedNote: rejectionReason,
+        }
       );
 
       // Close dialog, reset form and refresh data
@@ -187,28 +190,21 @@ const PromotionsPageAdmin = () => {
             className="promotion-image"
           />
           <div className="discount-badge">{discountPercent}% OFF</div>
-          {product.promotionApproved && (
+          {product.promotionApproved !== undefined && (
             <div
-              className={`approval-status ${product.promotionApproved}`}
+              className={`approval-status`}
               style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
+                backgroundColor: product.promotionApproved
+                  ? "#4CAF50" // green for approved
+                  : "#F44336", // red for rejected
+                color: "white",
                 padding: "4px 8px",
                 borderRadius: "4px",
+                display: "inline-block",
                 fontSize: "12px",
-                fontWeight: "bold",
-                backgroundColor:
-                  product.promotionApproved === "approved"
-                    ? "#4CAF50"
-                    : product.promotionApproved === "rejected"
-                    ? "#F44336"
-                    : "#FFC107",
-                color: "white",
-                zIndex: 2,
               }}
             >
-              {product.promotionApproved.toUpperCase()}
+              {product.promotionApproved ? "APPROVED" : "REJECTED"}
             </div>
           )}
           {/* Review button for pending promotions */}
