@@ -27,7 +27,7 @@ const AdminNotificationPage = () => {
   const fetchNotifications = useCallback(async () => {
     try {
       const response = await fetch(
-        "https://api.thedesigngrit.com/api/notifications/admin/allnotifications"
+        "https://api.thedesigngrit.com/api/notifications/admin/all-notifications"
       );
       const data = await response.json();
       setAllNotifications(data);
@@ -166,13 +166,14 @@ const AdminNotificationPage = () => {
             </Typography>
 
             {/* Brand Filter */}
-            <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <FormControl sx={{ m: 1 }}>
               <InputLabel id="brand-select-label">Filter by Brand</InputLabel>
               <Select
                 labelId="brand-select-label"
                 value={selectedBrand}
                 onChange={handleBrandChange}
                 sx={{
+                  width: "200px",
                   color: "#2d2d2d",
                   backgroundColor: "#fff",
                   "& .MuiOutlinedInput-notchedOutline": {
