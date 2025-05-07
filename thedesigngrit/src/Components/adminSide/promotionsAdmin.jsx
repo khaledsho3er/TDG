@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -167,28 +168,49 @@ const PromotionsPageAdmin = () => {
       <div className="promotions-content">
         <div className="promotions-header">
           <h1>Promotions</h1>
-          <div className="brand-filter">
-            <label htmlFor="brand">Filter by Brand:</label>
-            <select
-              id="brand"
-              value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
-            >
-              <option value="">All Brands</option>
-              {Array.from(
-                new Set(
-                  [...currentPromotions, ...futurePromotions, ...pastPromotions]
-                    .map((product) => product.brandId?.brandName)
-                    .filter(Boolean)
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "end",
+              marginBottom: "20px",
+            }}
+          >
+            <FormControl sx={{ m: 1 }}>
+              <InputLabel id="brand-select-label">Brand</InputLabel>
+              <Select
+                labelId="brand-select-label"
+                value={selectedBrand}
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                sx={{
+                  width: "200px",
+                  color: "#2d2d2d",
+                  backgroundColor: "#fff",
+                }}
+              >
+                <MenuItem value="">All Brands</MenuItem>
+                {Array.from(
+                  new Set(
+                    [
+                      ...currentPromotions,
+                      ...futurePromotions,
+                      ...pastPromotions,
+                    ]
+                      .map((product) => ({
+                        id: product.brandId?._id,
+                        name: product.brandId?.brandName,
+                      }))
+                      .filter((brand) => brand.id && brand.name)
+                  )
                 )
-              )
-                .sort()
-                .map((brand) => (
-                  <option key={brand} value={brand}>
-                    {brand}
-                  </option>
-                ))}
-            </select>
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((brand) => (
+                    <MenuItem key={brand.id} value={brand.name}>
+                      {brand.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
           </div>
         </div>
 
