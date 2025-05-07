@@ -469,7 +469,10 @@ const AdminNotificationPage = () => {
                     </Typography>
                   )}
                   {selectedNotification.brandId?.email && (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#2d2d2d !important" }}
+                    >
                       {selectedNotification.brandId.email}
                     </Typography>
                   )}
@@ -481,14 +484,24 @@ const AdminNotificationPage = () => {
                   Details
                 </Typography>
                 <Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
-                  <Typography variant="body1" paragraph>
+                  <Typography
+                    variant="body1"
+                    paragraph
+                    sx={{ color: "#2d2d2d !important" }}
+                  >
                     {selectedNotification.description}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#2d2d2d !important" }}
+                  >
                     Date: {formatDate(selectedNotification.date)}
                   </Typography>
                   {selectedNotification.orderId && (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#2d2d2d !important" }}
+                    >
                       Order ID: {selectedNotification.orderId}
                     </Typography>
                   )}
