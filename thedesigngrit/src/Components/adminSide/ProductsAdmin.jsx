@@ -171,9 +171,6 @@ const ProductPageAdmin = () => {
       }
     }
   };
-  const handleClose = () => {
-    setReviewDialogOpen(false);
-  };
 
   const handleInsights = (product) => {
     setSelectedProduct(product); // Set the selected product

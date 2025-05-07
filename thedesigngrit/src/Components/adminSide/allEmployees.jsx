@@ -40,9 +40,6 @@ const AllEmployees = () => {
       alert("Failed to delete employee. Please try again.");
     }
   };
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);

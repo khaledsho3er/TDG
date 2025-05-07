@@ -53,6 +53,9 @@ const PromotionsPageAdmin = () => {
         setPastPromotions(past);
         setFuturePromotions(future);
 
+        const allBrands = response.data.map((product) => product.brandName);
+        setAllBrands([...new Set(allBrands)]);
+
         // Fetch promotion metrics
         const metricsResponse = await axios.get(
           "https://api.thedesigngrit.com/api/products/admin/products-promotion-metrics"
