@@ -119,17 +119,10 @@ const PromotionsPage = () => {
       {/* Section for current promotions */}
       <div>
         <div
+          className="section-header"
           onClick={() => setShowTrueStatus((prev) => !prev)}
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            cursor: "pointer",
-            padding: "10px",
-            backgroundColor: "transparent",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            marginBottom: "30px",
+            margin: "30px 0",
           }}
         >
           <span>Current Promotions</span>
@@ -220,18 +213,10 @@ const PromotionsPage = () => {
       {/* Section for past promotions */}
       <div>
         <div
+          className="section-header"
           onClick={() => setShowFalseStatus((prev) => !prev)}
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            cursor: "pointer",
-            padding: "10px",
-            backgroundColor: "transparent",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            marginBottom: "30px",
-            marginTop: "30px",
+            margin: "30px 0",
           }}
         >
           <span>Past Promotions</span>
