@@ -374,6 +374,7 @@ const BrandManagement = () => {
 
                 {editMode ? (
                   <TextField
+                    select
                     fullWidth
                     name={key}
                     value={editedBrand[key] || ""}
@@ -381,7 +382,14 @@ const BrandManagement = () => {
                     variant="outlined"
                     size="small"
                     margin="dense"
-                  />
+                    SelectProps={{
+                      native: true,
+                    }}
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="active">Active</option>
+                    <option value="deactive">Deactive</option>
+                  </TextField>
                 ) : (
                   <Typography variant="body1">
                     {isUrl && value ? (
