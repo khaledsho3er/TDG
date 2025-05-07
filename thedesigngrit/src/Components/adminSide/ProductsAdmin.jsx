@@ -347,7 +347,42 @@ const ProductPageAdmin = () => {
                       </div>
                     </div>
                     <div className="promotion-details">
-                      <h3>{product.name}</h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <h3 className="promotion-details">{product.name}</h3>
+                        <div className="menu-container">
+                          <BsThreeDotsVertical
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent the click from triggering the document listener
+                              toggleMenu(product.id);
+                            }}
+                            className="three-dots-icon"
+                          />
+                          {menuOpen[product.id] && (
+                            <div className="menu-dropdown">
+                              <button onClick={() => handleEdit(product)}>
+                                Edit
+                              </button>
+                              <button onClick={() => handleDelete(product)}>
+                                Delete
+                              </button>
+                              <button onClick={() => handleInsights(product)}>
+                                Promotion
+                              </button>
+                              <button
+                                onClick={() => handleOpenReviewDialog(product)}
+                              >
+                                Review Product
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                       <p className="brand-name">{product.brandId?.brandName}</p>
                       <div className="price-container">
                         <span className="original-price">${product.price}</span>
@@ -357,33 +392,7 @@ const ProductPageAdmin = () => {
                         {product.description.substring(0, 100)}...
                       </p>
                     </div>
-                    <div className="menu-container">
-                      <BsThreeDotsVertical
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent the click from triggering the document listener
-                          toggleMenu(product.id);
-                        }}
-                        className="three-dots-icon"
-                      />
-                      {menuOpen[product.id] && (
-                        <div className="menu-dropdown">
-                          <button onClick={() => handleEdit(product)}>
-                            Edit
-                          </button>
-                          <button onClick={() => handleDelete(product)}>
-                            Delete
-                          </button>
-                          <button onClick={() => handleInsights(product)}>
-                            Promotion
-                          </button>
-                          <button
-                            onClick={() => handleOpenReviewDialog(product)}
-                          >
-                            Review Product
-                          </button>
-                        </div>
-                      )}
-                    </div>
+
                     <div className="product-card-body">
                       <h5>Summary</h5>
 
