@@ -17,6 +17,8 @@ const PromotionsPage = () => {
   const [currentPromotions, setCurrentPromotions] = useState([]); // Current promotions
   const [pastPromotions, setPastPromotions] = useState([]); // Past promotions
   const [pastPromotionMetrics, setPastPromotionMetrics] = useState([]); // Metrics for past promotions
+  const [upcomingPromotions, setUpcomingPromotions] = useState([]);
+  const [showUpcomingStatus, setShowUpcomingStatus] = useState(false); // Collapse control
 
   useEffect(() => {
     if (vendor) {
@@ -45,7 +47,15 @@ const PromotionsPage = () => {
               new Date(product.promotionEndDate) < now
             );
           });
+          const upcoming = response.data.filter((product) => {
+            return (
+              product.promotionStartDate &&
+              product.promotionEndDate &&
+              new Date(product.promotionStartDate) > now
+            );
+          });
 
+          setUpcomingPromotions(upcoming);
           setCurrentPromotions(current);
           setPastPromotions(past);
         } catch (error) {
@@ -88,6 +98,7 @@ const PromotionsPage = () => {
       turnoverIncrease: 0,
     };
   };
+
   return (
     <div className="promotions-page">
       <header className="dashboard-header-vendor">
@@ -169,7 +180,10 @@ const PromotionsPage = () => {
                     </div>
                     <div className="product-card-body">
                       <h5>Summary</h5>
-                      <div className="metrics-container">
+                      <div
+                        className="metrics-container"
+                        style={{ gap: "20px" }}
+                      >
                         <div className="metric">
                           <span className="metric-label">Discount</span>
 
@@ -188,6 +202,82 @@ const PromotionsPage = () => {
                               product.promotionStartDate
                             ).toLocaleDateString()}{" "}
                             -{" "}
+                            {new Date(
+                              product.promotionEndDate
+                            ).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      {/* Section for upcoming promotions */}
+      <div>
+        <div
+          className="section-header"
+          onClick={() => setShowUpcomingStatus((prev) => !prev)}
+          style={{
+            margin: "30px 0",
+          }}
+        >
+          <span>Upcoming Promotions</span>
+          {showUpcomingStatus ? <AiOutlineUp /> : <AiOutlineDown />}
+        </div>
+        {showUpcomingStatus && (
+          <div className="upcoming-promotions-section">
+            {upcomingPromotions.length === 0 ? (
+              <p>No upcoming promotions.</p>
+            ) : (
+              <div className="product-grid">
+                {upcomingPromotions.map((product) => (
+                  <div className="promotion-card" key={product.id}>
+                    <div className="promotion-image-container">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="promotion-image"
+                      />
+                      <div className="discount-badge">
+                        {product.discountPercentage}% OFF
+                      </div>
+                    </div>
+                    <div className="promotion-details">
+                      <h3>{product.name}</h3>
+                      <div className="price-container">
+                        <span className="original-price">
+                          E£{product.price}
+                        </span>
+                        <span className="sale-price">
+                          E£{product.salePrice}
+                        </span>
+                      </div>
+                      <p className="product-summary">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                    </div>
+                    <div className="product-card-body">
+                      <h5>Starts Soon</h5>
+                      <div
+                        className="metrics-container"
+                        style={{ gap: "20px" }}
+                      >
+                        <div className="metric">
+                          <span className="metric-label">Start Date</span>
+                          <span className="metric-value">
+                            {new Date(
+                              product.promotionStartDate
+                            ).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                        <div className="metric">
+                          <span className="metric-label">End Date</span>
+                          <span className="metric-value">
                             {new Date(
                               product.promotionEndDate
                             ).toLocaleDateString()}
