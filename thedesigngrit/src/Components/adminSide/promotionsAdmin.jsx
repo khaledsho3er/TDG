@@ -65,21 +65,25 @@ const PromotionsPageAdmin = () => {
 
   const calculatePromotionMetrics = (product) => {
     const metrics = promotionMetrics.find(
-      (metric) => metric.productId === product._id
+      (metric) => metric.productId === (product._id || product.productId)
     );
 
     if (metrics) {
       return {
-        salesDuringPromotion: metrics.salesDuringPromotion,
-        viewsDuringPromotion: metrics.viewsDuringPromotion,
-        turnoverIncrease: metrics.turnoverIncrease,
+        unitsSoldBefore: metrics.unitsSoldBefore,
+        unitsSoldDuring: metrics.unitsSoldDuring,
+        turnoverBefore: metrics.turnoverBefore,
+        turnoverDuring: metrics.turnoverDuring,
+        salesUpliftPercent: metrics.salesUpliftPercent,
       };
     }
 
     return {
-      salesDuringPromotion: 0,
-      viewsDuringPromotion: 0,
-      turnoverIncrease: 0,
+      unitsSoldBefore: 0,
+      unitsSoldDuring: 0,
+      turnoverBefore: 0,
+      turnoverDuring: 0,
+      salesUpliftPercent: 0,
     };
   };
 
