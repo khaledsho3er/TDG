@@ -1879,7 +1879,8 @@ h1 {
 
 .price-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: row;
   gap: 10px;
   margin-bottom: 10px;
 }

@@ -18,7 +18,7 @@ const PromotionsPageAdmin = () => {
       try {
         // Fetch all products with promotions
         const response = await axios.get(
-          "https://api.thedesigngrit.com/api/products/admin/product-promotions"
+          "https://api.thedesigngrit.com/api/products/admin/products-promotions"
         );
 
         // Separate current, past, and future promotions
@@ -52,7 +52,7 @@ const PromotionsPageAdmin = () => {
 
         // Fetch promotion metrics
         const metricsResponse = await axios.get(
-          "https://api.thedesigngrit.com/api/products/promotions/metrics"
+          "https://api.thedesigngrit.com/api/products/admin/products-promotion-metrics"
         );
         setPromotionMetrics(metricsResponse.data);
       } catch (error) {
