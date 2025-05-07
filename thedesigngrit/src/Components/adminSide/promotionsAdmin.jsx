@@ -110,7 +110,7 @@ const PromotionsPageAdmin = () => {
   };
 
   const handleProductClick = (productId) => {
-    navigate(`/product/${productId}`);
+    window.open(`/product/${productId}`, "_blank");
   };
   // Open approval dialog
   const handleOpenApprovalDialog = (product, e) => {
@@ -124,7 +124,7 @@ const PromotionsPageAdmin = () => {
     try {
       await axios.post(
         `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
-        { status: "approved" }
+        { promtoionApproved: true }
       );
 
       // Close dialog and refresh data
@@ -151,11 +151,11 @@ const PromotionsPageAdmin = () => {
     }
 
     try {
-      await axios.post(
+      await axios.put(
         `https://api.thedesigngrit.com/api/promotions/approval/${selectedPromotion._id}`,
         {
-          status: "rejected",
-          rejectionReason: rejectionReason,
+          promtoionApproved: false,
+          promotionRejectedNote: rejectionReason,
         }
       );
 
