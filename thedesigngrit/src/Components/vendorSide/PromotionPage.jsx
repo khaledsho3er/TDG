@@ -153,7 +153,7 @@ const PromotionsPage = () => {
                         {product.discountPercentage}% OFF
                       </div>
                     </div>
-                    <div className="promotion=details">
+                    <div className="promotion-details">
                       <h3>{product.name}</h3>
                       <div className="price-container">
                         <span className="original-price">
@@ -164,7 +164,7 @@ const PromotionsPage = () => {
                         </span>
                       </div>
                       <p className="product-summary">
-                        {product.description.substring(0, 5)}...
+                        {product.description.substring(0, 100)}...
                       </p>
                     </div>
                     <div className="product-card-body">
@@ -224,46 +224,60 @@ const PromotionsPage = () => {
                 {pastPromotions.map((product) => {
                   const metrics = calculatePromotionMetrics(product);
                   return (
-                    <div className="all-product-card" key={product.id}>
-                      <div className="product-card-header">
+                    <div className="promotion-card" key={product.id}>
+                      <div className="promotion-image-container">
                         <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
                           alt={product.name}
-                          className="all-product-image"
+                          className="promotion-image"
                         />
-                        <div className="product-info-vendor">
-                          <h3>{product.name}</h3>
-                          <p>{product.typeName}</p>
-                          <p
-                            style={{
-                              textDecoration: product.salePrice
-                                ? "line-through"
-                                : "none",
-                            }}
-                          >
-                            {product.price}
-                          </p>{" "}
-                          <p>{product.salePrice}</p>
+                        <div className="discount-badge">
+                          {product.discountPercentage}% OFF
                         </div>
                       </div>
+                      <div className="promotion-details">
+                        <h3>{product.name}</h3>
+                        <div className="price-container">
+                          <span className="original-price">
+                            E£{product.price}
+                          </span>
+                          <span className="sale-price">
+                            E£{product.salePrice}
+                          </span>
+                        </div>
+                        <p className="product-summary">
+                          {product.description.substring(0, 100)}...
+                        </p>
+                      </div>
 
-                      <div className="product-stats">
+                      <div className="metrics-container">
                         {/* Display metrics */}
-                        <div className="product-metrics">
-                          <h5>Promotion Metrics</h5>
-                          <ul>
-                            <li>
-                              Sales During Promotion:{" "}
-                              {metrics.salesDuringPromotion || 0}
-                            </li>
-                            <li>
-                              Views During Promotion:{" "}
-                              {metrics.viewsDuringPromotion || 0}
-                            </li>
-                            <li>
-                              Turnover Increase: {metrics.turnoverIncrease}%
-                            </li>
-                          </ul>
+                        <h5>Promotion Metrics</h5>
+                        <div className="metric">
+                          <span className="metric-label">
+                            {" "}
+                            Sales During Promotion:{" "}
+                          </span>
+                          <span className="metric-value">
+                            {" "}
+                            {metrics.salesDuringPromotion || 0}
+                          </span>
+                        </div>
+                        <div className="metric">
+                          <span className="metric-label">
+                            Views During Promotion:{" "}
+                          </span>
+                          <span className="metric-value">
+                            {metrics.viewsDuringPromotion || 0}
+                          </span>
+                        </div>
+                        <div className="metric">
+                          <span className="metric-label">
+                            Turnover Increase:{" "}
+                          </span>
+                          <span className="metric-value">
+                            {metrics.turnoverIncrease || 0}%
+                          </span>
                         </div>
                       </div>
                     </div>
