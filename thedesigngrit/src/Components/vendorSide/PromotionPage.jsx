@@ -250,9 +250,11 @@ const PromotionsPage = () => {
                         </p>
                       </div>
 
-                      <div className="metrics-container">
+                      <div
+                        className="metrics-container"
+                        style={{ padding: "10px" }}
+                      >
                         {/* Display metrics */}
-                        <h5>Promotion Metrics</h5>
                         <div className="metric">
                           <span className="metric-label">
                             {" "}
