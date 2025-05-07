@@ -119,64 +119,24 @@ const PromotionsPageAdmin = () => {
 
           {showMetrics && metrics && (
             <div className="metrics-container">
-              {metrics.map((metric, index) => (
-                <div className="metric-card" key={index}>
-                  <h3>{metric.name}</h3>
-                  <p>
-                    <strong>Brand:</strong> {metric.brandName}
-                  </p>
-
-                  <div className="metric">
-                    <span className="metric-label">Units Sold (Before)</span>
-                    <span className="metric-value">
-                      {metric.unitsSoldBefore}
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Units Sold (During)</span>
-                    <span className="metric-value">
-                      {metric.unitsSoldDuring}
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Turnover (Before)</span>
-                    <span className="metric-value">
-                      ${metric.turnoverBefore}
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Turnover (During)</span>
-                    <span className="metric-value">
-                      ${metric.turnoverDuring}
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Sales Uplift</span>
-                    <span className="metric-value">
-                      {metric.salesUpliftPercent}%
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Discount</span>
-                    <span className="metric-value">
-                      {metric.discountPercentage}%
-                    </span>
-                  </div>
-
-                  <div className="metric">
-                    <span className="metric-label">Promotion Period</span>
-                    <span className="metric-value">
-                      {new Date(metric.promotionStartDate).toLocaleDateString()}{" "}
-                      - {new Date(metric.promotionEndDate).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-              ))}
+              <div className="metric">
+                <span className="metric-label">Sales Before</span>
+                <span className="metric-value">{metrics.unitsSoldBefore}</span>
+                <span className="metric-label">Unit Sold During Sale</span>
+                <span className="metric-value">{metrics.unitsSoldDuring}</span>
+              </div>
+              <div className="metric">
+                <span className="metric-label">Sales Uplift %</span>
+                <span className="metric-value">
+                  {metrics.salesUpliftPercent}
+                </span>
+              </div>
+              <div className="metric">
+                <span className="metric-label">Turnover Before</span>
+                <span className="metric-value">+{metrics.turnoverBefore}%</span>
+                <span className="metric-label">During sale</span>
+                <span className="metric-value">+{metrics.turnoverDuring}%</span>
+              </div>
             </div>
           )}
 
