@@ -113,7 +113,6 @@ function Home() {
               <video
                 ref={fgVideoRef}
                 className="hero-video-element"
-                poster={posterImages[currentVideoIndex]}
                 autoPlay
                 muted
                 playsInline
