@@ -463,8 +463,7 @@ const BrandManagement = () => {
                   </Button>
                   <Button
                     onClick={handleSaveChanges}
-                    color="primary"
-                    variant="contained"
+                    className="approve-btn"
                     startIcon={<SaveIcon />}
                   >
                     Save Changes
@@ -476,13 +475,13 @@ const BrandManagement = () => {
                     onClick={handleDeleteClick}
                     color="error"
                     startIcon={<DeleteIcon />}
+                    className="reject-btn"
                   >
                     Delete
                   </Button>
                   <Button
                     onClick={handleEditClick}
-                    color="primary"
-                    variant="contained"
+                    className="approve-btn"
                     startIcon={<EditIcon />}
                   >
                     Edit
@@ -501,11 +500,7 @@ const BrandManagement = () => {
               <Button onClick={handleCancelDelete} color="inherit">
                 Cancel
               </Button>
-              <Button
-                onClick={handleConfirmDelete}
-                color="error"
-                variant="contained"
-              >
+              <Button onClick={handleConfirmDelete} className="reject-btn">
                 Confirm Delete
               </Button>
             </>
