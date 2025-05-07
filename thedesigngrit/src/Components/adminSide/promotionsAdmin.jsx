@@ -187,9 +187,9 @@ const PromotionsPageAdmin = () => {
             className="promotion-image"
           />
           <div className="discount-badge">{discountPercent}% OFF</div>
-          {product.approvalStatus && (
+          {product.promotionApproved && (
             <div
-              className={`approval-status ${product.approvalStatus}`}
+              className={`approval-status ${product.promtoionApproved}`}
               style={{
                 position: "absolute",
                 top: "10px",
@@ -199,21 +199,21 @@ const PromotionsPageAdmin = () => {
                 fontSize: "12px",
                 fontWeight: "bold",
                 backgroundColor:
-                  product.approvalStatus === "approved"
+                  product.promtoionApproved === "approved"
                     ? "#4CAF50"
-                    : product.approvalStatus === "rejected"
+                    : product.promtoionApproved === "rejected"
                     ? "#F44336"
                     : "#FFC107",
                 color: "white",
                 zIndex: 2,
               }}
             >
-              {product.approvalStatus.toUpperCase()}
+              {product.promtoionApproved.toUpperCase()}
             </div>
           )}
           {/* Review button for pending promotions */}
-          {(!product.approvalStatus ||
-            product.approvalStatus === "pending") && (
+          {(!product.promtoionApproved ||
+            product.promtoionApproved === false) && (
             <button
               onClick={(e) => handleOpenApprovalDialog(product, e)}
               style={{
