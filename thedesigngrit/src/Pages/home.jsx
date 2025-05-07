@@ -58,7 +58,7 @@ function Home() {
   useEffect(() => {
     const nextIndex = (currentVideoIndex + 1) % videos.length;
     const nextVideo = document.createElement("video");
-    nextVideo.src = videos[nextIndex].mp4;
+    nextVideo.src = videos[nextIndex].webm;
     nextVideo.preload = "auto";
     nextVideo.load();
     return () => nextVideo.remove();
@@ -120,7 +120,6 @@ function Home() {
                 preload="auto"
                 onLoadedMetadata={handleLoadedMetadata}
                 onTimeUpdate={handleTimeUpdate}
-                onEnded={handleEnded}
               >
                 <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
                 <source
