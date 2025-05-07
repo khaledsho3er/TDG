@@ -319,18 +319,19 @@ const ProductPageAdmin = () => {
       {/* Product List or No Products Message */}
       <div>
         <div
+          className="section-header"
           onClick={() => setShowFalseStatus((prev) => !prev)}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            cursor: "pointer",
-            padding: "10px",
-            backgroundColor: "transparent",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            marginBottom: "30px",
-          }}
+          // style={{
+          //   display: "flex",
+          //   justifyContent: "space-between",
+          //   alignItems: "center",
+          //   cursor: "pointer",
+          //   padding: "10px",
+          //   backgroundColor: "transparent",
+          //   border: "1px solid #ddd",
+          //   borderRadius: "5px",
+          //   marginBottom: "30px",
+          // }}
         >
           <span>Products without approval</span>
           {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
@@ -441,19 +442,20 @@ const ProductPageAdmin = () => {
       {/* Section for products with status true */}
       <div>
         <div
+          className="section-header"
           onClick={() => setShowTrueStatus((prev) => !prev)}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            cursor: "pointer",
-            padding: "10px",
-            backgroundColor: "transparent",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-            marginBottom: "15px",
-            marginTop: "30px",
-          }}
+          // style={{
+          //   display: "flex",
+          //   justifyContent: "space-between",
+          //   alignItems: "center",
+          //   cursor: "pointer",
+          //   padding: "10px",
+          //   backgroundColor: "transparent",
+          //   border: "1px solid #ddd",
+          //   borderRadius: "5px",
+          //   marginBottom: "15px",
+          //   marginTop: "30px",
+          // }}
         >
           <span>Products with approval</span>
           {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
