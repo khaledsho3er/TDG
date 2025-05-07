@@ -178,7 +178,9 @@ const PromotionsPageAdmin = () => {
                   No active promotions at the moment.
                 </p>
               ) : (
-                currentPromotions.map((product) => renderPromotionCard(product))
+                currentPromotions.map((product) =>
+                  renderPromotionCard(product, true)
+                )
               )}
             </div>
           )}
