@@ -53,6 +53,12 @@ const SidebarAdmin = ({ setActivePage }) => {
           Concepts
         </li>
         <li
+          onClick={() => setActivePage("promotions")}
+          className="sidebar-item-vendor"
+        >
+          Promotions
+        </li>
+        <li
           onClick={() => setActivePage("AllEmployees")}
           className="sidebar-item-vendor"
         >
