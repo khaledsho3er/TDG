@@ -520,6 +520,8 @@ const ProductPageAdmin = () => {
                             textDecoration: product.salePrice
                               ? "line-through"
                               : "none",
+                            color: product.salePrice ? "#999" : "#2d2d2d",
+                            fontWeight: product.salePrice ? "normal" : "bold",
                           }}
                         >
                           E£{product.price}
