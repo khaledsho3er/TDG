@@ -27,7 +27,7 @@ const AdminNotificationPage = () => {
   const fetchNotifications = useCallback(async () => {
     try {
       const response = await fetch(
-        "https://api.thedesigngrit.com/api/notifications/admin/allnotificaitions"
+        "https://api.thedesigngrit.com/api/notifications/admin/allnotifications"
       );
       const data = await response.json();
       setAllNotifications(data);
