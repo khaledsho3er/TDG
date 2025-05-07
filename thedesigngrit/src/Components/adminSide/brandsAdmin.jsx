@@ -348,7 +348,6 @@ const BrandManagement = () => {
                 "digitalCopiesLogo",
                 "catalogues",
                 "documents",
-                "types",
               ].includes(key)
             ) {
               return null;
