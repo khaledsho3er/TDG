@@ -142,12 +142,20 @@ const DashboardAdmin = () => {
               {bestSellers.length > 0 ? (
                 bestSellers.map((product, index) => (
                   <li key={index}>
-                    <img
-                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                      alt={product.name}
-                    />
-                    {product.name}- LE {product.price} ({product.totalSold}{" "}
-                    sales)
+                    <div className="best-seller-item-vendor">
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                        alt={product.name}
+                        className="best-seller-img-vendor"
+                      />
+                      <div className="best-seller-info-vendor">
+                        <h4>{product.name}</h4>
+                        <p>
+                          {product.brandName} - LE {product.price} (
+                          {product.totalSold} sales )
+                        </p>
+                      </div>
+                    </div>
                   </li>
                 ))
               ) : (
