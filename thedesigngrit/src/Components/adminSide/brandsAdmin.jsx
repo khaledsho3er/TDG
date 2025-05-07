@@ -348,6 +348,7 @@ const BrandManagement = () => {
                 "digitalCopiesLogo",
                 "catalogues",
                 "documents",
+                "types",
               ].includes(key)
             ) {
               return null;
@@ -373,23 +374,35 @@ const BrandManagement = () => {
                 </Typography>
 
                 {editMode ? (
-                  <TextField
-                    select
-                    fullWidth
-                    name={key}
-                    value={editedBrand[key] || ""}
-                    onChange={handleInputChange}
-                    variant="outlined"
-                    size="small"
-                    margin="dense"
-                    SelectProps={{
-                      native: true,
-                    }}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="active">Active</option>
-                    <option value="deactive">Deactive</option>
-                  </TextField>
+                  key === "status" ? (
+                    <TextField
+                      select
+                      fullWidth
+                      name={key}
+                      value={editedBrand[key] || ""}
+                      onChange={handleInputChange}
+                      variant="outlined"
+                      size="small"
+                      margin="dense"
+                      SelectProps={{
+                        native: true,
+                      }}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="active">Active</option>
+                      <option value="deactive">Deactive</option>
+                    </TextField>
+                  ) : (
+                    <TextField
+                      fullWidth
+                      name={key}
+                      value={editedBrand[key] || ""}
+                      onChange={handleInputChange}
+                      variant="outlined"
+                      size="small"
+                      margin="dense"
+                    />
+                  )
                 ) : (
                   <Typography variant="body1">
                     {isUrl && value ? (
@@ -403,6 +416,20 @@ const BrandManagement = () => {
                       >
                         {value}
                       </a>
+                    ) : key === "status" ? (
+                      <span
+                        style={{
+                          color:
+                            value === "active"
+                              ? "green"
+                              : value === "pending"
+                              ? "orange"
+                              : "red",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {value || "N/A"}
+                      </span>
                     ) : (
                       value || "N/A"
                     )}
