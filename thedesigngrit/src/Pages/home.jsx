@@ -50,27 +50,47 @@ const useIsMobile = () => {
 
 function Home() {
   const fgVideoRef = useRef(null);
+  const heroSectionRef = useRef(null); // 👈 Add ref for hero section
   const isMobile = useIsMobile();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showVideo, setShowVideo] = useState(true);
-
+  const [isHeroVisible, setIsHeroVisible] = useState(true); // 👈 track visibility
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroVisible(entry.isIntersecting);
+      },
+      { threshold: 0.3 } // 30% of hero must be visible to be "active"
+    );
+    if (heroSectionRef.current) {
+      observer.observe(heroSectionRef.current);
+    }
+    return () => {
+      if (heroSectionRef.current) observer.unobserve(heroSectionRef.current);
+    };
+  }, []);
+  useEffect(() => {
+    if (!isHeroVisible) return;
+
     const interval = setInterval(() => {
       setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-    }, 8000); // auto switch every 8 seconds
-    return () => clearInterval(interval);
-  }, []);
+    }, 8000);
 
+    return () => clearInterval(interval);
+  }, [isHeroVisible]);
+  // 👇 Handle playing/pausing video based on visibility
   useEffect(() => {
     const video = fgVideoRef.current;
     if (video) {
       video.load();
-      video.play().catch((err) => {
-        console.error("Autoplay failed:", err);
-      });
+      if (isHeroVisible) {
+        video.play().catch((err) => console.error("Autoplay failed:", err));
+      } else {
+        video.pause();
+      }
     }
-  }, [currentVideoIndex]);
+  }, [currentVideoIndex, isHeroVisible]);
 
   const handleTimeUpdate = () => {
     const video = fgVideoRef.current;
@@ -95,7 +115,7 @@ function Home() {
       </div>
       <Header />
 
-      <div className="hero-home-section">
+      <div className="hero-home-section" ref={heroSectionRef}>
         <div className="hero-video">
           {showVideo ? (
             isMobile ? (
