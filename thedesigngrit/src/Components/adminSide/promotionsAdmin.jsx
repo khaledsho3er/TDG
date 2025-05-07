@@ -117,26 +117,66 @@ const PromotionsPageAdmin = () => {
             <span className="sale-price">${product.salePrice}</span>
           </div>
 
-          {showMetrics && metrics && (
+          {showMetrics && metrics?.length > 0 && (
             <div className="metrics-container">
-              <div className="metric">
-                <span className="metric-label">Sales</span>
-                <span className="metric-value">
-                  {metrics.salesDuringPromotion}
-                </span>
-              </div>
-              <div className="metric">
-                <span className="metric-label">Views</span>
-                <span className="metric-value">
-                  {metrics.viewsDuringPromotion}
-                </span>
-              </div>
-              <div className="metric">
-                <span className="metric-label">Turnover</span>
-                <span className="metric-value">
-                  +{metrics.turnoverIncrease}%
-                </span>
-              </div>
+              {metrics.map((metric, index) => (
+                <div className="metric-card" key={index}>
+                  <h3>{metric.name}</h3>
+                  <p>
+                    <strong>Brand:</strong> {metric.brandName}
+                  </p>
+
+                  <div className="metric">
+                    <span className="metric-label">Units Sold (Before)</span>
+                    <span className="metric-value">
+                      {metric.unitsSoldBefore}
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Units Sold (During)</span>
+                    <span className="metric-value">
+                      {metric.unitsSoldDuring}
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Turnover (Before)</span>
+                    <span className="metric-value">
+                      ${metric.turnoverBefore}
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Turnover (During)</span>
+                    <span className="metric-value">
+                      ${metric.turnoverDuring}
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Sales Uplift</span>
+                    <span className="metric-value">
+                      {metric.salesUpliftPercent}%
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Discount</span>
+                    <span className="metric-value">
+                      {metric.discountPercentage}%
+                    </span>
+                  </div>
+
+                  <div className="metric">
+                    <span className="metric-label">Promotion Period</span>
+                    <span className="metric-value">
+                      {new Date(metric.promotionStartDate).toLocaleDateString()}{" "}
+                      - {new Date(metric.promotionEndDate).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
