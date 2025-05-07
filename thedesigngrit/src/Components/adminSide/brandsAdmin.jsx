@@ -171,6 +171,10 @@ const BrandManagement = () => {
     return brands.filter((brand) => brand.status === "pending");
   };
 
+  const getDeactiveBrands = () => {
+    return brands.filter((brand) => brand.status === "deactivated");
+  };
+
   const renderBrandCards = (brandsList) => {
     return (
       <Grid container spacing={3}>
@@ -390,7 +394,7 @@ const BrandManagement = () => {
                     >
                       <option value="pending">Pending</option>
                       <option value="active">Active</option>
-                      <option value="deactive">Deactive</option>
+                      <option value="deactivated">Deactivated</option>
                     </TextField>
                   ) : (
                     <TextField
@@ -452,6 +456,7 @@ const BrandManagement = () => {
       <Tabs value={tabValue} onChange={handleTabChange} sx={{ mb: 3 }}>
         <Tab label={`Active Brands (${getActiveBrands().length})`} />
         <Tab label={`Pending Brands (${getPendingBrands().length})`} />
+        <Tab label={`Deactivated Brands (${getDeactiveBrands().length})`} />
       </Tabs>
 
       {loading ? (
@@ -462,6 +467,7 @@ const BrandManagement = () => {
         <Box>
           {tabValue === 0 && renderBrandCards(getActiveBrands())}
           {tabValue === 1 && renderBrandCards(getPendingBrands())}
+          {tabValue === 2 && renderBrandCards(getDeactiveBrands())}
         </Box>
       )}
 
