@@ -221,7 +221,7 @@ const PromotionsPageAdmin = () => {
               onClick={(e) => handleOpenApprovalDialog(product, e)}
               style={{
                 position: "absolute",
-                top: "10px",
+                top: "30px",
                 right: "10px",
                 padding: "4px 8px",
                 borderRadius: "4px",
@@ -238,13 +238,37 @@ const PromotionsPageAdmin = () => {
         </div>
 
         <div className="promotion-details">
-          <h3>{product.name}</h3>
-          <p className="brand-name">{product.brandId?.brandName}</p>
-          <div className="price-container">
-            <span className="original-price">E£{product.price}</span>
-            <span className="sale-price">E£{product.salePrice}</span>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
+            <div className="promotion-details">
+              <h3>{product.name}</h3>
+              <p className="brand-name">{product.brandId?.brandName}</p>
+              <div className="price-container">
+                <span className="original-price">E£{product.price}</span>
+                <span className="sale-price">E£{product.salePrice}</span>
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  backgroundColor: product.promotionApprove
+                    ? "#2ecc71"
+                    : "#e74c3c",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  color: "white",
+                  fontWeight: "bold",
+                }}
+              >
+                {product.promotionApprove ? "Approved" : "Rejected"}
+              </div>
+            </div>
           </div>
-
           {showMetrics && metrics && (
             <div className="metrics-container">
               <div className="metric">
