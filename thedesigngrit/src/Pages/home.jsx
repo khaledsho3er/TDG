@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
-const ShopByCategory = React.lazy(() => import("../Components/home/Category"));
-const ExploreConcepts = React.lazy(() => import("../Components/home/concept"));
-const SustainabilitySection = React.lazy(() =>
+const ShopByCategory = lazy(() => import("../Components/home/Category"));
+const ExploreConcepts = lazy(() => import("../Components/home/concept"));
+const SustainabilitySection = lazy(() =>
   import("../Components/home/Sustainability")
 );
-const PartnersSection = React.lazy(() => import("../Components/home/partners"));
-const ProductSlider = React.lazy(() => import("../Components/home/bestSeller"));
-const Footer = React.lazy(() => import("../Components/Footer"));
+const PartnersSection = lazy(() => import("../Components/home/partners"));
+const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
+const Footer = lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
 
 const videos = [
@@ -39,116 +39,67 @@ const posterImages = [
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
-
   return isMobile;
 };
+
 function Home() {
-  const bgVideoRef = useRef(null);
   const fgVideoRef = useRef(null);
   const isMobile = useIsMobile();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [videoDuration, setVideoDuration] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
 
   useEffect(() => {
-    // Defer video rendering to reduce LCP impact
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => setShowVideo(true));
-    } else {
-      setTimeout(() => setShowVideo(true), 2000);
-    }
-  }, []);
+    const nextIndex = (currentVideoIndex + 1) % videos.length;
+    const nextVideo = document.createElement("video");
+    nextVideo.src = videos[nextIndex].mp4;
+    nextVideo.preload = "auto";
+    nextVideo.load();
+    return () => nextVideo.remove();
+  }, [currentVideoIndex]);
 
-  useEffect(() => {
+  const handleLoadedMetadata = () => {
     const video = fgVideoRef.current;
-
-    const handleLoadedMetadata = () => {
-      setVideoDuration(video.duration);
-    };
-
-    const handleTimeUpdate = () => {
-      if (videoDuration) {
-        setProgress((video.currentTime / videoDuration) * 100);
-      }
-    };
-
-    const handleEnded = () => {
-      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
-      setProgress(0);
-    };
-
     if (video) {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      video.addEventListener("timeupdate", handleTimeUpdate);
-      video.addEventListener("ended", handleEnded);
+      video.play();
     }
+  };
 
-    return () => {
-      if (video) {
-        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        video.removeEventListener("timeupdate", handleTimeUpdate);
-        video.removeEventListener("ended", handleEnded);
-      }
-    };
-  }, [videoDuration, currentVideoIndex]);
+  const handleTimeUpdate = () => {
+    const video = fgVideoRef.current;
+    if (video && video.duration) {
+      setProgress((video.currentTime / video.duration) * 100);
+    }
+  };
+
+  const handleEnded = () => {
+    const nextIndex = (currentVideoIndex + 1) % videos.length;
+    setCurrentVideoIndex(nextIndex);
+    setProgress(0);
+  };
 
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
-    if (fgVideoRef.current) {
-      fgVideoRef.current.load();
-    }
   };
 
   return (
     <div className="home">
       <div className="background-layer">
-        {isMobile ? (
-          <img
-            src={posterImages[currentVideoIndex]}
-            alt={`Hero background ${currentVideoIndex}`}
-            className="hero-video-element"
-            onLoad={() => {
-              const nextIndex = (currentVideoIndex + 1) % posterImages.length;
-              setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
-            }}
-          />
-        ) : (
-          // <video
-          //   ref={bgVideoRef}
-          //   className="hero-video-element"
-          //   poster={posterImages[currentVideoIndex]}
-          //   autoPlay
-          //   muted
-          //   loop
-          //   playsInline
-          //   preload="none"
-          // >
-          //   <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
-          //   <source src={videos[currentVideoIndex].webm} type="video/webm" />
-          // </video>
-          <img
-            src={posterImages[currentVideoIndex]}
-            alt={`Hero background ${currentVideoIndex}`}
-            className="hero-video-element"
-            onLoad={() => {
-              const nextIndex = (currentVideoIndex + 1) % posterImages.length;
-              setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
-            }}
-          />
-        )}
+        <img
+          src={posterImages[currentVideoIndex]}
+          alt={`Hero background ${currentVideoIndex}`}
+          className="hero-video-element"
+        />
       </div>
-      {/* Header and Sectionss */}
       <Header />
-      {/* Hero Section */}
+
       <div className="hero-home-section">
         <div className="hero-video">
           {showVideo ? (
@@ -157,17 +108,9 @@ function Home() {
                 src={posterImages[currentVideoIndex]}
                 alt={`Hero background ${currentVideoIndex}`}
                 className="hero-video-element"
-                loading="eager"
-                fetchpriority="high"
-                onLoad={() => {
-                  const nextIndex =
-                    (currentVideoIndex + 1) % posterImages.length;
-                  setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
-                }}
               />
             ) : (
               <video
-                key={currentVideoIndex} // This forces React to remount the video element
                 ref={fgVideoRef}
                 className="hero-video-element"
                 poster={posterImages[currentVideoIndex]}
@@ -175,7 +118,10 @@ function Home() {
                 muted
                 loop
                 playsInline
-                preload="none"
+                preload="auto"
+                onLoadedMetadata={handleLoadedMetadata}
+                onTimeUpdate={handleTimeUpdate}
+                onEnded={handleEnded}
               >
                 <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
                 <source
@@ -189,12 +135,9 @@ function Home() {
               src={posterImages[currentVideoIndex]}
               alt="Hero placeholder"
               className="hero-video-element"
-              onLoad={() => {
-                const nextIndex = (currentVideoIndex + 1) % posterImages.length;
-                setTimeout(() => setCurrentVideoIndex(nextIndex), 3000);
-              }}
             />
           )}
+
           <div className="video-progress-container">
             {videos.map((_, index) => (
               <div
