@@ -11,6 +11,12 @@ const SidebarAdmin = ({ setActivePage }) => {
           Dashboard
         </li>
         <li
+          onClick={() => setActivePage("adminNotificationPage")}
+          className="sidebar-item-vendor"
+        >
+          Notifications
+        </li>
+        <li
           onClick={() => setActivePage("allProducts")}
           className="sidebar-item-vendor"
         >
