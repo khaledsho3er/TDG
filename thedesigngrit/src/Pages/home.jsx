@@ -79,6 +79,14 @@ function Home() {
 
     return () => clearInterval(interval);
   }, [isHeroVisible]);
+  useEffect(() => {
+    videos.forEach((video) => {
+      const v = document.createElement("video");
+      v.src = video.mp4;
+      v.preload = "auto";
+      v.load();
+    });
+  }, []);
   // 👇 Handle playing/pausing video based on visibility
   useEffect(() => {
     const video = fgVideoRef.current;
@@ -125,28 +133,43 @@ function Home() {
                 className="hero-video-element"
               />
             ) : (
-              <video
-                key={currentVideoIndex}
-                ref={fgVideoRef}
-                className="hero-video-element"
-                poster={posterImages[currentVideoIndex]}
-                autoPlay
-                muted
-                playsInline
-                preload="auto"
-                onTimeUpdate={handleTimeUpdate}
-                onEnded={() => {
-                  setCurrentVideoIndex(
-                    (prevIndex) => (prevIndex + 1) % videos.length
-                  );
-                }}
-              >
-                <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
-                <source
-                  src={videos[currentVideoIndex].webm}
-                  type="video/webm"
-                />
-              </video>
+              videos.map((video, index) => (
+                <video
+                  key={currentVideoIndex}
+                  ref={fgVideoRef}
+                  className="hero-video-element"
+                  poster={posterImages[currentVideoIndex]}
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  onTimeUpdate={handleTimeUpdate}
+                  onEnded={() => {
+                    setCurrentVideoIndex(
+                      (prevIndex) => (prevIndex + 1) % videos.length
+                    );
+                  }}
+                  style={{
+                    display: index === currentVideoIndex ? "block" : "none",
+                    visibility:
+                      index === currentVideoIndex ? "visible" : "hidden",
+                  }}
+                  onCanPlay={() => {
+                    if (index === currentVideoIndex && isHeroVisible) {
+                      fgVideoRef.current?.play().catch(() => {});
+                    }
+                  }}
+                >
+                  <source
+                    src={videos[currentVideoIndex].mp4}
+                    type="video/mp4"
+                  />
+                  <source
+                    src={videos[currentVideoIndex].webm}
+                    type="video/webm"
+                  />
+                </video>
+              ))
             )
           ) : (
             <img
