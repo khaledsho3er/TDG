@@ -12,7 +12,6 @@ const PromotionsPageAdmin = () => {
   const [showFutureSection, setShowFutureSection] = useState(false);
   const [promotionMetrics, setPromotionMetrics] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState(""); // NEW
-  const [allBrands, setAllBrands] = useState([]); // NEW
 
   const navigate = useNavigate();
 
@@ -52,9 +51,6 @@ const PromotionsPageAdmin = () => {
         setCurrentPromotions(current);
         setPastPromotions(past);
         setFuturePromotions(future);
-
-        const allBrands = response.data.map((product) => product.brandName);
-        setAllBrands([...new Set(allBrands)]);
 
         // Fetch promotion metrics
         const metricsResponse = await axios.get(
@@ -179,11 +175,19 @@ const PromotionsPageAdmin = () => {
               onChange={(e) => setSelectedBrand(e.target.value)}
             >
               <option value="">All Brands</option>
-              {allBrands.map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  [...currentPromotions, ...futurePromotions, ...pastPromotions]
+                    .map((product) => product.brandId?.brandName)
+                    .filter(Boolean)
+                )
+              )
+                .sort()
+                .map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
