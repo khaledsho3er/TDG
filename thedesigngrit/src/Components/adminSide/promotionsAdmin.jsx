@@ -117,7 +117,7 @@ const PromotionsPageAdmin = () => {
             <span className="sale-price">${product.salePrice}</span>
           </div>
 
-          {showMetrics && metrics?.length > 0 && (
+          {showMetrics && metrics && (
             <div className="metrics-container">
               {metrics.map((metric, index) => (
                 <div className="metric-card" key={index}>
