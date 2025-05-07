@@ -83,10 +83,17 @@ function Home() {
     setCurrentVideoIndex(nextIndex);
     setProgress(0);
   };
-
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
+
+    // Reset and play the video after a short delay to allow state update
+    setTimeout(() => {
+      if (fgVideoRef.current) {
+        fgVideoRef.current.currentTime = 0;
+        fgVideoRef.current.play();
+      }
+    }, 50);
   };
 
   return (
