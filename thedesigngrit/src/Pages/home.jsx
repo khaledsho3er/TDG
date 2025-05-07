@@ -56,20 +56,21 @@ function Home() {
   const [showVideo, setShowVideo] = useState(true);
 
   useEffect(() => {
-    const nextIndex = (currentVideoIndex + 1) % videos.length;
-    const nextVideo = document.createElement("video");
-    nextVideo.src = videos[nextIndex].webm;
-    nextVideo.preload = "auto";
-    nextVideo.load();
-    return () => nextVideo.remove();
-  }, [currentVideoIndex]);
+    const interval = setInterval(() => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+    }, 8000); // auto switch every 8 seconds
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleLoadedMetadata = () => {
+  useEffect(() => {
     const video = fgVideoRef.current;
     if (video) {
-      video.play();
+      video.load();
+      video.play().catch((err) => {
+        console.error("Autoplay failed:", err);
+      });
     }
-  };
+  }, [currentVideoIndex]);
 
   const handleTimeUpdate = () => {
     const video = fgVideoRef.current;
@@ -78,22 +79,9 @@ function Home() {
     }
   };
 
-  const handleEnded = () => {
-    const nextIndex = (currentVideoIndex + 1) % videos.length;
-    setCurrentVideoIndex(nextIndex);
-    setProgress(0);
-  };
   const handleDotClick = (index) => {
     setCurrentVideoIndex(index);
     setProgress(0);
-
-    // Reset and play the video after a short delay to allow state update
-    setTimeout(() => {
-      if (fgVideoRef.current) {
-        fgVideoRef.current.currentTime = 0;
-        fgVideoRef.current.play();
-      }
-    }, 50);
   };
 
   return (
@@ -118,14 +106,20 @@ function Home() {
               />
             ) : (
               <video
+                key={currentVideoIndex}
                 ref={fgVideoRef}
                 className="hero-video-element"
+                poster={posterImages[currentVideoIndex]}
                 autoPlay
                 muted
                 playsInline
                 preload="auto"
-                onLoadedMetadata={handleLoadedMetadata}
                 onTimeUpdate={handleTimeUpdate}
+                onEnded={() => {
+                  setCurrentVideoIndex(
+                    (prevIndex) => (prevIndex + 1) % videos.length
+                  );
+                }}
               >
                 <source src={videos[currentVideoIndex].mp4} type="video/mp4" />
                 <source
