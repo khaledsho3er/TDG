@@ -161,23 +161,16 @@ const AdminNotificationPage = () => {
         >
           {/* Brand Filter */}
           <FormControl sx={{ m: 1 }}>
-            <InputLabel id="brand-select-label">Filter by Brand</InputLabel>
+            <InputLabel id="brand-select-label">Brand</InputLabel>
             <Select
               labelId="brand-select-label"
               value={selectedBrand}
-              onChange={handleBrandChange}
+              onChange={(e) => setSelectedBrand(e.target.value)}
               sx={{
                 width: "200px",
                 color: "#2d2d2d",
                 backgroundColor: "#fff",
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#2d2d2d",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#2d2d2d",
-                },
               }}
-              size="small"
             >
               <MenuItem value="">All Brands</MenuItem>
               {brands.map((brand) => (
