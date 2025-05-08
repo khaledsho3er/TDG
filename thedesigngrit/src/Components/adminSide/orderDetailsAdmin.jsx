@@ -34,13 +34,10 @@ const AdminOrderDetails = ({ order, onBack }) => {
         return;
       }
 
-      const response = await axios.post(
-        "https://api.thedesigngrit.com/api/orders/ping-brand",
-        {
-          orderId: order._id,
-          brandId: brandId,
-        }
-      );
+      await axios.post("https://api.thedesigngrit.com/api/orders/ping-brand", {
+        orderId: order._id,
+        brandId: brandId,
+      });
 
       setSnackbar({
         open: true,
@@ -68,17 +65,6 @@ const AdminOrderDetails = ({ order, onBack }) => {
 
   return (
     <div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-
       <header className="dashboard-header-vendor">
         <div className="dashboard-header-title">
           <div
@@ -185,16 +171,16 @@ const AdminOrderDetails = ({ order, onBack }) => {
               order={order}
               style={{
                 marginTop: "10px",
-                bgcolor: "#2d2d2d !important",
-                color: "#2d2d2d",
+                backgroundColor: "#2d2d2d !important",
+                color: "white !important",
                 borderRadius: "5px",
                 padding: "11px 10px",
                 alignItems: "center",
                 justifyContent: "center",
                 display: "flex",
                 "&:hover": {
-                  bgcolor: "#2d2d2d",
-                  color: "#fff",
+                  backgroundColor: "#1a1a1a !important",
+                  color: "white !important",
                 },
               }}
               className="invoice-download-btn"
@@ -588,6 +574,16 @@ const AdminOrderDetails = ({ order, onBack }) => {
           </Box>
         </div>
       </div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

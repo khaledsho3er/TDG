@@ -7057,8 +7057,8 @@ input:focus {
 }
 .invoice-download-btn {
   margin-top: 10px;
-  background-color: #2d2d2d;
-  color: #fff;
+  background-color: #2d2d2d !important;
+  color: #fff !important;
   border-radius: 5px;
   padding: 10px 15px;
   display: flex;
