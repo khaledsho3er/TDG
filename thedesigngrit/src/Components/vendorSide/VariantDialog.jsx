@@ -17,6 +17,9 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 
+// Define the sage green color
+const sageGreen = "#6a8452";
+
 export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   const [variants, setVariants] = useState([
     {
@@ -64,7 +67,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   const fetchSkus = async () => {
     try {
       const response = await axios.get(
-        "http://api.thedesigngrit.com/api/products/skus"
+        "https://api.thedesigngrit.com/api/product-variants/skus"
       );
       setSkuOptions(response.data);
     } catch (err) {
@@ -188,7 +191,17 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           <span>
             Add Product Variant {currentVariant + 1}/{variants.length}
           </span>
-          <IconButton color="primary" onClick={addVariant}>
+          <IconButton
+            color="primary"
+            onClick={addVariant}
+            sx={{
+              backgroundColor: sageGreen,
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#5a7342", // Slightly darker on hover
+              },
+            }}
+          >
             <AddIcon />
           </IconButton>
         </Box>
@@ -319,7 +332,14 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                   onClick={() =>
                     document.getElementById("variantFileInput").click()
                   }
-                  sx={{ mt: 1 }}
+                  sx={{
+                    mt: 1,
+                    backgroundColor: sageGreen,
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#5a7342", // Slightly darker on hover
+                    },
+                  }}
                 >
                   Upload Images
                 </Button>
@@ -336,7 +356,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                       border:
                         variants[currentVariant].mainImage ===
                         variants[currentVariant].images[index]
-                          ? "2px solid blue"
+                          ? `2px solid ${sageGreen}`
                           : "1px solid #ddd",
                     }}
                   >
@@ -379,7 +399,24 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                 variant={currentVariant === index ? "contained" : "outlined"}
                 size="small"
                 onClick={() => setCurrentVariant(index)}
-                sx={{ mx: 0.5 }}
+                sx={{
+                  mx: 0.5,
+                  ...(currentVariant === index
+                    ? {
+                        backgroundColor: sageGreen,
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "#5a7342", // Slightly darker on hover
+                        },
+                      }
+                    : {
+                        color: sageGreen,
+                        borderColor: sageGreen,
+                        "&:hover": {
+                          borderColor: "#5a7342",
+                        },
+                      }),
+                }}
               >
                 {index + 1}
               </Button>
@@ -388,8 +425,28 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button
+          onClick={onClose}
+          sx={{
+            color: sageGreen,
+            "&:hover": {
+              backgroundColor: "rgba(106, 132, 82, 0.1)",
+            },
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          sx={{
+            backgroundColor: sageGreen,
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#5a7342", // Slightly darker on hover
+            },
+          }}
+        >
           Save Variants
         </Button>
       </DialogActions>
