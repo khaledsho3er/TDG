@@ -284,15 +284,16 @@ const BrandManagement = () => {
           setCoverPreview(newCoverUrl);
         }
 
-      setSnackbar({
-        open: true,
-        message: "Brand images updated successfully",
-        severity: "success",
-      });
-      fetchBrands(); // Force refresh from API
-      // Reset file states
-      setNewLogoFile(null);
-      setNewCoverFile(null);
+        setSnackbar({
+          open: true,
+          message: "Brand images updated successfully",
+          severity: "success",
+        });
+        fetchBrands(); // Force refresh from API
+        // Reset file states
+        setNewLogoFile(null);
+        setNewCoverFile(null);
+      }
     } catch (error) {
       console.error("Error updating brand images:", error);
       console.error("Error details:", error.response?.data || error.message);
