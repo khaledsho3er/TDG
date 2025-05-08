@@ -206,7 +206,11 @@ const BrandManagement = () => {
       if (newCoverFile) {
         formData.append("coverPhoto", newCoverFile);
       }
-
+      console.log(
+        "Sending image update request with files:",
+        newLogoFile ? newLogoFile.name : "No logo file",
+        newCoverFile ? newCoverFile.name : "No cover file"
+      );
       const response = await axios.put(
         `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`,
         formData,
@@ -216,7 +220,7 @@ const BrandManagement = () => {
           },
         }
       );
-
+      console.log("Image update response:", response.data);
       // Update the selected brand with new image paths
       setSelectedBrand({
         ...selectedBrand,
@@ -248,9 +252,12 @@ const BrandManagement = () => {
       setNewCoverFile(null);
     } catch (error) {
       console.error("Error updating brand images:", error);
+      console.error("Error details:", error.response?.data || error.message);
       setSnackbar({
         open: true,
-        message: "Failed to update brand images",
+        message:
+          "Failed to update brand images: " +
+          (error.response?.data?.message || error.message),
         severity: "error",
       });
     } finally {
@@ -265,7 +272,7 @@ const BrandManagement = () => {
         `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}`,
         editedBrand
       );
-
+      console.log("Brand data update response:", editedBrand);
       // Then update images if needed
       if (newLogoFile || newCoverFile) {
         await handleUpdateImages();
