@@ -28,17 +28,22 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       color: "",
       size: "",
       price: "",
-      dimensions: "",
+      dimensions: {
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+      },
       images: [],
       mainImage: null,
-      productId: null, // Add productId to each variant
+      productId: null,
     },
   ]);
   const [currentVariant, setCurrentVariant] = useState(0);
   const [imagePreviews, setImagePreviews] = useState([[]]);
   const [skuOptions, setSkuOptions] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [productId, setProductId] = useState(null); // Store the product ID
+  const [productId, setProductId] = useState(null);
 
   // Fetch SKUs when dialog opens
   useEffect(() => {
@@ -57,7 +62,12 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           color: "",
           size: "",
           price: "",
-          dimensions: "",
+          dimensions: {
+            length: "",
+            width: "",
+            height: "",
+            weight: "",
+          },
           images: [],
           mainImage: null,
           productId: null,
@@ -72,10 +82,53 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   // Fetch product ID when SKU changes
   useEffect(() => {
     const currentSku = variants[currentVariant]?.sku;
-    if (currentSku) {
-      fetchProductIdBySku(currentSku);
+
+    // Only fetch if we have a SKU and don't already have a productId for this variant
+    if (currentSku && !variants[currentVariant].productId) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.thedesigngrit.com/api/product-variants/product-by-sku/${currentSku}`
+          );
+
+          if (response.data && response.data.productId) {
+            // Update the productId in the current variant
+            setVariants((prevVariants) => {
+              // Make sure we're still on the same variant
+              if (currentVariant >= prevVariants.length) return prevVariants;
+
+              // Only update if the SKU hasn't changed
+              if (prevVariants[currentVariant].sku !== currentSku)
+                return prevVariants;
+
+              const updatedVariants = [...prevVariants];
+              updatedVariants[currentVariant] = {
+                ...updatedVariants[currentVariant],
+                productId: response.data.productId,
+              };
+              return updatedVariants;
+            });
+
+            // Also store the productId at the component level
+            setProductId(response.data.productId);
+
+            console.log(
+              `Product ID for SKU ${currentSku}: ${response.data.productId}`
+            );
+          } else {
+            console.warn(`No product ID found for SKU: ${currentSku}`);
+          }
+        } catch (err) {
+          console.error(
+            `Error fetching product ID for SKU ${currentSku}:`,
+            err
+          );
+        }
+      };
+
+      fetchData();
     }
-  }, [variants, currentVariant]);
+  }, [currentVariant, variants[currentVariant]?.sku]);
 
   const fetchSkus = async () => {
     try {
@@ -100,55 +153,66 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     }
   };
 
-  // New function to fetch product ID by SKU
-  const fetchProductIdBySku = async (sku) => {
-    try {
-      const response = await axios.get(
-        `https://api.thedesigngrit.com/api/product-variants/product-by-sku/${sku}`
-      );
-
-      if (response.data && response.data.productId) {
-        // Update the productId in the current variant
-        const updatedVariants = [...variants];
-        updatedVariants[currentVariant] = {
-          ...updatedVariants[currentVariant],
-          productId: response.data.productId,
-        };
-        setVariants(updatedVariants);
-
-        // Also store the productId at the component level
-        setProductId(response.data.productId);
-
-        console.log(`Product ID for SKU ${sku}: ${response.data.productId}`);
-      } else {
-        console.warn(`No product ID found for SKU: ${sku}`);
-      }
-    } catch (err) {
-      console.error(`Error fetching product ID for SKU ${sku}:`, err);
-    }
-  };
-
+  // Update handleChange to handle nested dimensions
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedVariants = [...variants];
-    updatedVariants[currentVariant] = {
-      ...updatedVariants[currentVariant],
-      [name]: value,
-    };
+
+    // Check if this is a dimensions field
+    if (name.startsWith("dimensions.")) {
+      const dimensionField = name.split(".")[1]; // Get the specific dimension field (length, width, etc.)
+      updatedVariants[currentVariant] = {
+        ...updatedVariants[currentVariant],
+        dimensions: {
+          ...updatedVariants[currentVariant].dimensions,
+          [dimensionField]: value,
+        },
+      };
+    } else {
+      // Handle regular fields
+      updatedVariants[currentVariant] = {
+        ...updatedVariants[currentVariant],
+        [name]: value,
+      };
+    }
+
     setVariants(updatedVariants);
   };
 
   const handleSkuSelect = (e) => {
     const { value } = e.target;
+
+    // Only update if the SKU has actually changed
+    if (variants[currentVariant].sku !== value) {
+      const updatedVariants = [...variants];
+      updatedVariants[currentVariant] = {
+        ...updatedVariants[currentVariant],
+        sku: value,
+        productId: null, // Reset productId when SKU changes
+      };
+      setVariants(updatedVariants);
+
+      // Reset the component-level productId if we're changing the first variant's SKU
+      if (currentVariant === 0) {
+        setProductId(null);
+      }
+    }
+  };
+
+  // Handle array fields (colors, sizes)
+  const handleArrayChange = (e, field) => {
+    const { value } = e.target;
+
+    // Split the input value by commas and trim each item
+    const arrayValues = value.split(",").map((item) => item.trim());
+
     const updatedVariants = [...variants];
     updatedVariants[currentVariant] = {
       ...updatedVariants[currentVariant],
-      sku: value,
-      productId: null, // Reset productId when SKU changes
+      [field]: arrayValues,
     };
-    setVariants(updatedVariants);
 
-    // Product ID will be fetched by the useEffect hook
+    setVariants(updatedVariants);
   };
 
   const handleImageUpload = (e) => {
@@ -215,7 +279,12 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
         color: "",
         size: "",
         price: "",
-        dimensions: "",
+        dimensions: {
+          length: "",
+          width: "",
+          height: "",
+          weight: "",
+        },
         images: [],
         mainImage: null,
       },
@@ -263,7 +332,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             color: variant.color || "",
             size: variant.size || "",
             price: variant.price || "",
-            dimensions: variant.dimensions || "",
+            dimensions: JSON.stringify(variant.dimensions), // Convert dimensions object to string
             imageIndices: imageIndices,
             mainImageIndex: variant.mainImage
               ? currentImageIndex + variant.images.indexOf(variant.mainImage)
@@ -336,7 +405,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
               backgroundColor: sageGreen,
               color: "white",
               "&:hover": {
-                backgroundColor: "#5a7342", // Slightly darker on hover
+                backgroundColor: "#5a7342",
               },
             }}
           >
@@ -355,6 +424,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     value={variants[currentVariant].sku}
                     onChange={handleSkuSelect}
                     label="SKU"
+                    name="sku"
                   >
                     {skuOptions.map((option) => (
                       <MenuItem key={option} value={option}>
@@ -373,22 +443,24 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
-                  label="Color"
+                  label="Colors (comma separated)"
                   name="color"
                   fullWidth
                   value={variants[currentVariant].color}
                   onChange={handleChange}
+                  placeholder="Ex: Red, Blue, Green"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
-                  label="Size"
+                  label="Sizes (comma separated)"
                   name="size"
                   fullWidth
                   value={variants[currentVariant].size}
                   onChange={handleChange}
+                  placeholder="Ex: Small, Medium, Large"
                 />
               </Grid>
               <Grid item xs={6}>
@@ -401,19 +473,58 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Dimensions"
-                  name="dimensions"
-                  fullWidth
-                  value={variants[currentVariant].dimensions}
-                  onChange={handleChange}
-                />
-              </Grid>
             </Grid>
           </Grid>
 
           <Grid item xs={12} md={6}>
+            {/* Technical Dimensions */}
+            <Box sx={{ mb: 2 }}>
+              <h3>Technical Dimensions</h3>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Length (CM)"
+                    name="dimensions.length"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.length}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Width (CM)"
+                    name="dimensions.width"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.width}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Height (CM)"
+                    name="dimensions.height"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.height}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Weight (Kg)"
+                    name="dimensions.weight"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.weight}
+                    onChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+
+            {/* Image Upload Section */}
             <Box sx={{ mb: 2 }}>
               <div
                 className="image-placeholder"
@@ -464,128 +575,22 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                 <label htmlFor="variantFileInput" style={{ cursor: "pointer" }}>
                   Drop images here, or click to browse
                 </label>
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() =>
-                    document.getElementById("variantFileInput").click()
-                  }
-                  sx={{
-                    mt: 1,
-                    backgroundColor: sageGreen,
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#5a7342", // Slightly darker on hover
-                    },
-                  }}
-                >
-                  Upload Images
-                </Button>
               </div>
-
-              <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
-                {imagePreviews[currentVariant]?.map((preview, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      position: "relative",
-                      width: "60px",
-                      height: "60px",
-                      border:
-                        variants[currentVariant].mainImage ===
-                        variants[currentVariant].images[index]
-                          ? `2px solid ${sageGreen}`
-                          : "1px solid #ddd",
-                    }}
-                  >
-                    <img
-                      src={preview}
-                      alt={`Thumbnail ${index}`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      onClick={() => handleSetMainImage(index)}
-                    />
-                    <IconButton
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        top: -10,
-                        right: -10,
-                        backgroundColor: "white",
-                        border: "1px solid #ddd",
-                        padding: "2px",
-                      }}
-                      onClick={() => handleRemoveImage(index)}
-                    >
-                      ✖
-                    </IconButton>
-                  </Box>
-                ))}
-              </Box>
             </Box>
           </Grid>
         </Grid>
-
-        {variants.length > 1 && (
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-            {variants.map((_, index) => (
-              <Button
-                key={index}
-                variant={currentVariant === index ? "contained" : "outlined"}
-                size="small"
-                onClick={() => setCurrentVariant(index)}
-                sx={{
-                  mx: 0.5,
-                  ...(currentVariant === index
-                    ? {
-                        backgroundColor: sageGreen,
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "#5a7342", // Slightly darker on hover
-                        },
-                      }
-                    : {
-                        color: sageGreen,
-                        borderColor: sageGreen,
-                        "&:hover": {
-                          borderColor: "#5a7342",
-                        },
-                      }),
-                }}
-              >
-                {index + 1}
-              </Button>
-            ))}
-          </Box>
-        )}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={onClose}
-          sx={{
-            color: sageGreen,
-            "&:hover": {
-              backgroundColor: "rgba(106, 132, 82, 0.1)",
-            },
-          }}
-        >
+        <Button onClick={onClose} color="primary">
           Cancel
         </Button>
         <Button
-          variant="contained"
           onClick={handleSubmit}
-          sx={{
-            backgroundColor: sageGreen,
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#5a7342", // Slightly darker on hover
-            },
-          }}
+          color="primary"
+          variant="contained"
+          disabled={isSubmitting}
         >
-          Save Variants
+          {isSubmitting ? "Saving..." : "Save Variants"}
         </Button>
       </DialogActions>
     </Dialog>

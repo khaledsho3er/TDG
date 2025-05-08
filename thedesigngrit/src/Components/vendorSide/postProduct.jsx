@@ -228,18 +228,6 @@ const AddProduct = () => {
     });
   };
 
-  const handleVariantSubmit = async (variantData) => {
-    try {
-      const res = await axios.post(
-        "http://api.thedesigngrit.com/api/products/variants",
-        variantData
-      );
-      setVariants((prev) => [...prev, res.data]);
-    } catch (err) {
-      console.error("Error creating variant:", err);
-    }
-  };
-
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
   const handleArrayChange = (e, field, parentField = null) => {
     const { value } = e.target;
