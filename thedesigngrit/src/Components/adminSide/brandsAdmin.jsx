@@ -504,7 +504,7 @@ const BrandManagement = () => {
         </Box>
 
         {/* Image Update Button - Only show when in edit mode and images have changed */}
-        {editMode && (newLogoFile || newCoverFile) && (
+        {/* {editMode && (newLogoFile || newCoverFile) && (
           <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
             <Button
               variant="contained"
@@ -516,7 +516,7 @@ const BrandManagement = () => {
               {imageLoading ? "Updating Images..." : "Update Images"}
             </Button>
           </Box>
-        )}
+        )} */}
 
         {/* Social Media Links */}
         <Box
