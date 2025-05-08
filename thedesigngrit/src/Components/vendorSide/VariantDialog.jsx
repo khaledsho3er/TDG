@@ -358,7 +358,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
 
       // Submit to the API with productId in the URL
       const response = await axios.post(
-        `https://api.thedesigngrit.com/api/product/${productId}/variants`,
+        `https://api.thedesigngrit.com/api/product-variants/product/${productId}/variants`,
         formData,
         {
           headers: {
