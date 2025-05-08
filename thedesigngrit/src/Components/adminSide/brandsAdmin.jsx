@@ -199,13 +199,20 @@ const BrandManagement = () => {
     }
   };
 
-  const handleUpdateImages = async () => {
-    if (!newLogoFile && !newCoverFile) return;
-
+  const handleSaveChanges = async () => {
     try {
-      setImageLoading(true);
+      // Create a FormData object to handle both text fields and files
       const formData = new FormData();
 
+      // Add all the edited brand fields to the FormData
+      Object.keys(editedBrand).forEach((key) => {
+        // Skip image fields, we'll handle them separately
+        if (key !== "brandlogo" && key !== "coverPhoto") {
+          formData.append(key, editedBrand[key]);
+        }
+      });
+
+      // Add image files if they exist
       if (newLogoFile) {
         formData.append("brandlogo", newLogoFile);
         console.log(
@@ -233,11 +240,12 @@ const BrandManagement = () => {
 
       console.log(
         "Sending request to:",
-        `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`
+        `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}`
       );
 
+      // Send the update request with FormData
       const response = await axios.put(
-        `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`,
+        `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}`,
         formData,
         {
           headers: {
@@ -246,100 +254,55 @@ const BrandManagement = () => {
         }
       );
 
-      console.log("Full response:", response);
-      console.log("Image update response data:", response.data);
+      console.log("Brand update response:", response.data);
 
-      // Check if the response contains the expected fields
+      // Update the UI with the response data
       if (response.data) {
         // Extract the image paths from the response
-        const newBrandLogo = response.data.brandlogo || response.data.brandLogo;
-        const newCoverPhoto = response.data.coverPhoto;
+        const updatedBrand = response.data;
 
-        console.log("Response brandlogo:", newBrandLogo);
-        console.log("Response coverPhoto:", newCoverPhoto);
-
-        // Update the selected brand with new image paths
-        const updatedBrand = {
-          ...selectedBrand,
-          brandlogo: newBrandLogo || selectedBrand.brandlogo,
-          coverPhoto: newCoverPhoto || selectedBrand.coverPhoto,
-        };
-
-        console.log("Updated brand object:", updatedBrand);
+        // Update the selected brand
         setSelectedBrand(updatedBrand);
 
         // Force refresh the image previews with cache-busting
-        if (newBrandLogo) {
-          const newLogoUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${newBrandLogo}?t=${Date.now()}`;
-          console.log("Setting new logo URL:", newLogoUrl);
+        if (updatedBrand.brandlogo) {
+          const newLogoUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            updatedBrand.brandlogo
+          }?t=${Date.now()}`;
           setLogoPreview(newLogoUrl);
         }
 
-        if (newCoverPhoto) {
-          const newCoverUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${newCoverPhoto}?t=${Date.now()}`;
-          console.log("Setting new cover URL:", newCoverUrl);
+        if (updatedBrand.coverPhoto) {
+          const newCoverUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            updatedBrand.coverPhoto
+          }?t=${Date.now()}`;
           setCoverPreview(newCoverUrl);
         }
 
-        // Force refresh from API
+        // Force refresh from API to update the brands list
         fetchBrands();
 
         setSnackbar({
           open: true,
-          message: "Brand images updated successfully",
+          message: "Brand updated successfully",
           severity: "success",
         });
 
         // Reset file states
         setNewLogoFile(null);
         setNewCoverFile(null);
+
+        // Exit edit mode
+        setEditMode(false);
       }
     } catch (error) {
-      console.error("Error updating brand images:", error);
+      console.error("Error updating brand:", error);
       console.error("Error details:", error.response?.data || error.message);
       setSnackbar({
         open: true,
         message:
-          "Failed to update brand images: " +
+          "Failed to update brand: " +
           (error.response?.data?.message || error.message),
-        severity: "error",
-      });
-    } finally {
-      setImageLoading(false);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      // First update the brand data
-      await axios.put(
-        `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}`,
-        editedBrand
-      );
-      console.log("Brand data update response:", editedBrand);
-      // Then update images if needed
-      if (newLogoFile || newCoverFile) {
-        await handleUpdateImages();
-      }
-
-      setSnackbar({
-        open: true,
-        message: "Brand updated successfully",
-        severity: "success",
-      });
-
-      fetchBrands();
-      setSelectedBrand({
-        ...editedBrand,
-        brandlogo: selectedBrand.brandlogo,
-        coverPhoto: selectedBrand.coverPhoto,
-      });
-      setEditMode(false);
-    } catch (error) {
-      console.error("Error updating brand:", error);
-      setSnackbar({
-        open: true,
-        message: "Failed to update brand",
         severity: "error",
       });
     }
