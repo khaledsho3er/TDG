@@ -31,12 +31,14 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       dimensions: "",
       images: [],
       mainImage: null,
+      productId: null, // Add productId to each variant
     },
   ]);
   const [currentVariant, setCurrentVariant] = useState(0);
   const [imagePreviews, setImagePreviews] = useState([[]]);
   const [skuOptions, setSkuOptions] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [productId, setProductId] = useState(null); // Store the product ID
 
   // Fetch SKUs when dialog opens
   useEffect(() => {
@@ -58,12 +60,22 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           dimensions: "",
           images: [],
           mainImage: null,
+          productId: null,
         },
       ]);
       setCurrentVariant(0);
       setImagePreviews([[]]);
+      setProductId(null);
     }
   }, [open, sku]);
+
+  // Fetch product ID when SKU changes
+  useEffect(() => {
+    const currentSku = variants[currentVariant]?.sku;
+    if (currentSku) {
+      fetchProductIdBySku(currentSku);
+    }
+  }, [variants, currentVariant]);
 
   const fetchSkus = async () => {
     try {
@@ -88,6 +100,34 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     }
   };
 
+  // New function to fetch product ID by SKU
+  const fetchProductIdBySku = async (sku) => {
+    try {
+      const response = await axios.get(
+        `https://api.thedesigngrit.com/api/product-variants/product-by-sku/${sku}`
+      );
+
+      if (response.data && response.data.productId) {
+        // Update the productId in the current variant
+        const updatedVariants = [...variants];
+        updatedVariants[currentVariant] = {
+          ...updatedVariants[currentVariant],
+          productId: response.data.productId,
+        };
+        setVariants(updatedVariants);
+
+        // Also store the productId at the component level
+        setProductId(response.data.productId);
+
+        console.log(`Product ID for SKU ${sku}: ${response.data.productId}`);
+      } else {
+        console.warn(`No product ID found for SKU: ${sku}`);
+      }
+    } catch (err) {
+      console.error(`Error fetching product ID for SKU ${sku}:`, err);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedVariants = [...variants];
@@ -104,8 +144,11 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     updatedVariants[currentVariant] = {
       ...updatedVariants[currentVariant],
       sku: value,
+      productId: null, // Reset productId when SKU changes
     };
     setVariants(updatedVariants);
+
+    // Product ID will be fetched by the useEffect hook
   };
 
   const handleImageUpload = (e) => {
@@ -187,59 +230,93 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       return;
     }
 
+    if (!productId) {
+      alert(
+        "Product ID is required to create variants. Please select a valid SKU."
+      );
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Submit each variant individually
-      for (const variant of variants) {
+      // Create FormData for all variants
+      const formData = new FormData();
+
+      // Prepare variants data with imageIndices to map uploaded images to variants
+      const variantsData = [];
+      let currentImageIndex = 0;
+
+      variants.forEach((variant) => {
         if (variant.sku) {
-          // Create FormData for this variant
-          const formData = new FormData();
+          // Calculate image indices for this variant
+          const imageCount = variant.images.length;
+          const imageIndices = Array.from(
+            { length: imageCount },
+            (_, i) => currentImageIndex + i
+          );
 
-          // Append basic fields
-          formData.append("sku", variant.sku);
-          formData.append("title", variant.title || "");
-          formData.append("color", variant.color || "");
-          formData.append("size", variant.size || "");
-          formData.append("price", variant.price || "");
-          formData.append("dimensions", variant.dimensions || "");
+          // Add variant data with image indices
+          variantsData.push({
+            sku: variant.sku,
+            title: variant.title || "",
+            color: variant.color || "",
+            size: variant.size || "",
+            price: variant.price || "",
+            dimensions: variant.dimensions || "",
+            imageIndices: imageIndices,
+            mainImageIndex: variant.mainImage
+              ? currentImageIndex + variant.images.indexOf(variant.mainImage)
+              : null,
+          });
 
-          // Append images
+          // Update current image index for next variant
+          currentImageIndex += imageCount;
+        }
+      });
+
+      // Append variants as JSON string
+      formData.append("variants", JSON.stringify(variantsData));
+
+      // Append all images from all variants
+      variants.forEach((variant) => {
+        if (variant.sku) {
           variant.images.forEach((image) => {
             formData.append("images", image);
           });
-
-          // Append main image if exists
-          if (variant.mainImage) {
-            formData.append("mainImage", variant.mainImage);
-          }
-
-          // Submit this variant
-          await axios.post(
-            "https://api.thedesigngrit.com/api/product-variants",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-
-          // Call the onSubmit callback if provided
-          if (typeof onSubmit === "function") {
-            onSubmit(variant);
-          }
         }
-      }
+      });
+
+      // Submit to the API with productId in the URL
+      const response = await axios.post(
+        `https://api.thedesigngrit.com/api/product/${productId}/variants`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Variants created successfully:", response.data);
 
       // Show success message
       alert("All variants saved successfully!");
 
+      // Call the onSubmit callback if provided
+      if (typeof onSubmit === "function") {
+        onSubmit(response.data.variants);
+      }
+
       // Close the dialog
       onClose();
     } catch (error) {
-      console.error("Error saving variants:", error);
-      alert("Failed to save variants. Please try again.");
+      console.error("Error creating variants:", error);
+      alert(
+        `Failed to save variants: ${
+          error.response?.data?.error || error.message
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
