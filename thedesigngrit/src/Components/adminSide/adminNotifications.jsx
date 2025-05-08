@@ -498,8 +498,19 @@ const AdminNotificationPage = () => {
                 </Typography>
 
                 {/* Brand Filter */}
-                <FormControl sx={{ m: 1 }}>
-                  <InputLabel id="brand-select-label">Brand</InputLabel>
+                <FormControl
+                  sx={{ m: 1, border: "1px solid #ddd", borderRadius: "4px" }}
+                >
+                  <InputLabel
+                    id="brand-select-label"
+                    sx={{
+                      position: "relative",
+                      top: "-8px",
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    Brand
+                  </InputLabel>
                   <Select
                     labelId="brand-select-label"
                     value={selectedBrand}
