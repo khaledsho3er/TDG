@@ -206,11 +206,13 @@ const BrandManagement = () => {
       if (newCoverFile) {
         formData.append("coverPhoto", newCoverFile);
       }
+
       console.log(
         "Sending image update request with files:",
         newLogoFile ? newLogoFile.name : "No logo file",
         newCoverFile ? newCoverFile.name : "No cover file"
       );
+
       const response = await axios.put(
         `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`,
         formData,
@@ -220,25 +222,35 @@ const BrandManagement = () => {
           },
         }
       );
+
       console.log("Image update response:", response.data);
-      // Update the selected brand with new image paths
-      setSelectedBrand({
+
+      // Update the selected brand with new image paths from response
+      const updatedBrand = {
         ...selectedBrand,
         brandlogo: response.data.brandlogo || selectedBrand.brandlogo,
         coverPhoto: response.data.coverPhoto || selectedBrand.coverPhoto,
-      });
+      };
+
+      setSelectedBrand(updatedBrand);
 
       // Update the brand in the brands list
       setBrands(
         brands.map((brand) =>
-          brand._id === selectedBrand._id
-            ? {
-                ...brand,
-                brandlogo: response.data.brandlogo || brand.brandlogo,
-                coverPhoto: response.data.coverPhoto || brand.coverPhoto,
-              }
-            : brand
+          brand._id === selectedBrand._id ? updatedBrand : brand
         )
+      );
+
+      // Force refresh the image previews
+      setLogoPreview(
+        `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+          updatedBrand.brandlogo
+        }?t=${Date.now()}`
+      );
+      setCoverPreview(
+        `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+          updatedBrand.coverPhoto
+        }?t=${Date.now()}`
       );
 
       setSnackbar({
@@ -382,6 +394,15 @@ const BrandManagement = () => {
   const renderBrandDetails = () => {
     if (!selectedBrand) return null;
 
+    // Generate unique timestamp to force image refresh
+    const timestamp = Date.now();
+    const logoUrl =
+      logoPreview ||
+      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.brandlogo}?t=${timestamp}`;
+    const coverUrl =
+      coverPreview ||
+      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.coverPhoto}?t=${timestamp}`;
+
     return (
       <Box sx={{ p: 2 }}>
         {/* Cover Photo and Logo */}
@@ -391,10 +412,7 @@ const BrandManagement = () => {
             <CardMedia
               component="img"
               height="200"
-              image={
-                coverPreview ||
-                `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.coverPhoto}`
-              }
+              image={coverUrl}
               alt="Cover Photo"
               sx={{
                 borderRadius: 2,
@@ -451,10 +469,7 @@ const BrandManagement = () => {
             onClick={handleLogoClick}
           >
             <img
-              src={
-                logoPreview ||
-                `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.brandlogo}`
-              }
+              src={logoUrl}
               alt={selectedBrand.brandName}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
