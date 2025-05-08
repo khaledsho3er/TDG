@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   Box,
@@ -20,6 +20,7 @@ import {
   Alert,
   CircularProgress,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -29,6 +30,7 @@ import {
   Facebook as FacebookIcon,
   Instagram as InstagramIcon,
   LinkedIn as LinkedInIcon,
+  PhotoCamera,
 } from "@mui/icons-material";
 import { FaTiktok } from "react-icons/fa";
 
@@ -46,10 +48,34 @@ const BrandManagement = () => {
     severity: "success",
   });
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [newLogoFile, setNewLogoFile] = useState(null);
+  const [newCoverFile, setNewCoverFile] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [coverPreview, setCoverPreview] = useState(null);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const logoInputRef = useRef(null);
+  const coverInputRef = useRef(null);
 
   useEffect(() => {
     fetchBrands();
   }, []);
+
+  useEffect(() => {
+    // Reset image previews when selected brand changes
+    if (selectedBrand) {
+      setLogoPreview(
+        selectedBrand.brandlogo
+          ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.brandlogo}`
+          : null
+      );
+      setCoverPreview(
+        selectedBrand.coverPhoto
+          ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.coverPhoto}`
+          : null
+      );
+    }
+  }, [selectedBrand]);
 
   const fetchBrands = async () => {
     try {
@@ -79,6 +105,8 @@ const BrandManagement = () => {
     setOpenDialog(true);
     setEditMode(false);
     setEditedBrand(null);
+    setNewLogoFile(null);
+    setNewCoverFile(null);
   };
 
   const handleCloseDialog = () => {
@@ -87,6 +115,10 @@ const BrandManagement = () => {
     setEditMode(false);
     setEditedBrand(null);
     setConfirmDelete(false);
+    setNewLogoFile(null);
+    setNewCoverFile(null);
+    setLogoPreview(null);
+    setCoverPreview(null);
   };
 
   const handleEditClick = () => {
@@ -132,19 +164,125 @@ const BrandManagement = () => {
     });
   };
 
+  const handleLogoClick = () => {
+    if (editMode) {
+      logoInputRef.current.click();
+    }
+  };
+
+  const handleCoverClick = () => {
+    if (editMode) {
+      coverInputRef.current.click();
+    }
+  };
+
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewLogoFile(file);
+      setLogoPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleCoverChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewCoverFile(file);
+      setCoverPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpdateImages = async () => {
+    if (!newLogoFile && !newCoverFile) return;
+
+    try {
+      setImageLoading(true);
+      const formData = new FormData();
+
+      if (newLogoFile) {
+        formData.append("brandlogo", newLogoFile);
+      }
+
+      if (newCoverFile) {
+        formData.append("coverPhoto", newCoverFile);
+      }
+
+      const response = await axios.put(
+        `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Update the selected brand with new image paths
+      setSelectedBrand({
+        ...selectedBrand,
+        brandlogo: response.data.brandlogo || selectedBrand.brandlogo,
+        coverPhoto: response.data.coverPhoto || selectedBrand.coverPhoto,
+      });
+
+      // Update the brand in the brands list
+      setBrands(
+        brands.map((brand) =>
+          brand._id === selectedBrand._id
+            ? {
+                ...brand,
+                brandlogo: response.data.brandlogo || brand.brandlogo,
+                coverPhoto: response.data.coverPhoto || brand.coverPhoto,
+              }
+            : brand
+        )
+      );
+
+      setSnackbar({
+        open: true,
+        message: "Brand images updated successfully",
+        severity: "success",
+      });
+
+      // Reset file states
+      setNewLogoFile(null);
+      setNewCoverFile(null);
+    } catch (error) {
+      console.error("Error updating brand images:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update brand images",
+        severity: "error",
+      });
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
   const handleSaveChanges = async () => {
     try {
+      // First update the brand data
       await axios.put(
         `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}`,
         editedBrand
       );
+
+      // Then update images if needed
+      if (newLogoFile || newCoverFile) {
+        await handleUpdateImages();
+      }
+
       setSnackbar({
         open: true,
         message: "Brand updated successfully",
         severity: "success",
       });
+
       fetchBrands();
-      setSelectedBrand(editedBrand);
+      setSelectedBrand({
+        ...editedBrand,
+        brandlogo: selectedBrand.brandlogo,
+        coverPhoto: selectedBrand.coverPhoto,
+      });
       setEditMode(false);
     } catch (error) {
       console.error("Error updating brand:", error);
@@ -241,13 +379,55 @@ const BrandManagement = () => {
       <Box sx={{ p: 2 }}>
         {/* Cover Photo and Logo */}
         <Box sx={{ position: "relative", mb: 4 }}>
-          <CardMedia
-            component="img"
-            height="200"
-            image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.coverPhoto}`}
-            alt="Cover Photo"
-            sx={{ borderRadius: 2 }}
-          />
+          {/* Cover Photo */}
+          <Box sx={{ position: "relative" }}>
+            <CardMedia
+              component="img"
+              height="200"
+              image={
+                coverPreview ||
+                `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.coverPhoto}`
+              }
+              alt="Cover Photo"
+              sx={{
+                borderRadius: 2,
+                cursor: editMode ? "pointer" : "default",
+                "&:hover": editMode
+                  ? {
+                      opacity: 0.8,
+                    }
+                  : {},
+              }}
+              onClick={handleCoverClick}
+            />
+            {editMode && (
+              <Tooltip title="Change Cover Photo">
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    backgroundColor: "rgba(255,255,255,0.7)",
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.9)",
+                    },
+                  }}
+                  onClick={handleCoverClick}
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </Tooltip>
+            )}
+            <input
+              type="file"
+              ref={coverInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleCoverChange}
+            />
+          </Box>
+
+          {/* Logo */}
           <Box
             sx={{
               position: "absolute",
@@ -259,15 +439,64 @@ const BrandManagement = () => {
               overflow: "hidden",
               border: "3px solid white",
               boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+              cursor: editMode ? "pointer" : "default",
             }}
+            onClick={handleLogoClick}
           >
             <img
-              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.brandlogo}`}
+              src={
+                logoPreview ||
+                `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedBrand.brandlogo}`
+              }
               alt={selectedBrand.brandName}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
+            {editMode && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "rgba(0,0,0,0.3)",
+                  opacity: 0,
+                  transition: "opacity 0.2s",
+                  "&:hover": {
+                    opacity: 1,
+                  },
+                }}
+              >
+                <PhotoCamera sx={{ color: "white" }} />
+              </Box>
+            )}
+            <input
+              type="file"
+              ref={logoInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleLogoChange}
+            />
           </Box>
         </Box>
+
+        {/* Image Update Button - Only show when in edit mode and images have changed */}
+        {editMode && (newLogoFile || newCoverFile) && (
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateImages}
+              disabled={imageLoading}
+              startIcon={imageLoading ? <CircularProgress size={20} /> : null}
+            >
+              {imageLoading ? "Updating Images..." : "Update Images"}
+            </Button>
+          </Box>
+        )}
 
         {/* Social Media Links */}
         <Box
