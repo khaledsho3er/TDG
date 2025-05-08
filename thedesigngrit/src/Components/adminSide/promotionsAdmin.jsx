@@ -216,7 +216,7 @@ const PromotionsPageAdmin = () => {
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-around",
+              justifyContent: "space-between",
             }}
           >
             <div className="promotion-details">

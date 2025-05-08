@@ -151,7 +151,43 @@ const AdminNotificationPage = () => {
             <p>Admin Dashboard &gt; Notifications</p>
           </div>
         </header>
-
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+            marginBottom: "20px",
+          }}
+        >
+          {/* Brand Filter */}
+          <FormControl sx={{ m: 1 }}>
+            <InputLabel id="brand-select-label">Filter by Brand</InputLabel>
+            <Select
+              labelId="brand-select-label"
+              value={selectedBrand}
+              onChange={handleBrandChange}
+              sx={{
+                width: "200px",
+                color: "#2d2d2d",
+                backgroundColor: "#fff",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#2d2d2d",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#2d2d2d",
+                },
+              }}
+              size="small"
+            >
+              <MenuItem value="">All Brands</MenuItem>
+              {brands.map((brand) => (
+                <MenuItem key={brand._id} value={brand._id}>
+                  {brand.brandName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
         <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
           <Box
             sx={{
@@ -164,43 +200,6 @@ const AdminNotificationPage = () => {
             <Typography variant="h5" fontWeight="600">
               All Notifications
             </Typography>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "end",
-                marginBottom: "20px",
-              }}
-            >
-              {/* Brand Filter */}
-              <FormControl sx={{ m: 1 }}>
-                <InputLabel id="brand-select-label">Filter by Brand</InputLabel>
-                <Select
-                  labelId="brand-select-label"
-                  value={selectedBrand}
-                  onChange={handleBrandChange}
-                  sx={{
-                    width: "200px",
-                    color: "#2d2d2d",
-                    backgroundColor: "#fff",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#2d2d2d",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#2d2d2d",
-                    },
-                  }}
-                  size="small"
-                >
-                  <MenuItem value="">All Brands</MenuItem>
-                  {brands.map((brand) => (
-                    <MenuItem key={brand._id} value={brand._id}>
-                      {brand.brandName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
           </Box>
 
           {notifications.length === 0 ? (
