@@ -83,7 +83,14 @@ const BrandManagement = () => {
       const response = await axios.get(
         "https://api.thedesigngrit.com/api/brand/"
       );
-      setBrands(response.data);
+      const brandsWithTimestamp = response.data.map((brand) => ({
+        ...brand,
+        brandlogo: brand.brandlogo ? `${brand.brandlogo}?t=${Date.now()}` : "",
+        coverPhoto: brand.coverPhoto
+          ? `${brand.coverPhoto}?t=${Date.now()}`
+          : "",
+      }));
+      setBrands(brandsWithTimestamp);
     } catch (error) {
       console.error("Error fetching brands:", error);
       setSnackbar({
@@ -258,7 +265,7 @@ const BrandManagement = () => {
         message: "Brand images updated successfully",
         severity: "success",
       });
-
+      fetchBrands(); // Force refresh from API
       // Reset file states
       setNewLogoFile(null);
       setNewCoverFile(null);
@@ -356,6 +363,7 @@ const BrandManagement = () => {
                 height="140"
                 image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brand.brandlogo}`}
                 alt={brand.brandName}
+                key={brand._id} // Add key to force re-render
                 sx={{
                   objectFit: "contain",
                   padding: 2,
