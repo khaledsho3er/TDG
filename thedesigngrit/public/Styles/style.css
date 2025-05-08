@@ -369,7 +369,13 @@ body::-webkit-scrollbar:hover {
 }
 
 .header-container.sticky {
-  background-color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* or higher to stay above everything */
+  background: white; /* Or whatever background you want */
+  backdrop-filter: blur(10px); /* Nice blur effect */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional, for effect */
 }
 
 .header-top {
@@ -420,7 +426,10 @@ body::-webkit-scrollbar:hover {
   width: 60%;
   font-family: Montserrat;
 }
-
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
 /* Dropdown Container */
 .suggestions-dropdown {
   position: absolute;
