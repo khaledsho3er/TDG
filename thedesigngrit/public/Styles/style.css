@@ -6711,7 +6711,7 @@ input:focus {
   left: -100%;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: white !important;
   z-index: 1000;
   transition: left 1s ease, opacity 0.5s ease;
   opacity: 0;
@@ -6719,6 +6719,7 @@ input:focus {
 .full-page-menu.open {
   left: 0; /* Slide in to the left */
   opacity: 1; /* Fade in */
+  background-color: white !important; /* Ensure background is white */
 }
 
 .backdrop {
@@ -6744,6 +6745,7 @@ input:focus {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background-color: white !important; /* Ensure background is white */
 }
 
 .menu-logo {
@@ -6756,6 +6758,7 @@ input:focus {
 }
 
 .menu-content {
+  background-color: white !important; /* Ensure background is white */
   display: flex;
   flex-direction: column;
   gap: 20px;

@@ -311,25 +311,40 @@ function Header() {
               <Box
                 className={`backdrop ${menuOpen ? "open" : ""}`}
                 onClick={toggleMenu}
+                sx={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  zIndex: 999,
+                  opacity: menuOpen ? 1 : 0,
+                  transition: "opacity 0.5s ease",
+                  pointerEvents: menuOpen ? "auto" : "none",
+                }}
               />
               <Box
                 className={`full-page-menu ${menuOpen ? "open" : ""}`}
                 sx={{
                   position: "fixed",
                   top: 0,
-                  left: "-100%",
+                  left: menuOpen ? 0 : "-100%",
                   width: "100%",
                   height: "100%",
-                  backgroundColor: "white", // Ensure background is always white
-                  zIndex: 1000,
+                  backgroundColor: "white !important", // Ensure background is always white
+                  zIndex: 10000,
                   transition: "left 1s ease, opacity 0.5s ease",
-                  opacity: 0,
+                  opacity: menuOpen ? 1 : 0,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "flex-start",
                   fontFamily: "Montserrat",
+                  overflow: "auto",
                   "& .menu-content": {
+                    backgroundColor: "white",
+                    width: "100%",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -341,13 +356,27 @@ function Header() {
                     flexDirection: "column",
                     gap: "0.5rem",
                     marginTop: "1rem",
+                    backgroundColor: "white",
+                    width: "100%",
+                    alignItems: "center",
                     "@media (max-width: 767px)": {
                       alignItems: "center",
                     },
                   },
                 }}
               >
-                <Box className="menu-header">
+                <Box
+                  className="menu-header"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    backgroundColor: "white",
+                    padding: "10px 20px",
+                    borderBottom: "1px solid #f0f0f0",
+                  }}
+                >
                   <Link to="/home">
                     <img
                       src="/Assets/TDG_Logo_Black.webp"
@@ -361,7 +390,18 @@ function Header() {
                   </IconButton>
                 </Box>
 
-                <Box className="menu-content">
+                <Box
+                  className="menu-content"
+                  sx={{
+                    backgroundColor: "white",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "1rem",
+                    padding: "2rem 1rem",
+                  }}
+                >
                   <Typography
                     onClick={() => navigate("/home")}
                     className="menu-item"
