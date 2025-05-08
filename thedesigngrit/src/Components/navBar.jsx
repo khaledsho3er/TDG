@@ -315,6 +315,15 @@ function Header() {
               <Box
                 className={`full-page-menu ${menuOpen ? "open" : ""}`}
                 sx={{
+                  position: "fixed",
+                  top: 0,
+                  left: "-100%",
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "white", // Ensure background is always white
+                  zIndex: 1000,
+                  transition: "left 1s ease, opacity 0.5s ease",
+                  opacity: 0,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
