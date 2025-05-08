@@ -19,7 +19,6 @@ import {
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const PromotionsPageAdmin = () => {
   const [currentPromotions, setCurrentPromotions] = useState([]);
@@ -35,7 +34,6 @@ const PromotionsPageAdmin = () => {
   const [rejectionDialogOpen, setRejectionDialogOpen] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPromotions();
@@ -46,7 +44,7 @@ const PromotionsPageAdmin = () => {
       const response = await axios.get(
         "https://api.thedesigngrit.com/api/products/admin/products-promotions"
       );
-
+      console.log(response.data);
       // Separate current, past, and future promotions
       const now = new Date();
 
