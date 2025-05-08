@@ -188,23 +188,6 @@ const PromotionsPageAdmin = () => {
             className="promotion-image"
           />
           <div className="discount-badge">{discountPercent}% OFF</div>
-          {product.promotionApproved !== undefined && (
-            <div
-              className={`approval-status`}
-              style={{
-                backgroundColor: product.promotionApproved
-                  ? "#4CAF50" // green for approved
-                  : "#F44336", // red for rejected
-                color: "white",
-                padding: "4px 8px",
-                borderRadius: "4px",
-                display: "inline-block",
-                fontSize: "12px",
-              }}
-            >
-              {product.promotionApproved ? "APPROVED" : "REJECTED"}
-            </div>
-          )}
           {/* Review button for pending promotions */}
           {(!product.promotionApproved ||
             product.promotionApproved === false) && (
@@ -250,9 +233,12 @@ const PromotionsPageAdmin = () => {
                   className="approval-status"
                   style={{
                     backgroundColor: product.promotionApproved
-                      ? "#4CAF50"
-                      : "#F44336",
-                    color: "white",
+                      ? "#d4edda"
+                      : "#f8d7da",
+                    color: product.promotionApproved ? "#155724" : "#721c24",
+                    border: product.promotionApproved
+                      ? "none"
+                      : "1px solid #721c24",
                     padding: "4px 8px",
                     borderRadius: "4px",
                     fontSize: "12px",
