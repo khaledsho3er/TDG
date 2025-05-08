@@ -83,6 +83,8 @@ const BrandManagement = () => {
       const response = await axios.get(
         "https://api.thedesigngrit.com/api/brand/"
       );
+
+      // Add timestamp to image URLs to prevent caching
       const brandsWithTimestamp = response.data.map((brand) => ({
         ...brand,
         brandlogo: brand.brandlogo ? `${brand.brandlogo}?t=${Date.now()}` : "",
@@ -90,6 +92,7 @@ const BrandManagement = () => {
           ? `${brand.coverPhoto}?t=${Date.now()}`
           : "",
       }));
+
       setBrands(brandsWithTimestamp);
     } catch (error) {
       console.error("Error fetching brands:", error);
@@ -208,16 +211,32 @@ const BrandManagement = () => {
 
       if (newLogoFile) {
         formData.append("brandlogo", newLogoFile);
+        console.log(
+          "Adding logo file:",
+          newLogoFile.name,
+          newLogoFile.type,
+          newLogoFile.size
+        );
       }
 
       if (newCoverFile) {
         formData.append("coverPhoto", newCoverFile);
+        console.log(
+          "Adding cover file:",
+          newCoverFile.name,
+          newCoverFile.type,
+          newCoverFile.size
+        );
+      }
+
+      // Log the FormData contents (for debugging)
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
       }
 
       console.log(
-        "Sending image update request with files:",
-        newLogoFile ? newLogoFile.name : "No logo file",
-        newCoverFile ? newCoverFile.name : "No cover file"
+        "Sending request to:",
+        `https://api.thedesigngrit.com/api/brand/${selectedBrand._id}/media`
       );
 
       const response = await axios.put(
@@ -230,42 +249,58 @@ const BrandManagement = () => {
         }
       );
 
-      console.log("Image update response:", response.data);
+      console.log("Full response:", response);
+      console.log("Image update response data:", response.data);
 
-      // Update the selected brand with new image paths from response
-      const updatedBrand = {
-        ...selectedBrand,
-        brandlogo: response.data.brandlogo || selectedBrand.brandlogo,
-        coverPhoto: response.data.coverPhoto || selectedBrand.coverPhoto,
-      };
+      // Check if the response contains the expected fields
+      if (response.data) {
+        console.log("Response brandlogo:", response.data.brandlogo);
+        console.log("Response coverPhoto:", response.data.coverPhoto);
 
-      setSelectedBrand(updatedBrand);
+        // Force refresh from API
+        fetchBrands();
 
-      // Update the brand in the brands list
-      setBrands(
-        brands.map((brand) =>
-          brand._id === selectedBrand._id ? updatedBrand : brand
-        )
-      );
+        // Update the selected brand with new image paths from response
+        const updatedBrand = {
+          ...selectedBrand,
+          brandlogo: response.data.brandlogo || selectedBrand.brandlogo,
+          coverPhoto: response.data.coverPhoto || selectedBrand.coverPhoto,
+        };
 
-      // Force refresh the image previews
-      setLogoPreview(
-        `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-          updatedBrand.brandlogo
-        }?t=${Date.now()}`
-      );
-      setCoverPreview(
-        `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-          updatedBrand.coverPhoto
-        }?t=${Date.now()}`
-      );
+        console.log("Updated brand object:", updatedBrand);
+        setSelectedBrand(updatedBrand);
 
-      setSnackbar({
-        open: true,
-        message: "Brand images updated successfully",
-        severity: "success",
-      });
-      fetchBrands(); // Force refresh from API
+        // Force refresh the image previews with cache-busting
+        if (response.data.brandlogo) {
+          const newLogoUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            response.data.brandlogo
+          }?t=${Date.now()}`;
+          console.log("Setting new logo URL:", newLogoUrl);
+          setLogoPreview(newLogoUrl);
+        }
+
+        if (response.data.coverPhoto) {
+          const newCoverUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            response.data.coverPhoto
+          }?t=${Date.now()}`;
+          console.log("Setting new cover URL:", newCoverUrl);
+          setCoverPreview(newCoverUrl);
+        }
+
+        setSnackbar({
+          open: true,
+          message: "Brand images updated successfully",
+          severity: "success",
+        });
+      } else {
+        console.error("Response data is missing expected fields");
+        setSnackbar({
+          open: true,
+          message: "Response data is missing expected fields",
+          severity: "error",
+        });
+      }
+
       // Reset file states
       setNewLogoFile(null);
       setNewCoverFile(null);
@@ -361,9 +396,11 @@ const BrandManagement = () => {
               <CardMedia
                 component="img"
                 height="140"
-                image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brand.brandlogo}`}
+                image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                  brand.brandlogo
+                }?t=${Date.now()}`}
                 alt={brand.brandName}
-                key={brand._id} // Add key to force re-render
+                key={brand._id + Date.now()} // Add key to force re-render
                 sx={{
                   objectFit: "contain",
                   padding: 2,
