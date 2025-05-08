@@ -1,6 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Box } from "@mui/system";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { IoIosClose } from "react-icons/io";
 
 import CircularProgress from "@mui/material/CircularProgress";
 const AllEmployees = () => {
@@ -9,6 +22,17 @@ const AllEmployees = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 10;
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [currentEmployee, setCurrentEmployee] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    employeeNumber: "",
+    tier: "",
+  });
+
   // Define fetchVendors function and memoize it
   const fetchVendors = useCallback(async () => {
     try {
@@ -25,6 +49,7 @@ const AllEmployees = () => {
   useEffect(() => {
     fetchVendors();
   }, [fetchVendors]); // Include fetchVendors in dependency array
+
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this employee?"))
       return;
@@ -40,10 +65,62 @@ const AllEmployees = () => {
       alert("Failed to delete employee. Please try again.");
     }
   };
+
+  const handleEdit = (vendor) => {
+    setCurrentEmployee(vendor);
+    setFormData({
+      firstName: vendor.firstName || "",
+      lastName: vendor.lastName || "",
+      email: vendor.email || "",
+      phoneNumber: vendor.phoneNumber || "",
+      employeeNumber: vendor.employeeNumber || "",
+      tier: vendor.tier || "1",
+    });
+    setEditDialogOpen(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditDialogOpen(false);
+    setCurrentEmployee(null);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmitUpdate = async () => {
+    try {
+      const response = await axios.put(
+        `https://api.thedesigngrit.com/api/vendors/${currentEmployee._id}`,
+        formData
+      );
+
+      // Update the vendors list with the updated employee
+      setVendors(
+        vendors.map((vendor) =>
+          vendor._id === currentEmployee._id
+            ? { ...vendor, ...formData }
+            : vendor
+        )
+      );
+
+      setEditDialogOpen(false);
+      alert("Employee updated successfully!");
+    } catch (error) {
+      console.error("Error updating employee:", error);
+      alert("Failed to update employee. Please try again.");
+    }
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1);
   };
+
   const handleBrandChange = (e) => {
     setSelectedBrand(e.target.value);
     setCurrentPage(1); // Reset to page 1 when brand changes
@@ -73,6 +150,7 @@ const AllEmployees = () => {
     indexOfLastEmployee
   );
   const totalPages = Math.ceil(filteredVendors.length / employeesPerPage);
+
   return (
     <div style={{ padding: "70px" }}>
       <div className="dashboard-header-title">
@@ -168,13 +246,13 @@ const AllEmployees = () => {
                   <th>Phone Number</th>
                   <th>Tier</th>
                   <th>Brand</th>
-                  <th>Action</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               {vendors.length === 0 ? (
                 <tbody>
                   <tr>
-                    <td colSpan={7} style={{ textAlign: "center" }}>
+                    <td colSpan={8} style={{ textAlign: "center" }}>
                       <CircularProgress style={{ color: "#6b7b58" }} />
                     </td>
                   </tr>
@@ -190,7 +268,20 @@ const AllEmployees = () => {
                       <td>{vendor.phoneNumber}</td>
                       <td>{vendor.tier}</td>
                       <td>{vendor.brandId?.brandName}</td>
-                      <td>
+                      <td style={{ display: "flex", gap: "5px" }}>
+                        <button
+                          onClick={() => handleEdit(vendor)}
+                          style={{
+                            backgroundColor: "#6a8452",
+                            color: "white",
+                            border: "none",
+                            padding: "5px 10px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Update
+                        </button>
                         <button
                           onClick={() => handleDelete(vendor._id)}
                           style={{
@@ -233,6 +324,131 @@ const AllEmployees = () => {
           </Box>
         </div>
       </section>
+
+      {/* Edit Employee Dialog */}
+      <Dialog
+        open={editDialogOpen}
+        onClose={handleCloseEditDialog}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontWeight: "bold", fontFamily: "Horizon" }}>
+              Update Employee
+            </span>
+            <IoIosClose
+              size={30}
+              onClick={handleCloseEditDialog}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <Box sx={{ mt: 2 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "20px",
+              }}
+            >
+              <TextField
+                label="First Name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Phone Number"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Employee Number"
+                name="employeeNumber"
+                value={formData.employeeNumber}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="tier-label">Authority Level (Tier)</InputLabel>
+                <Select
+                  labelId="tier-label"
+                  name="tier"
+                  value={formData.tier}
+                  onChange={handleInputChange}
+                  label="Authority Level (Tier)"
+                >
+                  <MenuItem value="1">
+                    Tier 1 - Notification Page, Orders List
+                  </MenuItem>
+                  <MenuItem value="2">
+                    Tier 2 - Notifications Page, Orders List, all Products,
+                    Promotion, brand profile
+                  </MenuItem>
+                  <MenuItem value="3">
+                    Tier 3 - Full Access + Financials
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button
+            onClick={handleCloseEditDialog}
+            variant="outlined"
+            sx={{
+              color: "#2d2d2d",
+              borderColor: "#2d2d2d",
+              "&:hover": { borderColor: "#2d2d2d", backgroundColor: "#f5f5f5" },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmitUpdate}
+            variant="contained"
+            sx={{
+              backgroundColor: "#6a8452",
+              color: "white",
+              "&:hover": { backgroundColor: "#5a7342" },
+            }}
+          >
+            Update Employee
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
