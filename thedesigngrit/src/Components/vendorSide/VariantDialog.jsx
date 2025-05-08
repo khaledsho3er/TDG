@@ -36,6 +36,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   const [currentVariant, setCurrentVariant] = useState(0);
   const [imagePreviews, setImagePreviews] = useState([[]]);
   const [skuOptions, setSkuOptions] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch SKUs when dialog opens
   useEffect(() => {
@@ -180,20 +181,68 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     setCurrentVariant(variants.length);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!variants[currentVariant].sku) {
       alert("Missing SKU");
       return;
     }
 
-    // Submit all variants
-    variants.forEach((variant) => {
-      if (variant.sku) {
-        onSubmit(variant);
-      }
-    });
+    setIsSubmitting(true);
 
-    onClose();
+    try {
+      // Submit each variant individually
+      for (const variant of variants) {
+        if (variant.sku) {
+          // Create FormData for this variant
+          const formData = new FormData();
+
+          // Append basic fields
+          formData.append("sku", variant.sku);
+          formData.append("title", variant.title || "");
+          formData.append("color", variant.color || "");
+          formData.append("size", variant.size || "");
+          formData.append("price", variant.price || "");
+          formData.append("dimensions", variant.dimensions || "");
+
+          // Append images
+          variant.images.forEach((image) => {
+            formData.append("images", image);
+          });
+
+          // Append main image if exists
+          if (variant.mainImage) {
+            formData.append("mainImage", variant.mainImage);
+          }
+
+          // Submit this variant
+          await axios.post(
+            "https://api.thedesigngrit.com/api/product-variants",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          // Call the onSubmit callback if provided
+          if (typeof onSubmit === "function") {
+            onSubmit(variant);
+          }
+        }
+      }
+
+      // Show success message
+      alert("All variants saved successfully!");
+
+      // Close the dialog
+      onClose();
+    } catch (error) {
+      console.error("Error saving variants:", error);
+      alert("Failed to save variants. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
