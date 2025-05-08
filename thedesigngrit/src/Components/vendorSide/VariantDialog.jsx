@@ -69,7 +69,19 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       const response = await axios.get(
         "https://api.thedesigngrit.com/api/product-variants/skus"
       );
-      setSkuOptions(response.data);
+      // Extract just the SKU strings from the response if it's an array of objects
+      if (
+        Array.isArray(response.data) &&
+        response.data.length > 0 &&
+        typeof response.data[0] === "object"
+      ) {
+        // If the response contains objects with a 'sku' property
+        const skuStrings = response.data.map((item) => item.sku);
+        setSkuOptions(skuStrings);
+      } else {
+        // If the response is already an array of strings or another format
+        setSkuOptions(response.data);
+      }
     } catch (err) {
       console.error("Error fetching SKUs:", err);
     }
