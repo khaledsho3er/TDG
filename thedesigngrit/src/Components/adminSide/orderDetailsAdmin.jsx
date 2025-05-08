@@ -163,7 +163,7 @@ const AdminOrderDetails = ({ order, onBack }) => {
             sx={{
               display: "flex",
               gap: "10px",
-              alignItems: "center",
+              alignItems: "baseline",
               flexDirection: "row",
             }}
           >
@@ -197,7 +197,7 @@ const AdminOrderDetails = ({ order, onBack }) => {
                 "&:hover": {
                   backgroundColor: "#5a6a47",
                 },
-                padding: "10px 20px",
+                padding: "7px 20px",
                 borderRadius: "5px",
                 fontFamily: "Montserrat, sans-serif",
                 fontWeight: "bold",
