@@ -38,7 +38,6 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         top: 50,
         right: isMobile ? 0 : 20,
         width: "360px",
-        height: "55%",
         backgroundColor: "white",
         boxShadow: "-2px 0 5px rgba(0,0,0,0.2)",
         display: "flex",
