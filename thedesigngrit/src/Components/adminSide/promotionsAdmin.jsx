@@ -624,7 +624,6 @@ const PromotionsPageAdmin = () => {
             rows={4}
             value={rejectionReason}
             onChange={(e) => setRejectionReason(e.target.value)}
-            variant="outlined"
           />
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
