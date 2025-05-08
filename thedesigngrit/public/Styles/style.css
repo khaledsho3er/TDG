@@ -6710,16 +6710,18 @@ input:focus {
   top: 0;
   left: -100%;
   width: 100%;
-  height: 100%;
-  background-color: white !important;
-  z-index: 1000;
-  transition: left 1s ease, opacity 0.5s ease;
+  height: 100vh;
+  background-color: white;
+  z-index: 10000;
   opacity: 0;
+  overflow-y: auto; /* In case the menu content is longer */
+  transform: translateX(-100%);
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 .full-page-menu.open {
   left: 0; /* Slide in to the left */
-  opacity: 1; /* Fade in */
-  background-color: white !important; /* Ensure background is white */
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .backdrop {
@@ -6745,7 +6747,6 @@ input:focus {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: white !important; /* Ensure background is white */
 }
 
 .menu-logo {
@@ -6758,7 +6759,6 @@ input:focus {
 }
 
 .menu-content {
-  background-color: white !important; /* Ensure background is white */
   display: flex;
   flex-direction: column;
   gap: 20px;
