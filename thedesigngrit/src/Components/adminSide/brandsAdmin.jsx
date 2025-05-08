@@ -251,45 +251,45 @@ const BrandManagement = () => {
 
       // Check if the response contains the expected fields
       if (response.data) {
-        console.log("Response brandlogo:", response.data.brandlogo);
-        console.log("Response coverPhoto:", response.data.coverPhoto);
+        // Extract the image paths from the response
+        const newBrandLogo = response.data.brandlogo || response.data.brandLogo;
+        const newCoverPhoto = response.data.coverPhoto;
 
-        // Force refresh from API
-        fetchBrands();
+        console.log("Response brandlogo:", newBrandLogo);
+        console.log("Response coverPhoto:", newCoverPhoto);
 
-        // Update the selected brand with new image paths from response
+        // Update the selected brand with new image paths
         const updatedBrand = {
           ...selectedBrand,
-          brandlogo: response.data.brandlogo || selectedBrand.brandlogo,
-          coverPhoto: response.data.coverPhoto || selectedBrand.coverPhoto,
+          brandlogo: newBrandLogo || selectedBrand.brandlogo,
+          coverPhoto: newCoverPhoto || selectedBrand.coverPhoto,
         };
 
         console.log("Updated brand object:", updatedBrand);
         setSelectedBrand(updatedBrand);
 
         // Force refresh the image previews with cache-busting
-        if (response.data.brandlogo) {
-          const newLogoUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-            response.data.brandlogo
-          }?t=${Date.now()}`;
+        if (newBrandLogo) {
+          const newLogoUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${newBrandLogo}?t=${Date.now()}`;
           console.log("Setting new logo URL:", newLogoUrl);
           setLogoPreview(newLogoUrl);
         }
 
-        if (response.data.coverPhoto) {
-          const newCoverUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-            response.data.coverPhoto
-          }?t=${Date.now()}`;
+        if (newCoverPhoto) {
+          const newCoverUrl = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${newCoverPhoto}?t=${Date.now()}`;
           console.log("Setting new cover URL:", newCoverUrl);
           setCoverPreview(newCoverUrl);
         }
+
+        // Force refresh from API
+        fetchBrands();
 
         setSnackbar({
           open: true,
           message: "Brand images updated successfully",
           severity: "success",
         });
-        fetchBrands(); // Force refresh from API
+
         // Reset file states
         setNewLogoFile(null);
         setNewCoverFile(null);
