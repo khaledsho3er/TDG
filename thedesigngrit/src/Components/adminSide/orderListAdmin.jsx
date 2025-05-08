@@ -1,9 +1,9 @@
-import { Box, Select, MenuItem } from "@mui/material";
+import { Box, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
-import OrderDetails from "../vendorSide/orderDetails";
 import { subDays, isWithinInterval, parseISO } from "date-fns";
+import AdminOrderDetails from "./orderDetailsAdmin";
 
 const RecentPurchasesAdmin = () => {
   const [orders, setOrders] = useState([]);
@@ -111,7 +111,7 @@ const RecentPurchasesAdmin = () => {
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
   if (selectedOrder) {
     return (
-      <OrderDetails
+      <AdminOrderDetails
         order={selectedOrder}
         onBack={() => setSelectedOrder(null)}
       />
@@ -174,18 +174,22 @@ const RecentPurchasesAdmin = () => {
           <MenuItem value="Last7Days">Last 7 Days</MenuItem>
           <MenuItem value="Last30Days">Last 30 Days</MenuItem>
         </Select>
-        <Select
-          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
-          value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-        >
-          <MenuItem value="">Filter By Brand</MenuItem>
-          {brands.map((brand) => (
-            <MenuItem key={brand._id} value={brand._id}>
-              {brand.brandName}
-            </MenuItem>
-          ))}
-        </Select>
+
+        <FormControl>
+          <InputLabel id="brand-select-label">Filter By Brand</InputLabel>
+          <Select
+            labelId="brand-select-label"
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+          >
+            <MenuItem value="">All Brands</MenuItem>
+            {brands.map((brand) => (
+              <MenuItem key={brand._id} value={brand._id}>
+                {brand.brandName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
       <div className="recent-purchases">
         <Box
