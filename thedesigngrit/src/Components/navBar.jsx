@@ -231,6 +231,27 @@ function Header() {
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
   };
+  // Sticky Bounce Navbar Script
+
+  window.addEventListener("scroll", function () {
+    const header = document.querySelector(".header-container");
+    if (window.scrollY > 50) {
+      // Scrolled down — make sticky
+      header.classList.add("sticky");
+      header.classList.remove("unsticky");
+    } else {
+      // Near top — remove sticky and bounce
+      if (header.classList.contains("sticky")) {
+        header.classList.remove("sticky");
+        header.classList.add("unsticky");
+
+        // Optional: Remove the unsticky class after animation ends to prevent repeat
+        setTimeout(() => {
+          header.classList.remove("unsticky");
+        }, 600); // match animation duration
+      }
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
