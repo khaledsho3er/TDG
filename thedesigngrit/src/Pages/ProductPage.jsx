@@ -363,91 +363,71 @@ function ProductPage() {
               <div className="color-options">
                 {product.colors && product.colors.length > 0 ? (
                   product.colors.map((color, index) => {
-                    // Color mapping for non-standard color names
-                    const colorMap = {
-                      // Browns
-                      sandybrown: "#F4A460",
-                      "sandy brown": "#F4A460",
-                      "dark brown": "#5C4033",
-                      darkbrown: "#5C4033",
-                      brown: "#A52A2A",
-                      chocolate: "#D2691E",
-                      sienna: "#A0522D",
-                      saddlebrown: "#8B4513",
-                      "saddle brown": "#8B4513",
-                      peru: "#CD853F",
-                      burlywood: "#DEB887",
-                      tan: "#D2B48C",
+                    // Basic color extraction function
+                    const extractColorValue = (colorName) => {
+                      // Convert to lowercase for comparison
+                      const lowerColor = colorName.toLowerCase();
 
-                      // Grays
-                      "deep charcoal": "#333333",
-                      deepcharcoal: "#333333",
-                      charcoal: "#36454F",
-                      "dark gray": "#A9A9A9",
-                      darkgray: "#A9A9A9",
-                      gray: "#808080",
-                      grey: "#808080",
-                      "light gray": "#D3D3D3",
-                      lightgray: "#D3D3D3",
-                      silver: "#C0C0C0",
+                      // Basic color map for common colors
+                      const basicColorMap = {
+                        white: "#FFFFFF",
+                        black: "#000000",
+                        red: "#FF0000",
+                        green: "#008000",
+                        blue: "#0000FF",
+                        yellow: "#FFFF00",
+                        purple: "#800080",
+                        orange: "#FFA500",
+                        pink: "#FFC0CB",
+                        brown: "#A52A2A",
+                        gray: "#808080",
+                        grey: "#808080",
+                        beige: "#F5F5DC",
+                        cream: "#FFFDD0",
+                        gold: "#FFD700",
+                        silver: "#C0C0C0",
+                        navy: "#000080",
+                        olive: "#808000",
+                        maroon: "#800000",
+                        teal: "#008080",
+                        tan: "#D2B48C",
+                        coral: "#FF7F50",
+                        sage: "#BCB88A",
+                        charcoal: "#36454F",
+                      };
 
-                      // Whites and creams
-                      white: "#FFFFFF",
-                      offwhite: "#F8F8FF",
-                      "off white": "#F8F8FF",
-                      ivory: "#FFFFF0",
-                      beige: "#F5F5DC",
-                      cream: "#FFFDD0",
+                      // Try exact match first
+                      if (basicColorMap[lowerColor]) {
+                        return basicColorMap[lowerColor];
+                      }
 
-                      // Blues
-                      navy: "#000080",
-                      "navy blue": "#000080",
-                      "royal blue": "#4169E1",
-                      royalblue: "#4169E1",
-                      "steel blue": "#4682B4",
-                      steelblue: "#4682B4",
-                      "sky blue": "#87CEEB",
-                      skyblue: "#87CEEB",
+                      // Try to extract a basic color from the name
+                      for (const [basicColor, hexValue] of Object.entries(
+                        basicColorMap
+                      )) {
+                        if (lowerColor.includes(basicColor)) {
+                          return hexValue;
+                        }
+                      }
 
-                      // Reds
-                      burgundy: "#800020",
-                      maroon: "#800000",
-                      crimson: "#DC143C",
-                      ruby: "#E0115F",
-
-                      // Greens
-                      "forest green": "#228B22",
-                      forestgreen: "#228B22",
-                      olive: "#808000",
-                      "olive green": "#556B2F",
-                      olivegreen: "#556B2F",
-                      sage: "#BCB88A",
-                      "sage green": "#BCB88A",
-                      sagegreen: "#BCB88A",
-
-                      // Yellows/Oranges
-                      mustard: "#FFDB58",
-                      gold: "#FFD700",
-                      amber: "#FFBF00",
-                      tangerine: "#F28500",
+                      // If no match found, use a neutral gray with the color name displayed
+                      return "#CCCCCC";
                     };
 
-                    // Get the actual color value (either from map or use as is)
-                    const colorValue = colorMap[color.toLowerCase()] || color;
+                    // Get color value
+                    const colorValue = extractColorValue(color);
 
-                    // Check if color is a light/white color
+                    // Check if color is light
                     const isLightColor =
-                      color.toLowerCase() === "white" ||
-                      color.toLowerCase() === "offwhite" ||
-                      color.toLowerCase() === "off white" ||
-                      color.toLowerCase() === "beige" ||
-                      color.toLowerCase() === "cream" ||
-                      color.toLowerCase() === "ivory" ||
                       colorValue === "#FFFFFF" ||
-                      colorValue === "#F8F8FF" ||
                       colorValue === "#F5F5DC" ||
                       colorValue === "#FFFDD0" ||
-                      colorValue === "#FFFFF0";
+                      color.toLowerCase().includes("white") ||
+                      color.toLowerCase().includes("cream") ||
+                      color.toLowerCase().includes("beige") ||
+                      color.toLowerCase().includes("ivory") ||
+                      color.toLowerCase().includes("off white") ||
+                      color.toLowerCase().includes("offwhite");
 
                     return (
                       <div
@@ -458,10 +438,17 @@ function ProductPage() {
                         style={{
                           backgroundColor: colorValue,
                           border: isLightColor ? "1px solid #2d2d2d" : "none",
+                          position: "relative",
                         }}
                         title={color}
                         onClick={() => setSelectedColor(color)}
-                      ></div>
+                      >
+                        {colorValue === "#CCCCCC" && (
+                          <div className="color-name-overlay">
+                            {color.charAt(0)}
+                          </div>
+                        )}
+                      </div>
                     );
                   })
                 ) : (
