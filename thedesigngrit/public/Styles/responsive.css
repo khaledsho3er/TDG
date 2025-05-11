@@ -1212,9 +1212,6 @@
   .partners-second-section ul li {
     font-size: 18px;
   }
-  .product-card {
-    width: 45%;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1516,7 +1513,7 @@
   /* Pagination dots for mobile */
   .bestseller-swiper .swiper-pagination {
     position: relative;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   .bestseller-swiper .swiper-pagination-bullet {
@@ -1529,5 +1526,8 @@
   .bestseller-swiper .swiper-pagination-bullet-active {
     opacity: 1;
     background: #6c7c59;
+  }
+  .product-info-bestseller {
+    padding: 0.5rem 1rem;
   }
 }

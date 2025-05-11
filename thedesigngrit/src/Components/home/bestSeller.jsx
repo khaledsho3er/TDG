@@ -109,7 +109,7 @@ const ProductSlider = () => {
                 />
               </div>
 
-              <div className="product-info">
+              <div className="product-info-bestseller">
                 <h3 className="product-title-bestseller">{product.name}</h3>
                 <div className="product-price-bestseller">
                   {product.salePrice != null ? (
