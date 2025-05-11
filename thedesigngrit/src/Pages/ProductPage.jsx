@@ -394,7 +394,9 @@ function ProductPage() {
 
           <div className="product-details">
             <h1 className="product-title">{activeProduct.name}</h1>
-            <p className="product-brand">{activeProduct.brandName}</p>
+            <p className="product-brand">
+              {activeProduct?.brandName || "Undefined"}
+            </p>
             {selectedVariant && selectedVariant.sku && (
               <p className="product-sku">SKU: {selectedVariant.sku}</p>
             )}
