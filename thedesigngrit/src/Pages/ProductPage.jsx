@@ -110,7 +110,7 @@ function ProductPage() {
   }, [product]);
   // Add this effect to update the selected variant when color/size changes
   useEffect(() => {
-    if (selectedColor && selectedSize && variants.length > 0) {
+    if (selectedColor || selectedSize || variants.length > 0) {
       const matchingVariant = variants.find(
         (variant) =>
           variant.color.toLowerCase() === selectedColor.toLowerCase() &&
@@ -196,17 +196,18 @@ function ProductPage() {
     }));
   };
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = () => {
+    const productToAdd = selectedVariant || product;
     addToCart({
-      id: product._id,
-      name: product.name,
-      unitPrice: product.salePrice || product.price || 0,
+      id: productToAdd._id,
+      name: productToAdd.title || productToAdd.name,
+      unitPrice: productToAdd.salePrice || productToAdd.price || 0,
       quantity: 1,
-      image: product.mainImage,
-      brandId: product.brandId,
+      image: selectedVariant?.images?.[0] || productToAdd.mainImage,
+      brandId: productToAdd.brandId,
       color: selectedColor || "default",
       size: selectedSize || "default",
-      code: "N/A",
+      code: productToAdd.sku || "N/A",
     });
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
