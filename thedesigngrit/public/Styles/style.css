@@ -3463,9 +3463,8 @@ select {
 .selected-color-text {
   font-family: Montserrat;
   font-size: 14px;
-  margin-top: 8px;
+  margin: 8px 0px;
   color: #2d2d2d;
-  font-weight: 500;
 }
 /* Size Selector Section */
 .size-selector {

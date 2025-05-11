@@ -379,8 +379,8 @@ function ProductPage() {
                           color.toLowerCase() === "#fff" ||
                           color.toLowerCase() === "#f5f5dc" ||
                           color.toLowerCase() === "#fffdd0"
-                            ? "1px solid #2d2d2d"
-                            : "none",
+                            ? "none"
+                            : "1px solid #2d2d2d",
                       }}
                       title={color}
                       onClick={() => setSelectedColor(color)}
