@@ -200,22 +200,27 @@ function ProductPage() {
 
   const handleAddToCart = () => {
     const productToAdd = selectedVariant || product;
-    // Make sure brandId is properly handled
-    const brandIdValue =
-      typeof productToAdd.brandId === "object"
-        ? productToAdd.brandId._id
-        : productToAdd.brandId;
+    // Get the shipping fee safely
+    let shippingFee = 0;
+    if (
+      product.brandId &&
+      typeof product.brandId === "object" &&
+      product.brandId.fees
+    ) {
+      shippingFee = product.brandId.fees;
+    }
+
     addToCart({
       id: productToAdd._id,
       name: productToAdd.title || productToAdd.name,
       unitPrice: productToAdd.salePrice || productToAdd.price || 0,
       quantity: 1,
       image: selectedVariant?.images?.[0] || productToAdd.mainImage,
-      brandId: brandIdValue,
+      brandId: product.brandId,
       color: selectedColor || "default",
       size: selectedSize || "default",
       code: productToAdd.sku || "N/A",
-      shippingFee: product.brandId.fees || 0,
+      shippingFee: shippingFee || productToAdd.brandId.fees || 0,
     });
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
