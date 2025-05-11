@@ -447,28 +447,36 @@ const DashboardVendor = () => {
         <div className="best-sellers-vendor">
           <h3>Best Sellers</h3>
           <hr />
-          {products.length > 0 ? (
-            <ul>
-              {products.map((product, index) => (
-                <li key={index}>
-                  <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
-                    alt={product.name}
-                    onError={(e) => {
-                      e.target.src = "placeholder-image-url"; // Add a placeholder image URL
-                      e.target.onerror = null;
-                    }}
-                  />
-                  {product.name} - LE {product.price} ({product.totalSold}{" "}
-                  sales)
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div style={{ textAlign: "center", padding: "1rem" }}>
-              No best sellers data available
-            </div>
-          )}
+          <div
+            style={{
+              overflowY: "scroll",
+              height: "300px",
+              margin: "8px 0px",
+            }}
+          >
+            {products.length > 0 ? (
+              <ul>
+                {products.map((product, index) => (
+                  <li key={index}>
+                    <img
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
+                      alt={product.name}
+                      onError={(e) => {
+                        e.target.src = "placeholder-image-url"; // Add a placeholder image URL
+                        e.target.onerror = null;
+                      }}
+                    />
+                    {product.name} - LE {product.price} ({product.totalSold}{" "}
+                    sales)
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div style={{ textAlign: "center", padding: "1rem" }}>
+                No best sellers data available
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
