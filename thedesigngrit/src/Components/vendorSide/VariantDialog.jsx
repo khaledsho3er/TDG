@@ -165,10 +165,15 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   // Add function to fetch product details
   const fetchProductDetails = async () => {
     try {
+      console.log("Fetching product details for productId:", productId);
       const response = await axios.get(
         `https://api.thedesigngrit.com/api/products/${productId}`
       );
       if (response.data) {
+        console.log("Product details received:", response.data);
+        console.log("Colors:", response.data.colors);
+        console.log("Sizes:", response.data.sizes);
+
         setProductColors(response.data.colors || []);
         setProductSizes(response.data.sizes || []);
       }
@@ -176,6 +181,15 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       console.error("Error fetching product details:", err);
     }
   };
+
+  // Add useEffect to log when colors and sizes change
+  useEffect(() => {
+    console.log("Product colors updated:", productColors);
+  }, [productColors]);
+
+  useEffect(() => {
+    console.log("Product sizes updated:", productSizes);
+  }, [productSizes]);
 
   // Update handleChange to handle nested dimensions
   const handleChange = (e) => {
@@ -482,11 +496,17 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     label="Color"
                     name="color"
                   >
-                    {productColors.map((color) => (
-                      <MenuItem key={color} value={color}>
-                        {color}
+                    {productColors && productColors.length > 0 ? (
+                      productColors.map((color) => (
+                        <MenuItem key={color} value={color}>
+                          {color}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem value="" disabled>
+                        No colors available
                       </MenuItem>
-                    ))}
+                    )}
                   </Select>
                 </FormControl>
               </Grid>
@@ -499,11 +519,17 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     label="Size"
                     name="size"
                   >
-                    {productSizes.map((size) => (
-                      <MenuItem key={size} value={size}>
-                        {size}
+                    {productSizes && productSizes.length > 0 ? (
+                      productSizes.map((size) => (
+                        <MenuItem key={size} value={size}>
+                          {size}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem value="" disabled>
+                        No sizes available
                       </MenuItem>
-                    ))}
+                    )}
                   </Select>
                 </FormControl>
               </Grid>
@@ -552,16 +578,6 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     type="number"
                     fullWidth
                     value={variants[currentVariant].dimensions.height}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Weight (Kg)"
-                    name="dimensions.weight"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.weight}
                     onChange={handleChange}
                   />
                 </Grid>
