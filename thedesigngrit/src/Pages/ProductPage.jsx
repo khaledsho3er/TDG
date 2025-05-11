@@ -190,7 +190,6 @@ function ProductPage() {
   // Update your product display to use variant data when available
   const displayProduct = selectedVariant || product;
   const displayImages = selectedVariant?.images || product.images;
-  const displayPrice = selectedVariant?.price || product.price;
   const displayTitle = selectedVariant?.title || product.name;
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
@@ -392,8 +391,50 @@ function ProductPage() {
                 )}
               </p>
             </div>
+            {/* Price Display */}
             <p className="product-price">
-              {product.salePrice ? (
+              {selectedVariant ? (
+                // Show only variant pricing when a variant is selected
+                selectedVariant.salePrice ? (
+                  // Variant has sale price
+                  <>
+                    <span
+                      style={{
+                        textDecoration: "line-through",
+                        color: "gray",
+                        marginRight: "8px",
+                      }}
+                    >
+                      {selectedVariant.price > 1000
+                        ? new Intl.NumberFormat("en-US").format(
+                            selectedVariant.price
+                          )
+                        : selectedVariant.price}
+                      .00 E£
+                    </span>
+                    <span style={{ color: "red", fontWeight: "bold" }}>
+                      {selectedVariant.salePrice > 1000
+                        ? new Intl.NumberFormat("en-US").format(
+                            selectedVariant.salePrice
+                          )
+                        : selectedVariant.salePrice}
+                      .00 E£
+                    </span>
+                  </>
+                ) : (
+                  // Variant has only regular price
+                  <>
+                    {selectedVariant.price > 1000
+                      ? new Intl.NumberFormat("en-US").format(
+                          selectedVariant.price
+                        )
+                      : selectedVariant.price}
+                    .00 E£
+                  </>
+                )
+              ) : // Show parent product pricing when no variant is selected
+              product.salePrice ? (
+                // Parent product has sale price
                 <>
                   <span
                     style={{
@@ -402,9 +443,9 @@ function ProductPage() {
                       marginRight: "8px",
                     }}
                   >
-                    {displayPrice > 1000
-                      ? new Intl.NumberFormat("en-US").format(displayPrice)
-                      : displayPrice}
+                    {product.price > 1000
+                      ? new Intl.NumberFormat("en-US").format(product.price)
+                      : product.price}
                     .00 E£
                   </span>
                   <span style={{ color: "red", fontWeight: "bold" }}>
@@ -415,6 +456,7 @@ function ProductPage() {
                   </span>
                 </>
               ) : (
+                // Parent product has only regular price
                 <>
                   {product.price > 1000
                     ? new Intl.NumberFormat("en-US").format(product.price)
