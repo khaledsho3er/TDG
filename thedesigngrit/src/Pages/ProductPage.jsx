@@ -363,16 +363,91 @@ function ProductPage() {
               <div className="color-options">
                 {product.colors && product.colors.length > 0 ? (
                   product.colors.map((color, index) => {
+                    // Color mapping for non-standard color names
+                    const colorMap = {
+                      // Browns
+                      sandybrown: "#F4A460",
+                      "sandy brown": "#F4A460",
+                      "dark brown": "#5C4033",
+                      darkbrown: "#5C4033",
+                      brown: "#A52A2A",
+                      chocolate: "#D2691E",
+                      sienna: "#A0522D",
+                      saddlebrown: "#8B4513",
+                      "saddle brown": "#8B4513",
+                      peru: "#CD853F",
+                      burlywood: "#DEB887",
+                      tan: "#D2B48C",
+
+                      // Grays
+                      "deep charcoal": "#333333",
+                      deepcharcoal: "#333333",
+                      charcoal: "#36454F",
+                      "dark gray": "#A9A9A9",
+                      darkgray: "#A9A9A9",
+                      gray: "#808080",
+                      grey: "#808080",
+                      "light gray": "#D3D3D3",
+                      lightgray: "#D3D3D3",
+                      silver: "#C0C0C0",
+
+                      // Whites and creams
+                      white: "#FFFFFF",
+                      offwhite: "#F8F8FF",
+                      "off white": "#F8F8FF",
+                      ivory: "#FFFFF0",
+                      beige: "#F5F5DC",
+                      cream: "#FFFDD0",
+
+                      // Blues
+                      navy: "#000080",
+                      "navy blue": "#000080",
+                      "royal blue": "#4169E1",
+                      royalblue: "#4169E1",
+                      "steel blue": "#4682B4",
+                      steelblue: "#4682B4",
+                      "sky blue": "#87CEEB",
+                      skyblue: "#87CEEB",
+
+                      // Reds
+                      burgundy: "#800020",
+                      maroon: "#800000",
+                      crimson: "#DC143C",
+                      ruby: "#E0115F",
+
+                      // Greens
+                      "forest green": "#228B22",
+                      forestgreen: "#228B22",
+                      olive: "#808000",
+                      "olive green": "#556B2F",
+                      olivegreen: "#556B2F",
+                      sage: "#BCB88A",
+                      "sage green": "#BCB88A",
+                      sagegreen: "#BCB88A",
+
+                      // Yellows/Oranges
+                      mustard: "#FFDB58",
+                      gold: "#FFD700",
+                      amber: "#FFBF00",
+                      tangerine: "#F28500",
+                    };
+
+                    // Get the actual color value (either from map or use as is)
+                    const colorValue = colorMap[color.toLowerCase()] || color;
+
                     // Check if color is a light/white color
                     const isLightColor =
                       color.toLowerCase() === "white" ||
                       color.toLowerCase() === "offwhite" ||
+                      color.toLowerCase() === "off white" ||
                       color.toLowerCase() === "beige" ||
                       color.toLowerCase() === "cream" ||
-                      color.toLowerCase() === "#ffffff" ||
-                      color.toLowerCase() === "#fff" ||
-                      color.toLowerCase() === "#f5f5dc" ||
-                      color.toLowerCase() === "#fffdd0";
+                      color.toLowerCase() === "ivory" ||
+                      colorValue === "#FFFFFF" ||
+                      colorValue === "#F8F8FF" ||
+                      colorValue === "#F5F5DC" ||
+                      colorValue === "#FFFDD0" ||
+                      colorValue === "#FFFFF0";
 
                     return (
                       <div
@@ -381,7 +456,7 @@ function ProductPage() {
                           selectedColor === color ? "selected" : ""
                         }`}
                         style={{
-                          backgroundColor: color,
+                          backgroundColor: colorValue,
                           border: isLightColor ? "1px solid #2d2d2d" : "none",
                         }}
                         title={color}
