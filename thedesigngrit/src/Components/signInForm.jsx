@@ -47,14 +47,9 @@ function SignInForm() {
       );
 
       setUserSession(response.data.user);
-      console.log("Login successful!", response.data.user);
-      alert("Login successful!");
       navigate("/");
     } catch (error) {
       console.error("Error during sign-in:", error.response || error);
-      alert(
-        error.response?.data?.message || "An error occurred during sign-in"
-      );
     }
   };
 

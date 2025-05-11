@@ -81,11 +81,9 @@ function ContactUs() {
         });
       } else {
         console.error("Error sending message:", result);
-        alert("There was an error sending your message. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("There was an error sending your message. Please try again.");
     }
   };
 

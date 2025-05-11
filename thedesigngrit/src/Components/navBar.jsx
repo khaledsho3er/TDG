@@ -615,6 +615,7 @@ function Header() {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "baseline",
+                  gap: "10px",
                 }}
               >
                 <div>
