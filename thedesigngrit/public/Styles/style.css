@@ -498,6 +498,9 @@ html {
 
 .icon-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap:11px;
 }
 
 .avatar {

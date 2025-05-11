@@ -279,14 +279,16 @@ function Header() {
             />
           </Link>
           <Box sx={{ display: "flex", gap: "1rem", flexDirection: "row" }}>
-            <IconButton onClick={handleFavoritesToggle}>
-              <FavoriteBorderIcon fontSize="20px" />
-            </IconButton>
-            <IconButton onClick={handleCartToggle}>
-              <Badge badgeContent={totalCartItems} color="error">
-                <ShoppingCartIcon fontSize="20px" />
-              </Badge>
-            </IconButton>
+            <div>
+              <IconButton onClick={handleFavoritesToggle}>
+                <FavoriteBorderIcon fontSize="20px" />
+              </IconButton>
+              <IconButton onClick={handleCartToggle}>
+                <Badge badgeContent={totalCartItems} color="error">
+                  <ShoppingCartIcon fontSize="20px" />
+                </Badge>
+              </IconButton>
+            </div>
             <IconButton onClick={toggleMenu}>
               <MenuIcon />
             </IconButton>
@@ -535,14 +537,16 @@ function Header() {
           <Box className="icon-container">
             {userSession ? (
               <>
-                <IconButton onClick={handleFavoritesToggle}>
-                  <FavoriteBorderIcon fontSize="20px" />
-                </IconButton>
-                <IconButton onClick={handleCartToggle}>
-                  <Badge badgeContent={totalCartItems} color="error">
-                    <ShoppingCartIcon fontSize="20px" />
-                  </Badge>
-                </IconButton>
+                <div>
+                  <IconButton onClick={handleFavoritesToggle}>
+                    <FavoriteBorderIcon fontSize="20px" />
+                  </IconButton>
+                  <IconButton onClick={handleCartToggle}>
+                    <Badge badgeContent={totalCartItems} color="error">
+                      <ShoppingCartIcon fontSize="20px" />
+                    </Badge>
+                  </IconButton>
+                </div>
                 <Avatar
                   className="avatar"
                   onClick={handleAvatarClick}
@@ -607,14 +611,16 @@ function Header() {
               </>
             ) : (
               <Box sx={{ display: "inline", gap: "1rem" }}>
-                <IconButton onClick={handleFavoritesToggle}>
-                  <FavoriteBorderIcon fontSize="20px" />
-                </IconButton>
-                <IconButton onClick={handleCartToggle}>
-                  <Badge badgeContent={totalCartItems} color="error">
-                    <ShoppingCartIcon fontSize="20px" />
-                  </Badge>
-                </IconButton>
+                <div>
+                  <IconButton onClick={handleFavoritesToggle}>
+                    <FavoriteBorderIcon fontSize="20px" />
+                  </IconButton>
+                  <IconButton onClick={handleCartToggle}>
+                    <Badge badgeContent={totalCartItems} color="error">
+                      <ShoppingCartIcon fontSize="20px" />
+                    </Badge>
+                  </IconButton>
+                </div>
                 <button
                   variant="contained"
                   onClick={handleLoginClick}
