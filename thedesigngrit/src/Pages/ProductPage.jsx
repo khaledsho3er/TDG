@@ -17,10 +17,9 @@ import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
 import { BsExclamationOctagon } from "react-icons/bs";
-import axios from "axios";
 
 function ProductPage() {
-  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false);
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
   const [showToast, setShowToast] = useState(false);
@@ -37,18 +36,13 @@ function ProductPage() {
   const [expandedSections, setExpandedSections] = useState({});
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const { addToCart } = useCart();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state for when the product is being fetched
+  const [error, setError] = useState(null); // State for handling errors
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewerName, setReviewerName] = useState("");
-
-  // Variant states
-  const [variants, setVariants] = useState([]);
-  const [selectedVariant, setSelectedVariant] = useState(null);
-  const [activeProduct, setActiveProduct] = useState(null);
 
   // Fetch product details by ID
   useEffect(() => {
@@ -56,25 +50,23 @@ function ProductPage() {
       try {
         const response = await fetch(
           `https://api.thedesigngrit.com/api/products/getsingle/${id}`
-        );
+        ); // Make an API call to fetch the product by ID
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
         }
         const data = await response.json();
-        setProduct(data);
-        setActiveProduct(data); // Initialize active product with main product
+        setProduct(data); // Set the fetched product to state
         fetchReviews(data._id);
-        fetchVariants(data._id);
       } catch (error) {
         console.log(error);
-        setError(error.message);
+
+        setError(error.message); // Set error if something goes wrong
       } finally {
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 5000);
       }
     };
-
     const fetchReviews = async (productId) => {
       try {
         const response = await fetch(
@@ -84,61 +76,18 @@ function ProductPage() {
           throw new Error("Failed to fetch reviews");
         }
         const data = await response.json();
-        setReviews(data);
+        setReviews(data); // Assuming the response is an array of reviews
       } catch (error) {
         console.log(error);
         setError(error.message);
       }
     };
 
-    const fetchVariants = async (productId) => {
-      try {
-        const response = await axios.get(
-          `https://api.thedesigngrit.com/api/product-variants/product/${productId}`
-        );
-        if (response.data && response.data.length > 0) {
-          setVariants(response.data);
-          console.log("Variants loaded:", response.data);
-        }
-      } catch (error) {
-        console.log("Error fetching variants:", error);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  // Effect to update active product when variant is selected
-  useEffect(() => {
-    if (!product) return;
-
-    if (!selectedVariant) {
-      setActiveProduct(product);
-      return;
-    }
-
-    // Create a merged product with variant details
-    const variantProduct = {
-      ...product,
-      price: selectedVariant.price || product.price,
-      mainImage:
-        selectedVariant.images && selectedVariant.images.length > 0
-          ? selectedVariant.images[0]
-          : product.mainImage,
-      images:
-        selectedVariant.images?.length > 0
-          ? selectedVariant.images
-          : product.images,
-      stock: selectedVariant.quantity,
-      sku: selectedVariant.sku || product.sku,
-      _variantId: selectedVariant._id,
-    };
-
-    setActiveProduct(variantProduct);
-  }, [product, selectedVariant]);
+    fetchProduct(); // Fetch product on component mount
+  }, [id, error, loading]); // Refetch if the ID in the URL changes
 
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
-  if (!activeProduct) return <div>Product not found</div>;
+  if (!product) return <div>Product not found</div>;
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
@@ -153,16 +102,14 @@ function ProductPage() {
       setSelectedImageIndex(null);
     }, 300);
   };
-
   const handlePrevImage = () => {
     setSelectedImageIndex(
-      (prev) =>
-        (prev - 1 + activeProduct.images.length) % activeProduct.images.length
+      (prev) => (prev - 1 + product.images.length) % product.images.length
     );
   };
 
   const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev + 1) % activeProduct.images.length);
+    setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
   };
 
   const handleToggleSection = (index, type = "general") => {
@@ -178,7 +125,9 @@ function ProductPage() {
       }));
     }
   };
-
+  // const handleColorSelect = (color) => {
+  //   setSelectedColor(color);
+  // };
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -186,78 +135,23 @@ function ProductPage() {
     }));
   };
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-
-    // Find variant with this color and current size (if any)
-    let variant;
-    if (selectedSize) {
-      variant = variants.find(
-        (v) => v.color === color && v.size === selectedSize
-      );
-    }
-
-    // If no variant found with current size, just find one with this color
-    if (!variant) {
-      variant = variants.find((v) => v.color === color);
-    }
-
-    if (variant) {
-      setSelectedVariant(variant);
-      // If this variant has a specific size, select it
-      if (variant.size && variant.size !== selectedSize) {
-        setSelectedSize(variant.size);
-      }
-    }
-  };
-
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-
-    // Find variant with this size and current color (if any)
-    let variant;
-    if (selectedColor) {
-      variant = variants.find(
-        (v) => v.size === size && v.color === selectedColor
-      );
-    }
-
-    // If no variant found with current color, just find one with this size
-    if (!variant) {
-      variant = variants.find((v) => v.size === size);
-    }
-
-    if (variant) {
-      setSelectedVariant(variant);
-      // If this variant has a specific color, select it
-      if (variant.color && variant.color !== selectedColor) {
-        setSelectedColor(variant.color);
-      }
-    }
-  };
-
-  const handleAddToCart = () => {
-    // Check if we have a selected variant
-    const productToAdd = {
-      id: activeProduct._id,
-      name: activeProduct.name,
-      unitPrice: selectedVariant
-        ? selectedVariant.price
-        : activeProduct.salePrice || activeProduct.price || 0,
+  const handleAddToCart = (product) => {
+    addToCart({
+      id: product._id,
+      name: product.name,
+      unitPrice: product.salePrice || product.price || 0,
       quantity: 1,
-      image: activeProduct.mainImage,
-      brandId: activeProduct.brandId,
+      image: product.mainImage,
+      brandId: product.brandId,
       color: selectedColor || "default",
       size: selectedSize || "default",
-      code: selectedVariant ? selectedVariant.sku : activeProduct.sku || "N/A",
-      variantId: selectedVariant ? selectedVariant._id : null,
-    };
-
-    addToCart(productToAdd);
+      code: "N/A",
+    });
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
   };
 
+  //Review Function Post
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     try {
@@ -294,71 +188,10 @@ function ProductPage() {
       console.error("Error submitting review:", error);
     }
   };
-
-  // Extract available colors and sizes from variants
-  const availableColors = [
-    ...new Set(variants.map((v) => v.color).filter(Boolean)),
-  ];
-  const availableSizes = [
-    ...new Set(variants.map((v) => v.size).filter(Boolean)),
-  ];
-
-  // Basic color extraction function
-  const extractColorValue = (colorName) => {
-    if (!colorName) return "#CCCCCC";
-
-    // Convert to lowercase for comparison
-    const lowerColor = colorName.toLowerCase();
-
-    // Basic color map for common colors
-    const basicColorMap = {
-      white: "#FFFFFF",
-      black: "#000000",
-      red: "#FF0000",
-      green: "#008000",
-      blue: "#0000FF",
-      yellow: "#FFFF00",
-      purple: "#800080",
-      orange: "#FFA500",
-      pink: "#FFC0CB",
-      brown: "#A52A2A",
-      gray: "#808080",
-      grey: "#808080",
-      beige: "#F5F5DC",
-      cream: "#FFFDD0",
-      gold: "#FFD700",
-      silver: "#C0C0C0",
-      navy: "#000080",
-      olive: "#808000",
-      maroon: "#800000",
-      teal: "#008080",
-      tan: "#D2B48C",
-      coral: "#FF7F50",
-      sage: "#BCB88A",
-      charcoal: "#36454F",
-    };
-
-    // Try exact match first
-    if (basicColorMap[lowerColor]) {
-      return basicColorMap[lowerColor];
-    }
-
-    // Try to extract a basic color from the name
-    for (const [basicColor, hexValue] of Object.entries(basicColorMap)) {
-      if (lowerColor.includes(basicColor)) {
-        return hexValue;
-      }
-    }
-
-    // If no match found, use a neutral gray with the color name displayed
-    return "#CCCCCC";
-  };
-
   const ratingBreakdown = [5, 4, 3, 2, 1].map((stars) => {
     const count = reviews.filter((r) => r.rating === stars).length;
     return { stars, count };
   });
-
   return (
     <div className="product-page">
       <Header />
@@ -370,14 +203,14 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${activeProduct.mainImage}`}
-              alt={activeProduct.name}
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+              alt={product.name}
               className="product-main-image"
-              onClick={() => handleImageClick(0)}
+              onClick={() => handleImageClick(0)} // Main image click opens modal
             />
             <div className="thumbnail-container">
-              {activeProduct.images?.length ? (
-                activeProduct.images.map((image, index) => (
+              {product.images?.length ? (
+                product.images.map((image, index) => (
                   <img
                     key={index}
                     src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
@@ -393,15 +226,10 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <h1 className="product-title">{activeProduct.name}</h1>
-            <p className="product-brand">
-              {activeProduct?.brandName || "Undefined"}
-            </p>
-            {selectedVariant && selectedVariant.sku && (
-              <p className="product-sku">SKU: {selectedVariant.sku}</p>
-            )}
+            <h1 className="product-title">{product.name}</h1>
+            <p className="product-brand">{product.brandName}</p>
             <br />
-            {activeProduct.readyToShip === true && (
+            {product.readyToShip === true && (
               <div
                 style={{
                   display: "inline-block",
@@ -417,11 +245,7 @@ function ProductPage() {
                 Ready to Ship
               </div>
             )}
-            {(
-              selectedVariant
-                ? selectedVariant.quantity === 0
-                : activeProduct.stock === 0
-            ) ? (
+            {product.stock === 0 ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -439,11 +263,7 @@ function ProductPage() {
               >
                 SOLD OUT
               </Box>
-            ) : (
-                selectedVariant
-                  ? selectedVariant.quantity <= 5
-                  : activeProduct.stock <= 5
-              ) ? (
+            ) : product.stock <= 5 ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -457,13 +277,15 @@ function ProductPage() {
                   backgroundColor: "#FFAC1C",
                   color: "#fff",
                   boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
+                  animation: "pulse 1.5s infinite",
+                  "@keyframes pulse": {
+                    "0%": { transform: "scale(1)", opacity: 1 },
+                    "50%": { transform: "scale(1.05)", opacity: 0.8 },
+                    "100%": { transform: "scale(1)", opacity: 1 },
+                  },
                 }}
               >
-                HURRY UP! Only{" "}
-                {selectedVariant
-                  ? selectedVariant.quantity
-                  : activeProduct.stock}{" "}
-                left
+                HURRY UP!
               </Box>
             ) : null}
             <div
@@ -492,28 +314,19 @@ function ProductPage() {
               </p>
               <p
                 style={{
-                  display: activeProduct.discountPercentage ? "block" : "none",
+                  display: product.discountPercentage ? "block" : "none",
                   alignSelf: "end",
                 }}
               >
-                {activeProduct.discountPercentage ? (
-                  `${activeProduct.discountPercentage}% off`
+                {product.discountPercentage ? (
+                  `${product.discountPercentage}% off`
                 ) : (
                   <span style={{ display: "none" }}></span>
                 )}
               </p>
             </div>
             <p className="product-price">
-              {selectedVariant ? (
-                <>
-                  {selectedVariant.price > 1000
-                    ? new Intl.NumberFormat("en-US").format(
-                        selectedVariant.price
-                      )
-                    : selectedVariant.price}
-                  .00 E£
-                </>
-              ) : activeProduct.salePrice ? (
+              {product.salePrice ? (
                 <>
                   <span
                     style={{
@@ -522,40 +335,86 @@ function ProductPage() {
                       marginRight: "8px",
                     }}
                   >
-                    {activeProduct.price > 1000
-                      ? new Intl.NumberFormat("en-US").format(
-                          activeProduct.price
-                        )
-                      : activeProduct.price}
+                    {product.price > 1000
+                      ? new Intl.NumberFormat("en-US").format(product.price)
+                      : product.price}
                     .00 E£
                   </span>
                   <span style={{ color: "red", fontWeight: "bold" }}>
-                    {activeProduct.salePrice > 1000
-                      ? new Intl.NumberFormat("en-US").format(
-                          activeProduct.salePrice
-                        )
-                      : activeProduct.salePrice}
+                    {product.salePrice > 1000
+                      ? new Intl.NumberFormat("en-US").format(product.salePrice)
+                      : product.salePrice}
                     .00 E£
                   </span>
                 </>
               ) : (
                 <>
-                  {activeProduct.price > 1000
-                    ? new Intl.NumberFormat("en-US").format(activeProduct.price)
-                    : activeProduct.price}
+                  {product.price > 1000
+                    ? new Intl.NumberFormat("en-US").format(product.price)
+                    : product.price}
                   .00 E£
                 </>
               )}
             </p>
 
             <hr />
+            <div className="color-selector">
+              <span className="color-selector-label">Color:</span>
+              <div className="color-options">
+                {product.colors && product.colors.length > 0 ? (
+                  product.colors.map((color, index) => {
+                    // Basic color extraction function
+                    const extractColorValue = (colorName) => {
+                      // Convert to lowercase for comparison
+                      const lowerColor = colorName.toLowerCase();
 
-            {/* Color Selector */}
-            {availableColors.length > 0 && (
-              <div className="color-selector">
-                <span className="color-selector-label">Color:</span>
-                <div className="color-options">
-                  {availableColors.map((color, index) => {
+                      // Basic color map for common colors
+                      const basicColorMap = {
+                        white: "#FFFFFF",
+                        black: "#000000",
+                        red: "#FF0000",
+                        green: "#008000",
+                        blue: "#0000FF",
+                        yellow: "#FFFF00",
+                        purple: "#800080",
+                        orange: "#FFA500",
+                        pink: "#FFC0CB",
+                        brown: "#A52A2A",
+                        gray: "#808080",
+                        grey: "#808080",
+                        beige: "#F5F5DC",
+                        cream: "#FFFDD0",
+                        gold: "#FFD700",
+                        silver: "#C0C0C0",
+                        navy: "#000080",
+                        olive: "#808000",
+                        maroon: "#800000",
+                        teal: "#008080",
+                        tan: "#D2B48C",
+                        coral: "#FF7F50",
+                        sage: "#BCB88A",
+                        charcoal: "#36454F",
+                      };
+
+                      // Try exact match first
+                      if (basicColorMap[lowerColor]) {
+                        return basicColorMap[lowerColor];
+                      }
+
+                      // Try to extract a basic color from the name
+                      for (const [basicColor, hexValue] of Object.entries(
+                        basicColorMap
+                      )) {
+                        if (lowerColor.includes(basicColor)) {
+                          return hexValue;
+                        }
+                      }
+
+                      // If no match found, use a neutral gray with the color name displayed
+                      return "#CCCCCC";
+                    };
+
+                    // Get color value
                     const colorValue = extractColorValue(color);
 
                     // Check if color is light
@@ -566,7 +425,9 @@ function ProductPage() {
                       color.toLowerCase().includes("white") ||
                       color.toLowerCase().includes("cream") ||
                       color.toLowerCase().includes("beige") ||
-                      color.toLowerCase().includes("ivory");
+                      color.toLowerCase().includes("ivory") ||
+                      color.toLowerCase().includes("off white") ||
+                      color.toLowerCase().includes("offwhite");
 
                     return (
                       <div
@@ -576,261 +437,385 @@ function ProductPage() {
                         }`}
                         style={{
                           backgroundColor: colorValue,
-                          border: isLightColor ? "1px solid #ddd" : "none",
+                          border: isLightColor ? "1px solid #2d2d2d" : "none",
+                          position: "relative",
                         }}
-                        onClick={() => handleColorSelect(color)}
                         title={color}
-                      />
+                        onClick={() => setSelectedColor(color)}
+                      >
+                        {colorValue === "#CCCCCC" && (
+                          <div className="color-name-overlay">
+                            {color.charAt(0)}
+                          </div>
+                        )}
+                      </div>
                     );
-                  })}
-                </div>
+                  })
+                ) : (
+                  <p>
+                    This product is only available in one color, so you don't
+                    have to worry about choosing the perfect shade!
+                  </p>
+                )}
               </div>
-            )}
+            </div>
             {selectedColor && (
               <p className="selected-color-text">
                 Selected Color: {selectedColor}
               </p>
             )}
-
-            {/* Size Selector */}
-            {availableSizes.length > 0 && (
-              <div className="size-selector">
-                <span className="size-selector-label">Size:</span>
-                <div className="size-options">
-                  {availableSizes.map((size, index) => (
-                    <div
-                      key={index}
-                      className={`size-box ${
-                        selectedSize === size ? "selected" : ""
-                      }`}
-                      onClick={() => handleSizeSelect(size)}
-                    >
-                      {size}
-                    </div>
-                  ))}
-                </div>
+            <hr />
+            <div className="size-selector">
+              <span className="size-selector-label">Size:</span>
+              <div className="size-options">
+                {product.sizes.map((size, index) => (
+                  <button
+                    key={index}
+                    className={`size-button ${
+                      selectedSize === size ? "selected" : ""
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
-            )}
-            {selectedSize && (
-              <p className="selected-size-text">
-                Selected Size: {selectedSize}
-              </p>
-            )}
-
-            {/* Product Dimensions */}
-            {selectedVariant && selectedVariant.dimensions && (
-              <div className="product-dimensions">
-                <h3>Dimensions:</h3>
-                <ul>
-                  {selectedVariant.dimensions?.length && (
-                    <li>Length: {selectedVariant.dimensions.length} cm</li>
-                  )}
-                  {selectedVariant.dimensions?.width && (
-                    <li>Width: {selectedVariant.dimensions.width} cm</li>
-                  )}
-                  {selectedVariant.dimensions?.height && (
-                    <li>Height: {selectedVariant.dimensions.height} cm</li>
-                  )}
-                  {selectedVariant.dimensions?.weight && (
-                    <li>Weight: {selectedVariant.dimensions.weight} kg</li>
-                  )}
-                </ul>
-              </div>
-            )}
-
-            <div className="product-actions">
+            </div>
+            {selectedSize && <p>Selected Size: {selectedSize}</p>}
+            <div className="action-buttons">
               <button
-                className="add-to-cart-btn"
-                onClick={handleAddToCart}
-                disabled={
-                  selectedVariant
-                    ? selectedVariant.quantity === 0
-                    : activeProduct.stock === 0
-                }
+                className="action-button button-primary"
+                onClick={() => handleAddToCart(product)}
               >
-                {(
-                  selectedVariant
-                    ? selectedVariant.quantity === 0
-                    : activeProduct.stock === 0
-                )
-                  ? "Out of Stock"
-                  : "Add to Cart"}
+                Add to Cart
               </button>
               <button
-                className="request-info-btn"
-                onClick={() => setShowRequestInfoPopup(true)}
+                className="action-button button-secondary"
+                onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup
               >
                 Request Info
               </button>
             </div>
+            {/* Request Info Popup */}
+            {isRequestInfoOpen && (
+              <RequestInfoPopup
+                open={showRequestInfoPopup}
+                onClose={() => setShowRequestInfoPopup(false)}
+                productId={product} // Pass productId here
+              />
+            )}
+          </div>
+        </div>
 
-            <div className="product-description">
-              <div
-                className={`section-header ${
-                  expandedSections[0] ? "expanded" : ""
-                }`}
-                onClick={() => handleSectionToggle(0)}
-              >
-                <h3>Description</h3>
-                <KeyboardArrowDownIcon
-                  className={`arrow-icon ${
-                    expandedSections[0] ? "rotated" : ""
+        <div className="page-container">
+          {/* Collapsible Info Section */}
+          <div className="collapsible-container">
+            {["Overview", "Dimensions", "BIM/CAD", "Tags"].map(
+              (section, index) => (
+                <div
+                  key={index}
+                  className={`collapsible-section ${
+                    expandedSections[index] ? "open" : ""
                   }`}
-                />
-              </div>
-              {expandedSections[0] && (
-                <div className="section-content">
-                  <p>{activeProduct.description}</p>
+                  onClick={() => handleSectionToggle(index)}
+                >
+                  <div className="collapsible-header">
+                    {section}
+                    <KeyboardArrowDownIcon
+                      className={`collapsible-icon ${
+                        expandedSections[index] ? "rotated" : ""
+                      }`}
+                    />
+                  </div>
+
+                  {/* Content for each section */}
+                  <div className="collapsible-content">
+                    {section === "Overview" && (
+                      <div className="product-contents">
+                        <h5
+                          style={{
+                            fontSize: isMobile ? "20px" : "25px",
+                            marginLeft: "0px",
+                          }}
+                        >
+                          Manufacturer :{product.brandId.brandName}
+                        </h5>
+                        <div className="product-details">
+                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
+                            <span className="label">Collection:</span>
+                            {product.collection}
+                          </p>
+                          {/* <p style={{ fontSize: "20px" }}>
+                            <span className="label">Type:</span> 2 Seater Fabric
+                            Sofa
+                          </p> */}
+                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
+                            <span className="label">Manufacturer Year:</span>{" "}
+                            {product.manufactureYear}
+                          </p>
+                        </div>
+
+                        <p
+                          style={{
+                            fontSize: isMobile ? "13px" : "20px",
+                            textAlign: "justify",
+                          }}
+                        >
+                          {product.description}
+                        </p>
+                      </div>
+                    )}
+                    {section === "Dimensions" && (
+                      <div className="product-contents">
+                        {/* <img src="/Assets/productDemi.webp" alt="Dimensions" /> */}
+                        <p>Width X Length X Height</p>
+                        <p>
+                          <strong>{product.technicalDimensions.width}</strong>{" "}
+                          cm x{"  "}
+                          <strong>
+                            {" "}
+                            {product.technicalDimensions.length}
+                          </strong>{" "}
+                          cm X{"  "}
+                          <strong>
+                            {product.technicalDimensions.height}
+                          </strong>{" "}
+                          cm
+                        </p>
+                        <p>
+                          Weight :{" "}
+                          <strong>{product.technicalDimensions.weight}</strong>{" "}
+                          Kgs
+                        </p>
+                      </div>
+                    )}
+                    {section === "BIM/CAD" && (
+                      <div className="product-contents">
+                        <Button
+                          sx={{
+                            backgroundColor: "transparent",
+                            color: "#2d2d2d",
+                            borderRadius: "10px",
+                            border: "1px solid #2d2d2d",
+                            width: "40%",
+                            padding: "10px 20px",
+                            minWidth: "150px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            textTransform: "none",
+                            "&:hover": {
+                              backgroundColor: "#000",
+                              color: "#fff",
+                            },
+                          }}
+                          onClick={() => {
+                            if (product.cadFile) {
+                              // Create a temporary anchor element
+                              const link = document.createElement("a");
+                              link.href = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.cadFile}`; // Add the URL prefix
+                              link.download = `product_cad_${product._id}`; // Suggested filename
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            } else {
+                              alert("No CAD file available for download");
+                            }
+                          }}
+                        >
+                          {/* Left-aligned image */}
+                          <img
+                            src="/Assets/autocadIcon.webp"
+                            alt="AutoCAD Logo"
+                            style={{
+                              width: "24px",
+                              height: "24px",
+                              marginRight: "10px",
+                            }}
+                          />
+                          {/* Centered text */}
+                          <span>Download CAD File</span>
+                          {/* Right-aligned download icon */}
+                          <FaDownload style={{ marginLeft: "10px" }} />
+                        </Button>
+                      </div>
+                    )}
+                    {/* {section === "Videos" && (
+                      <div className="product-contents">
+                        <iframe
+                          width="560"
+                          height="315"
+                          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                          title="Product Video"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    )} */}
+                    {section === "Tags" && product.tags && (
+                      <div className="span-container">
+                        {product.tags.length > 0 ? (
+                          product.tags.map((tag, index) => (
+                            <span key={index}>{tag}</span>
+                          ))
+                        ) : (
+                          <p>No tags available.</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
+              )
+            )}
+          </div>
+          <div className="right-side-content">
+            <div className="Products-Materials">
+              <h4>NATURAL AND RECYCLED MATERIALS</h4>
+              <ul>
+                <li>R-LENO - Recycled Wool</li>
+                <span>Soft, comfortable, and lightweight</span>
+                <li>Designed to last a long time</li>
+                <span>Resistant materials that are easily washable</span>
+                <li>Waterproof to accompany you even in light rain </li>
+                <span>Flexible, lightweight, and cushioned</span>
+                <li>Inner Sole - Ortholite®</li>
+                <span>Removable and ergonomic</span>
+              </ul>
+            </div>
+            <div className="material-collapsible-container">
+              {[
+                "Delivery & Returns",
+                "Care Instructions",
+                "Product Specifications",
+              ].map((section, index) => (
+                <div key={index} className="material-collapsible-section">
+                  <div
+                    className="material-collapsible-header"
+                    onClick={() => handleToggleSection(index, "material")}
+                  >
+                    {section}
+                    <span className="material-collapsible-icon">
+                      {expandedMaterialSections[index] ? "-" : "+"}
+                    </span>
+                  </div>
+                  {expandedMaterialSections[index] && (
+                    <div className="material-collapsible-content">
+                      {section === "Delivery & Returns" ? (
+                        <ul>
+                          {product.Estimatedtimeleadforcustomization?.split(
+                            /(?<=\w)\s(?=[A-Z])/
+                          ).map((point, idx) => (
+                            <li key={idx}>{point}</li>
+                          ))}
+                        </ul>
+                      ) : section === "Care Instructions" ? (
+                        <ul>
+                          {product.materialCareInstructions
+                            .split("\n")
+                            .map((point, idx) => (
+                              <li key={idx}>{point}</li>
+                            ))}
+                        </ul>
+                      ) : section === "Product Specifications" ? (
+                        <ul>
+                          {product.productSpecificRecommendations
+                            .split("\n")
+                            .map((point, index) => (
+                              <li key={index}>{point.trim()}</li>
+                            ))}
+                        </ul>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
-            <div className="product-materials">
-              <div
-                className={`section-header ${
-                  expandedSections[1] ? "expanded" : ""
-                }`}
-                onClick={() => handleSectionToggle(1)}
-              >
-                <h3>Materials</h3>
-                <KeyboardArrowDownIcon
-                  className={`arrow-icon ${
-                    expandedSections[1] ? "rotated" : ""
-                  }`}
-                />
-              </div>
-              {expandedSections[1] && (
-                <div className="section-content">
-                  <p>
-                    {activeProduct.materials ||
-                      "Materials information not available"}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="product-shipping">
-              <div
-                className={`section-header ${
-                  expandedSections[2] ? "expanded" : ""
-                }`}
-                onClick={() => handleSectionToggle(2)}
-              >
-                <h3>Shipping & Returns</h3>
-                <KeyboardArrowDownIcon
-                  className={`arrow-icon ${
-                    expandedSections[2] ? "rotated" : ""
-                  }`}
-                />
-              </div>
-              {expandedSections[2] && (
-                <div className="section-content">
-                  <p>
-                    Shipping: We offer standard shipping across Egypt. Delivery
-                    times vary based on location.
-                  </p>
-                  <p>
-                    Returns: Items can be returned within 14 days of delivery.
-                    Please ensure the product is in its original condition.
-                  </p>
-                </div>
-              )}
+            <div className="brand-cursol">
+              <BrandCursol brandId={product.brandId} />
             </div>
           </div>
         </div>
 
-        <div className="reviews-section">
-          <h2>Customer Reviews</h2>
-          <div className="reviews-summary">
-            <div className="average-rating">
-              <h3>
-                {reviews.length > 0
-                  ? (
-                      reviews.reduce((acc, review) => acc + review.rating, 0) /
-                      reviews.length
-                    ).toFixed(1)
-                  : "0.0"}
-              </h3>
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <FaStar
-                    key={star}
-                    color={
-                      reviews.length > 0 &&
-                      star <=
-                        Math.round(
-                          reviews.reduce(
-                            (acc, review) => acc + review.rating,
-                            0
-                          ) / reviews.length
-                        )
-                        ? "#ffc107"
-                        : "#e4e5e9"
-                    }
-                  />
-                ))}
-              </div>
-              <p>{reviews.length} reviews</p>
-            </div>
-            <div className="rating-breakdown">
-              {ratingBreakdown.map(({ stars, count }) => (
-                <div key={stars} className="rating-bar">
-                  <span>{stars} stars</span>
-                  <div className="progress-bar">
-                    <div
-                      className="progress"
-                      style={{
-                        width: `${
-                          reviews.length > 0
-                            ? (count / reviews.length) * 100
-                            : 0
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                  <span>{count}</span>
-                </div>
-              ))}
+        {(isModalOpen || isTransitioning) && (
+          <div className={`modal ${isTransitioning ? "opening" : "closing"}`}>
+            <div className="modal-content">
+              <button className="modal-close" onClick={handleCloseModal}>
+                <IoMdClose size={30} color="#fff" />
+              </button>
+              <button className="modal-prev" onClick={handlePrevImage}>
+                <IoIosArrowBack size={30} color="#fff" />
+              </button>
+              <img
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
+                alt={`${selectedImageIndex + 1}`}
+                className="modal-image"
+              />
+              <button className="modal-next" onClick={handleNextImage}>
+                <IoIosArrowForward size={30} color="#fff" />
+              </button>
             </div>
           </div>
-
-          {userSession && !showReviewForm && (
+        )}
+        <hr
+          style={{
+            width: "90%",
+            textAlign: "center",
+            margin: "auto",
+            marginBottom: "20px",
+          }}
+        ></hr>
+        <div className="reviews-section" style={{ padding: "0 3rem" }}>
+          <h2>Related Products</h2>
+          <RelatedProducts productId={product._id} />
+        </div>
+        <div className="reviews-section">
+          <div className="reviews-header">
+            <h2>Reviews</h2>
             <button
-              className="write-review-btn"
               onClick={() => setShowReviewForm(true)}
+              className="write-review-btn"
             >
               Write a Review
             </button>
-          )}
+          </div>
 
           {showReviewForm && (
-            <div className="review-form">
-              <h3>Write a Review</h3>
-              <form onSubmit={handleSubmitReview}>
-                <div className="form-group">
-                  <label>Your Name</label>
-                  <input
-                    type="text"
-                    value={reviewerName}
-                    onChange={(e) => setReviewerName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Rating</label>
-                  <div className="star-rating">
-                    {[...Array(5)].map((star, index) => {
-                      const ratingValue = index + 1;
-                      return (
-                        <label key={index}>
-                          <input
-                            type="radio"
-                            name="rating"
-                            value={ratingValue}
-                            onClick={() => setRating(ratingValue)}
-                            style={{ display: "none" }}
-                          />
+            <div className="review-form-overlay">
+              <div className="review-form-container">
+                <button
+                  className="close-form-btn"
+                  onClick={() => setShowReviewForm(false)}
+                  style={{ backgroundColor: hover ? "transparent" : "" }}
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                >
+                  <IoMdClose />
+                </button>
+                <h3>Write a Review</h3>
+                <form onSubmit={handleSubmitReview} className="review-form">
+                  <div className="form-group">
+                    <label>Your Name</label>
+                    <input
+                      type="text"
+                      value={reviewerName}
+                      onChange={(e) => setReviewerName(e.target.value)}
+                      required
+                      className="review-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Rating</label>
+                    <div className="star-rating">
+                      {[...Array(5)].map((_, index) => {
+                        const ratingValue = index + 1;
+                        return (
                           <FaStar
+                            key={index}
                             className="star"
                             color={
                               ratingValue <= (hover || rating)
@@ -838,104 +823,69 @@ function ProductPage() {
                                 : "#e4e5e9"
                             }
                             size={24}
+                            onClick={() => setRating(ratingValue)}
                             onMouseEnter={() => setHover(ratingValue)}
-                            onMouseLeave={() => setHover(0)}
+                            onMouseLeave={() => setHover(rating)}
+                            style={{ cursor: "pointer" }}
                           />
-                        </label>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-                <div className="form-group">
-                  <label>Your Review</label>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    required
-                  ></textarea>
-                </div>
-                <div className="form-actions">
+
+                  <div className="form-group">
+                    <label>Your Review</label>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      required
+                      className="review-textarea"
+                      rows={4}
+                    />
+                  </div>
+
                   <button type="submit" className="submit-review-btn">
                     Submit Review
                   </button>
-                  <button
-                    type="button"
-                    className="cancel-review-btn"
-                    onClick={() => setShowReviewForm(false)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           )}
+          <div style={{ paddingLeft: "1rem" }}>
+            <Box className="review-summary">
+              <ReviewBox reviewsData={ratingBreakdown} />
+            </Box>
 
-          <div className="reviews-list">
             {reviews.length > 0 ? (
               reviews.map((review, index) => (
-                <div key={index} className="review-item">
-                  <div className="review-header">
-                    <h4>{review.reviewerName}</h4>
-                    <div className="review-stars">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar
-                          key={i}
-                          color={i < review.rating ? "#ffc107" : "#e4e5e9"}
-                        />
-                      ))}
-                    </div>
-                    <span className="review-date">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="review-comment">{review.comment}</p>
+                <div key={index} className="review-card">
+                  <Box className="review-subtitle">
+                    <h3>{review.reviewerName}</h3>
+                    <p>{review.reviewDate}</p>
+                  </Box>
+                  <p>{"★".repeat(review.rating)}</p>
+                  <p>{review.comment}</p>
                 </div>
               ))
             ) : (
-              <p className="no-reviews">
-                No reviews yet. Be the first to review!
-              </p>
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
+                <BsExclamationOctagon size={50} color="#ccc" />
+
+                <p className="no-reviews">No reviews yet.</p>
+              </div>
             )}
           </div>
         </div>
-
-        <RelatedProducts productId={activeProduct._id} />
-        <BrandCursol />
       </div>
-
-      {/* Image Modal */}
-      {isModalOpen && selectedImageIndex !== null && (
-        <div
-          className={`image-modal ${isTransitioning ? "transitioning" : ""}`}
-          onClick={handleCloseModal}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={handleCloseModal}>
-              <IoMdClose />
-            </button>
-            <button className="prev-image" onClick={handlePrevImage}>
-              <IoIosArrowBack />
-            </button>
-            <img
-              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${activeProduct.images[selectedImageIndex]}`}
-              alt={`Product ${selectedImageIndex + 1}`}
-            />
-            <button className="next-image" onClick={handleNextImage}>
-              <IoIosArrowForward />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Request Info Popup */}
-      <RequestInfoPopup
-        show={showRequestInfoPopup}
-        onClose={() => setShowRequestInfoPopup(false)}
-        productId={activeProduct._id}
-        productName={activeProduct.name}
-        isOpen={isRequestInfoOpen}
-      />
-
       <Footer />
     </div>
   );
