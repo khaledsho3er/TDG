@@ -685,7 +685,7 @@ function ProductPage() {
             marginBottom: "20px",
           }}
         ></hr>
-        <div className="reviews-section">
+        <div className="reviews-section" style={{ padding: "0 3rem" }}>
           <h2>Related Products</h2>
           <RelatedProducts productId={product._id} />
         </div>
