@@ -1489,3 +1489,34 @@
     display: none !important;
   }
 }
+/* Mobile-specific styles for related products */
+@media (max-width: 767px) {
+  .related-products-container {
+    padding: 24px 8px;
+  }
+
+  .related-swiper {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .related-img {
+    height: 200px;
+  }
+
+  .related-name {
+    font-size: 16px;
+  }
+
+  .related-category {
+    font-size: 12px;
+  }
+
+  .related-price {
+    font-size: 14px;
+  }
+
+  .swiper-slide {
+    width: 100% !important;
+  }
+}

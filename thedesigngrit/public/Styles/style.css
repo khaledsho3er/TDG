@@ -4341,11 +4341,13 @@ iframe {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  width: 100%;
 }
 .related-product-image-container {
   position: relative;
   overflow: hidden;
   border-radius: 8px;
+  width: 100%;
 }
 .no-related-products {
   display: flex;
@@ -4355,7 +4357,7 @@ iframe {
   color: #555;
 }
 .related-img {
-  width: 90%;
+  width: 100%;
   height: 256px;
   object-fit: cover;
   transition: transform 0.3s ease;
@@ -4366,6 +4368,7 @@ iframe {
 }
 .related-info {
   padding: 10px;
+  width: 100%;
 }
 .related-category {
   font-size: 14px;

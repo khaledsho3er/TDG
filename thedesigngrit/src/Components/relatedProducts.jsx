@@ -11,8 +11,20 @@ const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   // const [categories, setCategories] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
-  const isMobile = window.innerWidth < 1024;
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // Update window width on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const isMobile = windowWidth < 768;
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       try {
@@ -60,21 +72,25 @@ const RelatedProducts = ({ productId }) => {
       {relatedProducts.length > 0 ? (
         <Swiper
           modules={[Navigation]}
-          spaceBetween={20}
+          spaceBetween={isMobile ? 10 : 20}
+          slidesPerView={isMobile ? 1 : undefined}
           navigation={!isMobile}
           loop={true}
           breakpoints={{
             // When window width is >= 0px
             0: {
               slidesPerView: 1,
+              spaceBetween: 10,
             },
             // When window width is >= 768px (tablet and above)
             768: {
               slidesPerView: 2,
+              spaceBetween: 15,
             },
             // When window width is >= 1024px (desktop)
             1024: {
               slidesPerView: 3,
+              spaceBetween: 20,
             },
           }}
           className="related-swiper"
