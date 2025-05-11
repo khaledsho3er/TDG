@@ -17,9 +17,10 @@ import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
 import { BsExclamationOctagon } from "react-icons/bs";
+import axios from "axios";
 
 function ProductPage() {
-  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
+  const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false);
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
   const [showToast, setShowToast] = useState(false);
@@ -36,13 +37,19 @@ function ProductPage() {
   const [expandedSections, setExpandedSections] = useState({});
   const [expandedMaterialSections, setExpandedMaterialSections] = useState({});
   const { addToCart } = useCart();
-  const [loading, setLoading] = useState(true); // Loading state for when the product is being fetched
-  const [error, setError] = useState(null); // State for handling errors
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [reviewerName, setReviewerName] = useState("");
+
+  // New state for variants
+  const [variants, setVariants] = useState([]);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [availableColors, setAvailableColors] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState([]);
 
   // Fetch product details by ID
   useEffect(() => {
@@ -50,23 +57,52 @@ function ProductPage() {
       try {
         const response = await fetch(
           `https://api.thedesigngrit.com/api/products/getsingle/${id}`
-        ); // Make an API call to fetch the product by ID
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
         }
         const data = await response.json();
-        setProduct(data); // Set the fetched product to state
+        setProduct(data);
         fetchReviews(data._id);
+
+        // Fetch variants for this product
+        fetchVariants(data._id);
       } catch (error) {
         console.log(error);
-
-        setError(error.message); // Set error if something goes wrong
+        setError(error.message);
       } finally {
         setTimeout(() => {
           setLoading(false);
-        }, 5000);
+        }, 2000);
       }
     };
+
+    const fetchVariants = async (productId) => {
+      try {
+        const response = await axios.get(
+          `https://api.thedesigngrit.com/api/product-variants/product/${productId}`
+        );
+
+        if (response.data && response.data.length > 0) {
+          setVariants(response.data);
+          console.log("Variants loaded:", response.data);
+
+          // Extract unique colors and sizes
+          const colors = [
+            ...new Set(response.data.map((v) => v.color).filter(Boolean)),
+          ];
+          const sizes = [
+            ...new Set(response.data.map((v) => v.size).filter(Boolean)),
+          ];
+
+          setAvailableColors(colors);
+          setAvailableSizes(sizes);
+        }
+      } catch (error) {
+        console.error("Error fetching variants:", error);
+      }
+    };
+
     const fetchReviews = async (productId) => {
       try {
         const response = await fetch(
@@ -76,20 +112,82 @@ function ProductPage() {
           throw new Error("Failed to fetch reviews");
         }
         const data = await response.json();
-        setReviews(data); // Assuming the response is an array of reviews
+        setReviews(data);
       } catch (error) {
         console.log(error);
         setError(error.message);
       }
     };
 
-    fetchProduct(); // Fetch product on component mount
-  }, [id, error, loading]); // Refetch if the ID in the URL changes
+    fetchProduct();
+  }, [id]);
 
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
   if (!product) return <div>Product not found</div>;
 
+  // Handle color selection
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+
+    // Find a variant with this color and the currently selected size (if any)
+    let variant;
+    if (selectedSize) {
+      variant = variants.find(
+        (v) => v.color === color && v.size === selectedSize
+      );
+    }
+
+    // If no variant found with the current size, find any variant with this color
+    if (!variant) {
+      variant = variants.find((v) => v.color === color);
+    }
+
+    if (variant) {
+      setSelectedVariant(variant);
+
+      // If this variant has a size, update the selected size
+      if (variant.size && variant.size !== selectedSize) {
+        setSelectedSize(variant.size);
+      }
+    }
+  };
+
+  // Handle size selection
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+
+    // Find a variant with this size and the currently selected color (if any)
+    let variant;
+    if (selectedColor) {
+      variant = variants.find(
+        (v) => v.size === size && v.color === selectedColor
+      );
+    }
+
+    // If no variant found with the current color, find any variant with this size
+    if (!variant) {
+      variant = variants.find((v) => v.size === size);
+    }
+
+    if (variant) {
+      setSelectedVariant(variant);
+
+      // If this variant has a color, update the selected color
+      if (variant.color && variant.color !== selectedColor) {
+        setSelectedColor(variant.color);
+      }
+    }
+  };
+
   const handleImageClick = (index) => {
+    // If we have a selected variant with images, use those
+    const imagesToUse =
+      selectedVariant &&
+      selectedVariant.images &&
+      selectedVariant.images.length > 0
+        ? selectedVariant.images
+        : product.images;
+
     setSelectedImageIndex(index);
     setIsTransitioning(true);
     setTimeout(() => setIsModalOpen(true), 300);
@@ -102,14 +200,29 @@ function ProductPage() {
       setSelectedImageIndex(null);
     }, 300);
   };
+
   const handlePrevImage = () => {
+    const imagesToUse =
+      selectedVariant &&
+      selectedVariant.images &&
+      selectedVariant.images.length > 0
+        ? selectedVariant.images
+        : product.images;
+
     setSelectedImageIndex(
-      (prev) => (prev - 1 + product.images.length) % product.images.length
+      (prev) => (prev - 1 + imagesToUse.length) % imagesToUse.length
     );
   };
 
   const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev + 1) % product.images.length);
+    const imagesToUse =
+      selectedVariant &&
+      selectedVariant.images &&
+      selectedVariant.images.length > 0
+        ? selectedVariant.images
+        : product.images;
+
+    setSelectedImageIndex((prev) => (prev + 1) % imagesToUse.length);
   };
 
   const handleToggleSection = (index, type = "general") => {
@@ -125,9 +238,7 @@ function ProductPage() {
       }));
     }
   };
-  // const handleColorSelect = (color) => {
-  //   setSelectedColor(color);
-  // };
+
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -135,18 +246,40 @@ function ProductPage() {
     }));
   };
 
-  const handleAddToCart = (product) => {
-    addToCart({
-      id: product._id,
-      name: product.name,
-      unitPrice: product.salePrice || product.price || 0,
-      quantity: 1,
-      image: product.mainImage,
-      brandId: product.brandId,
-      color: selectedColor || "default",
-      size: selectedSize || "default",
-      code: "N/A",
-    });
+  const handleAddToCart = () => {
+    // If we have a selected variant, add that to cart
+    if (selectedVariant) {
+      addToCart({
+        id: selectedVariant._id,
+        name: selectedVariant.title || product.name,
+        unitPrice: selectedVariant.price || product.price,
+        quantity: 1,
+        image:
+          selectedVariant.images && selectedVariant.images.length > 0
+            ? selectedVariant.images[0]
+            : product.mainImage,
+        brandId: product.brandId,
+        color: selectedVariant.color || selectedColor || "default",
+        size: selectedVariant.size || selectedSize || "default",
+        code: selectedVariant.sku || "N/A",
+        productId: product._id, // Add parent product ID
+        isVariant: true,
+      });
+    } else {
+      // Otherwise add the main product
+      addToCart({
+        id: product._id,
+        name: product.name,
+        unitPrice: product.salePrice || product.price || 0,
+        quantity: 1,
+        image: product.mainImage,
+        brandId: product.brandId,
+        color: selectedColor || "default",
+        size: selectedSize || "default",
+        code: "N/A",
+      });
+    }
+
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
   };
@@ -188,10 +321,44 @@ function ProductPage() {
       console.error("Error submitting review:", error);
     }
   };
+
   const ratingBreakdown = [5, 4, 3, 2, 1].map((stars) => {
     const count = reviews.filter((r) => r.rating === stars).length;
     return { stars, count };
   });
+
+  // Determine which images to display based on selected variant
+  const displayImages =
+    selectedVariant &&
+    selectedVariant.images &&
+    selectedVariant.images.length > 0
+      ? selectedVariant.images
+      : product.images;
+
+  const mainImage =
+    selectedVariant &&
+    selectedVariant.images &&
+    selectedVariant.images.length > 0
+      ? selectedVariant.images[0]
+      : product.mainImage;
+
+  // Determine price to display based on selected variant
+  const displayPrice = selectedVariant
+    ? selectedVariant.price
+    : product.salePrice || product.price;
+  const originalPrice = product.price;
+  const showDiscountedPrice = selectedVariant
+    ? selectedVariant.price < originalPrice
+    : product.salePrice && product.salePrice < product.price;
+
+  // Determine stock status
+  const isOutOfStock = selectedVariant
+    ? selectedVariant.quantity === 0
+    : product.stock === 0;
+  const isLowStock = selectedVariant
+    ? selectedVariant.quantity <= 5
+    : product.stock <= 5;
+
   return (
     <div className="product-page">
       <Header />
@@ -203,14 +370,14 @@ function ProductPage() {
         <div className="grid-container">
           <div className="product-image-container">
             <img
-              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-              alt={product.name}
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
+              alt={selectedVariant ? selectedVariant.title : product.name}
               className="product-main-image"
-              onClick={() => handleImageClick(0)} // Main image click opens modal
+              onClick={() => handleImageClick(0)}
             />
             <div className="thumbnail-container">
-              {product.images?.length ? (
-                product.images.map((image, index) => (
+              {displayImages?.length ? (
+                displayImages.map((image, index) => (
                   <img
                     key={index}
                     src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
@@ -226,8 +393,27 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <h1 className="product-title">{product.name}</h1>
-            <p className="product-brand">{product.brandName}</p>
+            {/* Show variant title if selected, otherwise show product name */}
+            <h1 className="product-title">
+              {selectedVariant && selectedVariant.title
+                ? selectedVariant.title
+                : product.name}
+            </h1>
+
+            {/* If variant is selected, show parent product name underneath */}
+            {selectedVariant && selectedVariant.title && (
+              <p className="parent-product-name">{product.name}</p>
+            )}
+
+            <p className="product-brand">
+              {product.brandId?.brandName || product.brandName || ""}
+            </p>
+
+            {/* Show SKU if available */}
+            {selectedVariant && selectedVariant.sku && (
+              <p className="product-sku">SKU: {selectedVariant.sku}</p>
+            )}
+
             <br />
             {product.readyToShip === true && (
               <div
@@ -245,7 +431,7 @@ function ProductPage() {
                 Ready to Ship
               </div>
             )}
-            {product.stock === 0 ? (
+            {isOutOfStock ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -263,7 +449,7 @@ function ProductPage() {
               >
                 SOLD OUT
               </Box>
-            ) : product.stock <= 5 ? (
+            ) : isLowStock ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -326,7 +512,7 @@ function ProductPage() {
               </p>
             </div>
             <p className="product-price">
-              {product.salePrice ? (
+              {showDiscountedPrice ? (
                 <>
                   <span
                     style={{
@@ -335,34 +521,36 @@ function ProductPage() {
                       marginRight: "8px",
                     }}
                   >
-                    {product.price > 1000
-                      ? new Intl.NumberFormat("en-US").format(product.price)
-                      : product.price}
+                    {originalPrice > 1000
+                      ? new Intl.NumberFormat("en-US").format(originalPrice)
+                      : originalPrice}
                     .00 E£
                   </span>
                   <span style={{ color: "red", fontWeight: "bold" }}>
-                    {product.salePrice > 1000
-                      ? new Intl.NumberFormat("en-US").format(product.salePrice)
-                      : product.salePrice}
+                    {displayPrice > 1000
+                      ? new Intl.NumberFormat("en-US").format(displayPrice)
+                      : displayPrice}
                     .00 E£
                   </span>
                 </>
               ) : (
                 <>
-                  {product.price > 1000
-                    ? new Intl.NumberFormat("en-US").format(product.price)
-                    : product.price}
+                  {displayPrice > 1000
+                    ? new Intl.NumberFormat("en-US").format(displayPrice)
+                    : displayPrice}
                   .00 E£
                 </>
               )}
             </p>
 
             <hr />
-            <div className="color-selector">
-              <span className="color-selector-label">Color:</span>
-              <div className="color-options">
-                {product.colors && product.colors.length > 0 ? (
-                  product.colors.map((color, index) => {
+
+            {/* Color selector - only show if we have variants with colors */}
+            {availableColors.length > 0 && (
+              <div className="color-selector">
+                <span className="color-selector-label">Color:</span>
+                <div className="color-options">
+                  {availableColors.map((color, index) => {
                     // Basic color extraction function
                     const extractColorValue = (colorName) => {
                       // Convert to lowercase for comparison
@@ -383,51 +571,19 @@ function ProductPage() {
                         gray: "#808080",
                         grey: "#808080",
                         beige: "#F5F5DC",
-                        cream: "#FFFDD0",
+                        navy: "#000080",
+                        teal: "#008080",
                         gold: "#FFD700",
                         silver: "#C0C0C0",
-                        navy: "#000080",
-                        olive: "#808000",
-                        maroon: "#800000",
-                        teal: "#008080",
-                        tan: "#D2B48C",
-                        coral: "#FF7F50",
-                        sage: "#BCB88A",
-                        charcoal: "#36454F",
+                        bronze: "#CD7F32",
                       };
 
-                      // Try exact match first
-                      if (basicColorMap[lowerColor]) {
-                        return basicColorMap[lowerColor];
-                      }
-
-                      // Try to extract a basic color from the name
-                      for (const [basicColor, hexValue] of Object.entries(
-                        basicColorMap
-                      )) {
-                        if (lowerColor.includes(basicColor)) {
-                          return hexValue;
-                        }
-                      }
-
-                      // If no match found, use a neutral gray with the color name displayed
-                      return "#CCCCCC";
+                      return basicColorMap[lowerColor] || "#CCCCCC"; // Default gray if color not found
                     };
 
-                    // Get color value
                     const colorValue = extractColorValue(color);
-
-                    // Check if color is light
                     const isLightColor =
-                      colorValue === "#FFFFFF" ||
-                      colorValue === "#F5F5DC" ||
-                      colorValue === "#FFFDD0" ||
-                      color.toLowerCase().includes("white") ||
-                      color.toLowerCase().includes("cream") ||
-                      color.toLowerCase().includes("beige") ||
-                      color.toLowerCase().includes("ivory") ||
-                      color.toLowerCase().includes("off white") ||
-                      color.toLowerCase().includes("offwhite");
+                      colorValue === "#FFFFFF" || colorValue === "#F5F5DC";
 
                     return (
                       <div
@@ -437,305 +593,154 @@ function ProductPage() {
                         }`}
                         style={{
                           backgroundColor: colorValue,
-                          border: isLightColor ? "1px solid #2d2d2d" : "none",
-                          position: "relative",
+                          border: isLightColor ? "1px solid #ddd" : "none",
                         }}
+                        onClick={() => handleColorSelect(color)}
                         title={color}
-                        onClick={() => setSelectedColor(color)}
-                      >
-                        {colorValue === "#CCCCCC" && (
-                          <div className="color-name-overlay">
-                            {color.charAt(0)}
-                          </div>
-                        )}
-                      </div>
+                      />
                     );
-                  })
-                ) : (
-                  <p>
-                    This product is only available in one color, so you don't
-                    have to worry about choosing the perfect shade!
-                  </p>
-                )}
+                  })}
+                </div>
               </div>
-            </div>
+            )}
             {selectedColor && (
               <p className="selected-color-text">
                 Selected Color: {selectedColor}
               </p>
             )}
-            <hr />
-            <div className="size-selector">
-              <span className="size-selector-label">Size:</span>
-              <div className="size-options">
-                {product.sizes.map((size, index) => (
-                  <button
-                    key={index}
-                    className={`size-button ${
-                      selectedSize === size ? "selected" : ""
-                    }`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+
+            {/* Size Selector */}
+            {availableSizes.length > 0 && (
+              <div className="size-selector">
+                <span className="size-selector-label">Size:</span>
+                <div className="size-options">
+                  {availableSizes.map((size, index) => (
+                    <div
+                      key={index}
+                      className={`size-box ${
+                        selectedSize === size ? "selected" : ""
+                      }`}
+                      onClick={() => handleSizeSelect(size)}
+                    >
+                      {size}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            {selectedSize && <p>Selected Size: {selectedSize}</p>}
-            <div className="action-buttons">
+            )}
+            {selectedSize && (
+              <p className="selected-size-text">
+                Selected Size: {selectedSize}
+              </p>
+            )}
+
+            {/* Product Dimensions */}
+            {selectedVariant && selectedVariant.dimensions && (
+              <div className="product-dimensions">
+                <h3>Dimensions:</h3>
+                <ul>
+                  {selectedVariant.dimensions?.length && (
+                    <li>Length: {selectedVariant.dimensions.length} cm</li>
+                  )}
+                  {selectedVariant.dimensions?.width && (
+                    <li>Width: {selectedVariant.dimensions.width} cm</li>
+                  )}
+                  {selectedVariant.dimensions?.height && (
+                    <li>Height: {selectedVariant.dimensions.height} cm</li>
+                  )}
+                  {selectedVariant.dimensions?.weight && (
+                    <li>Weight: {selectedVariant.dimensions.weight} kg</li>
+                  )}
+                </ul>
+              </div>
+            )}
+
+            <div className="product-actions">
               <button
-                className="action-button button-primary"
-                onClick={() => handleAddToCart(product)}
+                className="add-to-cart-btn"
+                onClick={handleAddToCart}
+                disabled={isOutOfStock}
               >
-                Add to Cart
+                {isOutOfStock ? "Out of Stock" : "Add to Cart"}
               </button>
               <button
-                className="action-button button-secondary"
-                onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup
+                className="request-info-btn"
+                onClick={() => setShowRequestInfoPopup(true)}
               >
                 Request Info
               </button>
             </div>
-            {/* Request Info Popup */}
-            {isRequestInfoOpen && (
-              <RequestInfoPopup
-                open={showRequestInfoPopup}
-                onClose={() => setShowRequestInfoPopup(false)}
-                productId={product} // Pass productId here
-              />
-            )}
-          </div>
-        </div>
 
-        <div className="page-container">
-          {/* Collapsible Info Section */}
-          <div className="collapsible-container">
-            {["Overview", "Dimensions", "BIM/CAD", "Tags"].map(
-              (section, index) => (
-                <div
-                  key={index}
-                  className={`collapsible-section ${
-                    expandedSections[index] ? "open" : ""
+            <div className="product-description">
+              <div
+                className={`section-header ${
+                  expandedSections[0] ? "expanded" : ""
+                }`}
+                onClick={() => handleSectionToggle(0)}
+              >
+                <h3>Description</h3>
+                <KeyboardArrowDownIcon
+                  className={`arrow-icon ${
+                    expandedSections[0] ? "rotated" : ""
                   }`}
-                  onClick={() => handleSectionToggle(index)}
-                >
-                  <div className="collapsible-header">
-                    {section}
-                    <KeyboardArrowDownIcon
-                      className={`collapsible-icon ${
-                        expandedSections[index] ? "rotated" : ""
-                      }`}
-                    />
-                  </div>
-
-                  {/* Content for each section */}
-                  <div className="collapsible-content">
-                    {section === "Overview" && (
-                      <div className="product-contents">
-                        <h5
-                          style={{
-                            fontSize: isMobile ? "20px" : "25px",
-                            marginLeft: "0px",
-                          }}
-                        >
-                          Manufacturer :{product.brandId.brandName}
-                        </h5>
-                        <div className="product-details">
-                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
-                            <span className="label">Collection:</span>
-                            {product.collection}
-                          </p>
-                          {/* <p style={{ fontSize: "20px" }}>
-                            <span className="label">Type:</span> 2 Seater Fabric
-                            Sofa
-                          </p> */}
-                          <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
-                            <span className="label">Manufacturer Year:</span>{" "}
-                            {product.manufactureYear}
-                          </p>
-                        </div>
-
-                        <p
-                          style={{
-                            fontSize: isMobile ? "13px" : "20px",
-                            textAlign: "justify",
-                          }}
-                        >
-                          {product.description}
-                        </p>
-                      </div>
-                    )}
-                    {section === "Dimensions" && (
-                      <div className="product-contents">
-                        {/* <img src="/Assets/productDemi.webp" alt="Dimensions" /> */}
-                        <p>Width X Length X Height</p>
-                        <p>
-                          <strong>{product.technicalDimensions.width}</strong>{" "}
-                          cm x{"  "}
-                          <strong>
-                            {" "}
-                            {product.technicalDimensions.length}
-                          </strong>{" "}
-                          cm X{"  "}
-                          <strong>
-                            {product.technicalDimensions.height}
-                          </strong>{" "}
-                          cm
-                        </p>
-                        <p>
-                          Weight :{" "}
-                          <strong>{product.technicalDimensions.weight}</strong>{" "}
-                          Kgs
-                        </p>
-                      </div>
-                    )}
-                    {section === "BIM/CAD" && (
-                      <div className="product-contents">
-                        <Button
-                          sx={{
-                            backgroundColor: "transparent",
-                            color: "#2d2d2d",
-                            borderRadius: "10px",
-                            border: "1px solid #2d2d2d",
-                            width: "40%",
-                            padding: "10px 20px",
-                            minWidth: "150px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            textTransform: "none",
-                            "&:hover": {
-                              backgroundColor: "#000",
-                              color: "#fff",
-                            },
-                          }}
-                          onClick={() => {
-                            if (product.cadFile) {
-                              // Create a temporary anchor element
-                              const link = document.createElement("a");
-                              link.href = `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.cadFile}`; // Add the URL prefix
-                              link.download = `product_cad_${product._id}`; // Suggested filename
-                              document.body.appendChild(link);
-                              link.click();
-                              document.body.removeChild(link);
-                            } else {
-                              alert("No CAD file available for download");
-                            }
-                          }}
-                        >
-                          {/* Left-aligned image */}
-                          <img
-                            src="/Assets/autocadIcon.webp"
-                            alt="AutoCAD Logo"
-                            style={{
-                              width: "24px",
-                              height: "24px",
-                              marginRight: "10px",
-                            }}
-                          />
-                          {/* Centered text */}
-                          <span>Download CAD File</span>
-                          {/* Right-aligned download icon */}
-                          <FaDownload style={{ marginLeft: "10px" }} />
-                        </Button>
-                      </div>
-                    )}
-                    {/* {section === "Videos" && (
-                      <div className="product-contents">
-                        <iframe
-                          width="560"
-                          height="315"
-                          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                          title="Product Video"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    )} */}
-                    {section === "Tags" && product.tags && (
-                      <div className="span-container">
-                        {product.tags.length > 0 ? (
-                          product.tags.map((tag, index) => (
-                            <span key={index}>{tag}</span>
-                          ))
-                        ) : (
-                          <p>No tags available.</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                />
+              </div>
+              {expandedSections[0] && (
+                <div className="section-content">
+                  <p>{product.description}</p>
                 </div>
-              )
-            )}
-          </div>
-          <div className="right-side-content">
-            <div className="Products-Materials">
-              <h4>NATURAL AND RECYCLED MATERIALS</h4>
-              <ul>
-                <li>R-LENO - Recycled Wool</li>
-                <span>Soft, comfortable, and lightweight</span>
-                <li>Designed to last a long time</li>
-                <span>Resistant materials that are easily washable</span>
-                <li>Waterproof to accompany you even in light rain </li>
-                <span>Flexible, lightweight, and cushioned</span>
-                <li>Inner Sole - Ortholite®</li>
-                <span>Removable and ergonomic</span>
-              </ul>
-            </div>
-            <div className="material-collapsible-container">
-              {[
-                "Delivery & Returns",
-                "Care Instructions",
-                "Product Specifications",
-              ].map((section, index) => (
-                <div key={index} className="material-collapsible-section">
-                  <div
-                    className="material-collapsible-header"
-                    onClick={() => handleToggleSection(index, "material")}
-                  >
-                    {section}
-                    <span className="material-collapsible-icon">
-                      {expandedMaterialSections[index] ? "-" : "+"}
-                    </span>
-                  </div>
-                  {expandedMaterialSections[index] && (
-                    <div className="material-collapsible-content">
-                      {section === "Delivery & Returns" ? (
-                        <ul>
-                          {product.Estimatedtimeleadforcustomization?.split(
-                            /(?<=\w)\s(?=[A-Z])/
-                          ).map((point, idx) => (
-                            <li key={idx}>{point}</li>
-                          ))}
-                        </ul>
-                      ) : section === "Care Instructions" ? (
-                        <ul>
-                          {product.materialCareInstructions
-                            .split("\n")
-                            .map((point, idx) => (
-                              <li key={idx}>{point}</li>
-                            ))}
-                        </ul>
-                      ) : section === "Product Specifications" ? (
-                        <ul>
-                          {product.productSpecificRecommendations
-                            .split("\n")
-                            .map((point, index) => (
-                              <li key={index}>{point.trim()}</li>
-                            ))}
-                        </ul>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
+              )}
             </div>
 
-            <div className="brand-cursol">
-              <BrandCursol brandId={product.brandId} />
+            <div className="product-materials">
+              <div
+                className={`section-header ${
+                  expandedSections[1] ? "expanded" : ""
+                }`}
+                onClick={() => handleSectionToggle(1)}
+              >
+                <h3>Materials</h3>
+                <KeyboardArrowDownIcon
+                  className={`arrow-icon ${
+                    expandedSections[1] ? "rotated" : ""
+                  }`}
+                />
+              </div>
+              {expandedSections[1] && (
+                <div className="section-content">
+                  <p>
+                    {product.materials || "Materials information not available"}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="product-shipping">
+              <div
+                className={`section-header ${
+                  expandedSections[2] ? "expanded" : ""
+                }`}
+                onClick={() => handleSectionToggle(2)}
+              >
+                <h3>Shipping & Returns</h3>
+                <KeyboardArrowDownIcon
+                  className={`arrow-icon ${
+                    expandedSections[2] ? "rotated" : ""
+                  }`}
+                />
+              </div>
+              {expandedSections[2] && (
+                <div className="section-content">
+                  <p>
+                    Shipping: We offer standard shipping across Egypt. Delivery
+                    times vary based on location.
+                  </p>
+                  <p>
+                    Returns: Items can be returned within 14 days of delivery.
+                    Please ensure the product is in its original condition.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -750,7 +755,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} color="#fff" />
               </button>
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${displayImages[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />
