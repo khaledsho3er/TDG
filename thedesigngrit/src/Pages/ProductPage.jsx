@@ -190,8 +190,7 @@ function ProductPage() {
   // Update your product display to use variant data when available
   const displayProduct = selectedVariant || product;
   const displayImages = selectedVariant?.images || product.images;
-  const displayPrice =
-    selectedVariant?.price || product.salePrice || product.price;
+  const displayPrice = selectedVariant?.price || product.price;
   const displayTitle = selectedVariant?.title || product.name;
   const handleSectionToggle = (index) => {
     setExpandedSections((prev) => ({
@@ -394,7 +393,7 @@ function ProductPage() {
               </p>
             </div>
             <p className="product-price">
-              {displayPrice ? (
+              {product.salePrice ? (
                 <>
                   <span
                     style={{
