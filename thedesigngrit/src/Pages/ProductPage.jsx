@@ -200,16 +200,22 @@ function ProductPage() {
 
   const handleAddToCart = () => {
     const productToAdd = selectedVariant || product;
+    // Make sure brandId is properly handled
+    const brandIdValue =
+      typeof productToAdd.brandId === "object"
+        ? productToAdd.brandId._id
+        : productToAdd.brandId;
     addToCart({
       id: productToAdd._id,
       name: productToAdd.title || productToAdd.name,
       unitPrice: productToAdd.salePrice || productToAdd.price || 0,
       quantity: 1,
       image: selectedVariant?.images?.[0] || productToAdd.mainImage,
-      brandId: productToAdd.brandId,
+      brandId: brandIdValue,
       color: selectedColor || "default",
       size: selectedSize || "default",
       code: productToAdd.sku || "N/A",
+      shippingFee: product.brandId.fees || 0,
     });
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
@@ -293,6 +299,15 @@ function ProductPage() {
 
           <div className="product-details">
             <h1 className="product-title">{displayTitle}</h1>
+            <h3
+              style={{
+                marginBottom: "8px",
+                fontWeight: "light",
+                color: "#ccc",
+              }}
+            >
+              {product.name}
+            </h3>
             <p className="product-brand">{product.brandName}</p>
             <br />
             {product.readyToShip === true && (
