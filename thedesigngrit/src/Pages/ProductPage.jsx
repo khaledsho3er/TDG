@@ -361,23 +361,30 @@ function ProductPage() {
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
               <div className="color-options">
-                {product.colors.map((color, index) => (
-                  <div
-                    key={index}
-                    className="color-circle"
-                    style={{
-                      backgroundColor: color,
-                      border:
-                        color === "white" ||
-                        color === "offwhite" ||
-                        color === "beige"
-                          ? "1px solid #2d2d2d"
-                          : "none",
-                    }}
-                    title={color.name}
-                    onClick={() => setSelectedColor(color.name)}
-                  ></div>
-                ))}
+                {product.colors && product.colors.length > 0 ? (
+                  product.colors.map((color, index) => (
+                    <div
+                      key={index}
+                      className="color-circle"
+                      style={{
+                        backgroundColor: color,
+                        border:
+                          color === "white" ||
+                          color === "offwhite" ||
+                          color === "beige"
+                            ? "1px solid #2d2d2d"
+                            : "none",
+                      }}
+                      title={color.name}
+                      onClick={() => setSelectedColor(color.name)}
+                    ></div>
+                  ))
+                ) : (
+                  <p>
+                    This product is only available in one color, so you don't
+                    have to worry about choosing the perfect shade!
+                  </p>
+                )}
               </div>
             </div>
             {selectedColor && <p>Selected Color: {selectedColor}</p>}
