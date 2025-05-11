@@ -365,18 +365,25 @@ function ProductPage() {
                   product.colors.map((color, index) => (
                     <div
                       key={index}
-                      className="color-circle"
+                      className={`color-circle ${
+                        selectedColor === color ? "selected" : ""
+                      }`}
                       style={{
                         backgroundColor: color,
                         border:
-                          color === "white" ||
-                          color === "offwhite" ||
-                          color === "beige"
+                          color.toLowerCase() === "white" ||
+                          color.toLowerCase() === "offwhite" ||
+                          color.toLowerCase() === "beige" ||
+                          color.toLowerCase() === "cream" ||
+                          color.toLowerCase() === "#ffffff" ||
+                          color.toLowerCase() === "#fff" ||
+                          color.toLowerCase() === "#f5f5dc" ||
+                          color.toLowerCase() === "#fffdd0"
                             ? "1px solid #2d2d2d"
                             : "none",
                       }}
-                      title={color.name}
-                      onClick={() => setSelectedColor(color.name)}
+                      title={color}
+                      onClick={() => setSelectedColor(color)}
                     ></div>
                   ))
                 ) : (
@@ -387,7 +394,11 @@ function ProductPage() {
                 )}
               </div>
             </div>
-            {selectedColor && <p>Selected Color: {selectedColor}</p>}
+            {selectedColor && (
+              <p className="selected-color-text">
+                Selected Color: {selectedColor}
+              </p>
+            )}
             <hr />
             <div className="size-selector">
               <span className="size-selector-label">Size:</span>

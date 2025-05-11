@@ -3445,15 +3445,27 @@ select {
   border: 2px solid transparent;
   transition: border-color 0.3s;
   font-family: Montserrat;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .color-circle:hover {
   border-color: #4b6b47;
+  transform: scale(1.1);
 }
 
 .color-circle.selected {
+  border: 2px solid #4b6b47 !important;
+  transform: scale(1.1);
   border-color: #4b6b47;
   font-family: Montserrat;
+}
+
+.selected-color-text {
+  font-family: Montserrat;
+  font-size: 14px;
+  margin-top: 8px;
+  color: #2d2d2d;
+  font-weight: 500;
 }
 /* Size Selector Section */
 .size-selector {
