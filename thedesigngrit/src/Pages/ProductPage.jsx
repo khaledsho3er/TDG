@@ -362,30 +362,33 @@ function ProductPage() {
               <span className="color-selector-label">Color:</span>
               <div className="color-options">
                 {product.colors && product.colors.length > 0 ? (
-                  product.colors.map((color, index) => (
-                    <div
-                      key={index}
-                      className={`color-circle ${
-                        selectedColor === color ? "selected" : ""
-                      }`}
-                      style={{
-                        backgroundColor: color,
-                        border:
-                          color.toLowerCase() === "white" ||
-                          color.toLowerCase() === "offwhite" ||
-                          color.toLowerCase() === "beige" ||
-                          color.toLowerCase() === "cream" ||
-                          color.toLowerCase() === "#ffffff" ||
-                          color.toLowerCase() === "#fff" ||
-                          color.toLowerCase() === "#f5f5dc" ||
-                          color.toLowerCase() === "#fffdd0"
-                            ? "none"
-                            : "1px solid #2d2d2d",
-                      }}
-                      title={color}
-                      onClick={() => setSelectedColor(color)}
-                    ></div>
-                  ))
+                  product.colors.map((color, index) => {
+                    // Check if color is a light/white color
+                    const isLightColor =
+                      color.toLowerCase() === "white" ||
+                      color.toLowerCase() === "offwhite" ||
+                      color.toLowerCase() === "beige" ||
+                      color.toLowerCase() === "cream" ||
+                      color.toLowerCase() === "#ffffff" ||
+                      color.toLowerCase() === "#fff" ||
+                      color.toLowerCase() === "#f5f5dc" ||
+                      color.toLowerCase() === "#fffdd0";
+
+                    return (
+                      <div
+                        key={index}
+                        className={`color-circle ${
+                          selectedColor === color ? "selected" : ""
+                        }`}
+                        style={{
+                          backgroundColor: color,
+                          border: isLightColor ? "1px solid #2d2d2d" : "none",
+                        }}
+                        title={color}
+                        onClick={() => setSelectedColor(color)}
+                      ></div>
+                    );
+                  })
                 ) : (
                   <p>
                     This product is only available in one color, so you don't
