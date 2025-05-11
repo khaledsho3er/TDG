@@ -610,7 +610,13 @@ function Header() {
                 </Menu>
               </>
             ) : (
-              <Box sx={{ display: "inline", gap: "1rem" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "baseline",
+                }}
+              >
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
                     <FavoriteBorderIcon fontSize="20px" />
