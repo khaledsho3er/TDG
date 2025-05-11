@@ -500,7 +500,7 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap:11px;
+  gap: 11px;
 }
 
 .avatar {
@@ -1530,14 +1530,24 @@ html {
   transition: transform 0.3s ease-in-out;
   will-change: transform;
 }
-
-.product-card {
-  flex: 0 0 calc((100% - 2rem) / 5); /* 3 cards per view, minus gaps */
+.bestseller-swiper {
+  width: 100%;
+  overflow: visible;
+  touch-action: pan-y;
+}
+/* .product-card {
+  flex: 0 0 calc((100% - 2rem) / 5); 
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
+} */
+.product-card {
+  width: 100%;
+  transition: transform 0.3s ease;
 }
-
+.product-card:hover {
+  transform: translateY(-5px);
+}
 .product-image-home {
   width: 100%;
   height: 13rem;
@@ -1565,7 +1575,7 @@ html {
 }
 
 .product-info {
-  padding: 0rem 0;
+  padding: 0.5rem 0;
 }
 
 .product-metadata {
@@ -1578,7 +1588,7 @@ html {
 .product-title-bestseller {
   font-size: 0.8rem;
   margin: 0.5rem 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat";
 }
 
 .product-price-bestseller {
