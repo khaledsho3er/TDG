@@ -21,7 +21,15 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
   }, []);
 
   return (
-    <Box sx={{ display: "flex", gap: 2, marginBottom: 2, paddingLeft: 5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        marginBottom: 2,
+        paddingLeft: 5,
+        marginTop: 2,
+      }}
+    >
       <FormControl
         sx={{
           minWidth: 200,

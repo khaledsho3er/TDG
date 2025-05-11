@@ -32,7 +32,6 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
         length: "",
         width: "",
         height: "",
-        weight: "",
       },
       images: [],
       mainImage: null,
@@ -44,6 +43,10 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   const [skuOptions, setSkuOptions] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productId, setProductId] = useState(null);
+
+  // Add state for product colors and sizes
+  const [productColors, setProductColors] = useState([]);
+  const [productSizes, setProductSizes] = useState([]);
 
   // Fetch SKUs when dialog opens
   useEffect(() => {
@@ -66,7 +69,6 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             length: "",
             width: "",
             height: "",
-            weight: "",
           },
           images: [],
           mainImage: null,
@@ -130,6 +132,13 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     }
   }, [currentVariant, variants[currentVariant]?.sku]);
 
+  // Modify useEffect to fetch product colors and sizes when productId is set
+  useEffect(() => {
+    if (productId) {
+      fetchProductDetails();
+    }
+  }, [productId]);
+
   const fetchSkus = async () => {
     try {
       const response = await axios.get(
@@ -150,6 +159,21 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       }
     } catch (err) {
       console.error("Error fetching SKUs:", err);
+    }
+  };
+
+  // Add function to fetch product details
+  const fetchProductDetails = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.thedesigngrit.com/api/products/${productId}`
+      );
+      if (response.data) {
+        setProductColors(response.data.colors || []);
+        setProductSizes(response.data.sizes || []);
+      }
+    } catch (err) {
+      console.error("Error fetching product details:", err);
     }
   };
 
@@ -270,11 +294,13 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     setImagePreviews(updatedPreviews);
   };
 
+  // Modify addVariant to use same SKU and productId as first variant
   const addVariant = () => {
+    const firstVariant = variants[0];
     setVariants([
       ...variants,
       {
-        sku: "",
+        sku: firstVariant.sku,
         title: "",
         color: "",
         size: "",
@@ -283,10 +309,10 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           length: "",
           width: "",
           height: "",
-          weight: "",
         },
         images: [],
         mainImage: null,
+        productId: firstVariant.productId,
       },
     ]);
     setImagePreviews([...imagePreviews, []]);
@@ -329,10 +355,14 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           variantsData.push({
             sku: variant.sku,
             title: variant.title || "",
-            color: variant.color || "",
-            size: variant.size || "",
+            color: variant.color || "", // Now a single color from dropdown
+            size: variant.size || "", // Now a single size from dropdown
             price: variant.price || "",
-            dimensions: JSON.stringify(variant.dimensions), // Convert dimensions object to string
+            dimensions: JSON.stringify({
+              length: variant.dimensions.length || 0,
+              width: variant.dimensions.width || 0,
+              height: variant.dimensions.height || 0,
+            }),
             imageIndices: imageIndices,
             mainImageIndex: variant.mainImage
               ? currentImageIndex + variant.images.indexOf(variant.mainImage)
@@ -444,24 +474,38 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="Colors (comma separated)"
-                  name="color"
-                  fullWidth
-                  value={variants[currentVariant].color}
-                  onChange={handleChange}
-                  placeholder="Ex: Red, Blue, Green"
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Color</InputLabel>
+                  <Select
+                    value={variants[currentVariant].color}
+                    onChange={handleChange}
+                    label="Color"
+                    name="color"
+                  >
+                    {productColors.map((color) => (
+                      <MenuItem key={color} value={color}>
+                        {color}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="Sizes (comma separated)"
-                  name="size"
-                  fullWidth
-                  value={variants[currentVariant].size}
-                  onChange={handleChange}
-                  placeholder="Ex: Small, Medium, Large"
-                />
+                <FormControl fullWidth>
+                  <InputLabel>Size</InputLabel>
+                  <Select
+                    value={variants[currentVariant].size}
+                    onChange={handleChange}
+                    label="Size"
+                    name="size"
+                  >
+                    {productSizes.map((size) => (
+                      <MenuItem key={size} value={size}>
+                        {size}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <TextField
