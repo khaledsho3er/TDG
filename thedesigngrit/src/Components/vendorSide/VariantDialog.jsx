@@ -20,7 +20,13 @@ import axios from "axios";
 // Define the sage green color
 const sageGreen = "#6a8452";
 
-export default function VariantDialog({ open, onClose, onSubmit, sku }) {
+export default function VariantDialog({
+  open,
+  onClose,
+  onSubmit,
+  sku,
+  brandId,
+}) {
   const [variants, setVariants] = useState([
     {
       sku: sku || "",
@@ -146,7 +152,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
   const fetchSkus = async () => {
     try {
       const response = await axios.get(
-        "https://api.thedesigngrit.com/api/product-variants/skus"
+        `https://api.thedesigngrit.com/api/products/getproducts/brand/${brandId}`
       );
       // Extract just the SKU strings from the response if it's an array of objects
       if (

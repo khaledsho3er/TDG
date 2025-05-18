@@ -540,6 +540,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
           onClose={() => setOpenVariantDialog(false)}
           onSubmit={handleVariantSubmit}
           sku={product?.sku}
+          brandId={vendor?.brandId}
         />
         {/* Promotion Modal */}
         {promotionModalOpen && (
