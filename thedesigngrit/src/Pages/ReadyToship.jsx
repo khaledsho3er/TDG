@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import axios from "axios";
 import Header from "../Components/navBar";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -12,6 +12,7 @@ function ReadyToShip() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortOption, setSortOption] = useState("Newest");
+  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     brands: [],
     colors: [],
@@ -21,6 +22,7 @@ function ReadyToShip() {
   // 🟢 Fetch ready-to-ship products
   useEffect(() => {
     const fetchReadyToShipProducts = async () => {
+      setIsLoading(true);
       try {
         const { data } = await axios.get(
           "https://api.thedesigngrit.com/api/products/getproducts/readytoship"
@@ -29,6 +31,8 @@ function ReadyToShip() {
         setFilteredProducts(data);
       } catch (error) {
         console.error("Error fetching ready-to-ship products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -160,7 +164,24 @@ function ReadyToShip() {
           />
         </Grid>
         <Grid item xs={12} md={9} container spacing={3}>
-          {filteredProducts.length > 0 ? (
+          {isLoading ? (
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "300px",
+              }}
+            >
+              <CircularProgress
+                size={60}
+                thickness={4}
+                sx={{ color: "#6b7b58" }}
+              />
+            </Grid>
+          ) : filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
           ) : (
             <Grid item xs={12}>

@@ -180,7 +180,7 @@ function OnSale() {
               <CircularProgress
                 size={60}
                 thickness={4}
-                sx={{ color: "#2d2d2d" }}
+                sx={{ color: "#6b7b58" }}
               />
             </Grid>
           ) : filteredProducts.length > 0 ? (
