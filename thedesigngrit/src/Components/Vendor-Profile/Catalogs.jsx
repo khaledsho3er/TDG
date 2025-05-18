@@ -148,6 +148,7 @@ function VendorCatalogs({ vendorID }) {
                 alignItems: "center",
                 padding: "20px 0",
                 marginTop: "10px",
+                flexDirection: "row-reverse",
               }}
             >
               {/* Pagination dots on the left */}
