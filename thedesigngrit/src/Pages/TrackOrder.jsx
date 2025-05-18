@@ -348,6 +348,7 @@ function TrackOrder() {
                         display: "flex",
                         gap: 2,
                         flexDirection: "column",
+                        width: "60%",
                       }}
                     >
                       <a

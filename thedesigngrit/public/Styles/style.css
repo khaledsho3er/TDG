@@ -4943,7 +4943,7 @@ iframe {
   align-items: center;
   color: #4b6b47;
   border: 1px solid #4b6b47;
-  z-index: 1000;
+  z-index: 999;
 }
 .step-circle-track.completed {
   background-color: #4b6b47; /* Green background for completed steps */
