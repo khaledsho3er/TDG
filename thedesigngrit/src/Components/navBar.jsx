@@ -361,7 +361,6 @@ function Header() {
                   width: "100%",
                   maxHeight: "100vh",
                   overflowY: "auto",
-                  position: "relative",
                   zIndex: 9999,
                   display: "flex",
                   flexDirection: "column",
