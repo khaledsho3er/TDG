@@ -416,9 +416,37 @@ const AdminNotificationPage = () => {
               value={activeTab}
               onChange={handleTabChange}
               aria-label="notification tabs"
+              textColor="inherit"
+              TabIndicatorProps={{
+                style: { backgroundColor: "#2d2d2d", height: 3 },
+              }}
             >
-              <Tab label="Admin Notifications" />
-              <Tab label="Brand Notifications" />
+              <Tab
+                label="Admin Notifications"
+                sx={{
+                  color: "#2d2d2d",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  borderRadius: 1,
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                    border: "1px solid #2d2d2d",
+                  },
+                }}
+              />
+              <Tab
+                label="Brand Notifications"
+                sx={{
+                  color: "#2d2d2d",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  borderRadius: 1,
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                    border: "1px solid #2d2d2d",
+                  },
+                }}
+              />
             </Tabs>
           </Box>
 
