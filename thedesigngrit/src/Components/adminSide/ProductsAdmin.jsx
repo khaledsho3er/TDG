@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
-import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import {
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  CircularProgress,
+  Box,
+} from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,9 +35,11 @@ const ProductPageAdmin = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [productToReview, setProductToReview] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           "https://api.thedesigngrit.com/api/products/getproducts",
@@ -66,6 +75,8 @@ const ProductPageAdmin = () => {
         setProducts(productsWithTypeNames); // Set the products with type names
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -316,300 +327,344 @@ const ProductPageAdmin = () => {
           </Select>
         </FormControl>
       </div>
-      {/* Product List or No Products Message */}
-      <div>
-        <div
-          className="section-header"
-          onClick={() => setShowFalseStatus((prev) => !prev)}
-          style={{
-            margin: "30px 0",
+
+      {/* Loading Indicator */}
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "400px",
+            width: "100%",
           }}
         >
-          <span>Products without approval</span>
-          {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
-        </div>
-        {showFalseStatus && (
-          <div className="false-status-section">
-            {falseStatusProducts.length === 0 ? (
-              <p>No products Not approval.</p>
-            ) : (
-              <div className="product-grid">
-                {falseStatusProducts.map((product) => (
-                  <div className="promotion-card" key={product.id}>
-                    <div className="promotion-image-container">
-                      <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                        alt={product.name}
-                        className="promotion-image"
-                      />
-                      {product.discountPercentage && (
-                        <div className="discount-badge">
-                          {product.discountPercentage}% OFF
-                        </div>
-                      )}
-                    </div>
-                    <div className="promotion-details">
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <h3 className="promotion-details">{product.name}</h3>
-                        <div className="menu-container">
-                          <BsThreeDotsVertical
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent the click from triggering the document listener
-                              toggleMenu(product.id);
-                            }}
-                            className="three-dots-icon"
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
+        </Box>
+      ) : (
+        <>
+          {/* Product List or No Products Message */}
+          <div>
+            <div
+              className="section-header"
+              onClick={() => setShowFalseStatus((prev) => !prev)}
+              style={{
+                margin: "30px 0",
+              }}
+            >
+              <span>Products without approval</span>
+              {showFalseStatus ? <AiOutlineUp /> : <AiOutlineDown />}
+            </div>
+            {showFalseStatus && (
+              <div className="false-status-section">
+                {falseStatusProducts.length === 0 ? (
+                  <p>No products Not approval.</p>
+                ) : (
+                  <div className="product-grid">
+                    {falseStatusProducts.map((product) => (
+                      <div className="promotion-card" key={product.id}>
+                        <div className="promotion-image-container">
+                          <img
+                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                            alt={product.name}
+                            className="promotion-image"
                           />
-                          {menuOpen[product.id] && (
-                            <div className="menu-dropdown">
-                              <button onClick={() => handleEdit(product)}>
-                                Edit
-                              </button>
-                              <button onClick={() => handleDelete(product)}>
-                                Delete
-                              </button>
-                              <button onClick={() => handleInsights(product)}>
-                                Promotion
-                              </button>
-                              <button
-                                onClick={() => handleOpenReviewDialog(product)}
-                              >
-                                Review Product
-                              </button>
+                          {product.discountPercentage && (
+                            <div className="discount-badge">
+                              {product.discountPercentage}% OFF
                             </div>
                           )}
                         </div>
-                      </div>
-                      <p className="brand-name">{product.brandId?.brandName}</p>
-                      <div className="price-container">
-                        <span
-                          className="original-price"
-                          style={{
-                            textDecoration: product.salePrice
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          E£{product.price}
-                        </span>
-                        {product.salePrice > 0 && (
-                          <span className="sale-price">
-                            E£{product.salePrice}
-                          </span>
-                        )}{" "}
-                      </div>
-                      <p className="product-summary">
-                        {product.description.substring(0, 100)}...
-                      </p>
-                    </div>
-
-                    <div className="product-card-body">
-                      <h5>Summary</h5>
-
-                      <div className="metrics-container">
-                        <div className="metric">
-                          <span className="metric-label">Sales</span>
+                        <div className="promotion-details">
                           <div
                             style={{
                               display: "flex",
-                              alignItems: "center",
-                              gap: "5px",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
                             }}
                           >
-                            <span className="metric-value">
-                              {product.sales ? product.sales : "No yet sales"}
+                            <h3 className="promotion-details">
+                              {product.name}
+                            </h3>
+                            <div className="menu-container">
+                              <BsThreeDotsVertical
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent the click from triggering the document listener
+                                  toggleMenu(product.id);
+                                }}
+                                className="three-dots-icon"
+                              />
+                              {menuOpen[product.id] && (
+                                <div className="menu-dropdown">
+                                  <button onClick={() => handleEdit(product)}>
+                                    Edit
+                                  </button>
+                                  <button onClick={() => handleDelete(product)}>
+                                    Delete
+                                  </button>
+                                  <button
+                                    onClick={() => handleInsights(product)}
+                                  >
+                                    Promotion
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenReviewDialog(product)
+                                    }
+                                  >
+                                    Review Product
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <p className="brand-name">
+                            {product.brandId?.brandName}
+                          </p>
+                          <div className="price-container">
+                            <span
+                              className="original-price"
+                              style={{
+                                textDecoration: product.salePrice
+                                  ? "line-through"
+                                  : "none",
+                              }}
+                            >
+                              E£{product.price}
                             </span>
+                            {product.salePrice > 0 && (
+                              <span className="sale-price">
+                                E£{product.salePrice}
+                              </span>
+                            )}{" "}
+                          </div>
+                          <p className="product-summary">
+                            {product.description.substring(0, 100)}...
+                          </p>
+                        </div>
+
+                        <div className="product-card-body">
+                          <h5>Summary</h5>
+
+                          <div className="metrics-container">
+                            <div className="metric">
+                              <span className="metric-label">Sales</span>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                <span className="metric-value">
+                                  {product.sales
+                                    ? product.sales
+                                    : "No yet sales"}
+                                </span>
+                              </div>
+                            </div>
+                            <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                            <div className="metric">
+                              <span className="metric-label">
+                                Semaining Products
+                              </span>
+                              <span className="metric-value">
+                                {product.stock}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                        <div className="metric">
-                          <span className="metric-label">
-                            Semaining Products
-                          </span>
-                          <span className="metric-value">{product.stock}</span>
-                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Section for products with status true */}
-      <div>
-        <div
-          className="section-header"
-          onClick={() => setShowTrueStatus((prev) => !prev)}
-          style={{
-            margin: "30px 0",
-          }}
-        >
-          <span>Products with approval</span>
-          {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
-        </div>
-        {showTrueStatus && (
-          <div className="true-status-section">
-            {trueStatusProducts.length === 0 ? (
-              <p>No products with approval.</p>
-            ) : (
-              <div className="product-grid">
-                {trueStatusProducts.map((product) => (
-                  <div className="promotion-card" key={product.id}>
-                    <div className="promotion-image-container">
-                      <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                        alt={product.name}
-                        className="promotion-image"
-                      />
-                      {product.discountPercentage && (
-                        <div className="discount-badge">
-                          {product.discountPercentage}% OFF
-                        </div>
-                      )}
-                    </div>
-                    <div className="promotion-details">
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <h3 className="promotion-details">{product.name}</h3>
-                        <div className="menu-container">
-                          <BsThreeDotsVertical
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent the click from triggering the document listener
-                              toggleMenu(product.id);
-                            }}
-                            className="three-dots-icon"
+          {/* Section for products with status true */}
+          <div>
+            <div
+              className="section-header"
+              onClick={() => setShowTrueStatus((prev) => !prev)}
+              style={{
+                margin: "30px 0",
+              }}
+            >
+              <span>Products with approval</span>
+              {showTrueStatus ? <AiOutlineUp /> : <AiOutlineDown />}
+            </div>
+            {showTrueStatus && (
+              <div className="true-status-section">
+                {trueStatusProducts.length === 0 ? (
+                  <p>No products with approval.</p>
+                ) : (
+                  <div className="product-grid">
+                    {trueStatusProducts.map((product) => (
+                      <div className="promotion-card" key={product.id}>
+                        <div className="promotion-image-container">
+                          <img
+                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                            alt={product.name}
+                            className="promotion-image"
                           />
-                          {menuOpen[product.id] && (
-                            <div className="menu-dropdown">
-                              <button onClick={() => handleEdit(product)}>
-                                Edit
-                              </button>
-                              <button onClick={() => handleDelete(product)}>
-                                Delete
-                              </button>
-                              <button onClick={() => handleInsights(product)}>
-                                Promotion
-                              </button>
-                              <button
-                                onClick={() => handleOpenReviewDialog(product)}
-                              >
-                                Review Product
-                              </button>
+                          {product.discountPercentage && (
+                            <div className="discount-badge">
+                              {product.discountPercentage}% OFF
                             </div>
                           )}
                         </div>
-                      </div>
-                      <p className="brand-name">{product.brandId?.brandName}</p>
-                      <div className="price-container">
-                        <span
-                          className="original-price"
-                          style={{
-                            textDecoration: product.salePrice
-                              ? "line-through"
-                              : "none",
-                            color: product.salePrice ? "#999" : "#2d2d2d",
-                            fontWeight: product.salePrice ? "normal" : "bold",
-                          }}
-                        >
-                          E£{product.price}
-                        </span>
-                        {product.salePrice > 0 && (
-                          <span className="sale-price">
-                            E£{product.salePrice}
-                          </span>
-                        )}
-                      </div>
-                      <p className="product-summary">
-                        {product.description.substring(0, 100)}...
-                      </p>
-                    </div>
-
-                    <div className="product-card-body">
-                      <h5>Summary</h5>
-
-                      <div className="metrics-container">
-                        <div className="metric">
-                          <span className="metric-label">Sales</span>
+                        <div className="promotion-details">
                           <div
                             style={{
                               display: "flex",
-                              alignItems: "center",
-                              gap: "5px",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
                             }}
                           >
-                            <span className="metric-value">
-                              {product.sales ? product.sales : "No yet sales"}
+                            <h3 className="promotion-details">
+                              {product.name}
+                            </h3>
+                            <div className="menu-container">
+                              <BsThreeDotsVertical
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent the click from triggering the document listener
+                                  toggleMenu(product.id);
+                                }}
+                                className="three-dots-icon"
+                              />
+                              {menuOpen[product.id] && (
+                                <div className="menu-dropdown">
+                                  <button onClick={() => handleEdit(product)}>
+                                    Edit
+                                  </button>
+                                  <button onClick={() => handleDelete(product)}>
+                                    Delete
+                                  </button>
+                                  <button
+                                    onClick={() => handleInsights(product)}
+                                  >
+                                    Promotion
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleOpenReviewDialog(product)
+                                    }
+                                  >
+                                    Review Product
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <p className="brand-name">
+                            {product.brandId?.brandName}
+                          </p>
+                          <div className="price-container">
+                            <span
+                              className="original-price"
+                              style={{
+                                textDecoration: product.salePrice
+                                  ? "line-through"
+                                  : "none",
+                                color: product.salePrice ? "#999" : "#2d2d2d",
+                                fontWeight: product.salePrice
+                                  ? "normal"
+                                  : "bold",
+                              }}
+                            >
+                              E£{product.price}
                             </span>
+                            {product.salePrice > 0 && (
+                              <span className="sale-price">
+                                E£{product.salePrice}
+                              </span>
+                            )}
+                          </div>
+                          <p className="product-summary">
+                            {product.description.substring(0, 100)}...
+                          </p>
+                        </div>
+
+                        <div className="product-card-body">
+                          <h5>Summary</h5>
+
+                          <div className="metrics-container">
+                            <div className="metric">
+                              <span className="metric-label">Sales</span>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                <span className="metric-value">
+                                  {product.sales
+                                    ? product.sales
+                                    : "No yet sales"}
+                                </span>
+                              </div>
+                            </div>
+                            <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                            <div className="metric">
+                              <span className="metric-label">
+                                Semaining Products
+                              </span>
+                              <span className="metric-value">
+                                {product.stock}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                        <div className="metric">
-                          <span className="metric-label">
-                            Semaining Products
-                          </span>
-                          <span className="metric-value">{product.stock}</span>
-                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Pagination */}
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => paginate(index + 1)}
-            style={{
-              margin: "5px",
-              padding: "8px 12px",
-              backgroundColor:
-                currentPage === index + 1 ? "#2d2d2d" : "#efebe8",
-              color: currentPage === index + 1 ? "#fff" : "#2d2d2d",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+          {/* Pagination */}
+          <div className="pagination">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                style={{
+                  margin: "5px",
+                  padding: "8px 12px",
+                  backgroundColor:
+                    currentPage === index + 1 ? "#2d2d2d" : "#efebe8",
+                  color: currentPage === index + 1 ? "#fff" : "#2d2d2d",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
 
-      {/* Promotion Modal */}
-      {promotionModalOpen && (
-        <PromotionModal
-          open={promotionModalOpen}
-          onClose={() => setPromotionModalOpen(false)}
-          onSave={handleSavePromotion}
-          product={selectedProduct}
-        />
-      )}
-      {productToReview && (
-        <ProductReviewDialog
-          open={reviewDialogOpen}
-          onClose={handleCloseReviewDialog}
-          product={productToReview}
-          onAccept={handleAccept}
-          onReject={handleReject}
-        />
+          {/* Promotion Modal */}
+          {promotionModalOpen && (
+            <PromotionModal
+              open={promotionModalOpen}
+              onClose={() => setPromotionModalOpen(false)}
+              onSave={handleSavePromotion}
+              product={selectedProduct}
+            />
+          )}
+          {productToReview && (
+            <ProductReviewDialog
+              open={reviewDialogOpen}
+              onClose={handleCloseReviewDialog}
+              product={productToReview}
+              onAccept={handleAccept}
+              onReject={handleReject}
+            />
+          )}
+        </>
       )}
     </div>
   );

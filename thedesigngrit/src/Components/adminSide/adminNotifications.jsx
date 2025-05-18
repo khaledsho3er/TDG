@@ -430,7 +430,6 @@ const AdminNotificationPage = () => {
                   borderRadius: 1,
                   "&:hover": {
                     backgroundColor: "transparent",
-                    border: "1px solid #2d2d2d",
                   },
                 }}
               />
@@ -443,7 +442,6 @@ const AdminNotificationPage = () => {
                   borderRadius: 1,
                   "&:hover": {
                     backgroundColor: "transparent",
-                    border: "1px solid #2d2d2d",
                   },
                 }}
               />
