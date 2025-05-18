@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  Fragment,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import {
   Box,
   Typography,
@@ -50,7 +44,6 @@ function Header() {
   ]);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuTransitioning, setMenuTransitioning] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null); // State for the avatar menu
   const { cartItems } = useCart();
@@ -67,36 +60,6 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
-  // Refs for menu elements
-  const menuRef = useRef(null);
-  const hamburgerRef = useRef(null);
-
-  // Prevent scroll when menu is open
-  useEffect(() => {
-    if (menuOpen && isMobile) {
-      document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
-      document.body.style.top = `-${window.scrollY}px`;
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-      document.body.style.top = "";
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-      }
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-      document.body.style.top = "";
-    };
-  }, [menuOpen, isMobile]);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -161,41 +124,28 @@ function Header() {
     );
   };
 
-  // Combined event listeners to avoid conflicts
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 80);
-      // Don't close menu on scroll - removed any auto-closing behavior
-    };
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 767);
-    };
-
-    // Handle clicks outside the menu
-    const handleClickOutside = (event) => {
-      // Only close if menu is open AND click is outside menu AND outside hamburger button
-      if (
-        menuOpen &&
-        menuRef.current &&
-        hamburgerRef.current &&
-        !menuRef.current.contains(event.target) &&
-        !hamburgerRef.current.contains(event.target)
-      ) {
-        setMenuOpen(false);
-      }
     };
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuOpen]); // Added menuOpen as dependency to update click handler
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 767); // Update state on window resize
+    };
+
+    window.addEventListener("resize", handleResize); // Add resize event listener
+    return () => {
+      window.removeEventListener("resize", handleResize); // Cleanup on unmount
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch user data
@@ -252,33 +202,14 @@ function Header() {
     setHoveredCategory(null); // Always close when leaving menu
   };
 
-  const toggleMenu = (e) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    if (menuTransitioning) return; // Prevent multiple clicks during transition
-
-    if (!menuOpen) {
-      // Opening menu
-      setMenuTransitioning(true);
-      setMenuOpen(true);
-      setTimeout(() => setMenuTransitioning(false), 500); // Match transition duration
-    } else {
-      // Closing menu
-      closeMenu();
-    }
+  // Update your toggleMenu function to this:
+  const openMenu = () => {
+    setMenuOpen(true);
   };
 
   const closeMenu = () => {
-    if (menuTransitioning) return;
-
-    setMenuTransitioning(true);
     setMenuOpen(false);
-    setTimeout(() => setMenuTransitioning(false), 500);
   };
-
   const handleLoginClick = () => {
     navigate("/login"); // Redirect to login page
   };
@@ -337,8 +268,6 @@ function Header() {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
-            position: "relative",
-            zIndex: 10000,
           }}
         >
           <Link to="/home">
@@ -364,12 +293,7 @@ function Header() {
                 </Badge>
               </IconButton>
             </div>
-            <IconButton
-              onClick={toggleMenu}
-              ref={hamburgerRef}
-              aria-label="Toggle menu"
-              sx={{ zIndex: 10001 }}
-            >
+            <IconButton onClick={openMenu}>
               <MenuIcon />
             </IconButton>
           </Box>
@@ -394,80 +318,60 @@ function Header() {
                 className={`backdrop ${menuOpen ? "open" : ""}`}
                 onClick={closeMenu}
                 sx={{
-                  display: menuOpen ? "block" : "none",
                   position: "fixed",
                   top: 0,
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  zIndex: 9998,
-                  transition: "opacity 0.3s ease",
-                  opacity: menuOpen ? 1 : 0,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                  zIndex: 9998, // Ensure it's below the menu
                 }}
               />
               <Box
-                ref={menuRef}
                 className={`full-page-menu ${menuOpen ? "open" : ""}`}
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                  fontFamily: "Montserrat",
                   position: "fixed",
                   top: 0,
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  backgroundColor: "#fff",
+                  backgroundColor: "white",
                   zIndex: 9999,
-                  transform: menuOpen ? "translateX(0)" : "translateX(-100%)",
-                  transition: "transform 0.5s ease",
                   overflowY: "auto",
-                  overflowX: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  fontFamily: "Montserrat",
                   "& .menu-content": {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "1rem",
                     padding: "1rem",
-                    width: "100%",
                   },
                   "& .menu-categories": {
-                    display: categoriesVisible ? "flex" : "none",
+                    display: categoriesVisible ? "flex" : "none", // Show or hide categories based on state
                     flexDirection: "column",
                     gap: "0.5rem",
                     marginTop: "1rem",
-                    width: "100%",
-                    alignItems: "center",
+                    "@media (max-width: 767px)": {
+                      alignItems: "center",
+                    },
                   },
                 }}
+                onClick={(e) => e.stopPropagation()} // Prevent clicks inside menu from closing it
               >
-                <Box
-                  className="menu-header"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%",
-                    padding: "12px",
-                    borderBottom: "1px solid rgba(0,0,0,0.1)",
-                  }}
-                >
+                <Box className="menu-header">
                   <Link to="/home">
                     <img
                       src="/Assets/TDG_Logo_Black.webp"
                       alt="Logo"
                       className="menu-logo"
-                      style={{ width: "69px" }}
+                      style={{ width: "69px", padding: "12px" }}
                     />
                   </Link>
-                  <IconButton
-                    onClick={closeMenu}
-                    className="close-button"
-                    aria-label="Close menu"
-                  >
+                  <IconButton onClick={closeMenu} className="close-button">
                     <CloseIcon fontSize="large" />
                   </IconButton>
                 </Box>
