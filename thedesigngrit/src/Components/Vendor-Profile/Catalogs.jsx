@@ -21,8 +21,7 @@ function VendorCatalogs({ vendorID }) {
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
   const isMobile = useMediaQuery("(max-width:768px)");
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -111,16 +110,9 @@ function VendorCatalogs({ vendorID }) {
                 type: "bullets",
               }}
               loop={catalogs.length > 1}
-              navigation={{
-                prevEl: prevRef.current,
-                nextEl: nextRef.current,
-              }}
-              onBeforeInit={(swiper) => {
-                // Update navigation refs after Swiper initialization
-                if (swiper.params.navigation) {
-                  swiper.params.navigation.prevEl = prevRef.current;
-                  swiper.params.navigation.nextEl = nextRef.current;
-                }
+              navigation={false} // Disable default navigation
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
               }}
               style={{ paddingBottom: "10px", color: "#2d2d2d" }}
             >
@@ -179,7 +171,7 @@ function VendorCatalogs({ vendorID }) {
               {/* Navigation buttons on the right */}
               <Box sx={{ display: "flex", gap: "10px" }}>
                 <IconButton
-                  ref={prevRef}
+                  onClick={() => swiperRef.current?.slidePrev()}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.7)",
                     "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
@@ -191,7 +183,7 @@ function VendorCatalogs({ vendorID }) {
                   <ArrowBackIosNewIcon sx={{ fontSize: "16px" }} />
                 </IconButton>
                 <IconButton
-                  ref={nextRef}
+                  onClick={() => swiperRef.current?.slideNext()}
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.7)",
                     "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },

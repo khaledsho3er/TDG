@@ -12,7 +12,7 @@ function VendorProfileHero({ vendor }) {
   return (
     <Box
       sx={{
-        width: "98.7vw", // Full viewport width
+        width: "100vw", // Full viewport width
         height: "300px", // Fixed height
         overflow: "hidden", // Prevents content overflow
         display: "flex", // Ensures proper alignment

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Button, Grid, useMediaQuery } from "@mui/material";
+import { Box, Typography, Grid, useMediaQuery } from "@mui/material";
 import VendorProductsCard from "./Productscard";
 function VendorsProductsGrid({ vendor }) {
   const [products, setProducts] = useState([]);
@@ -46,7 +46,7 @@ function VendorsProductsGrid({ vendor }) {
         >
           {vendor.brandName}'s Products
         </Typography>
-        <Button
+        {/* <Button
           variant="contained"
           sx={{
             padding: "8px 16px",
@@ -59,7 +59,7 @@ function VendorsProductsGrid({ vendor }) {
           }}
         >
           View all
-        </Button>
+        </Button> */}
       </Box>
       <Grid
         container
