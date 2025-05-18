@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PartnersSection = () => {
+  const navigate = useNavigate();
   const partners = [
     {
       name: "Art House",
@@ -48,8 +50,12 @@ const PartnersSection = () => {
           that empowers local talent and delivers authentic Egyptian crafts
           manshipto your home.
         </p>
-
-        <button className="partners-button">Shop all</button>
+        <button
+          className="partners-button"
+          onClick={() => navigate("/vendors")}
+        >
+          Shop all
+        </button>
       </div>
 
       <div className="partners-logo-grid">

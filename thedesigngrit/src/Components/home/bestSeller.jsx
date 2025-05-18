@@ -12,6 +12,7 @@ const ProductSlider = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const swiperRef = useRef(null);
 
   // Update window width on resize
   useEffect(() => {
@@ -48,6 +49,26 @@ const ProductSlider = () => {
     fetchBestSellers();
   }, [fetchBestSellers]);
 
+  // Handle mousewheel events to enable vertical scrolling at swiper boundaries
+  const handleMouseWheel = (swiper, event) => {
+    // Check if we're at the beginning or end of the swiper
+    const isAtBeginning = swiper.isBeginning;
+    const isAtEnd = swiper.isEnd;
+
+    // Get the direction of the scroll (positive = down, negative = up)
+    const delta = event.deltaY;
+
+    // If we're at the beginning and scrolling left, or at the end and scrolling right,
+    // allow the page to scroll vertically
+    if ((isAtBeginning && delta < 0) || (isAtEnd && delta > 0)) {
+      // Enable default scroll behavior
+      event.stopPropagation();
+    } else {
+      // Otherwise, prevent default scroll and let swiper handle it
+      event.preventDefault();
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="slider-container-home">
@@ -68,10 +89,18 @@ const ProductSlider = () => {
         navigation={!isMobile}
         pagination={isMobile ? { clickable: true } : false}
         keyboard={{ enabled: true }}
-        mousewheel={true}
+        mousewheel={{
+          enabled: true,
+          forceToAxis: true,
+          sensitivity: 1,
+        }}
         grabCursor={true}
         loop={true}
         className="bestseller-swiper"
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        onMousewheel={handleMouseWheel}
         breakpoints={{
           // When window width is >= 0px (mobile)
           0: {
