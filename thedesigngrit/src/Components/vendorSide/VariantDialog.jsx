@@ -575,7 +575,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             <Box sx={{ mb: 2 }}>
               <h3>Technical Dimensions</h3>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <TextField
                     label="Length (CM)"
                     name="dimensions.length"
@@ -602,6 +602,16 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     type="number"
                     fullWidth
                     value={variants[currentVariant].dimensions.height}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Weight (KG)"
+                    name="dimensions.weight"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.weight}
                     onChange={handleChange}
                   />
                 </Grid>
