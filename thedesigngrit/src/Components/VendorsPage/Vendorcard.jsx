@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  CircularProgress,
+} from "@mui/material";
 import axios from "axios";
 
 const VendorCard = ({ vendor, onClick }) => {
@@ -39,8 +46,8 @@ const VendorCard = ({ vendor, onClick }) => {
       sx={{
         width: 300,
         height: 350,
-        borderRadius: 4,
-        boxShadow: 3,
+        borderRadius: "10px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
         overflow: "hidden",
         textAlign: "center",
         border: "1px solid #ddd",
@@ -83,12 +90,35 @@ const VendorCard = ({ vendor, onClick }) => {
         }}
       >
         {loading ? (
-          <Typography
-            variant="body2"
-            sx={{ color: "gray", gridColumn: "span 2" }}
+          <Box
+            sx={{
+              gridColumn: "span 2",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
           >
-            Loading...
-          </Typography>
+            <CircularProgress
+              size={40}
+              thickness={4}
+              sx={{
+                color: "#2d2d2d",
+                marginBottom: 1,
+              }}
+            />
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#666",
+                fontSize: "0.8rem",
+                fontFamily: "Montserrat, sans-serif",
+              }}
+            >
+              Loading products...
+            </Typography>
+          </Box>
         ) : productImages.length > 0 ? (
           productImages.map((img, index) => (
             <Box
@@ -112,7 +142,15 @@ const VendorCard = ({ vendor, onClick }) => {
         ) : (
           <Typography
             variant="body2"
-            sx={{ color: "gray", gridColumn: "span 2" }}
+            sx={{
+              color: "#666",
+              gridColumn: "span 2",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              fontFamily: "Montserrat, sans-serif",
+            }}
           >
             No products available
           </Typography>

@@ -38,7 +38,7 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
             backgroundColor: "white",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             transition: "all 0.3s ease",
-            fontFamily: "Montserrat, sans-serif",
+            fontFamily: "Montserrat",
 
             "& fieldset": {
               borderColor: "#ddd",
@@ -65,6 +65,9 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
           },
           "& .MuiSelect-select": {
             padding: "10px 14px",
+            minHeight: "2rem !important",
+            display: "flex",
+            alignItems: "center",
           },
         }}
         variant="outlined"
@@ -83,6 +86,7 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
                 "& .MuiMenuItem-root": {
                   fontFamily: "Montserrat, sans-serif",
                   padding: "10px 16px",
+                  minHeight: "2rem",
                   "&:hover": {
                     backgroundColor: "#f5f5f5",
                   },
