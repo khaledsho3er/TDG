@@ -28,6 +28,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
       color: "",
       size: "",
       price: "",
+      stock: "", // Add stock field
       dimensions: {
         length: "",
         width: "",
@@ -66,6 +67,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           color: "",
           size: "",
           price: "",
+          stock: "", // Add stock field
           dimensions: {
             length: "",
             width: "",
@@ -341,6 +343,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
         color: "",
         size: "",
         price: "",
+        stock: "", // Add stock field
         dimensions: {
           length: "",
           width: "",
@@ -395,6 +398,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             color: variant.color || "", // Now a single color from dropdown
             size: variant.size || "", // Now a single size from dropdown
             price: variant.price || "",
+            stock: variant.stock || 0, // Add stock to the API submission
             dimensions: JSON.stringify({
               length: variant.dimensions.length || 0,
               width: variant.dimensions.width || 0,
@@ -564,6 +568,16 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                   type="number"
                   fullWidth
                   value={variants[currentVariant].price}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Stock"
+                  name="stock"
+                  type="number"
+                  fullWidth
+                  value={variants[currentVariant].stock}
                   onChange={handleChange}
                 />
               </Grid>
