@@ -130,7 +130,8 @@ function VendorProfileHeader({ vendor }) {
             fontSize: "14px",
             marginTop: "8px", // Space between title and description
             lineHeight: "1.5", // Line height for readability
-            textAlign: { xs: "center", md: "left" }, // Centered for small screens
+            textAlign: { xs: "justify", md: "left" }, // Centered for small screens
+            padding: "10px",
           }}
         >
           {vendor.brandDescription} {/* Vendor Description */}

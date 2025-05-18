@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardMedia, Typography, Box } from "@mui/material";
 
-const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
+const VendorCatalogCard = ({ title, year, image, type, pdf, isMobile }) => {
   // Function to handle clicking on the card to open the PDF
   const handleClick = () => {
     const pdfUrl = `${pdf}`;
@@ -14,13 +14,14 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
-        width: "100%",
+        width: isMobile ? "85%" : "100%", // Smaller width on mobile
+        margin: isMobile ? "0 auto" : "0",
       }}
     >
       {/* Card Container */}
       <Card
         sx={{
-          height: 400, // Keep the original height
+          height: isMobile ? 320 : 400, // Smaller height on mobile
           display: "flex",
           flexDirection: "column",
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
@@ -74,7 +75,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
           variant="subtitle1"
           sx={{
             fontWeight: 600,
-            fontSize: 14,
+            fontSize: isMobile ? 13 : 14,
             marginBottom: "4px",
             textAlign: "left",
             fontFamily: "Montserrat",
@@ -85,7 +86,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf }) => {
         <Typography
           variant="body2"
           sx={{
-            fontSize: 12,
+            fontSize: isMobile ? 11 : 12,
             color: "text.secondary",
             textAlign: "left",
             fontFamily: "Montserrat",

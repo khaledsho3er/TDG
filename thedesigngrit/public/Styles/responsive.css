@@ -1376,8 +1376,8 @@
   }
 
   .content {
-    width: 80%; /* Full width */
-    padding: 25px;
+    width: 100%; /* Full width */
+    padding: 20px;
   }
   /*shiping*/
   .shipping-container {

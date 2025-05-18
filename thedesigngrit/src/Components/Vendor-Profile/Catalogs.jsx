@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, IconButton, Grid } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Grid,
+  useMediaQuery,
+} from "@mui/material";
 import VendorCatalogCard from "./CatalogCard";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 function VendorCatalogs({ vendorID }) {
   const [catalogs, setCatalogs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -54,8 +66,8 @@ function VendorCatalogs({ vendorID }) {
         sx={{
           fontFamily: "Horizon",
           fontWeight: "bold",
-          fontSize: "20px",
-          padding: "25px",
+          fontSize: isMobile ? "18px" : "20px",
+          padding: isMobile ? "15px" : "25px",
         }}
       >
         Catalogs
@@ -64,7 +76,7 @@ function VendorCatalogs({ vendorID }) {
       <Box
         position="relative"
         overflow="hidden"
-        sx={{ padding: "10px 50px 50px" }}
+        sx={{ padding: isMobile ? "10px 25px 30px" : "10px 50px 50px" }}
       >
         {isLoading ? (
           <Typography sx={{ textAlign: "center", mt: 5 }}>
@@ -84,7 +96,42 @@ function VendorCatalogs({ vendorID }) {
               No catalogs available at the moment.
             </Typography>
           </Box>
+        ) : isMobile ? (
+          // Mobile view with Swiper
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={15}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            loop={catalogs.length > 1}
+            style={{ paddingBottom: "40px" }} // Space for pagination dots
+          >
+            {catalogs.map((item) => (
+              <SwiperSlide key={item._id}>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <VendorCatalogCard
+                    title={item.title || "Untitled Catalog"}
+                    year={item.year || "N/A"}
+                    image={
+                      item.image
+                        ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.image}`
+                        : "/placeholder.jpg"
+                    }
+                    type={item.type || "Unknown Type"}
+                    pdf={
+                      item.pdf
+                        ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.pdf}`
+                        : "#"
+                    }
+                    isMobile={isMobile}
+                  />
+                </Box>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         ) : (
+          // Desktop view with Grid
           <>
             <IconButton
               onClick={handlePrev}
@@ -120,6 +167,7 @@ function VendorCatalogs({ vendorID }) {
                         ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.pdf}`
                         : "#"
                     }
+                    isMobile={isMobile}
                   />
                 </Grid>
               ))}
