@@ -16,10 +16,16 @@ function TopVButtons() {
     >
       <Button
         sx={{
-          border: "1px solid black",
+          border: "1px solid #2d2d2d",
           color: "black",
           fontFamily: "Montserrat, sans-serif",
           fontSize: "8px",
+          transition: "all 0.3s ease",
+
+          "&:hover": {
+            backgroundColor: "#2d2d2d",
+            color: "white",
+          },
         }}
       >
         <FilterAltIcon sx={{ fontSize: "10px" }} />
@@ -31,7 +37,12 @@ function TopVButtons() {
           color: "white",
           fontFamily: "Montserrat, sans-serif",
           fontSize: "8px",
-          backgroundColor: "#434343",
+          backgroundColor: "#2d2d2d",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            backgroundColor: "white",
+            color: "#2d2d2d",
+          },
         }}
       >
         <FilterListIcon sx={{ fontSize: "10px" }} />

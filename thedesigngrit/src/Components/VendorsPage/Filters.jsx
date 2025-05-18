@@ -34,9 +34,37 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
         sx={{
           minWidth: 200,
           "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "gray" }, // Default border color
-            "&:hover fieldset": { borderColor: "black" }, // On hover
-            "&.Mui-focused fieldset": { borderColor: "green" }, // On focus
+            borderRadius: "10px",
+            backgroundColor: "white",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            transition: "all 0.3s ease",
+            fontFamily: "Montserrat, sans-serif",
+
+            "& fieldset": {
+              borderColor: "#ddd",
+              borderWidth: "1px",
+            },
+            "&:hover fieldset": {
+              borderColor: "#2d2d2d",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#2d2d2d",
+              borderWidth: "1px",
+            },
+            "&:hover": {
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+              transform: "translateY(-2px)",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            fontFamily: "Montserrat, sans-serif",
+            color: "#333",
+            "&.Mui-focused": {
+              color: "#2d2d2d",
+            },
+          },
+          "& .MuiSelect-select": {
+            padding: "10px 14px",
           },
         }}
         variant="outlined"
@@ -47,6 +75,28 @@ const FilterVSection = ({ selectedCategory, setSelectedCategory }) => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
           label="Category"
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                borderRadius: "8px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                "& .MuiMenuItem-root": {
+                  fontFamily: "Montserrat, sans-serif",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    backgroundColor: "#f5f5f5",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#2d2d2d",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#434343",
+                    },
+                  },
+                },
+              },
+            },
+          }}
         >
           <MenuItem value="">All Categories</MenuItem>
           {categories.map((category) => (

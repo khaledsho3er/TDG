@@ -18,7 +18,9 @@ function Vendorspage() {
           "Welcome to our Partners Showcase, where innovation meets collaboration! Discover an exclusive lineup of visionary organisations and influential allies that drive our success. Each partner is a testament to shared ambition and excellence, contributing to a vibrant ecosystem of mutual growth. Dive into dynamic profiles to learn about their groundbreaking work and how our synergies pave the way for transformative impacts. Join us in celebrating these powerful partnerships that empower us to push boundaries and achieve new heights together. Explore, connect, and be inspired by the incredible force of our collective journey!"
         }
       />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}
+      >
         <TopVButtons />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
