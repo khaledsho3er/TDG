@@ -32,6 +32,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
         length: "",
         width: "",
         height: "",
+        weight: "", // Add weight field
       },
       images: [],
       mainImage: null,
@@ -69,6 +70,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             length: "",
             width: "",
             height: "",
+            weight: "", // Add weight field
           },
           images: [],
           mainImage: null,
@@ -167,7 +169,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     try {
       console.log("Fetching product details for productId:", productId);
       const response = await axios.get(
-        `https://api.thedesigngrit.com/api/products/${productId}`
+        `https://api.thedesigngrit.com/api/products/getsingle/${productId}`
       );
       if (response.data) {
         console.log("Product details received:", response.data);
@@ -323,6 +325,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
           length: "",
           width: "",
           height: "",
+          weight: "", // Add weight field
         },
         images: [],
         mainImage: null,
@@ -376,6 +379,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
               length: variant.dimensions.length || 0,
               width: variant.dimensions.width || 0,
               height: variant.dimensions.height || 0,
+              weight: variant.dimensions.weight || 0, // Add weight to the JSON string
             }),
             imageIndices: imageIndices,
             mainImageIndex: variant.mainImage
@@ -578,6 +582,16 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     type="number"
                     fullWidth
                     value={variants[currentVariant].dimensions.height}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Weight (KG)"
+                    name="dimensions.weight"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].dimensions.weight}
                     onChange={handleChange}
                   />
                 </Grid>
