@@ -134,7 +134,8 @@ function Checkout() {
         acc[brandId] = [];
       }
       acc[brandId].push({
-        productId: item.id,
+        productId: item.productId || item.id, // Use productId if available (for variants), otherwise use id
+        variantId: item.variantId || null, // Include variantId if it exists
         name: item.name,
         price: item.unitPrice,
         quantity: item.quantity,
@@ -143,6 +144,7 @@ function Checkout() {
       });
       return acc;
     }, {});
+
     // Parent order reference (for tracking user purchases)
     const parentOrderId = `ORDER-${Date.now()}`;
 
@@ -151,7 +153,7 @@ function Checkout() {
       const orderRequests = Object.keys(groupedOrders).map(async (brandId) => {
         const orderData = {
           parentOrderId, // Single order ID for user tracking
-          customerId: userSession.id, // Ensure this is taken from the authenticated use
+          customerId: userSession.id, // Ensure this is taken from the authenticated user
           billingDetails: billingData,
           shippingDetails: shippingData,
           paymentDetails: paymentData,
@@ -186,7 +188,6 @@ function Checkout() {
       // Reset the cart after successful order placement
       resetCart();
       setShowPopup(true); // Show the popup
-      // Delay navigation by 3 seconds to show the popup
     } catch (error) {
       console.log("Error creating orders:", error);
       console.error("Failed to create orders:", error);

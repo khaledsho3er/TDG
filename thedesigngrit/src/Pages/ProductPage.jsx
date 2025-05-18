@@ -199,29 +199,58 @@ function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    const productToAdd = selectedVariant || product;
-    // Get the shipping fee safely
-    let shippingFee = 0;
-    if (
-      product.brandId &&
-      typeof product.brandId === "object" &&
-      product.brandId.fees
-    ) {
-      shippingFee = product.brandId.fees;
+    // Determine if we're adding a variant or the main product
+    if (selectedVariant) {
+      // Adding a variant
+      // Get the shipping fee safely
+      let shippingFee = 0;
+      if (
+        product.brandId &&
+        typeof product.brandId === "object" &&
+        product.brandId.fees
+      ) {
+        shippingFee = product.brandId.fees;
+      }
+
+      addToCart({
+        id: selectedVariant._id, // Variant ID as the main ID
+        variantId: selectedVariant._id, // Same ID to identify it as a variant
+        productId: product._id, // Parent product ID
+        name: selectedVariant.title || product.name,
+        unitPrice: selectedVariant.salePrice || selectedVariant.price || 0,
+        quantity: 1,
+        image: selectedVariant.images?.[0] || product.mainImage,
+        brandId: product.brandId,
+        color: selectedColor || "default",
+        size: selectedSize || "default",
+        code: selectedVariant.sku || product.sku || "N/A",
+        shippingFee: shippingFee || 0,
+      });
+    } else {
+      // Adding the main product
+      let shippingFee = 0;
+      if (
+        product.brandId &&
+        typeof product.brandId === "object" &&
+        product.brandId.fees
+      ) {
+        shippingFee = product.brandId.fees;
+      }
+
+      addToCart({
+        id: product._id,
+        name: product.name,
+        unitPrice: product.salePrice || product.price || 0,
+        quantity: 1,
+        image: product.mainImage,
+        brandId: product.brandId,
+        color: selectedColor || "default",
+        size: selectedSize || "default",
+        code: product.sku || "N/A",
+        shippingFee: shippingFee || 0,
+      });
     }
 
-    addToCart({
-      id: productToAdd._id,
-      name: productToAdd.title || productToAdd.name,
-      unitPrice: productToAdd.salePrice || productToAdd.price || 0,
-      quantity: 1,
-      image: selectedVariant?.images?.[0] || productToAdd.mainImage,
-      brandId: product.brandId,
-      color: selectedColor || "default",
-      size: selectedSize || "default",
-      code: productToAdd.sku || "N/A",
-      shippingFee: shippingFee || productToAdd.brandId.fees || 0,
-    });
     setToastMessage("Item added successfully to cart!");
     setShowToast(true);
   };
