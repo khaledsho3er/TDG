@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  Fragment,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import {
   Box,
   Typography,
@@ -66,6 +60,7 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
     0
@@ -129,39 +124,18 @@ function Header() {
     );
   };
 
-  // Handle scroll and resize
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 80);
     };
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 767);
-      if (window.innerWidth >= 767) {
-        setMenuOpen(false);
-      }
-    };
-
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  // Prevent scroll when menu is open
-  useEffect(() => {
-    if (menuOpen && isMobile) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen, isMobile]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 767); // Update state on window resize
@@ -192,6 +166,14 @@ function Header() {
 
     fetchData();
   }, [userSession]);
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [menuOpen]);
+
   const handleCartToggle = () => {
     setCartOpen((prev) => {
       if (!prev) setFavoritesOpen(false); // Close favorites if cart is being opened
@@ -229,11 +211,8 @@ function Header() {
   };
 
   // Update your toggleMenu function to this:
-  const toggleMenu = (e) => {
-    if (e) {
-      e.stopPropagation();
-    }
-    setMenuOpen(!menuOpen);
+  const openMenu = () => {
+    setMenuOpen(true);
   };
 
   const closeMenu = () => {
@@ -297,8 +276,6 @@ function Header() {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
-            position: "relative",
-            zIndex: 1000,
           }}
         >
           <Link to="/home">
@@ -324,8 +301,8 @@ function Header() {
                 </Badge>
               </IconButton>
             </div>
-            <IconButton onClick={toggleMenu}>
-              {menuOpen ? <CloseIcon /> : <MenuIcon />}
+            <IconButton onClick={openMenu}>
+              <MenuIcon />
             </IconButton>
           </Box>
         </Box>
@@ -346,160 +323,144 @@ function Header() {
             <>
               {/* Backdrop */}
               <Box
-                className={`backdrop ${menuOpen ? "open" : ""}`}
-                onClick={closeMenu}
-                sx={{
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: "rgba(0,0,0,0.5)",
-                  zIndex: 9998, // Ensure it's below the menu
-                }}
-              />
-              <Box
-                className={`full-page-menu ${menuOpen ? "open" : ""}`}
                 sx={{
                   position: "fixed",
                   top: 0,
                   left: 0,
                   width: "100%",
-                  backgroundColor: "white",
-                  zIndex: 9999,
-                  overflowY: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                  fontFamily: "Montserrat",
-                  "& .menu-content": {
+                  height: "100vh", // Make sure it spans the full screen
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  zIndex: 9998,
+                }}
+                onClick={closeMenu}
+              >
+                <Box
+                  className={`full-page-menu ${menuOpen ? "open" : ""}`}
+                  sx={{
+                    backgroundColor: "white",
+                    width: "100%",
+                    maxHeight: "100vh",
+                    overflowY: "auto",
+                    position: "relative",
+                    zIndex: 9999,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: "1rem",
-                    padding: "1rem",
-                  },
-                  "& .menu-categories": {
-                    display: categoriesVisible ? "flex" : "none", // Show or hide categories based on state
-                    flexDirection: "column",
-                    gap: "0.5rem",
-                    marginTop: "1rem",
-                    "@media (max-width: 767px)": {
-                      alignItems: "center",
-                    },
-                  },
-                }}
-                onClick={(e) => e.stopPropagation()} // Prevent clicks inside menu from closing it
-              >
-                <Box className="menu-header">
-                  <Link to="/home">
-                    <img
-                      src="/Assets/TDG_Logo_Black.webp"
-                      alt="Logo"
-                      className="menu-logo"
-                      style={{ width: "69px", padding: "12px" }}
-                    />
-                  </Link>
-                  <IconButton onClick={closeMenu} className="close-button">
-                    <CloseIcon fontSize="large" />
-                  </IconButton>
-                </Box>
-
-                <Box className="menu-content">
-                  <Typography
-                    onClick={() => navigate("/home")}
-                    className="menu-item"
-                  >
-                    Home
-                  </Typography>
-                  <Typography
-                    className="menu-item"
-                    aria-controls={anchorEls ? "shop-menu" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleShopClick} // Toggle categories visibility on click
-                  >
-                    Shop
-                  </Typography>
-
-                  {/* Categories */}
-                  <Box
-                    className={`menu-categories ${
-                      categoriesVisible ? "open" : ""
-                    }`}
-                  >
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/vendors")}
-                    >
-                      All Brands
-                    </Typography>
-
-                    {menuData.length > 0 ? (
-                      menuData.map((category) => (
-                        <Typography
-                          key={category._id}
-                          className="menu-category-item"
-                          onClick={() => {
-                            navigate(`/category/${category._id}/subcategories`);
-                            handleShopClose();
-                          }}
-                        >
-                          {category.name}
-                        </Typography>
-                      ))
-                    ) : (
-                      <Typography>No Categories Available</Typography>
-                    )}
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/products/readytoship")}
-                    >
-                      Ready To Ship
-                    </Typography>
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/products/onsale")}
-                    >
-                      On Sale
-                    </Typography>
+                    justifyContent: "flex-start",
+                  }}
+                  onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
+                >
+                  <Box className="menu-header">
+                    <Link to="/home">
+                      <img
+                        src="/Assets/TDG_Logo_Black.webp"
+                        alt="Logo"
+                        className="menu-logo"
+                        style={{ width: "69px", padding: "12px" }}
+                      />
+                    </Link>
+                    <IconButton onClick={closeMenu} className="close-button">
+                      <CloseIcon fontSize="large" />
+                    </IconButton>
                   </Box>
 
-                  <Typography
-                    onClick={() => navigate("/about")}
-                    className="menu-item"
-                  >
-                    About
-                  </Typography>
-                  <Typography
-                    onClick={() => navigate("/contactus")}
-                    className="menu-item"
-                  >
-                    Contact
-                  </Typography>
-                  {userSession ? (
+                  <Box className="menu-content">
                     <Typography
-                      onClick={() => navigate("/myaccount")}
+                      onClick={() => navigate("/home")}
                       className="menu-item"
                     >
-                      Account
+                      Home
                     </Typography>
-                  ) : (
-                    <></>
-                  )}
+                    <Typography
+                      className="menu-item"
+                      aria-controls={anchorEls ? "shop-menu" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleShopClick} // Toggle categories visibility on click
+                    >
+                      Shop
+                    </Typography>
 
-                  {userSession ? (
-                    <Typography onClick={handleLogout} className="menu-item">
-                      Logout
-                    </Typography>
-                  ) : (
+                    {/* Categories */}
+                    <Box
+                      className={`menu-categories ${
+                        categoriesVisible ? "open" : ""
+                      }`}
+                    >
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/vendors")}
+                      >
+                        All Brands
+                      </Typography>
+
+                      {menuData.length > 0 ? (
+                        menuData.map((category) => (
+                          <Typography
+                            key={category._id}
+                            className="menu-category-item"
+                            onClick={() => {
+                              navigate(
+                                `/category/${category._id}/subcategories`
+                              );
+                              handleShopClose();
+                            }}
+                          >
+                            {category.name}
+                          </Typography>
+                        ))
+                      ) : (
+                        <Typography>No Categories Available</Typography>
+                      )}
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/products/readytoship")}
+                      >
+                        Ready To Ship
+                      </Typography>
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/products/onsale")}
+                      >
+                        On Sale
+                      </Typography>
+                    </Box>
+
                     <Typography
-                      onClick={handleLoginClick}
+                      onClick={() => navigate("/about")}
                       className="menu-item"
                     >
-                      Login
+                      About
                     </Typography>
-                  )}
+                    <Typography
+                      onClick={() => navigate("/contactus")}
+                      className="menu-item"
+                    >
+                      Contact
+                    </Typography>
+                    {userSession ? (
+                      <Typography
+                        onClick={() => navigate("/myaccount")}
+                        className="menu-item"
+                      >
+                        Account
+                      </Typography>
+                    ) : (
+                      <></>
+                    )}
+
+                    {userSession ? (
+                      <Typography onClick={handleLogout} className="menu-item">
+                        Logout
+                      </Typography>
+                    ) : (
+                      <Typography
+                        onClick={handleLoginClick}
+                        className="menu-item"
+                      >
+                        Login
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
               </Box>
             </>
