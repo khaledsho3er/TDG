@@ -50,6 +50,7 @@ function Header() {
   ]);
   const [isMenuHovered, setIsMenuHovered] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuTransitioning, setMenuTransitioning] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null); // State for the avatar menu
   const { cartItems } = useCart();
@@ -75,12 +76,25 @@ function Header() {
   useEffect(() => {
     if (menuOpen && isMobile) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.top = `-${window.scrollY}px`;
     } else {
-      document.body.style.overflow = "auto";
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+      }
     }
 
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
     };
   }, [menuOpen, isMobile]);
 
@@ -239,8 +253,30 @@ function Header() {
   };
 
   const toggleMenu = (e) => {
-    if (e) e.stopPropagation(); // Prevent event bubbling
-    setMenuOpen((prevState) => !prevState);
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    if (menuTransitioning) return; // Prevent multiple clicks during transition
+
+    if (!menuOpen) {
+      // Opening menu
+      setMenuTransitioning(true);
+      setMenuOpen(true);
+      setTimeout(() => setMenuTransitioning(false), 500); // Match transition duration
+    } else {
+      // Closing menu
+      closeMenu();
+    }
+  };
+
+  const closeMenu = () => {
+    if (menuTransitioning) return;
+
+    setMenuTransitioning(true);
+    setMenuOpen(false);
+    setTimeout(() => setMenuTransitioning(false), 500);
   };
 
   const handleLoginClick = () => {
@@ -301,6 +337,8 @@ function Header() {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
+            position: "relative",
+            zIndex: 10000,
           }}
         >
           <Link to="/home">
@@ -326,7 +364,12 @@ function Header() {
                 </Badge>
               </IconButton>
             </div>
-            <IconButton onClick={toggleMenu} ref={hamburgerRef}>
+            <IconButton
+              onClick={toggleMenu}
+              ref={hamburgerRef}
+              aria-label="Toggle menu"
+              sx={{ zIndex: 10001 }}
+            >
               <MenuIcon />
             </IconButton>
           </Box>
@@ -349,7 +392,19 @@ function Header() {
               {/* Backdrop */}
               <Box
                 className={`backdrop ${menuOpen ? "open" : ""}`}
-                onClick={toggleMenu}
+                onClick={closeMenu}
+                sx={{
+                  display: menuOpen ? "block" : "none",
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  zIndex: 9998,
+                  transition: "opacity 0.3s ease",
+                  opacity: menuOpen ? 1 : 0,
+                }}
               />
               <Box
                 ref={menuRef}
@@ -360,40 +415,59 @@ function Header() {
                   alignItems: "center",
                   justifyContent: "flex-start",
                   fontFamily: "Montserrat",
-                  position: "fixed", // Ensure it stays fixed
+                  position: "fixed",
                   top: 0,
                   left: 0,
-                  right: 0,
-                  bottom: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#fff",
                   zIndex: 9999,
+                  transform: menuOpen ? "translateX(0)" : "translateX(-100%)",
+                  transition: "transform 0.5s ease",
+                  overflowY: "auto",
+                  overflowX: "hidden",
                   "& .menu-content": {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "1rem",
                     padding: "1rem",
+                    width: "100%",
                   },
                   "& .menu-categories": {
-                    display: categoriesVisible ? "flex" : "none", // Show or hide categories based on state
+                    display: categoriesVisible ? "flex" : "none",
                     flexDirection: "column",
                     gap: "0.5rem",
                     marginTop: "1rem",
-                    "@media (max-width: 767px)": {
-                      alignItems: "center",
-                    },
+                    width: "100%",
+                    alignItems: "center",
                   },
                 }}
               >
-                <Box className="menu-header">
+                <Box
+                  className="menu-header"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    padding: "12px",
+                    borderBottom: "1px solid rgba(0,0,0,0.1)",
+                  }}
+                >
                   <Link to="/home">
                     <img
                       src="/Assets/TDG_Logo_Black.webp"
                       alt="Logo"
                       className="menu-logo"
-                      style={{ width: "69px", padding: "12px" }}
+                      style={{ width: "69px" }}
                     />
                   </Link>
-                  <IconButton onClick={toggleMenu} className="close-button">
+                  <IconButton
+                    onClick={closeMenu}
+                    className="close-button"
+                    aria-label="Close menu"
+                  >
                     <CloseIcon fontSize="large" />
                   </IconButton>
                 </Box>
