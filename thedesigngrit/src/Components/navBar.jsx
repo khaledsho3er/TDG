@@ -342,7 +342,6 @@ function Header() {
               <img src="/Assets/TDG_Logo_Black.webp" alt="Logo" />
             </Typography>
           </Link>
-
           {/* Full-Screen Mobile Menu */}
           {/* Full-Screen Mobile Menu */}
           {menuOpen && (
@@ -359,139 +358,141 @@ function Header() {
                   zIndex: 9998,
                 }}
                 onClick={closeMenu}
-              />
-              <Box
-                className={`full-page-menu ${menuOpen ? "open" : ""}`}
-                sx={{
-                  backgroundColor: "white",
-                  height: "100vh", // make sure it covers full height
-                  touchAction: "none", // <- Important to prevent scroll gestures
-                  width: "100%",
-                  maxHeight: "100vh",
-                  overflowY: "auto",
-                  position: "relative",
-                  zIndex: 9999,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-                onTouchMove={(e) => e.stopPropagation()} // Prevent scroll propagation
-                onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
               >
-                <Box className="menu-header">
-                  <Link to="/home">
-                    <img
-                      src="/Assets/TDG_Logo_Black.webp"
-                      alt="Logo"
-                      className="menu-logo"
-                      style={{ width: "69px", padding: "12px" }}
-                    />
-                  </Link>
-                  <IconButton onClick={closeMenu} className="close-button">
-                    <CloseIcon fontSize="large" />
-                  </IconButton>
-                </Box>
-
-                <Box className="menu-content">
-                  <Typography
-                    onClick={() => navigate("/home")}
-                    className="menu-item"
-                  >
-                    Home
-                  </Typography>
-                  <Typography
-                    className="menu-item"
-                    aria-controls={anchorEls ? "shop-menu" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleShopClick} // Toggle categories visibility on click
-                  >
-                    Shop
-                  </Typography>
-
-                  {/* Categories */}
-                  <Box
-                    className={`menu-categories ${
-                      categoriesVisible ? "open" : ""
-                    }`}
-                  >
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/vendors")}
-                    >
-                      All Brands
-                    </Typography>
-
-                    {menuData.length > 0 ? (
-                      menuData.map((category) => (
-                        <Typography
-                          key={category._id}
-                          className="menu-category-item"
-                          onClick={() => {
-                            navigate(`/category/${category._id}/subcategories`);
-                            handleShopClose();
-                          }}
-                        >
-                          {category.name}
-                        </Typography>
-                      ))
-                    ) : (
-                      <Typography>No Categories Available</Typography>
-                    )}
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/products/readytoship")}
-                    >
-                      Ready To Ship
-                    </Typography>
-                    <Typography
-                      className="category"
-                      onClick={() => navigate("/products/onsale")}
-                    >
-                      On Sale
-                    </Typography>
+                <Box
+                  className={`full-page-menu ${menuOpen ? "open" : ""}`}
+                  sx={{
+                    backgroundColor: "white",
+                    height: "100vh", // make sure it covers full height
+                    touchAction: "none", // <- Important to prevent scroll gestures
+                    width: "100%",
+                    maxHeight: "100vh",
+                    overflowY: "auto",
+                    position: "relative",
+                    zIndex: 9999,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                  onTouchMove={(e) => e.stopPropagation()} // Prevent scroll propagation
+                  onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
+                >
+                  <Box className="menu-header">
+                    <Link to="/home">
+                      <img
+                        src="/Assets/TDG_Logo_Black.webp"
+                        alt="Logo"
+                        className="menu-logo"
+                        style={{ width: "69px", padding: "12px" }}
+                      />
+                    </Link>
+                    <IconButton onClick={toggleMenu} className="close-button">
+                      <CloseIcon fontSize="large" />
+                    </IconButton>
                   </Box>
 
-                  <Typography
-                    onClick={() => navigate("/about")}
-                    className="menu-item"
-                  >
-                    About
-                  </Typography>
-                  <Typography
-                    onClick={() => navigate("/contactus")}
-                    className="menu-item"
-                  >
-                    Contact
-                  </Typography>
-                  {userSession ? (
+                  <Box className="menu-content">
                     <Typography
-                      onClick={() => navigate("/myaccount")}
+                      onClick={() => navigate("/home")}
                       className="menu-item"
                     >
-                      Account
+                      Home
                     </Typography>
-                  ) : (
-                    <></>
-                  )}
+                    <Typography
+                      className="menu-item"
+                      aria-controls={anchorEls ? "shop-menu" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleShopClick} // Toggle categories visibility on click
+                    >
+                      Shop
+                    </Typography>
 
-                  {userSession ? (
-                    <Typography onClick={handleLogout} className="menu-item">
-                      Logout
-                    </Typography>
-                  ) : (
+                    {/* Categories */}
+                    <Box
+                      className={`menu-categories ${
+                        categoriesVisible ? "open" : ""
+                      }`}
+                    >
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/vendors")}
+                      >
+                        All Brands
+                      </Typography>
+
+                      {menuData.length > 0 ? (
+                        menuData.map((category) => (
+                          <Typography
+                            key={category._id}
+                            className="menu-category-item"
+                            onClick={() => {
+                              navigate(
+                                `/category/${category._id}/subcategories`
+                              );
+                              handleShopClose();
+                            }}
+                          >
+                            {category.name}
+                          </Typography>
+                        ))
+                      ) : (
+                        <Typography>No Categories Available</Typography>
+                      )}
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/products/readytoship")}
+                      >
+                        Ready To Ship
+                      </Typography>
+                      <Typography
+                        className="category"
+                        onClick={() => navigate("/products/onsale")}
+                      >
+                        On Sale
+                      </Typography>
+                    </Box>
+
                     <Typography
-                      onClick={handleLoginClick}
+                      onClick={() => navigate("/about")}
                       className="menu-item"
                     >
-                      Login
+                      About
                     </Typography>
-                  )}
+                    <Typography
+                      onClick={() => navigate("/contactus")}
+                      className="menu-item"
+                    >
+                      Contact
+                    </Typography>
+                    {userSession ? (
+                      <Typography
+                        onClick={() => navigate("/myaccount")}
+                        className="menu-item"
+                      >
+                        Account
+                      </Typography>
+                    ) : (
+                      <></>
+                    )}
+
+                    {userSession ? (
+                      <Typography onClick={handleLogout} className="menu-item">
+                        Logout
+                      </Typography>
+                    ) : (
+                      <Typography
+                        onClick={handleLoginClick}
+                        className="menu-item"
+                      >
+                        Login
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
               </Box>
             </>
           )}
-
           {/* Dropdown Menu for Shop */}
           <Menu
             id="shop-menu"
@@ -522,7 +523,7 @@ function Header() {
             ) : (
               <MenuItem disabled>No Categories Available</MenuItem>
             )}
-          </Menu>
+          </Menu>{" "}
           {/* Search */}
           <Box className="search-bar">
             <SearchIcon sx={{ color: "#999", cursor: "pointer" }} />
@@ -532,9 +533,6 @@ function Header() {
               value={searchQuery}
               onChange={handleSearchChange}
               onBlur={() => setTimeout(() => setSuggestions([]), 200)}
-              // onKeyDown={(e) =>
-              //   e.key === "Enter" && navigate(`/search?query=${searchQuery}`)
-              // }
             />
 
             {/* Suggestion Dropdown */}
@@ -571,7 +569,6 @@ function Header() {
               </Box>
             )}
           </Box>
-
           {/* Icons */}
           <Box className="icon-container">
             {userSession ? (
