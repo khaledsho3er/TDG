@@ -37,13 +37,15 @@ const VendorProductsCard = ({ vendor, products }) => {
   return (
     <div
       className="related-products-container"
-      style={{ padding: "49px 110px" }}
+      style={{
+        padding: window.innerWidth <= 768 ? "30px 25px" : "49px 110px",
+      }}
     >
       {products && products.length > 0 ? (
         <Swiper
           modules={[Navigation]}
-          slidesPerView={3}
-          spaceBetween={20}
+          slidesPerView={window.innerWidth <= 768 ? 1 : 3}
+          spaceBetween={window.innerWidth <= 768 ? 10 : 20}
           navigation
           loop={products.length > 1} // disable loop if only one
           className="related-swiper"

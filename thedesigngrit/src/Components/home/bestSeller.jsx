@@ -13,6 +13,7 @@ const ProductSlider = () => {
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const swiperRef = useRef(null);
+  const sliderContainerRef = useRef(null);
 
   // Update window width on resize
   useEffect(() => {
@@ -49,25 +50,39 @@ const ProductSlider = () => {
     fetchBestSellers();
   }, [fetchBestSellers]);
 
-  // Handle mousewheel events to enable vertical scrolling at swiper boundaries
-  const handleMouseWheel = (swiper, event) => {
-    // Check if we're at the beginning or end of the swiper
-    const isAtBeginning = swiper.isBeginning;
-    const isAtEnd = swiper.isEnd;
+  // Handle wheel events for the entire slider container
+  useEffect(() => {
+    const handleWheel = (event) => {
+      if (!swiperRef.current || !sliderContainerRef.current) return;
 
-    // Get the direction of the scroll (positive = down, negative = up)
-    const delta = event.deltaY;
+      const swiper = swiperRef.current;
+      const { deltaX, deltaY } = event;
 
-    // If we're at the beginning and scrolling left, or at the end and scrolling right,
-    // allow the page to scroll vertically
-    if ((isAtBeginning && delta < 0) || (isAtEnd && delta > 0)) {
-      // Enable default scroll behavior
-      event.stopPropagation();
-    } else {
-      // Otherwise, prevent default scroll and let swiper handle it
-      event.preventDefault();
+      // Determine if we should scroll horizontally or vertically
+      const isHorizontalScroll = Math.abs(deltaX) > Math.abs(deltaY);
+      const isAtBeginning = swiper.isBeginning;
+      const isAtEnd = swiper.isEnd;
+
+      // If scrolling horizontally or within the slider's bounds
+      if (isHorizontalScroll || (!isAtBeginning && !isAtEnd)) {
+        // Let the swiper handle horizontal scrolling
+        swiper.mousewheel.handleMouseWheel(event);
+        event.preventDefault();
+      }
+      // Otherwise, let the page scroll naturally (vertical scrolling)
+    };
+
+    const container = sliderContainerRef.current;
+    if (container) {
+      container.addEventListener("wheel", handleWheel, { passive: false });
     }
-  };
+
+    return () => {
+      if (container) {
+        container.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, []);
 
   if (isLoading) {
     return (
@@ -79,7 +94,7 @@ const ProductSlider = () => {
   }
 
   return (
-    <div className="slider-container-home">
+    <div className="slider-container-home" ref={sliderContainerRef}>
       <h2 className="slider-title">BEST SELLERS</h2>
 
       <Swiper
@@ -93,6 +108,8 @@ const ProductSlider = () => {
           enabled: true,
           forceToAxis: true,
           sensitivity: 1,
+          thresholdDelta: 50,
+          thresholdTime: 300,
         }}
         grabCursor={true}
         loop={true}
@@ -100,7 +117,6 @@ const ProductSlider = () => {
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
-        onMousewheel={handleMouseWheel}
         breakpoints={{
           // When window width is >= 0px (mobile)
           0: {
