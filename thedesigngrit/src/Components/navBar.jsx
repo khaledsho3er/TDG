@@ -61,7 +61,7 @@ function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   // Add state for shop dropdown
-  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
+  const [setShopDropdownOpen] = useState(false);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -340,6 +340,8 @@ function Header() {
             <>
               {/* Backdrop */}
               <Box
+                className={`backdrop ${menuOpen ? "open" : ""}`}
+                onClick={openMenu}
                 sx={{
                   position: "fixed",
                   top: 0,
@@ -349,171 +351,114 @@ function Header() {
                   backgroundColor: "rgba(0, 0, 0, 0.5)",
                   zIndex: 9998,
                 }}
-                onClick={closeMenu}
-              >
-                <Box
-                  className={`full-page-menu ${menuOpen ? "open" : ""}`}
-                  sx={{
-                    backgroundColor: "white",
-                    height: "100vh", // make sure it covers full height
-                    touchAction: "none", // <- Important to prevent scroll gestures
-                    width: "100%",
-                    maxHeight: "100vh",
-                    overflowY: "auto",
-                    position: "relative",
-                    zIndex: 9999,
+              />
+              <Box
+                className={`full-page-menu ${menuOpen ? "open" : ""}`}
+                sx={{
+                  backgroundColor: "white",
+                  height: "100vh", // make sure it covers full height
+                  touchAction: "none", // <- Important to prevent scroll gestures
+                  width: "100%",
+                  maxHeight: "100vh",
+                  overflowY: "auto",
+                  position: "relative",
+                  zIndex: 9999,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  fontFamily: "Montserrat",
+                  "& .menu-content": {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                  onTouchMove={(e) => e.stopPropagation()} // Prevent scroll propagation
-                  onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
-                >
-                  <Box className="menu-header">
-                    <Link to="/home">
-                      <img
-                        src="/Assets/TDG_Logo_Black.webp"
-                        alt="Logo"
-                        className="menu-logo"
-                        style={{ width: "69px", padding: "12px" }}
-                      />
-                    </Link>
-                    <IconButton onClick={closeMenu} className="close-button">
-                      <CloseIcon fontSize="large" />
-                    </IconButton>
-                  </Box>
+                    gap: "1rem",
+                    padding: "1rem",
+                  },
+                  "& .menu-categories": {
+                    display: categoriesVisible ? "flex" : "none", // Show or hide categories based on state
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    marginTop: "1rem",
+                    "@media (max-width: 767px)": {
+                      alignItems: "center",
+                    },
+                  },
+                }}
+                onTouchMove={(e) => e.stopPropagation()} // Prevent scroll propagation
+                onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
+              >
+                <Box className="menu-header">
+                  <Link to="/home">
+                    <img
+                      src="/Assets/TDG_Logo_Black.webp"
+                      alt="Logo"
+                      className="menu-logo"
+                      style={{ width: "69px", padding: "12px" }}
+                    />
+                  </Link>
+                  <IconButton onClick={closeMenu} className="close-button">
+                    <CloseIcon fontSize="large" />
+                  </IconButton>
+                </Box>
 
-                  <Box className="menu-content">
+                <Box className="menu-content">
+                  <Typography
+                    onClick={() => navigate("/home")}
+                    className="menu-item"
+                  >
+                    Home
+                  </Typography>
+                  <Typography
+                    className="menu-item"
+                    aria-controls={anchorEls ? "shop-menu" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleShopClick} // Toggle categories visibility on click
+                  >
+                    Shop
+                  </Typography>
+
+                  {/* Categories */}
+                  <Box
+                    className={`menu-categories ${
+                      categoriesVisible ? "open" : ""
+                    }`}
+                  >
                     <Typography
-                      onClick={() => navigate("/home")}
-                      className="menu-item"
+                      className="category"
+                      onClick={() => navigate("/vendors")}
                     >
-                      Home
+                      All Brands
                     </Typography>
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        className="menu-item"
-                        aria-controls={anchorEls ? "shop-menu" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleShopClick} // Toggle categories visibility on click
-                      >
-                        Shop
-                        {shopDropdownOpen ? (
-                          <Box
-                            component="span"
-                            sx={{
-                              transform: "rotate(180deg)",
-                              transition: "transform 0.3s ease",
-                            }}
-                          >
-                            ▼
-                          </Box>
-                        ) : (
-                          <Box
-                            component="span"
-                            sx={{ transition: "transform 0.3s ease" }}
-                          >
-                            ▼
-                          </Box>
-                        )}
-                      </Typography>
-                      {shopDropdownOpen && (
-                        <Box
-                          sx={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: "16px",
-                            padding: "16px 0",
-                            animation: "fadeIn 0.3s ease-in-out",
-                            "@keyframes fadeIn": {
-                              "0%": {
-                                opacity: 0,
-                                transform: "translateY(-10px)",
-                              },
-                              "100%": {
-                                opacity: 1,
-                                transform: "translateY(0)",
-                              },
-                            },
+
+                    {menuData.length > 0 ? (
+                      menuData.map((category) => (
+                        <Typography
+                          key={category._id}
+                          className="menu-category-item"
+                          onClick={() => {
+                            navigate(`/category/${category._id}/subcategories`);
+                            handleShopClose();
                           }}
                         >
-                          <Typography
-                            onClick={() => {
-                              navigate("/vendors");
-                              closeMenu();
-                            }}
-                            sx={{
-                              fontSize: "16px",
-                              color: "#666",
-                              cursor: "pointer",
-                              fontFamily: "Montserrat",
-                            }}
-                          >
-                            All Brands
-                          </Typography>
-
-                          {menuData.map((category) => (
-                            <Typography
-                              key={category._id}
-                              onClick={() => {
-                                navigate(
-                                  `/category/${category._id}/subcategories`
-                                );
-                                closeMenu();
-                              }}
-                              sx={{
-                                fontSize: "16px",
-                                color: "#666",
-                                cursor: "pointer",
-                                fontFamily: "Montserrat",
-                              }}
-                            >
-                              {category.name}
-                            </Typography>
-                          ))}
-
-                          <Typography
-                            onClick={() => {
-                              navigate("/products/readytoship");
-                              closeMenu();
-                            }}
-                            sx={{
-                              fontSize: "16px",
-                              color: "#666",
-                              cursor: "pointer",
-                              fontFamily: "Montserrat",
-                            }}
-                          >
-                            Ready To Ship
-                          </Typography>
-
-                          <Typography
-                            onClick={() => {
-                              navigate("/products/onsale");
-                              closeMenu();
-                            }}
-                            sx={{
-                              fontSize: "16px",
-                              color: "#666",
-                              cursor: "pointer",
-                              fontFamily: "Montserrat",
-                            }}
-                          >
-                            On Sale
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
+                          {category.name}
+                        </Typography>
+                      ))
+                    ) : (
+                      <Typography>No Categories Available</Typography>
+                    )}
+                    <Typography
+                      className="category"
+                      onClick={() => navigate("/products/readytoship")}
+                    >
+                      Ready To Ship
+                    </Typography>
+                    <Typography
+                      className="category"
+                      onClick={() => navigate("/products/onsale")}
+                    >
+                      On Sale
+                    </Typography>
                   </Box>
 
                   <Typography
