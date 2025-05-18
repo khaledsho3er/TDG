@@ -23,14 +23,31 @@ export const CartProvider = ({ children }) => {
     console.log("Adding product to cart:", product); // Debug log
     console.log("Current unit Price:", product.unitPrice); // Debug log
     setCartItems((prev) => {
-      const existingProduct = prev.find((item) => item.id === product.id);
+      // Create a unique identifier based on product ID and variant ID (if present)
+      const itemId = product.variantId
+        ? `${product.id}-${product.variantId}`
+        : product.id;
+
+      // Check if this exact product/variant combination exists in cart
+      const existingProduct = prev.find((item) =>
+        product.variantId
+          ? item.id === product.id && item.variantId === product.variantId
+          : item.id === product.id
+      );
+
       if (existingProduct) {
+        // Update quantity if product already exists
         return prev.map((item) =>
-          item.id === product.id
+          (
+            product.variantId
+              ? item.id === product.id && item.variantId === product.variantId
+              : item.id === product.id
+          )
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
+        // Add new product with all necessary fields
         return [
           ...prev,
           {
@@ -40,6 +57,9 @@ export const CartProvider = ({ children }) => {
             unitPrice:
               product.unitPrice || product.salePrice || product.price || 0,
             shippingFee: product.brandId.fees || 0,
+            // Add variant information if present
+            variantId: product.variantId || null,
+            productId: product.productId || product._id, // Use productId from variant if available
           },
         ];
       }
