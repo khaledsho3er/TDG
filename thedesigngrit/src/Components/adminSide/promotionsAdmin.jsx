@@ -15,6 +15,7 @@ import {
   Grid,
   Divider,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,6 +30,7 @@ const PromotionsPageAdmin = () => {
   const [showFutureSection, setShowFutureSection] = useState(false);
   const [promotionMetrics, setPromotionMetrics] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState(""); // NEW
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   // Approval related states
   const [approvalDialogOpen, setApprovalDialogOpen] = useState(false);
   const [rejectionDialogOpen, setRejectionDialogOpen] = useState(false);
@@ -39,6 +41,7 @@ const PromotionsPageAdmin = () => {
     fetchPromotions();
   }, []);
   const fetchPromotions = async () => {
+    setIsLoading(true); // Set loading to true when fetching starts
     try {
       // Fetch all products with promotions
       const response = await axios.get(
@@ -81,6 +84,8 @@ const PromotionsPageAdmin = () => {
       setPromotionMetrics(metricsResponse.data);
     } catch (error) {
       console.error("Error fetching promotions:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false when fetching completes
     }
   };
   const calculatePromotionMetrics = (product) => {
@@ -332,88 +337,110 @@ const PromotionsPageAdmin = () => {
           </div>
         </div>
 
-        {/* Current Promotions Section */}
-        <div className="promotion-section">
-          <div
-            className="section-header"
-            onClick={() => setShowCurrentSection((prev) => !prev)}
+        {isLoading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "400px",
+              width: "100%",
+            }}
           >
-            <h2>Current Promotions</h2>
-            <span className="toggle-icon">
-              {showCurrentSection ? <AiOutlineUp /> : <AiOutlineDown />}
-            </span>
-          </div>
+            <CircularProgress
+              size={60}
+              thickness={4}
+              sx={{ color: "#6b7b58" }}
+            />
+          </Box>
+        ) : (
+          <>
+            {/* Current Promotions Section */}
+            <div className="promotion-section">
+              <div
+                className="section-header"
+                onClick={() => setShowCurrentSection((prev) => !prev)}
+              >
+                <h2>Current Promotions</h2>
+                <span className="toggle-icon">
+                  {showCurrentSection ? <AiOutlineUp /> : <AiOutlineDown />}
+                </span>
+              </div>
 
-          {showCurrentSection && (
-            <div className="promotion-grid">
-              {filterPromotions(currentPromotions).length === 0 ? (
-                <p className="no-promotions">
-                  {selectedBrand
-                    ? "No active promotions for this brand."
-                    : "No active promotions."}
-                </p>
-              ) : (
-                filterPromotions(currentPromotions).map((product) =>
-                  renderPromotionCard(product, true)
-                )
+              {showCurrentSection && (
+                <div className="promotion-grid">
+                  {filterPromotions(currentPromotions).length === 0 ? (
+                    <p className="no-promotions">
+                      {selectedBrand
+                        ? "No active promotions for this brand."
+                        : "No active promotions."}
+                    </p>
+                  ) : (
+                    filterPromotions(currentPromotions).map((product) =>
+                      renderPromotionCard(product, true)
+                    )
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
 
-        {/* Future Promotions Section */}
-        <div className="promotion-section">
-          <div
-            className="section-header"
-            onClick={() => setShowFutureSection((prev) => !prev)}
-          >
-            <h2>Upcoming Promotions</h2>
-            <span className="toggle-icon">
-              {showFutureSection ? <AiOutlineUp /> : <AiOutlineDown />}
-            </span>
-          </div>
+            {/* Future Promotions Section */}
+            <div className="promotion-section">
+              <div
+                className="section-header"
+                onClick={() => setShowFutureSection((prev) => !prev)}
+              >
+                <h2>Upcoming Promotions</h2>
+                <span className="toggle-icon">
+                  {showFutureSection ? <AiOutlineUp /> : <AiOutlineDown />}
+                </span>
+              </div>
 
-          {showFutureSection && (
-            <div className="promotion-grid">
-              {filterPromotions(futurePromotions).length === 0 ? (
-                <p className="no-promotions">
-                  {selectedBrand
-                    ? "No upcoming promotions for this brand."
-                    : "No upcoming promotions."}{" "}
-                </p>
-              ) : (
-                filterPromotions(futurePromotions).map((product) =>
-                  renderPromotionCard(product)
-                )
+              {showFutureSection && (
+                <div className="promotion-grid">
+                  {filterPromotions(futurePromotions).length === 0 ? (
+                    <p className="no-promotions">
+                      {selectedBrand
+                        ? "No upcoming promotions for this brand."
+                        : "No upcoming promotions."}{" "}
+                    </p>
+                  ) : (
+                    filterPromotions(futurePromotions).map((product) =>
+                      renderPromotionCard(product)
+                    )
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
 
-        {/* Past Promotions Section */}
-        <div className="promotion-section">
-          <div
-            className="section-header"
-            onClick={() => setShowPastSection((prev) => !prev)}
-          >
-            <h2>Past Promotions</h2>
-            <span className="toggle-icon">
-              {showPastSection ? <AiOutlineUp /> : <AiOutlineDown />}
-            </span>
-          </div>
+            {/* Past Promotions Section */}
+            <div className="promotion-section">
+              <div
+                className="section-header"
+                onClick={() => setShowPastSection((prev) => !prev)}
+              >
+                <h2>Past Promotions</h2>
+                <span className="toggle-icon">
+                  {showPastSection ? <AiOutlineUp /> : <AiOutlineDown />}
+                </span>
+              </div>
 
-          {showPastSection && (
-            <div className="promotion-grid">
-              {filterPromotions(pastPromotions).length === 0 ? (
-                <p className="no-promotions">No past promotions available.</p>
-              ) : (
-                filterPromotions(pastPromotions).map((product) =>
-                  renderPromotionCard(product, true)
-                )
+              {showPastSection && (
+                <div className="promotion-grid">
+                  {filterPromotions(pastPromotions).length === 0 ? (
+                    <p className="no-promotions">
+                      No past promotions available.
+                    </p>
+                  ) : (
+                    filterPromotions(pastPromotions).map((product) =>
+                      renderPromotionCard(product, true)
+                    )
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
       {/* Promotion Approval Dialog */}
       <Dialog

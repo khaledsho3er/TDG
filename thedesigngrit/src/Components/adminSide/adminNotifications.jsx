@@ -11,6 +11,7 @@ import {
   MenuItem,
   Tabs,
   Tab,
+  CircularProgress,
 } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5";
@@ -26,10 +27,13 @@ const AdminNotificationPage = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [brands, setBrands] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMarkingAsRead, setIsMarkingAsRead] = useState(false);
   const notificationsPerPage = 8;
 
   // Fetch brand notifications
   const fetchBrandNotifications = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         "https://api.thedesigngrit.com/api/notifications/admin/all-notifications"
@@ -55,11 +59,14 @@ const AdminNotificationPage = () => {
       setBrands(uniqueBrands);
     } catch (error) {
       console.error("Error fetching brand notifications:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
   // Fetch admin notifications
   const fetchAdminNotifications = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         "https://api.thedesigngrit.com/api/admin-notifications/"
@@ -68,6 +75,8 @@ const AdminNotificationPage = () => {
       setAdminNotifications(data);
     } catch (error) {
       console.error("Error fetching admin notifications:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -107,6 +116,7 @@ const AdminNotificationPage = () => {
 
   // Mark a brand notification as read
   const markBrandNotificationAsRead = async (id) => {
+    setIsMarkingAsRead(true);
     try {
       // Update the read status locally
       setNotifications((prevNotifications) =>
@@ -135,11 +145,14 @@ const AdminNotificationPage = () => {
       );
     } catch (error) {
       console.error("Error marking brand notification as read:", error);
+    } finally {
+      setIsMarkingAsRead(false);
     }
   };
 
   // Mark an admin notification as read
   const markAdminNotificationAsRead = async (id) => {
+    setIsMarkingAsRead(true);
     try {
       // Update the read status locally
       setAdminNotifications((prevNotifications) =>
@@ -159,6 +172,8 @@ const AdminNotificationPage = () => {
       );
     } catch (error) {
       console.error("Error marking admin notification as read:", error);
+    } finally {
+      setIsMarkingAsRead(false);
     }
   };
 
@@ -214,6 +229,22 @@ const AdminNotificationPage = () => {
     notifications,
     isAdminNotification = false
   ) => {
+    if (isLoading) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "400px",
+            width: "100%",
+          }}
+        >
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
+        </Box>
+      );
+    }
+
     return (
       <>
         {notifications.length === 0 ? (
@@ -358,6 +389,10 @@ const AdminNotificationPage = () => {
                             borderRadius: "5px",
                             cursor: "pointer",
                             transition: "background-color 0.3s",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            minWidth: "120px",
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -371,8 +406,18 @@ const AdminNotificationPage = () => {
                           onMouseOut={(e) =>
                             (e.currentTarget.style.backgroundColor = "#2d2d2d")
                           }
+                          disabled={isMarkingAsRead}
                         >
-                          Mark as Read
+                          {isMarkingAsRead &&
+                          notification._id === selectedNotification?._id ? (
+                            <CircularProgress
+                              size={20}
+                              thickness={4}
+                              sx={{ color: "#fff" }}
+                            />
+                          ) : (
+                            "Mark as Read"
+                          )}
                         </button>
                       ) : (
                         <button
@@ -383,6 +428,7 @@ const AdminNotificationPage = () => {
                             padding: "10px 15px",
                             borderRadius: "5px",
                             cursor: "not-allowed",
+                            minWidth: "120px",
                           }}
                           disabled
                         >
@@ -465,7 +511,7 @@ const AdminNotificationPage = () => {
               </Box>
               {renderNotificationTable(currentAdminNotifications, true)}
 
-              {adminNotifications.length > 0 && (
+              {!isLoading && adminNotifications.length > 0 && (
                 <div
                   className="pagination"
                   style={{
@@ -524,42 +570,44 @@ const AdminNotificationPage = () => {
                 </Typography>
 
                 {/* Brand Filter */}
-                <FormControl
-                  sx={{ m: 1, border: "1px solid #ddd", borderRadius: "4px" }}
-                >
-                  <InputLabel
-                    id="brand-select-label"
-                    sx={{
-                      position: "relative",
-                      top: "-8px",
-                      backgroundColor: "#fff",
-                    }}
+                {!isLoading && (
+                  <FormControl
+                    sx={{ m: 1, border: "1px solid #ddd", borderRadius: "4px" }}
                   >
-                    Brand
-                  </InputLabel>
-                  <Select
-                    labelId="brand-select-label"
-                    value={selectedBrand}
-                    onChange={handleBrandChange}
-                    sx={{
-                      width: "200px",
-                      color: "#2d2d2d",
-                      backgroundColor: "#fff",
-                    }}
-                  >
-                    <MenuItem value="">All Brands</MenuItem>
-                    {brands.map((brand) => (
-                      <MenuItem key={brand._id} value={brand._id}>
-                        {brand.brandName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                    <InputLabel
+                      id="brand-select-label"
+                      sx={{
+                        position: "relative",
+                        top: "-8px",
+                        backgroundColor: "#fff",
+                      }}
+                    >
+                      Brand
+                    </InputLabel>
+                    <Select
+                      labelId="brand-select-label"
+                      value={selectedBrand}
+                      onChange={handleBrandChange}
+                      sx={{
+                        width: "200px",
+                        color: "#2d2d2d",
+                        backgroundColor: "#fff",
+                      }}
+                    >
+                      <MenuItem value="">All Brands</MenuItem>
+                      {brands.map((brand) => (
+                        <MenuItem key={brand._id} value={brand._id}>
+                          {brand.brandName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
               </div>
 
               {renderNotificationTable(currentBrandNotifications)}
 
-              {notifications.length > 0 && (
+              {!isLoading && notifications.length > 0 && (
                 <div
                   className="pagination"
                   style={{

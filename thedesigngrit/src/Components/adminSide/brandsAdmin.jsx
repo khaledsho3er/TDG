@@ -711,15 +711,52 @@ const BrandManagement = () => {
             backgroundColor: "transparent",
           },
         }}
+        textColor="inherit"
+        TabIndicatorProps={{
+          style: { backgroundColor: "#2d2d2d", height: 3 },
+        }}
       >
-        <Tab label={`Active Brands (${getActiveBrands().length})`} />
-        <Tab label={`Pending Brands (${getPendingBrands().length})`} />
-        <Tab label={`Deactivated Brands (${getDeactiveBrands().length})`} />
+        <Tab
+          label={`Active Brands (${getActiveBrands().length})`}
+          sx={{
+            color: "#2d2d2d",
+            textTransform: "none",
+            fontWeight: 500,
+            borderRadius: 1,
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        />
+        <Tab
+          label={`Pending Brands (${getPendingBrands().length})`}
+          sx={{
+            color: "#2d2d2d",
+            textTransform: "none",
+            fontWeight: 500,
+            borderRadius: 1,
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        />
+        <Tab
+          label={`Deactivated Brands (${getDeactiveBrands().length})`}
+          sx={{
+            color: "#2d2d2d",
+            textTransform: "none",
+            fontWeight: 500,
+            borderRadius: 1,
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+        />
       </Tabs>
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-          <CircularProgress />
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
         </Box>
       ) : (
         <Box>
