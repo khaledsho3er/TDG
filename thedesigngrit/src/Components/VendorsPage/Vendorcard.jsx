@@ -55,6 +55,7 @@ const VendorCard = ({ vendor, onClick }) => {
         cursor: "pointer",
         display: "flex",
         flexDirection: "column",
+        gap: "10px",
       }}
       onClick={onClick}
     >
@@ -66,6 +67,7 @@ const VendorCard = ({ vendor, onClick }) => {
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "white",
+          marginTop: "7px",
         }}
       >
         <CardMedia
@@ -80,7 +82,7 @@ const VendorCard = ({ vendor, onClick }) => {
       <Box
         sx={{
           width: "100%",
-          height: 160,
+          height: 200,
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gridTemplateRows: "1fr 1fr",
@@ -140,20 +142,28 @@ const VendorCard = ({ vendor, onClick }) => {
             </Box>
           ))
         ) : (
-          <Typography
-            variant="body2"
-            sx={{
-              color: "#666",
-              gridColumn: "span 2",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              fontFamily: "Montserrat, sans-serif",
-            }}
-          >
-            No products available
-          </Typography>
+          // Simple blurred gradient squares as placeholders
+          Array.from({ length: 4 }).map((_, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: 2,
+                overflow: "hidden",
+                border: "1px solid #ddd",
+                background: `linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)`,
+                opacity: 0.7,
+                filter: "blur(0.5px)",
+                animation: "pulse 2s infinite ease-in-out",
+                "@keyframes pulse": {
+                  "0%": { opacity: 0.7 },
+                  "50%": { opacity: 0.5 },
+                  "100%": { opacity: 0.7 },
+                },
+              }}
+            />
+          ))
         )}
       </Box>
 
