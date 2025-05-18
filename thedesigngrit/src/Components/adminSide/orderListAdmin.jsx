@@ -1,9 +1,16 @@
-import { Box, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { subDays, isWithinInterval, parseISO } from "date-fns";
 import AdminOrderDetails from "./orderDetailsAdmin";
+import {
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  CircularProgress,
+} from "@mui/material";
 
 const RecentPurchasesAdmin = () => {
   const [orders, setOrders] = useState([]);
@@ -15,10 +22,12 @@ const RecentPurchasesAdmin = () => {
   const [dateFilter, setDateFilter] = useState("All");
   const [brands, setBrands] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const ordersPerPage = 8;
 
   // Fetch order data from JSON
   const fetchOrders = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         "https://api.thedesigngrit.com/api/orders/admin-orders"
@@ -27,6 +36,8 @@ const RecentPurchasesAdmin = () => {
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const fetchBrands = async () => {
@@ -174,94 +185,105 @@ const RecentPurchasesAdmin = () => {
           <MenuItem value="Last7Days">Last 7 Days</MenuItem>
           <MenuItem value="Last30Days">Last 30 Days</MenuItem>
         </Select>
-
-        <FormControl>
-          <InputLabel id="brand-select-label">Filter By Brand</InputLabel>
-          <Select
-            labelId="brand-select-label"
-            value={selectedBrand}
-            onChange={(e) => setSelectedBrand(e.target.value)}
-          >
-            <MenuItem value="">All Brands</MenuItem>
-            {brands.map((brand) => (
-              <MenuItem key={brand._id} value={brand._id}>
-                {brand.brandName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Select
+          sx={{ width: 200, borderRadius: "5px", color: "#2d2d2d" }}
+          value={selectedBrand}
+          onChange={(e) => setSelectedBrand(e.target.value)}
+        >
+          <MenuItem value="">All Brands</MenuItem>
+          {brands.map((brand) => (
+            <MenuItem key={brand._id} value={brand._id}>
+              {brand.brandName}
+            </MenuItem>
+          ))}
+        </Select>
       </Box>
-      <div className="recent-purchases">
+
+      {isLoading ? (
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "400px",
+            width: "100%",
           }}
         >
-          <h2>Recent Purchases</h2>
-          <BsThreeDotsVertical style={{ fontSize: "1rem" }} />
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
         </Box>
-        <hr />
-        <table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Customer Name</th>
-              <th>Brand</th>
-              <th>Status</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentOrders.map((order) => (
-              <tr
-                onClick={() => setSelectedOrder(order)}
-                style={{ cursor: "pointer" }}
-                key={order._id}
-              >
-                <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
-                <td>{order._id}</td>
-                <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                <td>
-                  {order.customerId.firstName}
-                  {order.customerId.lastName}
-                </td>
-                <td>{order.cartItems[0]?.brandId.brandName}</td>
-                <td>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 12px",
-                      borderRadius: "5px",
-                      backgroundColor:
-                        order.orderStatus === "Pending"
-                          ? "#f8d7da"
-                          : order.orderStatus === "Delivered"
-                          ? "#d4edda"
-                          : "#FFE5B4",
-                      color:
-                        order.orderStatus === "Pending"
-                          ? "#721c24"
-                          : order.orderStatus === "Delivered"
-                          ? "#155724"
-                          : "#FF7518",
-                      fontWeight: "500",
-                      textAlign: "center",
-                      minWidth: "80px",
-                    }}
-                  >
-                    {order.orderStatus}
-                  </span>
-                </td>
-                <td>{order.total} EGP</td>
+      ) : (
+        <div className="recent-purchases">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "row",
+            }}
+          >
+            <h2>Recent Purchases</h2>
+            <BsThreeDotsVertical style={{ fontSize: "1rem" }} />
+          </Box>
+          <hr />
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Brand</th>
+                <th>Status</th>
+                <th>Amount</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {currentOrders.map((order) => (
+                <tr
+                  onClick={() => setSelectedOrder(order)}
+                  style={{ cursor: "pointer" }}
+                  key={order._id}
+                >
+                  <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
+                  <td>{order._id}</td>
+                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                  <td>
+                    {order.customerId.firstName}
+                    {order.customerId.lastName}
+                  </td>
+                  <td>{order.cartItems[0]?.brandId.brandName}</td>
+                  <td>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: "5px",
+                        backgroundColor:
+                          order.orderStatus === "Pending"
+                            ? "#f8d7da"
+                            : order.orderStatus === "Delivered"
+                            ? "#d4edda"
+                            : "#FFE5B4",
+                        color:
+                          order.orderStatus === "Pending"
+                            ? "#721c24"
+                            : order.orderStatus === "Delivered"
+                            ? "#155724"
+                            : "#FF7518",
+                        fontWeight: "500",
+                        textAlign: "center",
+                        minWidth: "80px",
+                      }}
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </td>
+                  <td>{order.total} EGP</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       {/* Pagination */}
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, index) => (
