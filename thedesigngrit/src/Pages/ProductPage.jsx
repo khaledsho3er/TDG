@@ -88,7 +88,7 @@ function ProductPage() {
     };
 
     fetchProduct(); // Fetch product on component mount
-  }, [id, error, loading]); // Refetch if the ID in the URL changes
+  }, [id, error, loading, activeProduct]); // Refetch if the ID in the URL changes
 
   // Add this useEffect to fetch variants when the product loads
   useEffect(() => {
@@ -188,7 +188,7 @@ function ProductPage() {
   };
 
   // Update your product display to use variant data when available
-  const displayProduct = selectedVariant || product;
+  // const displayProduct = selectedVariant || product;
   const displayImages = selectedVariant?.images || product.images;
   const displayTitle = selectedVariant?.title || product.name;
   const handleSectionToggle = (index) => {
@@ -303,17 +303,21 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <h1 className="product-title">{displayTitle}</h1>
-            <h3
-              style={{
-                marginBottom: "8px",
-                fontWeight: "light",
-                color: "#ccc",
-              }}
-            >
-              {product.name}
-            </h3>
-            <p className="product-brand">{product.brandName}</p>
+            <h1 className="product-title">
+              {selectedVariant ? selectedVariant.title : product.name}
+            </h1>
+            {selectedVariant && (
+              <h3
+                style={{
+                  marginBottom: "8px",
+                  fontWeight: "light",
+                  color: "#ccc",
+                }}
+              >
+                {product.name}
+              </h3>
+            )}
+            <p className="product-brand">{product.brandId.brandName}</p>
             <br />
             {product.readyToShip === true && (
               <div

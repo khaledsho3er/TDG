@@ -19,23 +19,16 @@ function Vendorspage() {
         }
       />
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: { xs: "column", sm: "row" },
-          marginTop: "20px",
-          gap: 2,
-        }}
+        sx={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}
       >
         <TopVButtons />
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        {/* Pass the selected category and setter function */}
         <FilterVSection
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {/* Pass the selected category and setter function */}
-
         <VendorsGrid selectedCategory={selectedCategory} />
       </Box>
     </Box>

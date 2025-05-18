@@ -891,6 +891,7 @@ html {
   box-sizing: border-box; /* Ensures padding doesn't add extra width */
   background-color: #fff;
   position: relative;
+  margin-top: 10rem;
 }
 
 .concept-title-container {
