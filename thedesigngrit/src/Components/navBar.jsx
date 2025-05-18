@@ -60,6 +60,8 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  // Add state for shop dropdown
+  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -227,6 +229,7 @@ function Header() {
 
   const closeMenu = () => {
     setMenuOpen(false);
+    closeShopDropdown();
   };
   const handleLoginClick = () => {
     navigate("/login"); // Redirect to login page
@@ -267,6 +270,19 @@ function Header() {
 
   const handleShopClose = () => {
     setAnchorEls(null);
+  };
+
+  // Toggle shop dropdown function
+  const toggleShopDropdown = (e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    setShopDropdownOpen(!shopDropdownOpen);
+  };
+
+  // Close shop dropdown
+  const closeShopDropdown = () => {
+    setShopDropdownOpen(false);
   };
 
   return (
