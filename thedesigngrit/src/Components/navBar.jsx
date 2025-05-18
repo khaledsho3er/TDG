@@ -272,14 +272,6 @@ function Header() {
     setAnchorEls(null);
   };
 
-  // Toggle shop dropdown function
-  const toggleShopDropdown = (e) => {
-    if (e) {
-      e.stopPropagation();
-    }
-    setShopDropdownOpen(!shopDropdownOpen);
-  };
-
   // Close shop dropdown
   const closeShopDropdown = () => {
     setShopDropdownOpen(false);
@@ -399,96 +391,166 @@ function Header() {
                     >
                       Home
                     </Typography>
-                    <Typography
-                      className="menu-item"
-                      aria-controls={anchorEls ? "shop-menu" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleShopClick} // Toggle categories visibility on click
-                    >
-                      Shop
-                    </Typography>
-
-                    {/* Categories */}
                     <Box
-                      className={`menu-categories ${
-                        categoriesVisible ? "open" : ""
-                      }`}
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
                     >
                       <Typography
-                        className="category"
-                        onClick={() => navigate("/vendors")}
+                        className="menu-item"
+                        aria-controls={anchorEls ? "shop-menu" : undefined}
+                        aria-haspopup="true"
+                        onClick={handleShopClick} // Toggle categories visibility on click
                       >
-                        All Brands
-                      </Typography>
-
-                      {menuData.length > 0 ? (
-                        menuData.map((category) => (
-                          <Typography
-                            key={category._id}
-                            className="menu-category-item"
-                            onClick={() => {
-                              navigate(
-                                `/category/${category._id}/subcategories`
-                              );
-                              handleShopClose();
+                        Shop
+                        {shopDropdownOpen ? (
+                          <Box
+                            component="span"
+                            sx={{
+                              transform: "rotate(180deg)",
+                              transition: "transform 0.3s ease",
                             }}
                           >
-                            {category.name}
+                            ▼
+                          </Box>
+                        ) : (
+                          <Box
+                            component="span"
+                            sx={{ transition: "transform 0.3s ease" }}
+                          >
+                            ▼
+                          </Box>
+                        )}
+                      </Typography>
+                      {shopDropdownOpen && (
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "16px",
+                            padding: "16px 0",
+                            animation: "fadeIn 0.3s ease-in-out",
+                            "@keyframes fadeIn": {
+                              "0%": {
+                                opacity: 0,
+                                transform: "translateY(-10px)",
+                              },
+                              "100%": {
+                                opacity: 1,
+                                transform: "translateY(0)",
+                              },
+                            },
+                          }}
+                        >
+                          <Typography
+                            onClick={() => {
+                              navigate("/vendors");
+                              closeMenu();
+                            }}
+                            sx={{
+                              fontSize: "16px",
+                              color: "#666",
+                              cursor: "pointer",
+                              fontFamily: "Montserrat",
+                            }}
+                          >
+                            All Brands
                           </Typography>
-                        ))
-                      ) : (
-                        <Typography>No Categories Available</Typography>
+
+                          {menuData.map((category) => (
+                            <Typography
+                              key={category._id}
+                              onClick={() => {
+                                navigate(
+                                  `/category/${category._id}/subcategories`
+                                );
+                                closeMenu();
+                              }}
+                              sx={{
+                                fontSize: "16px",
+                                color: "#666",
+                                cursor: "pointer",
+                                fontFamily: "Montserrat",
+                              }}
+                            >
+                              {category.name}
+                            </Typography>
+                          ))}
+
+                          <Typography
+                            onClick={() => {
+                              navigate("/products/readytoship");
+                              closeMenu();
+                            }}
+                            sx={{
+                              fontSize: "16px",
+                              color: "#666",
+                              cursor: "pointer",
+                              fontFamily: "Montserrat",
+                            }}
+                          >
+                            Ready To Ship
+                          </Typography>
+
+                          <Typography
+                            onClick={() => {
+                              navigate("/products/onsale");
+                              closeMenu();
+                            }}
+                            sx={{
+                              fontSize: "16px",
+                              color: "#666",
+                              cursor: "pointer",
+                              fontFamily: "Montserrat",
+                            }}
+                          >
+                            On Sale
+                          </Typography>
+                        </Box>
                       )}
-                      <Typography
-                        className="category"
-                        onClick={() => navigate("/products/readytoship")}
-                      >
-                        Ready To Ship
-                      </Typography>
-                      <Typography
-                        className="category"
-                        onClick={() => navigate("/products/onsale")}
-                      >
-                        On Sale
-                      </Typography>
                     </Box>
-
-                    <Typography
-                      onClick={() => navigate("/about")}
-                      className="menu-item"
-                    >
-                      About
-                    </Typography>
-                    <Typography
-                      onClick={() => navigate("/contactus")}
-                      className="menu-item"
-                    >
-                      Contact
-                    </Typography>
-                    {userSession ? (
-                      <Typography
-                        onClick={() => navigate("/myaccount")}
-                        className="menu-item"
-                      >
-                        Account
-                      </Typography>
-                    ) : (
-                      <></>
-                    )}
-
-                    {userSession ? (
-                      <Typography onClick={handleLogout} className="menu-item">
-                        Logout
-                      </Typography>
-                    ) : (
-                      <Typography
-                        onClick={handleLoginClick}
-                        className="menu-item"
-                      >
-                        Login
-                      </Typography>
-                    )}
                   </Box>
+
+                  <Typography
+                    onClick={() => navigate("/about")}
+                    className="menu-item"
+                  >
+                    About
+                  </Typography>
+                  <Typography
+                    onClick={() => navigate("/contactus")}
+                    className="menu-item"
+                  >
+                    Contact
+                  </Typography>
+                  {userSession ? (
+                    <Typography
+                      onClick={() => navigate("/myaccount")}
+                      className="menu-item"
+                    >
+                      Account
+                    </Typography>
+                  ) : (
+                    <></>
+                  )}
+
+                  {userSession ? (
+                    <Typography onClick={handleLogout} className="menu-item">
+                      Logout
+                    </Typography>
+                  ) : (
+                    <Typography
+                      onClick={handleLoginClick}
+                      className="menu-item"
+                    >
+                      Login
+                    </Typography>
+                  )}
                 </Box>
               </Box>
             </>
