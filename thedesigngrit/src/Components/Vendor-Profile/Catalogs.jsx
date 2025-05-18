@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Typography,
@@ -21,6 +21,8 @@ function VendorCatalogs({ vendorID }) {
   const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
   const isMobile = useMediaQuery("(max-width:768px)");
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -98,38 +100,111 @@ function VendorCatalogs({ vendorID }) {
           </Box>
         ) : isMobile ? (
           // Mobile view with Swiper
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={15}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            loop={catalogs.length > 1}
-            style={{ paddingBottom: "40px" }} // Space for pagination dots
-          >
-            {catalogs.map((item) => (
-              <SwiperSlide key={item._id}>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                  <VendorCatalogCard
-                    title={item.title || "Untitled Catalog"}
-                    year={item.year || "N/A"}
-                    image={
-                      item.image
-                        ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.image}`
-                        : "/placeholder.jpg"
-                    }
-                    type={item.type || "Unknown Type"}
-                    pdf={
-                      item.pdf
-                        ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.pdf}`
-                        : "#"
-                    }
-                    isMobile={isMobile}
-                  />
-                </Box>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <Box sx={{ position: "relative" }}>
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={15}
+              slidesPerView={1}
+              pagination={{
+                clickable: true,
+                el: ".swiper-pagination",
+                type: "bullets",
+              }}
+              loop={catalogs.length > 1}
+              navigation={{
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
+              }}
+              onBeforeInit={(swiper) => {
+                // Update navigation refs after Swiper initialization
+                if (swiper.params.navigation) {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                }
+              }}
+              style={{ paddingBottom: "10px", color: "#2d2d2d" }}
+            >
+              {catalogs.map((item) => (
+                <SwiperSlide key={item._id}>
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <VendorCatalogCard
+                      title={item.title || "Untitled Catalog"}
+                      year={item.year || "N/A"}
+                      image={
+                        item.image
+                          ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.image}`
+                          : "/placeholder.jpg"
+                      }
+                      type={item.type || "Unknown Type"}
+                      pdf={
+                        item.pdf
+                          ? `https://pub-8c9ce55fbad6475eb1afe9472bd396e0.r2.dev/${item.pdf}`
+                          : "#"
+                      }
+                      isMobile={isMobile}
+                    />
+                  </Box>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Custom navigation and pagination container */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "20px 0",
+                marginTop: "10px",
+              }}
+            >
+              {/* Pagination dots on the left */}
+              <Box
+                className="swiper-pagination"
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  "& .swiper-pagination-bullet": {
+                    backgroundColor: "#2d2d2d",
+                    opacity: 0.5,
+                    margin: "0 4px",
+                  },
+                  "& .swiper-pagination-bullet-active": {
+                    opacity: 1,
+                    backgroundColor: "#2d2d2d",
+                  },
+                }}
+              />
+
+              {/* Navigation buttons on the right */}
+              <Box sx={{ display: "flex", gap: "10px" }}>
+                <IconButton
+                  ref={prevRef}
+                  sx={{
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                    width: "35px",
+                    height: "35px",
+                  }}
+                >
+                  <ArrowBackIosNewIcon sx={{ fontSize: "16px" }} />
+                </IconButton>
+                <IconButton
+                  ref={nextRef}
+                  sx={{
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                    width: "35px",
+                    height: "35px",
+                  }}
+                >
+                  <ArrowForwardIosIcon sx={{ fontSize: "16px" }} />
+                </IconButton>
+              </Box>
+            </Box>
+          </Box>
         ) : (
           // Desktop view with Grid
           <>

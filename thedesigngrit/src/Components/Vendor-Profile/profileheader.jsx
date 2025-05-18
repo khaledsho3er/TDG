@@ -23,17 +23,14 @@ function VendorProfileHeader({ vendor }) {
         sx={{
           width: { xs: "120px", md: "150px" },
           height: { xs: "120px", md: "150px" },
-          backgroundColor: "#fff",
+          backgroundColor: "transparent",
           borderRadius: "16px",
-          boxShadow:
-            "0px 4px 15px rgba(0, 0, 0, 0.1), 0px 8px 10px rgba(0, 0, 0, 0.1)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           transition: "transform 0.3s ease",
           "&:hover": {
             transform: "translateY(-5px)",
-            boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.2)",
           },
           marginRight: "20px",
         }}
@@ -43,7 +40,8 @@ function VendorProfileHeader({ vendor }) {
           src={fullImagePath || "//Assets/TDG_Logo_Black.webp"} // Use dynamic logo or fallback
           alt="Logo"
           sx={{
-            width: { xs: "80px", md: "100px" },
+            width: { xs: "100px", md: "120px" },
+            borderRadius: "16px",
             height: "auto",
             objectFit: "contain",
           }}
@@ -91,8 +89,8 @@ function VendorProfileHeader({ vendor }) {
               variant="outlined"
               sx={{
                 width: "8rem",
-                height: "25px",
-                borderRadius: "5px",
+                height: "40px",
+                borderRadius: "6px",
                 color: "white",
                 backgroundColor: "black",
                 fontSize: "0.6rem",
@@ -107,8 +105,8 @@ function VendorProfileHeader({ vendor }) {
               variant="contained"
               sx={{
                 width: "8rem",
-                height: "25px",
-                borderRadius: "5px",
+                height: "40px",
+                borderRadius: "6px",
                 color: "Black",
                 backgroundColor: "#E5E5E5",
                 fontSize: "0.6rem",
