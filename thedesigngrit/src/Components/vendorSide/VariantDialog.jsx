@@ -257,6 +257,8 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
     const previews = files.map((file) => URL.createObjectURL(file));
 
     const updatedVariants = [...variants];
@@ -267,6 +269,9 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
     };
 
     const updatedPreviews = [...imagePreviews];
+    if (!updatedPreviews[currentVariant]) {
+      updatedPreviews[currentVariant] = [];
+    }
     updatedPreviews[currentVariant] = [
       ...updatedPreviews[currentVariant],
       ...previews,
@@ -274,31 +279,43 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
 
     setVariants(updatedVariants);
     setImagePreviews(updatedPreviews);
+
+    console.log("Images added:", files.length);
+    console.log("Current previews:", updatedPreviews[currentVariant]);
   };
 
   const handleSetMainImage = (index) => {
+    if (index < 0 || !variants[currentVariant].images[index]) return;
+
     const updatedVariants = [...variants];
     updatedVariants[currentVariant] = {
       ...updatedVariants[currentVariant],
       mainImage: updatedVariants[currentVariant].images[index],
     };
     setVariants(updatedVariants);
+
+    console.log("Set main image to index:", index);
   };
 
   const handleRemoveImage = (index) => {
+    if (index < 0 || !variants[currentVariant].images[index]) return;
+
     const updatedVariants = [...variants];
     const updatedImages = updatedVariants[currentVariant].images.filter(
       (_, i) => i !== index
     );
 
+    // Check if we're removing the main image
+    const isRemovingMainImage =
+      updatedVariants[currentVariant].mainImage ===
+      updatedVariants[currentVariant].images[index];
+
     updatedVariants[currentVariant] = {
       ...updatedVariants[currentVariant],
       images: updatedImages,
-      mainImage:
-        updatedVariants[currentVariant].mainImage ===
-        updatedVariants[currentVariant].images[index]
-          ? updatedImages[0] || null
-          : updatedVariants[currentVariant].mainImage,
+      mainImage: isRemovingMainImage
+        ? updatedImages[0] || null
+        : updatedVariants[currentVariant].mainImage,
     };
 
     const updatedPreviews = [...imagePreviews];
@@ -308,6 +325,9 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
 
     setVariants(updatedVariants);
     setImagePreviews(updatedPreviews);
+
+    console.log("Removed image at index:", index);
+    console.log("Remaining images:", updatedImages.length);
   };
 
   // Modify addVariant to use same SKU and productId as first variant
@@ -555,7 +575,7 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
             <Box sx={{ mb: 2 }}>
               <h3>Technical Dimensions</h3>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     label="Length (CM)"
                     name="dimensions.length"
@@ -582,16 +602,6 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                     type="number"
                     fullWidth
                     value={variants[currentVariant].dimensions.height}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Weight (KG)"
-                    name="dimensions.weight"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.weight}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -650,6 +660,71 @@ export default function VariantDialog({ open, onClose, onSubmit, sku }) {
                   Drop images here, or click to browse
                 </label>
               </div>
+
+              {/* Image Thumbnails for Selection */}
+              <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
+                {imagePreviews[currentVariant] &&
+                  imagePreviews[currentVariant].map((preview, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        position: "relative",
+                        width: "80px",
+                        height: "80px",
+                        border:
+                          variants[currentVariant].mainImage ===
+                          variants[currentVariant].images[index]
+                            ? "2px solid #6a8452"
+                            : "1px solid #ccc",
+                        borderRadius: "4px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <img
+                        src={preview}
+                        alt={`Thumbnail ${index}`}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleSetMainImage(index)}
+                      />
+                      <IconButton
+                        size="small"
+                        sx={{
+                          position: "absolute",
+                          top: "2px",
+                          right: "2px",
+                          backgroundColor: "rgba(255,255,255,0.7)",
+                          padding: "2px",
+                          "&:hover": { backgroundColor: "rgba(255,0,0,0.2)" },
+                        }}
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        ✕
+                      </IconButton>
+                      {variants[currentVariant].mainImage ===
+                        variants[currentVariant].images[index] && (
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            bottom: "2px",
+                            left: "2px",
+                            backgroundColor: "rgba(106,132,82,0.7)",
+                            color: "white",
+                            fontSize: "10px",
+                            padding: "2px 4px",
+                            borderRadius: "2px",
+                          }}
+                        >
+                          Main
+                        </Box>
+                      )}
+                    </Box>
+                  ))}
+              </Box>
             </Box>
           </Grid>
         </Grid>
