@@ -387,7 +387,7 @@ function Header() {
                         style={{ width: "69px", padding: "12px" }}
                       />
                     </Link>
-                    <IconButton onClick={toggleMenu} className="close-button">
+                    <IconButton onClick={closeMenu} className="close-button">
                       <CloseIcon fontSize="large" />
                     </IconButton>
                   </Box>
