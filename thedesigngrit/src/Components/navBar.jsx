@@ -169,9 +169,19 @@ function Header() {
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed"; // Lock scrolling on iOS
+      document.body.style.width = "100%";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
   }, [menuOpen]);
 
   const handleCartToggle = () => {
@@ -338,6 +348,8 @@ function Header() {
                   className={`full-page-menu ${menuOpen ? "open" : ""}`}
                   sx={{
                     backgroundColor: "white",
+                    height: "100vh", // make sure it covers full height
+                    touchAction: "none", // <- Important to prevent scroll gestures
                     width: "100%",
                     maxHeight: "100vh",
                     overflowY: "auto",
@@ -348,6 +360,7 @@ function Header() {
                     alignItems: "center",
                     justifyContent: "flex-start",
                   }}
+                  onTouchMove={(e) => e.stopPropagation()} // Prevent scroll propagation
                   onClick={(e) => e.stopPropagation()} // This prevents bubbling to outer Box
                 >
                   <Box className="menu-header">
