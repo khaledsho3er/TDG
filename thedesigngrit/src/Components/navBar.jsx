@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  Fragment,
+  useRef,
+} from "react";
 import {
   Box,
   Typography,
@@ -60,6 +66,23 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
+  // Refs for menu elements
+  const menuRef = useRef(null);
+  const hamburgerRef = useRef(null);
+
+  // Prevent scroll when menu is open
+  useEffect(() => {
+    if (menuOpen && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [menuOpen, isMobile]);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -124,28 +147,41 @@ function Header() {
     );
   };
 
+  // Combined event listeners to avoid conflicts
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 80);
+      // Don't close menu on scroll - removed any auto-closing behavior
+    };
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 767);
+    };
+
+    // Handle clicks outside the menu
+    const handleClickOutside = (event) => {
+      // Only close if menu is open AND click is outside menu AND outside hamburger button
+      if (
+        menuOpen &&
+        menuRef.current &&
+        hamburgerRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !hamburgerRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 767); // Update state on window resize
-    };
-
-    window.addEventListener("resize", handleResize); // Add resize event listener
-    return () => {
-      window.removeEventListener("resize", handleResize); // Cleanup on unmount
-    };
-  }, []);
+  }, [menuOpen]); // Added menuOpen as dependency to update click handler
 
   useEffect(() => {
     // Fetch user data
@@ -202,8 +238,9 @@ function Header() {
     setHoveredCategory(null); // Always close when leaving menu
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const toggleMenu = (e) => {
+    if (e) e.stopPropagation(); // Prevent event bubbling
+    setMenuOpen((prevState) => !prevState);
   };
 
   const handleLoginClick = () => {
@@ -289,7 +326,7 @@ function Header() {
                 </Badge>
               </IconButton>
             </div>
-            <IconButton onClick={toggleMenu}>
+            <IconButton onClick={toggleMenu} ref={hamburgerRef}>
               <MenuIcon />
             </IconButton>
           </Box>
@@ -315,6 +352,7 @@ function Header() {
                 onClick={toggleMenu}
               />
               <Box
+                ref={menuRef}
                 className={`full-page-menu ${menuOpen ? "open" : ""}`}
                 sx={{
                   display: "flex",
@@ -322,6 +360,12 @@ function Header() {
                   alignItems: "center",
                   justifyContent: "flex-start",
                   fontFamily: "Montserrat",
+                  position: "fixed", // Ensure it stays fixed
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 9999,
                   "& .menu-content": {
                     display: "flex",
                     flexDirection: "column",
