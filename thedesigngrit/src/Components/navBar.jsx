@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  Fragment,
+  useRef,
+} from "react";
 import {
   Box,
   Typography,
@@ -60,7 +66,6 @@ function Header() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
     0
@@ -124,18 +129,39 @@ function Header() {
     );
   };
 
+  // Handle scroll and resize
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 80);
     };
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 767);
+      if (window.innerWidth >= 767) {
+        setMenuOpen(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
+  // Prevent scroll when menu is open
+  useEffect(() => {
+    if (menuOpen && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen, isMobile]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 767); // Update state on window resize
@@ -203,8 +229,11 @@ function Header() {
   };
 
   // Update your toggleMenu function to this:
-  const openMenu = () => {
-    setMenuOpen(true);
+  const toggleMenu = (e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    setMenuOpen(!menuOpen);
   };
 
   const closeMenu = () => {
@@ -268,6 +297,8 @@ function Header() {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
+            position: "relative",
+            zIndex: 1000,
           }}
         >
           <Link to="/home">
@@ -293,8 +324,8 @@ function Header() {
                 </Badge>
               </IconButton>
             </div>
-            <IconButton onClick={openMenu}>
-              <MenuIcon />
+            <IconButton onClick={toggleMenu}>
+              {menuOpen ? <CloseIcon /> : <MenuIcon />}
             </IconButton>
           </Box>
         </Box>
