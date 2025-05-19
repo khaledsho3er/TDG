@@ -80,17 +80,33 @@ const SignUpForm = () => {
   useEffect(() => {
     if (watchPassword) {
       calculateStrength(watchPassword);
-      checkRequirements(watchPassword);
+      const newRequirements = checkRequirements(watchPassword);
+
+      // Check if all requirements are met to auto-close the popper
+      if (
+        newRequirements.length &&
+        newRequirements.uppercase &&
+        newRequirements.number &&
+        newRequirements.special
+      ) {
+        // Add a small delay before closing for better UX
+        setTimeout(() => {
+          setShowRequirements(false);
+        }, 1000);
+      }
     }
-  }, [watchPassword]);
+  }, [watchPassword, strength]);
 
   const checkRequirements = (password) => {
-    setRequirements({
+    const newRequirements = {
       length: password.length >= 8,
       uppercase: /[A-Z]/.test(password),
       number: /\d/.test(password),
       special: /[\W_]/.test(password),
-    });
+    };
+
+    setRequirements(newRequirements);
+    return newRequirements; // Return the requirements for immediate use
   };
 
   const calculateStrength = (password) => {
@@ -102,19 +118,19 @@ const SignUpForm = () => {
     setStrength(score);
   };
 
-  const getBarColors = () => {
-    if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
-    if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
-    if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
-    return ["green", "green", "green", "green"];
-  };
+  // const getBarColors = () => {
+  //   if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
+  //   if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
+  //   if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
+  //   return ["green", "green", "green", "green"];
+  // };
 
-  const getStrengthLabel = () => {
-    if (strength <= 25) return "Weak";
-    if (strength <= 50) return "Fair";
-    if (strength <= 75) return "Good";
-    return "Strong";
-  };
+  // const getStrengthLabel = () => {
+  //   if (strength <= 25) return "Weak";
+  //   if (strength <= 50) return "Fair";
+  //   if (strength <= 75) return "Good";
+  //   return "Strong";
+  // };
 
   const onSubmit = async (data) => {
     try {

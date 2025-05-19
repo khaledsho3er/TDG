@@ -7,7 +7,7 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
@@ -16,7 +16,6 @@ import PageDescription from "../Components/Topheader";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
-  const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [subcategory, setSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
