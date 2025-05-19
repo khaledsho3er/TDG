@@ -732,21 +732,33 @@ function ProductPage() {
                         {/* <img src="/Assets/productDemi.webp" alt="Dimensions" /> */}
                         <p>Width X Length X Height</p>
                         <p>
-                          <strong>{product.technicalDimensions.width}</strong>{" "}
+                          <strong>
+                            {selectedVariant
+                              ? selectedVariant.dimensions.width
+                              : product.technicalDimensions.width}
+                          </strong>{" "}
                           cm x{"  "}
                           <strong>
                             {" "}
-                            {product.technicalDimensions.length}
+                            {selectedVariant
+                              ? selectedVariant.dimensions.length
+                              : product.technicalDimensions.length}
                           </strong>{" "}
                           cm X{"  "}
                           <strong>
-                            {product.technicalDimensions.height}
+                            {selectedVariant
+                              ? selectedVariant.dimensions.height
+                              : product.technicalDimensions.height}
                           </strong>{" "}
                           cm
                         </p>
                         <p>
                           Weight :{" "}
-                          <strong>{product.technicalDimensions.weight}</strong>{" "}
+                          <strong>
+                            {selectedVariant
+                              ? selectedVariant.dimensions.weight
+                              : product.technicalDimensions.weight}
+                          </strong>{" "}
                           Kgs
                         </p>
                       </div>
