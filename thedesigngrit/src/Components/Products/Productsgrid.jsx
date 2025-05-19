@@ -59,14 +59,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             }}
           >
             {currentProducts.map((product) => (
-              <Box
-                key={product._id}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "100%",
-                }}
-              >
+              <Box key={product._id}>
                 <ProductCard
                   product={product}
                   onToggleFavorite={onToggleFavorite}
