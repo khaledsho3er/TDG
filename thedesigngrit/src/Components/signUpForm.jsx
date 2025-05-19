@@ -15,7 +15,6 @@ import AccountSentPopup from "./successMsgs/successfullyRegistered";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Translate } from "@mui/icons-material";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -162,7 +161,14 @@ const SignUpForm = () => {
         margin: isMediumLaptop ? "0 auto" : "initial",
       }}
     >
-      <h1 className="form-title-signup">Register</h1>
+      <h1
+        className="form-title-signup"
+        style={
+          isMediumLaptop ? { fontSize: "1.5rem", marginBottom: "10px" } : {}
+        }
+      >
+        Register
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="signup-form"
@@ -176,9 +182,21 @@ const SignUpForm = () => {
           placeholder="E-mail"
           className="input-field"
           {...register("email")}
+          style={
+            isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
+          }
         />
         {errors.email && (
-          <p className="error-message">{errors.email.message}</p>
+          <p
+            className="error-message"
+            style={
+              isMediumLaptop
+                ? { marginTop: "-8px", marginBottom: "8px", fontSize: "0.7rem" }
+                : {}
+            }
+          >
+            {errors.email.message}
+          </p>
         )}
 
         <input
@@ -186,9 +204,21 @@ const SignUpForm = () => {
           placeholder="First Name"
           className="input-field"
           {...register("firstName")}
+          style={
+            isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
+          }
         />
         {errors.firstName && (
-          <p className="error-message">{errors.firstName.message}</p>
+          <p
+            className="error-message"
+            style={
+              isMediumLaptop
+                ? { marginTop: "-8px", marginBottom: "8px", fontSize: "0.7rem" }
+                : {}
+            }
+          >
+            {errors.firstName.message}
+          </p>
         )}
 
         <input
@@ -196,9 +226,21 @@ const SignUpForm = () => {
           placeholder="Last Name"
           className="input-field"
           {...register("lastName")}
+          style={
+            isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
+          }
         />
         {errors.lastName && (
-          <p className="error-message">{errors.lastName.message}</p>
+          <p
+            className="error-message"
+            style={
+              isMediumLaptop
+                ? { marginTop: "-8px", marginBottom: "8px", fontSize: "0.7rem" }
+                : {}
+            }
+          >
+            {errors.lastName.message}
+          </p>
         )}
 
         {/* Password Field */}
@@ -212,6 +254,11 @@ const SignUpForm = () => {
               value={password}
               onChange={handlePasswordChange}
               onFocus={handlePasswordFocus}
+              style={
+                isMediumLaptop
+                  ? { marginBottom: "10px", padding: "8px 12px" }
+                  : {}
+              }
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
@@ -258,12 +305,17 @@ const SignUpForm = () => {
               open={showRequirements}
               anchorEl={passwordFieldRef.current}
               placement="bottom-start"
-              style={{ zIndex: 1000, transform: "translate(911px, 441px)" }}
+              style={{
+                zIndex: 1000,
+                transform: isMediumLaptop
+                  ? "translate(0, 10px)"
+                  : "translate(911px, 441px)",
+              }}
             >
               <Paper
                 elevation={3}
                 sx={{
-                  p: 2,
+                  p: isMediumLaptop ? 1 : 2,
                   mt: 1,
                   position: "relative",
                   "&::before": {
@@ -280,15 +332,22 @@ const SignUpForm = () => {
               >
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: "bold", mb: 1 }}
+                  sx={{
+                    fontWeight: "bold",
+                    mb: 1,
+                    fontSize: isMediumLaptop ? "0.8rem" : "inherit",
+                  }}
                 >
                   Password Requirements:
                 </Typography>
-                <ul style={{ margin: 0, paddingLeft: 20 }}>
+                <ul
+                  style={{ margin: 0, paddingLeft: isMediumLaptop ? 15 : 20 }}
+                >
                   <li
                     style={{
                       color: requirements.length ? "green" : "red",
                       marginBottom: "4px",
+                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least 8 characters
@@ -297,6 +356,7 @@ const SignUpForm = () => {
                     style={{
                       color: requirements.uppercase ? "green" : "red",
                       marginBottom: "4px",
+                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least one uppercase letter
@@ -305,11 +365,17 @@ const SignUpForm = () => {
                     style={{
                       color: requirements.number ? "green" : "red",
                       marginBottom: "4px",
+                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least one number
                   </li>
-                  <li style={{ color: requirements.special ? "green" : "red" }}>
+                  <li
+                    style={{
+                      color: requirements.special ? "green" : "red",
+                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
+                    }}
+                  >
                     At least one special character
                   </li>
                 </ul>
