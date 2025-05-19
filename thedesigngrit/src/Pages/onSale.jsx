@@ -28,7 +28,12 @@ function OnSale() {
           "https://api.thedesigngrit.com/api/products/getproducts/"
         );
         // Filter products that have salePrice
-        const onSaleProducts = data.filter((product) => product.salePrice);
+        const onSaleProducts = data.filter(
+          (product) =>
+            product.salePrice &&
+            product.status === true &&
+            product.promotionApproved === true
+        );
         setProducts(onSaleProducts);
         setFilteredProducts(onSaleProducts);
       } catch (error) {

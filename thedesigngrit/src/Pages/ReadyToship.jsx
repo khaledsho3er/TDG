@@ -27,8 +27,11 @@ function ReadyToShip() {
         const { data } = await axios.get(
           "https://api.thedesigngrit.com/api/products/getproducts/readytoship"
         );
-        setProducts(data);
-        setFilteredProducts(data);
+        const approvedReadyToShipProducts = data.filter(
+          (product) => product.status === true && product.readyToShip === true
+        );
+        setProducts(approvedReadyToShipProducts);
+        setFilteredProducts(approvedReadyToShipProducts);
       } catch (error) {
         console.error("Error fetching ready-to-ship products:", error);
       } finally {

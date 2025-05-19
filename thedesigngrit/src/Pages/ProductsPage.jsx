@@ -50,8 +50,12 @@ function ProductsPage() {
         );
         console.log("Raw API response:", data); // Add this line
 
-        setProducts(data);
-        setFilteredProducts(data);
+        const approvedProducts = data.filter(
+          (product) => product.status === true
+        );
+
+        setProducts(approvedProducts);
+        setFilteredProducts(approvedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
