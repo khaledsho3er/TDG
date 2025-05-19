@@ -55,6 +55,9 @@ const SignUpForm = () => {
     "(min-width: 1024px) and (max-width: 1440px)"
   );
 
+  // Add media query for mobile devices
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   // Password requirements state
   const [requirements, setRequirements] = useState({
     length: false,
@@ -315,24 +318,42 @@ const SignUpForm = () => {
             <Popper
               open={showRequirements}
               anchorEl={passwordFieldRef.current}
-              placement="right-start"
+              placement={isMobile ? "bottom-start" : "right-start"}
               style={{ zIndex: 1000 }}
             >
               <Paper
                 elevation={3}
                 sx={{
                   p: 2,
-                  ml: 1,
-                  position: "relative",
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: 20,
-                    left: -10,
-                    borderWidth: "10px 10px 10px 0",
-                    borderStyle: "solid",
-                    borderColor: "transparent #fff transparent transparent",
-                  },
+                  ...(isMobile
+                    ? {
+                        mt: 1,
+                        position: "relative",
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: -10,
+                          left: 20,
+                          borderWidth: "0 10px 10px 10px",
+                          borderStyle: "solid",
+                          borderColor:
+                            "transparent transparent #fff transparent",
+                        },
+                      }
+                    : {
+                        ml: 1,
+                        position: "relative",
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: 20,
+                          left: -10,
+                          borderWidth: "10px 10px 10px 0",
+                          borderStyle: "solid",
+                          borderColor:
+                            "transparent #fff transparent transparent",
+                        },
+                      }),
                 }}
               >
                 <Typography
