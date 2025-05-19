@@ -49,6 +49,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
               width: isMobile ? "100%" : "100%",
               margin: isMobile ? "auto" : "auto",
             }}
+            alignItems={"baseline"}
           >
             {currentProducts.map((product) => {
               return (
