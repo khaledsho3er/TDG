@@ -30,7 +30,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
     <Box
       sx={{
         margin: { xs: "auto", md: 0 },
-        marginTop: { xs: "0", md: "70px" },
+        marginTop: { xs: "0", md: "70px 70px 0px " },
       }}
     >
       {safeProducts.length === 0 ? (
