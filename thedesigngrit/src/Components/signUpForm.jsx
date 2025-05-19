@@ -364,7 +364,7 @@ const SignUpForm = () => {
         )}
 
         {/* Confirm Password Field */}
-        <div style={{ position: "relative", marginTop: "20px" }}>
+        <div style={{ position: "relative" }}>
           <input
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm Password"
