@@ -9,6 +9,9 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
   const isMobile = useMediaQuery("(max-width:768px)");
+  const isMediumLaptop = useMediaQuery(
+    "(min-width: 1024px) and (max-width: 1440px)"
+  );
 
   // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -44,10 +47,13 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             container
             spacing={3}
             justifyContent="flex-start"
-            gap={currentProducts.length < 3 ? "60px" : "0px"}
+            gap={currentProducts.length < 3 && !isMediumLaptop ? "60px" : "0px"}
             sx={{
               width: isMobile ? "100%" : "100%",
               margin: isMobile ? "auto" : "auto",
+              transition: "none", // Prevent animation during filter
+              transform: "none", // Ensure no transform is applied
+              position: isMediumLaptop ? "static" : "relative",
             }}
             alignItems={"baseline"}
           >
