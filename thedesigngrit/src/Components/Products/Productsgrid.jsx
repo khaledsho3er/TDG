@@ -29,7 +29,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
   return (
     <Box
       sx={{
-        padding: { xs: "20px", sm: "30px", md: "40px 15px" },
+        margin: "auto",
       }}
     >
       {safeProducts.length === 0 ? (
@@ -53,8 +53,14 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                 gap: "20px",
               },
               "@media (max-width: 768px)": {
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "16px",
+                marginTop: "20px",
+              },
+              "@media (max-width: 480px)": {
                 gridTemplateColumns: "repeat(1, 1fr)",
                 gap: "16px",
+                marginTop: "20px",
               },
             }}
           >

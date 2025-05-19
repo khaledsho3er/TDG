@@ -754,13 +754,6 @@
     padding: 10px;
   }
 
-  /* Center product cards on mobile */
-  .MuiBox-root .MuiCard-root {
-    margin: 0 auto;
-    width: 100%;
-    max-width: 300px;
-  }
-
   /* Adjust product card image size on mobile */
   .MuiCardMedia-root {
     height: 200px !important;
