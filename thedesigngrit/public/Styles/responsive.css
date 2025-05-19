@@ -156,6 +156,9 @@
     margin: 0 auto;
     padding: 20px;
   }
+  .signinLogo {
+    height: 95vh;
+  }
 
   .signup-form {
     width: 100%;
