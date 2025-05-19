@@ -42,7 +42,7 @@ const VendorHome = () => {
     const vendorData = localStorage.getItem("vendor");
 
     if (!vendorData) {
-      navigate("/vendor-login"); // redirect to login page if no vendor found
+      navigate("/signin-vendor"); // redirect to login page if no vendor found
       return;
     }
 
@@ -126,7 +126,7 @@ const VendorHome = () => {
           Account Deactivated
         </DialogTitle>
         <DialogContent sx={{ py: 3 }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ mb: 2, mt: 2 }}>
             Your brand account has been deactivated. Please contact the
             administrator team of THE DESIGN GRIT for assistance.
           </Typography>
@@ -134,11 +134,16 @@ const VendorHome = () => {
             Email: support@thedesigngrit.com
           </Typography>
           <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-            Phone: +1-800-DESIGN-GRIT
+            Phone: +1 (123) 456-7890
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogout} variant="contained" color="primary">
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            color="#ffffff"
+            bacvkgroundColor="#2d2d2d"
+          >
             Logout
           </Button>
         </DialogActions>
