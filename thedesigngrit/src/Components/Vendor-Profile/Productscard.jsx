@@ -4,13 +4,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { Box, CircularProgress } from "@mui/material";
 
 const VendorProductsCard = ({ vendor, products }) => {
   const [categories, setCategories] = useState([]);
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(
           "https://api.thedesigngrit.com/api/categories/categories/"
@@ -19,20 +22,26 @@ const VendorProductsCard = ({ vendor, products }) => {
         setCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    if (swiperInstance && products.length === 1) {
-      const wrapper = swiperInstance.el.querySelector(".swiper-wrapper");
-      if (wrapper) {
-        wrapper.style.width = "1000px";
-      }
+  // Determine the appropriate slidesPerView based on product count and screen size
+  const getSlidesPerView = () => {
+    const isMobile = window.innerWidth <= 768;
+
+    if (products.length === 1) {
+      return 1;
+    } else if (products.length === 2) {
+      return isMobile ? 1 : 2;
+    } else {
+      return isMobile ? 1 : 3;
     }
-  }, [swiperInstance, products]);
+  };
 
   return (
     <div
@@ -41,15 +50,28 @@ const VendorProductsCard = ({ vendor, products }) => {
         padding: window.innerWidth <= 768 ? "30px 25px" : "49px 110px",
       }}
     >
-      {products && products.length > 0 ? (
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "200px",
+            width: "100%",
+          }}
+        >
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
+        </Box>
+      ) : products && products.length > 0 ? (
         <Swiper
           modules={[Navigation]}
-          slidesPerView={window.innerWidth <= 768 ? 1 : 3}
+          slidesPerView={getSlidesPerView()}
           spaceBetween={window.innerWidth <= 768 ? 10 : 20}
-          navigation
-          loop={products.length > 1} // disable loop if only one
+          navigation={products.length > 1}
+          loop={products.length > 2} // Only enable loop when there are more than 2 products
           className="related-swiper"
           onSwiper={setSwiperInstance}
+          centeredSlides={products.length === 1}
         >
           {products.map((product) => {
             const category = categories.find(
