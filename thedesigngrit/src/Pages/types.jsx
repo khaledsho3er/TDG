@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   Box,
   Grid,
@@ -21,60 +21,116 @@ function TypesPage() {
   const [subcategory, setSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     // Function to fetch the subcategory details
     const fetchSubcategory = async () => {
       try {
         const { data } = await axios.get(
           `https://api.thedesigngrit.com/api/subcategories/${subCategoryId}`
         );
-        setSubcategory(data);
+        if (isMounted) {
+          setSubcategory(data);
+        }
       } catch (error) {
         console.error("Error fetching subcategory:", error);
-        setError("Failed to load subcategory details. Please try again later.");
+        if (isMounted) {
+          setError(
+            "Failed to load subcategory details. Please try again later."
+          );
+        }
       }
     };
 
     // Function to fetch types for the subcategory
     const fetchTypes = async () => {
       try {
-        setLoading(true);
+        if (isMounted) {
+          setLoading(true);
+        }
         const { data } = await axios.get(
           `https://api.thedesigngrit.com/api/types/subcategories/${subCategoryId}/types`
         );
 
-        // Filter types to only include those with status = true (if applicable)
+        // Filter types to only include those with status = true
         const activeTypes = data.filter((type) => type.status !== false);
-        setTypes(activeTypes);
+
+        if (isMounted) {
+          setTypes(activeTypes);
+          setLoading(false);
+          setInitialLoad(false);
+        }
       } catch (error) {
         console.error("Error fetching types:", error);
-        setError(
-          error.response?.data?.message ||
-            "Error fetching types. Please try again later."
-        );
-      } finally {
-        setLoading(false);
+        if (isMounted) {
+          setError(
+            error.response?.data?.message ||
+              "Error fetching types. Please try again later."
+          );
+          setLoading(false);
+          setInitialLoad(false);
+        }
       }
     };
 
+    // Only fetch if we have a valid subCategoryId
     if (subCategoryId) {
-      fetchTypes();
-      fetchSubcategory();
+      // Use Promise.all to fetch both data in parallel
+      Promise.all([fetchSubcategory(), fetchTypes()]).catch((error) => {
+        console.error("Error in Promise.all:", error);
+        if (isMounted) {
+          setError(
+            "An error occurred while loading the page. Please try again."
+          );
+          setLoading(false);
+          setInitialLoad(false);
+        }
+      });
     } else {
-      setError("Invalid subcategory ID");
-      setLoading(false);
+      if (isMounted) {
+        setError("Invalid subcategory ID");
+        setLoading(false);
+        setInitialLoad(false);
+      }
     }
 
+    // Cleanup function to prevent memory leaks and state updates after unmount
     return () => {
-      // Cleanup function
-      setTypes([]);
-      setSubcategory(null);
+      isMounted = false;
     };
   }, [subCategoryId]);
 
-  // Handle loading state
-  if (loading) return <LoadingScreen />;
+  // Render loading screen during initial load
+  if (initialLoad) {
+    return <LoadingScreen />;
+  }
+
+  // Render a basic structure with loading indicator for subsequent loads
+  if (loading && !initialLoad) {
+    return (
+      <Box
+        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <Header />
+        <Container
+          maxWidth="lg"
+          sx={{
+            py: 4,
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Container>
+        <Footer />
+      </Box>
+    );
+  }
 
   // Handle error state
   if (error) {
@@ -181,6 +237,16 @@ function TypesPage() {
                     },
                   }}
                 >
+                  {/* Add image preloading */}
+                  <link
+                    rel="preload"
+                    as="image"
+                    href={encodeURI(
+                      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                        type.image ? type.image : "Assets/signin.jpeg"
+                      }`
+                    )}
+                  />
                   <Box
                     sx={{
                       position: "absolute",
@@ -231,4 +297,56 @@ function TypesPage() {
   );
 }
 
-export default TypesPage;
+// Create an error boundary component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught by boundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box
+          sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+        >
+          <Header />
+          <Container maxWidth="lg" sx={{ py: 4, flexGrow: 1 }}>
+            <Alert severity="error" sx={{ mb: 2 }}>
+              Something went wrong. Please try refreshing the page.
+            </Alert>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <Typography variant="button" color="primary">
+                  Return to Home
+                </Typography>
+              </Link>
+            </Box>
+          </Container>
+          <Footer sx={{ marginTop: "auto" }} />
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Wrap the TypesPage component with the ErrorBoundary
+export default function TypesPageWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingScreen />}>
+        <TypesPage />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
