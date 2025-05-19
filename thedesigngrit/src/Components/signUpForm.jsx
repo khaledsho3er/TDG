@@ -15,6 +15,7 @@ import AccountSentPopup from "./successMsgs/successfullyRegistered";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Translate } from "@mui/icons-material";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -257,7 +258,7 @@ const SignUpForm = () => {
               open={showRequirements}
               anchorEl={passwordFieldRef.current}
               placement="bottom-start"
-              style={{ zIndex: 1000 }}
+              style={{ zIndex: 1000, transform: "translate(911px, 441px)" }}
             >
               <Paper
                 elevation={3}
@@ -268,11 +269,12 @@ const SignUpForm = () => {
                   "&::before": {
                     content: '""',
                     position: "absolute",
-                    top: -10,
-                    left: 20,
+                    top: -17,
+                    left: -15,
                     borderWidth: "0 10px 10px 10px",
                     borderStyle: "solid",
                     borderColor: "transparent transparent #fff transparent",
+                    rotate: "-90deg",
                   },
                 }}
               >
