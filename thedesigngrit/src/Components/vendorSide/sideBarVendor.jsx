@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useVendor } from "../../utils/vendorContext";
+import axios from "axios";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { LuPackageOpen } from "react-icons/lu";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -12,22 +13,48 @@ import { FaWpforms, FaBell, FaUsers } from "react-icons/fa";
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
 const SidebarVendor = ({ setActivePage, activePage }) => {
-  // Get vendor data (including tier) from the useVendor hook
   const { vendor } = useVendor();
-
-  // Local state to track if the vendor data has been loaded
   const [isVendorLoaded, setIsVendorLoaded] = useState(false);
+  const [brandStatus, setBrandStatus] = useState(null);
 
   useEffect(() => {
-    if (vendor) {
-      setIsVendorLoaded(true); // Set to true once vendor data is available
-    } else {
-      // Fallback: Check if vendor data is available in localStorage (if persisted)
-      const storedVendor = JSON.parse(localStorage.getItem("vendor"));
-      if (storedVendor) {
+    const checkVendorAndBrand = async () => {
+      if (vendor) {
         setIsVendorLoaded(true);
+
+        // Check brand status if vendor has a brandId
+        if (vendor.brandId) {
+          try {
+            const response = await axios.get(
+              `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`
+            );
+            setBrandStatus(response.data.status);
+          } catch (error) {
+            console.error("Error checking brand status:", error);
+          }
+        }
+      } else {
+        // Fallback: Check if vendor data is available in localStorage
+        const storedVendor = JSON.parse(localStorage.getItem("vendor"));
+        if (storedVendor) {
+          setIsVendorLoaded(true);
+
+          // Check brand status if stored vendor has a brandId
+          if (storedVendor.brandId) {
+            try {
+              const response = await axios.get(
+                `https://api.thedesigngrit.com/api/brand/${storedVendor.brandId}`
+              );
+              setBrandStatus(response.data.status);
+            } catch (error) {
+              console.error("Error checking brand status:", error);
+            }
+          }
+        }
       }
-    }
+    };
+
+    checkVendorAndBrand();
   }, [vendor]);
 
   // Function to handle active page highlighting
@@ -39,7 +66,12 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   // Return a loading spinner or message until vendor data is loaded
   if (!isVendorLoaded) {
-    return <div>Loading...</div>; // Or a spinner component
+    return <div>Loading...</div>;
+  }
+
+  // If brand is deactivated, don't render the sidebar
+  if (brandStatus === "deactivated") {
+    return null;
   }
 
   return (

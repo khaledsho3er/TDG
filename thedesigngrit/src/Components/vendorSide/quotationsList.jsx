@@ -78,7 +78,8 @@ const QuotationsPage = () => {
               />
               <div className="quotation-card-info">
                 <h2>{quotation?.productId?.name || "Unnamed Product"}</h2>
-                <p>ID: {quotation?.productId?.id || "No ID"}</p>
+                <p>ID: {quotation?.productId?._id || "No ID"}</p>
+                <p>User: {quotation?.userId?.firstName || "Unknown"}</p>
               </div>
             </div>
           ))}
