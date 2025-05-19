@@ -227,7 +227,7 @@ const SignUpForm = () => {
             </span>
 
             {/* Password strength indicator */}
-            <div style={{ marginTop: "8px" }}>
+            {/* <div style={{ marginTop: "8px" }}>
               <div style={{ display: "flex", gap: "4px" }}>
                 {getBarColors().map((color, index) => (
                   <div
@@ -251,7 +251,7 @@ const SignUpForm = () => {
               >
                 {getStrengthLabel()}
               </div>
-            </div>
+            </div> */}
 
             {/* Password requirements popup */}
             <Popper
