@@ -4302,6 +4302,77 @@ iframe {
   border: none;
   cursor: pointer;
   font-weight: 500;
+}
+
+/* Password strength indicator styles */
+.password-strength-container {
+  margin-top: 8px;
+}
+
+.password-strength-bars {
+  display: flex;
+  gap: 4px;
+}
+
+.password-strength-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.password-strength-label {
+  text-align: right;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Password requirements popup styles */
+.password-requirements-popup {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  width: 250px;
+  position: absolute;
+  z-index: 1000;
+  margin-top: 8px;
+}
+
+.password-requirements-popup::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
+
+.password-requirements-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.password-requirements-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.password-requirement-item {
+  margin-bottom: 4px;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.requirement-met {
+  color: green;
+}
+
+.requirement-not-met {
+  color: red;
+
   transition: background-color 0.2s;
 }
 .write-review-btn:hover {

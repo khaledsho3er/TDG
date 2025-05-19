@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Checkbox, Box } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Checkbox,
+  Box,
+  Popper,
+  Paper,
+  Typography,
+  ClickAwayListener,
+} from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -37,17 +44,71 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [setPassword] = useState("");
-
+  const [password, setPassword] = useState("");
   const [strength, setStrength] = useState(0);
+  const [showRequirements, setShowRequirements] = useState(false);
+  const passwordFieldRef = useRef(null);
+
+  // Password requirements state
+  const [requirements, setRequirements] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    special: false,
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  // Watch the password field to update strength and requirements
+  const watchPassword = watch("password", "");
+
+  // Update password strength and requirements whenever password changes
+  useEffect(() => {
+    if (watchPassword) {
+      calculateStrength(watchPassword);
+      checkRequirements(watchPassword);
+    }
+  }, [watchPassword]);
+
+  const checkRequirements = (password) => {
+    setRequirements({
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      number: /\d/.test(password),
+      special: /[\W_]/.test(password),
+    });
+  };
+
+  const calculateStrength = (password) => {
+    let score = 0;
+    if (password.length >= 8) score += 25;
+    if (/[A-Z]/.test(password)) score += 25;
+    if (/\d/.test(password)) score += 25;
+    if (/[\W_]/.test(password)) score += 25;
+    setStrength(score);
+  };
+
+  const getBarColors = () => {
+    if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
+    if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
+    if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
+    return ["green", "green", "green", "green"];
+  };
+
+  const getStrengthLabel = () => {
+    if (strength <= 25) return "Weak";
+    if (strength <= 50) return "Fair";
+    if (strength <= 75) return "Good";
+    return "Strong";
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -67,24 +128,24 @@ const SignUpForm = () => {
       );
     }
   };
-  const calculateStrength = (password) => {
-    let score = 0;
-    if (password.length >= 8) score += 25;
-    if (/[A-Z]/.test(password)) score += 25;
-    if (/\d/.test(password)) score += 25;
-    if (/[\W_]/.test(password)) score += 25;
-    setStrength(score);
-  };
 
-  const getBarColors = () => {
-    if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
-    if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
-    if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
-    return ["green", "green", "green", "green"];
-  };
   const closePopup = () => {
     setIsPopupVisible(false);
     navigate("/login");
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setValue("password", newPassword);
+  };
+
+  const handlePasswordFocus = () => {
+    setShowRequirements(true);
+  };
+
+  const handleClickAway = () => {
+    setShowRequirements(false);
   };
 
   return (
@@ -122,43 +183,121 @@ const SignUpForm = () => {
         )}
 
         {/* Password Field */}
-        <div style={{ position: "relative" }}>
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className="input-field"
-            {...register("password")}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              calculateStrength(e.target.value);
-            }}
-          />
-          <span
-            onClick={() => setShowPassword((prev) => !prev)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-            }}
-          >
-            {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-          </span>
-        </div>
-        <div style={{ display: "flex", gap: "4px", marginTop: "8px" }}>
-          {getBarColors().map((color, index) => (
-            <div
-              key={index}
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div style={{ position: "relative" }}>
+            <input
+              ref={passwordFieldRef}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="input-field"
+              value={password}
+              onChange={handlePasswordChange}
+              onFocus={handlePasswordFocus}
+            />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
               style={{
-                flex: 1,
-                height: "8px",
-                backgroundColor: color,
-                borderRadius: "4px",
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
               }}
-            ></div>
-          ))}
-        </div>
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+
+            {/* Password strength indicator */}
+            <div style={{ marginTop: "8px" }}>
+              <div style={{ display: "flex", gap: "4px" }}>
+                {getBarColors().map((color, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      flex: 1,
+                      height: "8px",
+                      backgroundColor: color,
+                      borderRadius: "4px",
+                    }}
+                  ></div>
+                ))}
+              </div>
+              <div
+                style={{
+                  textAlign: "right",
+                  fontSize: "12px",
+                  marginTop: "4px",
+                  color: getBarColors()[0],
+                }}
+              >
+                {getStrengthLabel()}
+              </div>
+            </div>
+
+            {/* Password requirements popup */}
+            <Popper
+              open={showRequirements}
+              anchorEl={passwordFieldRef.current}
+              placement="bottom-start"
+              style={{ zIndex: 1000 }}
+            >
+              <Paper
+                elevation={3}
+                sx={{
+                  p: 2,
+                  mt: 1,
+                  position: "relative",
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: -10,
+                    left: 20,
+                    borderWidth: "0 10px 10px 10px",
+                    borderStyle: "solid",
+                    borderColor: "transparent transparent #fff transparent",
+                  },
+                }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: "bold", mb: 1 }}
+                >
+                  Password Requirements:
+                </Typography>
+                <ul style={{ margin: 0, paddingLeft: 20 }}>
+                  <li
+                    style={{
+                      color: requirements.length ? "green" : "red",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    At least 8 characters
+                  </li>
+                  <li
+                    style={{
+                      color: requirements.uppercase ? "green" : "red",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    At least one uppercase letter
+                  </li>
+                  <li
+                    style={{
+                      color: requirements.number ? "green" : "red",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    At least one number
+                  </li>
+                  <li style={{ color: requirements.special ? "green" : "red" }}>
+                    At least one special character
+                  </li>
+                </ul>
+              </Paper>
+            </Popper>
+          </div>
+        </ClickAwayListener>
+
         {errors.password && (
           <p className="error-message">{errors.password.message}</p>
         )}
