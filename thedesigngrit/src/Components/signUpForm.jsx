@@ -266,7 +266,7 @@ const SignUpForm = () => {
                 position: "absolute",
                 right: "10px",
                 top: "50%",
-                transform: "translateY(-50%)",
+                transform: "translate(-50%,-50%)",
                 cursor: "pointer",
               }}
             >
@@ -382,7 +382,7 @@ const SignUpForm = () => {
               position: "absolute",
               right: "10px",
               top: "50%",
-              transform: "translateY(-50%)",
+              transform: "translate(-50%,-50%)",
               cursor: "pointer",
             }}
           >
