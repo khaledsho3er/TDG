@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
@@ -9,6 +16,7 @@ import PageDescription from "../Components/Topheader";
 
 function TypesPage() {
   const { subCategoryId } = useParams();
+  const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [subcategory, setSubcategory] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,28 +32,97 @@ function TypesPage() {
         setSubcategory(data);
       } catch (error) {
         console.error("Error fetching subcategory:", error);
+        setError("Failed to load subcategory details. Please try again later.");
       }
     };
+
+    // Function to fetch types for the subcategory
     const fetchTypes = async () => {
       try {
         setLoading(true);
         const { data } = await axios.get(
           `https://api.thedesigngrit.com/api/types/subcategories/${subCategoryId}/types`
         );
-        setTypes(data);
+
+        // Filter types to only include those with status = true (if applicable)
+        const activeTypes = data.filter((type) => type.status !== false);
+        setTypes(activeTypes);
       } catch (error) {
-        setError(error.response?.data?.message || "Error fetching types");
+        console.error("Error fetching types:", error);
+        setError(
+          error.response?.data?.message ||
+            "Error fetching types. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTypes();
-    fetchSubcategory();
+    if (subCategoryId) {
+      fetchTypes();
+      fetchSubcategory();
+    } else {
+      setError("Invalid subcategory ID");
+      setLoading(false);
+    }
+
+    return () => {
+      // Cleanup function
+      setTypes([]);
+      setSubcategory(null);
+    };
   }, [subCategoryId]);
 
+  // Handle loading state
   if (loading) return <LoadingScreen />;
-  if (error) return <Box>Error: {error}</Box>;
+
+  // Handle error state
+  if (error) {
+    return (
+      <Box
+        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <Header />
+        <Container maxWidth="lg" sx={{ py: 4, flexGrow: 1 }}>
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Typography variant="button" color="primary">
+                Return to Home
+              </Typography>
+            </Link>
+          </Box>
+        </Container>
+        <Footer sx={{ marginTop: "auto" }} />
+      </Box>
+    );
+  }
+
+  // Handle case where subcategory is not found
+  if (!subcategory) {
+    return (
+      <Box
+        sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <Header />
+        <Container maxWidth="lg" sx={{ py: 4, flexGrow: 1 }}>
+          <Alert severity="warning">
+            Subcategory not found. It may have been removed or is unavailable.
+          </Alert>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Typography variant="button" color="primary">
+                Return to Home
+              </Typography>
+            </Link>
+          </Box>
+        </Container>
+        <Footer sx={{ marginTop: "auto" }} />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -55,91 +132,101 @@ function TypesPage() {
         description={subcategory.description}
       />
 
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          justifyContent: "center",
-          padding: 5,
-        }}
-      >
+      <Container maxWidth="xl" sx={{ flexGrow: 1, py: 4 }}>
         <Grid
           container
           spacing={3}
-          columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{
-            margin: "0 auto",
-            width: "100%",
-            padding: "16px",
             display: "flex",
-            flexDirection: "row",
             justifyContent: "center",
-            alignItems: "center",
-            gap: "40px",
           }}
         >
           {types.length > 0 ? (
             types.map((type) => (
               <Grid
                 item
-                xs={4}
-                sm={4}
-                md={3}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
                 key={type._id}
-                component={Link}
-                to={`/products/${type._id}/${type.name}`}
-                sx={{
-                  position: "relative",
-                  textDecoration: "none",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  height: 300,
-                  backgroundImage: `url(${encodeURI(
-                    `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                      type.image ? type.image : "Assets/signin.jpeg"
-                    }`
-                  )})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  justifyContent: "flex-start",
-                  padding: 2,
-                  transition: "transform 0.3s ease-in-out",
-                  "&:hover": {
-                    transform: "scale(0.95)",
-                  },
-                }}
+                sx={{ display: "flex" }}
               >
                 <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "rgba(0, 0, 0, 0.1)",
-                  }}
-                />
-                <Typography
-                  variant="h6"
+                  component={Link}
+                  to={`/products/${type._id}/${type.name}`}
                   sx={{
                     position: "relative",
-                    color: "white",
-                    fontSize: 24,
-                    fontWeight: "bold",
+                    textDecoration: "none",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    height: 300,
+                    width: "100%",
+                    backgroundImage: `url(${encodeURI(
+                      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                        type.image ? type.image : "Assets/signin.jpeg"
+                      }`
+                    )})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    justifyContent: "flex-start",
+                    padding: 2,
+                    transition: "all 0.3s ease-in-out",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                      boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+                    },
                   }}
                 >
-                  {type.name}
-                </Typography>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      background:
+                        "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)",
+                    }}
+                  />
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      position: "relative",
+                      color: "white",
+                      fontSize: { xs: 20, md: 24 },
+                      fontWeight: "bold",
+                      textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
+                    }}
+                  >
+                    {type.name}
+                  </Typography>
+                </Box>
               </Grid>
             ))
           ) : (
-            <Typography>No types found.</Typography>
+            <Box sx={{ textAlign: "center", py: 5, width: "100%" }}>
+              <Typography variant="h6" color="text.secondary" gutterBottom>
+                No types found for this subcategory.
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Please check back later or explore other categories.
+              </Typography>
+              <Box sx={{ mt: 3 }}>
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  <Typography variant="button" color="primary">
+                    Return to Home
+                  </Typography>
+                </Link>
+              </Box>
+            </Box>
           )}
         </Grid>
-      </Box>
-      <Footer sx={{ marginTop: "auto" }} />
+      </Container>
+      <Footer />
     </Box>
   );
 }
