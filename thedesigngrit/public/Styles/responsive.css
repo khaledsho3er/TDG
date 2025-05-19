@@ -750,8 +750,20 @@
     display: none;
   }
   .product-grid-container {
-    grid-template-columns: repeat(1, 1fr);
-    gap: 16px;
+    grid-template-columns: 1fr !important;
+    padding: 10px;
+  }
+
+  /* Center product cards on mobile */
+  .MuiBox-root .MuiCard-root {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Adjust product card image size on mobile */
+  .MuiCardMedia-root {
+    height: 200px !important;
   }
 }
 
@@ -1117,7 +1129,12 @@
     font-size: 18px;
   }
 }
-
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-grid-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px;
+  }
+}
 @media (max-width: 768px) {
   /* Tablet screens */
   .partner-Caption {

@@ -38,7 +38,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
         </Box>
       ) : (
         <>
-          {/* Consistent Grid Layout for all screen sizes */}
+          {/* Grid Layout with responsive columns */}
           <Grid
             container
             spacing={3}
@@ -49,15 +49,24 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
               gridTemplateColumns: "repeat(3, 1fr)",
               gap: "24px",
               "@media (max-width: 1024px)": {
-                gridTemplateColumns: "repeat(3, 1fr)",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "20px",
               },
               "@media (max-width: 768px)": {
-                gridTemplateColumns: "repeat(3, 1fr)",
+                gridTemplateColumns: "repeat(1, 1fr)",
+                gap: "16px",
               },
             }}
           >
             {currentProducts.map((product) => (
-              <Box key={product._id}>
+              <Box
+                key={product._id}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
                 <ProductCard
                   product={product}
                   onToggleFavorite={onToggleFavorite}
