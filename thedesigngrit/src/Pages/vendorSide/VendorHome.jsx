@@ -100,6 +100,19 @@ const VendorHome = () => {
       return null;
     }
 
+    // If brand is pending, only allow access to brand-related pages
+    if (brandStatus === "pending") {
+      // Only allow these specific pages when status is pending
+      if (activePage === "BrandForm" || activePage === "BrandingPage") {
+        return pageComponents[activePage];
+      } else {
+        // Redirect to BrandForm if trying to access other pages
+        setActivePage("BrandForm");
+        return pageComponents["BrandForm"];
+      }
+    }
+
+    // For active brands, render the selected page or default to dashboard
     return pageComponents[activePage] || <DashboardVendor />;
   };
 
