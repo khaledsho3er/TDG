@@ -155,12 +155,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: isMediumLaptop ? "90%" : "50%",
-        margin: isMediumLaptop ? "0 auto" : "initial",
-      }}
-    >
+    <Box>
       <h1
         className="form-title-signup"
         style={
