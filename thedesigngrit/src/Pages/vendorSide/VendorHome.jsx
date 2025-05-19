@@ -113,40 +113,65 @@ const VendorHome = () => {
         onClose={() => {}} // Empty function to prevent closing by clicking outside
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "8px",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+            padding: "24px",
+          },
+        }}
       >
-        <DialogTitle
-          sx={{
-            bgcolor: "#f44336",
-            color: "white",
-            display: "flex",
-            alignItems: "center",
-          }}
+        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+          <Box
+            sx={{
+              bgcolor: "#FFF4F4",
+              borderRadius: "50%",
+              width: 48,
+              height: 48,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mr: 2,
+            }}
+          >
+            <ErrorOutlineIcon sx={{ color: "#D32F2F", fontSize: 28 }} />
+          </Box>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+              Account Deactivated
+            </Typography>
+            <Typography variant="body1" sx={{ color: "#555", mb: 2 }}>
+              Your brand account has been deactivated. Please contact the
+              administrator team of THE DESIGN GRIT for assistance.
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: "bold", mb: 0.5 }}>
+              Email: support@thedesigngrit.com
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              Phone: +1 (123) 456-7890
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{ display: "flex", justifyContent: "flex-end", mt: 3, gap: 2 }}
         >
-          <ErrorOutlineIcon sx={{ mr: 1 }} />
-          Account Deactivated
-        </DialogTitle>
-        <DialogContent sx={{ py: 3 }}>
-          <Typography variant="body1" sx={{ mb: 2, mt: 2 }}>
-            Your brand account has been deactivated. Please contact the
-            administrator team of THE DESIGN GRIT for assistance.
-          </Typography>
-          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-            Email: support@thedesigngrit.com
-          </Typography>
-          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-            Phone: +1 (123) 456-7890
-          </Typography>
-        </DialogContent>
-        <DialogActions>
           <Button
             onClick={handleLogout}
             variant="contained"
-            color="#ffffff"
-            bacvkgroundColor="#2d2d2d"
+            sx={{
+              bgcolor: "#D32F2F",
+              color: "white",
+              textTransform: "none",
+              px: 3,
+              py: 1,
+              "&:hover": {
+                bgcolor: "#B71C1C",
+              },
+            }}
           >
             Logout
           </Button>
-        </DialogActions>
+        </Box>
       </Dialog>
 
       {/* Only render the sidebar and content if brand is not deactivated */}
