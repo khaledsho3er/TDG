@@ -47,13 +47,13 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             container
             spacing={3}
             justifyContent="flex-start"
-            gap={currentProducts.length < 3 && !isMediumLaptop ? "60px" : "0px"}
+            gap={0}
             sx={{
-              width: isMobile ? "100%" : "100%",
-              margin: isMobile ? "auto" : "auto",
-              transition: "none", // Prevent animation during filter
-              transform: "none", // Ensure no transform is applied
-              position: isMediumLaptop ? "static" : "relative",
+              width: "100%",
+              margin: "0",
+              transition: "none",
+              transform: "none",
+              position: "static",
             }}
             alignItems={"baseline"}
           >
@@ -67,8 +67,8 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                   key={product._id}
                   style={{
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
                   }}
                 >
                   <ProductCard
