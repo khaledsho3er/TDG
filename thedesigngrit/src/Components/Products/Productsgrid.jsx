@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import { Grid, Box, Pagination, useMediaQuery } from "@mui/material";
-import ProductCard from "./productcard"; // Import the ProductCard component
+import { Grid, Box, Pagination } from "@mui/material";
+import ProductCard from "./productcard";
 
 const ProductCards = ({ products = [], onToggleFavorite }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [favorites] = useState([]); // The favorites array
-  const productsPerPage = 12; // Limit to 12 products per page
+  const [favorites] = useState([]);
+  const productsPerPage = 12; // Consistent 12 products per page
+
   // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
-  const isMobile = useMediaQuery("(max-width:768px)");
-  const isMediumLaptop = useMediaQuery(
-    "(min-width: 1024px) and (max-width: 1440px)"
-  );
 
   // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -25,8 +22,8 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
 
   // Handle page change and scroll to top
   const handlePageChange = (event, value) => {
-    setCurrentPage(value); // Update current page when clicked
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    setCurrentPage(value);
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -35,52 +32,39 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
         padding: { xs: "20px", sm: "30px", md: "40px 15px" },
       }}
     >
-      {/* If there are no products, display a message */}
       {safeProducts.length === 0 ? (
         <Box sx={{ textAlign: "center", marginTop: 4 }}>
           <h2>No products found in this category.</h2>
         </Box>
       ) : (
         <>
-          {/* Grid Layout for Product Cards */}
+          {/* Consistent Grid Layout for all screen sizes */}
           <Grid
             container
             spacing={3}
-            justifyContent="flex-start"
-            gap={0}
             sx={{
               width: "100%",
               margin: "0",
-              transition: "none",
-              transform: "none",
-              position: "static",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "24px",
+              "@media (max-width: 1024px)": {
+                gridTemplateColumns: "repeat(3, 1fr)",
+              },
+              "@media (max-width: 768px)": {
+                gridTemplateColumns: "repeat(3, 1fr)",
+              },
             }}
-            alignItems={"baseline"}
           >
-            {currentProducts.map((product) => {
-              return (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  key={product._id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <ProductCard
-                    product={product}
-                    onToggleFavorite={onToggleFavorite}
-                    isFavorite={favorites.some(
-                      (fav) => fav._id === product._id // Use _id for favorite check
-                    )}
-                  />
-                </Grid>
-              );
-            })}
+            {currentProducts.map((product) => (
+              <Box key={product._id}>
+                <ProductCard
+                  product={product}
+                  onToggleFavorite={onToggleFavorite}
+                  isFavorite={favorites.some((fav) => fav._id === product._id)}
+                />
+              </Box>
+            ))}
           </Grid>
 
           {/* Pagination */}
@@ -97,16 +81,16 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                   display: "flex",
                   justifyContent: "center",
                   "& .MuiPaginationItem-root": {
-                    backgroundColor: "#fff", // Ensure pagination buttons are styled the same
-                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", // Add subtle shadow for uniformity
-                    borderRadius: 2, // Round corners of pagination buttons
+                    backgroundColor: "#fff",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                    borderRadius: 2,
                   },
                   "& .Mui-selected": {
-                    backgroundColor: "#6B7B58", // Active page background color
-                    color: "#fff", // Change text color for selected page
+                    backgroundColor: "#6B7B58",
+                    color: "#fff",
                   },
                   "& .MuiPaginationItem-root:hover": {
-                    backgroundColor: "#f5f5f5", // Light hover effect for better visibility
+                    backgroundColor: "#f5f5f5",
                   },
                 }}
               />

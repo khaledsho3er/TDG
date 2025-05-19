@@ -1542,8 +1542,17 @@ html {
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
 } */
+.product-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
 .product-card {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   transition: transform 0.3s ease;
 }
 .product-card:hover {

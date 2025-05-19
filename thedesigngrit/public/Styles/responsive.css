@@ -295,6 +295,9 @@
   .right-card {
     height: 30vh;
   }
+  .product-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 767px) {
@@ -746,6 +749,10 @@
   }
   .subcategory-description {
     display: none;
+  }
+  .product-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
 }
 
