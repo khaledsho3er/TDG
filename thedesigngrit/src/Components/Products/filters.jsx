@@ -89,7 +89,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
     <Box
       sx={{
         width: isMobile ? "90vw" : 300,
-        p: isMobile ? 10 : 2,
+        p: isMobile ? "80px 0px 80px 42px" : 2,
         position: "relative",
         paddingRight: isMobile ? 0 : "55px",
       }}
@@ -97,7 +97,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
       {isMobile && (
         <IconButton
           onClick={() => setDrawerOpen(false)}
-          sx={{ position: "absolute", top: 10, right: 10 }}
+          sx={{ position: "absolute", top: 10, right: "-24px" }}
         >
           <CloseIcon />
         </IconButton>
