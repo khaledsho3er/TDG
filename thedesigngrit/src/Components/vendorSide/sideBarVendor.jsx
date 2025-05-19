@@ -9,6 +9,7 @@ import { HiBuildingStorefront } from "react-icons/hi2";
 import { MdAccountBalance } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { FaWpforms, FaBell, FaUsers } from "react-icons/fa";
+import LoadingScreen from "../../Pages/loadingScreen";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
@@ -66,7 +67,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   // Return a loading spinner or message until vendor data is loaded
   if (!isVendorLoaded) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   // If brand is deactivated, don't render the sidebar

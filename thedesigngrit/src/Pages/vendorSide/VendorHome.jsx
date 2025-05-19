@@ -71,7 +71,7 @@ const VendorHome = () => {
   // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("vendor");
-    navigate("/vendor-login");
+    navigate("/signin-vendor");
   };
 
   // Object for rendering content based on activepage
@@ -123,8 +123,8 @@ const VendorHome = () => {
           <Box
             sx={{
               bgcolor: "#FFF4F4",
-              borderRadius: "50%",
-              width: 48,
+              borderRadius: "20%",
+              width: 83,
               height: 48,
               display: "flex",
               alignItems: "center",
@@ -157,6 +157,7 @@ const VendorHome = () => {
             onClick={handleLogout}
             variant="contained"
             sx={{
+              fontFamily: "Montserrat",
               bgcolor: "#D32F2F",
               color: "white",
               textTransform: "none",
@@ -175,11 +176,17 @@ const VendorHome = () => {
       {/* Only render the sidebar and content if brand is not deactivated */}
       {brandStatus !== "deactivated" && (
         <>
-          <SidebarVendor
-            setActivePage={setActivePage}
-            activePage={activePage}
-          />
-          <div className="vendor-content">{renderContent()}</div>
+          <div className="app-container-vendor">
+            <NavbarVendor />
+            <div className="main-content-vendor">
+              <SidebarVendor
+                setActivePage={setActivePage}
+                activePage={activePage}
+                user={vendor} // The user object should contain role and tier information
+              />
+              <div className="content-vendor">{renderContent()}</div>
+            </div>
+          </div>
         </>
       )}
     </div>
