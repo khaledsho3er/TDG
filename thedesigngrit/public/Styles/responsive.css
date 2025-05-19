@@ -750,7 +750,7 @@
     display: none;
   }
   .product-grid-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
 }
@@ -856,6 +856,11 @@
   .delete-icon {
     font-size: 16px; /* Smaller delete icon */
     margin-top: 60px; /* Adjust margin */
+  }
+  .product-grid-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+    padding-left: 50px;
   }
 }
 /* Responsive Design */
