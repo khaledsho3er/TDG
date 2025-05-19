@@ -152,17 +152,20 @@
 @media (min-width: 1024px) and (max-width: 1440px) {
   .signup-form-container {
     width: 90%;
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-  }
-  .signinLogo {
-    height: 95vh;
   }
 
   .signup-form {
     width: 100%;
     max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .signinLogo {
+    width: 100px;
+    height: 50px;
     margin: 0 auto;
   }
 
