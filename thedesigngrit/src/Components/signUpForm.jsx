@@ -157,7 +157,7 @@ const SignUpForm = () => {
   return (
     <Box
       sx={{
-        width: isMediumLaptop ? "90%" : "100%",
+        width: isMediumLaptop ? "90%" : "50%",
         margin: isMediumLaptop ? "0 auto" : "initial",
       }}
     >
