@@ -318,7 +318,7 @@ const SignUpForm = () => {
             <Popper
               open={showRequirements}
               anchorEl={passwordFieldRef.current}
-              placement={isMobile ? "bottom-start" : "right-start"}
+              placement={isMobile ? "bottom-start" : "right-center"}
               style={{ zIndex: 1000 }}
             >
               <Paper
