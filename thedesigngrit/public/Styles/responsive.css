@@ -148,167 +148,50 @@
   }
 }
 
-/* Medium Laptops (1024px to 1366px) */
+/* Medium Laptop (1024px - 1440px) */
 @media (min-width: 1024px) and (max-width: 1440px) {
-  body {
-    font-size: 18px;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  .container-login {
-    height: 100vh;
-    padding: 40px;
-  }
-
-  .login-form,
   .signup-form-container {
-    width: 60%;
-    height: auto;
-    padding: 40px;
-  }
-
-  .hero-home-section {
-    height: 500px;
-  }
-
-  .hero-text-overlay h1 {
-    font-size: 3rem;
-  }
-
-  .header-top {
-    justify-content: space-between;
-  }
-
-  .header-bottom {
-    gap: 30px;
-  }
-
-  .category-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-  }
-
-  .team-member {
-    width: 30%;
-  }
-
-  .footer-container {
-    text-align: left;
-    padding: 60px;
-  }
-
-  .middle-card {
-    width: 300px;
-    height: 300px;
-  }
-
-  .left-card {
-    width: 235px;
-    height: 235px;
-  }
-
-  .right-card {
-    width: 235px;
-    height: 235px;
-  }
-
-  .concept-card {
-    margin-bottom: 60px;
-  }
-
-  .concept-subtitle h4 {
-    font-size: 20px;
-    margin-top: -80px;
-  }
-
-  .concept-title-container h4 {
-    font-size: 20px;
-    font-family: horrizon;
-    font-weight: bold;
-  }
-
-  .signinLogo img {
-    width: 110px;
-    height: 70px;
-    z-index: 5;
-    margin-top: 30px;
-    justify-content: center;
-  }
-
-  .container-login {
-    padding-left: 20px;
-    padding-right: 20px;
-    background-size: cover;
-    flex-direction: column;
-  }
-
-  .login-form {
     width: 90%;
-    height: 95%;
-    margin-bottom: 10px;
-  }
-
-  .signup-form-container {
-    height: 100%;
-    width: 40%;
-    margin-bottom: 10px;
-  }
-
-  .form-title-signin {
-    font-size: 24px;
-    font-family: "horizon";
-    font-weight: bold;
-  }
-
-  .google-icon {
-    font-size: 30px;
-  }
-
-  .popup-left {
-    margin-top: -20px;
-    padding: 2px;
-    gap: 2px;
-  }
-  .popup-right {
-    padding: 8px;
-    gap: 5px;
-  }
-
-  .reset-popup-form {
-    gap: 5px;
-    padding: 10px;
-  }
-
-  .hero-container {
+    max-width: 500px;
+    margin: 0 auto;
     padding: 20px;
   }
 
-  .hero-section-image img {
-    margin-left: 150px;
-  }
-  .content-container {
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    padding: 5% 8%;
-  }
-  .contact-form-field label {
-    text-align: left;
-  }
-  .Contant-caption {
-    max-width: 100%;
+  .signup-form {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
   }
 
-  .Contact-form {
-    max-width: 100%;
+  .form-title-signup {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
   }
-  .types-container {
-    grid-template-columns: repeat(4, 1fr);
+
+  .input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  .error-message {
+    font-size: 0.8rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .password-strength-container {
+    margin-bottom: 15px;
+  }
+
+  .terms-container {
+    margin-bottom: 20px;
+  }
+
+  .signup-button {
+    width: 100%;
+    padding: 12px;
   }
 }
 /* General styles are unchanged from the original */

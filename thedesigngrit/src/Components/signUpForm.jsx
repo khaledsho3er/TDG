@@ -6,6 +6,7 @@ import {
   Paper,
   Typography,
   ClickAwayListener,
+  useMediaQuery,
 } from "@mui/material";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
@@ -48,6 +49,11 @@ const SignUpForm = () => {
   const [strength, setStrength] = useState(0);
   const [showRequirements, setShowRequirements] = useState(false);
   const passwordFieldRef = useRef(null);
+
+  // Add media query for medium-sized laptops
+  const isMediumLaptop = useMediaQuery(
+    "(min-width: 1024px) and (max-width: 1440px)"
+  );
 
   // Password requirements state
   const [requirements, setRequirements] = useState({
@@ -149,9 +155,21 @@ const SignUpForm = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: isMediumLaptop ? "90%" : "100%",
+        margin: isMediumLaptop ? "0 auto" : "initial",
+      }}
+    >
       <h1 className="form-title-signup">Register</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="signup-form"
+        style={{
+          maxWidth: isMediumLaptop ? "450px" : "initial",
+          margin: isMediumLaptop ? "0 auto" : "initial",
+        }}
+      >
         <input
           type="email"
           placeholder="E-mail"
