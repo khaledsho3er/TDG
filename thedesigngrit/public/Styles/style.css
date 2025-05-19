@@ -4327,8 +4327,8 @@ iframe {
   margin-top: 4px;
 }
 
-/* Password requirements popup styles */
-.password-requirements-popup {
+/* Password requirements popup styles for right-side positioning */
+.password-requirements-popup-right {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -4336,18 +4336,17 @@ iframe {
   width: 250px;
   position: absolute;
   z-index: 1000;
-  margin-top: 8px;
+  margin-left: 8px;
 }
 
-.password-requirements-popup::before {
+.password-requirements-popup-right::before {
   content: "";
   position: absolute;
-  top: 17px;
-  left: -15px;
-  border-width: 0 10px 10px 10px;
+  top: 20px;
+  left: -10px;
+  border-width: 10px 10px 10px 0;
   border-style: solid;
-  border-color: transparent transparent white transparent;
-  rotate: -90deg;
+  border-color: transparent white transparent transparent;
 }
 
 .password-requirements-title {

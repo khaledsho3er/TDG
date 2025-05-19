@@ -304,50 +304,37 @@ const SignUpForm = () => {
             <Popper
               open={showRequirements}
               anchorEl={passwordFieldRef.current}
-              placement="bottom-start"
-              style={{
-                zIndex: 1000,
-                transform: isMediumLaptop
-                  ? "translate(0, 10px)"
-                  : "translate(911px, 441px)",
-              }}
+              placement="right-start"
+              style={{ zIndex: 1000 }}
             >
               <Paper
                 elevation={3}
                 sx={{
-                  p: isMediumLaptop ? 1 : 2,
-                  mt: 1,
+                  p: 2,
+                  ml: 1,
                   position: "relative",
                   "&::before": {
                     content: '""',
                     position: "absolute",
-                    top: -17,
-                    left: -15,
-                    borderWidth: "0 10px 10px 10px",
+                    top: 20,
+                    left: -10,
+                    borderWidth: "10px 10px 10px 0",
                     borderStyle: "solid",
-                    borderColor: "transparent transparent #fff transparent",
-                    rotate: "-90deg",
+                    borderColor: "transparent #fff transparent transparent",
                   },
                 }}
               >
                 <Typography
                   variant="subtitle2"
-                  sx={{
-                    fontWeight: "bold",
-                    mb: 1,
-                    fontSize: isMediumLaptop ? "0.8rem" : "inherit",
-                  }}
+                  sx={{ fontWeight: "bold", mb: 1 }}
                 >
                   Password Requirements:
                 </Typography>
-                <ul
-                  style={{ margin: 0, paddingLeft: isMediumLaptop ? 15 : 20 }}
-                >
+                <ul style={{ margin: 0, paddingLeft: 20 }}>
                   <li
                     style={{
                       color: requirements.length ? "green" : "red",
                       marginBottom: "4px",
-                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least 8 characters
@@ -356,7 +343,6 @@ const SignUpForm = () => {
                     style={{
                       color: requirements.uppercase ? "green" : "red",
                       marginBottom: "4px",
-                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least one uppercase letter
@@ -365,17 +351,11 @@ const SignUpForm = () => {
                     style={{
                       color: requirements.number ? "green" : "red",
                       marginBottom: "4px",
-                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
                     }}
                   >
                     At least one number
                   </li>
-                  <li
-                    style={{
-                      color: requirements.special ? "green" : "red",
-                      fontSize: isMediumLaptop ? "0.7rem" : "inherit",
-                    }}
-                  >
+                  <li style={{ color: requirements.special ? "green" : "red" }}>
                     At least one special character
                   </li>
                 </ul>
