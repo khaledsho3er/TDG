@@ -155,6 +155,7 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
+    height: auto;
   }
 
   .signup-form {
@@ -163,8 +164,8 @@
     margin: 0 auto;
   }
 
-  .signinLogo {
-    width: 50px;
+  .signinLogo img {
+    width: 100px;
     height: 50px;
     margin: auto;
   }
