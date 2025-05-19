@@ -154,7 +154,7 @@
     width: 90%;
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 50px;
   }
 
   .signup-form {
@@ -163,16 +163,15 @@
     margin: 0 auto;
   }
 
-  .signinLogo {
+  .signinLogo img {
     width: 100px;
     height: 50px;
-    margin: 0 auto;
+    margin: auto;
   }
 
   .form-title-signup {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     text-align: center;
-    margin-bottom: 20px;
   }
 
   .input-field {
