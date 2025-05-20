@@ -84,6 +84,8 @@ export default function BrandCursol({
             background: "none",
             border: "none",
             padding: 0,
+            fontFamily: "montserrat",
+            fontSize: "14px",
           }}
         >
           <IoNewspaperOutline /> Request a quotation
