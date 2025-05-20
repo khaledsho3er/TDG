@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import React, { Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -17,6 +17,7 @@ import OnSale from "./Pages/onSale";
 import { FavoritesProvider } from "./Components/favoriteOverlay";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import { CircularProgress, Box } from "@mui/material";
+import NetworkDetector from "./Components/NetworkDetector";
 
 // Custom loading component with retry
 const PageLoadingFallback = ({ error, retry }) => {
@@ -67,26 +68,23 @@ const PageLoadingFallback = ({ error, retry }) => {
   );
 };
 
-// Enhanced lazy loading with retry
+// Enhanced lazy loading with retry - without using hooks
 const lazyWithRetry = (componentImport) => {
-  const [error, setError] = useState(null);
-
-  const LazyComponent = lazy(() =>
-    componentImport().catch((err) => {
-      setError(err);
-      // Return a placeholder component to prevent the suspense from triggering
+  return lazy(() =>
+    componentImport().catch((error) => {
+      console.error("Error loading component:", error);
+      // Return a component that displays the error and provides a retry button
       return {
-        default: () => (
+        default: (props) => (
           <PageLoadingFallback
-            error={err}
+            error={error}
             retry={() => window.location.reload()}
+            {...props}
           />
         ),
       };
     })
   );
-
-  return LazyComponent;
 };
 
 // Lazy Load Pages with enhanced error handling
@@ -144,51 +142,6 @@ const SignupVendor = lazyWithRetry(() =>
 const VerifyPartners = lazyWithRetry(() =>
   import("./Components/adminSide/VerifyPartners")
 );
-
-// Network status detector
-const NetworkDetector = ({ children }) => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
-  if (!isOnline) {
-    return (
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          zIndex: 9999,
-          p: 3,
-          textAlign: "center",
-        }}
-      >
-        <h2>You are offline</h2>
-        <p>Please check your internet connection and try again.</p>
-      </Box>
-    );
-  }
-
-  return children;
-};
 
 const PublicRoutes = () => (
   <ErrorBoundary>
@@ -253,7 +206,6 @@ const VendorRoutes = () => (
     </Routes>
   </Suspense>
 );
-//hi.
 
 function App() {
   return (
