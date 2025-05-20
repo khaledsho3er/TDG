@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 import { Box } from "@mui/material";
-import RequestQuote from "./product/RequestInfo";
-import { UserContext } from "../utils/userContext";
-import { useNavigate } from "react-router-dom";
 
-export default function BrandCursol({ brandId }) {
+export default function BrandCursol({ brandId, onRequestQuote }) {
   const [products, setProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
-  const { userSession } = useContext(UserContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!brandId || !brandId._id) {
@@ -49,24 +43,12 @@ export default function BrandCursol({ brandId }) {
     setCurrentIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
   };
 
-  const handleRequestQuoteClick = () => {
-    if (!userSession) {
-      navigate("/login");
-    } else {
-      setIsRequestQuoteOpen(true);
-    }
-  };
-
-  const handleCloseRequestQuote = () => {
-    setIsRequestQuoteOpen(false);
-  };
-
   return (
     <div className="carousel-container">
       {/* Contact Section */}
       <div className="carousel-contact-section">
         <a
-          onClick={handleRequestQuoteClick}
+          onClick={() => onRequestQuote(products[currentIndex] || brandId)}
           className="contact-link"
           style={{ cursor: "pointer" }}
         >
@@ -134,7 +116,7 @@ export default function BrandCursol({ brandId }) {
                     position: "relative",
                     left: "50%",
                     transform: "translate(-50%, 0%)",
-                    top: "calc(50% - 10px)", // Adjust icon position for better centering
+                    top: "calc(50% - 10px)",
                   }}
                 />
               </button>
@@ -144,7 +126,7 @@ export default function BrandCursol({ brandId }) {
                     position: "relative",
                     left: "50%",
                     transform: "translate(-50%, 0%)",
-                    top: "calc(50% - 10px)", // Adjust icon position for better centering
+                    top: "calc(50% - 10px)",
                   }}
                 />
               </button>
@@ -153,14 +135,6 @@ export default function BrandCursol({ brandId }) {
         </div>
       ) : (
         <p className="carousel-no-products">No products available</p>
-      )}
-
-      {/* RequestQuote Popup */}
-      {isRequestQuoteOpen && (
-        <RequestQuote
-          onClose={handleCloseRequestQuote}
-          productId={products[currentIndex] || brandId}
-        />
       )}
     </div>
   );

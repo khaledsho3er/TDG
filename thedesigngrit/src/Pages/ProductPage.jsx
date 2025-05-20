@@ -17,6 +17,7 @@ import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import Toast from "../Components/toast";
 import { BsExclamationOctagon } from "react-icons/bs";
+import RequestQuote from "../Components/product/RequestInfo";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
@@ -47,6 +48,22 @@ function ProductPage() {
   const [variants, setVariants] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [activeProduct, setActiveProduct] = useState(null);
+  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
+  const [quoteProduct, setQuoteProduct] = useState(null);
+
+  const handleRequestQuote = (productData) => {
+    if (!userSession) {
+      navigate("/login");
+      return;
+    }
+    setQuoteProduct(productData);
+    setIsRequestQuoteOpen(true);
+  };
+
+  const handleCloseRequestQuote = () => {
+    setIsRequestQuoteOpen(false);
+  };
+
   // Fetch product details by ID
   useEffect(() => {
     const fetchProduct = async () => {
@@ -909,7 +926,10 @@ function ProductPage() {
             </div>
 
             <div className="brand-cursol">
-              <BrandCursol brandId={product.brandId} />
+              <BrandCursol
+                brandId={product.brandId}
+                onRequestQuote={handleRequestQuote}
+              />
             </div>
           </div>
         </div>
@@ -1063,6 +1083,12 @@ function ProductPage() {
         </div>
       </div>
       <Footer />
+      {isRequestQuoteOpen && (
+        <RequestQuote
+          onClose={handleCloseRequestQuote}
+          productId={quoteProduct || product}
+        />
+      )}
     </div>
   );
 }
