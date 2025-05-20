@@ -115,6 +115,7 @@ const BillingInfoPopup = ({
       cardNumber: cardNumber.replace(/\s/g, ""),
       cardType,
       expiryDate,
+      cvv, // Include CVV in the request
     };
 
     try {
@@ -125,16 +126,24 @@ const BillingInfoPopup = ({
         cardData
       );
 
-      // Only show success message if we get a successful response
+      // Check if response contains the expected data
       if (response.status === 200 || response.status === 201) {
-        // Update UI state first
-        onSave(response.data.card);
+        // Make sure we have valid data before calling onSave
+        if (response.data && response.data.card) {
+          // Update UI state first
+          onSave(response.data.card);
 
-        // Close the modal
-        onCancel();
+          // Close the modal
+          onCancel();
 
-        // Show success alert last (after UI is updated)
-        alert("✅ Card saved successfully!");
+          // Show success alert last (after UI is updated)
+          alert("✅ Card saved successfully!");
+        } else {
+          // Response is successful but doesn't contain expected data
+          console.warn("Unexpected response format:", response.data);
+          alert("✅ Card saved successfully!");
+          onCancel();
+        }
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
