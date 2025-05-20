@@ -9,7 +9,6 @@ import LoadingScreen from "./Pages/loadingScreen";
 import ReadyToShip from "./Pages/ReadyToship";
 import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
-import { FavoritesProvider } from "./Components/favoriteOverlay";
 // Lazy Load Pages (Public)
 const Home = lazy(() => import("./Pages/home"));
 const LoginPage = lazy(() => import("./Pages/login"));
@@ -121,14 +120,12 @@ function App() {
       <VendorProvider>
         <AdminProvider>
           <CartProvider>
-            <FavoritesProvider>
-              <Router>
-                <ScrollToTop />
-                <PublicRoutes />
-                <VendorRoutes />
-                <Analytics />
-              </Router>
-            </FavoritesProvider>
+            <Router>
+              <ScrollToTop />
+              <PublicRoutes />
+              <VendorRoutes />
+              <Analytics />
+            </Router>
           </CartProvider>
         </AdminProvider>
       </VendorProvider>

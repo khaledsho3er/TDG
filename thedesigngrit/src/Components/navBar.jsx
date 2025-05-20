@@ -344,10 +344,10 @@ function Header() {
             <div>
               <IconButton onClick={handleFavoritesToggle}>
                 <Badge
-                  badgeContent={favoriteCount}
                   color="error"
                   sx={{
                     "& .MuiBadge-badge": {
+                      backgroundColor: "red",
                       animation: favoriteUpdated ? "pulse 1s" : "none",
                     },
                   }}
@@ -643,10 +643,10 @@ function Header() {
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
                     <Badge
-                      badgeContent={favoriteCount}
                       color="error"
                       sx={{
                         "& .MuiBadge-badge": {
+                          backgroundColor: "red",
                           animation: favoriteUpdated ? "pulse 1s" : "none",
                         },
                       }}
@@ -734,10 +734,10 @@ function Header() {
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
                     <Badge
-                      badgeContent={favoriteCount}
                       color="error"
                       sx={{
                         "& .MuiBadge-badge": {
+                          backgroundColor: "red",
                           animation: favoriteUpdated ? "pulse 1s" : "none",
                         },
                       }}
