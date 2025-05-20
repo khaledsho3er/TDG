@@ -36,16 +36,14 @@ const AddressCard = styled(Card)(({ theme, isDefault }) => ({
 }));
 
 const DefaultChip = styled(Chip)(({ theme }) => ({
-  position: "absolute",
-  top: "12px",
-  right: "12px",
   backgroundColor: "#2d2d2d",
   color: "white",
   fontWeight: "bold",
+  marginRight: "auto", // Push to the left
 }));
 
-const ActionButton = styled(Button)(({ theme, color }) => ({
-  marginRight: theme.spacing(1),
+const ActionButton = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
   backgroundColor: "#2d2d2d",
   color: "white",
   "&:hover": {
@@ -311,9 +309,6 @@ const ShippingInfoPopup = () => {
           {userData.shipmentAddress.map((addr, index) => (
             <Grid item xs={12} md={6} key={index}>
               <AddressCard isDefault={addr.isDefault === "Default"}>
-                {addr.isDefault === "Default" && (
-                  <DefaultChip label="Default" size="small" />
-                )}
                 <CardContent>
                   <Typography
                     variant="h6"
@@ -348,19 +343,24 @@ const ShippingInfoPopup = () => {
 
                   <Divider sx={{ mb: 2 }} />
 
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <ActionButton
-                      onClick={() => handleEditAddress(index)}
-                      size="small"
-                    >
-                      Edit
-                    </ActionButton>
-                    <ActionButton
-                      onClick={() => handleDeleteAddress(addr._id)}
-                      size="small"
-                    >
-                      Remove
-                    </ActionButton>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {addr.isDefault === "Default" && (
+                      <DefaultChip label="Default" size="small" />
+                    )}
+                    <Box sx={{ display: "flex", marginLeft: "auto" }}>
+                      <ActionButton
+                        onClick={() => handleEditAddress(index)}
+                        size="small"
+                      >
+                        Edit
+                      </ActionButton>
+                      <ActionButton
+                        onClick={() => handleDeleteAddress(addr._id)}
+                        size="small"
+                      >
+                        Remove
+                      </ActionButton>
+                    </Box>
                   </Box>
                 </CardContent>
               </AddressCard>
