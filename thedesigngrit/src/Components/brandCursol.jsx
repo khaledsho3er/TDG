@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { LuPhone } from "react-icons/lu";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 import { Box } from "@mui/material";
+import RequestQuote from "./product/RequestInfo";
+import { UserContext } from "../utils/userContext";
+import { useNavigate } from "react-router-dom";
 
 export default function BrandCursol({ brandId }) {
   const [products, setProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
+  const { userSession } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!brandId || !brandId._id) {
@@ -43,23 +49,36 @@ export default function BrandCursol({ brandId }) {
     setCurrentIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
   };
 
+  const handleRequestQuoteClick = () => {
+    if (!userSession) {
+      navigate("/login");
+    } else {
+      setIsRequestQuoteOpen(true);
+    }
+  };
+
+  const handleCloseRequestQuote = () => {
+    setIsRequestQuoteOpen(false);
+  };
+
   return (
     <div className="carousel-container">
       {/* Contact Section */}
       <div className="carousel-contact-section">
         <a
-          href="mailto:info@thedesigngrit.com?subject=Request a quotation"
+          onClick={handleRequestQuoteClick}
           className="contact-link"
+          style={{ cursor: "pointer" }}
         >
           <IoNewspaperOutline /> Request a quotation
         </a>
         <hr className="carousel-divider" />
-        <a href="tel:+390805543553" className="contact-link">
-          <LuPhone /> Call us at +39 080 554 3553
+        <a href={`tel:${brandId.phoneNumber}`} className="contact-link">
+          <LuPhone /> Call us at {brandId.phoneNumber}
         </a>
         <hr className="carousel-divider" />
         <a
-          href="https://wa.me/393664455454"
+          href={`whatsapp://send?text=Hello, I would like to order a product from your brand. Please contact me at ${brandId.phoneNumber}&phone=+393664455454`}
           className="contact-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -134,6 +153,14 @@ export default function BrandCursol({ brandId }) {
         </div>
       ) : (
         <p className="carousel-no-products">No products available</p>
+      )}
+
+      {/* RequestQuote Popup */}
+      {isRequestQuoteOpen && (
+        <RequestQuote
+          onClose={handleCloseRequestQuote}
+          productId={products[currentIndex] || brandId}
+        />
       )}
     </div>
   );
