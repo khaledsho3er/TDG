@@ -16,6 +16,11 @@ const RequestQuote = ({ onClose, productId }) => {
   const [isLoading, setIsLoading] = useState(false); // State for loading spinner
   const [brandData, setBrandData] = useState(null);
 
+  // New state for tracking dropdown selections
+  const [materialOption, setMaterialOption] = useState("");
+  const [sizeOption, setSizeOption] = useState("");
+  const [colorOption, setColorOption] = useState("");
+
   // Fetch brand data if needed
   useEffect(() => {
     // If productId has brandId as an ID string instead of an object
@@ -40,6 +45,50 @@ const RequestQuote = ({ onClose, productId }) => {
       setBrandData(productId.brandId);
     }
   }, [productId]);
+
+  // Handle dropdown changes
+  const handleMaterialChange = (e) => {
+    const value = e.target.value;
+    setMaterialOption(value);
+    if (value !== "Others") {
+      setMaterial(value);
+    } else {
+      setMaterial("");
+    }
+  };
+
+  const handleSizeChange = (e) => {
+    const value = e.target.value;
+    setSizeOption(value);
+    if (value !== "Others") {
+      setSize(value);
+    } else {
+      setSize("");
+    }
+  };
+
+  const handleColorChange = (e) => {
+    const value = e.target.value;
+    setColorOption(value);
+    if (value !== "Others") {
+      setColor(value);
+    } else {
+      setColor("");
+    }
+  };
+
+  // Handle text input changes
+  const handleMaterialInput = (e) => {
+    setMaterial(e.target.value);
+  };
+
+  const handleSizeInput = (e) => {
+    setSize(e.target.value);
+  };
+
+  const handleColorInput = (e) => {
+    setColor(e.target.value);
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -178,61 +227,77 @@ const RequestQuote = ({ onClose, productId }) => {
                 <label>Material</label>
                 <div className="requestInfo-input-group">
                   <select
-                    value={material}
-                    onChange={(e) => setMaterial(e.target.value)}
+                    value={materialOption}
+                    onChange={handleMaterialChange}
                   >
-                    <option>Wool Fabric</option>
-                    <option>Cotton Fabric</option>
-                    <option>Leather</option>
-                    <option>Denim</option>
-                    {/* Add more options here */}
+                    <option value="">Select Material</option>
+                    <option value="Wool Fabric">Wool Fabric</option>
+                    <option value="Cotton Fabric">Cotton Fabric</option>
+                    <option value="Leather">Leather</option>
+                    <option value="Denim">Denim</option>
+                    <option value="Others">Others</option>
                   </select>
                   <input
                     type="text"
                     placeholder="Others..."
                     value={material}
-                    onChange={(e) => setMaterial(e.target.value)}
+                    onChange={handleMaterialInput}
+                    disabled={materialOption !== "Others"}
+                    style={{
+                      backgroundColor:
+                        materialOption !== "Others" ? "#f0f0f0" : "white",
+                      cursor:
+                        materialOption !== "Others" ? "not-allowed" : "text",
+                    }}
                   />
                 </div>
               </div>
               <div className="requestInfo-form-group">
                 <label>Size</label>
                 <div className="requestInfo-input-group">
-                  <select
-                    value={size}
-                    onChange={(e) => setSize(e.target.value)}
-                  >
-                    <option>4080 x 1000</option>
-                    <option>4080 x 1200</option>
-                    <option>4080 x 1400</option>
-                    {/* Add more options here */}
+                  <select value={sizeOption} onChange={handleSizeChange}>
+                    <option value="">Select Size</option>
+                    <option value="4080 x 1000">4080 x 1000</option>
+                    <option value="4080 x 1200">4080 x 1200</option>
+                    <option value="4080 x 1400">4080 x 1400</option>
+                    <option value="Others">Others</option>
                   </select>
                   <input
                     type="text"
                     placeholder="Others..."
                     value={size}
-                    onChange={(e) => setSize(e.target.value)}
+                    onChange={handleSizeInput}
+                    disabled={sizeOption !== "Others"}
+                    style={{
+                      backgroundColor:
+                        sizeOption !== "Others" ? "#f0f0f0" : "white",
+                      cursor: sizeOption !== "Others" ? "not-allowed" : "text",
+                    }}
                   />
                 </div>
               </div>
               <div className="requestInfo-form-group">
                 <label>Colour</label>
                 <div className="requestInfo-input-group">
-                  <select
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
-                  >
-                    <option>White Grey</option>
-                    <option>White</option>
-                    <option>Black</option>
-                    <option>Grey</option>
-                    {/* Add more options here */}
+                  <select value={colorOption} onChange={handleColorChange}>
+                    <option value="">Select Colour</option>
+                    <option value="White Grey">White Grey</option>
+                    <option value="White">White</option>
+                    <option value="Black">Black</option>
+                    <option value="Grey">Grey</option>
+                    <option value="Others">Others</option>
                   </select>
                   <input
                     type="text"
                     placeholder="Others..."
                     value={color}
-                    onChange={(e) => setColor(e.target.value)}
+                    onChange={handleColorInput}
+                    disabled={colorOption !== "Others"}
+                    style={{
+                      backgroundColor:
+                        colorOption !== "Others" ? "#f0f0f0" : "white",
+                      cursor: colorOption !== "Others" ? "not-allowed" : "text",
+                    }}
                   />
                 </div>
               </div>
