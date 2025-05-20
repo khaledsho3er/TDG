@@ -1,15 +1,35 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaTimes } from "react-icons/fa";
-import { UserContext } from "../../src/utils/userContext"; // Assuming UserContext is where user session is stored
+import { UserContext } from "../../src/utils/userContext";
 import { useNavigate } from "react-router-dom";
+
+// Create a context for favorite updates
+export const FavoritesContext = React.createContext();
+
+export const FavoritesProvider = ({ children }) => {
+  const [favoritesUpdated, setFavoritesUpdated] = useState(false);
+
+  const updateFavorites = () => {
+    setFavoritesUpdated((prev) => !prev); // Toggle to trigger useEffect
+  };
+
+  return (
+    <FavoritesContext.Provider value={{ favoritesUpdated, updateFavorites }}>
+      {children}
+    </FavoritesContext.Provider>
+  );
+};
+
 const FavoritesOverlay = ({ open, onClose }) => {
   const [favoriteProducts, setFavoriteProducts] = useState([]);
-  const { userSession } = useContext(UserContext); // Access user session from context
+  const { userSession } = useContext(UserContext);
   const navigate = useNavigate();
-  // Fetch favorite products when the component is mounted or when userSession changes
+  const { favoritesUpdated } = useContext(FavoritesContext);
+
+  // Fetch favorite products when the component is mounted or when userSession or favoritesUpdated changes
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (!userSession) return; // Make sure user session is available
+      if (!userSession) return;
 
       try {
         const response = await fetch(
@@ -29,7 +49,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
     if (userSession) {
       fetchFavorites();
     }
-  }, [userSession]); // Runs when the userSession changes
+  }, [userSession, favoritesUpdated, open]); // Added open to refresh when overlay opens
 
   if (!open) return null; // Do not render if not open
 

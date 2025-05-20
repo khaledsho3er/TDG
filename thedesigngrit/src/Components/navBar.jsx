@@ -7,6 +7,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -62,6 +63,8 @@ function Header() {
   const [suggestions, setSuggestions] = useState([]);
   // Add state for shop dropdown
   const [setShopDropdownOpen] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(0);
+  const [favoriteUpdated, setFavoriteUpdated] = useState(false);
 
   const totalCartItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
@@ -185,6 +188,35 @@ function Header() {
       document.body.style.width = "";
     };
   }, [menuOpen]);
+  useEffect(() => {
+    const fetchFavoriteCount = async () => {
+      if (!userSession) {
+        setFavoriteCount(0);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
+        );
+        if (response.ok) {
+          const favoritesData = await response.json();
+          setFavoriteCount(favoritesData.length);
+          // Reset the update flag after fetching
+          if (favoriteUpdated) {
+            setFavoriteUpdated(false);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching favorite count:", error);
+      }
+    };
+
+    fetchFavoriteCount();
+  }, [userSession, favoriteUpdated]);
+  const handleFavoriteUpdate = () => {
+    setFavoriteUpdated(true);
+  };
 
   const handleCartToggle = () => {
     setCartOpen((prev) => {
@@ -311,7 +343,17 @@ function Header() {
           <Box sx={{ display: "flex", gap: "1rem", flexDirection: "row" }}>
             <div>
               <IconButton onClick={handleFavoritesToggle}>
-                <FavoriteBorderIcon fontSize="20px" />
+                <Badge
+                  badgeContent={favoriteCount}
+                  color="error"
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      animation: favoriteUpdated ? "pulse 1s" : "none",
+                    },
+                  }}
+                >
+                  <FavoriteBorderIcon fontSize="20px" />
+                </Badge>
               </IconButton>
               <IconButton onClick={handleCartToggle}>
                 <Badge badgeContent={totalCartItems} color="error">
@@ -600,7 +642,17 @@ function Header() {
               <>
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
-                    <FavoriteBorderIcon fontSize="20px" />
+                    <Badge
+                      badgeContent={favoriteCount}
+                      color="error"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          animation: favoriteUpdated ? "pulse 1s" : "none",
+                        },
+                      }}
+                    >
+                      <FavoriteBorderIcon fontSize="20px" />
+                    </Badge>
                   </IconButton>
                   <IconButton onClick={handleCartToggle}>
                     <Badge badgeContent={totalCartItems} color="error">
@@ -681,7 +733,17 @@ function Header() {
               >
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
-                    <FavoriteBorderIcon fontSize="20px" />
+                    <Badge
+                      badgeContent={favoriteCount}
+                      color="error"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          animation: favoriteUpdated ? "pulse 1s" : "none",
+                        },
+                      }}
+                    >
+                      <FavoriteBorderIcon fontSize="20px" />
+                    </Badge>
                   </IconButton>
                   <IconButton onClick={handleCartToggle}>
                     <Badge badgeContent={totalCartItems} color="error">
