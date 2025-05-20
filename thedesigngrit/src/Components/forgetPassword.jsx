@@ -158,9 +158,19 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               fullWidth
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              sx={{ marginBottom: "20px" }}
-              InputLabelProps={{
-                style: { color: "#fff", zIndex: 1 },
+              sx={{
+                marginBottom: "20px",
+                "& .MuiInputLabel-root": {
+                  color: "#fff",
+                  backgroundColor: "rgba(45, 45, 45, 0.7)",
+                  padding: "0 8px",
+                  borderRadius: "4px",
+                  transform: "translate(14px, -9px) scale(0.75)",
+                  "&.Mui-focused": {
+                    transform: "translate(14px, -9px) scale(0.75)",
+                    zIndex: 999,
+                  },
+                },
               }}
               InputProps={{
                 style: {
@@ -168,6 +178,7 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
                   color: "#fff",
                 },
               }}
+              variant="outlined"
             />
           </>
         )}

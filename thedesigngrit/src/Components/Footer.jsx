@@ -311,12 +311,16 @@ function Footer() {
                 <Link
                   to={`/policy?section=Cookie Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Cookie</Typography>
                 </Link>
                 <Link
                   to={`/policy?section=Privacy Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Privacy</Typography>
                 </Link>
@@ -325,38 +329,48 @@ function Footer() {
                     "Returns & Exchanges Policy"
                   )}`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Return & Exchange</Typography>
                 </Link>
                 <Link
                   to={`/policy?section=Payment Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Payment</Typography>
                 </Link>
-
                 <Link
                   to={`/policy?section=Shipping Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Shipping Information</Typography>
                 </Link>
                 <Link
                   to={`/policy?section=Security Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Security </Typography>
                 </Link>
                 <Link
                   to={`/policy?section=Compliance Policy`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Compliance</Typography>
                 </Link>
-
                 <Link
                   to={`/policy?section=Full Terms of Service Agreement`}
                   style={{ textDecoration: "none", color: "#2d2d2d" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Typography>Terms of Use</Typography>
                 </Link>
