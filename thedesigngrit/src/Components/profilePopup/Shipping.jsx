@@ -485,6 +485,10 @@ const ShippingInfoPopup = () => {
                     height: "56px",
                     minHeight: "56px",
                   }),
+                  menu: (base) => ({
+                    ...base,
+                    zIndex: 1000,
+                  }),
                 }}
               />
             </Grid>
