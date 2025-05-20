@@ -16,8 +16,9 @@ const BillingInfo = () => {
   const [cardToDelete, setCardToDelete] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const userId = userSession.id;
-  // Fetch saved cards from the API
-  useEffect(() => {
+
+  // Function to fetch cards from API
+  const fetchCards = () => {
     fetch(`https://api.thedesigngrit.com/api/cards/user/${userId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -31,6 +32,11 @@ const BillingInfo = () => {
         );
       })
       .catch((error) => console.error("Error fetching cards:", error));
+  };
+
+  // Fetch saved cards from the API
+  useEffect(() => {
+    fetchCards();
   }, [userId]);
 
   const handleSetDefault = (cardId) => {
@@ -96,6 +102,12 @@ const BillingInfo = () => {
 
   const handleConfirmationClose = () => {
     setShowConfirmation(false);
+  };
+
+  // Handle card save (new or updated)
+  const handleCardSave = () => {
+    // Refresh the cards list without page reload
+    fetchCards();
   };
 
   return (
@@ -173,6 +185,7 @@ const BillingInfo = () => {
         card={selectedCard}
         isAddingNew={isAddingNew}
         onCancel={handleCancel}
+        onSave={handleCardSave}
         userId={userId} // Ensure this is available in the parent component
       />
 

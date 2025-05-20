@@ -119,8 +119,6 @@ const BillingInfoPopup = ({
     };
 
     try {
-      // Show loading state or disable button here if needed
-
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/cards/add",
         cardData
@@ -134,8 +132,10 @@ const BillingInfoPopup = ({
         // Show success alert
         alert("✅ Card saved successfully!");
 
-        // Refresh the page to show the updated card list
-        window.location.reload();
+        // Signal the parent component to refresh the card list
+        if (typeof onSave === "function") {
+          onSave();
+        }
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
@@ -147,7 +147,11 @@ const BillingInfoPopup = ({
         // This is the specific error we're seeing, but the card is still being saved
         onCancel();
         alert("✅ Card saved successfully!");
-        window.location.reload();
+
+        // Signal the parent component to refresh the card list
+        if (typeof onSave === "function") {
+          onSave();
+        }
       } else if (error.response?.data?.message) {
         alert(`❌ ${error.response.data.message}`);
       } else {
