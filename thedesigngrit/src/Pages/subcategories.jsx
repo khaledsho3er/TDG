@@ -84,9 +84,9 @@ function Subcategories() {
                 <Typography variant="h3" className="subcategory-title">
                   {subCategory.name}
                 </Typography>
-                <Typography variant="h2" className="subcategory-description">
+                {/* <Typography variant="h2" className="subcategory-description">
                   {subCategory.description}
-                </Typography>
+                </Typography> */}
                 <Link
                   to={`/types/${subCategory._id}`}
                   className="subcategory-button"
