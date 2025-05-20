@@ -118,26 +118,35 @@ const BillingInfoPopup = ({
     };
 
     try {
+      // Show loading state or disable button here if needed
+
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/cards/add",
         cardData
       );
 
+      // Only show success message if we get a successful response
       if (response.status === 200 || response.status === 201) {
-        // 1. Show success alert first
-        alert("✅ Card saved successfully!");
-
-        // 2. Update UI state
+        // Update UI state first
         onSave(response.data.card);
 
-        // 3. Close the modal
+        // Close the modal
         onCancel();
+
+        // Show success alert last (after UI is updated)
+        alert("✅ Card saved successfully!");
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
     } catch (error) {
       console.error("Error saving card:", error);
-      alert("❌ Failed to save card. Please try again.");
+
+      // Show more specific error message if available
+      if (error.response?.data?.message) {
+        alert(`❌ ${error.response.data.message}`);
+      } else {
+        alert("❌ Failed to save card. Please try again.");
+      }
     }
   };
 
