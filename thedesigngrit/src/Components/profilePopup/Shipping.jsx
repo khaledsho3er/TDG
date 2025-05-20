@@ -345,7 +345,16 @@ const ShippingInfoPopup = () => {
 
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     {addr.isDefault === true && (
-                      <DefaultChip label="Default" size="small" />
+                      <span
+                        style={{
+                          borderColor: "1px solid #2d2d2d",
+                          backgroundColor: "transparent",
+                          color: "#2d2d2d",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        Default Address
+                      </span>
                     )}
                     <Box sx={{ display: "flex", marginLeft: "auto" }}>
                       <ActionButton
