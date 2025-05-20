@@ -105,6 +105,7 @@ const ExploreConcepts = () => {
                       left: `${node.x * 100}%`,
                       top: `${node.y * 100}%`,
                       transform: "translate(-50%, -50%)",
+                      zIndex: 10,
                     }}
                     onClick={() => navigate(`/product/${node.productId._id}`)}
                   >
@@ -119,6 +120,7 @@ const ExploreConcepts = () => {
                             display: "flex",
                             alignItems: "center",
                             gap: 1,
+                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                           }}
                         >
                           <img
@@ -129,7 +131,10 @@ const ExploreConcepts = () => {
                             style={{ objectFit: "cover" }}
                           />
                           <Box>
-                            <Typography variant="body2">
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: "bold" }}
+                            >
                               {node.productId.name}
                             </Typography>
                             <Typography variant="body2">
@@ -140,14 +145,40 @@ const ExploreConcepts = () => {
                         </Box>
                       }
                       placement="top"
+                      arrow
                     >
                       <Box
                         sx={{
-                          backgroundColor: "#fff",
-                          width: 12,
-                          height: 12,
+                          width: 24,
+                          height: 24,
                           borderRadius: "50%",
                           cursor: "pointer",
+                          background:
+                            "radial-gradient(circle at 30% 30%, #ffffff, #6c7c59)",
+                          border: "2px solid #ffffff",
+                          boxShadow:
+                            "0 2px 6px rgba(0,0,0,0.3), inset 0 -2px 5px rgba(0,0,0,0.2)",
+                          transition: "all 0.2s ease-in-out",
+                          animation: "pulse 2s infinite",
+                          "&:hover": {
+                            transform: "scale(1.2)",
+                            boxShadow:
+                              "0 4px 8px rgba(0,0,0,0.4), inset 0 -3px 6px rgba(0,0,0,0.3)",
+                          },
+                          "@keyframes pulse": {
+                            "0%": {
+                              boxShadow:
+                                "0 0 0 0 rgba(108, 124, 89, 0.7), inset 0 -2px 5px rgba(0,0,0,0.2)",
+                            },
+                            "70%": {
+                              boxShadow:
+                                "0 0 0 10px rgba(108, 124, 89, 0), inset 0 -2px 5px rgba(0,0,0,0.2)",
+                            },
+                            "100%": {
+                              boxShadow:
+                                "0 0 0 0 rgba(108, 124, 89, 0), inset 0 -2px 5px rgba(0,0,0,0.2)",
+                            },
+                          },
                         }}
                       />
                     </Tooltip>
