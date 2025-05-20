@@ -154,7 +154,10 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
         {step === 1 && (
           <>
             <TextField
-              label="Enter your email"
+              label="Enter Your Email"
+              InputLabelProps={{
+                style: { color: "#fff", marginTop: "10px" },
+              }}
               fullWidth
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -163,10 +166,6 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
                 "& .MuiInputBase-root": {
                   paddingTop: "12px", // Add space to avoid clipping label
                 },
-              }}
-              InputLabelProps={{
-                style: { color: "#fff" },
-                shrink: true, // Forces the label to float above
               }}
               InputProps={{
                 style: {
