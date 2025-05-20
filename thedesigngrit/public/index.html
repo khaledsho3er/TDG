@@ -5,45 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
+      name="google-site-verification"
+      content="MxZUsWMbEOJNGRT6hcm5ZADa3cEjShpVF0Xgjm2NDuo"
+    />
+    <meta
       name="description"
-      content="The Design Grit - Premium Home Decor and Furniture"
+      content="The Design Grit is built on a foundation of timelessness, authority, and
+      creative mastery. Focused on legacy, ownership, and bold innovation, the
+      brand offers a curated, end-to-end interior design service. It helps users
+      furnish their homes by selecting products from a diverse range of local brands,
+      tailored to their personal style and needs."
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/Assets/Video-hero/poster.webp"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/TDGLoadingScreen.webm"
+      type="video/webm"
     />
 
-    <!-- Preconnect to API domain -->
-    <link rel="preconnect" href="https://api.thedesigngrit.com" />
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://use.fontawesome.com" crossorigin />
     <link
       rel="preconnect"
       href="https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev"
+      crossorigin
     />
 
-    <!-- Preload critical assets -->
+    <!-- Preload Fonts -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      as="style"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="preload"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      as="style"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+    />
+
+    <!-- Preload Critical CSS -->
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/Styles/style.css?v=1.0"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="%PUBLIC_URL%/Styles/style.css?v=1.0"
+    /></noscript>
+
+    <!-- Load Other CSS Asynchronously -->
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/Styles/responsive.css?v=1.0"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="%PUBLIC_URL%/Styles/responsive.css?v=1.0"
+    /></noscript>
+
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/Styles/VendorPanel.css?v=1.0"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="%PUBLIC_URL%/Styles/VendorPanel.css?v=1.0"
+    /></noscript>
+
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/Styles/vendor.css?v=1.0"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="%PUBLIC_URL%/Styles/vendor.css?v=1.0"
+    /></noscript>
+
+    <!-- Preload Logo for Faster LCP -->
+    <!-- Preload Critical Hero Poster -->
+    <!-- Preload videos -->
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo4.webm"
+      type="video/webm"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo2.webm"
+      type="video/webm"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo5.webm"
+      type="video/webm"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo2.mp4"
+      type="video/mp4"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo5.mp4"
+      type="video/mp4"
+    />
+    <link
+      rel="preload"
+      as="video"
+      href="/Assets/Video-hero/herovideo4.mp4"
+      type="video/mp4"
+    />
+
+    <!-- Preload poster image -->
+    <link
+      rel="preload"
+      as="image"
+      href="/Assets/Video-hero/poster.webp"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="Assets/susSection-768.webp"
+      type="image/webp"
+    />
+
     <link
       rel="preload"
       as="image"
       href="/Assets/Video-hero/poster.avif"
       fetchpriority="high"
     />
-    <link rel="preload" href="/Assets/TDG_Logo_Black.webp" as="image" />
-
-    <!-- Preload critical fonts -->
-    <link
-      rel="preload"
-      href="/fonts/Horizon-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/Montserrat-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-
-    <!-- Defer non-critical scripts -->
     <script src="some-non-critical.js" defer></script>
 
+    <!-- <link rel="preload" href="/Assets/TDG_Logo_Black.webp" as="image" /> -->
     <!-- App Metadata -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.ico" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
@@ -54,24 +176,5 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-
-    <!-- Add service worker registration -->
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/service-worker.js").then(
-            function (registration) {
-              console.log(
-                "ServiceWorker registration successful with scope: ",
-                registration.scope
-              );
-            },
-            function (err) {
-              console.log("ServiceWorker registration failed: ", err);
-            }
-          );
-        });
-      }
-    </script>
   </body>
 </html>
