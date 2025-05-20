@@ -4,12 +4,80 @@ import axios from "axios";
 import countryList from "react-select-country-list";
 import ConfirmationDialog from "../confirmationMsg";
 import { UserContext } from "../../utils/userContext";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Card,
+  CardContent,
+  Grid,
+  Button,
+  Chip,
+  Divider,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { MdEdit, MdDelete, MdAdd, MdLocationOn } from "react-icons/md";
+
+// Styled components
+const AddressCard = styled(Card)(({ theme, isDefault }) => ({
+  marginBottom: theme.spacing(2),
+  borderRadius: "12px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  position: "relative",
+  border: isDefault ? `2px solid ${theme.palette.success.main}` : "none",
+  transition: "transform 0.2s ease-in-out",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: "0 8px 16px rgba(0,0,0,0.12)",
+  },
+}));
+
+const DefaultChip = styled(Chip)(({ theme }) => ({
+  position: "absolute",
+  top: "12px",
+  right: "12px",
+  backgroundColor: "#6c7c59",
+  color: "white",
+  fontWeight: "bold",
+}));
+
+const ActionButton = styled(Button)(({ theme, color }) => ({
+  marginRight: theme.spacing(1),
+  backgroundColor: color === "delete" ? "#f44336" : "#6c7c59",
+  color: "white",
+  "&:hover": {
+    backgroundColor: color === "delete" ? "#d32f2f" : "#556b2f",
+  },
+}));
+
+const AddButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  backgroundColor: "#6c7c59",
+  color: "white",
+  padding: "10px 20px",
+  borderRadius: "8px",
+  "&:hover": {
+    backgroundColor: "#556b2f",
+  },
+}));
+
+const ModalBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  maxWidth: "90%",
+  backgroundColor: "white",
+  borderRadius: "12px",
+  boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+  padding: theme.spacing(4),
+  maxHeight: "90vh",
+  overflow: "auto",
+}));
 
 const ShippingInfoPopup = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -32,10 +100,12 @@ const ShippingInfoPopup = () => {
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const { userSession } = useContext(UserContext);
   const [countries] = useState(countryList().getData());
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
           { withCredentials: true }
@@ -43,7 +113,8 @@ const ShippingInfoPopup = () => {
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        alert("Failed to fetch user data.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchUserData();
@@ -90,10 +161,12 @@ const ShippingInfoPopup = () => {
   const handleUpdate = () => {
     setDialogOpen(true);
   };
+
   const handleDeleteAddress = (addressId) => {
     setSelectedAddressId(addressId);
     setDeleteDialogOpen(true);
   };
+
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(
@@ -103,23 +176,53 @@ const ShippingInfoPopup = () => {
 
       setUserData((prev) => ({
         ...prev,
-        shipmentAddress: response.data.shipmentAddress, // Update UI with the latest address list
+        shipmentAddress: response.data.shipmentAddress,
       }));
 
-      alert("Address removed successfully!");
+      // Use a more elegant notification instead of alert
+      // You could implement a snackbar here
     } catch (error) {
       console.error("Error removing address:", error);
-      alert("Failed to remove address.");
     }
     setDeleteDialogOpen(false);
   };
+
   const handleConfirm = async () => {
     try {
+      // Validate required fields
+      if (
+        !newAddress.address1 ||
+        !newAddress.city ||
+        !newAddress.country ||
+        !newAddress.postalCode
+      ) {
+        alert(
+          "Please fill in all required fields: Address, City, Country, and Postal Code"
+        );
+        return;
+      }
+
       let updatedAddresses = [...userData.shipmentAddress];
+
+      // If setting as default, update all other addresses
+      if (newAddress.isDefault) {
+        updatedAddresses = updatedAddresses.map((addr) => ({
+          ...addr,
+          isDefault: false,
+        }));
+      }
+
       if (selectedAddressIndex !== null) {
-        updatedAddresses[selectedAddressIndex] = newAddress;
+        updatedAddresses[selectedAddressIndex] = {
+          ...updatedAddresses[selectedAddressIndex],
+          ...newAddress,
+          isDefault: newAddress.isDefault ? "Default" : false,
+        };
       } else {
-        updatedAddresses.push(newAddress);
+        updatedAddresses.push({
+          ...newAddress,
+          isDefault: newAddress.isDefault ? "Default" : false,
+        });
       }
 
       await axios.put(
@@ -133,14 +236,13 @@ const ShippingInfoPopup = () => {
         shipmentAddress: updatedAddresses,
       }));
 
-      alert("Address updated successfully!");
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating user data:", error);
-      alert("Failed to update address.");
     }
     setDialogOpen(false);
   };
+
   const handleCancelDelete = () => {
     setDeleteDialogOpen(false);
   };
@@ -151,339 +253,308 @@ const ShippingInfoPopup = () => {
   };
 
   return (
-    <div
-      className="profile-info"
-      style={{ textAlign: "center", padding: "20px", flexDirection: "column" }}
-    >
-      <h2>Shipping Addresses</h2>
-      {userData.shipmentAddress.map((addr, index) => (
-        <div key={index} className="shipping-container">
-          {addr.isDefault === "Default" && (
-            <label
-              style={{
-                marginLeft: "auto",
-                display: "block",
-                padding: "5px",
-                border: "1px solid #6c7c59",
-                backgroundColor: "#6c7c59",
-                color: "#fff",
-                borderRadius: "4px",
-                textAlign: "center",
-                width: "fit-content",
-              }}
-            >
-              Default
-            </label>
-          )}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Address 1:</label>
-              <p>{addr.address1}</p>
-            </div>
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Address 2:</label>
-              <p>{addr.address2 || "N/A"}</p>
-            </div>{" "}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Label:</label>
-              <p>{addr.label || "N/A"}</p>
-            </div>{" "}
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Apartment:</label>
-              <p>{addr.apartment || "N/A"}</p>
-            </div>{" "}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Floor:</label>
-              <p>{addr.floor || "N/A"}</p>
-            </div>{" "}
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>LandMark:</label>
-              <p>{addr.landmark || "N/A"}</p>
-            </div>{" "}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>City:</label>
-
-              <p>{addr.city}</p>
-            </div>
-            <div className="profile-form-field" style={{ width: "48%" }}>
-              <label>Country:</label>
-              <p>{addr.country}</p>
-            </div>
-          </div>
-          <div className="profile-form-field" style={{ width: "48%" }}>
-            <label>Postal Code:</label>
-            <p>{addr.postalCode}</p>
-          </div>
-          <div className="action-buttons-shipping">
-            {/* Edit Button */}
-            <button
-              style={{ display: "block" }}
-              className="submit-btn"
-              onClick={() => handleEditAddress(index)}
-            >
-              Edit
-            </button>
-            {/* Delete Button */}
-            <button
-              style={{ display: "block" }}
-              className="submit-btn"
-              onClick={() => handleDeleteAddress(addr._id)}
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      ))}
-      <button
-        className="submit-btn"
-        sx={{ margin: "auto" }}
-        onClick={handleAddNewAddress}
+    <Box sx={{ padding: 3, maxWidth: "900px", margin: "0 auto" }}>
+      <Typography
+        variant="h4"
+        component="h2"
+        gutterBottom
+        sx={{
+          fontFamily: "Horizon",
+          textAlign: "center",
+          marginBottom: 4,
+        }}
       >
-        Add New Address
-      </button>
+        Shipping Addresses
+      </Typography>
 
-      <Modal open={isEditing} onClose={handleCancel}>
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+          <Typography>Loading your addresses...</Typography>
+        </Box>
+      ) : userData.shipmentAddress.length === 0 ? (
         <Box
           sx={{
-            width: 400,
-            padding: 4,
-            margin: "auto",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            marginTop: "8%",
+            display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            zIndex: 1000,
+            justifyContent: "center",
+            p: 4,
+            backgroundColor: "#f9f9f9",
+            borderRadius: "12px",
+            minHeight: "200px",
           }}
         >
-          <Typography variant="h6" align="center" fontFamily={"Horizon"}>
-            {selectedAddressIndex !== null ? "Edit Address" : "New Address"}
+          <MdLocationOn size={48} color="#6c7c59" />
+          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
+            You don't have any saved addresses yet
           </Typography>
-          <Box
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            sx={{ mb: 3, textAlign: "center" }}
+          >
+            Add a shipping address to make checkout faster
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<MdAdd />}
+            onClick={handleAddNewAddress}
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px 0",
+              backgroundColor: "#6c7c59",
+              "&:hover": { backgroundColor: "#556b2f" },
             }}
           >
-            <TextField
-              sx={{ width: "48%" }}
-              label="Address 1"
-              name="address1"
-              value={newAddress.address1}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <TextField
-              sx={{ width: "48%" }}
-              label="Address 2"
-              name="address2"
-              value={newAddress.address2}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px 0",
-            }}
-          >
-            <TextField
-              sx={{ width: "48%" }}
-              label="Label"
-              name="label"
-              value={newAddress.label}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <TextField
-              sx={{ width: "48%" }}
-              label="Apartment"
-              name="apartment"
-              value={newAddress.apartment}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px 0",
-            }}
-          >
-            <TextField
-              sx={{ width: "48%" }}
-              label="Floor"
-              name="floor"
-              value={newAddress.floor}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <TextField
-              sx={{ width: "48%" }}
-              label="Landmark"
-              name="landmark"
-              value={newAddress.landmark}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px 0",
-            }}
-          >
-            <TextField
-              sx={{ width: "48%" }}
-              label="City"
-              name="city"
-              value={newAddress.city}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <Select
-              options={countries}
-              onChange={handleCountryChange}
-              placeholder="Select your country"
-              isSearchable
-              value={
-                countries.find((c) => c.label === newAddress.country) || null
-              }
-              styles={{ container: (base) => ({ ...base, width: "48%" }) }}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              margin: "10px 0",
-            }}
-          >
-            <TextField
-              sx={{ width: "48%" }}
-              label="Postal Code"
-              name="postalCode"
-              value={newAddress.postalCode}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={newAddress.isDefault}
-                  onChange={(e) => {
-                    setNewAddress((prev) => ({
-                      ...prev,
-                      isDefault: e.target.checked,
-                    }));
+            Add Your First Address
+          </Button>
+        </Box>
+      ) : (
+        <Grid container spacing={3}>
+          {userData.shipmentAddress.map((addr, index) => (
+            <Grid item xs={12} md={6} key={index}>
+              <AddressCard isDefault={addr.isDefault === "Default"}>
+                {addr.isDefault === "Default" && (
+                  <DefaultChip label="Default" size="small" />
+                )}
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ mb: 1, fontWeight: "bold" }}
+                  >
+                    {addr.label || "Address " + (index + 1)}
+                  </Typography>
 
-                    if (e.target.checked) {
-                      setUserData((prev) => {
-                        const updatedAddresses = prev.shipmentAddress.map(
-                          (addr) => ({
-                            ...addr,
-                            isDefault: false, // Reset all other addresses
-                          })
-                        );
-                        return { ...prev, shipmentAddress: updatedAddresses };
-                      });
-                    }
-                  }}
-                />
-              }
-              label="Set as Default"
-            />
-          </Box>
+                  <Typography variant="body1" sx={{ mb: 0.5 }}>
+                    {addr.address1}
+                    {addr.address2 && `, ${addr.address2}`}
+                  </Typography>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              gap: "10px",
-              alignItems: "center",
-            }}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 0.5 }}
+                  >
+                    {addr.apartment && `Apt ${addr.apartment}, `}
+                    {addr.floor && `Floor ${addr.floor}, `}
+                    {addr.landmark && `Near ${addr.landmark}`}
+                  </Typography>
+
+                  <Typography variant="body1" sx={{ mb: 0.5 }}>
+                    {addr.city}, {addr.postalCode}
+                  </Typography>
+
+                  <Typography variant="body1" sx={{ mb: 2 }}>
+                    {addr.country}
+                  </Typography>
+
+                  <Divider sx={{ mb: 2 }} />
+
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <ActionButton
+                      startIcon={<MdEdit />}
+                      onClick={() => handleEditAddress(index)}
+                      size="small"
+                    >
+                      Edit
+                    </ActionButton>
+                    <ActionButton
+                      startIcon={<MdDelete />}
+                      onClick={() => handleDeleteAddress(addr._id)}
+                      size="small"
+                      color="delete"
+                    >
+                      Remove
+                    </ActionButton>
+                  </Box>
+                </CardContent>
+              </AddressCard>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <AddButton startIcon={<MdAdd />} onClick={handleAddNewAddress}>
+          Add New Address
+        </AddButton>
+      </Box>
+
+      <Modal open={isEditing} onClose={handleCancel}>
+        <ModalBox>
+          <Typography
+            variant="h5"
+            component="h2"
+            align="center"
+            sx={{ mb: 3, fontFamily: "Horizon" }}
           >
-            <button
-              sx={{ width: "40%" }}
-              className="submit-btn"
-              onClick={handleUpdate}
-            >
-              Save
-            </button>
-            <button
-              sx={{ width: "40%" }}
-              className="cancel-btn"
+            {selectedAddressIndex !== null ? "Edit Address" : "Add New Address"}
+          </Typography>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Address Line 1*"
+                name="address1"
+                value={newAddress.address1}
+                onChange={handleInputChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Address Line 2"
+                name="address2"
+                value={newAddress.address2}
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Label (e.g. Home, Work)"
+                name="label"
+                value={newAddress.label}
+                onChange={handleInputChange}
+                placeholder="Home, Work, etc."
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Apartment/Suite"
+                name="apartment"
+                value={newAddress.apartment}
+                onChange={handleInputChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Floor"
+                name="floor"
+                value={newAddress.floor}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Landmark"
+                name="landmark"
+                value={newAddress.landmark}
+                onChange={handleInputChange}
+                placeholder="Nearby landmark"
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="City*"
+                name="city"
+                value={newAddress.city}
+                onChange={handleInputChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Select
+                options={countries}
+                onChange={handleCountryChange}
+                placeholder="Select your country*"
+                isSearchable
+                value={
+                  countries.find((c) => c.label === newAddress.country) || null
+                }
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    height: "56px",
+                    minHeight: "56px",
+                  }),
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Postal Code*"
+                name="postalCode"
+                value={newAddress.postalCode}
+                onChange={handleInputChange}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newAddress.isDefault}
+                    onChange={(e) => {
+                      setNewAddress((prev) => ({
+                        ...prev,
+                        isDefault: e.target.checked,
+                      }));
+                    }}
+                  />
+                }
+                label="Set as Default Address"
+              />
+            </Grid>
+          </Grid>
+
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+            <Button
+              variant="outlined"
               onClick={handleCancel}
+              sx={{
+                width: "48%",
+                borderColor: "#6c7c59",
+                color: "#6c7c59",
+                "&:hover": {
+                  borderColor: "#556b2f",
+                  backgroundColor: "rgba(108, 124, 89, 0.04)",
+                },
+              }}
             >
               Cancel
-            </button>
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleUpdate}
+              sx={{
+                width: "48%",
+                backgroundColor: "#6c7c59",
+                "&:hover": { backgroundColor: "#556b2f" },
+              }}
+            >
+              Save Address
+            </Button>
           </Box>
-        </Box>
+        </ModalBox>
       </Modal>
-      <div style={{ position: "relative", zIndex: 9999 }}>
-        <ConfirmationDialog
-          open={dialogOpen}
-          title="Confirm Update"
-          content="Are you sure you want to update your shipping information?"
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-      </div>
-      <div style={{ position: "relative", zIndex: 9999 }}>
-        <ConfirmationDialog
-          open={deleteDialogOpen}
-          title="Confirm Delete"
-          content="Are you sure you want to delete this address?"
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
-        />
-      </div>
-    </div>
+
+      <ConfirmationDialog
+        open={dialogOpen}
+        title="Confirm Update"
+        content="Are you sure you want to save this address?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
+
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        title="Confirm Delete"
+        content="Are you sure you want to delete this address? This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+    </Box>
   );
 };
 
