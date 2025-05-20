@@ -344,7 +344,7 @@ const ShippingInfoPopup = () => {
                   <Divider sx={{ mb: 2 }} />
 
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    {addr.isDefault === "Default" && (
+                    {addr.isDefault === true && (
                       <DefaultChip label="Default" size="small" />
                     )}
                     <Box sx={{ display: "flex", marginLeft: "auto" }}>
