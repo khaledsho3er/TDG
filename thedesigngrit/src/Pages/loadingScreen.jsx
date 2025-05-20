@@ -2,8 +2,58 @@ import React, { useState, useEffect } from "react";
 
 const LoadingScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [resourcesLoaded, setResourcesLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  const loadingScreenStyle = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "#ffffff",
+    zIndex: 9999,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  };
+
+  // Check if critical resources are loaded
+  useEffect(() => {
+    // Create a list of critical resources to check
+    const criticalResources = [
+      "/Assets/TDG_Logo_Black.webp",
+      "/Assets/Video-hero/poster.avif",
+    ];
+
+    // Check if resources are in cache or can be loaded
+    const checkResources = async () => {
+      try {
+        // Try to load all resources in parallel
+        await Promise.all(
+          criticalResources.map(
+            (url) =>
+              new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = url;
+              })
+          )
+        );
+        setResourcesLoaded(true);
+      } catch (error) {
+        console.error("Failed to load critical resources:", error);
+        // Continue anyway after a timeout
+        setTimeout(() => setResourcesLoaded(true), 3000);
+      }
+    };
+
+    checkResources();
+  }, []);
 
   useEffect(() => {
     // Detect mobile (including iOS Safari)
