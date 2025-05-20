@@ -15,6 +15,7 @@ import AccountSentPopup from "./successMsgs/successfullyRegistered";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useUser } from "../utils/userContext";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -42,6 +43,7 @@ const schema = yup.object().shape({
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const { setUserSession } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -137,15 +139,52 @@ const SignUpForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      // Register the user
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/signup",
         data
       );
-      alert(response.data.message);
-      setIsPopupVisible(true);
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000); // Wait 3 seconds before navigating
+
+      // If registration is successful, automatically sign in
+      if (
+        response.data.success ||
+        response.status === 200 ||
+        response.status === 201
+      ) {
+        try {
+          // Sign in with the same credentials
+          const signInResponse = await axios.post(
+            "https://api.thedesigngrit.com/api/signin",
+            {
+              email: data.email,
+              password: data.password,
+            },
+            { withCredentials: true }
+          );
+
+          // Set user session
+          setUserSession(signInResponse.data.user);
+
+          // Show success popup briefly
+          setIsPopupVisible(true);
+
+          // Navigate to home page after a short delay
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        } catch (signInError) {
+          console.error("Auto sign-in error:", signInError);
+          // If auto sign-in fails, still show success message and redirect to login
+          setIsPopupVisible(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        }
+      } else {
+        alert(
+          response.data.message || "Registration successful. Please sign in."
+        );
+      }
     } catch (error) {
       console.error("Sign-up error:", error);
       alert(

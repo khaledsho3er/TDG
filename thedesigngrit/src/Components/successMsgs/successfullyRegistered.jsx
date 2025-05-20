@@ -17,7 +17,7 @@ const AccountSentPopup = ({ show, closePopup }) => {
 
         <h1>YOUR ACCOUNT HAS BEEN CREATED SUCCESSFULLY!</h1>
         <p>
-          Now, Enjoy our services.
+          You are now signed in and ready to go.
           <br />
           <strong>THANKS.</strong>
         </p>

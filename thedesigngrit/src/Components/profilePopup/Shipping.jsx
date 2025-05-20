@@ -343,9 +343,9 @@ const ShippingInfoPopup = () => {
                           border: "1px solid #2d2d2d",
                           backgroundColor: "transparent",
                           color: "#2d2d2d",
-                          borderRadius: "8px",
+                          borderRadius: "4px",
                           padding: "5px 10px",
-                          fontSize: "10px",
+                          fontSize: "15px",
                           fontWeight: "bold",
                           textTransform: "uppercase",
                         }}

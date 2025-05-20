@@ -159,7 +159,14 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{ marginBottom: "20px" }}
-              InputLabelProps={{ style: { color: "#fff" } }}
+              InputLabelProps={{
+                style: {
+                  color: "#fff",
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                  padding: "0 8px",
+                  borderRadius: "4px",
+                },
+              }}
               InputProps={{
                 style: {
                   backgroundColor: "rgba(255,255,255,0.1)",
