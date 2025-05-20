@@ -22,6 +22,109 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
+const waveAnimation = keyframes`
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.2; transform: scale(0.8); }
+`;
+
+const searchingAnimation = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+// Network searching icon component
+const NetworkSearchingIcon = () => {
+  return (
+    <Box
+      sx={{
+        width: "120px",
+        height: "120px",
+        position: "relative",
+        margin: "0 auto 20px",
+        animation: `${fadeIn} 0.5s ease-out`,
+      }}
+    >
+      {/* Rotating outer circle (searching) */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "120px",
+          height: "120px",
+          borderRadius: "50%",
+          border: "4px dashed #6b7b58",
+          opacity: 0.7,
+          animation: `${searchingAnimation} 8s linear infinite`,
+        }}
+      />
+
+      {/* Outer wave (wifi signal) */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "10px",
+          left: "10px",
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
+          border: "6px solid #6b7b58",
+          opacity: 0.7,
+          animation: `${waveAnimation} 2s infinite ease-in-out`,
+          animationDelay: "0s",
+        }}
+      />
+
+      {/* Middle wave (wifi signal) */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "25px",
+          left: "25px",
+          width: "70px",
+          height: "70px",
+          borderRadius: "50%",
+          border: "6px solid #6b7b58",
+          opacity: 0.8,
+          animation: `${waveAnimation} 2s infinite ease-in-out`,
+          animationDelay: "0.3s",
+        }}
+      />
+
+      {/* Inner wave (wifi signal) */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "40px",
+          left: "40px",
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          border: "6px solid #6b7b58",
+          opacity: 0.9,
+          animation: `${waveAnimation} 2s infinite ease-in-out`,
+          animationDelay: "0.6s",
+        }}
+      />
+
+      {/* Device icon */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "55px",
+          left: "55px",
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: "#6b7b58",
+          animation: `${pulse} 1.5s infinite ease-in-out`,
+        }}
+      />
+    </Box>
+  );
+};
+
 // Network failure icon component
 const NetworkFailureIcon = () => {
   return (
@@ -110,10 +213,18 @@ const NetworkFailureIcon = () => {
 
 const NetworkDetector = ({ children }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOnline = () => {
+      setIsSearching(false);
+      setIsOnline(true);
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      setIsSearching(false);
+    };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
@@ -123,6 +234,20 @@ const NetworkDetector = ({ children }) => {
       window.removeEventListener("offline", handleOffline);
     };
   }, []);
+
+  const handleRetry = () => {
+    setIsSearching(true);
+    // Simulate network check
+    setTimeout(() => {
+      if (navigator.onLine) {
+        setIsOnline(true);
+        setIsSearching(false);
+        window.location.reload();
+      } else {
+        setIsSearching(false);
+      }
+    }, 3000);
+  };
 
   if (!isOnline) {
     return (
@@ -143,7 +268,7 @@ const NetworkDetector = ({ children }) => {
           textAlign: "center",
         }}
       >
-        <NetworkFailureIcon />
+        {isSearching ? <NetworkSearchingIcon /> : <NetworkFailureIcon />}
         <h2
           style={{
             marginBottom: "10px",
@@ -152,7 +277,7 @@ const NetworkDetector = ({ children }) => {
             color: "#6b7b58",
           }}
         >
-          You are offline
+          {isSearching ? "Searching for network..." : "You are offline"}
         </h2>
         <p
           style={{
@@ -162,24 +287,28 @@ const NetworkDetector = ({ children }) => {
             animation: `${fadeIn} 0.5s ease-out 0.4s both`,
           }}
         >
-          Please check your internet connection and try again.
+          {isSearching
+            ? "Attempting to reconnect..."
+            : "Please check your internet connection and try again."}
         </p>
-        <button
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#6b7b58",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontFamily: "Montserrat, sans-serif",
-            animation: `${fadeIn} 0.5s ease-out 0.6s both`,
-          }}
-          onClick={() => window.location.reload()}
-        >
-          Retry
-        </button>
+        {!isSearching && (
+          <button
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#6b7b58",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontFamily: "Montserrat, sans-serif",
+              animation: `${fadeIn} 0.5s ease-out 0.6s both`,
+            }}
+            onClick={handleRetry}
+          >
+            Retry
+          </button>
+        )}
       </Box>
     );
   }
