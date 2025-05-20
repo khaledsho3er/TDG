@@ -57,7 +57,19 @@ function ProductPage() {
       navigate("/login");
       return;
     }
-    setQuoteProduct(productData);
+
+    // Ensure we have the brand data
+    let dataToPass = productData;
+
+    // If productData doesn't have brandId as an object, use the product's brandId
+    if (!productData.brandId || typeof productData.brandId !== "object") {
+      dataToPass = {
+        ...productData,
+        brandId: product.brandId, // Use the main product's brandId
+      };
+    }
+
+    setQuoteProduct(dataToPass);
     setIsRequestQuoteOpen(true);
   };
 
@@ -1087,7 +1099,7 @@ function ProductPage() {
       {isRequestQuoteOpen && (
         <RequestQuote
           onClose={handleCloseRequestQuote}
-          productId={quoteProduct || product}
+          productId={quoteProduct}
         />
       )}
     </div>

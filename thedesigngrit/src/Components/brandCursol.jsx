@@ -43,12 +43,28 @@ export default function BrandCursol({ brandId, onRequestQuote }) {
     setCurrentIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
   };
 
+  const handleRequestQuote = () => {
+    // If we have products, use the current product with brand data attached
+    if (products.length > 0 && products[currentIndex]) {
+      const currentProduct = products[currentIndex];
+      // Ensure the product has the brandId object attached
+      const productWithBrand = {
+        ...currentProduct,
+        brandId: currentProduct.brandId || brandId,
+      };
+      onRequestQuote(productWithBrand);
+    } else {
+      // If no products, just use the brandId
+      onRequestQuote(brandId);
+    }
+  };
+
   return (
     <div className="carousel-container">
       {/* Contact Section */}
       <div className="carousel-contact-section">
         <a
-          onClick={() => onRequestQuote(products[currentIndex] || brandId)}
+          onClick={handleRequestQuote}
           className="contact-link"
           style={{ cursor: "pointer" }}
         >
