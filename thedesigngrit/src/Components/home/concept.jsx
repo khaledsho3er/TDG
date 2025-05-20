@@ -153,31 +153,13 @@ const ExploreConcepts = () => {
                           height: 24,
                           borderRadius: "50%",
                           cursor: "pointer",
-                          background:
-                            "radial-gradient(circle at 30% 30%, #ffffff, #6c7c59)",
-                          border: "2px solid #ffffff",
-                          boxShadow:
-                            "0 2px 6px rgba(0,0,0,0.3), inset 0 -2px 5px rgba(0,0,0,0.2)",
+                          backgroundColor: "#6b7b58",
+                          border: "3px solid #fff",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
                           transition: "all 0.2s ease-in-out",
                           animation: "pulse 2s infinite",
                           "&:hover": {
                             transform: "scale(1.2)",
-                            boxShadow:
-                              "0 4px 8px rgba(0,0,0,0.4), inset 0 -3px 6px rgba(0,0,0,0.3)",
-                          },
-                          "@keyframes pulse": {
-                            "0%": {
-                              boxShadow:
-                                "0 0 0 0 rgba(108, 124, 89, 0.7), inset 0 -2px 5px rgba(0,0,0,0.2)",
-                            },
-                            "70%": {
-                              boxShadow:
-                                "0 0 0 10px rgba(108, 124, 89, 0), inset 0 -2px 5px rgba(0,0,0,0.2)",
-                            },
-                            "100%": {
-                              boxShadow:
-                                "0 0 0 0 rgba(108, 124, 89, 0), inset 0 -2px 5px rgba(0,0,0,0.2)",
-                            },
                           },
                         }}
                       />
