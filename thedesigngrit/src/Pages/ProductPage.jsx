@@ -6,7 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import Header from "../Components/navBar";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ReviewBox from "../Components/reviewBox";
 import RequestInfoPopup from "../Components/product/optionPopUp";
 import Footer from "../Components/Footer";
@@ -32,6 +32,7 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [expandedSections, setExpandedSections] = useState({});
