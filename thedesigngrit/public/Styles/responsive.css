@@ -755,9 +755,9 @@
   }
 
   /* Adjust product card image size on mobile */
-  .MuiCardMedia-root {
+  /* .MuiCardMedia-root {
     height: 200px !important;
-  }
+  } */
 }
 
 @media (max-width: 480px) {
