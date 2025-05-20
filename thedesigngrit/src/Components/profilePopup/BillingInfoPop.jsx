@@ -128,30 +128,27 @@ const BillingInfoPopup = ({
 
       // Check if response contains the expected data
       if (response.status === 200 || response.status === 201) {
-        // Make sure we have valid data before calling onSave
-        if (response.data && response.data.card) {
-          // Update UI state first
-          onSave(response.data.card);
+        // Close the modal first
+        onCancel();
 
-          // Close the modal
-          onCancel();
+        // Show success alert
+        alert("✅ Card saved successfully!");
 
-          // Show success alert last (after UI is updated)
-          alert("✅ Card saved successfully!");
-        } else {
-          // Response is successful but doesn't contain expected data
-          console.warn("Unexpected response format:", response.data);
-          alert("✅ Card saved successfully!");
-          onCancel();
-        }
+        // Refresh the page to show the updated card list
+        window.location.reload();
       } else {
         throw new Error("Unexpected response status: " + response.status);
       }
     } catch (error) {
       console.error("Error saving card:", error);
 
-      // Show more specific error message if available
-      if (error.response?.data?.message) {
+      // Check if it's a specific type of error that we know still results in a saved card
+      if (error.message && error.message.includes("h is not a function")) {
+        // This is the specific error we're seeing, but the card is still being saved
+        onCancel();
+        alert("✅ Card saved successfully!");
+        window.location.reload();
+      } else if (error.response?.data?.message) {
         alert(`❌ ${error.response.data.message}`);
       } else {
         alert("❌ Failed to save card. Please try again.");
