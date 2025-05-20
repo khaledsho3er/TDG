@@ -2092,20 +2092,20 @@ textarea {
 }
 
 .content h2 {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 10px;
   font-family: Horizon;
   text-align: left;
 }
 
 .content h3 {
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 10px;
   font-family: Montserrat;
 }
 
 .content p {
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 10px;
   line-height: 1.6;
   font-family: Montserrat;

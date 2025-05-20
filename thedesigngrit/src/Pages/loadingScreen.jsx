@@ -65,7 +65,7 @@ const LoadingScreen = ({ onComplete }) => {
     };
 
     checkResources();
-  }, []);
+  }, [resourcesLoaded, videoLoaded]);
 
   // Handle video loaded event
   const handleVideoLoaded = () => {

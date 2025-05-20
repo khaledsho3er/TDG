@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import LoadingScreen from "../Pages/loadingScreen";
 
 class ErrorBoundaryClass extends React.Component {
@@ -71,8 +70,6 @@ class ErrorBoundaryClass extends React.Component {
 
 // Hook wrapper for class component
 const ErrorBoundary = ({ children }) => {
-  const navigate = useNavigate();
-
   return <ErrorBoundaryClass>{children}</ErrorBoundaryClass>;
 };
 

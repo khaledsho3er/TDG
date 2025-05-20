@@ -11,7 +11,6 @@ import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
 import { FavoritesProvider } from "./Components/favoriteOverlay";
 import ErrorBoundary from "./Components/ErrorBoundary";
-import { CircularProgress, Box } from "@mui/material";
 import NetworkDetector from "./Components/NetworkDetector";
 
 // Custom loading component with retry
