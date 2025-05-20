@@ -212,10 +212,7 @@ function Header() {
     };
 
     fetchFavoriteCount();
-  }, [userSession, favoriteUpdated]);
-  const handleFavoriteUpdate = () => {
-    setFavoriteUpdated(true);
-  };
+  }, [userSession, favoriteUpdated, favoriteCount]);
 
   const handleCartToggle = () => {
     setCartOpen((prev) => {
