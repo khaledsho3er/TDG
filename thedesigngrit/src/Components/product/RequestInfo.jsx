@@ -49,7 +49,7 @@ const RequestQuote = ({ onClose, productId }) => {
 
   // Handle confirmation
   const handleConfirm = async () => {
-    setIsLoading(true); // Start loading spinner
+    setIsLoading(true);
 
     try {
       // Determine the correct brandId to use
@@ -59,12 +59,15 @@ const RequestQuote = ({ onClose, productId }) => {
         ? productId.brandId._id
         : productId.brandId;
 
+      // Ensure we have a valid product ID
+      const productIdToUse = productId._id || productId;
+
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/quotation/create",
         {
-          userId: userSession.id, // Assuming userSession contains the logged-in user's data
+          userId: userSession.id,
           brandId: brandIdToUse,
-          productId: productId._id, // Assuming product contains the product ID
+          productId: productIdToUse,
           material: material,
           size: size,
           color: color,
@@ -73,13 +76,13 @@ const RequestQuote = ({ onClose, productId }) => {
       );
 
       console.log("Quotation sent successfully:", response.data);
-      setIsConfirmed(true); // Set confirmation state after success
-      setIsDialogOpen(false); // Open the confirmation dialog
+      setIsConfirmed(true);
+      setIsDialogOpen(false);
     } catch (error) {
       console.error("Error submitting quotation:", error);
       alert("There was an error submitting your quotation.");
     } finally {
-      setIsLoading(false); // Stop loading spinner
+      setIsLoading(false);
     }
   };
 

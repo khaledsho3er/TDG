@@ -5,7 +5,11 @@ import { LuPhone } from "react-icons/lu";
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 import { Box } from "@mui/material";
 
-export default function BrandCursol({ brandId, onRequestQuote }) {
+export default function BrandCursol({
+  brandId,
+  onRequestQuote,
+  mainProductId,
+}) {
   const [products, setProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,18 +48,27 @@ export default function BrandCursol({ brandId, onRequestQuote }) {
   };
 
   const handleRequestQuote = () => {
-    // If we have products, use the current product with brand data attached
-    if (products.length > 0 && products[currentIndex]) {
-      const currentProduct = products[currentIndex];
-      // Ensure the product has the brandId object attached
-      const productWithBrand = {
-        ...currentProduct,
-        brandId: currentProduct.brandId || brandId,
+    // Always use the main product ID from the product page
+    if (mainProductId) {
+      // Create a product object with the main product ID and brand data
+      const productData = {
+        _id: mainProductId,
+        brandId: brandId,
       };
-      onRequestQuote(productWithBrand);
+      onRequestQuote(productData);
     } else {
-      // If no products, just use the brandId
-      onRequestQuote(brandId);
+      // Fallback to using the carousel product if main product ID is not available
+      if (products.length > 0 && products[currentIndex]) {
+        const currentProduct = products[currentIndex];
+        const productWithBrand = {
+          ...currentProduct,
+          brandId: currentProduct.brandId || brandId,
+        };
+        onRequestQuote(productWithBrand);
+      } else {
+        // If no products, just use the brandId
+        onRequestQuote(brandId);
+      }
     }
   };
 

@@ -942,6 +942,7 @@ function ProductPage() {
               <BrandCursol
                 brandId={product.brandId}
                 onRequestQuote={handleRequestQuote}
+                mainProductId={product._id} // Pass the main product ID
               />
             </div>
           </div>
