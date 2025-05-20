@@ -5,13 +5,32 @@ const LoadingScreen = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [resourcesLoaded, setResourcesLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   // Check if critical resources are loaded
   useEffect(() => {
+    // Hide any default loading indicators
+    const hideDefaultSpinners = () => {
+      // Find and hide any MUI CircularProgress elements
+      const spinners = document.querySelectorAll(".MuiCircularProgress-root");
+      spinners.forEach((spinner) => {
+        spinner.style.display = "none";
+      });
+    };
+
+    // Run immediately
+    hideDefaultSpinners();
+
+    // Also run after a short delay to catch any that appear later
+    setTimeout(hideDefaultSpinners, 100);
+
     // Create a list of critical resources to check
     const criticalResources = [
       "/Assets/TDG_Logo_Black.webp",
       "/Assets/Video-hero/poster.avif",
+      "/Assets/TDGLoadingScreen.webm",
+      "/Assets/TDGLoadingScreen.mp4",
+      "/Assets/TDGLoadingScreen.jpg",
     ];
 
     // Check if resources are in cache or can be loaded
@@ -22,10 +41,18 @@ const LoadingScreen = ({ onComplete }) => {
           criticalResources.map(
             (url) =>
               new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = resolve;
-                img.onerror = reject;
-                img.src = url;
+                if (url.endsWith(".webm") || url.endsWith(".mp4")) {
+                  const video = document.createElement("video");
+                  video.onloadeddata = resolve;
+                  video.onerror = reject;
+                  video.src = url;
+                  video.load();
+                } else {
+                  const img = new Image();
+                  img.onload = resolve;
+                  img.onerror = reject;
+                  img.src = url;
+                }
               })
           )
         );
@@ -33,12 +60,17 @@ const LoadingScreen = ({ onComplete }) => {
       } catch (error) {
         console.error("Failed to load critical resources:", error);
         // Continue anyway after a timeout
-        setTimeout(() => setResourcesLoaded(true), 3000);
+        setTimeout(() => setResourcesLoaded(true), 2000);
       }
     };
 
     checkResources();
-  }, [resourcesLoaded]);
+  }, []);
+
+  // Handle video loaded event
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+  };
 
   useEffect(() => {
     // Detect mobile (including iOS Safari)
@@ -52,6 +84,7 @@ const LoadingScreen = ({ onComplete }) => {
       },
       isMobile ? 5000 : 10000
     ); // Faster timeout on mobile
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -63,6 +96,7 @@ const LoadingScreen = ({ onComplete }) => {
         return prev + 1;
       });
     }, 50); // Adjust speed here (lower = faster)
+
     return () => {
       clearTimeout(timer);
       clearInterval(interval);
@@ -71,10 +105,15 @@ const LoadingScreen = ({ onComplete }) => {
 
   return (
     isVisible && (
-      <div style={loadingScreenStyle}>
+      <div
+        style={{
+          ...loadingScreenStyle,
+          // Ensure this is on top of everything
+          zIndex: 10000,
+        }}
+      >
         {isMobile ? (
           // Mobile: Use JPEG (Safari-compatible) + WebP for others
-
           <div
             style={{
               position: "fixed",
@@ -141,27 +180,10 @@ const LoadingScreen = ({ onComplete }) => {
                   borderTopColor: "transparent",
                   borderRightColor: "transparent",
                   boxSizing: "border-box",
-                  transform: `rotate(${progress * 3.6}deg)`, // 360ssdeg / 100%
+                  transform: `rotate(${progress * 3.6}deg)`, // 360deg / 100%
                   transition: "transform 0.1s linear",
                 }}
               />
-
-              {/* Percentage Text (Optional) */}
-              {/* <div
-                style={{
-                  position: "relative",
-                  // position: "absolute",
-                  // top: "50%",
-                  // left: "50%",
-                  // transform: "translate(-50%, -50%)",
-                  color: "#6c7c59",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  marginTop: "25px",
-                }}
-              >
-                {progress}%
-              </div> */}
             </div>
           </div>
         ) : (
@@ -172,9 +194,10 @@ const LoadingScreen = ({ onComplete }) => {
             playsInline
             preload="auto"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            onLoadedData={handleVideoLoaded}
           >
-            <source src="/Assets/TDGLoadingScreen.mp4" type="video/mp4" />
             <source src="/Assets/TDGLoadingScreen.webm" type="video/webm" />
+            <source src="/Assets/TDGLoadingScreen.mp4" type="video/mp4" />
             <img src="/Assets/loading-static.jpg" alt="Loading" />{" "}
             {/* Fallback */}
           </video>

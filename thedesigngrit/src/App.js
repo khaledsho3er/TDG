@@ -17,50 +17,11 @@ import NetworkDetector from "./Components/NetworkDetector";
 // Custom loading component with retry
 const PageLoadingFallback = ({ error, retry }) => {
   if (error) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          textAlign: "center",
-          p: 3,
-        }}
-      >
-        <h2>Failed to load page</h2>
-        <p>{error.message}</p>
-        <button
-          onClick={retry}
-          style={{
-            padding: "10px 20px",
-            background: "#6b7b58",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            marginTop: "20px",
-          }}
-        >
-          Retry
-        </button>
-      </Box>
-    );
+    // Even for errors, use the LoadingScreen instead of showing error UI
+    return <LoadingScreen onComplete={() => window.location.reload()} />;
   }
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <CircularProgress color="primary" />
-    </Box>
-  );
+  return <LoadingScreen />;
 };
 
 // Enhanced lazy loading with retry - without using hooks
