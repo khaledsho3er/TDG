@@ -35,13 +35,6 @@ const AddressCard = styled(Card)(({ theme, isDefault }) => ({
   },
 }));
 
-const DefaultChip = styled(Chip)(({ theme }) => ({
-  backgroundColor: "#2d2d2d",
-  color: "white",
-  fontWeight: "bold",
-  marginRight: "auto", // Push to the left
-}));
-
 const ActionButton = styled(Button)(({ theme }) => ({
   marginLeft: theme.spacing(1),
   backgroundColor: "#2d2d2d",
@@ -347,13 +340,17 @@ const ShippingInfoPopup = () => {
                     {addr.isDefault === true && (
                       <span
                         style={{
-                          borderColor: "1px solid #2d2d2d",
+                          border: "1px solid #2d2d2d",
                           backgroundColor: "transparent",
                           color: "#2d2d2d",
                           borderRadius: "8px",
+                          padding: "5px 10px",
+                          fontSize: "10px",
+                          fontWeight: "bold",
+                          textTransform: "uppercase",
                         }}
                       >
-                        Default Address
+                        Default
                       </span>
                     )}
                     <Box sx={{ display: "flex", marginLeft: "auto" }}>
