@@ -366,6 +366,15 @@ const ShippingInfoPopup = () => {
                       <ActionButton
                         onClick={() => handleDeleteAddress(addr._id)}
                         size="small"
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2d2d2d",
+                          border: "1px solid #2d2d2d",
+                          "&:hover": {
+                            backgroundColor: "#2d2d2d",
+                            color: "white",
+                          },
+                        }}
                       >
                         Remove
                       </ActionButton>
