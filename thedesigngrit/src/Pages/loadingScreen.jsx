@@ -5,21 +5,6 @@ const LoadingScreen = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [resourcesLoaded, setResourcesLoaded] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-
-  const loadingScreenStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "#ffffff",
-    zIndex: 9999,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-  };
 
   // Check if critical resources are loaded
   useEffect(() => {
@@ -53,12 +38,11 @@ const LoadingScreen = ({ onComplete }) => {
     };
 
     checkResources();
-  }, []);
+  }, [resourcesLoaded]);
 
   useEffect(() => {
     // Detect mobile (including iOS Safari)
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     setIsMobile(window.innerWidth <= 768 || isIOS);
 
     const timer = setTimeout(

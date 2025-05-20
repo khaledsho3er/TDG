@@ -7,7 +7,6 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
