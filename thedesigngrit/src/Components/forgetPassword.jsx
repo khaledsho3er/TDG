@@ -144,7 +144,14 @@ const ForgotPasswordDialog = ({ open, onClose }) => {
           : "Error"}
       </DialogTitle>
 
-      <DialogContent sx={{ color: "#eee", marginBottom: "20px" }}>
+      <DialogContent
+        sx={{
+          color: "#eee",
+          marginBottom: "20px",
+          overflow: "visible",
+          paddingTop: "12px",
+        }}
+      >
         {error && <p style={{ color: "red", marginBottom: "30px" }}>{error}</p>}
 
         {success && (

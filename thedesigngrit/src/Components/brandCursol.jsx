@@ -76,13 +76,19 @@ export default function BrandCursol({
     <div className="carousel-container">
       {/* Contact Section */}
       <div className="carousel-contact-section">
-        <a
+        <button
           onClick={handleRequestQuote}
           className="contact-link"
-          style={{ cursor: "pointer" }}
+          style={{
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            padding: 0,
+          }}
         >
           <IoNewspaperOutline /> Request a quotation
-        </a>
+        </button>
+
         <hr className="carousel-divider" />
         <a href={`tel:${brandId.phoneNumber}`} className="contact-link">
           <LuPhone /> Call us at {brandId.phoneNumber}
