@@ -214,12 +214,12 @@ const ShippingInfoPopup = () => {
         updatedAddresses[selectedAddressIndex] = {
           ...updatedAddresses[selectedAddressIndex],
           ...newAddress,
-          isDefault: newAddress.isDefault ? "Default" : false,
+          isDefault: newAddress.isDefault ? true : false,
         };
       } else {
         updatedAddresses.push({
           ...newAddress,
-          isDefault: newAddress.isDefault ? "Default" : false,
+          isDefault: newAddress.isDefault ? true : false,
         });
       }
 
@@ -308,7 +308,7 @@ const ShippingInfoPopup = () => {
         <Grid container spacing={3}>
           {userData.shipmentAddress.map((addr, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <AddressCard isDefault={addr.isDefault === "Default"}>
+              <AddressCard isDefault={addr.isDefault === true}>
                 <CardContent>
                   <Typography
                     variant="h6"
