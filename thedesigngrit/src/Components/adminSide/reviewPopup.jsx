@@ -70,7 +70,7 @@ const ProductReviewDialog = ({
             <Typography variant="body1" color="text.secondary">
               {product.brandName}
             </Typography>
-            <Typography variant="body1">Price: {product.price}EGP</Typography>
+            <Typography variant="body1">Price: {product.price}E£</Typography>
             <Typography variant="body2" color="text.secondary">
               <span style={{ fontWeight: "bold" }}>Category:</span> Category:{" "}
               {product.category?.name}

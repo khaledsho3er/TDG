@@ -148,7 +148,7 @@ const CreatePromotionDialog = ({
                       {prod.name}
                     </Typography>
                     <Typography fontSize={12} color="gray">
-                      EGP {prod.price}
+                      E£ {prod.price}
                     </Typography>
                   </Box>
                 </Grid>

@@ -559,7 +559,7 @@ function Header() {
                       />
                     )}
 
-                    {/* Name & Category */}
+                    {/* Name & Category & Brand */}
                     <Box className="suggestion-text">
                       <Typography className="suggestion-name">
                         {suggestion.name}
@@ -569,6 +569,25 @@ function Header() {
                           {suggestion.category.name}
                         </Typography>
                       )}
+                      <Typography className="suggestion-info">
+                        {suggestion.brandId.brandName}
+                      </Typography>
+                      <Typography
+                        className="suggestion-info"
+                        style={{
+                          textDecoration: suggestion.salePrice
+                            ? "line-through"
+                            : undefined,
+                        }}
+                      >
+                        {suggestion.salePrice ? (
+                          <span style={{ color: "red" }}>
+                            E£{suggestion.salePrice}
+                          </span>
+                        ) : (
+                          `E£${suggestion.price}`
+                        )}
+                      </Typography>
                     </Box>
                   </Box>
                 ))}

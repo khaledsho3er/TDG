@@ -495,7 +495,10 @@ html {
   color: gray;
   font-size: 14px;
 }
-
+.suggestion-info {
+  color: gray;
+  font-size: 12px;
+}
 .icon-container {
   display: flex;
   justify-content: space-between;

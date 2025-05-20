@@ -3,14 +3,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlCalender } from "react-icons/sl";
 import { subDays, isWithinInterval, parseISO } from "date-fns";
 import AdminOrderDetails from "./orderDetailsAdmin";
-import {
-  Box,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Select, MenuItem, CircularProgress } from "@mui/material";
 
 const RecentPurchasesAdmin = () => {
   const [orders, setOrders] = useState([]);
@@ -277,7 +270,7 @@ const RecentPurchasesAdmin = () => {
                       {order.orderStatus}
                     </span>
                   </td>
-                  <td>{order.total} EGP</td>
+                  <td>{order.total} E£</td>
                 </tr>
               ))}
             </tbody>
