@@ -19,7 +19,7 @@ import {
   Divider,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { MdEdit, MdDelete, MdAdd, MdLocationOn } from "react-icons/md";
+import { MdLocationOn } from "react-icons/md";
 
 // Styled components
 const AddressCard = styled(Card)(({ theme, isDefault }) => ({
@@ -27,7 +27,7 @@ const AddressCard = styled(Card)(({ theme, isDefault }) => ({
   borderRadius: "12px",
   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
   position: "relative",
-  border: isDefault ? `2px solid ${theme.palette.success.main}` : "none",
+  border: isDefault ? `2px solid #2d2d2d` : "none",
   transition: "transform 0.2s ease-in-out",
   "&:hover": {
     transform: "translateY(-4px)",
@@ -39,28 +39,28 @@ const DefaultChip = styled(Chip)(({ theme }) => ({
   position: "absolute",
   top: "12px",
   right: "12px",
-  backgroundColor: "#6c7c59",
+  backgroundColor: "#2d2d2d",
   color: "white",
   fontWeight: "bold",
 }));
 
 const ActionButton = styled(Button)(({ theme, color }) => ({
   marginRight: theme.spacing(1),
-  backgroundColor: color === "delete" ? "#f44336" : "#6c7c59",
+  backgroundColor: "#2d2d2d",
   color: "white",
   "&:hover": {
-    backgroundColor: color === "delete" ? "#d32f2f" : "#556b2f",
+    backgroundColor: "#555555",
   },
 }));
 
 const AddButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
-  backgroundColor: "#6c7c59",
+  backgroundColor: "#2d2d2d",
   color: "white",
   padding: "10px 20px",
   borderRadius: "8px",
   "&:hover": {
-    backgroundColor: "#556b2f",
+    backgroundColor: "#555555",
   },
 }));
 
@@ -284,7 +284,7 @@ const ShippingInfoPopup = () => {
             minHeight: "200px",
           }}
         >
-          <MdLocationOn size={48} color="#6c7c59" />
+          <MdLocationOn size={48} color="#2d2d2d" />
           <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
             You don't have any saved addresses yet
           </Typography>
@@ -297,11 +297,10 @@ const ShippingInfoPopup = () => {
           </Typography>
           <Button
             variant="contained"
-            startIcon={<MdAdd />}
             onClick={handleAddNewAddress}
             sx={{
-              backgroundColor: "#6c7c59",
-              "&:hover": { backgroundColor: "#556b2f" },
+              backgroundColor: "#2d2d2d",
+              "&:hover": { backgroundColor: "#555555" },
             }}
           >
             Add Your First Address
@@ -351,17 +350,14 @@ const ShippingInfoPopup = () => {
 
                   <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                     <ActionButton
-                      startIcon={<MdEdit />}
                       onClick={() => handleEditAddress(index)}
                       size="small"
                     >
                       Edit
                     </ActionButton>
                     <ActionButton
-                      startIcon={<MdDelete />}
                       onClick={() => handleDeleteAddress(addr._id)}
                       size="small"
-                      color="delete"
                     >
                       Remove
                     </ActionButton>
@@ -374,9 +370,7 @@ const ShippingInfoPopup = () => {
       )}
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <AddButton startIcon={<MdAdd />} onClick={handleAddNewAddress}>
-          Add New Address
-        </AddButton>
+        <AddButton onClick={handleAddNewAddress}>Add New Address</AddButton>
       </Box>
 
       <Modal open={isEditing} onClose={handleCancel}>
@@ -514,11 +508,11 @@ const ShippingInfoPopup = () => {
               onClick={handleCancel}
               sx={{
                 width: "48%",
-                borderColor: "#6c7c59",
-                color: "#6c7c59",
+                borderColor: "#2d2d2d",
+                color: "#2d2d2d",
                 "&:hover": {
-                  borderColor: "#556b2f",
-                  backgroundColor: "rgba(108, 124, 89, 0.04)",
+                  borderColor: "#555555",
+                  backgroundColor: "rgba(45, 45, 45, 0.04)",
                 },
               }}
             >
@@ -529,8 +523,8 @@ const ShippingInfoPopup = () => {
               onClick={handleUpdate}
               sx={{
                 width: "48%",
-                backgroundColor: "#6c7c59",
-                "&:hover": { backgroundColor: "#556b2f" },
+                backgroundColor: "#2d2d2d",
+                "&:hover": { backgroundColor: "#555555" },
               }}
             >
               Save Address
