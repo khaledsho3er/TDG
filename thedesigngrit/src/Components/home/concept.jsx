@@ -120,7 +120,6 @@ const ExploreConcepts = () => {
                             display: "flex",
                             alignItems: "center",
                             gap: 1,
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                           }}
                         >
                           <img
