@@ -33,17 +33,8 @@ const OrderDetails = ({ order, onBack }) => {
   const [notePostedAt, setNotePostedAt] = useState(order?.notePostedAt || null);
   const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
   const [showButton, setShowButton] = useState(!!order?.note);
-  useEffect(() => {
-    if (order.note) {
-      setNote(order.note);
-      setNotePostedAt(order.notePostedAt || null);
-      setIsReadOnly(true);
-      setShowButton(false);
-    }
-  }, [order.note, order.notePostedAt]);
 
-  if (error) return <p>Error: {error}</p>; // Show error message if any
-
+  // Define brandId and filteredProducts before using them in useEffect
   const brandId =
     order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
 
@@ -60,6 +51,36 @@ const OrderDetails = ({ order, onBack }) => {
         : product.brandId === brandId;
     }
   });
+
+  useEffect(() => {
+    if (order.note) {
+      setNote(order.note);
+      setNotePostedAt(order.notePostedAt || null);
+      setIsReadOnly(true);
+      setShowButton(false);
+    }
+  }, [order.note, order.notePostedAt]);
+
+  // Debug logging effect - now brandId and filteredProducts are defined before this hook
+  useEffect(() => {
+    // Debug logging
+    console.log("Order:", order);
+    console.log("BrandId:", brandId);
+    console.log("Cart Items:", order.cartItems);
+
+    // Log the structure of brandId in each cart item
+    order.cartItems.forEach((item, index) => {
+      console.log(`Item ${index} brandId:`, item.brandId);
+      if (typeof item.brandId === "object" && item.brandId !== null) {
+        console.log(`Item ${index} brandId._id:`, item.brandId._id);
+      }
+    });
+
+    console.log("Filtered Products:", filteredProducts);
+  }, [order, brandId, filteredProducts]);
+
+  if (error) return <p>Error: {error}</p>; // Show error message if any
+
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
@@ -188,22 +209,7 @@ const OrderDetails = ({ order, onBack }) => {
       console.error("Error posting note:", error);
     }
   };
-  useEffect(() => {
-    // Debug logging
-    console.log("Order:", order);
-    console.log("BrandId:", brandId);
-    console.log("Cart Items:", order.cartItems);
 
-    // Log the structure of brandId in each cart item
-    order.cartItems.forEach((item, index) => {
-      console.log(`Item ${index} brandId:`, item.brandId);
-      if (typeof item.brandId === "object" && item.brandId !== null) {
-        console.log(`Item ${index} brandId._id:`, item.brandId._id);
-      }
-    });
-
-    console.log("Filtered Products:", filteredProducts);
-  }, [order, brandId, filteredProducts]);
   return (
     <div>
       <header className="dashboard-header-vendor">
