@@ -5983,6 +5983,7 @@ input:focus {
   border-bottom: 1px solid #ccc;
   background-color: #fff;
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 
 .ordersummary-cart-item:last-child {
@@ -5992,6 +5993,7 @@ input:focus {
 
 /* Custom scrollbar for the cart items */
 .ordersummary-cart-items::-webkit-scrollbar {
+  background-color: #6c7b58;
   width: 8px;
 }
 

@@ -26,6 +26,7 @@ function BillSummary({ cartItems }) {
             marginBottom: "16px",
             padding: "0 5px",
             "&::-webkit-scrollbar": {
+              background: "#6c7b58",
               width: "8px",
             },
             "&::-webkit-scrollbar-track": {
