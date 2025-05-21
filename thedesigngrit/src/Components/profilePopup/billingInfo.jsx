@@ -17,23 +17,25 @@ const BillingInfo = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const userId = userSession.id;
 
-  useEffect(() => {
-    const fetchCards = () => {
-      fetch(`https://api.thedesigngrit.com/api/cards/user/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setSavedCards(
-            data.map((card) => ({
-              id: card._id,
-              cardNumber: card.cardNumber,
-              type: card.cardType,
-              isDefault: card.default,
-            }))
-          );
-        })
-        .catch((error) => console.error("Error fetching cards:", error));
-    };
+  // Function to fetch cards from API
+  const fetchCards = () => {
+    fetch(`https://api.thedesigngrit.com/api/cards/user/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setSavedCards(
+          data.map((card) => ({
+            id: card._id,
+            cardNumber: card.cardNumber,
+            type: card.cardType,
+            isDefault: card.default,
+          }))
+        );
+      })
+      .catch((error) => console.error("Error fetching cards:", error));
+  };
 
+  // Fetch saved cards from the API
+  useEffect(() => {
     fetchCards();
   }, [userId]);
 
