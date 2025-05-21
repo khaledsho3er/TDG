@@ -5998,17 +5998,17 @@ input:focus {
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-track {
-  background: #fff;
+  background: #2d2d2d;
   border-radius: 10px;
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-thumb {
-  background: #fff;
+  background: #2d2d2d;
   border-radius: 10px;
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-thumb:hover {
-  background: #fff;
+  background: #2d2d2d;
 }
 
 .ordersummary-cart-item-image {

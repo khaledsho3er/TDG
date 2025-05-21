@@ -30,15 +30,15 @@ function BillSummary({ cartItems }) {
               width: "8px",
             },
             "&::-webkit-scrollbar-track": {
-              background: "#fff",
+              background: "#2d2d2d",
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb": {
-              background: "#fff",
+              background: "#2d2d2d",
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: "#fff",
+              background: "#2d2d2d",
             },
           }}
         >
