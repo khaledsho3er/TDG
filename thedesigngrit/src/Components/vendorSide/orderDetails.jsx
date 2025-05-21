@@ -48,13 +48,18 @@ const OrderDetails = ({ order, onBack }) => {
     order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
 
   // Filter products based on brandId
-  const filteredProducts = order.cartItems.filter(
-    (product) => product.brandId === brandId
-  );
-  // const handleDialogOpen = () => {
-  //   setOpenDialog(true);
-  // };
-
+  const filteredProducts = order.cartItems.filter((product) => {
+    // Handle both string IDs and object IDs
+    if (typeof product.brandId === "object" && product.brandId !== null) {
+      return typeof brandId === "object"
+        ? product.brandId._id === brandId._id
+        : product.brandId._id === brandId;
+    } else {
+      return typeof brandId === "object"
+        ? product.brandId === brandId._id
+        : product.brandId === brandId;
+    }
+  });
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
@@ -74,7 +79,6 @@ const OrderDetails = ({ order, onBack }) => {
   };
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // const handleProductChange = (event) => setSelectedProduct(event.target.value);
   const handleSubDateChange = (event) => setSubDeliveryDate(event.target.value);
 
   const handleSaveSubDeliveryDate = async () => {
@@ -85,9 +89,6 @@ const OrderDetails = ({ order, onBack }) => {
 
     const parentOrderId = order._id; // Main order ID
     const cartItemId = selectedProduct._id; // Selected cartItem ID
-    console.log("Parent order ID:", parentOrderId);
-    console.log("Selected product:", selectedProduct);
-    console.log("Sub-delivery date:", subDeliveryDate);
     try {
       const response = await fetch(
         `https://api.thedesigngrit.com/api/orders/orders/${parentOrderId}/cart-items/${cartItemId}/delivery-date`,
@@ -187,6 +188,22 @@ const OrderDetails = ({ order, onBack }) => {
       console.error("Error posting note:", error);
     }
   };
+  useEffect(() => {
+    // Debug logging
+    console.log("Order:", order);
+    console.log("BrandId:", brandId);
+    console.log("Cart Items:", order.cartItems);
+
+    // Log the structure of brandId in each cart item
+    order.cartItems.forEach((item, index) => {
+      console.log(`Item ${index} brandId:`, item.brandId);
+      if (typeof item.brandId === "object" && item.brandId !== null) {
+        console.log(`Item ${index} brandId._id:`, item.brandId._id);
+      }
+    });
+
+    console.log("Filtered Products:", filteredProducts);
+  }, [order, brandId, filteredProducts]);
   return (
     <div>
       <header className="dashboard-header-vendor">
@@ -312,7 +329,7 @@ const OrderDetails = ({ order, onBack }) => {
               <IoMdPrint style={{ color: "#fff", fontSize: "20px" }} />
             </InvoiceDownload>
 
-            {order.cartItems.every(
+            {filteredProducts.every(
               (item) => item.subOrderStatus === "Confirmed"
             ) && (
               <button className="submit-btn" onClick={handleFileDialogOpen}>
@@ -705,40 +722,48 @@ const OrderDetails = ({ order, onBack }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product, index) => (
-              <tr key={index}>
-                <td>{product.name}</td>
-                <td>{product._id}</td>
-                <td>{product.quantity} Item</td>
-                <td>
-                  <span
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 12px",
-                      borderRadius: "5px",
-                      backgroundColor:
-                        product.subOrderStatus === "Pending"
-                          ? "#f8d7da"
-                          : product.subOrderStatus === "Delivered"
-                          ? "#d4edda"
-                          : "#FFE5B4",
-                      color:
-                        product.subOrderStatus === "Pending"
-                          ? "#721c24"
-                          : product.subOrderStatus === "Delivered"
-                          ? "#155724"
-                          : "#FF7518",
-                      fontWeight: "500",
-                      textAlign: "center",
-                      minWidth: "80px",
-                    }}
-                  >
-                    {product.subOrderStatus}
-                  </span>
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product, index) => (
+                <tr key={index}>
+                  <td>{product.name}</td>
+                  <td>{product._id}</td>
+                  <td>{product.quantity} Item</td>
+                  <td>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: "5px",
+                        backgroundColor:
+                          product.subOrderStatus === "Pending"
+                            ? "#f8d7da"
+                            : product.subOrderStatus === "Delivered"
+                            ? "#d4edda"
+                            : "#FFE5B4",
+                        color:
+                          product.subOrderStatus === "Pending"
+                            ? "#721c24"
+                            : product.subOrderStatus === "Delivered"
+                            ? "#155724"
+                            : "#FF7518",
+                        fontWeight: "500",
+                        textAlign: "center",
+                        minWidth: "80px",
+                      }}
+                    >
+                      {product.subOrderStatus}
+                    </span>
+                  </td>
+                  <td>{product.totalPrice} LE</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No products found for this brand.
                 </td>
-                <td>{product.totalPrice} LE</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
 
