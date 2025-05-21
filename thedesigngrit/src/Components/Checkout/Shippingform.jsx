@@ -4,6 +4,7 @@ import React, {
   useContext,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
@@ -54,15 +55,125 @@ const validationSchema = Yup.object().shape({
   zipCode: Yup.string().required("Zip code is required"),
 });
 
-const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
-  const [selectedOption, setSelectedOption] = useState("new");
-  const { userSession } = useContext(UserContext);
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({}); // Track which fields have been touched
+const ShippingForm = forwardRef(
+  ({ shippingData, onChange, attemptedSubmit }, ref) => {
+    const [selectedOption, setSelectedOption] = useState("new");
+    const { userSession } = useContext(UserContext);
+    const [errors, setErrors] = useState({});
+    const [touched, setTouched] = useState({});
 
-  // Expose the validateForm method to parent components
-  useImperativeHandle(ref, () => ({
-    validateForm: async () => {
+    // Update touched state when attemptedSubmit changes
+    useEffect(() => {
+      if (attemptedSubmit) {
+        // Mark all fields as touched when form submission is attempted
+        const allTouched = Object.keys(shippingData).reduce((acc, field) => {
+          acc[field] = true;
+          return acc;
+        }, {});
+        setTouched(allTouched);
+
+        // Validate all fields
+        validateForm();
+      }
+    }, [attemptedSubmit]);
+
+    // Expose the validateForm method to parent components
+    useImperativeHandle(ref, () => ({
+      validateForm: async () => {
+        try {
+          await validationSchema.validate(shippingData, { abortEarly: false });
+          setErrors({});
+          return true;
+        } catch (validationErrors) {
+          const formattedErrors = {};
+          validationErrors.inner.forEach((error) => {
+            formattedErrors[error.path] = error.message;
+          });
+          setErrors(formattedErrors);
+          return false;
+        }
+      },
+    }));
+
+    const handleCheckboxChange = (option) => {
+      console.log("Checkbox clicked:", option);
+      console.log("User data:", userSession);
+
+      setSelectedOption(option);
+
+      if (option === "existing") {
+        console.log("Shipment Addresses:", userSession?.shipmentAddress);
+
+        if (userSession?.shipmentAddress?.length > 0) {
+          let defaultAddress = userSession.shipmentAddress.find(
+            (addr) => addr.isDefault
+          );
+          console.log("Default Address Found:", defaultAddress);
+
+          if (!defaultAddress) {
+            defaultAddress = userSession.shipmentAddress[0];
+            console.log("No default, using first address:", defaultAddress);
+          }
+
+          if (defaultAddress) {
+            const newData = {
+              firstName: userSession.firstName || "",
+              lastName: userSession.lastName || "",
+              address: defaultAddress.address1 || "",
+              label: "Home", // Optional
+              apartment: defaultAddress.address2 || "",
+              floor: "1", // Optional
+              country: defaultAddress.country || "",
+              city: defaultAddress.city || "",
+              zipCode: defaultAddress.postalCode || "",
+            };
+
+            onChange(newData);
+
+            // Clear errors and touched state when using existing address
+            setErrors({});
+            setTouched({});
+          }
+        } else {
+          console.log("No shipment addresses found!");
+        }
+      }
+
+      if (option === "new") {
+        console.log("Switching to empty new address.");
+        const emptyData = {
+          firstName: "",
+          lastName: "",
+          address: "",
+          label: "",
+          apartment: "",
+          floor: "",
+          country: "",
+          city: "",
+          zipCode: "",
+        };
+
+        onChange(emptyData);
+
+        // Clear errors and touched state when switching to new address
+        setErrors({});
+        setTouched({});
+      }
+    };
+
+    const validateField = (name, value) => {
+      try {
+        // Validate just this field
+        Yup.reach(validationSchema, name).validateSync(value);
+        // Clear the error if validation passes
+        setErrors((prev) => ({ ...prev, [name]: undefined }));
+      } catch (error) {
+        // Set the error message if validation fails
+        setErrors((prev) => ({ ...prev, [name]: error.message }));
+      }
+    };
+
+    const validateForm = async () => {
       try {
         await validationSchema.validate(shippingData, { abortEarly: false });
         setErrors({});
@@ -73,369 +184,287 @@ const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
           formattedErrors[error.path] = error.message;
         });
         setErrors(formattedErrors);
-
-        // Mark all fields as touched to show errors after form submission attempt
-        const allTouched = Object.keys(shippingData).reduce((acc, field) => {
-          acc[field] = true;
-          return acc;
-        }, {});
-        setTouched(allTouched);
-
         return false;
       }
-    },
-  }));
+    };
 
-  const handleCheckboxChange = (option) => {
-    console.log("Checkbox clicked:", option);
-    console.log("User data:", userSession);
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      const updatedData = { ...shippingData, [name]: value };
+      onChange(updatedData);
 
-    setSelectedOption(option);
-
-    if (option === "existing") {
-      console.log("Shipment Addresses:", userSession?.shipmentAddress);
-
-      if (userSession?.shipmentAddress?.length > 0) {
-        let defaultAddress = userSession.shipmentAddress.find(
-          (addr) => addr.isDefault
-        );
-        console.log("Default Address Found:", defaultAddress);
-
-        if (!defaultAddress) {
-          defaultAddress = userSession.shipmentAddress[0];
-          console.log("No default, using first address:", defaultAddress);
-        }
-
-        if (defaultAddress) {
-          const newData = {
-            firstName: userSession.firstName || "",
-            lastName: userSession.lastName || "",
-            address: defaultAddress.address1 || "",
-            label: "Home", // Optional
-            apartment: defaultAddress.address2 || "",
-            floor: "1", // Optional
-            country: defaultAddress.country || "",
-            city: defaultAddress.city || "",
-            zipCode: defaultAddress.postalCode || "",
-          };
-
-          onChange(newData);
-
-          // Clear errors and touched state when using existing address
-          setErrors({});
-          setTouched({});
-        }
-      } else {
-        console.log("No shipment addresses found!");
+      // Only validate if the field has been touched before
+      if (touched[name]) {
+        validateField(name, value);
       }
-    }
+    };
 
-    if (option === "new") {
-      console.log("Switching to empty new address.");
-      const emptyData = {
-        firstName: "",
-        lastName: "",
-        address: "",
-        label: "",
-        apartment: "",
-        floor: "",
-        country: "",
-        city: "",
-        zipCode: "",
-      };
+    const handleBlur = (e) => {
+      const { name } = e.target;
+      // Mark field as touched when it loses focus
+      setTouched({ ...touched, [name]: true });
+      // Validate the field when it loses focus
+      validateField(name, shippingData[name]);
+    };
 
-      onChange(emptyData);
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-      // Clear errors and touched state when switching to new address
-      setErrors({});
-      setTouched({});
-    }
-  };
+      // Mark all fields as touched
+      const allTouched = Object.keys(shippingData).reduce((acc, field) => {
+        acc[field] = true;
+        return acc;
+      }, {});
+      setTouched(allTouched);
 
-  const validateField = (name, value) => {
-    try {
-      // Validate just this field
-      Yup.reach(validationSchema, name).validateSync(value);
-      // Clear the error if validation passes
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    } catch (error) {
-      // Set the error message if validation fails
-      setErrors((prev) => ({ ...prev, [name]: error.message }));
-    }
-  };
+      // Validate the entire form
+      const isValid = await validateForm();
 
-  const validateForm = async () => {
-    try {
-      await validationSchema.validate(shippingData, { abortEarly: false });
-      setErrors({});
-      return true;
-    } catch (validationErrors) {
-      const formattedErrors = {};
-      validationErrors.inner.forEach((error) => {
-        formattedErrors[error.path] = error.message;
-      });
-      setErrors(formattedErrors);
-      return false;
-    }
-  };
+      if (isValid) {
+        console.log("Shipping Data:", shippingData);
+        onChange(shippingData);
+      } else {
+        console.log("Form validation failed:", errors);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const updatedData = { ...shippingData, [name]: value };
-    onChange(updatedData);
+    // Update the input field styling to only show red border when touched and has error
+    const getInputClassName = (fieldName) => {
+      return touched[fieldName] && errors[fieldName]
+        ? "input-field error"
+        : "input-field";
+    };
 
-    // Only validate if the field has been touched before
-    if (touched[name]) {
-      validateField(name, value);
-    }
-  };
+    return (
+      <Box className="Billinginfo_container">
+        <Box className="Billinginfo_checkbox">
+          <FormControlLabel
+            control={
+              <CircularCheckbox
+                checked={selectedOption === "existing"}
+                onChange={() => handleCheckboxChange("existing")}
+              />
+            }
+            label="Use the existing Shipping Information"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "16px",
+              paddingLeft: "20px",
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat, san-sarif",
+                fontSize: "13px",
+                color: "#333",
+              },
+            }}
+          />
+          <Box
+            style={{
+              width: "100%",
+              height: "1px",
+              backgroundColor: "#ccc",
+              margin: "8px 0",
+            }}
+          />
+          <FormControlLabel
+            control={
+              <CircularCheckbox
+                checked={selectedOption === "new"}
+                onChange={() => handleCheckboxChange("new")}
+              />
+            }
+            label="Enter a new Shipping Information"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              columnGap: "16px",
+              paddingLeft: "20px",
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Montserrat, san-sarif",
+                fontSize: "13px",
+                color: "#333",
+              },
+            }}
+          />
+        </Box>
 
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    // Mark field as touched when it loses focus
-    setTouched({ ...touched, [name]: true });
-    // Validate the field when it loses focus
-    validateField(name, shippingData[name]);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Mark all fields as touched
-    const allTouched = Object.keys(shippingData).reduce((acc, field) => {
-      acc[field] = true;
-      return acc;
-    }, {});
-    setTouched(allTouched);
-
-    // Validate the entire form
-    const isValid = await validateForm();
-
-    if (isValid) {
-      console.log("Shipping Data:", shippingData);
-      onChange(shippingData);
-    } else {
-      console.log("Form validation failed:", errors);
-    }
-  };
-
-  return (
-    <Box className="Billinginfo_container">
-      <Box className="Billinginfo_checkbox">
-        <FormControlLabel
-          control={
-            <CircularCheckbox
-              checked={selectedOption === "existing"}
-              onChange={() => handleCheckboxChange("existing")}
-            />
-          }
-          label="Use the existing Shipping Information"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: "16px",
-            paddingLeft: "20px",
-            "& .MuiFormControlLabel-label": {
-              fontFamily: "Montserrat, san-sarif",
-              fontSize: "13px",
-              color: "#333",
-            },
-          }}
-        />
-        <Box
-          style={{
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#ccc",
-            margin: "8px 0",
-          }}
-        />
-        <FormControlLabel
-          control={
-            <CircularCheckbox
-              checked={selectedOption === "new"}
-              onChange={() => handleCheckboxChange("new")}
-            />
-          }
-          label="Enter a new Shipping Information"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: "16px",
-            paddingLeft: "20px",
-            "& .MuiFormControlLabel-label": {
-              fontFamily: "Montserrat, san-sarif",
-              fontSize: "13px",
-              color: "#333",
-            },
-          }}
-        />
-      </Box>
-
-      <Box className="shipping-form-container">
-        <Box className="shipping-form">
-          <form onSubmit={handleSubmit} className="shippingform-form-container">
-            {/* Row 1 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  placeholder="First Name"
-                  value={shippingData.firstName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.firstName && errors.firstName && (
-                  <div className="error-message">{errors.firstName}</div>
-                )}
+        <Box className="shipping-form-container">
+          <Box className="shipping-form">
+            <form
+              onSubmit={handleSubmit}
+              className="shippingform-form-container"
+            >
+              {/* Row 1 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First Name"
+                    value={shippingData.firstName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("firstName")}
+                  />
+                  {touched.firstName && errors.firstName && (
+                    <div className="error-message">{errors.firstName}</div>
+                  )}
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={shippingData.lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("lastName")}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <div className="error-message">{errors.lastName}</div>
+                  )}
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  placeholder="Last Name"
-                  value={shippingData.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.lastName && errors.lastName && (
-                  <div className="error-message">{errors.lastName}</div>
-                )}
-              </div>
-            </div>
 
-            {/* Row 2 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  placeholder="Address"
-                  value={shippingData.address}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.address && errors.address && (
-                  <div className="error-message">{errors.address}</div>
-                )}
+              {/* Row 2 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Address"
+                    value={shippingData.address}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("address")}
+                  />
+                  {touched.address && errors.address && (
+                    <div className="error-message">{errors.address}</div>
+                  )}
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="label"
+                    name="label"
+                    placeholder="Label"
+                    value={shippingData.label}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("label")}
+                  />
+                  {touched.label && errors.label && (
+                    <div className="error-message">{errors.label}</div>
+                  )}
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="label"
-                  name="label"
-                  placeholder="Label"
-                  value={shippingData.label}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.label && errors.label && (
-                  <div className="error-message">{errors.label}</div>
-                )}
-              </div>
-            </div>
 
-            {/* Row 3 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="apartment"
-                  name="apartment"
-                  placeholder="Apartment"
-                  value={shippingData.apartment}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.apartment && errors.apartment && (
-                  <div className="error-message">{errors.apartment}</div>
-                )}
+              {/* Row 3 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="apartment"
+                    name="apartment"
+                    placeholder="Apartment"
+                    value={shippingData.apartment}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("apartment")}
+                  />
+                  {touched.apartment && errors.apartment && (
+                    <div className="error-message">{errors.apartment}</div>
+                  )}
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="floor"
+                    name="floor"
+                    placeholder="Floor"
+                    value={shippingData.floor}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("floor")}
+                  />
+                  {touched.floor && errors.floor && (
+                    <div className="error-message">{errors.floor}</div>
+                  )}
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="floor"
-                  name="floor"
-                  placeholder="Floor"
-                  value={shippingData.floor}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.floor && errors.floor && (
-                  <div className="error-message">{errors.floor}</div>
-                )}
-              </div>
-            </div>
 
-            {/* Row 4 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="country"
-                  name="country"
-                  placeholder="Country"
-                  value={shippingData.country}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.country && errors.country && (
-                  <div className="error-message">{errors.country}</div>
-                )}
+              {/* Row 4 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="country"
+                    name="country"
+                    placeholder="Country"
+                    value={shippingData.country}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("country")}
+                  />
+                  {touched.country && errors.country && (
+                    <div className="error-message">{errors.country}</div>
+                  )}
+                </div>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder="City"
+                    value={shippingData.city}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("city")}
+                  />
+                  {touched.city && errors.city && (
+                    <div className="error-message">{errors.city}</div>
+                  )}
+                </div>
               </div>
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  placeholder="City"
-                  value={shippingData.city}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.city && errors.city && (
-                  <div className="error-message">{errors.city}</div>
-                )}
-              </div>
-            </div>
 
-            {/* Row 5 */}
-            <div className="shippingform-form-row">
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  placeholder="Zip Code"
-                  value={shippingData.zipCode}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-                {touched.zipCode && errors.zipCode && (
-                  <div className="error-message">{errors.zipCode}</div>
-                )}
+              {/* Row 5 */}
+              <div className="shippingform-form-row">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="zipCode"
+                    name="zipCode"
+                    placeholder="Zip Code"
+                    value={shippingData.zipCode}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    className={getInputClassName("zipCode")}
+                  />
+                  {touched.zipCode && errors.zipCode && (
+                    <div className="error-message">{errors.zipCode}</div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <button type="submit" style={{ display: "none" }}></button>
-          </form>
+              <button type="submit" style={{ display: "none" }}></button>
+            </form>
+          </Box>
         </Box>
       </Box>
-    </Box>
-  );
-});
+    );
+  }
+);
 
 export default ShippingForm;
