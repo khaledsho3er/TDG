@@ -336,44 +336,21 @@ const ShippingInfoPopup = () => {
                   <Divider sx={{ mb: 2 }} />
 
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                    {addr.isDefault === true ? (
+                    {addr.isDefault === true && (
                       <span
                         style={{
-                          backgroundColor: "#2d2d2d",
-                          color: "white",
+                          border: "1px solid #2d2d2d",
+                          backgroundColor: "transparent",
+                          color: "#2d2d2d",
                           borderRadius: "4px",
                           padding: "5px 10px",
-                          fontSize: "12px",
+                          fontSize: "15px",
                           fontWeight: "bold",
                           textTransform: "uppercase",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                         }}
                       >
-                        <span style={{ marginRight: "4px" }}>✓</span> Default
+                        Default
                       </span>
-                    ) : (
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                          setSelectedAddressId(addr._id);
-                          setNewAddress({ ...addr, isDefault: true });
-                          setDialogOpen(true);
-                        }}
-                        sx={{
-                          borderColor: "#2d2d2d",
-                          color: "#2d2d2d",
-                          fontSize: "12px",
-                          "&:hover": {
-                            backgroundColor: "#f0f0f0",
-                            borderColor: "#2d2d2d",
-                          },
-                        }}
-                      >
-                        Set as Default
-                      </Button>
                     )}
                     <Box sx={{ display: "flex", marginLeft: "auto" }}>
                       <ActionButton
