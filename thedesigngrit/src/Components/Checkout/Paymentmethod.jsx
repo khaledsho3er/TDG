@@ -30,18 +30,18 @@ function PaymentForm({
   });
   const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
 
-  // Add CSS for error styling
-  const errorStyle = {
-    border: "1px solid red",
-    backgroundColor: "rgba(255, 0, 0, 0.05)",
-  };
+  // // Add CSS for error styling
+  // const errorStyle = {
+  //   border: "1px solid red",
+  //   backgroundColor: "rgba(255, 0, 0, 0.05)",
+  // };
 
-  const errorMessageStyle = {
-    color: "red",
-    fontSize: "12px",
-    marginTop: "4px",
-    textAlign: "left",
-  };
+  // const errorMessageStyle = {
+  //   color: "red",
+  //   fontSize: "12px",
+  //   marginTop: "4px",
+  //   textAlign: "left",
+  // };
 
   const handleCardDetailsChange = (e) => {
     const { name, value } = e.target;

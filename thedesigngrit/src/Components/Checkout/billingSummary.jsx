@@ -1,6 +1,6 @@
 // BillSummary.js
 import React from "react";
-import { Box, Typography, Divider, Avatar } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import PaymentIcons from "../paymentsIcons";
 
 function BillSummary({ cartItems }) {
@@ -17,12 +17,34 @@ function BillSummary({ cartItems }) {
       <Box className="ordersummary-total">
         <h1 className="ordersummary-cart-title">Your Cart</h1>
 
-        {/* Cart Items List */}
-        <Box className="ordersummary-cart-items">
+        {/* Cart Items List - Scrollable */}
+        <Box
+          className="ordersummary-cart-items"
+          sx={{
+            maxHeight: "250px",
+            overflowY: "auto",
+            marginBottom: "16px",
+            padding: "0 5px",
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "#f0f0f0",
+              borderRadius: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#6b7b58",
+              borderRadius: "10px",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              background: "#4e5b44",
+            },
+          }}
+        >
           {cartItems.map((item, index) => (
             <Box key={index} className="ordersummary-cart-item">
               {/* Product Image */}
-              <Avatar
+              <img
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`}
                 alt={item.name}
                 className="ordersummary-cart-item-image"
@@ -77,7 +99,7 @@ function BillSummary({ cartItems }) {
           ))}
         </Box>
 
-        <Divider style={{ margin: "16px 0" }} />
+        <Divider style={{ margin: "16px 0", color: "#ccc" }} />
 
         {/* Summary Totals */}
         <div className="ordersummary-cart-summary-row">
