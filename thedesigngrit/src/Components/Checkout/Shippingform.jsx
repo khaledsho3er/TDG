@@ -133,7 +133,7 @@ function ShippingForm({
               onChange={() => handleCheckboxChange("existing")}
             />
           }
-          label="Use the existing Shipping Information"
+          label="Use the Default Shipping Information"
           sx={{
             display: "flex",
             alignItems: "center",

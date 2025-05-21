@@ -193,7 +193,7 @@ const ProductCard = ({ product }) => {
             marginTop: "4px",
           }}
         >
-          {product.description.split(" ").slice(0, 10).join(" ")}
+          {product.brandId.brandName}
         </Typography>
 
         <Typography

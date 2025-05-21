@@ -232,6 +232,18 @@ function Checkout() {
   const steps = [
     {
       id: 1,
+      label: "Shipping Information",
+      content: (
+        <ShippingForm
+          shippingData={shippingData}
+          onChange={handleShippingChange}
+          errors={shippingErrors}
+          validateOnChange={true}
+        />
+      ),
+    },
+    {
+      id: 2,
       label: "Billing Information",
       content: (
         <BillingForm
@@ -243,18 +255,7 @@ function Checkout() {
         />
       ),
     },
-    {
-      id: 2,
-      label: "Shipping Information",
-      content: (
-        <ShippingForm
-          shippingData={shippingData}
-          onChange={handleShippingChange}
-          errors={shippingErrors}
-          validateOnChange={true}
-        />
-      ),
-    },
+
     {
       id: 3,
       label: "Order Summary",
@@ -292,8 +293,8 @@ function Checkout() {
           {currentStep < steps.length && (
             <button
               onClick={() => {
-                if (currentStep === 1 && !validateBillingData()) return;
-                if (currentStep === 2 && !validateShippingData()) return;
+                if (currentStep === 1 && !validateShippingData()) return;
+                if (currentStep === 2 && !validateBillingData()) return;
                 if (
                   currentStep === 3 &&
                   validateCheckboxRef.current &&

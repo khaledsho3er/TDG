@@ -1,11 +1,12 @@
 // BillSummary.js
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography, Divider, Avatar } from "@mui/material";
 import PaymentIcons from "../paymentsIcons";
+
 function BillSummary({ cartItems }) {
   // Calculate subtotal, shipping, and total
   const subtotal = cartItems.reduce(
-    (total, item) => total + item.unitPrice * item.quantity,
+    (total, item) => total + (item.salePrice || item.unitPrice) * item.quantity,
     0
   );
   const shipping = 100; // Example fixed shipping cost
@@ -15,6 +16,70 @@ function BillSummary({ cartItems }) {
     <Box className="Ordersummary-firstrow-secondcolumn">
       <Box className="ordersummary-total">
         <h1 className="ordersummary-cart-title">Your Cart</h1>
+
+        {/* Cart Items List */}
+        <Box className="ordersummary-cart-items">
+          {cartItems.map((item, index) => (
+            <Box key={index} className="ordersummary-cart-item">
+              {/* Product Image */}
+              <Avatar
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`}
+                alt={item.name}
+                className="ordersummary-cart-item-image"
+                variant="rounded"
+                sx={{
+                  width: 60,
+                  height: 60,
+                  marginRight: 2,
+                  border: "1px solid #eee",
+                }}
+              />
+
+              <Box className="ordersummary-cart-item-details">
+                <Typography
+                  variant="body1"
+                  className="ordersummary-cart-item-name"
+                >
+                  {item.name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  className="ordersummary-cart-item-quantity"
+                >
+                  Qty: {item.quantity}
+                </Typography>
+              </Box>
+
+              <Box className="ordersummary-cart-item-price">
+                {item.salePrice ? (
+                  <>
+                    <Typography
+                      variant="body2"
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                        marginRight: "8px",
+                      }}
+                    >
+                      {item.unitPrice.toLocaleString()} LE
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "red" }}>
+                      {item.salePrice.toLocaleString()} LE
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography variant="body1">
+                    {item.unitPrice.toLocaleString()} LE
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+          ))}
+        </Box>
+
+        <Divider style={{ margin: "16px 0" }} />
+
+        {/* Summary Totals */}
         <div className="ordersummary-cart-summary-row">
           <span>Subtotal:</span>
           <span>{subtotal.toLocaleString()} LE</span>
