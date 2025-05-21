@@ -23,10 +23,10 @@ export const CartProvider = ({ children }) => {
     console.log("Adding product to cart:", product); // Debug log
     console.log("Current unit Price:", product.unitPrice); // Debug log
     setCartItems((prev) => {
-      // Create a unique identifier based on product ID and variant ID (if present)
-      const itemId = product.variantId
-        ? `${product.id}-${product.variantId}`
-        : product.id;
+      // // Create a unique identifier based on product ID and variant ID (if present)
+      // const itemId = product.variantId
+      //   ? `${product.id}-${product.variantId}`
+      //   : product.id;
 
       // Check if this exact product/variant combination exists in cart
       const existingProduct = prev.find((item) =>
@@ -57,6 +57,7 @@ export const CartProvider = ({ children }) => {
             unitPrice:
               product.unitPrice || product.salePrice || product.price || 0,
             shippingFee: product.brandId.fees || 0,
+            mainImage: product.mainImage || product.images[0] || "",
             // Add variant information if present
             variantId: product.variantId || null,
             productId: product.productId || product._id, // Use productId from variant if available

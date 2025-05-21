@@ -174,7 +174,10 @@ function BillingForm({
       <Box className="billinginfo-form-container">
         <Box className="Billinginfo-form">
           <form onSubmit={handleSubmit} className="form-container">
-            <div className="form-row">
+            <div
+              className="form-row"
+              style={{ marginBottom: "0rem", gap: "1rem" }}
+            >
               <div className="input-group">
                 <input
                   type="text"
@@ -259,7 +262,7 @@ function BillingForm({
                   fontSize: "14px",
                   width: "100%",
                 }}
-                containerStyle={{ marginBottom: "1rem", width: "100%" }}
+                containerStyle={{ marginBottom: "0rem", width: "100%" }}
                 buttonStyle={{
                   border: "none",
                 }}
@@ -269,7 +272,10 @@ function BillingForm({
               )}
             </div>
 
-            <div className="form-row">
+            <div
+              className="form-row"
+              style={{ marginBottom: "0rem", gap: "1rem" }}
+            >
               <div className="input-group">
                 <input
                   type="text"

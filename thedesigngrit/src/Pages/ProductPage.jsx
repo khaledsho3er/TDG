@@ -247,7 +247,7 @@ function ProductPage() {
         name: selectedVariant.title || product.name,
         unitPrice: selectedVariant.salePrice || selectedVariant.price || 0,
         quantity: 1,
-        image: selectedVariant.images?.[0] || product.mainImage,
+        mainImage: selectedVariant.images?.[0] || product.mainImage,
         brandId: product.brandId,
         color: selectedColor || "default",
         size: selectedSize || "default",
