@@ -5970,7 +5970,7 @@ input:focus {
 }
 /* Cart items in order summary */
 .ordersummary-cart-items {
-  max-height: 250px;
+  max-height: 140px;
   overflow-y: auto;
   margin-bottom: 16px;
   border-radius: 8px;
@@ -5980,9 +5980,8 @@ input:focus {
   display: flex;
   align-items: center;
   padding: 12px 8px;
-  border-bottom: 1px solid #eee;
-  background-color: white;
-  margin-bottom: 4px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
 }
 
 .ordersummary-cart-item:last-child {
@@ -6013,7 +6012,9 @@ input:focus {
   width: 100px;
   margin: 6px;
   flex-shrink: 0;
-  background-color: #f9f9f9;
+  margin-right: 10px;
+  border-radius: 4px;
+  background-color: transparent;
   object-fit: contain !important;
 }
 

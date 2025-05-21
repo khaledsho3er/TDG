@@ -29,7 +29,7 @@ function SummaryForm({ billData, onValidate }) {
             </Box>
             <Box
               className="product-content"
-              style={{ overflowY: "auto", maxHeight: "130px" }}
+              style={{ overflowY: "auto", maxHeight: "140px" }}
             >
               {cartItems.map((product) => (
                 <Box className="product-row" key={product.id}>
