@@ -58,7 +58,7 @@ const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
+  const [touched, setTouched] = useState({}); // Track which fields have been touched
 
   // Expose the validateForm method to parent components
   useImperativeHandle(ref, () => ({
@@ -74,7 +74,7 @@ const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
         });
         setErrors(formattedErrors);
 
-        // Mark all fields as touched to show errors
+        // Mark all fields as touched to show errors after form submission attempt
         const allTouched = Object.keys(shippingData).reduce((acc, field) => {
           acc[field] = true;
           return acc;
@@ -184,16 +184,17 @@ const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
     const updatedData = { ...shippingData, [name]: value };
     onChange(updatedData);
 
-    // Mark field as touched
-    setTouched({ ...touched, [name]: true });
-
-    // Validate the field if it's been touched
-    validateField(name, value);
+    // Only validate if the field has been touched before
+    if (touched[name]) {
+      validateField(name, value);
+    }
   };
 
   const handleBlur = (e) => {
     const { name } = e.target;
+    // Mark field as touched when it loses focus
     setTouched({ ...touched, [name]: true });
+    // Validate the field when it loses focus
     validateField(name, shippingData[name]);
   };
 
