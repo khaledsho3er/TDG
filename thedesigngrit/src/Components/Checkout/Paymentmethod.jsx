@@ -13,7 +13,14 @@ import React, { useState } from "react";
 import BillSummary from "./billingSummary";
 // import { useCart } from "../../Context/cartcontext";
 
-function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
+function PaymentForm({
+  onSubmit,
+  paymentData,
+  onChange,
+  billData,
+  errors = {},
+  validateOnChange = false,
+}) {
   const [cardOptions, setCardOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState("");
   const [cardDetails, setCardDetails] = useState({
@@ -22,6 +29,19 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
     cvv: paymentData.cvv,
   });
   const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
+
+  // Add CSS for error styling
+  const errorStyle = {
+    border: "1px solid red",
+    backgroundColor: "rgba(255, 0, 0, 0.05)",
+  };
+
+  const errorMessageStyle = {
+    color: "red",
+    fontSize: "12px",
+    marginTop: "4px",
+    textAlign: "left",
+  };
 
   const handleCardDetailsChange = (e) => {
     const { name, value } = e.target;
@@ -89,6 +109,8 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
                   className="montserrat-font"
                   value={cardDetails.cardNumber}
                   onChange={handleCardDetailsChange}
+                  error={!!errors.cardNumber}
+                  helperText={errors.cardNumber}
                 />
                 <Box display="flex" gap={2}>
                   <TextField
@@ -100,6 +122,8 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
                     className="montserrat-font"
                     value={cardDetails.expiry}
                     onChange={handleCardDetailsChange}
+                    error={!!errors.expiry}
+                    helperText={errors.expiry}
                   />
                   <TextField
                     fullWidth
@@ -111,6 +135,8 @@ function PaymentForm({ onSubmit, paymentData, onChange, billData }) {
                     className="montserrat-font"
                     value={cardDetails.cvv}
                     onChange={handleCardDetailsChange}
+                    error={!!errors.cvv}
+                    helperText={errors.cvv}
                   />
                 </Box>
                 <Button

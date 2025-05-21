@@ -35,7 +35,12 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function ShippingForm({ shippingData, onChange }) {
+function ShippingForm({
+  shippingData,
+  onChange,
+  errors = {},
+  validateOnChange = false,
+}) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
 
@@ -105,6 +110,19 @@ function ShippingForm({ shippingData, onChange }) {
     onChange(shippingData);
   };
 
+  // Add CSS for error styling
+  const errorStyle = {
+    border: "1px solid red",
+    backgroundColor: "rgba(255, 0, 0, 0.05)",
+  };
+
+  const errorMessageStyle = {
+    color: "red",
+    fontSize: "12px",
+    marginTop: "4px",
+    textAlign: "left",
+  };
+
   return (
     <Box className="Billinginfo_container">
       <Box className="Billinginfo_checkbox">
@@ -172,7 +190,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.firstName}
                   onChange={handleChange}
                   required
+                  style={errors.firstName ? errorStyle : {}}
                 />
+                {errors.firstName && (
+                  <div style={errorMessageStyle}>{errors.firstName}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -183,7 +205,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.lastName}
                   onChange={handleChange}
                   required
+                  style={errors.lastName ? errorStyle : {}}
                 />
+                {errors.lastName && (
+                  <div style={errorMessageStyle}>{errors.lastName}</div>
+                )}
               </div>
             </div>
 
@@ -198,7 +224,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.address}
                   onChange={handleChange}
                   required
+                  style={errors.address ? errorStyle : {}}
                 />
+                {errors.address && (
+                  <div style={errorMessageStyle}>{errors.address}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -209,7 +239,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.label}
                   onChange={handleChange}
                   required
+                  style={errors.label ? errorStyle : {}}
                 />
+                {errors.label && (
+                  <div style={errorMessageStyle}>{errors.label}</div>
+                )}
               </div>
             </div>
 
@@ -224,7 +258,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.apartment}
                   onChange={handleChange}
                   required
+                  style={errors.apartment ? errorStyle : {}}
                 />
+                {errors.apartment && (
+                  <div style={errorMessageStyle}>{errors.apartment}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -235,7 +273,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.floor}
                   onChange={handleChange}
                   required
+                  style={errors.floor ? errorStyle : {}}
                 />
+                {errors.floor && (
+                  <div style={errorMessageStyle}>{errors.floor}</div>
+                )}
               </div>
             </div>
 
@@ -250,7 +292,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.country}
                   onChange={handleChange}
                   required
+                  style={errors.country ? errorStyle : {}}
                 />
+                {errors.country && (
+                  <div style={errorMessageStyle}>{errors.country}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -261,7 +307,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.city}
                   onChange={handleChange}
                   required
+                  style={errors.city ? errorStyle : {}}
                 />
+                {errors.city && (
+                  <div style={errorMessageStyle}>{errors.city}</div>
+                )}
               </div>
             </div>
 
@@ -276,7 +326,11 @@ function ShippingForm({ shippingData, onChange }) {
                   value={shippingData.zipCode}
                   onChange={handleChange}
                   required
+                  style={errors.zipCode ? errorStyle : {}}
                 />
+                {errors.zipCode && (
+                  <div style={errorMessageStyle}>{errors.zipCode}</div>
+                )}
               </div>
             </div>
 

@@ -26,7 +26,9 @@ function Checkout() {
     city: "",
     zipCode: "",
   });
+  const [billingErrors, setBillingErrors] = useState({});
   const validateBillingData = () => {
+    const errors = {};
     const {
       firstName,
       lastName,
@@ -38,20 +40,18 @@ function Checkout() {
       zipCode,
     } = billingData;
 
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !address ||
-      !phoneNumber ||
-      !country ||
-      !city ||
-      !zipCode
-    ) {
-      alert("Please fill in all required billing fields.");
-      return false;
-    }
-    return true;
+    if (!firstName) errors.firstName = "First name is required";
+    if (!lastName) errors.lastName = "Last name is required";
+    if (!email) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
+    if (!address) errors.address = "Address is required";
+    if (!phoneNumber) errors.phoneNumber = "Phone number is required";
+    if (!country) errors.country = "Country is required";
+    if (!city) errors.city = "City is required";
+    if (!zipCode) errors.zipCode = "Zip code is required";
+
+    setBillingErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const [shippingData, setShippingData] = useState({
@@ -65,7 +65,9 @@ function Checkout() {
     city: "",
     zipCode: "",
   });
+  const [shippingErrors, setShippingErrors] = useState({});
   const validateShippingData = () => {
+    const errors = {};
     const {
       firstName,
       lastName,
@@ -77,21 +79,19 @@ function Checkout() {
       city,
       zipCode,
     } = shippingData;
-    if (
-      !firstName ||
-      !lastName ||
-      !address ||
-      !label ||
-      !apartment ||
-      !floor ||
-      !country ||
-      !city ||
-      !zipCode
-    ) {
-      alert("Please fill in all required shipping fields.");
-      return false;
-    }
-    return true;
+
+    if (!firstName) errors.firstName = "First name is required";
+    if (!lastName) errors.lastName = "Last name is required";
+    if (!address) errors.address = "Address is required";
+    if (!label) errors.label = "Label is required";
+    if (!apartment) errors.apartment = "Apartment is required";
+    if (!floor) errors.floor = "Floor is required";
+    if (!country) errors.country = "Country is required";
+    if (!city) errors.city = "City is required";
+    if (!zipCode) errors.zipCode = "Zip code is required";
+
+    setShippingErrors(errors);
+    return Object.keys(errors).length === 0;
   };
   const [paymentData, setPaymentData] = useState({
     cardNumber: "",
@@ -99,6 +99,27 @@ function Checkout() {
     cvv: "",
     paymentMethod: "card",
   });
+  const [paymentErrors, setPaymentErrors] = useState({});
+  const validatePaymentData = () => {
+    const errors = {};
+    const { cardNumber, expiry, cvv } = paymentData;
+
+    if (paymentData.paymentMethod === "card") {
+      if (!cardNumber) errors.cardNumber = "Card number is required";
+      else if (cardNumber.replace(/\s/g, "").length !== 16)
+        errors.cardNumber = "Card number must be 16 digits";
+
+      if (!expiry) errors.expiry = "Expiry date is required";
+      else if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry))
+        errors.expiry = "Invalid format (MM/YY)";
+
+      if (!cvv) errors.cvv = "CVV is required";
+      else if (!/^\d{3,4}$/.test(cvv)) errors.cvv = "CVV must be 3 or 4 digits";
+    }
+
+    setPaymentErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const shippingFee = 100;
 
@@ -217,6 +238,8 @@ function Checkout() {
           billingData={billingData}
           onChange={handleBillingChange}
           billData={{ cartItems, subtotal, shippingFee, total }}
+          errors={billingErrors}
+          validateOnChange={true}
         />
       ),
     },
@@ -227,6 +250,8 @@ function Checkout() {
         <ShippingForm
           shippingData={shippingData}
           onChange={handleShippingChange}
+          errors={shippingErrors}
+          validateOnChange={true}
         />
       ),
     },
@@ -249,6 +274,8 @@ function Checkout() {
           paymentData={paymentData}
           onChange={handlePaymentChange}
           billData={{ cartItems, subtotal, shippingFee, total }}
+          errors={paymentErrors}
+          validateOnChange={true}
         />
       ),
     },
@@ -275,6 +302,7 @@ function Checkout() {
                   alert("Please agree to the terms before proceeding.");
                   return;
                 }
+                if (currentStep === 4 && !validatePaymentData()) return;
 
                 setCurrentStep(currentStep + 1);
               }}

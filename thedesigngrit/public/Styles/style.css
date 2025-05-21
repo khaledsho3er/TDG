@@ -5597,10 +5597,27 @@ iframe {
   width: 60%;
   background-color: #434343;
   border-radius: 15px;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .form-navigation button:hover {
   background-color: #000;
+}
+.input-group input.error,
+.input-group select.error,
+.input-group textarea.error {
+  border: 1px solid red !important;
+  background-color: rgba(255, 0, 0, 0.05);
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: left;
 }
 
 .checkout_img_container {
@@ -5858,9 +5875,6 @@ button:hover {
 
 .input-group {
   flex: 1;
-}
-.input-group input:invalid {
-  border-color: #d32f2f;
 }
 input {
   width: 80%;

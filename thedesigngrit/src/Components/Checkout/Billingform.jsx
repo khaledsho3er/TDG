@@ -39,7 +39,13 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function BillingForm({ billingData, onChange, billData }) {
+function BillingForm({
+  billingData,
+  onChange,
+  billData,
+  errors = {},
+  validateOnChange = false,
+}) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
 
@@ -47,6 +53,19 @@ function BillingForm({ billingData, onChange, billData }) {
     const { name, value } = e.target;
     const updatedData = { ...billingData, [name]: value };
     onChange(updatedData);
+  };
+
+  // Add CSS for error styling
+  const errorStyle = {
+    border: "1px solid red",
+    backgroundColor: "rgba(255, 0, 0, 0.05)",
+  };
+
+  const errorMessageStyle = {
+    color: "red",
+    fontSize: "12px",
+    marginTop: "4px",
+    textAlign: "left",
   };
 
   const handleCheckboxChange = (option) => {
@@ -165,7 +184,11 @@ function BillingForm({ billingData, onChange, billData }) {
                   value={billingData.firstName}
                   onChange={handleChange}
                   required
+                  style={errors.firstName ? errorStyle : {}}
                 />
+                {errors.firstName && (
+                  <div style={errorMessageStyle}>{errors.firstName}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -176,7 +199,11 @@ function BillingForm({ billingData, onChange, billData }) {
                   value={billingData.lastName}
                   onChange={handleChange}
                   required
+                  style={errors.lastName ? errorStyle : {}}
                 />
+                {errors.lastName && (
+                  <div style={errorMessageStyle}>{errors.lastName}</div>
+                )}
               </div>
             </div>
 
@@ -189,7 +216,11 @@ function BillingForm({ billingData, onChange, billData }) {
                 value={billingData.email}
                 onChange={handleChange}
                 required
+                style={errors.email ? errorStyle : {}}
               />
+              {errors.email && (
+                <div style={errorMessageStyle}>{errors.email}</div>
+              )}
             </div>
 
             <div className="input-group">
@@ -201,7 +232,11 @@ function BillingForm({ billingData, onChange, billData }) {
                 value={billingData.address}
                 onChange={handleChange}
                 required
+                style={errors.address ? errorStyle : {}}
               />
+              {errors.address && (
+                <div style={errorMessageStyle}>{errors.address}</div>
+              )}
             </div>
 
             <div className="input-group">
@@ -216,7 +251,10 @@ function BillingForm({ billingData, onChange, billData }) {
                   });
                 }}
                 inputStyle={{
-                  border: "1px solid #000",
+                  ...(errors.phoneNumber ? errorStyle : {}),
+                  border: errors.phoneNumber
+                    ? "1px solid red"
+                    : "1px solid #000",
                   borderRadius: "8px",
                   fontSize: "14px",
                   width: "100%",
@@ -226,6 +264,9 @@ function BillingForm({ billingData, onChange, billData }) {
                   border: "none",
                 }}
               />
+              {errors.phoneNumber && (
+                <div style={errorMessageStyle}>{errors.phoneNumber}</div>
+              )}
             </div>
 
             <div className="form-row">
