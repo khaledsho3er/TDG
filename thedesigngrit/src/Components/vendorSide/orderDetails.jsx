@@ -36,7 +36,7 @@ const OrderDetails = ({ order, onBack }) => {
 
   // Define brandId and filteredProducts before using them in useEffect
   const brandId =
-    order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
+    order.cartItems.length > 0 ? order.cartItems[1].brandId : null;
 
   // Filter products based on brandId
   const filteredProducts = order.cartItems.filter((product) => {
@@ -72,7 +72,7 @@ const OrderDetails = ({ order, onBack }) => {
     order.cartItems.forEach((item, index) => {
       console.log(`Item ${index} brandId:`, item.brandId);
       if (typeof item.brandId === "object" && item.brandId !== null) {
-        console.log(`Item ${index} brandId._id:`, item.brandId._id);
+        console.log(`Item ${index} brandId._id:`, item.brandId);
       }
     });
 
