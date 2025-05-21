@@ -16,6 +16,7 @@
       furnish their homes by selecting products from a diverse range of local brands,
       tailored to their personal style and needs."
     />
+
     <link
       rel="preload"
       as="image"
@@ -28,7 +29,7 @@
       href="/Assets/TDGLoadingScreen.webm"
       type="video/webm"
     />
-
+    <link rel="preconnect" href="https://api.thedesigngrit.com" />
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -176,5 +177,23 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- Add service worker registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/service-worker.js").then(
+            function (registration) {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            },
+            function (err) {
+              console.log("ServiceWorker registration failed: ", err);
+            }
+          );
+        });
+      }
+    </script>
   </body>
 </html>

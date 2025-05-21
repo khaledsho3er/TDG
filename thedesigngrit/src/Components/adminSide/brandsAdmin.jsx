@@ -52,7 +52,7 @@ const BrandManagement = () => {
   const [newCoverFile, setNewCoverFile] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
-  const [imageLoading, setImageLoading] = useState(false);
+  // const [imageLoading, setImageLoading] = useState(false);
 
   const logoInputRef = useRef(null);
   const coverInputRef = useRef(null);

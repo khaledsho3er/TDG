@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Typography,
-  Avatar,
   Chip,
   Paper,
   FormControl,
@@ -13,12 +12,11 @@ import {
   Tab,
   CircularProgress,
 } from "@mui/material";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoEllipse } from "react-icons/io5";
-import { useAdmin } from "../../utils/adminContext";
+// import { useAdmin } from "../../utils/adminContext";
 
 const AdminNotificationPage = () => {
-  const { admin } = useAdmin();
+  // const { admin } = useAdmin();
   const [notifications, setNotifications] = useState([]);
   const [allNotifications, setAllNotifications] = useState([]);
   const [adminNotifications, setAdminNotifications] = useState([]);
