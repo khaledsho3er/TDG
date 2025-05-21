@@ -15,7 +15,6 @@ import LoadingScreen from "./loadingScreen";
 import { UserContext } from "../utils/userContext";
 import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
-import Toast from "../Components/toast";
 import { BsExclamationOctagon } from "react-icons/bs";
 import RequestQuote from "../Components/product/RequestInfo";
 
@@ -23,8 +22,7 @@ function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -280,9 +278,6 @@ function ProductPage() {
         shippingFee: shippingFee || 0,
       });
     }
-
-    setToastMessage("Item added successfully to cart!");
-    setShowToast(true);
   };
 
   //Review Function Post
@@ -329,9 +324,6 @@ function ProductPage() {
   return (
     <div className="product-page">
       <Header />
-      {showToast && (
-        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
-      )}
 
       <div className="product-container">
         <div className="grid-container">
