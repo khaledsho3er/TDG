@@ -121,11 +121,17 @@ function Header() {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion.name); // Set search input to selected suggestion
-    setSuggestions([]); // Hide suggestions
-    navigate(
-      `/product/${suggestion._id}` // Navigate to product page
+    setSearchQuery(
+      suggestion.resultType === "brand" ? suggestion.brandName : suggestion.name
     );
+    setSuggestions([]);
+
+    // Navigate to different pages based on result type
+    if (suggestion.resultType === "brand") {
+      navigate(`/vendor/${suggestion._id}`); // Navigate to brand page
+    } else {
+      navigate(`/product/${suggestion._id}`); // Navigate to product page
+    }
   };
 
   useEffect(() => {
@@ -588,44 +594,93 @@ function Header() {
                     className="suggestion-item"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
-                    {/* Product Image */}
-                    {suggestion.mainImage && (
+                    {/* Image - handle both product and brand */}
+                    {suggestion.resultType === "product" &&
+                    suggestion.mainImage ? (
                       <img
                         src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.mainImage}`}
                         alt={suggestion.name}
                         className="suggestion-image"
                       />
+                    ) : suggestion.resultType === "brand" &&
+                      suggestion.brandlogo ? (
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.brandlogo}`}
+                        alt={suggestion.brandName}
+                        className="suggestion-image"
+                      />
+                    ) : (
+                      <Box className="suggestion-image-placeholder"></Box>
                     )}
 
-                    {/* Name & Category & Brand */}
+                    {/* Content - handle both product and brand */}
                     <Box className="suggestion-text">
-                      <Typography className="suggestion-name">
-                        {suggestion.name}
-                      </Typography>
-                      {suggestion.category && (
-                        <Typography className="suggestion-category">
-                          {suggestion.category.name}
-                        </Typography>
+                      {suggestion.resultType === "product" ? (
+                        // Product suggestion
+                        <>
+                          <Typography className="suggestion-name">
+                            {suggestion.name}
+                          </Typography>
+                          {suggestion.category && (
+                            <Typography className="suggestion-category">
+                              {suggestion.category.name}
+                            </Typography>
+                          )}
+                          {suggestion.brandId && (
+                            <Typography className="suggestion-info">
+                              {suggestion.brandId.brandName}
+                            </Typography>
+                          )}
+                          <Typography className="suggestion-info">
+                            {suggestion.salePrice ? (
+                              <>
+                                <span
+                                  style={{
+                                    textDecoration: "line-through",
+                                    color: "#ccc",
+                                  }}
+                                >
+                                  E£{suggestion.price}
+                                </span>
+                                <span
+                                  style={{ color: "red", marginLeft: "5px" }}
+                                >
+                                  E£{suggestion.salePrice}
+                                </span>
+                              </>
+                            ) : (
+                              `E£${suggestion.price}`
+                            )}
+                          </Typography>
+                        </>
+                      ) : (
+                        // Brand suggestion
+                        <>
+                          <Typography
+                            className="suggestion-name"
+                            sx={{ fontWeight: "bold" }}
+                          >
+                            {suggestion.brandName}
+                          </Typography>
+                          <Typography
+                            className="suggestion-category"
+                            sx={{ fontStyle: "italic" }}
+                          >
+                            Brand
+                          </Typography>
+                          {suggestion.brandDescription && (
+                            <Typography
+                              className="suggestion-info"
+                              sx={{ fontSize: "0.8rem" }}
+                            >
+                              {suggestion.brandDescription.substring(0, 60)}
+                              {suggestion.brandDescription.length > 60
+                                ? "..."
+                                : ""}
+                            </Typography>
+                          )}
+                        </>
                       )}
-                      <Typography className="suggestion-info">
-                        {suggestion.brandId.brandName}
-                      </Typography>
-                      <Typography
-                        className="suggestion-info"
-                        style={{
-                          textDecoration: suggestion.salePrice
-                            ? "line-through"
-                            : undefined,
-                        }}
-                      >
-                        {suggestion.salePrice ? (
-                          <span style={{ color: "red" }}>
-                            E£{suggestion.salePrice}
-                          </span>
-                        ) : (
-                          `E£${suggestion.price}`
-                        )}
-                      </Typography>
                     </Box>
                   </Box>
                 ))}

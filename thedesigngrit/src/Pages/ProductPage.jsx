@@ -270,7 +270,7 @@ function ProductPage() {
         name: product.name,
         unitPrice: product.salePrice || product.price || 0,
         quantity: 1,
-        image: product.mainImage,
+        mainImage: product.mainImage,
         brandId: product.brandId,
         color: selectedColor || "default",
         size: selectedSize || "default",
