@@ -48,13 +48,6 @@ function BillSummary({ cartItems }) {
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`}
                 alt={item.name}
                 className="ordersummary-cart-item-image"
-                variant="rounded"
-                sx={{
-                  width: 60,
-                  height: 60,
-                  marginRight: 2,
-                  border: "1px solid #eee",
-                }}
               />
 
               <Box className="ordersummary-cart-item-details">

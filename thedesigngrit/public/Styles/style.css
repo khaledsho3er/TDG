@@ -5973,7 +5973,7 @@ input:focus {
   overflow-y: auto;
   margin-bottom: 16px;
   border-radius: 8px;
-  background-color: #fafafa;
+  background-color: #fff;
 }
 
 .ordersummary-cart-item {
@@ -6010,6 +6010,8 @@ input:focus {
 }
 
 .ordersummary-cart-item-image {
+  width: 100px;
+  margin: 6px;
   flex-shrink: 0;
   background-color: #f9f9f9;
   object-fit: contain !important;
