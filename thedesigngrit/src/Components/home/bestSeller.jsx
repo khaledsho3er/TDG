@@ -165,15 +165,15 @@ const ProductSlider = () => {
                           marginRight: "5px",
                         }}
                       >
-                        {product.price} E£
+                        {Number(product.price).toLocaleString()} E£
                       </span>
                       <br />
                       <span style={{ color: "red" }}>
-                        {product.salePrice} E£
+                        {Number(product.salePrice).toLocaleString()} E£
                       </span>
                     </span>
                   ) : (
-                    <span>{product.price} E£</span>
+                    <span>{Number(product.price).toLocaleString()} E£</span>
                   )}
                 </div>
               </div>

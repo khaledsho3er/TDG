@@ -138,7 +138,7 @@ const ExploreConcepts = () => {
                               {node.productId.name}
                             </Typography>
                             <Typography variant="body2">
-                              E£{node.productId.price}
+                              E£{Number(node.productId.price).toLocaleString()}
                             </Typography>
                           </Box>
                           <MdOutlineArrowForwardIos />
