@@ -5859,7 +5859,9 @@ button:hover {
 .input-group {
   flex: 1;
 }
-
+.input-group input:invalid {
+  border-color: #d32f2f;
+}
 input {
   width: 80%;
   padding: 8px;
@@ -7127,6 +7129,8 @@ input:focus {
 .error-message {
   color: red;
   font-size: 12px;
+  font-family: "Montserrat";
+  margin-top: 3px;
 }
 
 .loading-screen {

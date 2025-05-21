@@ -1,12 +1,18 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext } from "react";
+import React, {
+  useState,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 import BillSummary from "./billingSummary";
 import { useCart } from "../../Context/cartcontext";
-import { UserContext } from "../../utils/userContext"; // adjust path accordingly
+import { UserContext } from "../../utils/userContext";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import * as Yup from "yup";
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -39,14 +45,87 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function BillingForm({ billingData, onChange, billData }) {
+// Validation schema
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  address: Yup.string().required("Address is required"),
+  phoneNumber: Yup.string().required("Phone number is required"),
+  country: Yup.string().required("Country is required"),
+  city: Yup.string().required("City is required"),
+  zipCode: Yup.string().required("Zip code is required"),
+});
+
+const BillingForm = forwardRef(({ billingData, onChange, billData }, ref) => {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  // Expose the validateForm method to parent components
+  useImperativeHandle(ref, () => ({
+    validateForm: async () => {
+      try {
+        await validationSchema.validate(billingData, { abortEarly: false });
+        setErrors({});
+        return true;
+      } catch (validationErrors) {
+        const formattedErrors = {};
+        validationErrors.inner.forEach((error) => {
+          formattedErrors[error.path] = error.message;
+        });
+        setErrors(formattedErrors);
 
+        // Mark all fields as touched to show errors
+        const allTouched = Object.keys(billingData).reduce((acc, field) => {
+          acc[field] = true;
+          return acc;
+        }, {});
+        setTouched(allTouched);
+
+        return false;
+      }
+    },
+  }));
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedData = { ...billingData, [name]: value };
     onChange(updatedData);
+
+    // Mark field as touched
+    setTouched({ ...touched, [name]: true });
+
+    // Validate the field if it's been touched
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    try {
+      // Validate just this field
+      Yup.reach(validationSchema, name).validateSync(value);
+      // Clear the error if validation passes
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    } catch (error) {
+      // Set the error message if validation fails
+      setErrors((prev) => ({ ...prev, [name]: error.message }));
+    }
+  };
+
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(billingData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (validationErrors) {
+      const formattedErrors = {};
+      validationErrors.inner.forEach((error) => {
+        formattedErrors[error.path] = error.message;
+      });
+      setErrors(formattedErrors);
+      return false;
+    }
   };
 
   const handleCheckboxChange = (option) => {
@@ -71,6 +150,8 @@ function BillingForm({ billingData, onChange, billData }) {
           phoneNumber: userSession.phoneNumber || "",
         };
         onChange(filledData);
+        setErrors({});
+        setTouched({});
       }
     } else if (option === "new") {
       // If the user chooses to enter new data, clear the form
@@ -85,13 +166,36 @@ function BillingForm({ billingData, onChange, billData }) {
         city: "",
         zipCode: "",
       });
+      setErrors({});
+      setTouched({});
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Billing Data:", billingData);
-    onChange(billingData);
+
+    // Mark all fields as touched
+    const allTouched = Object.keys(billingData).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allTouched);
+
+    // Validate the entire form
+    const isValid = await validateForm();
+
+    if (isValid) {
+      console.log("Billing Data:", billingData);
+      onChange(billingData);
+    } else {
+      console.log("Form validation failed:", errors);
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    validateField(name, value);
   };
 
   const { cartItems } = useCart(); // Get cart items from context
@@ -164,8 +268,12 @@ function BillingForm({ billingData, onChange, billData }) {
                   placeholder="First Name"
                   value={billingData.firstName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.firstName && errors.firstName && (
+                  <div className="error-message">{errors.firstName}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -175,8 +283,12 @@ function BillingForm({ billingData, onChange, billData }) {
                   placeholder="Last Name"
                   value={billingData.lastName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.lastName && errors.lastName && (
+                  <div className="error-message">{errors.lastName}</div>
+                )}
               </div>
             </div>
 
@@ -188,8 +300,12 @@ function BillingForm({ billingData, onChange, billData }) {
                 placeholder="Email"
                 value={billingData.email}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
               />
+              {touched.email && errors.email && (
+                <div className="error-message">{errors.email}</div>
+              )}
             </div>
 
             <div className="input-group">
@@ -200,8 +316,12 @@ function BillingForm({ billingData, onChange, billData }) {
                 placeholder="Address"
                 value={billingData.address}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
               />
+              {touched.address && errors.address && (
+                <div className="error-message">{errors.address}</div>
+              )}
             </div>
 
             <div className="input-group">
@@ -209,11 +329,16 @@ function BillingForm({ billingData, onChange, billData }) {
                 country={billingData.userCountryCode || "eg"}
                 value={billingData.phoneNumber}
                 onChange={(phone, countryData) => {
-                  onChange({
+                  const updatedData = {
                     ...billingData,
                     phoneNumber: phone,
                     userCountryCode: countryData.countryCode,
-                  });
+                  };
+                  onChange(updatedData);
+
+                  // Mark as touched and validate
+                  setTouched({ ...touched, phoneNumber: true });
+                  validateField("phoneNumber", phone);
                 }}
                 inputStyle={{
                   border: "1px solid #000",
@@ -225,7 +350,14 @@ function BillingForm({ billingData, onChange, billData }) {
                 buttonStyle={{
                   border: "none",
                 }}
+                onBlur={() => {
+                  setTouched({ ...touched, phoneNumber: true });
+                  validateField("phoneNumber", billingData.phoneNumber);
+                }}
               />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <div className="error-message">{errors.phoneNumber}</div>
+              )}
             </div>
 
             <div className="form-row">
@@ -237,8 +369,12 @@ function BillingForm({ billingData, onChange, billData }) {
                   placeholder="Country"
                   value={billingData.country}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.country && errors.country && (
+                  <div className="error-message">{errors.country}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -248,8 +384,12 @@ function BillingForm({ billingData, onChange, billData }) {
                   placeholder="City"
                   value={billingData.city}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.city && errors.city && (
+                  <div className="error-message">{errors.city}</div>
+                )}
               </div>
             </div>
 
@@ -261,8 +401,12 @@ function BillingForm({ billingData, onChange, billData }) {
                 placeholder="Zip Code"
                 value={billingData.zipCode}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
               />
+              {touched.zipCode && errors.zipCode && (
+                <div className="error-message">{errors.zipCode}</div>
+              )}
             </div>
             <button type="submit" style={{ display: "none" }}></button>
           </form>
@@ -271,6 +415,6 @@ function BillingForm({ billingData, onChange, billData }) {
       </Box>
     </Box>
   );
-}
+});
 
 export default BillingForm;

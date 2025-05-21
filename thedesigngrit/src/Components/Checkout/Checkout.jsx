@@ -65,7 +65,13 @@ function Checkout() {
     city: "",
     zipCode: "",
   });
-  const validateShippingData = () => {
+  const validateShippingData = async () => {
+    // Get a reference to the ShippingForm component's validateForm function
+    if (shippingFormRef.current && shippingFormRef.current.validateForm) {
+      return await shippingFormRef.current.validateForm();
+    }
+
+    // Fallback to basic validation if the ref isn't available
     const {
       firstName,
       lastName,
@@ -77,6 +83,7 @@ function Checkout() {
       city,
       zipCode,
     } = shippingData;
+
     if (
       !firstName ||
       !lastName ||
@@ -208,12 +215,17 @@ function Checkout() {
 
   const total = subtotal + (shippingFee || 0);
 
+  // Add refs for the form components
+  const billingFormRef = useRef(null);
+  const shippingFormRef = useRef(null);
+
   const steps = [
     {
       id: 1,
       label: "Billing Information",
       content: (
         <BillingForm
+          ref={billingFormRef}
           billingData={billingData}
           onChange={handleBillingChange}
           billData={{ cartItems, subtotal, shippingFee, total }}
@@ -225,6 +237,7 @@ function Checkout() {
       label: "Shipping Information",
       content: (
         <ShippingForm
+          ref={shippingFormRef}
           shippingData={shippingData}
           onChange={handleShippingChange}
         />
@@ -264,9 +277,15 @@ function Checkout() {
         <div className="form-navigation">
           {currentStep < steps.length && (
             <button
-              onClick={() => {
-                if (currentStep === 1 && !validateBillingData()) return;
-                if (currentStep === 2 && !validateShippingData()) return;
+              onClick={async () => {
+                if (currentStep === 1) {
+                  const isValid = await validateBillingData();
+                  if (!isValid) return;
+                }
+                if (currentStep === 2) {
+                  const isValid = await validateShippingData();
+                  if (!isValid) return;
+                }
                 if (
                   currentStep === 3 &&
                   validateCheckboxRef.current &&

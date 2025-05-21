@@ -1,8 +1,14 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext } from "react";
+import React, {
+  useState,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
-import { UserContext } from "../../utils/userContext"; // adjust path accordingly
+import { UserContext } from "../../utils/userContext";
+import * as Yup from "yup";
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -35,9 +41,50 @@ const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-function ShippingForm({ shippingData, onChange }) {
+// Validation schema
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  address: Yup.string().required("Address is required"),
+  label: Yup.string().required("Label is required"),
+  apartment: Yup.string().required("Apartment is required"),
+  floor: Yup.string().required("Floor is required"),
+  country: Yup.string().required("Country is required"),
+  city: Yup.string().required("City is required"),
+  zipCode: Yup.string().required("Zip code is required"),
+});
+
+const ShippingForm = forwardRef(({ shippingData, onChange }, ref) => {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  // Expose the validateForm method to parent components
+  useImperativeHandle(ref, () => ({
+    validateForm: async () => {
+      try {
+        await validationSchema.validate(shippingData, { abortEarly: false });
+        setErrors({});
+        return true;
+      } catch (validationErrors) {
+        const formattedErrors = {};
+        validationErrors.inner.forEach((error) => {
+          formattedErrors[error.path] = error.message;
+        });
+        setErrors(formattedErrors);
+
+        // Mark all fields as touched to show errors
+        const allTouched = Object.keys(shippingData).reduce((acc, field) => {
+          acc[field] = true;
+          return acc;
+        }, {});
+        setTouched(allTouched);
+
+        return false;
+      }
+    },
+  }));
 
   const handleCheckboxChange = (option) => {
     console.log("Checkbox clicked:", option);
@@ -60,7 +107,7 @@ function ShippingForm({ shippingData, onChange }) {
         }
 
         if (defaultAddress) {
-          onChange({
+          const newData = {
             firstName: userSession.firstName || "",
             lastName: userSession.lastName || "",
             address: defaultAddress.address1 || "",
@@ -70,7 +117,13 @@ function ShippingForm({ shippingData, onChange }) {
             country: defaultAddress.country || "",
             city: defaultAddress.city || "",
             zipCode: defaultAddress.postalCode || "",
-          });
+          };
+
+          onChange(newData);
+
+          // Clear errors and touched state when using existing address
+          setErrors({});
+          setTouched({});
         }
       } else {
         console.log("No shipment addresses found!");
@@ -79,7 +132,7 @@ function ShippingForm({ shippingData, onChange }) {
 
     if (option === "new") {
       console.log("Switching to empty new address.");
-      onChange({
+      const emptyData = {
         firstName: "",
         lastName: "",
         address: "",
@@ -89,7 +142,40 @@ function ShippingForm({ shippingData, onChange }) {
         country: "",
         city: "",
         zipCode: "",
+      };
+
+      onChange(emptyData);
+
+      // Clear errors and touched state when switching to new address
+      setErrors({});
+      setTouched({});
+    }
+  };
+
+  const validateField = (name, value) => {
+    try {
+      // Validate just this field
+      Yup.reach(validationSchema, name).validateSync(value);
+      // Clear the error if validation passes
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    } catch (error) {
+      // Set the error message if validation fails
+      setErrors((prev) => ({ ...prev, [name]: error.message }));
+    }
+  };
+
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(shippingData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (validationErrors) {
+      const formattedErrors = {};
+      validationErrors.inner.forEach((error) => {
+        formattedErrors[error.path] = error.message;
       });
+      setErrors(formattedErrors);
+      return false;
     }
   };
 
@@ -97,12 +183,39 @@ function ShippingForm({ shippingData, onChange }) {
     const { name, value } = e.target;
     const updatedData = { ...shippingData, [name]: value };
     onChange(updatedData);
+
+    // Mark field as touched
+    setTouched({ ...touched, [name]: true });
+
+    // Validate the field if it's been touched
+    validateField(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched({ ...touched, [name]: true });
+    validateField(name, shippingData[name]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Shipping Data:", shippingData);
-    onChange(shippingData);
+
+    // Mark all fields as touched
+    const allTouched = Object.keys(shippingData).reduce((acc, field) => {
+      acc[field] = true;
+      return acc;
+    }, {});
+    setTouched(allTouched);
+
+    // Validate the entire form
+    const isValid = await validateForm();
+
+    if (isValid) {
+      console.log("Shipping Data:", shippingData);
+      onChange(shippingData);
+    } else {
+      console.log("Form validation failed:", errors);
+    }
   };
 
   return (
@@ -171,8 +284,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="First Name"
                   value={shippingData.firstName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.firstName && errors.firstName && (
+                  <div className="error-message">{errors.firstName}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -182,8 +299,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Last Name"
                   value={shippingData.lastName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.lastName && errors.lastName && (
+                  <div className="error-message">{errors.lastName}</div>
+                )}
               </div>
             </div>
 
@@ -197,8 +318,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Address"
                   value={shippingData.address}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.address && errors.address && (
+                  <div className="error-message">{errors.address}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -208,8 +333,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Label"
                   value={shippingData.label}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.label && errors.label && (
+                  <div className="error-message">{errors.label}</div>
+                )}
               </div>
             </div>
 
@@ -223,8 +352,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Apartment"
                   value={shippingData.apartment}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.apartment && errors.apartment && (
+                  <div className="error-message">{errors.apartment}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -234,8 +367,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Floor"
                   value={shippingData.floor}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.floor && errors.floor && (
+                  <div className="error-message">{errors.floor}</div>
+                )}
               </div>
             </div>
 
@@ -249,8 +386,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Country"
                   value={shippingData.country}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.country && errors.country && (
+                  <div className="error-message">{errors.country}</div>
+                )}
               </div>
               <div className="input-group">
                 <input
@@ -260,8 +401,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="City"
                   value={shippingData.city}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.city && errors.city && (
+                  <div className="error-message">{errors.city}</div>
+                )}
               </div>
             </div>
 
@@ -275,8 +420,12 @@ function ShippingForm({ shippingData, onChange }) {
                   placeholder="Zip Code"
                   value={shippingData.zipCode}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
+                {touched.zipCode && errors.zipCode && (
+                  <div className="error-message">{errors.zipCode}</div>
+                )}
               </div>
             </div>
 
@@ -286,6 +435,6 @@ function ShippingForm({ shippingData, onChange }) {
       </Box>
     </Box>
   );
-}
+});
 
 export default ShippingForm;
