@@ -11,12 +11,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../utils/userContext";
-import { FavoritesContext } from "../favoriteOverlay";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
-  const { userSession } = useContext(UserContext);
-  const { updateFavorites } = useContext(FavoritesContext);
+  const { userSession } = useContext(UserContext); // Access user session and logout function from context
   const [isFavorite, setIsFavorite] = useState(false);
 
   // Fetch the user's favorite products on component mount
@@ -40,10 +38,7 @@ const ProductCard = ({ product }) => {
   const toggleFavorite = async (event) => {
     event.stopPropagation(); // Prevent triggering card click
 
-    if (!userSession) {
-      navigate("/login");
-      return;
-    }
+    if (!userSession) return; // If there's no user session, prevent posting
 
     const endpoint = isFavorite ? "/remove" : "/add";
     const requestPayload = {
@@ -65,7 +60,6 @@ const ProductCard = ({ product }) => {
 
       if (response.ok) {
         setIsFavorite(!isFavorite); // Toggle the favorite status if successful
-        updateFavorites(); // Notify the context that favorites have been updated
       } else {
         console.error("Error: Unable to update favorite status.");
       }
@@ -193,7 +187,7 @@ const ProductCard = ({ product }) => {
             marginTop: "4px",
           }}
         >
-          {product.brandId.brandName}
+          {product.description.split(" ").slice(0, 10).join(" ")}
         </Typography>
 
         <Typography
@@ -210,13 +204,15 @@ const ProductCard = ({ product }) => {
             <span
               style={{ textDecoration: "line-through", marginRight: "5px" }}
             >
-              {product.price} E£
+              {Number(product.price).toLocaleString()} E£
             </span>
           ) : (
-            product.price
+            Number(product.price).toLocaleString() + " E£"
           )}
           {product.salePrice && (
-            <span style={{ color: "red" }}>{product.salePrice}E£</span>
+            <span style={{ color: "red" }}>
+              {Number(product.salePrice).toLocaleString()}E£
+            </span>
           )}
         </Typography>
       </CardContent>
