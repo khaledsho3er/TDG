@@ -21,7 +21,7 @@ function BillSummary({ cartItems }) {
         <Box
           className="ordersummary-cart-items"
           sx={{
-            maxHeight: "130px",
+            maxHeight: "140px",
             overflowY: "auto",
             marginBottom: "16px",
             padding: "0 5px",
@@ -29,15 +29,15 @@ function BillSummary({ cartItems }) {
               width: "8px",
             },
             "&::-webkit-scrollbar-track": {
-              background: "#f0f0f0",
+              background: "#fff",
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb": {
-              background: "#6b7b58",
+              background: "#fff",
               borderRadius: "10px",
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: "#4e5b44",
+              background: "#fff",
             },
           }}
         >
@@ -92,7 +92,9 @@ function BillSummary({ cartItems }) {
           ))}
         </Box>
 
-        <Divider style={{ margin: "16px 0", color: "#ccc" }} />
+        <Divider
+          style={{ margin: "16px 0", color: "#fff", background: "#fff" }}
+        />
 
         {/* Summary Totals */}
         <div className="ordersummary-cart-summary-row">

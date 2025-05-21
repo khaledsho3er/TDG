@@ -5561,7 +5561,7 @@ iframe {
   z-index: 2000;
   text-align: center;
   z-index: 1;
-  margin-top: 0.2rem;
+  margin-top: 1.2rem;
 }
 
 .checkout-form h2 {
@@ -5898,7 +5898,7 @@ input:focus {
 }
 
 .Ordersummary-firstrow-firstcolumn {
-  height: 308px;
+  height: 317px;
   font-family: "Montserrat";
   width: 80%;
   padding: 16px;
@@ -5982,6 +5982,7 @@ input:focus {
   padding: 12px 8px;
   border-bottom: 1px solid #ccc;
   background-color: #fff;
+  border-radius: 8px;
 }
 
 .ordersummary-cart-item:last-child {
