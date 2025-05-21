@@ -27,7 +27,10 @@ function SummaryForm({ billData, onValidate }) {
               <span>Qty.</span>
               <span>Total Price</span>
             </Box>
-            <Box className="product-content">
+            <Box
+              className="product-content"
+              style={{ overflowY: "auto", maxHeight: "130px" }}
+            >
               {cartItems.map((product) => (
                 <Box className="product-row" key={product.id}>
                   <Box className="product-info">

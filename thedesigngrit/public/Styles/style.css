@@ -5898,6 +5898,7 @@ input:focus {
 }
 
 .Ordersummary-firstrow-firstcolumn {
+  height: 308px;
   font-family: "Montserrat";
   width: 80%;
   padding: 16px;
@@ -5973,7 +5974,6 @@ input:focus {
   overflow-y: auto;
   margin-bottom: 16px;
   border-radius: 8px;
-  background-color: #fff;
 }
 
 .ordersummary-cart-item {
@@ -5996,17 +5996,17 @@ input:focus {
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: #fff;
   border-radius: 10px;
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-thumb {
-  background: #6b7b58;
+  background: #fff;
   border-radius: 10px;
 }
 
 .ordersummary-cart-items::-webkit-scrollbar-thumb:hover {
-  background: #4e5b44;
+  background: #fff;
 }
 
 .ordersummary-cart-item-image {

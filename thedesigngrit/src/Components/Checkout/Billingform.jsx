@@ -173,7 +173,11 @@ function BillingForm({
 
       <Box className="billinginfo-form-container">
         <Box className="Billinginfo-form">
-          <form onSubmit={handleSubmit} className="form-container">
+          <form
+            onSubmit={handleSubmit}
+            className="form-container"
+            style={{ gap: "1.5rem" }}
+          >
             <div
               className="form-row"
               style={{ marginBottom: "0rem", gap: "1rem" }}

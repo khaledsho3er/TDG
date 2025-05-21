@@ -57,7 +57,7 @@ export const CartProvider = ({ children }) => {
             unitPrice:
               product.unitPrice || product.salePrice || product.price || 0,
             shippingFee: product.brandId.fees || 0,
-            mainImage: product.mainImage || product.images[0] || "",
+            image: product.mainImage || product.images[0] || "",
             // Add variant information if present
             variantId: product.variantId || null,
             productId: product.productId || product._id, // Use productId from variant if available

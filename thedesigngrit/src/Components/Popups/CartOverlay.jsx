@@ -87,7 +87,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                 {/* Left: Image */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}`}
                     alt={item.name}
                     width="120"
                     height="100"

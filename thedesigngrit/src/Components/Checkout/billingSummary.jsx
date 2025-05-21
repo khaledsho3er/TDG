@@ -21,7 +21,7 @@ function BillSummary({ cartItems }) {
         <Box
           className="ordersummary-cart-items"
           sx={{
-            maxHeight: "250px",
+            maxHeight: "130px",
             overflowY: "auto",
             marginBottom: "16px",
             padding: "0 5px",
@@ -45,7 +45,7 @@ function BillSummary({ cartItems }) {
             <Box key={index} className="ordersummary-cart-item">
               {/* Product Image */}
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}`}
                 alt={item.name}
                 className="ordersummary-cart-item-image"
               />
