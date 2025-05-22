@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
 import {
@@ -9,10 +9,12 @@ import {
   FaChartLine,
 } from "react-icons/fa"; // React Icons
 import { BsThreeDotsVertical } from "react-icons/bs";
+import AdminOrderDetails from "./orderDetailsAdmin";
 
 const DashboardAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
 
   // Fetch order data from JSON
   const fetchOrders = async () => {
@@ -45,6 +47,16 @@ const DashboardAdmin = () => {
     fetchBestSellers();
   }, []);
 
+  if (selectedOrder) {
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <AdminOrderDetails
+          order={selectedOrder}
+          onBack={() => setSelectedOrder(null)}
+        />
+      </Suspense>
+    );
+  }
   return (
     <div className="dashboard-vendor">
       <header className="dashboard-header-vendor">
@@ -180,60 +192,77 @@ const DashboardAdmin = () => {
             <h3>Recent Orders</h3>
             <BsThreeDotsVertical />
           </Box>
-          {/* <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Customer Name</th>
-                <th>Brand</th>
-                <th>Status</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.slice(0, 8).map((order) => (
-                <tr key={order._id}>
-                  <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
-                  <td>{order._id}</td>
-                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                  <td>
-                    {order.customerId.firstName}
-                    {order.customerId.lastName}
-                  </td>
-                  <td>{order.cartItems[0]?.brandId.brandName}</td>
-                  <td>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 12px",
-                        borderRadius: "5px",
-                        backgroundColor:
-                          order.orderStatus === "Pending"
-                            ? "#f8d7da"
-                            : order.orderStatus === "Delivered"
-                            ? "#d4edda"
-                            : "#FFE5B4",
-                        color:
-                          order.orderStatus === "Pending"
-                            ? "#721c24"
-                            : order.orderStatus === "Delivered"
-                            ? "#155724"
-                            : "#FF7518",
-                        fontWeight: "500",
-                        textAlign: "center",
-                        minWidth: "80px",
-                      }}
-                    >
-                      {order.orderStatus}
-                    </span>
-                  </td>
-                  <td>LE {order.total}</td>
+          {orders.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer Name</th>
+                  <th>Status</th>
+                  <th>Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table> */}
+              </thead>
+              <tbody>
+                {orders.slice(0, 5).map((order) => (
+                  <tr
+                    key={order._id}
+                    onClick={() => setSelectedOrder(order)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <td> {order.cartItems[0]?.name || "N/A"}</td>
+                    <td>{order._id}</td>
+                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td>
+                      {order.customerId.firstName} {""}
+                      {order.customerId.lastName}
+                    </td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          marginTop: "4px",
+                          padding: "4px 12px",
+                          borderRadius: "5px",
+                          backgroundColor:
+                            order.orderStatus === "Pending"
+                              ? "#f8d7da"
+                              : order.orderStatus === "Delivered"
+                              ? "#d4edda"
+                              : "#FFE5B4",
+                          color:
+                            order.orderStatus === "Pending"
+                              ? "#721c24"
+                              : order.orderStatus === "Delivered"
+                              ? "#155724"
+                              : "#FF7518",
+                          fontWeight: "500",
+                          textAlign: "center",
+                          minWidth: "80px",
+                        }}
+                      >
+                        {order.orderStatus}
+                      </span>
+                    </td>
+                    <td>LE {order.total}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "2rem",
+                backgroundColor: "#f5f5f5",
+                borderRadius: "8px",
+                margin: "1rem 0",
+              }}
+            >
+              No orders available
+            </div>
+          )}
         </div>
       </section>
     </div>
