@@ -516,7 +516,16 @@ const DashboardVendor = () => {
                     onClick={() => setSelectedOrder(order)}
                     style={{ cursor: "pointer" }}
                   >
-                    <td>{order.cartItems[0]?.name || "N/A"}</td>
+                    <td>
+                      {" "}
+                      {order.cartItems.find((item) => {
+                        const itemBrandId =
+                          item.brandId && typeof item.brandId === "object"
+                            ? item.brandId._id
+                            : item.brandId;
+                        return itemBrandId === vendor.brandId;
+                      })?.name || "N/A"}
+                    </td>
                     <td>{order._id}</td>
                     <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                     <td>

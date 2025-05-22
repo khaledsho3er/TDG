@@ -180,7 +180,7 @@ const DashboardAdmin = () => {
             <h3>Recent Orders</h3>
             <BsThreeDotsVertical />
           </Box>
-          <table>
+          {/* <table>
             <thead>
               <tr>
                 <th>Product</th>
@@ -233,7 +233,7 @@ const DashboardAdmin = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </section>
     </div>
