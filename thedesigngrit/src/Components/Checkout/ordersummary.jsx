@@ -30,8 +30,9 @@ function SummaryForm({ billData, onValidate }) {
           <Box
             className="Ordersummary-firstrow-firstcolumn"
             sx={{
+              width: "95%",
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-              borderRadius: "12px",
+              borderRadius: "8px",
               overflow: "hidden",
               backgroundColor: "#fff",
               border: "1px solid #f0f0f0",
