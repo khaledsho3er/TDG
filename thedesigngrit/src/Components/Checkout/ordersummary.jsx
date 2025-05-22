@@ -19,9 +19,28 @@ function SummaryForm({ billData, onValidate }) {
       {/* First Row */}
       <Box className="Ordersummary-firstrow">
         {/* Product Details */}
-        <Box className="Ordersummary-firstrow-firstcolumn">
+        <Box
+          className="Ordersummary-firstrow-firstcolumn"
+          sx={{
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+            borderRadius: "12px",
+            overflow: "hidden",
+            backgroundColor: "#fff",
+            border: "1px solid #f0f0f0",
+          }}
+        >
           <Box className="product-details">
-            <Box className="product-header">
+            <Box
+              className="product-header"
+              sx={{
+                padding: "16px 20px",
+                backgroundColor: "#f9f9f9",
+                borderBottom: "1px solid #eee",
+                fontWeight: 600,
+                color: "#555",
+                fontSize: "14px",
+              }}
+            >
               <span>Product</span>
               <span>Unit Price</span>
               <span>Qty.</span>
@@ -29,25 +48,121 @@ function SummaryForm({ billData, onValidate }) {
             </Box>
             <Box
               className="product-content"
-              style={{ overflowY: "auto", maxHeight: "140px" }}
+              sx={{
+                padding: "10px 20px",
+                maxHeight: "240px",
+                overflowY: "auto",
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "#f0f0f0",
+                  borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#6b7b58",
+                  borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "#4e5b44",
+                },
+              }}
             >
               {cartItems.map((product) => (
-                <Box className="product-row" key={product.id}>
-                  <Box className="product-info">
-                    <h4 className="product-title">{product.name}</h4>
-                    {/* <p className="product-description">{product.description}</p> */}
+                <Box
+                  className="product-row"
+                  key={product.id}
+                  sx={{
+                    padding: "12px 0",
+                    borderBottom: "1px solid #f0f0f0",
+                    "&:last-child": {
+                      borderBottom: "none",
+                    },
+                  }}
+                >
+                  <Box
+                    className="product-info"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
                     <img
                       src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
                       alt={product.name}
                       className="product-image"
+                      style={{
+                        width: "70px",
+                        height: "70px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        border: "1px solid #f0f0f0",
+                      }}
                     />
-                    <p>Color: {product.color}</p>
-                    <p>Size: {product.size}</p>
+                    <Box>
+                      <h4
+                        className="product-title"
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          marginBottom: "4px",
+                          color: "#333",
+                        }}
+                      >
+                        {product.name}
+                      </h4>
+                      <p
+                        style={{
+                          fontSize: "12px",
+                          color: "#777",
+                          margin: "2px 0",
+                        }}
+                      >
+                        Color: {product.color}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: "12px",
+                          color: "#777",
+                          margin: "2px 0",
+                        }}
+                      >
+                        Size: {product.size}
+                      </p>
+                    </Box>
                   </Box>
 
-                  <span className="unit-price">{product.unitPrice} LE</span>
-                  <span className="quantity">{product.quantity}</span>
-                  <span className="total-price">
+                  <span
+                    className="unit-price"
+                    style={{
+                      fontSize: "14px",
+                      color: "#555",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {product.unitPrice} LE
+                  </span>
+
+                  <span
+                    className="quantity"
+                    style={{
+                      fontSize: "14px",
+                      color: "#555",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {product.quantity}
+                  </span>
+
+                  <span
+                    className="total-price"
+                    style={{
+                      fontSize: "14px",
+                      color: "#333",
+                      fontWeight: 600,
+                    }}
+                  >
                     {(product.unitPrice * product.quantity).toLocaleString()} LE
                   </span>
                 </Box>
@@ -56,12 +171,52 @@ function SummaryForm({ billData, onValidate }) {
           </Box>
 
           {/* Shipping Details */}
-          <Box className="shipping-details">
-            <ul>
-              <li>Shipping to Egypt</li>
-              <li>Ship in 1-2 weeks</li>
-              <li>
-                Sold and shipped by <strong>{cartItems[0].brandName}</strong>
+          <Box
+            className="shipping-details"
+            sx={{
+              padding: "16px 20px",
+              backgroundColor: "#f9f9f9",
+              borderTop: "1px solid #eee",
+            }}
+          >
+            <ul
+              style={{
+                listStyleType: "none",
+                padding: 0,
+                margin: 0,
+                fontSize: "13px",
+                color: "#666",
+              }}
+            >
+              <li
+                style={{
+                  marginBottom: "6px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <span style={{ color: "#6b7b58" }}>•</span> Shipping to Egypt
+              </li>
+              <li
+                style={{
+                  marginBottom: "6px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <span style={{ color: "#6b7b58" }}>•</span> Ship in 1-2 weeks
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <span style={{ color: "#6b7b58" }}>•</span> Sold and shipped by{" "}
+                <strong>{cartItems[0].brandName}</strong>
               </li>
             </ul>
           </Box>
