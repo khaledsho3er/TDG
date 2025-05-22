@@ -8,7 +8,9 @@ function CheckoutPage() {
     <div>
       <NavBar />
       <Checkout />
-      <Footer />
+      <div style={{ marginTop: 0 }}>
+        <Footer />
+      </div>
     </div>
   );
 }
