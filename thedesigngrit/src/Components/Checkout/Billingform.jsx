@@ -172,7 +172,7 @@ function BillingForm({
       </Box>
 
       <Box className="billinginfo-form-container">
-        <Box className="Billinginfo-form">
+        <Box className="Billinginfo-form" sx={{ width: "100%" }}>
           <form
             onSubmit={handleSubmit}
             className="form-container"

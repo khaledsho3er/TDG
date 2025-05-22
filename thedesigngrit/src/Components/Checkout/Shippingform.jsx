@@ -326,7 +326,7 @@ function ShippingForm({
                   value={shippingData.zipCode}
                   onChange={handleChange}
                   required
-                  style={errors.zipCode ? errorStyle : {}}
+                  style={errors.zipCode ? errorStyle : { width: "45%" }}
                 />
                 {errors.zipCode && (
                   <div style={errorMessageStyle}>{errors.zipCode}</div>
