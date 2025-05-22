@@ -5893,7 +5893,7 @@ input:focus {
   width: 42.6% !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .zip-code-input {
     width: 100% !important;
   }
