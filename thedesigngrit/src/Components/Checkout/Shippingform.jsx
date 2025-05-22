@@ -326,11 +326,11 @@ function ShippingForm({
                   value={shippingData.zipCode}
                   onChange={handleChange}
                   required
-                  style={
-                    errors.zipCode
-                      ? errorStyle
-                      : { width: window.innerWidth < 768 ? "100%" : "42.6%" }
-                  }
+                  style={{
+                    ...(errors.zipCode ? errorStyle : {}),
+                    width: window.innerWidth < 768 ? "100%" : "42.6%",
+                  }}
+                  className="zip-code-input"
                 />
                 {errors.zipCode && (
                   <div style={errorMessageStyle}>{errors.zipCode}</div>

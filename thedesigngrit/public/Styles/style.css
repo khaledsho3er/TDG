@@ -5889,7 +5889,15 @@ input:focus {
   border-color: #6c7c59;
   box-shadow: 0 0 4px rgba(108, 124, 89, 0.4);
 }
+.zip-code-input {
+  width: 42.6% !important;
+}
 
+@media (max-width: 767px) {
+  .zip-code-input {
+    width: 100% !important;
+  }
+}
 .Ordersummary-bigcontainer {
   display: flex;
   flex-direction: column;
