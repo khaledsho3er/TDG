@@ -113,8 +113,11 @@ const DashboardVendor = () => {
           throw new Error("Failed to fetch orders");
         }
         const data = await response.json();
-        setOrders(data || []);
-        setTotalOrders(data?.length || 0);
+        const sortedOrders = [...data].sort(
+          (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+        );
+        setOrders(sortedOrders || []);
+        setTotalOrders(sortedOrders?.length || 0);
       } catch (error) {
         console.error("Error fetching orders:", error);
         setOrders([]);
