@@ -18,210 +18,270 @@ function SummaryForm({ billData, onValidate }) {
     <Box className="Ordersummary-bigcontainer">
       {/* First Row */}
       <Box className="Ordersummary-firstrow">
-        {/* Product Details */}
         <Box
-          className="Ordersummary-firstrow-firstcolumn"
-          sx={{
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-            borderRadius: "12px",
-            overflow: "hidden",
-            backgroundColor: "#fff",
-            border: "1px solid #f0f0f0",
+          style={{
+            width: "100%",
+            display: "flex",
+            gap: "20px",
+            flexdirection: "column",
           }}
         >
-          <Box className="product-details">
+          {/* Product Details */}
+          <Box
+            className="Ordersummary-firstrow-firstcolumn"
+            sx={{
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+              borderRadius: "12px",
+              overflow: "hidden",
+              backgroundColor: "#fff",
+              border: "1px solid #f0f0f0",
+            }}
+          >
+            <Box className="product-details">
+              <Box
+                className="product-header"
+                sx={{
+                  padding: "16px 20px",
+                  backgroundColor: "#f9f9f9",
+                  borderBottom: "1px solid #eee",
+                  fontWeight: 600,
+                  color: "#555",
+                  fontSize: "14px",
+                }}
+              >
+                <span>Product</span>
+                <span>Unit Price</span>
+                <span>Qty.</span>
+                <span>Total Price</span>
+              </Box>
+              <Box
+                className="product-content"
+                sx={{
+                  padding: "10px 20px",
+                  maxHeight: "130px",
+                  overflowY: "auto",
+                  "&::-webkit-scrollbar": {
+                    width: "8px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    background: "#f0f0f0",
+                    borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    background: "#6b7b58",
+                    borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                    background: "#4e5b44",
+                  },
+                }}
+              >
+                {cartItems.map((product) => (
+                  <Box
+                    className="product-row"
+                    key={product.id}
+                    sx={{
+                      padding: "12px 0",
+                      borderBottom: "1px solid #f0f0f0",
+                      "&:last-child": {
+                        borderBottom: "none",
+                      },
+                    }}
+                  >
+                    <Box
+                      className="product-info"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
+                        alt={product.name}
+                        className="product-image"
+                        style={{
+                          width: "70px",
+                          height: "70px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          border: "1px solid #f0f0f0",
+                        }}
+                      />
+                      <Box>
+                        <h4
+                          className="product-title"
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: 600,
+                            marginBottom: "4px",
+                            color: "#333",
+                          }}
+                        >
+                          {product.name}
+                        </h4>
+                        <p
+                          style={{
+                            fontSize: "12px",
+                            color: "#777",
+                            margin: "2px 0",
+                            textAlign: "left",
+                          }}
+                        >
+                          Color: {product.color}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: "12px",
+                            color: "#777",
+                            margin: "2px 0",
+                            textAlign: "left",
+                          }}
+                        >
+                          Size: {product.size}
+                        </p>
+                      </Box>
+                    </Box>
+
+                    <span
+                      className="unit-price"
+                      style={{
+                        fontSize: "14px",
+                        color: "#555",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {product.unitPrice} LE
+                    </span>
+
+                    <span
+                      className="quantity"
+                      style={{
+                        fontSize: "14px",
+                        color: "#555",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {product.quantity}
+                    </span>
+
+                    <span
+                      className="total-price"
+                      style={{
+                        fontSize: "14px",
+                        color: "#333",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {(product.unitPrice * product.quantity).toLocaleString()}{" "}
+                      LE
+                    </span>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            {/* Shipping Details */}
             <Box
-              className="product-header"
+              className="shipping-details"
               sx={{
                 padding: "16px 20px",
                 backgroundColor: "#f9f9f9",
-                borderBottom: "1px solid #eee",
-                fontWeight: 600,
-                color: "#555",
-                fontSize: "14px",
+                borderTop: "1px solid #eee",
               }}
             >
-              <span>Product</span>
-              <span>Unit Price</span>
-              <span>Qty.</span>
-              <span>Total Price</span>
+              <ul
+                style={{
+                  listStyleType: "none",
+                  padding: 0,
+                  margin: 0,
+                  fontSize: "13px",
+                  color: "#666",
+                }}
+              >
+                <li
+                  style={{
+                    marginBottom: "6px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  <span style={{ color: "#6b7b58" }}>•</span> Shipping to Egypt
+                </li>
+                <li
+                  style={{
+                    marginBottom: "6px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  <span style={{ color: "#6b7b58" }}>•</span> Ship in 1-2 weeks
+                </li>
+                <li
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  <span style={{ color: "#6b7b58" }}>•</span> Sold and shipped
+                  by <strong>{cartItems[0].brandName}</strong>
+                </li>
+              </ul>
             </Box>
-            <Box
-              className="product-content"
-              sx={{
-                padding: "10px 20px",
-                maxHeight: "240px",
-                overflowY: "auto",
-                "&::-webkit-scrollbar": {
-                  width: "8px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  background: "#f0f0f0",
-                  borderRadius: "10px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  background: "#6b7b58",
-                  borderRadius: "10px",
-                },
-                "&::-webkit-scrollbar-thumb:hover": {
-                  background: "#4e5b44",
-                },
-              }}
-            >
-              {cartItems.map((product) => (
-                <Box
-                  className="product-row"
-                  key={product.id}
+          </Box>
+          <Box className="Ordersummary-thirdrow">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                />
+              }
+              label={
+                <Typography
+                  variant="body2"
+                  component="span"
                   sx={{
-                    padding: "12px 0",
-                    borderBottom: "1px solid #f0f0f0",
-                    "&:last-child": {
-                      borderBottom: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    columnGap: "4px",
+                    fontFamily: "Montserrat",
+                    fontSize: "13px",
+                    "& a": {
+                      textDecoration: "underline",
+                      color: "#2962ff",
                     },
                   }}
                 >
-                  <Box
-                    className="product-info"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                    }}
+                  I have read and accept the{" "}
+                  <a
+                    href="/policy?section=Full Terms of Service Agreement"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <img
-                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
-                      alt={product.name}
-                      className="product-image"
-                      style={{
-                        width: "70px",
-                        height: "70px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        border: "1px solid #f0f0f0",
-                      }}
-                    />
-                    <Box>
-                      <h4
-                        className="product-title"
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: 600,
-                          marginBottom: "4px",
-                          color: "#333",
-                        }}
-                      >
-                        {product.name}
-                      </h4>
-                      <p
-                        style={{
-                          fontSize: "12px",
-                          color: "#777",
-                          margin: "2px 0",
-                        }}
-                      >
-                        Color: {product.color}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: "12px",
-                          color: "#777",
-                          margin: "2px 0",
-                        }}
-                      >
-                        Size: {product.size}
-                      </p>
-                    </Box>
-                  </Box>
-
-                  <span
-                    className="unit-price"
-                    style={{
-                      fontSize: "14px",
-                      color: "#555",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {product.unitPrice} LE
-                  </span>
-
-                  <span
-                    className="quantity"
-                    style={{
-                      fontSize: "14px",
-                      color: "#555",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {product.quantity}
-                  </span>
-
-                  <span
-                    className="total-price"
-                    style={{
-                      fontSize: "14px",
-                      color: "#333",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {(product.unitPrice * product.quantity).toLocaleString()} LE
-                  </span>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-
-          {/* Shipping Details */}
-          <Box
-            className="shipping-details"
-            sx={{
-              padding: "16px 20px",
-              backgroundColor: "#f9f9f9",
-              borderTop: "1px solid #eee",
-            }}
-          >
-            <ul
-              style={{
-                listStyleType: "none",
-                padding: 0,
-                margin: 0,
-                fontSize: "13px",
-                color: "#666",
+                    terms and conditions
+                  </a>
+                  .
+                </Typography>
+              }
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                columnGap: "16px",
+                paddingLeft: "20px",
+                "& .MuiFormControlLabel-label": {
+                  fontFamily: "Montserrat, san-serif",
+                  fontSize: "13px",
+                  color: "#333",
+                  textAlign: "left",
+                },
               }}
-            >
-              <li
-                style={{
-                  marginBottom: "6px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
-              >
-                <span style={{ color: "#6b7b58" }}>•</span> Shipping to Egypt
-              </li>
-              <li
-                style={{
-                  marginBottom: "6px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
-              >
-                <span style={{ color: "#6b7b58" }}>•</span> Ship in 1-2 weeks
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
-              >
-                <span style={{ color: "#6b7b58" }}>•</span> Sold and shipped by{" "}
-                <strong>{cartItems[0].brandName}</strong>
-              </li>
-            </ul>
+            />
           </Box>
         </Box>
-
         {/* Cart Summary */}
         <BillSummary
           cartItems={cartItems}
@@ -232,55 +292,6 @@ function SummaryForm({ billData, onValidate }) {
       </Box>
 
       {/* Terms and Conditions */}
-      <Box className="Ordersummary-thirdrow">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isChecked}
-              onChange={(e) => setIsChecked(e.target.checked)}
-            />
-          }
-          label={
-            <Typography
-              variant="body2"
-              component="span"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                columnGap: "4px",
-                fontFamily: "Montserrat",
-                fontSize: "13px",
-                "& a": {
-                  textDecoration: "underline",
-                  color: "#2962ff",
-                },
-              }}
-            >
-              I have read and accept the{" "}
-              <a
-                href="/policy?section=Full Terms of Service Agreement"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                terms and conditions
-              </a>
-              .
-            </Typography>
-          }
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            columnGap: "16px",
-            paddingLeft: "20px",
-            "& .MuiFormControlLabel-label": {
-              fontFamily: "Montserrat, san-serif",
-              fontSize: "13px",
-              color: "#333",
-              textAlign: "left",
-            },
-          }}
-        />
-      </Box>
     </Box>
   );
 }
