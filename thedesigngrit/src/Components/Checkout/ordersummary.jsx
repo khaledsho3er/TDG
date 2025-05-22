@@ -234,7 +234,6 @@ function SummaryForm({ billData, onValidate }) {
               <FormControlLabel
                 style={{
                   marginTop: "10px",
-                  marginLeft: "-20px",
                 }}
                 control={
                   <Checkbox
@@ -272,8 +271,6 @@ function SummaryForm({ billData, onValidate }) {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  columnGap: "16px",
-                  paddingLeft: "20px",
                   "& .MuiFormControlLabel-label": {
                     fontFamily: "Montserrat, san-serif",
                     fontSize: "13px",
