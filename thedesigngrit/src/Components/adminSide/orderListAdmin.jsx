@@ -236,7 +236,7 @@ const RecentPurchasesAdmin = () => {
                   style={{ cursor: "pointer" }}
                   key={order._id}
                 >
-                  <td>{order.cartItems[0]?.productId.name || "N/A"}</td>
+                  <td>{order.cartItems[0]?.name || "N/A"}</td>
                   <td>{order._id}</td>
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>
