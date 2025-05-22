@@ -59,7 +59,7 @@ function SummaryForm({ billData, onValidate }) {
                 className="product-content"
                 sx={{
                   padding: "10px 20px",
-                  maxHeight: "130px",
+                  maxHeight: "142px",
                   overflowY: "auto",
                   "&::-webkit-scrollbar": {
                     width: "8px",
@@ -232,6 +232,10 @@ function SummaryForm({ billData, onValidate }) {
                 </li>
               </ul>
               <FormControlLabel
+                style={{
+                  marginTop: "10px",
+                  marginLeft: "-20px",
+                }}
                 control={
                   <Checkbox
                     checked={isChecked}
