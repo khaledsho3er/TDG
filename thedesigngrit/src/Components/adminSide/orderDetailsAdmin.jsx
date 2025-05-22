@@ -57,11 +57,8 @@ const AdminOrderDetails = ({ order, onBack }) => {
   if (!order) return <div>Order not found</div>;
 
   // Filter products based on brandId
-  const brandId =
-    order.cartItems.length > 0 ? order.cartItems[0].brandId : null;
-  const filteredProducts = order.cartItems.filter(
-    (product) => product.brandId === brandId
-  );
+
+  const filteredProducts = order.cartItems;
 
   return (
     <div>
