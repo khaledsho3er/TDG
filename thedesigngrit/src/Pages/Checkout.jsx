@@ -8,7 +8,7 @@ function CheckoutPage() {
     <div>
       <NavBar />
       <Checkout />
-      <div style={{ marginTop: 0 }}>
+      <div style={{ marginTop: "-16 px" }}>
         <Footer />
       </div>
     </div>
