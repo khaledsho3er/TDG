@@ -22,8 +22,8 @@ function SummaryForm({ billData, onValidate }) {
           style={{
             width: "100%",
             display: "flex",
+            flexDirection: "column",
             gap: "20px",
-            flexdirection: "column",
           }}
         >
           {/* Product Details */}
@@ -231,57 +231,58 @@ function SummaryForm({ billData, onValidate }) {
                   by <strong>{cartItems[0].brandName}</strong>
                 </li>
               </ul>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isChecked}
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
+                }
+                label={
+                  <Typography
+                    variant="body2"
+                    component="span"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: "4px",
+                      fontFamily: "Montserrat",
+                      fontSize: "13px",
+                      "& a": {
+                        textDecoration: "underline",
+                        color: "#2962ff",
+                      },
+                    }}
+                  >
+                    I have read and accept the{" "}
+                    <a
+                      href="/policy?section=Full Terms of Service Agreement"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      terms and conditions
+                    </a>
+                    .
+                  </Typography>
+                }
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  columnGap: "16px",
+                  paddingLeft: "20px",
+                  "& .MuiFormControlLabel-label": {
+                    fontFamily: "Montserrat, san-serif",
+                    fontSize: "13px",
+                    color: "#333",
+                    textAlign: "left",
+                  },
+                }}
+              />
             </Box>
           </Box>
-          <Box className="Ordersummary-thirdrow">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={isChecked}
-                  onChange={(e) => setIsChecked(e.target.checked)}
-                />
-              }
-              label={
-                <Typography
-                  variant="body2"
-                  component="span"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    columnGap: "4px",
-                    fontFamily: "Montserrat",
-                    fontSize: "13px",
-                    "& a": {
-                      textDecoration: "underline",
-                      color: "#2962ff",
-                    },
-                  }}
-                >
-                  I have read and accept the{" "}
-                  <a
-                    href="/policy?section=Full Terms of Service Agreement"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    terms and conditions
-                  </a>
-                  .
-                </Typography>
-              }
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                columnGap: "16px",
-                paddingLeft: "20px",
-                "& .MuiFormControlLabel-label": {
-                  fontFamily: "Montserrat, san-serif",
-                  fontSize: "13px",
-                  color: "#333",
-                  textAlign: "left",
-                },
-              }}
-            />
-          </Box>
+          {/* <Box className="Ordersummary-thirdrow">
+            
+          </Box> */}
         </Box>
         {/* Cart Summary */}
         <BillSummary
