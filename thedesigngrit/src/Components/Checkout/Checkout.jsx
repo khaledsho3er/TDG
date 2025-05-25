@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
@@ -184,6 +184,8 @@ function Checkout() {
         quantity: item.quantity,
         totalPrice: item.unitPrice * item.quantity,
         shippingFee: item.shippingFee,
+        color: item.color || "default", // Add color information
+        size: item.size || "default", // Add size information
       });
       return acc;
     }, {});
@@ -250,6 +252,26 @@ function Checkout() {
     : 0;
 
   const total = subtotal + (shippingFee || 0);
+
+  // Add useEffect to recalculate totals when cartItems change
+  useEffect(() => {
+    // Recalculate subtotal and total when cart items change
+    const newSubtotal = cartItems?.length
+      ? cartItems.reduce(
+          (sum, item) => sum + (item.unitPrice || 0) * (item.quantity || 1),
+          0
+        )
+      : 0;
+
+    const newTotal = newSubtotal + (shippingFee || 0);
+
+    // Update state if needed
+    if (subtotal !== newSubtotal) {
+      // If you have state variables for these, update them
+      // setSubtotal(newSubtotal);
+      // setTotal(newTotal);
+    }
+  }, [cartItems]);
 
   const steps = [
     {

@@ -4,6 +4,7 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [lastAddedItem, setLastAddedItem] = useState(null); // Track last added item for highlighting
 
   // Load cart items from localStorage if available
   useEffect(() => {
@@ -22,12 +23,11 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     console.log("Adding product to cart:", product); // Debug log
     console.log("Current unit Price:", product.unitPrice); // Debug log
-    setCartItems((prev) => {
-      // // Create a unique identifier based on product ID and variant ID (if present)
-      // const itemId = product.variantId
-      //   ? `${product.id}-${product.variantId}`
-      //   : product.id;
 
+    // Store the last added item for highlighting in cart
+    setLastAddedItem(product);
+
+    setCartItems((prev) => {
       // Check if this exact product/variant combination exists in cart
       const existingProduct = prev.find((item) =>
         product.variantId
@@ -66,6 +66,24 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // Add updateQuantity function
+  const updateQuantity = (itemId, newQuantity) => {
+    if (newQuantity < 1) return; // Prevent quantities less than 1
+
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              quantity: newQuantity,
+              // Make sure totalPrice is updated correctly
+              totalPrice: item.unitPrice * newQuantity,
+            }
+          : item
+      )
+    );
+  };
+
   const removeFromCart = (id) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -73,11 +91,19 @@ export const CartProvider = ({ children }) => {
   const resetCart = () => {
     setCartItems([]); // Clear cartItems state
     localStorage.removeItem("cartItems"); // Clear localStorage
+    setLastAddedItem(null); // Reset last added item
   };
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, resetCart }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        resetCart,
+        updateQuantity,
+        lastAddedItem,
+      }}
     >
       {children}
     </CartContext.Provider>

@@ -6,7 +6,7 @@ import PaymentIcons from "../paymentsIcons";
 function BillSummary({ cartItems }) {
   // Calculate subtotal, shipping, and total
   const subtotal = cartItems.reduce(
-    (total, item) => total + (item.salePrice || item.unitPrice) * item.quantity,
+    (total, item) => total + (item.unitPrice || item.salePrice) * item.quantity,
     0
   );
   const shipping = 100; // Example fixed shipping cost
