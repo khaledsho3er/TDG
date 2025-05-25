@@ -300,16 +300,7 @@ const ShippingInfoPopup = () => {
         <Grid container spacing={3}>
           {userData.shipmentAddress.map((addr, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <AddressCard
-                isDefault={addr.isDefault === true}
-                sx={{
-                  width: "100%",
-                  maxWidth: "1200px",
-                  "@media (min-width: 900px)": {
-                    width: "calc(50% - 12px)",
-                  },
-                }}
-              >
+              <AddressCard isDefault={addr.isDefault === true}>
                 <CardContent>
                   <Typography
                     variant="h6"

@@ -52,6 +52,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
               "@media (max-width: 1024px)": {
                 gridTemplateColumns: "repeat(2, 1fr)",
                 gap: "20px",
+                marginTop: "70px",
                 margin: "61px",
               },
               "@media (max-width: 768px)": {
