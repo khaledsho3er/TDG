@@ -1,18 +1,34 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Box, Typography, Button, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  IconButton,
+} from "@mui/material";
 import { useCart } from "../../Context/cartcontext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { UserContext } from "../../utils/userContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
-  const { cartItems, removeFromCart, lastAddedItem } = useCart(); // Use cartItems and lastAddedItem from context
+  const { cartItems, removeFromCart, lastAddedItem, updateQuantity } =
+    useCart(); // Add updateQuantity
   const isMobile = useMediaQuery("(max-width:768px)");
   const navigate = useNavigate();
   const { userSession } = useContext(UserContext); // Access user session from context
   const [highlightedItem, setHighlightedItem] = useState(null);
+
+  // Add handler for quantity changes
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity >= 1) {
+      updateQuantity(itemId, newQuantity);
+    }
+  };
 
   // When cart opens or a new item is added, highlight that item
   useEffect(() => {
@@ -144,7 +160,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                   </Box>
                 )}
 
-                {/* Left: Image */}
+                {/* Left: Image and details */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <img
                     src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}`}
@@ -161,7 +177,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     }}
                   />
 
-                  {/* Right: Name & Price */}
+                  {/* Right: Name, Price, and Quantity controls */}
                   <Box>
                     <Typography
                       variant="body1"
@@ -173,12 +189,73 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     >
                       {item.name}
                     </Typography>
+
+                    {/* Quantity controls */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        marginTop: "4px",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity - 1)
+                        }
+                        sx={{
+                          padding: "2px",
+                          backgroundColor: "#6B7B58",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#5a6a47" },
+                          width: "20px",
+                          height: "20px",
+                          minWidth: "20px",
+                        }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+
+                      <Typography
+                        sx={{
+                          fontFamily: "Montserrat",
+                          fontSize: "14px",
+                          minWidth: "20px",
+                          textAlign: "center",
+                        }}
+                      >
+                        {item.quantity}
+                      </Typography>
+
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity + 1)
+                        }
+                        sx={{
+                          padding: "2px",
+                          backgroundColor: "#6B7B58",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#5a6a47" },
+                          width: "20px",
+                          height: "20px",
+                          minWidth: "20px",
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+
                     <Typography
                       variant="body2"
                       sx={{ color: "gray", fontFamily: "Montserrat" }}
                     >
-                      {`${item.quantity} x  ${item.unitPrice.toFixed(2)}LE`}
+                      {`${item.unitPrice.toFixed(2)}LE`}
                     </Typography>
+
+                    {/* Existing color and size info... */}
                     {item.color && item.color !== "default" && (
                       <Typography
                         variant="body2"

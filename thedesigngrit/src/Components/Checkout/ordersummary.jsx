@@ -1,9 +1,18 @@
-import { Box, FormControlLabel, Checkbox, Typography } from "@mui/material";
+import {
+  Box,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useCart } from "../../Context/cartcontext"; // Import CartContext
 import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
 function SummaryForm({ billData, onValidate }) {
-  const { cartItems } = useCart(); // Get cart items from context
+  const { cartItems, updateQuantity } = useCart(); // Add updateQuantity
   const { subtotal, shippingFee, total } = billData;
   const [isChecked, setIsChecked] = useState(false);
 
@@ -13,6 +22,13 @@ function SummaryForm({ billData, onValidate }) {
       onValidate(() => isChecked);
     }
   }, [isChecked, onValidate]);
+
+  // Add handler for quantity changes
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity >= 1) {
+      updateQuantity(itemId, newQuantity);
+    }
+  };
 
   return (
     <Box className="Ordersummary-bigcontainer">
@@ -155,16 +171,62 @@ function SummaryForm({ billData, onValidate }) {
                       {product.unitPrice.toLocaleString()} LE
                     </span>
 
-                    <span
-                      className="quantity"
-                      style={{
-                        fontSize: "14px",
-                        color: "#555",
-                        fontWeight: 500,
+                    {/* Quantity with +/- controls */}
+                    <Box
+                      className="quantity-controls"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
                       }}
                     >
-                      {product.quantity}
-                    </span>
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          handleQuantityChange(product.id, product.quantity - 1)
+                        }
+                        sx={{
+                          padding: "2px",
+                          backgroundColor: "#6B7B58",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#5a6a47" },
+                          width: "20px",
+                          height: "20px",
+                          minWidth: "20px",
+                        }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          color: "#555",
+                          fontWeight: 500,
+                          margin: "0 8px",
+                        }}
+                      >
+                        {product.quantity}
+                      </span>
+
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          handleQuantityChange(product.id, product.quantity + 1)
+                        }
+                        sx={{
+                          padding: "2px",
+                          backgroundColor: "#6B7B58",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#5a6a47" },
+                          width: "20px",
+                          height: "20px",
+                          minWidth: "20px",
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
 
                     <span
                       className="total-price"
