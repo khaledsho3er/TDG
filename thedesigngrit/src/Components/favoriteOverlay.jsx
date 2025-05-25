@@ -137,11 +137,11 @@ const FavoritesOverlay = ({ open, onClose }) => {
             className="view-all-vendor"
             onClick={() => navigate("/login")}
           >
-            VIEW ALL FAVORITES
+            VIEW WISHLIST
           </button>
         ) : (
           <button className="view-all-vendor" onClick={navigateToWishlistPage}>
-            VIEW ALL FAVORITES
+            VIEW WISHLIST
           </button>
         )}
       </div>

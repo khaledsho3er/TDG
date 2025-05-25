@@ -369,7 +369,6 @@ const ShippingInfoPopup = () => {
                     {addr.isDefault === true && (
                       <span
                         style={{
-                          border: "1px solid #2d2d2d",
                           backgroundColor: "transparent",
                           color: "#2d2d2d",
                           borderRadius: "4px",
@@ -432,7 +431,7 @@ const ShippingInfoPopup = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Address Line 1*"
+                label="Address Line 1"
                 name="address1"
                 value={newAddress.address1}
                 onChange={handleInputChange}
@@ -492,7 +491,7 @@ const ShippingInfoPopup = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="City*"
+                label="City"
                 name="city"
                 value={newAddress.city}
                 onChange={handleInputChange}
@@ -503,7 +502,7 @@ const ShippingInfoPopup = () => {
               <Select
                 options={countries}
                 onChange={handleCountryChange}
-                placeholder="Select your country*"
+                placeholder="Select your country"
                 isSearchable
                 value={
                   countries.find((c) => c.label === newAddress.country) || null
@@ -525,7 +524,7 @@ const ShippingInfoPopup = () => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Postal Code*"
+                label="Postal Code"
                 name="postalCode"
                 value={newAddress.postalCode}
                 onChange={handleInputChange}

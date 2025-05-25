@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../Components/navBar";
 import { Box } from "@mui/material";
-import ApplicationSentPopup from "../Components/JobDesc/applicationSentPopUp";
+import ContactUsSuccess from "../Components/contactUsSuccess";
 import Footer from "../Components/Footer";
 import * as Yup from "yup"; // Import Yup for validation
 
@@ -176,7 +176,7 @@ function ContactUs() {
           </form>
         </Box>
       </div>
-      <ApplicationSentPopup show={isPopupVisible} closePopup={closePopup} />
+      <ContactUsSuccess show={isPopupVisible} closePopup={closePopup} />
       <Footer />
     </Box>
   );

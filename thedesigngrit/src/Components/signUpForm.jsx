@@ -88,17 +88,7 @@ const SignUpForm = () => {
       const newRequirements = checkRequirements(watchPassword);
 
       // Check if all requirements are met to auto-close the popper
-      if (
-        newRequirements.length &&
-        newRequirements.uppercase &&
-        newRequirements.number &&
-        newRequirements.special
-      ) {
-        // Add a small delay before closing for better UX
-        setTimeout(() => {
-          setShowRequirements(false);
-        }, 1000);
-      }
+      setShowRequirements(true); // Always show on change
     }
   }, [watchPassword, strength]);
 
@@ -202,6 +192,7 @@ const SignUpForm = () => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     setValue("password", newPassword);
+    setShowRequirements(true); // Always show requirements when changing
   };
 
   const handlePasswordFocus = () => {
@@ -470,8 +461,15 @@ const SignUpForm = () => {
             sx={{ color: "#efebe8", "&.Mui-checked": { color: "#efebe8" } }}
           />
           <p className="register-policy">
-            I have read and accept the <a href="/policy">Terms of use</a> and{" "}
-            <a href="/policy">Privacy Policy</a>.
+            I have read and accept the{" "}
+            <a href="/policy" target="_blank" rel="noopener noreferrer">
+              Terms of use
+            </a>{" "}
+            and{" "}
+            <a href="/policy" target="_blank" rel="noopener noreferrer">
+              Privacy Policy
+            </a>
+            .
           </p>
         </div>
         {errors.terms && (
