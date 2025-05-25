@@ -149,6 +149,15 @@
   .menu-overlay {
     width: 80%;
   }
+  .concept-explore-container {
+    margin-top: 26rem;
+  }
+  .concept-card {
+    height: 26vh;
+  }
+  .right-card {
+    height: 29vh;
+  }
 }
 
 /* Medium Laptop (1024px - 1440px) */

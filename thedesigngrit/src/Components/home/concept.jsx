@@ -91,7 +91,7 @@ const ExploreConcepts = () => {
                   alt={concept?.title || "Concept image"}
                   width="400"
                   height="300"
-                  style={{ width: "100%", height: "auto" }}
+                  style={{ width: "100%" }}
                   loading={position === 1 ? "eager" : "lazy"}
                   fetchpriority={position === 1 ? "high" : "auto"}
                   decoding="async"
