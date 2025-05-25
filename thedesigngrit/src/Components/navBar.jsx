@@ -7,6 +7,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -26,7 +27,6 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { UserContext } from "../utils/userContext";
 import axios from "axios";
 import { useCart } from "../Context/cartcontext";
-import Badge from "@mui/material/Badge";
 
 function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
@@ -694,11 +694,24 @@ function Header() {
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
                     <Badge
+                      badgeContent={favoriteCount}
                       color="error"
+                      max={99}
                       sx={{
                         "& .MuiBadge-badge": {
-                          backgroundColor: "red",
+                          backgroundColor: "#f44336",
+                          color: "#fff",
+                          fontWeight: "bold",
+                          fontSize: "10px",
+                          minWidth: "18px",
+                          height: "18px",
+                          padding: "0 4px",
                           animation: favoriteUpdated ? "pulse 1s" : "none",
+                          "@keyframes pulse": {
+                            "0%": { transform: "scale(1)" },
+                            "50%": { transform: "scale(1.2)" },
+                            "100%": { transform: "scale(1)" },
+                          },
                         },
                       }}
                     >
@@ -788,11 +801,24 @@ function Header() {
                 <div>
                   <IconButton onClick={handleFavoritesToggle}>
                     <Badge
+                      badgeContent={favoriteCount}
                       color="error"
+                      max={99}
                       sx={{
                         "& .MuiBadge-badge": {
-                          backgroundColor: "red",
+                          backgroundColor: "#f44336",
+                          color: "#fff",
+                          fontWeight: "bold",
+                          fontSize: "10px",
+                          minWidth: "18px",
+                          height: "18px",
+                          padding: "0 4px",
                           animation: favoriteUpdated ? "pulse 1s" : "none",
+                          "@keyframes pulse": {
+                            "0%": { transform: "scale(1)" },
+                            "50%": { transform: "scale(1.2)" },
+                            "100%": { transform: "scale(1)" },
+                          },
                         },
                       }}
                     >

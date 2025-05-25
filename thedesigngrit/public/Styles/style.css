@@ -537,7 +537,61 @@ html {
   align-items: center;
   gap: 11px;
 }
+/* Favorites overlay styling */
+.notification-actions-vendor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
 
+.remove-favorite-button {
+  background-color: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-favorite-button:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+/* Animation for the badge */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Make the favorites item more interactive */
+.notification-item-vendor {
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.notification-item-vendor:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Update the header to show count */
+.overlay-header-vendor h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .avatar {
   background-color: #e0e0e0;
 }
