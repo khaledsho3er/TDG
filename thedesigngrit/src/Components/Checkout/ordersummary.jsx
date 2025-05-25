@@ -152,7 +152,7 @@ function SummaryForm({ billData, onValidate }) {
                         fontWeight: 500,
                       }}
                     >
-                      {product.unitPrice} LE
+                      {product.unitPrice.toLocaleString()} LE
                     </span>
 
                     <span
@@ -174,7 +174,7 @@ function SummaryForm({ billData, onValidate }) {
                         fontWeight: 600,
                       }}
                     >
-                      {(product.unitPrice * product.quantity).toLocaleString()}{" "}
+                      {(product.unitPrice * product.quantity).toLocaleString()}
                       LE
                     </span>
                   </Box>
