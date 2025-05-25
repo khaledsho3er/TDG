@@ -146,6 +146,9 @@
   .types-container {
     grid-template-columns: repeat(3, 1fr);
   }
+  .menu-overlay {
+    width: 80%;
+  }
 }
 
 /* Medium Laptop (1024px - 1440px) */
@@ -283,10 +286,11 @@
   }
 
   .concept-card {
-    width: 150vw;
-    height: 40vh;
+    height: 35vh;
   }
-
+  .middle-card {
+    width: 450px;
+  }
   .left-card {
     height: 30vh;
   }

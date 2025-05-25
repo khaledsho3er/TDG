@@ -894,7 +894,7 @@ html {
   box-sizing: border-box; /* Ensures padding doesn't add extra width */
   background-color: #fff;
   position: relative;
-  margin-top: 10rem;
+  margin-top: 15rem;
 }
 
 .concept-title-container {
@@ -931,11 +931,13 @@ html {
   transform-origin: center;
   opacity: 0.8;
   overflow: hidden; /* Ensure the overlay doesn't spill out of the card */
+  background-color: transparent;
 }
 
 .concept-card img {
   width: 100%;
   height: 100%;
+  background-color: transparent;
 }
 
 /* Node animation for concepts */
