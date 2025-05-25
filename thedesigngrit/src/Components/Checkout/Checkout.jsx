@@ -45,7 +45,15 @@ function Checkout() {
     if (!email) errors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
     if (!address) errors.address = "Address is required";
-    if (!phoneNumber) errors.phoneNumber = "Phone number is required";
+    if (!phoneNumber) {
+      errors.phoneNumber = "Phone number is required";
+    } else {
+      // Remove any non-digit characters
+      const digitsOnly = phoneNumber.replace(/\D/g, "");
+      if (digitsOnly.length < 10) {
+        errors.phoneNumber = "Phone number must have at least 10 digits";
+      }
+    }
     if (!country) errors.country = "Country is required";
     if (!city) errors.city = "City is required";
     if (!zipCode) errors.zipCode = "Zip code is required";
