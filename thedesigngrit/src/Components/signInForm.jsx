@@ -30,6 +30,8 @@ function SignInForm() {
     useState(false);
   const [forgotPasswordSuccessDialogOpen, setForgotPasswordSuccessDialogOpen] =
     useState(false);
+  const [loginError, setLoginError] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -40,6 +42,8 @@ function SignInForm() {
 
   const onSubmit = async (data) => {
     try {
+      setLoginError(""); // Clear previous error messages
+
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/signin",
         data,
@@ -50,6 +54,23 @@ function SignInForm() {
       navigate("/");
     } catch (error) {
       console.error("Error during sign-in:", error.response || error);
+
+      // Set appropriate error message based on the error response
+      if (error.response) {
+        if (error.response.status === 401) {
+          setLoginError("Invalid email or password. Please try again.");
+        } else if (error.response.data && error.response.data.message) {
+          setLoginError(error.response.data.message);
+        } else {
+          setLoginError(
+            "Login failed. Please check your credentials and try again."
+          );
+        }
+      } else {
+        setLoginError(
+          "Network error. Please check your connection and try again."
+        );
+      }
     }
   };
 
@@ -70,6 +91,11 @@ function SignInForm() {
         <div className="divider-signIn"> OR</div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Display general login error at the top of the form */}
+          {loginError && (
+            <div className="login-error-message">{loginError}</div>
+          )}
+
           <input
             type="email"
             name="email"
@@ -78,7 +104,7 @@ function SignInForm() {
             className="input-field"
           />
           {errors.email && (
-            <p className="error-message">{errors.email.message}</p>
+            <p className="error-message-login">{errors.email.message}</p>
           )}
 
           <div style={{ position: "relative" }}>
@@ -122,7 +148,7 @@ function SignInForm() {
             Forgot Password?
           </span>
           {errors.password && (
-            <p className="error-message">{errors.password.message}</p>
+            <p className="error-message-login">{errors.password.message}</p>
           )}
 
           <button
