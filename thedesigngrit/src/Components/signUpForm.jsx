@@ -216,6 +216,7 @@ const SignUpForm = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="signup-form"
+        noValidate
         style={{
           maxWidth: isMediumLaptop ? "450px" : "initial",
           margin: isMediumLaptop ? "0 auto" : "initial",
