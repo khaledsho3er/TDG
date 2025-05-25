@@ -225,7 +225,13 @@ const SignUpForm = () => {
           type="email"
           placeholder="E-mail"
           className="input-field"
-          {...register("email")}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Enter a valid email address",
+            },
+          })}
           style={
             isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
           }
