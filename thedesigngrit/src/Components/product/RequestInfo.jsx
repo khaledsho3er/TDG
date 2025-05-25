@@ -4,6 +4,7 @@ import { IoIosClose } from "react-icons/io";
 import ConfirmationDialog from "../confirmationMsg"; // Import ConfirmationDialog
 import { UserContext } from "../../utils/userContext"; // Assuming you have UserContext
 import axios from "axios"; // Import axios for API calls
+import * as Yup from "yup"; // Import Yup for validation
 
 const RequestQuote = ({ onClose, productId }) => {
   const { userSession } = useContext(UserContext); // Get user data from context
@@ -15,11 +16,20 @@ const RequestQuote = ({ onClose, productId }) => {
   const [customization, setCustomization] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading spinner
   const [brandData, setBrandData] = useState(null);
+  const [errors, setErrors] = useState({}); // Add errors state
 
   // New state for tracking dropdown selections
   const [materialOption, setMaterialOption] = useState("");
   const [sizeOption, setSizeOption] = useState("");
   const [colorOption, setColorOption] = useState("");
+
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    material: Yup.string().required("Material is required"),
+    size: Yup.string().required("Size is required"),
+    color: Yup.string().required("Color is required"),
+    // Customization is optional
+  });
 
   // Fetch brand data if needed
   useEffect(() => {
@@ -46,6 +56,23 @@ const RequestQuote = ({ onClose, productId }) => {
     }
   }, [productId]);
 
+  // Validate form fields
+  const validateForm = async () => {
+    try {
+      const formData = { material, size, color, customization };
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (error) {
+      const newErrors = {};
+      error.inner.forEach((err) => {
+        newErrors[err.path] = err.message;
+      });
+      setErrors(newErrors);
+      return false;
+    }
+  };
+
   // Handle dropdown changes
   const handleMaterialChange = (e) => {
     const value = e.target.value;
@@ -54,6 +81,10 @@ const RequestQuote = ({ onClose, productId }) => {
       setMaterial(value);
     } else {
       setMaterial("");
+    }
+    // Clear error when user makes a selection
+    if (errors.material && value !== "") {
+      setErrors({ ...errors, material: "" });
     }
   };
 
@@ -65,6 +96,10 @@ const RequestQuote = ({ onClose, productId }) => {
     } else {
       setSize("");
     }
+    // Clear error when user makes a selection
+    if (errors.size && value !== "") {
+      setErrors({ ...errors, size: "" });
+    }
   };
 
   const handleColorChange = (e) => {
@@ -75,24 +110,49 @@ const RequestQuote = ({ onClose, productId }) => {
     } else {
       setColor("");
     }
+    // Clear error when user makes a selection
+    if (errors.color && value !== "") {
+      setErrors({ ...errors, color: "" });
+    }
   };
 
   // Handle text input changes
   const handleMaterialInput = (e) => {
     setMaterial(e.target.value);
+    // Clear error when user types
+    if (errors.material && e.target.value !== "") {
+      setErrors({ ...errors, material: "" });
+    }
   };
 
   const handleSizeInput = (e) => {
     setSize(e.target.value);
+    // Clear error when user types
+    if (errors.size && e.target.value !== "") {
+      setErrors({ ...errors, size: "" });
+    }
   };
 
   const handleColorInput = (e) => {
     setColor(e.target.value);
+    // Clear error when user types
+    if (errors.color && e.target.value !== "") {
+      setErrors({ ...errors, color: "" });
+    }
+  };
+
+  const handleCustomizationInput = (e) => {
+    setCustomization(e.target.value);
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
+
+    // Validate form before proceeding
+    const isValid = await validateForm();
+    if (!isValid) return;
+
     setIsDialogOpen(true); // Open the confirmation dialog
   };
 
@@ -129,7 +189,6 @@ const RequestQuote = ({ onClose, productId }) => {
       setIsDialogOpen(false);
     } catch (error) {
       console.error("Error submitting quotation:", error);
-      alert("There was an error submitting your quotation.");
     } finally {
       setIsLoading(false);
     }
@@ -170,6 +229,9 @@ const RequestQuote = ({ onClose, productId }) => {
       </div>
     );
   }
+
+  // Check if form is valid for submit button state
+  const isFormValid = material !== "" && size !== "" && color !== "";
 
   return (
     <div className="requestInfo-popup-overlay">
@@ -224,18 +286,21 @@ const RequestQuote = ({ onClose, productId }) => {
             </div>
             <form className="requestInfo-form" onSubmit={handleSubmit}>
               <div className="requestInfo-form-group">
-                <label>Material</label>
+                <label>
+                  Material <span className="required-field">*</span>
+                </label>
                 <div className="requestInfo-input-group">
                   <select
                     value={materialOption}
                     onChange={handleMaterialChange}
+                    className={errors.material ? "input-error" : ""}
                   >
                     <option value="">Select Material</option>
                     <option value="Wool Fabric">Wool Fabric</option>
                     <option value="Cotton Fabric">Cotton Fabric</option>
                     <option value="Leather">Leather</option>
                     <option value="Denim">Denim</option>
-                    <option value="Others">Others</option>
+                    <option value="Others">Other</option>
                   </select>
                   <input
                     type="text"
@@ -243,6 +308,11 @@ const RequestQuote = ({ onClose, productId }) => {
                     value={material}
                     onChange={handleMaterialInput}
                     disabled={materialOption !== "Others"}
+                    className={
+                      errors.material && materialOption === "Others"
+                        ? "input-error"
+                        : ""
+                    }
                     style={{
                       backgroundColor:
                         materialOption !== "Others" ? "#f0f0f0" : "white",
@@ -251,16 +321,25 @@ const RequestQuote = ({ onClose, productId }) => {
                     }}
                   />
                 </div>
+                {errors.material && (
+                  <div className="error-message">{errors.material}</div>
+                )}
               </div>
               <div className="requestInfo-form-group">
-                <label>Size</label>
+                <label>
+                  Size <span className="required-field">*</span>
+                </label>
                 <div className="requestInfo-input-group">
-                  <select value={sizeOption} onChange={handleSizeChange}>
+                  <select
+                    value={sizeOption}
+                    onChange={handleSizeChange}
+                    className={errors.size ? "input-error" : ""}
+                  >
                     <option value="">Select Size</option>
                     <option value="4080 x 1000">4080 x 1000</option>
                     <option value="4080 x 1200">4080 x 1200</option>
                     <option value="4080 x 1400">4080 x 1400</option>
-                    <option value="Others">Others</option>
+                    <option value="Others">Other</option>
                   </select>
                   <input
                     type="text"
@@ -268,6 +347,11 @@ const RequestQuote = ({ onClose, productId }) => {
                     value={size}
                     onChange={handleSizeInput}
                     disabled={sizeOption !== "Others"}
+                    className={
+                      errors.size && sizeOption === "Others"
+                        ? "input-error"
+                        : ""
+                    }
                     style={{
                       backgroundColor:
                         sizeOption !== "Others" ? "#f0f0f0" : "white",
@@ -275,17 +359,26 @@ const RequestQuote = ({ onClose, productId }) => {
                     }}
                   />
                 </div>
+                {errors.size && (
+                  <div className="error-message">{errors.size}</div>
+                )}
               </div>
               <div className="requestInfo-form-group">
-                <label>Colour</label>
+                <label>
+                  Colour <span className="required-field">*</span>
+                </label>
                 <div className="requestInfo-input-group">
-                  <select value={colorOption} onChange={handleColorChange}>
+                  <select
+                    value={colorOption}
+                    onChange={handleColorChange}
+                    className={errors.color ? "input-error" : ""}
+                  >
                     <option value="">Select Colour</option>
                     <option value="White Grey">White Grey</option>
                     <option value="White">White</option>
                     <option value="Black">Black</option>
                     <option value="Grey">Grey</option>
-                    <option value="Others">Others</option>
+                    <option value="Others">Other</option>
                   </select>
                   <input
                     type="text"
@@ -293,6 +386,11 @@ const RequestQuote = ({ onClose, productId }) => {
                     value={color}
                     onChange={handleColorInput}
                     disabled={colorOption !== "Others"}
+                    className={
+                      errors.color && colorOption === "Others"
+                        ? "input-error"
+                        : ""
+                    }
                     style={{
                       backgroundColor:
                         colorOption !== "Others" ? "#f0f0f0" : "white",
@@ -300,21 +398,26 @@ const RequestQuote = ({ onClose, productId }) => {
                     }}
                   />
                 </div>
+                {errors.color && (
+                  <div className="error-message">{errors.color}</div>
+                )}
               </div>
               <div className="requestInfo-form-group">
                 <label>Customization</label>
                 <textarea
                   placeholder="Add a note..."
                   value={customization}
-                  onChange={(e) => setCustomization(e.target.value)}
+                  onChange={handleCustomizationInput}
                 ></textarea>
               </div>
               <button
                 type="submit"
-                className="requestInfo-submit-button"
-                disabled={isLoading} // Disable button when loading
+                className={`requestInfo-submit-button ${
+                  !isFormValid ? "button-disabled" : ""
+                }`}
+                disabled={isLoading || !isFormValid}
               >
-                {isLoading ? "Sending..." : "SEND"} {/* Show loading state */}
+                {isLoading ? "Sending..." : "SEND"}
               </button>
             </form>
           </div>
