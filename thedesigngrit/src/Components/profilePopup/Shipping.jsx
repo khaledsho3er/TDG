@@ -297,10 +297,40 @@ const ShippingInfoPopup = () => {
           </Button>
         </Box>
       ) : (
-        <Grid container spacing={3}>
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            "@media (min-width: 1024px) and (max-width: 1440px)": {
+              flexDirection: "column",
+            },
+          }}
+        >
           {userData.shipmentAddress.map((addr, index) => (
-            <Grid item xs={12} md={6} key={index}>
-              <AddressCard isDefault={addr.isDefault === true}>
+            <Grid
+              item
+              xs={12}
+              md={12} // Changed from md={6} to md={12} to take full width
+              lg={6} // Added lg={6} to return to two columns at larger screens
+              key={index}
+              sx={{
+                "@media (min-width: 1024px) and (max-width: 1440px)": {
+                  maxWidth: "100%",
+                  flexBasis: "100%",
+                  width: "100%",
+                },
+              }}
+            >
+              <AddressCard
+                isDefault={addr.isDefault === true}
+                sx={{
+                  width: "100%",
+                  "@media (min-width: 1024px) and (max-width: 1440px)": {
+                    maxWidth: "100%",
+                    margin: "0 0 16px 0",
+                  },
+                }}
+              >
                 <CardContent>
                   <Typography
                     variant="h6"
