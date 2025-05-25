@@ -56,7 +56,14 @@ function Checkout() {
     }
     if (!country) errors.country = "Country is required";
     if (!city) errors.city = "City is required";
-    if (!zipCode) errors.zipCode = "Zip code is required";
+    if (!zipCode) {
+      errors.zipCode = "Zip code is required";
+    } else {
+      const digitsOnly = zipCode.replace(/\D/g, "");
+      if (digitsOnly.length !== 5) {
+        errors.zipCode = "Zip Code Must be 5 digits";
+      }
+    }
 
     setBillingErrors(errors);
     return Object.keys(errors).length === 0;
@@ -96,7 +103,14 @@ function Checkout() {
     if (!floor) errors.floor = "Floor is required";
     if (!country) errors.country = "Country is required";
     if (!city) errors.city = "City is required";
-    if (!zipCode) errors.zipCode = "Zip code is required";
+    if (!zipCode) {
+      errors.zipCode = "Zip code is required";
+    } else {
+      const digitsOnly = zipCode.replace(/\D/g, "");
+      if (digitsOnly.length !== 5) {
+        errors.zipCode = "Zip Code Must be 5 digits";
+      }
+    }
 
     setShippingErrors(errors);
     return Object.keys(errors).length === 0;

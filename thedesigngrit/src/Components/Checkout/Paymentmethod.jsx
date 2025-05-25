@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -9,7 +10,6 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
 import BillSummary from "./billingSummary";
 // import { useCart } from "../../Context/cartcontext";
 
@@ -29,7 +29,7 @@ function PaymentForm({
     cvv: paymentData.cvv,
   });
   const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
-
+  const [showCOD, setShowCOD] = useState(true);
   // // Add CSS for error styling
   // const errorStyle = {
   //   border: "1px solid red",
@@ -42,7 +42,17 @@ function PaymentForm({
   //   marginTop: "4px",
   //   textAlign: "left",
   // };
+  useEffect(() => {
+    if (billData && billData.total) {
+      setShowCOD(billData.total <= 10000);
 
+      // If COD is selected but no longer available, switch to card payment
+      if (paymentMethod === "cod" && billData.total > 10000) {
+        setPaymentMethod("card");
+        onChange({ ...paymentData, paymentMethod: "card" });
+      }
+    }
+  }, [billData, paymentData, onChange, paymentMethod]);
   const handleCardDetailsChange = (e) => {
     const { name, value } = e.target;
     const updatedCardDetails = { ...cardDetails, [name]: value };
@@ -165,11 +175,36 @@ function PaymentForm({
               control={<Radio />}
               label={<span className="montserrat-font">Fawry Pay</span>}
             />
-            <FormControlLabel
-              value="cod"
-              control={<Radio />}
-              label={<span className="montserrat-font">Cash on Delivery</span>}
-            />
+            {showCOD ? (
+              <FormControlLabel
+                value="cod"
+                control={<Radio />}
+                label={
+                  <span className="montserrat-font">Cash on Delivery</span>
+                }
+              />
+            ) : (
+              <Box
+                sx={{
+                  padding: "8px 0",
+                  color: "#888",
+                  fontStyle: "italic",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+                className="montserrat-font"
+              >
+                <span
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                    display: "inline-block",
+                  }}
+                ></span>
+                Cash on Delivery unavailable for orders over 10,000 EGP
+              </Box>
+            )}
           </RadioGroup>
         </FormControl>
       </Box>
