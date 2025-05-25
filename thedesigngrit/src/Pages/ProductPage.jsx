@@ -52,6 +52,11 @@ function ProductPage() {
   const [quoteProduct, setQuoteProduct] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  // Add state for validation errors
+  const [validationErrors, setValidationErrors] = useState({
+    color: false,
+    size: false,
+  });
 
   const handleRequestQuote = (productData) => {
     if (!userSession) {
@@ -230,6 +235,19 @@ function ProductPage() {
   };
 
   const handleAddToCart = () => {
+    // Validate color and size selection
+    const errors = {
+      color: product.colors?.length > 0 && !selectedColor,
+      size: getAvailableSizes().length > 0 && !selectedSize,
+    };
+
+    setValidationErrors(errors);
+
+    // If there are validation errors, don't proceed
+    if (errors.color || errors.size) {
+      return;
+    }
+
     // Determine if we're adding a variant or the main product
     if (selectedVariant) {
       // Adding a variant
@@ -559,7 +577,6 @@ function ProductPage() {
                 </>
               )}
             </p>
-
             <hr />
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
@@ -662,11 +679,18 @@ function ProductPage() {
                 )}
               </div>
             </div>
-            {selectedColor && (
+            {selectedColor ? (
               <p className="selected-color-text">
                 Selected Color: {selectedColor}
               </p>
-            )}
+            ) : validationErrors.color ? (
+              <p
+                className="selected-color-text"
+                style={{ color: "red", fontWeight: "bold" }}
+              >
+                Please select a color
+              </p>
+            ) : null}
             <hr />
             <div className="size-selector">
               <span className="size-selector-label">Size:</span>
@@ -684,7 +708,13 @@ function ProductPage() {
                 ))}
               </div>
             </div>
-            {selectedSize && <p>Selected Size: {selectedSize}</p>}
+            {selectedSize ? (
+              <p>Selected Size: {selectedSize}</p>
+            ) : validationErrors.size ? (
+              <p style={{ color: "red", fontWeight: "bold" }}>
+                Please select a size
+              </p>
+            ) : null}{" "}
             <div className="action-buttons">
               <button
                 className="action-button button-primary"
