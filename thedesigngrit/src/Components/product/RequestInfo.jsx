@@ -77,7 +77,7 @@ const RequestQuote = ({ onClose, productId }) => {
   const handleMaterialChange = (e) => {
     const value = e.target.value;
     setMaterialOption(value);
-    if (value !== "Others") {
+    if (value !== "Other") {
       setMaterial(value);
     } else {
       setMaterial("");
@@ -91,7 +91,7 @@ const RequestQuote = ({ onClose, productId }) => {
   const handleSizeChange = (e) => {
     const value = e.target.value;
     setSizeOption(value);
-    if (value !== "Others") {
+    if (value !== "Other") {
       setSize(value);
     } else {
       setSize("");
@@ -105,7 +105,7 @@ const RequestQuote = ({ onClose, productId }) => {
   const handleColorChange = (e) => {
     const value = e.target.value;
     setColorOption(value);
-    if (value !== "Others") {
+    if (value !== "Other") {
       setColor(value);
     } else {
       setColor("");
@@ -286,9 +286,7 @@ const RequestQuote = ({ onClose, productId }) => {
             </div>
             <form className="requestInfo-form" onSubmit={handleSubmit}>
               <div className="requestInfo-form-group">
-                <label>
-                  Material <span className="required-field">*</span>
-                </label>
+                <label>Material</label>
                 <div className="requestInfo-input-group">
                   <select
                     value={materialOption}
@@ -300,24 +298,24 @@ const RequestQuote = ({ onClose, productId }) => {
                     <option value="Cotton Fabric">Cotton Fabric</option>
                     <option value="Leather">Leather</option>
                     <option value="Denim">Denim</option>
-                    <option value="Others">Other</option>
+                    <option value="Other">Other</option>
                   </select>
                   <input
                     type="text"
-                    placeholder="Others..."
+                    placeholder="Other..."
                     value={material}
                     onChange={handleMaterialInput}
-                    disabled={materialOption !== "Others"}
+                    disabled={materialOption !== "Other"}
                     className={
-                      errors.material && materialOption === "Others"
+                      errors.material && materialOption === "Other"
                         ? "input-error"
                         : ""
                     }
                     style={{
                       backgroundColor:
-                        materialOption !== "Others" ? "#f0f0f0" : "white",
+                        materialOption !== "Other" ? "#f0f0f0" : "white",
                       cursor:
-                        materialOption !== "Others" ? "not-allowed" : "text",
+                        materialOption !== "Other" ? "not-allowed" : "text",
                     }}
                   />
                 </div>
@@ -326,9 +324,7 @@ const RequestQuote = ({ onClose, productId }) => {
                 )}
               </div>
               <div className="requestInfo-form-group">
-                <label>
-                  Size <span className="required-field">*</span>
-                </label>
+                <label>Size</label>
                 <div className="requestInfo-input-group">
                   <select
                     value={sizeOption}
@@ -339,23 +335,21 @@ const RequestQuote = ({ onClose, productId }) => {
                     <option value="4080 x 1000">4080 x 1000</option>
                     <option value="4080 x 1200">4080 x 1200</option>
                     <option value="4080 x 1400">4080 x 1400</option>
-                    <option value="Others">Other</option>
+                    <option value="Other">Other</option>
                   </select>
                   <input
                     type="text"
-                    placeholder="Others..."
+                    placeholder="Other..."
                     value={size}
                     onChange={handleSizeInput}
-                    disabled={sizeOption !== "Others"}
+                    disabled={sizeOption !== "Other"}
                     className={
-                      errors.size && sizeOption === "Others"
-                        ? "input-error"
-                        : ""
+                      errors.size && sizeOption === "Other" ? "input-error" : ""
                     }
                     style={{
                       backgroundColor:
-                        sizeOption !== "Others" ? "#f0f0f0" : "white",
-                      cursor: sizeOption !== "Others" ? "not-allowed" : "text",
+                        sizeOption !== "Other" ? "#f0f0f0" : "white",
+                      cursor: sizeOption !== "Other" ? "not-allowed" : "text",
                     }}
                   />
                 </div>
@@ -364,9 +358,7 @@ const RequestQuote = ({ onClose, productId }) => {
                 )}
               </div>
               <div className="requestInfo-form-group">
-                <label>
-                  Colour <span className="required-field">*</span>
-                </label>
+                <label>Colour</label>
                 <div className="requestInfo-input-group">
                   <select
                     value={colorOption}
@@ -378,23 +370,23 @@ const RequestQuote = ({ onClose, productId }) => {
                     <option value="White">White</option>
                     <option value="Black">Black</option>
                     <option value="Grey">Grey</option>
-                    <option value="Others">Other</option>
+                    <option value="Other">Other</option>
                   </select>
                   <input
                     type="text"
-                    placeholder="Others..."
+                    placeholder="Other..."
                     value={color}
                     onChange={handleColorInput}
-                    disabled={colorOption !== "Others"}
+                    disabled={colorOption !== "Other"}
                     className={
-                      errors.color && colorOption === "Others"
+                      errors.color && colorOption === "Other"
                         ? "input-error"
                         : ""
                     }
                     style={{
                       backgroundColor:
-                        colorOption !== "Others" ? "#f0f0f0" : "white",
-                      cursor: colorOption !== "Others" ? "not-allowed" : "text",
+                        colorOption !== "Other" ? "#f0f0f0" : "white",
+                      cursor: colorOption !== "Other" ? "not-allowed" : "text",
                     }}
                   />
                 </div>
