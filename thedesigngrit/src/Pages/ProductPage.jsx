@@ -213,13 +213,18 @@ function ProductPage() {
 
   // Create a function to get available sizes for the selected color
   const getAvailableSizes = () => {
-    if (!selectedColor || variants.length === 0) return product.sizes || [];
+    if (!selectedColor || !variants || variants.length === 0)
+      return product.sizes || [];
 
     const colorVariants = variants.filter(
-      (variant) => variant.color.toLowerCase() === selectedColor.toLowerCase()
+      (variant) =>
+        variant.color &&
+        variant.color.toLowerCase() === selectedColor.toLowerCase()
     );
 
-    const uniqueSizes = [...new Set(colorVariants.map((v) => v.size))];
+    const uniqueSizes = [
+      ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
+    ];
     return uniqueSizes.length > 0 ? uniqueSizes : product.sizes || [];
   };
 
@@ -374,7 +379,7 @@ function ProductPage() {
               onClick={() => handleImageClick(0)}
             />
             <div className="thumbnail-container">
-              {displayImages?.length ? (
+              {displayImages && displayImages.length > 0 ? (
                 displayImages.map((image, index) => (
                   <img
                     key={index}
@@ -684,10 +689,7 @@ function ProductPage() {
                 Selected Color: {selectedColor}
               </p>
             ) : validationErrors.color ? (
-              <p
-                className="selected-color-text"
-                style={{ color: "red", fontWeight: "bold" }}
-              >
+              <p className="selected-color-text" style={{ color: "red" }}>
                 Please select a color
               </p>
             ) : null}
@@ -695,25 +697,27 @@ function ProductPage() {
             <div className="size-selector">
               <span className="size-selector-label">Size:</span>
               <div className="size-options">
-                {getAvailableSizes().map((size, index) => (
-                  <button
-                    key={index}
-                    className={`size-button ${
-                      selectedSize === size ? "selected" : ""
-                    }`}
-                    onClick={() => handleSizeSelect(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {getAvailableSizes() && getAvailableSizes().length > 0 ? (
+                  getAvailableSizes().map((size, index) => (
+                    <button
+                      key={index}
+                      className={`size-button ${
+                        selectedSize === size ? "selected" : ""
+                      }`}
+                      onClick={() => handleSizeSelect(size)}
+                    >
+                      {size}
+                    </button>
+                  ))
+                ) : (
+                  <p>No size options available</p>
+                )}
               </div>
             </div>
             {selectedSize ? (
               <p>Selected Size: {selectedSize}</p>
             ) : validationErrors.size ? (
-              <p style={{ color: "red", fontWeight: "bold" }}>
-                Please select a size
-              </p>
+              <p style={{ color: "red" }}>Please select a size</p>
             ) : null}{" "}
             <div className="action-buttons">
               <button
