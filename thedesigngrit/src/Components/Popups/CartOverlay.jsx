@@ -257,28 +257,6 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             >
               Checkout
             </Button>
-
-            {/* View Cart Button */}
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{
-                marginTop: "10px",
-                fontFamily: "Horizon",
-                borderColor: "#6B7B58",
-                color: "#6B7B58",
-                "&:hover": {
-                  borderColor: "#5a6a47",
-                  backgroundColor: "rgba(107, 123, 88, 0.1)",
-                },
-              }}
-              onClick={() => {
-                navigate("/cart");
-                onClose();
-              }}
-            >
-              View Cart
-            </Button>
           </Box>
         </>
       )}
