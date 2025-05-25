@@ -48,23 +48,10 @@ function BillingForm({
 }) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
-  const [setErrors] = useState(errors);
-  const validatePhoneNumber = (phoneNumber) => {
-    // Remove any non-digit characters
-    const digitsOnly = phoneNumber.replace(/\D/g, "");
-    // Check if the resulting string has at least 10 digits
-    return digitsOnly.length >= 10;
-  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedData = { ...billingData, [name]: value };
-    if (name === "phoneNumber" && validateOnChange) {
-      const isValid = validatePhoneNumber(value);
-      setErrors({
-        ...errors,
-        phoneNumber: isValid ? "" : "Phone number must have at least 10 digits",
-      });
-    }
     onChange(updatedData);
   };
 
@@ -264,24 +251,11 @@ function BillingForm({
                 country={billingData.userCountryCode || "eg"}
                 value={billingData.phoneNumber}
                 onChange={(phone, countryData) => {
-                  const updatedData = {
+                  onChange({
                     ...billingData,
                     phoneNumber: phone,
                     userCountryCode: countryData.countryCode,
-                  };
-
-                  // Validate phone number
-                  if (validateOnChange) {
-                    const isValid = validatePhoneNumber(phone);
-                    setErrors({
-                      ...errors,
-                      phoneNumber: isValid
-                        ? ""
-                        : "Phone number must have at least 10 digits",
-                    });
-                  }
-
-                  onChange(updatedData);
+                  });
                 }}
                 inputStyle={{
                   ...(errors.phoneNumber ? errorStyle : {}),
@@ -295,10 +269,6 @@ function BillingForm({
                 containerStyle={{ marginBottom: "0rem", width: "100%" }}
                 buttonStyle={{
                   border: "none",
-                }}
-                isValid={(value, country) => {
-                  const digitsOnly = value.replace(/\D/g, "");
-                  return digitsOnly.length >= 10;
                 }}
               />
               {errors.phoneNumber && (
