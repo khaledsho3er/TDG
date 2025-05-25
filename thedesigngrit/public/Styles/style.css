@@ -3194,6 +3194,56 @@ select {
 }
 
 /*My cart Page*/
+/* Add to Cart Notification */
+.added-to-cart-notification {
+  animation: slideIn 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Cart Overlay Animation */
+.Cart-popup {
+  animation: slideInCart 0.3s ease-out;
+}
+
+@keyframes slideInCart {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Highlight animation for newly added items */
+@keyframes highlightItem {
+  0% {
+    background-color: rgba(107, 123, 88, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
 /* General styles */
 
 .Shopping-cart-title h2 {

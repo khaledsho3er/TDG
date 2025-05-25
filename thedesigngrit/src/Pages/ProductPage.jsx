@@ -17,6 +17,7 @@ import RelatedProducts from "../Components/relatedProducts";
 import BrandCursol from "../Components/brandCursol";
 import { BsExclamationOctagon } from "react-icons/bs";
 import RequestQuote from "../Components/product/RequestInfo";
+import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
@@ -49,6 +50,8 @@ function ProductPage() {
   const [activeProduct, setActiveProduct] = useState(null);
   const [isRequestQuoteOpen, setIsRequestQuoteOpen] = useState(false);
   const [quoteProduct, setQuoteProduct] = useState(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const handleRequestQuote = (productData) => {
     if (!userSession) {
@@ -278,6 +281,22 @@ function ProductPage() {
         shippingFee: shippingFee || 0,
       });
     }
+
+    // Show cart overlay
+    setCartOpen(true);
+
+    // Show notification
+    setAddedToCart(true);
+
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 3000);
+  };
+
+  // Add this function to close the cart overlay
+  const handleCloseCart = () => {
+    setCartOpen(false);
   };
 
   //Review Function Post
@@ -1094,6 +1113,51 @@ function ProductPage() {
           onClose={handleCloseRequestQuote}
           productId={quoteProduct}
         />
+      )}
+      {/* Cart Overlay */}
+      <ShoppingCartOverlay open={cartOpen} onClose={handleCloseCart} />
+
+      {/* Added to Cart Notification */}
+      {addedToCart && (
+        <div
+          className="added-to-cart-notification"
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor: "#6B7B58",
+            color: "white",
+            padding: "15px 20px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            animation: "slideIn 0.3s ease-out",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img
+              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                selectedVariant?.images?.[0] || product.mainImage
+              }`}
+              alt={product.name}
+              style={{
+                width: "40px",
+                height: "40px",
+                objectFit: "cover",
+                borderRadius: "4px",
+              }}
+            />
+            <div>
+              <div style={{ fontWeight: "bold" }}>Added to Cart</div>
+              <div style={{ fontSize: "14px" }}>
+                {selectedVariant ? selectedVariant.title : product.name}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

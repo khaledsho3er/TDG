@@ -1,16 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import { useCart } from "../../Context/cartcontext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { UserContext } from "../../utils/userContext";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
-  const { cartItems, removeFromCart } = useCart(); // Use cartItems from context
+  const { cartItems, removeFromCart, lastAddedItem } = useCart(); // Use cartItems and lastAddedItem from context
   const isMobile = useMediaQuery("(max-width:768px)");
   const navigate = useNavigate();
   const { userSession } = useContext(UserContext); // Access user session from context
+  const [highlightedItem, setHighlightedItem] = useState(null);
+
+  // When cart opens or a new item is added, highlight that item
+  useEffect(() => {
+    if (open && lastAddedItem) {
+      setHighlightedItem(lastAddedItem.id);
+
+      // Remove highlight after 2 seconds
+      const timer = setTimeout(() => {
+        setHighlightedItem(null);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [open, lastAddedItem]);
+
   if (!open) return null; // Don't render if overlay is closed
 
   const subtotal = cartItems.reduce(
@@ -29,6 +46,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         total,
       },
     });
+    onClose(); // Close the overlay when navigating to checkout
   };
 
   return (
@@ -45,6 +63,12 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         padding: "16px",
         zIndex: 1000,
         borderRadius: "8px",
+        maxHeight: "80vh",
+        animation: "slideIn 0.3s ease-out",
+        "@keyframes slideIn": {
+          "0%": { transform: "translateX(100%)", opacity: 0 },
+          "100%": { transform: "translateX(0)", opacity: 1 },
+        },
       }}
       className="Cart-popup"
     >
@@ -72,7 +96,14 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         </Typography>
       ) : (
         <>
-          <Box sx={{ flexGrow: 1, overflowY: "auto", marginTop: "10px" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              overflowY: "auto",
+              marginTop: "10px",
+              maxHeight: "50vh",
+            }}
+          >
             {cartItems.map((item) => (
               <Box
                 key={item.id}
@@ -82,8 +113,37 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                   alignItems: "center",
                   padding: "8px 0",
                   borderBottom: "1px solid #eee",
+                  backgroundColor:
+                    highlightedItem === item.id
+                      ? "rgba(107, 123, 88, 0.1)"
+                      : "transparent",
+                  transition: "background-color 0.3s ease",
+                  position: "relative",
+                  borderRadius: "4px",
                 }}
               >
+                {/* New Item Indicator */}
+                {highlightedItem === item.id && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "8px",
+                      right: "8px",
+                      backgroundColor: "#6B7B58",
+                      color: "white",
+                      fontSize: "10px",
+                      padding: "2px 6px",
+                      borderRadius: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <CheckCircleIcon sx={{ fontSize: 14 }} />
+                    <span>Added</span>
+                  </Box>
+                )}
+
                 {/* Left: Image */}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <img
@@ -91,14 +151,25 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     alt={item.name}
                     width="120"
                     height="100"
-                    style={{ borderRadius: "5px" }}
+                    style={{
+                      borderRadius: "5px",
+                      transition: "transform 0.3s ease",
+                      transform:
+                        highlightedItem === item.id
+                          ? "scale(1.05)"
+                          : "scale(1)",
+                    }}
                   />
 
                   {/* Right: Name & Price */}
                   <Box>
                     <Typography
                       variant="body1"
-                      sx={{ fontFamily: "Montserrat" }}
+                      sx={{
+                        fontFamily: "Montserrat",
+                        fontWeight:
+                          highlightedItem === item.id ? "bold" : "normal",
+                      }}
                     >
                       {item.name}
                     </Typography>
@@ -108,12 +179,45 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     >
                       {`${item.quantity} x  ${item.unitPrice.toFixed(2)}LE`}
                     </Typography>
+                    {item.color && item.color !== "default" && (
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#6B7B58",
+                          fontFamily: "Montserrat",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Color: {item.color}
+                      </Typography>
+                    )}
+                    {item.size && item.size !== "default" && (
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#6B7B58",
+                          fontFamily: "Montserrat",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Size: {item.size}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
 
                 {/* Remove Button */}
-
-                <CancelIcon onClick={() => removeFromCart(item.id)} />
+                <CancelIcon
+                  onClick={() => removeFromCart(item.id)}
+                  sx={{
+                    cursor: "pointer",
+                    color: "#999",
+                    "&:hover": {
+                      color: "#f44336",
+                    },
+                    marginRight: highlightedItem === item.id ? "30px" : "0",
+                  }}
+                />
               </Box>
             ))}
           </Box>
@@ -132,17 +236,50 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             </Typography>
           </Box>
 
-          {/* Checkout Button */}
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: "10px", fontFamily: "Horizon" }}
-            onClick={
-              userSession ? handleCheckoutClick : () => navigate("/login")
-            } // Use the corrected function
-          >
-            Checkout
-          </Button>
+          {/* Action Buttons */}
+          <Box sx={{ display: "flex", gap: "10px" }}>
+            {/* Checkout Button */}
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                marginTop: "10px",
+                fontFamily: "Horizon",
+                backgroundColor: "#6B7B58",
+                "&:hover": {
+                  backgroundColor: "#5a6a47",
+                },
+              }}
+              onClick={
+                userSession ? handleCheckoutClick : () => navigate("/login")
+              }
+            >
+              Checkout
+            </Button>
+
+            {/* View Cart Button */}
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{
+                marginTop: "10px",
+                fontFamily: "Horizon",
+                borderColor: "#6B7B58",
+                color: "#6B7B58",
+                "&:hover": {
+                  borderColor: "#5a6a47",
+                  backgroundColor: "rgba(107, 123, 88, 0.1)",
+                },
+              }}
+              onClick={() => {
+                navigate("/cart");
+                onClose();
+              }}
+            >
+              View Cart
+            </Button>
+          </Box>
         </>
       )}
     </Box>
