@@ -171,15 +171,10 @@ const SignUpForm = () => {
           }, 3000);
         }
       } else {
-        alert(
-          response.data.message || "Registration successful. Please sign in."
-        );
+        console.error("Registration failed:", response.data.message);
       }
     } catch (error) {
       console.error("Sign-up error:", error);
-      alert(
-        error.response?.data?.message || "An error occurred during sign-up."
-      );
     }
   };
 

@@ -52,11 +52,9 @@ function Profile({ userData }) {
           { withCredentials: true }
         );
         console.log(response.data);
-        alert("User data updated successfully!");
         setIsEditing(false); // Switch to text display after save
       } catch (error) {
         console.error("Error updating user data:", error.response || error);
-        alert("Failed to update user data.");
       }
     } else if (dialogAction === "cancel") {
       console.log("Changes discarded!");

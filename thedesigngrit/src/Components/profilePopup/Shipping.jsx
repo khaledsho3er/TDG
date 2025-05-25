@@ -186,9 +186,6 @@ const ShippingInfoPopup = () => {
         !newAddress.country ||
         !newAddress.postalCode
       ) {
-        alert(
-          "Please fill in all required fields: Address, City, Country, and Postal Code"
-        );
         return;
       }
 

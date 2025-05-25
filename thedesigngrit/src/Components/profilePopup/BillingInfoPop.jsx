@@ -129,9 +129,6 @@ const BillingInfoPopup = ({
         // Close the modal first
         onCancel();
 
-        // Show success alert
-        alert("✅ Card saved successfully!");
-
         // Signal the parent component to refresh the card list
         if (typeof onSave === "function") {
           onSave();
@@ -146,16 +143,18 @@ const BillingInfoPopup = ({
       if (error.message && error.message.includes("h is not a function")) {
         // This is the specific error we're seeing, but the card is still being saved
         onCancel();
-        alert("✅ Card saved successfully!");
 
         // Signal the parent component to refresh the card list
         if (typeof onSave === "function") {
           onSave();
         }
       } else if (error.response?.data?.message) {
-        alert(`❌ ${error.response.data.message}`);
+        console.error(
+          "Error message from server:",
+          error.response.data.message
+        );
       } else {
-        alert("❌ Failed to save card. Please try again.");
+        console.error("Unexpected error:", error);
       }
     }
   };

@@ -31,7 +31,6 @@ function EditProfile() {
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error.response || error);
-        alert("Failed to fetch user data.");
       }
     };
 
@@ -66,7 +65,6 @@ function EditProfile() {
         console.log(response.data);
       } catch (error) {
         console.error("Error updating user data:", error.response || error);
-        alert("Failed to update user data.");
       }
       console.log("Changes saved!");
     } else if (dialogAction === "cancel") {

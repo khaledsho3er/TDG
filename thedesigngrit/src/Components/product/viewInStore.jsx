@@ -51,11 +51,9 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
       } else {
         const error = await response.json();
         console.error("Failed to create ViewInStore entry:", error);
-        alert("Error: " + error.message || "Failed to submit information.");
       }
     } catch (err) {
       console.error("Request error:", err);
-      alert("Something went wrong! Please try again.");
     }
   };
 
