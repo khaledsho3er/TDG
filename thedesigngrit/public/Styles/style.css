@@ -453,10 +453,10 @@ body::-webkit-scrollbar:hover {
 .search-bar {
   display: flex;
   align-items: center;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border: 2px solid #2d2d2d;
+  border-radius: 6px;
   padding: 5px 15px;
-  width: 60%;
+  width: 55%;
   font-family: Montserrat;
 }
 /* Smooth Scroll Behavior */
@@ -3220,7 +3220,8 @@ select {
 }
 
 /* Cart Overlay Animation */
-.Cart-popup {
+.Cart-popup,
+.overlay-container-vendor {
   animation: slideInCart 0.3s ease-out;
 }
 
