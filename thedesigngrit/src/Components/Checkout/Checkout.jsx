@@ -295,6 +295,7 @@ function Checkout() {
           billData={{ cartItems, subtotal, shippingFee, total }}
           errors={billingErrors}
           validateOnChange={true}
+          shippingData={shippingData} // Pass shipping data to BillingForm
         />
       ),
     },
