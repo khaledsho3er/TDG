@@ -441,12 +441,8 @@ function Signupvendor() {
         </Typography>
 
         {currentPhase === 1 && (
-          <form
-            onSubmit={handleSubmitPhase1(onSubmitPhase1)}
-            className="signup-form"
-          >
+          <form onSubmit={handleSubmitPhase1(onSubmitPhase1)}>
             <TextField
-              className="input-field"
               label="First Name"
               {...registerPhase1("firstName")}
               error={!!errorsPhase1.firstName}
