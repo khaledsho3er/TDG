@@ -230,10 +230,14 @@ function Signupvendor() {
     const formData = new FormData();
 
     // Add phase 2 data
+    // Add phase 2 data
     const phase2Data = phase2Form.getValues();
     Object.keys(phase2Data).forEach((key) => {
       if (key === "type") {
-        formData.append("type", JSON.stringify(phase2Data[key]));
+        // Use "types" as the field name and append each type ID individually
+        phase2Data[key].forEach((typeId) => {
+          formData.append("types", typeId);
+        });
       } else {
         formData.append(key, phase2Data[key]);
       }
@@ -248,12 +252,12 @@ function Signupvendor() {
     if (brandLogo) formData.append("brandlogo", brandLogo);
     if (coverPhoto) formData.append("coverPhoto", coverPhoto);
 
-    catalogues.forEach((file, index) => {
-      formData.append(`catalogues[${index}]`, file);
+    catalogues.forEach((file) => {
+      formData.append("catalogues", file);
     });
 
-    documents.forEach((file, index) => {
-      formData.append(`documents[${index}]`, file);
+    documents.forEach((file) => {
+      formData.append("documents", file);
     });
 
     // Add additional fields
