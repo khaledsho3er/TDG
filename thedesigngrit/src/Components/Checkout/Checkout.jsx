@@ -48,7 +48,6 @@ function Checkout() {
     if (!phoneNumber) {
       errors.phoneNumber = "Phone number is required";
     } else {
-      // Remove any non-digit characters
       const digitsOnly = phoneNumber.replace(/\D/g, "");
       if (digitsOnly.length < 10) {
         errors.phoneNumber = "Phone number must have at least 10 digits";
