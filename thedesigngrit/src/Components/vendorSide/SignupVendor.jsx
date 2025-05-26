@@ -313,6 +313,9 @@ function Signupvendor() {
       "&.Mui-focused fieldset": {
         borderColor: "white !important",
       },
+      "&.Mui-error fieldset": {
+        borderColor: "#f44336 !important",
+      },
     },
     "& .MuiFormHelperText-root": {
       color: "rgba(255, 255, 255, 0.7)",
