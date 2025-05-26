@@ -115,7 +115,41 @@ const RelatedProducts = ({ productId }) => {
                         {categoryNames[product.category] || "Loading..."}
                       </p>
                       <h3 className="related-name">{product.name}</h3>
-                      <p className="related-price">{product.price} E£</p>
+                      {product.salePrice ? (
+                        <>
+                          <p
+                            className="related-price"
+                            style={{
+                              textDecoration: "line-through",
+                              color: "#999",
+                            }}
+                          >
+                            {product.price.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
+                            E£
+                          </p>
+                          <p
+                            className="related-price"
+                            style={{ color: "#e74c3c", fontWeight: "bold" }}
+                          >
+                            {product.salePrice.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
+                            E£
+                          </p>
+                        </>
+                      ) : (
+                        <p className="related-price">
+                          {product.price.toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}{" "}
+                          E£
+                        </p>
+                      )}
                     </div>
                   </div>
                 </Link>

@@ -298,15 +298,19 @@ function TrackOrder() {
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p>Subtotal:</p>
-                    <p>{selectedOrder.subtotal} LE</p>
+                    <p>{selectedOrder.subtotal.toLocaleString("en-us")} LE</p>
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p>Shipping:</p>
-                    <p>{selectedOrder.shippingFee} LE</p>
+                    <p>
+                      {selectedOrder.shippingFee.toLocaleString("en-us")} LE
+                    </p>
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p className="total">Total:</p>
-                    <p className="total">{selectedOrder.total} LE</p>
+                    <p className="total">
+                      {selectedOrder.total.toLocaleString("en-us")} LE
+                    </p>
                   </Box>
                 </div>
 
@@ -390,7 +394,12 @@ function TrackOrder() {
                         />
                         <div className="trackorder-suborder-item-details">
                           <h5>{selectedSubOrder.productId.name}</h5>
-                          <p>{selectedSubOrder.totalPrice} LE</p>
+                          <p>
+                            {selectedSubOrder.totalPrice.toLocaleString(
+                              "en-US"
+                            )}{" "}
+                            LE
+                          </p>
                           <p>
                             <strong>Quantity: </strong>
                             {selectedSubOrder.quantity}
