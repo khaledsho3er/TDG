@@ -4,10 +4,15 @@ import {
   Box,
   Select,
   MenuItem,
-  InputLabel,
-  FormControl,
   Chip,
-  OutlinedInput,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Grid,
+  Container,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 import {
@@ -16,77 +21,50 @@ import {
   FaLinkedin,
   FaTiktok,
   FaGlobe,
+  FaEdit,
+  FaSave,
+  FaTimes,
 } from "react-icons/fa";
 
 const BrandSignup = () => {
   const { vendor } = useVendor();
-  const [formData, setFormData] = useState({
-    brandName: "",
-    commercialRegisterNo: "",
-    taxNumber: "",
-    companyAddress: "",
-    phoneNumber: "",
-    email: "",
-    bankAccountNumber: "",
-    websiteURL: "",
-    instagramURL: "",
-    facebookURL: "",
-    linkedinURL: "",
-    tiktokURL: "",
-    shippingPolicy: "",
-    brandlogo: "",
-    type: [], // Updated: now an array for multiple selections
-    status: "",
-  });
-
+  const [formData, setFormData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState({});
   const [types, setTypes] = useState([]);
-  const [selectedTypeNames, setSelectedTypeNames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState(null);
 
   const platformIcons = {
-    instagramURL: (
-      <FaInstagram style={{ marginRight: "10px", color: "black" }} />
-    ),
-    facebookURL: <FaFacebook style={{ marginRight: "10px", color: "black" }} />,
-    linkedinURL: <FaLinkedin style={{ marginRight: "10px", color: "black" }} />,
-    tiktokURL: <FaTiktok style={{ marginRight: "10px", color: "black" }} />,
-    websiteURL: <FaGlobe style={{ marginRight: "10px", color: "black" }} />,
+    instagramURL: <FaInstagram />,
+    facebookURL: <FaFacebook />,
+    linkedinURL: <FaLinkedin />,
+    tiktokURL: <FaTiktok />,
+    websiteURL: <FaGlobe />,
   };
 
   useEffect(() => {
-    const init = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         await fetchTypes();
         if (vendor?.brandId) {
           await fetchBrandData(vendor.brandId);
         }
-        setLoading(false);
       } catch (err) {
-        console.error("Initialization error:", err);
+        console.error("Error loading data:", err);
         setError(err.message || "Failed to load data");
+      } finally {
         setLoading(false);
       }
     };
 
-    init();
+    fetchData();
   }, [vendor]);
 
-  useEffect(() => {
-    // Update selected type names whenever types or formData.type changes
-    if (types.length > 0 && formData.type && Array.isArray(formData.type)) {
-      const names = formData.type
-        .map((id) => {
-          const type = types.find((t) => t._id === id);
-          return type ? type.name : null;
-        })
-        .filter(Boolean); // Filter out any null/undefined names
-      setSelectedTypeNames(names);
-    }
-  }, [types, formData.type]);
   const fetchTypes = async () => {
     try {
       const { data } = await axios.get(
@@ -99,76 +77,74 @@ const BrandSignup = () => {
     }
   };
 
-  // Update your fetchBrandData function
   const fetchBrandData = async (brandId) => {
     try {
       const response = await axios.get(
         `https://api.thedesigngrit.com/api/brand/${brandId}`
       );
-      const data = response.data;
-
-      // Extract type IDs from the types array
-      const typeIds = data.types ? data.types.map((type) => type._id) : [];
-
-      setFormData({
-        ...data,
-        type: typeIds, // Now using the array of IDs
-      });
-      setOriginalData({
-        ...data,
-        type: typeIds,
-      });
+      setFormData(response.data);
+      setOriginalData(response.data);
     } catch (error) {
       console.error("Error fetching brand data:", error);
       throw error;
     }
   };
-  useEffect(() => {
-    // Use the types array directly from the API response
-    if (formData.types && Array.isArray(formData.types)) {
-      const names = formData.types.map((type) => type.name);
-      setSelectedTypeNames(names);
-    }
-  }, [formData.types]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTypeChange = (event) => {
-    const { value } = event.target;
+  const handleTypeChange = (e) => {
+    const { value } = e.target;
     // Limit to maximum 3 types
     if (value.length <= 3) {
       setFormData((prev) => ({
         ...prev,
-        type: value,
+        selectedTypes: value,
       }));
     }
   };
 
-  const handleEdit = () => setIsEditing(true);
+  const handleEdit = () => {
+    // Create a selectedTypes array from the types objects
+    const selectedTypeIds = formData.types?.map((type) => type._id) || [];
+    setFormData((prev) => ({
+      ...prev,
+      selectedTypes: selectedTypeIds,
+    }));
+    setIsEditing(true);
+  };
 
   const handleCancel = () => {
-    setFormData({
-      ...originalData,
-      type: Array.isArray(originalData.type)
-        ? originalData.type
-        : [originalData.type].filter(Boolean),
-    });
+    setFormData(originalData);
     setIsEditing(false);
+    setSaveError(null);
+    setSaveSuccess(false);
   };
 
   const handleSave = async () => {
     try {
+      setSaveLoading(true);
+      setSaveError(null);
+      setSaveSuccess(false);
+
       const dataToSend = new FormData();
+
+      // Add all regular fields
       Object.keys(formData).forEach((key) => {
-        if (key === "type" && Array.isArray(formData.type)) {
-          // Send type IDs
-          formData.type.forEach((typeId) => {
-            if (typeId) dataToSend.append("types", typeId);
-          });
-        } else if (
+        if (
           key !== "types" &&
+          key !== "selectedTypes" &&
+          key !== "_id" &&
+          key !== "createdAt" &&
+          key !== "updatedAt" &&
+          key !== "__v" &&
+          key !== "brandlogo" &&
+          key !== "coverPhoto" &&
+          key !== "digitalCopiesLogo" &&
+          key !== "catalogues" &&
+          key !== "documents" &&
           formData[key] !== null &&
           formData[key] !== undefined
         ) {
@@ -176,18 +152,32 @@ const BrandSignup = () => {
         }
       });
 
+      // Add selected types
+      if (formData.selectedTypes && Array.isArray(formData.selectedTypes)) {
+        formData.selectedTypes.forEach((typeId) => {
+          if (typeId) dataToSend.append("types", typeId);
+        });
+      }
+
       const response = await axios.put(
         `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`,
         dataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
+      // Update the data with the response
+      setFormData(response.data);
       setOriginalData(response.data);
+      setSaveSuccess(true);
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating brand data:", error);
+      setSaveError(error.response?.data?.message || "Failed to update brand");
+    } finally {
+      setSaveLoading(false);
     }
   };
+
   const getStatusStyle = (status) => {
     switch (status) {
       case "pending":
@@ -195,107 +185,345 @@ const BrandSignup = () => {
       case "active":
         return { backgroundColor: "#def9bf", color: "#6b7b58" };
       case "deactivated":
-        return { backgroundColor: "red", color: "white" };
+        return { backgroundColor: "#ffcccc", color: "#cc0000" };
       default:
-        return {};
+        return { backgroundColor: "#e0e0e0", color: "#666666" };
     }
   };
 
   if (loading) {
-    return <div>Loading brand information...</div>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 5 }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div>Error loading data: {error}</div>;
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
   }
 
   return (
-    <div className="brand-signup-form">
-      <div className="brand-header">
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+        {/* Header with status and brand info */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+          }}
+        >
           <Box>
-            <div
-              className="status paid"
-              style={getStatusStyle(formData.status)}
+            <Typography variant="h4" component="h1" gutterBottom>
+              {formData.brandName || "Brand Information"}
+            </Typography>
+
+            <Box
+              sx={{
+                display: "inline-block",
+                px: 2,
+                py: 0.5,
+                borderRadius: 1,
+                ...getStatusStyle(formData.status),
+              }}
             >
               {formData.status
                 ? `${formData.status
                     .charAt(0)
                     .toUpperCase()}${formData.status.slice(1)}`
                 : "Status not set"}
-            </div>
+            </Box>
           </Box>
-        </Box>
-        <Box>
-          <h2>{formData.brandName || "Brand Information"}</h2>
-          <div className="brand-logo">
+
+          <Box sx={{ textAlign: "center" }}>
             {formData.brandlogo ? (
               <img
                 src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${formData.brandlogo}`}
                 alt="Brand Logo"
-                width="150"
+                style={{
+                  width: "120px",
+                  height: "120px",
+                  objectFit: "contain",
+                }}
               />
             ) : (
-              <p>No brand logo available</p>
+              <Box
+                sx={{
+                  width: 120,
+                  height: 120,
+                  bgcolor: "#f0f0f0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="body2" color="text.secondary">
+                  No logo
+                </Typography>
+              </Box>
             )}
-          </div>
+          </Box>
         </Box>
-      </div>
 
-      <div className="brand-info">
-        {Object.keys(formData)
-          .filter(
-            (key) =>
-              ![
-                "_id",
-                "createdAt",
-                "updatedAt",
-                "__v",
-                "coverPhoto",
-                "digitalCopiesLogo",
-                "catalogues",
-                "documents",
-                "status",
-                "brandlogo",
-              ].includes(key)
-          )
-          .map((key) => (
-            <div className="form-field" key={key}>
-              <label>{key.replace(/([A-Z])/g, " $1")}</label>
-              {key.endsWith("URL") ? (
-                isEditing ? (
-                  <input
-                    type="text"
-                    name={key}
-                    value={formData[key] || ""}
-                    onChange={handleInputChange}
-                  />
-                ) : (
-                  <div className="display-content">
-                    {formData[key] ? (
-                      <a
-                        href={formData[key]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: "blue", textDecoration: "underline" }}
-                      >
-                        {platformIcons[key]} {formData[key]}
-                      </a>
+        {saveSuccess && (
+          <Alert severity="success" sx={{ mb: 3 }}>
+            Brand information updated successfully!
+          </Alert>
+        )}
+
+        {saveError && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {saveError}
+          </Alert>
+        )}
+
+        {/* Brand Information */}
+        <Grid container spacing={3}>
+          {/* Basic Information */}
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ borderBottom: "1px solid #eee", pb: 1 }}
+            >
+              Basic Information
+            </Typography>
+
+            <Grid container spacing={2}>
+              {[
+                "brandName",
+                "commercialRegisterNo",
+                "taxNumber",
+                "companyAddress",
+                "phoneNumber",
+                "email",
+                "bankAccountNumber",
+              ].map((field) => (
+                <Grid item xs={12} key={field}>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      {field
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/^./, (str) => str.toUpperCase())}
+                    </Typography>
+
+                    {isEditing ? (
+                      <TextField
+                        fullWidth
+                        name={field}
+                        value={formData[field] || ""}
+                        onChange={handleInputChange}
+                        size="small"
+                        variant="outlined"
+                      />
                     ) : (
-                      <span>No URL provided</span>
+                      <Typography variant="body1">
+                        {formData[field] || "Not provided"}
+                      </Typography>
                     )}
-                  </div>
-                )
-              ) : key === "type" ? (
-                isEditing ? (
-                  <FormControl fullWidth>
-                    <InputLabel id="type-select-label">Types</InputLabel>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+
+          {/* Online Presence */}
+          <Grid item xs={12} md={6}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ borderBottom: "1px solid #eee", pb: 1 }}
+            >
+              Online Presence
+            </Typography>
+
+            <Grid container spacing={2}>
+              {[
+                "websiteURL",
+                "instagramURL",
+                "facebookURL",
+                "tiktokURL",
+                "linkedinURL",
+              ].map((field) => (
+                <Grid item xs={12} key={field}>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      {field
+                        .replace(/URL$/, "")
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/^./, (str) => str.toUpperCase())}
+                    </Typography>
+
+                    {isEditing ? (
+                      <TextField
+                        fullWidth
+                        name={field}
+                        value={formData[field] || ""}
+                        onChange={handleInputChange}
+                        size="small"
+                        variant="outlined"
+                        InputProps={{
+                          startAdornment: platformIcons[field],
+                        }}
+                      />
+                    ) : (
+                      <Typography variant="body1">
+                        {formData[field] ? (
+                          <a
+                            href={
+                              formData[field].startsWith("http")
+                                ? formData[field]
+                                : `https://${formData[field]}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              color: "#1976d2",
+                              textDecoration: "none",
+                            }}
+                          >
+                            <Box sx={{ mr: 1 }}>{platformIcons[field]}</Box>
+                            {formData[field]}
+                          </a>
+                        ) : (
+                          "Not provided"
+                        )}
+                      </Typography>
+                    )}
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+
+          {/* Additional Information */}
+          <Grid item xs={12}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ borderBottom: "1px solid #eee", pb: 1, mt: 2 }}
+            >
+              Additional Information
+            </Typography>
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Shipping Policy
+                  </Typography>
+
+                  {isEditing ? (
+                    <TextField
+                      fullWidth
+                      name="shippingPolicy"
+                      value={formData.shippingPolicy || ""}
+                      onChange={handleInputChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    <Typography variant="body1">
+                      {formData.shippingPolicy || "Not provided"}
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Brand Description
+                  </Typography>
+
+                  {isEditing ? (
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      name="brandDescription"
+                      value={formData.brandDescription || ""}
+                      onChange={handleInputChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    <Typography variant="body1">
+                      {formData.brandDescription || "Not provided"}
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Fees
+                  </Typography>
+
+                  {isEditing ? (
+                    <TextField
+                      fullWidth
+                      name="fees"
+                      type="number"
+                      value={formData.fees || ""}
+                      onChange={handleInputChange}
+                      size="small"
+                      variant="outlined"
+                    />
+                  ) : (
+                    <Typography variant="body1">
+                      {formData.fees || "Not provided"}
+                    </Typography>
+                  )}
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Types
+                  </Typography>
+
+                  {isEditing ? (
                     <Select
-                      labelId="type-select-label"
                       multiple
-                      value={Array.isArray(formData.type) ? formData.type : []}
+                      fullWidth
+                      size="small"
+                      value={formData.selectedTypes || []}
                       onChange={handleTypeChange}
-                      input={<OutlinedInput label="Types" />}
                       renderValue={(selected) => (
                         <Box
                           sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
@@ -306,7 +534,7 @@ const BrandSignup = () => {
                               <Chip
                                 key={value}
                                 label={type ? type.name : value}
-                                sx={{ backgroundColor: "#e0e0e0" }}
+                                size="small"
                               />
                             );
                           })}
@@ -319,55 +547,69 @@ const BrandSignup = () => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>
-                ) : (
-                  <div>
-                    {formData.types && formData.types.length > 0 ? (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                        {formData.types.map((type, index) => (
+                  ) : (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {formData.types && formData.types.length > 0 ? (
+                        formData.types.map((type, index) => (
                           <Chip
                             key={index}
                             label={type.name}
-                            sx={{ backgroundColor: "#e0e0e0" }}
+                            size="small"
+                            sx={{ bgcolor: "#f0f0f0" }}
                           />
-                        ))}
-                      </Box>
-                    ) : (
-                      <p>Not Selected</p>
-                    )}
-                  </div>
-                )
-              ) : isEditing ? (
-                <input
-                  type="text"
-                  name={key}
-                  value={formData[key] || ""}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                <p>{formData[key] || "N/A"}</p>
-              )}
-            </div>
-          ))}
-      </div>
+                        ))
+                      ) : (
+                        <Typography variant="body1">
+                          No types selected
+                        </Typography>
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
 
-      <div className="button-group">
-        {isEditing ? (
-          <>
-            <button onClick={handleSave} className="btn-save">
-              Save
-            </button>
-            <button onClick={handleCancel} className="btn-cancel">
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button onClick={handleEdit} className="btn-edit">
-            Edit
-          </button>
-        )}
-      </div>
-    </div>
+        {/* Action Buttons */}
+        <Box
+          sx={{ mt: 4, display: "flex", justifyContent: "flex-end", gap: 2 }}
+        >
+          {isEditing ? (
+            <>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleCancel}
+                startIcon={<FaTimes />}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                disabled={saveLoading}
+                startIcon={
+                  saveLoading ? <CircularProgress size={20} /> : <FaSave />
+                }
+              >
+                {saveLoading ? "Saving..." : "Save Changes"}
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEdit}
+              startIcon={<FaEdit />}
+            >
+              Edit Information
+            </Button>
+          )}
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
