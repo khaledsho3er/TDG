@@ -198,7 +198,7 @@ function SummaryForm({ billData, onValidate }) {
                           padding: "2px",
                           backgroundColor:
                             product.quantity === 1 ? "transparent" : "#6B7B58",
-                          color: "white",
+                          color: product.quantity === 1 ? "#ccc" : "white",
                           "&:hover": {
                             backgroundColor:
                               product.quantity === 1
