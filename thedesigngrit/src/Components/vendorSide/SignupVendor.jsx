@@ -406,7 +406,7 @@ function Signupvendor() {
       color: "white", // Text color
     },
     "& .MuiInputLabel-root": {
-      color: "white", // Label color
+      color: "white !important", // Label color
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
@@ -419,12 +419,12 @@ function Signupvendor() {
         borderColor: "white", // Outline color when focused
       },
       "&.Mui-focused": {
-        color: "white", // Text color when focused
+        color: "white !important", // Text color when focused
         borderColor: "white", // Outline color when focused
       },
     },
     "& .MuiFormHelperText-root": {
-      color: "white", // Helper text color
+      color: "white !important", // Helper text color
     },
   };
   const renderPhaseContent = () => {
