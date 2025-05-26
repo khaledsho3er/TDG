@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 import BillSummary from "./billingSummary";
