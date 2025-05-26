@@ -630,7 +630,7 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 multiline
-                rows={3}
+                rows={2}
                 sx={whiteTextFieldStyles}
               />
             </Box>
@@ -668,6 +668,12 @@ function Signupvendor() {
                 "& .MuiTextField-root": {
                   marginBottom: 2,
                 },
+                "&::-webkit-scrollbar": {
+                  background: "#fff",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#2d2d2d",
+                },
               }}
             >
               <TextField
@@ -678,7 +684,7 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 multiline
-                rows={2}
+                rows={1}
                 sx={whiteTextFieldStyles}
               />
 
