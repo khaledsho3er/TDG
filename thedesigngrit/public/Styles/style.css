@@ -5949,9 +5949,9 @@ iframe {
 
 .input-group input,
 select {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #000;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   width: 100%;
 }
