@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Typography,
@@ -13,7 +13,12 @@ import {
   Grid,
   Checkbox,
   CircularProgress,
+  Popper,
+  Paper,
+  ClickAwayListener,
+  useMediaQuery,
 } from "@mui/material";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Toast from "../toast";
@@ -34,6 +39,21 @@ function Signupvendor() {
   const [catalogues, setCatalogues] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showRequirements, setShowRequirements] = useState(false);
+  const passwordFieldRef = useRef(null);
+
+  // Add media query for mobile devices
+  const isMobile = useMediaQuery("(max-width:768px)");
+
+  // Password requirements state
+  const [requirements, setRequirements] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    special: false,
+  });
 
   // Define validation schemas for each phase
   const phase1Schema = Yup.object().shape({
@@ -133,6 +153,8 @@ function Signupvendor() {
     register: registerPhase1,
     handleSubmit: handleSubmitPhase1,
     formState: { errors: errorsPhase1 },
+    setValue: setValuePhase1,
+    watch: watchPhase1,
   } = phase1Form;
 
   const {
@@ -147,6 +169,44 @@ function Signupvendor() {
     handleSubmit: handleSubmitPhase3,
     formState: { errors: errorsPhase3 },
   } = phase3Form;
+
+  // Watch the password field to update requirements
+  const watchPassword = watchPhase1("password", "");
+
+  // Update password requirements whenever password changes
+  useEffect(() => {
+    if (watchPassword) {
+      const newRequirements = checkRequirements(watchPassword);
+      setShowRequirements(true); // Always show on change
+    }
+  }, [watchPassword]);
+
+  const checkRequirements = (password) => {
+    const newRequirements = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      number: /\d/.test(password),
+      special: /[\W_]/.test(password),
+    };
+
+    setRequirements(newRequirements);
+    return newRequirements;
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setValuePhase1("password", newPassword);
+    setShowRequirements(true);
+  };
+
+  const handlePasswordFocus = () => {
+    setShowRequirements(true);
+  };
+
+  const handleClickAway = () => {
+    setShowRequirements(false);
+  };
 
   const fetchTypes = async () => {
     try {
@@ -408,16 +468,128 @@ function Signupvendor() {
               sx={whiteTextFieldStyles}
             />
 
-            <TextField
-              label="Password"
-              type="password"
-              {...registerPhase1("password")}
-              error={!!errorsPhase1.password}
-              helperText={errorsPhase1.password?.message}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
+            {/* Password Field with Requirements Popper */}
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <div style={{ position: "relative", width: "100%" }}>
+                <TextField
+                  inputRef={passwordFieldRef}
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onFocus={handlePasswordFocus}
+                  error={!!errorsPhase1.password}
+                  helperText={errorsPhase1.password?.message}
+                  fullWidth
+                  margin="normal"
+                  sx={whiteTextFieldStyles}
+                  InputProps={{
+                    endAdornment: (
+                      <Box
+                        component="span"
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{
+                          cursor: "pointer",
+                          color: "white",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {showPassword ? (
+                          <AiOutlineEyeInvisible />
+                        ) : (
+                          <AiOutlineEye />
+                        )}
+                      </Box>
+                    ),
+                  }}
+                />
+
+                {/* Password requirements popup */}
+                <Popper
+                  open={showRequirements}
+                  anchorEl={passwordFieldRef.current}
+                  placement={isMobile ? "bottom-start" : "right-start"}
+                  style={{ zIndex: 1000 }}
+                >
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      p: 2,
+                      ...(isMobile
+                        ? {
+                            mt: 1,
+                            position: "relative",
+                            "&::before": {
+                              content: '""',
+                              position: "absolute",
+                              top: -10,
+                              left: 20,
+                              borderWidth: "0 10px 10px 10px",
+                              borderStyle: "solid",
+                              borderColor:
+                                "transparent transparent #fff transparent",
+                            },
+                          }
+                        : {
+                            ml: 1,
+                            position: "relative",
+                            "&::before": {
+                              content: '""',
+                              position: "absolute",
+                              top: 20,
+                              left: -10,
+                              borderWidth: "10px 10px 10px 0",
+                              borderStyle: "solid",
+                              borderColor:
+                                "transparent #fff transparent transparent",
+                            },
+                          }),
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: "bold", mb: 1 }}
+                    >
+                      Password Requirements:
+                    </Typography>
+                    <ul style={{ margin: 0, paddingLeft: 20 }}>
+                      <li
+                        style={{
+                          color: requirements.length ? "green" : "red",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        At least 8 characters
+                      </li>
+                      <li
+                        style={{
+                          color: requirements.uppercase ? "green" : "red",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        At least one uppercase letter
+                      </li>
+                      <li
+                        style={{
+                          color: requirements.number ? "green" : "red",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        At least one number
+                      </li>
+                      <li
+                        style={{
+                          color: requirements.special ? "green" : "red",
+                        }}
+                      >
+                        At least one special character
+                      </li>
+                    </ul>
+                  </Paper>
+                </Popper>
+              </div>
+            </ClickAwayListener>
 
             <TextField
               label="Phone Number"
