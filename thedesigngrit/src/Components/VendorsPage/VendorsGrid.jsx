@@ -21,7 +21,7 @@ const VendorsGrid = ({ selectedCategory }) => {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://api.thedesigngrit.com/api/brand/?status=active"
+          "https://api.thedesigngrit.com/api/brand/active"
         );
         const data = await response.json();
         setVendors(data);

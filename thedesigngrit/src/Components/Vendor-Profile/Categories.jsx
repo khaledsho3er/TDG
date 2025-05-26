@@ -7,7 +7,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://api.thedesigngrit.com/api/types/${vendor._id}`)
+    fetch(`https://api.thedesigngrit.com/api/${vendor._id}/types`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
