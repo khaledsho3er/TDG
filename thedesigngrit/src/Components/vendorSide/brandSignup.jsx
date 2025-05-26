@@ -99,6 +99,7 @@ const BrandSignup = () => {
     }
   };
 
+  // Update your fetchBrandData function
   const fetchBrandData = async (brandId) => {
     try {
       const response = await axios.get(
@@ -106,33 +107,29 @@ const BrandSignup = () => {
       );
       const data = response.data;
 
-      // Convert the concatenated type IDs string to an array
-      let typeArray = [];
-      if (data.type) {
-        // If it's already an array, use it directly
-        if (Array.isArray(data.type)) {
-          typeArray = data.type;
-        }
-        // If it's a string of concatenated IDs (24 chars each)
-        else if (typeof data.type === "string" && data.type.length > 0) {
-          typeArray = data.type.match(/.{24}/g) || [];
-        }
-      }
+      // Extract type IDs from the types array
+      const typeIds = data.types ? data.types.map((type) => type._id) : [];
 
       setFormData({
         ...data,
-        type: typeArray,
+        type: typeIds, // Now using the array of IDs
       });
       setOriginalData({
         ...data,
-        type: typeArray,
+        type: typeIds,
       });
     } catch (error) {
       console.error("Error fetching brand data:", error);
       throw error;
     }
   };
-
+  useEffect(() => {
+    // Use the types array directly from the API response
+    if (formData.types && Array.isArray(formData.types)) {
+      const names = formData.types.map((type) => type.name);
+      setSelectedTypeNames(names);
+    }
+  }, [formData.types]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -166,14 +163,15 @@ const BrandSignup = () => {
       const dataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         if (key === "type" && Array.isArray(formData.type)) {
-          formData.type.forEach((item) => {
-            if (item) dataToSend.append("type", item);
-          });
-          // Also send as types for API compatibility
+          // Send type IDs
           formData.type.forEach((typeId) => {
             if (typeId) dataToSend.append("types", typeId);
           });
-        } else if (formData[key] !== null && formData[key] !== undefined) {
+        } else if (
+          key !== "types" &&
+          formData[key] !== null &&
+          formData[key] !== undefined
+        ) {
           dataToSend.append(key, formData[key]);
         }
       });
@@ -190,7 +188,6 @@ const BrandSignup = () => {
       console.error("Error updating brand data:", error);
     }
   };
-
   const getStatusStyle = (status) => {
     switch (status) {
       case "pending":
@@ -325,12 +322,12 @@ const BrandSignup = () => {
                   </FormControl>
                 ) : (
                   <div>
-                    {selectedTypeNames.length > 0 ? (
+                    {formData.types && formData.types.length > 0 ? (
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                        {selectedTypeNames.map((name, index) => (
+                        {formData.types.map((type, index) => (
                           <Chip
                             key={index}
-                            label={name}
+                            label={type.name}
                             sx={{ backgroundColor: "#e0e0e0" }}
                           />
                         ))}
