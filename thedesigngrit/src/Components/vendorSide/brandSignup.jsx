@@ -43,6 +43,8 @@ const BrandSignup = () => {
   const [originalData, setOriginalData] = useState({});
   const [types, setTypes] = useState([]);
   const [selectedTypeNames, setSelectedTypeNames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const platformIcons = {
     instagramURL: (
@@ -55,18 +57,33 @@ const BrandSignup = () => {
   };
 
   useEffect(() => {
-    fetchTypes();
-    if (vendor?.brandId) fetchBrandData(vendor.brandId);
+    const init = async () => {
+      try {
+        setLoading(true);
+        await fetchTypes();
+        if (vendor?.brandId) {
+          await fetchBrandData(vendor.brandId);
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error("Initialization error:", err);
+        setError(err.message || "Failed to load data");
+        setLoading(false);
+      }
+    };
+
+    init();
   }, [vendor]);
+
   useEffect(() => {
     // Update selected type names whenever types or formData.type changes
-    if (types.length > 0 && formData.type) {
+    if (types.length > 0 && formData.type && Array.isArray(formData.type)) {
       const names = formData.type
         .map((id) => {
           const type = types.find((t) => t._id === id);
-          return type ? type.name : id;
+          return type ? type.name : null;
         })
-        .filter((name) => name); // Filter out any undefined names
+        .filter(Boolean); // Filter out any null/undefined names
       setSelectedTypeNames(names);
     }
   }, [types, formData.type]);
@@ -75,9 +92,10 @@ const BrandSignup = () => {
       const { data } = await axios.get(
         "https://api.thedesigngrit.com/api/types/getAll"
       );
-      setTypes(data);
+      setTypes(data || []);
     } catch (error) {
       console.error("Error fetching types:", error);
+      throw error;
     }
   };
 
@@ -111,6 +129,7 @@ const BrandSignup = () => {
       });
     } catch (error) {
       console.error("Error fetching brand data:", error);
+      throw error;
     }
   };
 
@@ -130,11 +149,8 @@ const BrandSignup = () => {
     }
   };
 
-  const getTypeName = (typeId) => {
-    const type = types.find((t) => t._id === typeId);
-    return type ? type.name : typeId;
-  };
   const handleEdit = () => setIsEditing(true);
+
   const handleCancel = () => {
     setFormData({
       ...originalData,
@@ -149,13 +165,15 @@ const BrandSignup = () => {
     try {
       const dataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        if (key === "type") {
-          formData.type.forEach((item) => dataToSend.append("type", item)); // send as multiple values
-        } else if (key === "types") {
-          formData.type.forEach((typeId) => {
-            dataToSend.append("types", typeId); // Note plural "types" to match API
+        if (key === "type" && Array.isArray(formData.type)) {
+          formData.type.forEach((item) => {
+            if (item) dataToSend.append("type", item);
           });
-        } else {
+          // Also send as types for API compatibility
+          formData.type.forEach((typeId) => {
+            if (typeId) dataToSend.append("types", typeId);
+          });
+        } else if (formData[key] !== null && formData[key] !== undefined) {
           dataToSend.append(key, formData[key]);
         }
       });
@@ -185,6 +203,14 @@ const BrandSignup = () => {
         return {};
     }
   };
+
+  if (loading) {
+    return <div>Loading brand information...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data: {error}</div>;
+  }
 
   return (
     <div className="brand-signup-form">
@@ -244,19 +270,23 @@ const BrandSignup = () => {
                   <input
                     type="text"
                     name={key}
-                    value={formData[key]}
+                    value={formData[key] || ""}
                     onChange={handleInputChange}
                   />
                 ) : (
                   <div className="display-content">
-                    <a
-                      href={formData[key]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: "blue", textDecoration: "underline" }}
-                    >
-                      {platformIcons[key]} {formData[key] || "No URL provided"}
-                    </a>
+                    {formData[key] ? (
+                      <a
+                        href={formData[key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "blue", textDecoration: "underline" }}
+                      >
+                        {platformIcons[key]} {formData[key]}
+                      </a>
+                    ) : (
+                      <span>No URL provided</span>
+                    )}
                   </div>
                 )
               ) : key === "type" ? (
@@ -266,7 +296,7 @@ const BrandSignup = () => {
                     <Select
                       labelId="type-select-label"
                       multiple
-                      value={formData.type}
+                      value={Array.isArray(formData.type) ? formData.type : []}
                       onChange={handleTypeChange}
                       input={<OutlinedInput label="Types" />}
                       renderValue={(selected) => (
@@ -314,7 +344,7 @@ const BrandSignup = () => {
                 <input
                   type="text"
                   name={key}
-                  value={formData[key]}
+                  value={formData[key] || ""}
                   onChange={handleInputChange}
                 />
               ) : (
