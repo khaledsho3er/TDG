@@ -2018,3 +2018,33 @@ h1 {
   max-width: 100%;
   object-fit: contain;
 }
+/* Vendor Types Swiper Styles */
+.vendor-types-swiper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.vendor-types-swiper .swiper-slide {
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.vendor-types-swiper .swiper-pagination {
+  bottom: 0;
+}
+
+.vendor-types-swiper .swiper-pagination-bullet {
+  background: #6b7b58;
+  opacity: 0.5;
+}
+
+.vendor-types-swiper .swiper-pagination-bullet-active {
+  background: #6b7b58;
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-types-swiper {
+    padding-bottom: 30px;
+  }
+}

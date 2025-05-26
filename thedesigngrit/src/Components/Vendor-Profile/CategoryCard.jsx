@@ -7,16 +7,16 @@ const VendorCategoryCard = ({ name, description, image }) => {
     <Box
       component={motion.div}
       whileHover={{
-        y: -10,
+        y: -5,
         transition: { duration: 0.3 },
       }}
       sx={{
         position: "relative",
         width: "100%",
-        height: "300px",
-        borderRadius: "16px",
+        height: "220px", // Reduced height for slider
+        borderRadius: "12px",
         overflow: "hidden",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+        boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
         cursor: "pointer",
         "&::before": {
           content: '""',
@@ -55,7 +55,7 @@ const VendorCategoryCard = ({ name, description, image }) => {
         initial={{ opacity: 0.9, y: 0 }}
         whileHover={{
           opacity: 1,
-          y: -5,
+          y: -3,
           transition: { duration: 0.3 },
         }}
         sx={{
@@ -63,7 +63,7 @@ const VendorCategoryCard = ({ name, description, image }) => {
           bottom: 0,
           left: 0,
           right: 0,
-          padding: "25px",
+          padding: "16px",
           zIndex: 2,
           display: "flex",
           flexDirection: "column",
@@ -71,24 +71,25 @@ const VendorCategoryCard = ({ name, description, image }) => {
         }}
       >
         <Typography
-          variant="h5"
-          component={motion.h5}
+          variant="h6" // Smaller heading for compact cards
+          component={motion.h6}
           initial={{ y: 0 }}
-          whileHover={{ y: -3 }}
+          whileHover={{ y: -2 }}
           sx={{
             color: "white",
             fontFamily: "Horizon",
             fontWeight: "bold",
-            marginBottom: "8px",
+            marginBottom: "4px",
+            fontSize: "16px", // Smaller font size
             textShadow: "0 2px 4px rgba(0,0,0,0.3)",
             position: "relative",
             "&::after": {
               content: '""',
               position: "absolute",
-              bottom: -8,
+              bottom: -5,
               left: 0,
-              width: "40px",
-              height: "3px",
+              width: "30px",
+              height: "2px",
               backgroundColor: "#6b7b58",
               transition: "width 0.3s ease",
             },
@@ -109,7 +110,7 @@ const VendorCategoryCard = ({ name, description, image }) => {
             sx={{
               color: "rgba(255,255,255,0.8)",
               fontFamily: "Montserrat",
-              fontSize: "14px",
+              fontSize: "12px", // Smaller font size
               maxWidth: "90%",
               overflow: "hidden",
               textOverflow: "ellipsis",

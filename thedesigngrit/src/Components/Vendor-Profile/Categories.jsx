@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import React, { useEffect, useState, useRef } from "react";
+import { Box, Typography, useMediaQuery, IconButton } from "@mui/material";
 import VendorCategoryCard from "./CategoryCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const VendorCategoriesgrid = ({ vendor }) => {
   const [types, setTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const swiperRef = useRef(null);
+  const isMobile = useMediaQuery("(max-width:768px)");
+  const isTablet = useMediaQuery("(max-width:1024px)");
 
   useEffect(() => {
     fetch(`https://api.thedesigngrit.com/api/brand/${vendor._id}/types`)
@@ -19,11 +28,61 @@ const VendorCategoriesgrid = ({ vendor }) => {
       .finally(() => setIsLoading(false));
   }, [vendor._id]);
 
+  const getSlidesPerView = () => {
+    if (isMobile) return 1;
+    if (isTablet) return 2;
+    return 3;
+  };
+
+  const handlePrev = () => {
+    if (swiperRef.current && swiperRef.current.swiper) {
+      swiperRef.current.swiper.slidePrev();
+    }
+  };
+
+  const handleNext = () => {
+    if (swiperRef.current && swiperRef.current.swiper) {
+      swiperRef.current.swiper.slideNext();
+    }
+  };
+
   return (
     <Box className="vendorcategories-grid-container">
-      <Typography variant="h1" className="vendorcategories-title">
-        {vendor.brandName}'s Types
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Typography variant="h1" className="vendorcategories-title">
+          {vendor.brandName}'s Types
+        </Typography>
+
+        {types.length > 3 && !isMobile && (
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <IconButton
+              onClick={handlePrev}
+              sx={{
+                bgcolor: "#f5f5f5",
+                "&:hover": { bgcolor: "#e0e0e0" },
+              }}
+            >
+              <ChevronLeft />
+            </IconButton>
+            <IconButton
+              onClick={handleNext}
+              sx={{
+                bgcolor: "#f5f5f5",
+                "&:hover": { bgcolor: "#e0e0e0" },
+              }}
+            >
+              <ChevronRight />
+            </IconButton>
+          </Box>
+        )}
+      </Box>
 
       {isLoading ? (
         <Typography sx={{ p: 2, color: "gray" }}>Loading...</Typography>
@@ -45,17 +104,29 @@ const VendorCategoriesgrid = ({ vendor }) => {
           </Typography>
         </Box>
       ) : (
-        <Grid container spacing={3} className="vendorcategories-grid">
-          {types.slice(0, 3).map((type) => (
-            <Grid item xs={12} sm={6} md={4} key={type._id}>
-              <VendorCategoryCard
-                name={type.name}
-                description={type.description}
-                image={type.image}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <Box sx={{ position: "relative" }}>
+          <Swiper
+            ref={swiperRef}
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={getSlidesPerView()}
+            pagination={isMobile ? { clickable: true } : false}
+            loop={types.length > getSlidesPerView()}
+            navigation={false} // We're using custom navigation
+            className="vendor-types-swiper"
+            style={{ padding: "10px 0 30px 0" }}
+          >
+            {types.map((type) => (
+              <SwiperSlide key={type._id}>
+                <VendorCategoryCard
+                  name={type.name}
+                  description={type.description}
+                  image={type.image}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
       )}
     </Box>
   );
