@@ -630,7 +630,7 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 multiline
-                rows={4}
+                rows={3}
                 sx={whiteTextFieldStyles}
               />
             </Box>
@@ -678,7 +678,7 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 multiline
-                rows={4}
+                rows={2}
                 sx={whiteTextFieldStyles}
               />
 
