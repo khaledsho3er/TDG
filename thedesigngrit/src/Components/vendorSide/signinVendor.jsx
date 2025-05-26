@@ -109,13 +109,19 @@ const SignIn = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div
-              className="eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </div>
+            {showPassword ? (
+              <FaEyeSlash
+                className="eye-icon"
+                onClick={() => setShowPassword(false)}
+              />
+            ) : (
+              <FaEye
+                className="eye-icon"
+                onClick={() => setShowPassword(true)}
+              />
+            )}
           </div>
+
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>

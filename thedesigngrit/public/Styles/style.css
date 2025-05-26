@@ -133,7 +133,15 @@ body::-webkit-scrollbar:hover {
   justify-content: center; /* Ensures elements are vertically aligned */
   align-items: center; /* Centers child elements horizontally */
 }
-
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  z-index: 1;
+}
 .signinLogo {
   position: relative;
   z-index: 2;
