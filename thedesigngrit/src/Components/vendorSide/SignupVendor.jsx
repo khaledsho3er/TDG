@@ -133,44 +133,40 @@ function Signupvendor() {
 
   const validateField = (name, value) => {
     let error = "";
+
+    // Common validation for empty fields
+    if (!value || (typeof value === "string" && !value.trim())) {
+      return "This field is required";
+    }
+
+    // Field-specific validations
     switch (name) {
-      case "firstName":
-      case "lastName":
-        if (!value.trim()) {
-          error = "This field is required";
-        }
-        break;
       case "email":
-        if (!value.trim()) {
-          error = "Email is required";
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
+      case "brandEmail":
+        if (!/\S+@\S+\.\S+/.test(value)) {
           error = "Please enter a valid email address";
         }
         break;
       case "password":
-        if (!value) {
-          error = "Password is required";
-        } else if (value.length < 6) {
-          error = "Password must be at least 6 characters long";
+        if (value.length < 8) {
+          error = "Password must be at least 8 characters long";
+        } else if (!/[A-Z]/.test(value)) {
+          error = "Password must contain at least one uppercase letter";
+        } else if (!/\d/.test(value)) {
+          error = "Password must contain at least one number";
+        } else if (!/[\W_]/.test(value)) {
+          error = "Password must contain at least one special character";
         }
         break;
       case "phoneNumber":
-        if (!value.trim()) {
-          error = "Phone number is required";
-        } else if (!/^\+?[\d\s-]{10,}$/.test(value)) {
+      case "brandPhoneNumber":
+        if (!/^\+?[\d\s-]{10,}$/.test(value)) {
           error = "Please enter a valid phone number";
         }
         break;
-      case "brandName":
-      case "commercialRegisterNo":
       case "taxNumber":
-      case "companyAddress":
-      case "brandPhoneNumber":
-      case "brandEmail":
-      case "shippingPolicy":
-      case "bankAccountNumber":
-        if (!value.trim()) {
-          error = "This field is required";
+        if (!/^\d+$/.test(value)) {
+          error = "Tax number should contain only digits";
         }
         break;
       default:
@@ -265,41 +261,47 @@ function Signupvendor() {
     setShowToast(true);
   };
 
-  const handleNext = async (e) => {
-    e.preventDefault();
-    const sanitizedData = sanitizeVendorData();
-
-    // Validate all fields in the current phase
+  const validatePhaseFields = (phase) => {
     let hasErrors = false;
-    const currentFields =
-      currentPhase === 1
-        ? Object.keys(vendorData)
-        : currentPhase === 2
-        ? Object.keys(brandData)
+    const fieldsToValidate =
+      phase === 1
+        ? ["firstName", "lastName", "email", "password", "phoneNumber"]
+        : phase === 2
+        ? [
+            "brandName",
+            "commercialRegisterNo",
+            "taxNumber",
+            "companyAddress",
+            "phoneNumber",
+            "email",
+            "type",
+          ]
         : ["shippingPolicy", "bankAccountNumber"];
 
-    currentFields.forEach((field) => {
-      const value =
-        currentPhase === 1
-          ? vendorData[field]
-          : currentPhase === 2
-          ? brandData[field]
-          : brandData[field];
+    fieldsToValidate.forEach((field) => {
+      const value = phase === 1 ? vendorData[field] : brandData[field];
 
       const error = validateField(field, value);
       if (error) {
-        setErrors((prev) => ({
-          ...prev,
-          [field]: error,
-        }));
+        setErrors((prev) => ({ ...prev, [field]: error }));
+        setTouched((prev) => ({ ...prev, [field]: true }));
         hasErrors = true;
       }
     });
 
-    if (hasErrors) {
+    return !hasErrors;
+  };
+
+  const handleNext = async (e) => {
+    e.preventDefault();
+
+    // Validate all fields in the current phase
+    if (!validatePhaseFields(currentPhase)) {
       showToastMessage("Please fix the errors before proceeding", "error");
       return;
     }
+
+    const sanitizedData = sanitizeVendorData();
 
     if (currentPhase === 1) {
       try {
