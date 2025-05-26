@@ -323,7 +323,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Total Sales</h3>
-            <p>LE {totalSales}</p>
+            <p>E£ {totalSales}</p>
             <h3>Total orders</h3>
             <p>{totalOrders}</p>
             <span>▲ {salesPercentageChange}% Compared to Last Month</span>
@@ -336,7 +336,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders sales</h3>
-            <p>LE {confirmedSales}</p>
+            <p>E£ {confirmedSales}</p>
             <h3>Active Orders </h3>
             <p> {activeOrders}</p>
             <span>
@@ -351,7 +351,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders sales</h3>
-            <p>LE {deliveredSales}</p>
+            <p>E£ {deliveredSales}</p>
             <h3>Completed Orders</h3>
             <p> {completedOrders}</p>
             <span>
@@ -366,7 +366,7 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Return Orders sales</h3>
-            <p>LE {returnedSales}</p>
+            <p>E£ {returnedSales}</p>
             <h3>Returned Orders</h3>
             <p>{returnedOrders}</p>
             <span>
@@ -469,7 +469,7 @@ const DashboardVendor = () => {
                         e.target.onerror = null;
                       }}
                     />
-                    {product.name} - LE {product.price} ({product.totalSold}{" "}
+                    {product.name} - E£ {product.price} ({product.totalSold}{" "}
                     sales)
                   </li>
                 ))}
@@ -559,7 +559,7 @@ const DashboardVendor = () => {
                         {order.orderStatus}
                       </span>
                     </td>
-                    <td>LE {order.total}</td>
+                    <td>E£ {order.total}</td>
                   </tr>
                 ))}
               </tbody>

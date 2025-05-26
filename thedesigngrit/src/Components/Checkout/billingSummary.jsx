@@ -77,15 +77,15 @@ function BillSummary({ cartItems }) {
                         marginRight: "8px",
                       }}
                     >
-                      {item.unitPrice.toLocaleString()} LE
+                      {item.unitPrice.toLocaleString()} E£
                     </Typography>
                     <Typography variant="body1" style={{ color: "red" }}>
-                      {item.salePrice.toLocaleString()} LE
+                      {item.salePrice.toLocaleString()} E£
                     </Typography>
                   </>
                 ) : (
                   <Typography variant="body1">
-                    {item.unitPrice.toLocaleString()} LE
+                    {item.unitPrice.toLocaleString()} E£
                   </Typography>
                 )}
               </Box>
@@ -100,15 +100,15 @@ function BillSummary({ cartItems }) {
         {/* Summary Totals */}
         <div className="ordersummary-cart-summary-row">
           <span>Subtotal:</span>
-          <span>{subtotal.toLocaleString()} LE</span>
+          <span>{subtotal.toLocaleString()} E£</span>
         </div>
         <div className="ordersummary-cart-summary-row">
           <span>Shipping:</span>
-          <span>{shipping.toLocaleString()} LE</span>
+          <span>{shipping.toLocaleString()} E£</span>
         </div>
         <div className="ordersummary-cart-summary-total">
           <span>Total:</span>
-          <span>{total.toLocaleString()} LE</span>
+          <span>{total.toLocaleString()} E£</span>
         </div>
       </Box>
       <Box className="Ordersummary-firstrow-secondcolumn-secondrow">

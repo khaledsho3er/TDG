@@ -207,7 +207,7 @@ const ProductCard = ({ product }) => {
               {Number(product.price).toLocaleString()} E£
             </span>
           ) : (
-            Number(product.price).toLocaleString() + " E£"
+            Number(product.price).toLocaleString() + "E£"
           )}
           {product.salePrice && (
             <span style={{ color: "red" }}>

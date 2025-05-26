@@ -768,7 +768,7 @@ const OrderDetails = ({ order, onBack }) => {
                       {product.subOrderStatus}
                     </span>
                   </td>
-                  <td>{product.totalPrice} LE</td>
+                  <td>{product.totalPrice} E£</td>
                 </tr>
               ))
             ) : (
@@ -841,11 +841,11 @@ const OrderDetails = ({ order, onBack }) => {
             <h4>Total:</h4>
           </Box>
           <Box>
-            <p>LE {order.subtotal}</p>
+            <p>E£ {order.subtotal}</p>
             <p> {order.tax || 20}%</p>
-            <p> LE {order.discount || 0}</p>
-            <p> LE {order.shippingFee}</p>
-            <h4> LE {order.total}</h4>
+            <p> E£ {order.discount || 0}</p>
+            <p> E£ {order.shippingFee}</p>
+            <h4> E£ {order.total}</h4>
           </Box>
         </div>
       </div>

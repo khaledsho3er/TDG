@@ -81,7 +81,7 @@ function ShoppingCart() {
                 </Box>
               </Box>
               <Typography className="unit-price">
-                {(item.unitPrice || item.price || 0).toLocaleString()} LE
+                {(item.unitPrice || item.price || 0).toLocaleString()} E£
               </Typography>
               <Box className="quantity">
                 <Button
@@ -120,7 +120,7 @@ function ShoppingCart() {
                   {(
                     (item.unitPrice || item.price || 0) * (item.quantity || 1)
                   ).toLocaleString()}{" "}
-                  LE
+                  E£
                 </Typography>
               </Box>
               <Box className="delete-icon">
@@ -149,16 +149,16 @@ function ShoppingCart() {
             <Typography className="summary-title">YOUR CART</Typography>
             <Box className="summary-item">
               <Typography>Subtotal:</Typography>
-              <Typography>{subtotal.toLocaleString()} LE</Typography>
+              <Typography>{subtotal.toLocaleString()} E£</Typography>
             </Box>
             <Box className="summary-item">
               <Typography>Shipping:</Typography>
-              <Typography>{shippingFee} LE</Typography>
+              <Typography>{shippingFee} E£</Typography>
             </Box>
             <Box className="summary-item total">
               <Typography>Total:</Typography>
               <Typography>
-                {(subtotal + shippingFee).toLocaleString()} LE
+                {(subtotal + shippingFee).toLocaleString()} E£
               </Typography>
             </Box>
           </Box>

@@ -78,7 +78,7 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Total Orders</h3>
-            <p>LE 126,500</p>
+            <p>E£ 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -88,7 +88,7 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders</h3>
-            <p>LE 126,500</p>
+            <p>E£ 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -98,7 +98,7 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
-            <p>LE 126,500</p>
+            <p>E£ 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -108,7 +108,7 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Return Orders</h3>
-            <p>LE 126,500</p>
+            <p>E£ 126,500</p>
             <span>▲ 34.7% Compared to Oct 2023</span>
           </div>
         </div>
@@ -163,7 +163,7 @@ const DashboardAdmin = () => {
                       <div className="best-seller-info-vendor">
                         <h4>{product.name}</h4>
                         <p>
-                          {product.brandName} - LE {product.price} (
+                          {product.brandName} - E£ {product.price} (
                           {product.totalSold} sales )
                         </p>
                       </div>
@@ -245,7 +245,7 @@ const DashboardAdmin = () => {
                         {order.orderStatus}
                       </span>
                     </td>
-                    <td>LE {order.total}</td>
+                    <td>E£ {order.total}</td>
                   </tr>
                 ))}
               </tbody>
