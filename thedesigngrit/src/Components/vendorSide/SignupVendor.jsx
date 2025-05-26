@@ -430,14 +430,23 @@ function Signupvendor() {
       >
         <Typography
           variant="h4"
-          sx={{ textAlign: "center", marginBottom: 2, color: "white" }}
+          sx={{
+            textAlign: "center",
+            marginBottom: 2,
+            color: "#2d2d2d",
+            fontFamily: "Horizon",
+          }}
         >
           Vendor and Brand Registration
         </Typography>
 
         {currentPhase === 1 && (
-          <form onSubmit={handleSubmitPhase1(onSubmitPhase1)}>
+          <form
+            onSubmit={handleSubmitPhase1(onSubmitPhase1)}
+            className="signup-form"
+          >
             <TextField
+              className="input-field"
               label="First Name"
               {...registerPhase1("firstName")}
               error={!!errorsPhase1.firstName}
