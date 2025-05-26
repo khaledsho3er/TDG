@@ -1,8 +1,10 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
-import { UserContext } from "../../utils/userContext"; // adjust path accordingly
+import { UserContext } from "../../utils/userContext";
+import AddressSelectionPopup from "./AddressSelectionPopup";
+import axios from "axios";
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -43,47 +45,48 @@ function ShippingForm({
 }) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
+  const [showAddressPopup, setShowAddressPopup] = useState(false);
+  const [hasAddresses, setHasAddresses] = useState(false);
+
+  // Check if user has addresses when component mounts
+  useEffect(() => {
+    if (userSession && userSession.id) {
+      checkForAddresses();
+    }
+  }, [userSession]);
+
+  const checkForAddresses = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
+        { withCredentials: true }
+      );
+
+      const hasShipmentAddresses =
+        response.data &&
+        response.data.shipmentAddress &&
+        response.data.shipmentAddress.length > 0;
+
+      setHasAddresses(hasShipmentAddresses);
+    } catch (error) {
+      console.error("Error checking for addresses:", error);
+      setHasAddresses(false);
+    }
+  };
 
   const handleCheckboxChange = (option) => {
     console.log("Checkbox clicked:", option);
-    console.log("User data:", userSession);
-
-    setSelectedOption(option);
 
     if (option === "existing") {
-      console.log("Shipment Addresses:", userSession?.shipmentAddress);
-
-      if (userSession?.shipmentAddress?.length > 0) {
-        let defaultAddress = userSession.shipmentAddress.find(
-          (addr) => addr.isDefault
-        );
-        console.log("Default Address Found:", defaultAddress);
-
-        if (!defaultAddress) {
-          defaultAddress = userSession.shipmentAddress[0];
-          console.log("No default, using first address:", defaultAddress);
-        }
-
-        if (defaultAddress) {
-          onChange({
-            firstName: userSession.firstName || "",
-            lastName: userSession.lastName || "",
-            address: defaultAddress.address1 || "",
-            label: "Home", // Optional
-            apartment: defaultAddress.address2 || "",
-            floor: "1", // Optional
-            country: defaultAddress.country || "",
-            city: defaultAddress.city || "",
-            zipCode: defaultAddress.postalCode || "",
-          });
-        }
+      if (hasAddresses) {
+        setShowAddressPopup(true);
       } else {
-        console.log("No shipment addresses found!");
+        // If no addresses, show popup to add one
+        setShowAddressPopup(true);
       }
-    }
-
-    if (option === "new") {
-      console.log("Switching to empty new address.");
+    } else {
+      // For "new" option, just clear the form
+      setSelectedOption(option);
       onChange({
         firstName: "",
         lastName: "",
@@ -96,6 +99,23 @@ function ShippingForm({
         zipCode: "",
       });
     }
+  };
+
+  const handleAddressSelect = (address) => {
+    setSelectedOption("existing");
+
+    // Map the selected address to the shipping form format
+    onChange({
+      firstName: userSession.firstName || "",
+      lastName: userSession.lastName || "",
+      address: address.address1 || "",
+      label: address.label || "Home",
+      apartment: address.apartment || address.address2 || "",
+      floor: address.floor || "",
+      country: address.country || "",
+      city: address.city || "",
+      zipCode: address.postalCode || "",
+    });
   };
 
   const handleChange = (e) => {
@@ -175,6 +195,13 @@ function ShippingForm({
           }}
         />
       </Box>
+
+      {/* Address Selection Popup */}
+      <AddressSelectionPopup
+        open={showAddressPopup}
+        onClose={() => setShowAddressPopup(false)}
+        onAddressSelect={handleAddressSelect}
+      />
 
       <Box className="shipping-form-container">
         <Box className="shipping-form">
