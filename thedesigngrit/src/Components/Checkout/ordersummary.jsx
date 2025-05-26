@@ -196,11 +196,14 @@ function SummaryForm({ billData, onValidate }) {
                         }
                         sx={{
                           padding: "2px",
-                          backgroundColor: "#6B7B58",
+                          backgroundColor:
+                            product.quantity === 1 ? "transparent" : "#6B7B58",
                           color: "white",
                           "&:hover": {
                             backgroundColor:
-                              product.quantity === 1 ? "#f44336" : "#5a6a47",
+                              product.quantity === 1
+                                ? "transparent"
+                                : "#5a6a47",
                           },
                           width: "20px",
                           height: "20px",
@@ -208,7 +211,7 @@ function SummaryForm({ billData, onValidate }) {
                         }}
                       >
                         {product.quantity === 1 ? (
-                          <DeleteIcon fontSize="small" />
+                          <DeleteIcon fontSize="small" color="#ccc" />
                         ) : (
                           <RemoveIcon fontSize="small" />
                         )}

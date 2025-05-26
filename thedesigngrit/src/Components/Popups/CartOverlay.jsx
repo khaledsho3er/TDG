@@ -213,11 +213,12 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                         }
                         sx={{
                           padding: "2px",
-                          backgroundColor: "#6B7B58",
+                          backgroundColor:
+                            item.quantity === 1 ? "transparent" : "#6B7B58",
                           color: "white",
                           "&:hover": {
                             backgroundColor:
-                              item.quantity === 1 ? "#f44336" : "#5a6a47",
+                              item.quantity === 1 ? "transparent" : "#5a6a47",
                           },
                           width: "20px",
                           height: "20px",
@@ -225,7 +226,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                         }}
                       >
                         {item.quantity === 1 ? (
-                          <DeleteIcon fontSize="small" />
+                          <DeleteIcon fontSize="small" color="#ccc" />
                         ) : (
                           <RemoveIcon fontSize="small" />
                         )}
