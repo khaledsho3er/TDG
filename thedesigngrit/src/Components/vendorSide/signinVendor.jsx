@@ -3,66 +3,59 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import { useNavigate, Link } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { login } = useVendor(); // Access the login function from the context
-
+  const { login } = useVendor();
   const navigate = useNavigate();
 
-  // Validation schema using Yup
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage(""); // Clear previous error messages
-
-    // Validate input data using Yup
+  const onSubmit = async (data) => {
     try {
-      await validationSchema.validate(
-        { email, password },
-        { abortEarly: false }
-      );
+      setErrorMessage("");
 
-      // Proceed with the axios request if validation passes
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/vendors/login",
-        {
-          email,
-          password,
-        }
+        data
       );
 
-      console.log("Login successful", response.data);
-
       const vendorData = response.data.vendor;
-
-      // Login via context
       login(vendorData);
-
-      // Optionally store vendor data in localStorage for persistence
       localStorage.setItem("vendor", JSON.stringify(vendorData));
-
-      // Redirect user to the dashboard
       navigate(`/vendor-dashboard/${vendorData.brandId}`);
     } catch (error) {
-      // If validation fails, show the first validation error
-      if (error instanceof Yup.ValidationError) {
-        setErrorMessage(error.errors[0]); // Show the first validation error
+      console.error("Login error:", error);
+      if (error.response) {
+        if (error.response.status === 401) {
+          setErrorMessage("Invalid email or password.");
+        } else if (error.response.data?.message) {
+          setErrorMessage(error.response.data.message);
+        } else {
+          setErrorMessage("Login failed. Please try again.");
+        }
       } else {
-        setErrorMessage("Invalid email or password.");
+        setErrorMessage("Network error. Please check your connection.");
       }
     }
   };
@@ -82,8 +75,8 @@ const SignIn = () => {
           alt="Logo"
         />
       </h1>
+
       <Box className="login-form" sx={{ height: "55%" }}>
-        {/* <h1 style={{ textAlign: "center", fontFamily: "" }}>Sign In</h1> */}
         <h1
           style={{
             textAlign: "center",
@@ -93,38 +86,51 @@ const SignIn = () => {
         >
           Vendor Portal
         </h1>
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
           <input
             type="email"
             placeholder="Email"
-            value={email}
             className="input-field"
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
-          <div className="password-input">
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
+
+          <div className="password-input" style={{ position: "relative" }}>
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
+              {...register("password")}
               placeholder="Password"
               className="input-field"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
-            {showPassword ? (
-              <FaEyeSlash
-                className="eye-icon"
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <FaEye
-                className="eye-icon"
-                onClick={() => setShowPassword(true)}
-              />
-            )}
+            <span
+              onClick={() => setShowPassword((prevState) => !prevState)}
+              style={{
+                position: "absolute",
+                right: "18px",
+                top: "53%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                color: "#6b7b58",
+                fontFamily: "Montserrat",
+              }}
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
           </div>
+          {errors.password && (
+            <p className="error-message">{errors.password.message}</p>
+          )}
 
           <button type="submit" className="btn signin-btn">
             Sign In
           </button>
+
           <p className="signup-link">
             Don't have an account?{" "}
             <Link to="/signupvendor" className="signup-btn">
@@ -132,7 +138,6 @@ const SignIn = () => {
             </Link>
           </p>
         </form>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </Box>
     </div>
   );
