@@ -16,6 +16,9 @@ import {
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Toast from "../toast";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -23,96 +26,126 @@ function Signupvendor() {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success"); // "success" or "error"
-  const [errors, setErrors] = useState({
-    // Vendor data fields
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    // Brand data fields
-    brandName: "",
-    commercialRegisterNo: "",
-    taxNumber: "",
-    companyAddress: "",
-    brandPhoneNumber: "",
-    brandEmail: "",
-    // Phase 3 fields
-    shippingPolicy: "",
-    bankAccountNumber: "",
-  });
-  const [touched, setTouched] = useState({
-    // Vendor data fields
-    firstName: false,
-    lastName: false,
-    email: false,
-    password: false,
-    phoneNumber: false,
-    // Brand data fields
-    brandName: false,
-    commercialRegisterNo: false,
-    taxNumber: false,
-    companyAddress: false,
-    brandPhoneNumber: false,
-    brandEmail: false,
-    // Phase 3 fields
-    shippingPolicy: false,
-    bankAccountNumber: false,
-  });
-  const [vendorData, setVendorData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    employeeNumber: Math.floor(1000 + Math.random() * 9000).toString(),
-    password: "",
-    phoneNumber: "",
-    tier: "3",
-  });
-  const [brandData, setBrandData] = useState({
-    brandName: "",
-    commercialRegisterNo: "",
-    taxNumber: "",
-    companyAddress: "",
-    phoneNumber: "",
-    email: "",
-    bankAccountNumber: "",
-    websiteURL: "",
-    instagramURL: "",
-    facebookURL: "",
-    tiktokURL: "",
-    linkedinURL: "",
-    shippingPolicy: "",
-    brandlogo: "", // Single logo path
-    digitalCopiesLogo: [], // Array of logo paths
-    coverPhoto: "", // Single cover photo path
-    catalogues: [], // Array of catalogue paths
-    brandDescription: "",
-    type: [],
-    status: "pending", // Default status
-    documents: [], // Array of document paths (e.g., tax documents)
-    fees: 0, // Placeholder value
-    createdAt: "", // Can be generated on the server side
-  });
+  const [toastType, setToastType] = useState("success");
   const [types, setTypes] = useState([]);
+  const [brandLogo, setBrandLogo] = useState(null);
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [catalogues, setCatalogues] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
-  const sanitizeVendorData = () => {
-    const allowedKeys = [
-      "firstName",
-      "lastName",
-      "email",
-      "employeeNumber",
-      "password",
-      "phoneNumber",
-      "tier",
-    ];
-    return Object.keys(vendorData)
-      .filter((key) => allowedKeys.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = vendorData[key];
-        return obj;
-      }, {});
-  };
+  // Define validation schemas for each phase
+  const phase1Schema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .matches(/\d/, "Password must contain at least one number")
+      .matches(/[\W_]/, "Password must contain at least one special character"),
+    phoneNumber: Yup.string()
+      .required("Phone number is required")
+      .matches(/^\+?[\d\s-]{10,}$/, "Please enter a valid phone number"),
+  });
+
+  const phase2Schema = Yup.object().shape({
+    brandName: Yup.string().required("Brand name is required"),
+    commercialRegisterNo: Yup.string().required(
+      "Commercial register number is required"
+    ),
+    taxNumber: Yup.string()
+      .required("Tax number is required")
+      .matches(/^\d+$/, "Tax number should contain only digits"),
+    companyAddress: Yup.string().required("Company address is required"),
+    phoneNumber: Yup.string()
+      .required("Phone number is required")
+      .matches(/^\+?[\d\s-]{10,}$/, "Please enter a valid phone number"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    type: Yup.array()
+      .min(1, "Select at least one type")
+      .max(3, "You can select up to 3 types only"),
+    brandDescription: Yup.string(),
+  });
+
+  const phase3Schema = Yup.object().shape({
+    shippingPolicy: Yup.string().required("Shipping policy is required"),
+    bankAccountNumber: Yup.string().required("Bank account number is required"),
+    websiteURL: Yup.string().url("Please enter a valid URL").nullable(),
+    instagramURL: Yup.string().url("Please enter a valid URL").nullable(),
+    facebookURL: Yup.string().url("Please enter a valid URL").nullable(),
+    tiktokURL: Yup.string().url("Please enter a valid URL").nullable(),
+    linkedinURL: Yup.string().url("Please enter a valid URL").nullable(),
+  });
+
+  // Setup react-hook-form for each phase
+  const phase1Form = useForm({
+    resolver: yupResolver(phase1Schema),
+    mode: "onBlur",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+      employeeNumber: Math.floor(1000 + Math.random() * 9000).toString(),
+      tier: "3",
+    },
+  });
+
+  const phase2Form = useForm({
+    resolver: yupResolver(phase2Schema),
+    mode: "onBlur",
+    defaultValues: {
+      brandName: "",
+      commercialRegisterNo: "",
+      taxNumber: "",
+      companyAddress: "",
+      phoneNumber: "",
+      email: "",
+      type: [],
+      brandDescription: "",
+    },
+  });
+
+  const phase3Form = useForm({
+    resolver: yupResolver(phase3Schema),
+    mode: "onBlur",
+    defaultValues: {
+      shippingPolicy: "",
+      bankAccountNumber: "",
+      websiteURL: "",
+      instagramURL: "",
+      facebookURL: "",
+      tiktokURL: "",
+      linkedinURL: "",
+    },
+  });
+
+  // Get form methods
+  const {
+    register: registerPhase1,
+    handleSubmit: handleSubmitPhase1,
+    formState: { errors: errorsPhase1 },
+  } = phase1Form;
+
+  const {
+    register: registerPhase2,
+    handleSubmit: handleSubmitPhase2,
+    formState: { errors: errorsPhase2 },
+    control: controlPhase2,
+    setValue: setValuePhase2,
+  } = phase2Form;
+
+  const {
+    register: registerPhase3,
+    handleSubmit: handleSubmitPhase3,
+    formState: { errors: errorsPhase3 },
+  } = phase3Form;
 
   const fetchTypes = async () => {
     try {
@@ -120,7 +153,7 @@ function Signupvendor() {
         "https://api.thedesigngrit.com/api/types/getAll"
       );
       if (response.status === 200) {
-        setTypes(response.data); // Assuming response.data is an array of types
+        setTypes(response.data);
       }
     } catch (error) {
       console.error("Error fetching types:", error);
@@ -131,127 +164,28 @@ function Signupvendor() {
     fetchTypes();
   }, []);
 
-  const validateField = (name, value) => {
-    let error = "";
+  // Handle file changes
+  const handleFileChange = (event, fileType) => {
+    const { files } = event.target;
 
-    // Common validation for empty fields
-    if (!value || (typeof value === "string" && !value.trim())) {
-      return "This field is required";
-    }
-
-    // Field-specific validations
-    switch (name) {
-      case "email":
-      case "brandEmail":
-        if (!/\S+@\S+\.\S+/.test(value)) {
-          error = "Please enter a valid email address";
-        }
+    switch (fileType) {
+      case "brandlogo":
+        setBrandLogo(files[0]);
         break;
-      case "password":
-        if (value.length < 8) {
-          error = "Password must be at least 8 characters long";
-        } else if (!/[A-Z]/.test(value)) {
-          error = "Password must contain at least one uppercase letter";
-        } else if (!/\d/.test(value)) {
-          error = "Password must contain at least one number";
-        } else if (!/[\W_]/.test(value)) {
-          error = "Password must contain at least one special character";
-        }
+      case "coverPhoto":
+        setCoverPhoto(files[0]);
         break;
-      case "phoneNumber":
-      case "brandPhoneNumber":
-        if (!/^\+?[\d\s-]{10,}$/.test(value)) {
-          error = "Please enter a valid phone number";
-        }
-        break;
-      case "taxNumber":
-        if (!/^\d+$/.test(value)) {
-          error = "Tax number should contain only digits";
-        }
-        break;
-      default:
-        break;
-    }
-    return error;
-  };
-
-  const handleBlur = (fieldName) => {
-    setTouched((prev) => ({
-      ...prev,
-      [fieldName]: true,
-    }));
-
-    const value = fieldName.includes("brand")
-      ? brandData[fieldName.replace("brand", "").toLowerCase()]
-      : vendorData[fieldName];
-
-    const error = validateField(fieldName, value);
-    setErrors((prev) => ({
-      ...prev,
-      [fieldName]: error,
-    }));
-  };
-
-  const handleInputChange = (event, phase) => {
-    const { name, value } = event.target;
-
-    if (phase === 1) {
-      setVendorData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-      // Clear error when user starts typing
-      if (touched[name]) {
-        const error = validateField(name, value);
-        setErrors((prev) => ({
-          ...prev,
-          [name]: error,
-        }));
-      }
-    } else {
-      setBrandData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-      // Clear error when user starts typing
-      if (touched[name]) {
-        const error = validateField(name, value);
-        setErrors((prev) => ({
-          ...prev,
-          [name]: error,
-        }));
-      }
-    }
-  };
-
-  const handleFileChange = (event, phase) => {
-    const { name, files } = event.target;
-
-    if (phase === 2) {
-      if (name === "brandlogo") {
-        setBrandData((prevState) => ({
-          ...prevState,
-          [name]: files[0], // Only takes the first logo file
-        }));
-      } else if (name === "coverPhoto") {
-        setBrandData((prevState) => ({
-          ...prevState,
-          [name]: files[0], // Only takes the first cover photo file
-        }));
-      } else if (name === "catalogues") {
+      case "catalogues":
         const pdfFiles = Array.from(files).filter(
           (file) => file.type === "application/pdf"
         );
-        setBrandData((prevState) => ({
-          ...prevState,
-          [name]: pdfFiles, // Only accepts PDF files
-        }));
-      } else if (name === "documents") {
-        setBrandData((prevState) => ({
-          ...prevState,
-          [name]: Array.from(files), // Takes multiple files (documents)
-        }));
-      }
+        setCatalogues(pdfFiles);
+        break;
+      case "documents":
+        setDocuments(Array.from(files));
+        break;
+      default:
+        break;
     }
   };
 
@@ -261,610 +195,122 @@ function Signupvendor() {
     setShowToast(true);
   };
 
-  const validatePhaseFields = (phase) => {
-    let hasErrors = false;
-    const fieldsToValidate =
-      phase === 1
-        ? ["firstName", "lastName", "email", "password", "phoneNumber"]
-        : phase === 2
-        ? [
-            "brandName",
-            "commercialRegisterNo",
-            "taxNumber",
-            "companyAddress",
-            "phoneNumber",
-            "email",
-            "type",
-          ]
-        : ["shippingPolicy", "bankAccountNumber"];
+  // Handle form submissions for each phase
+  const onSubmitPhase1 = async (data) => {
+    try {
+      const response = await axios.post(
+        "https://api.thedesigngrit.com/api/vendors/signup",
+        data,
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-    fieldsToValidate.forEach((field) => {
-      const value = phase === 1 ? vendorData[field] : brandData[field];
+      if (response.status === 201) {
+        setVendorId(response.data._id);
+        setCurrentPhase(2);
+        showToastMessage("Vendor account created successfully!");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to create vendor account";
+      showToastMessage(errorMessage, "error");
+    }
+  };
 
-      const error = validateField(field, value);
-      if (error) {
-        setErrors((prev) => ({ ...prev, [field]: error }));
-        setTouched((prev) => ({ ...prev, [field]: true }));
-        hasErrors = true;
+  const onSubmitPhase2 = (data) => {
+    setCurrentPhase(3);
+  };
+
+  const onSubmitPhase3 = async (data) => {
+    const formData = new FormData();
+
+    // Add phase 2 data
+    const phase2Data = phase2Form.getValues();
+    Object.keys(phase2Data).forEach((key) => {
+      if (key === "type") {
+        formData.append("type", JSON.stringify(phase2Data[key]));
+      } else {
+        formData.append(key, phase2Data[key]);
       }
     });
 
-    return !hasErrors;
-  };
+    // Add phase 3 data
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
 
-  const handleNext = async (e) => {
-    e.preventDefault();
+    // Add files
+    if (brandLogo) formData.append("brandlogo", brandLogo);
+    if (coverPhoto) formData.append("coverPhoto", coverPhoto);
 
-    // Validate all fields in the current phase
-    if (!validatePhaseFields(currentPhase)) {
-      showToastMessage("Please fix the errors before proceeding", "error");
-      return;
-    }
+    catalogues.forEach((file, index) => {
+      formData.append(`catalogues[${index}]`, file);
+    });
 
-    const sanitizedData = sanitizeVendorData();
+    documents.forEach((file, index) => {
+      formData.append(`documents[${index}]`, file);
+    });
 
-    if (currentPhase === 1) {
-      try {
-        const response = await axios.post(
-          "https://api.thedesigngrit.com/api/vendors/signup",
-          sanitizedData,
-          { headers: { "Content-Type": "application/json" } }
-        );
+    // Add additional fields
+    formData.append("status", "pending");
+    formData.append("fees", 0);
+    formData.append("createdAt", new Date().toISOString());
 
-        if (response.status === 201) {
-          setVendorId(response.data._id);
-          setCurrentPhase(2);
-          showToastMessage("Vendor account created successfully!");
-        }
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Failed to create vendor account";
-        showToastMessage(errorMessage, "error");
-      }
-    } else if (currentPhase === 2) {
-      setCurrentPhase(3);
-    } else if (currentPhase === 3) {
-      const formData = new FormData();
+    try {
+      const response = await axios.post(
+        "https://api.thedesigngrit.com/api/brand/brand",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-      Object.keys(brandData).forEach((key) => {
-        if (Array.isArray(brandData[key])) {
-          if (key === "type") {
-            formData.append("type", JSON.stringify(brandData[key]));
-          } else {
-            brandData[key].forEach((item, index) => {
-              formData.append(`${key}[${index}]`, item);
-            });
+      if (response.status === 201) {
+        await axios.put(
+          `https://api.thedesigngrit.com/api/vendors/${vendorId}`,
+          {
+            brandId: response.data._id,
           }
-        } else {
-          formData.append(key, brandData[key]);
-        }
-      });
-
-      try {
-        const response = await axios.post(
-          "https://api.thedesigngrit.com/api/brand/brand",
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
         );
+        showToastMessage("Signup completed successfully!");
 
-        if (response.status === 201) {
-          await axios.put(
-            `https://api.thedesigngrit.com/api/vendors/${vendorId}`,
-            {
-              brandId: response.data._id,
-            }
-          );
-          showToastMessage("Signup completed successfully!");
-          // Reset form data
-          setCurrentPhase(1);
-          setVendorData({
-            firstName: "",
-            lastName: "",
-            email: "",
-            employeeNumber: "001",
-            password: "",
-            phoneNumber: "",
-            tier: "3",
-          });
-          setBrandData({
-            brandName: "",
-            commercialRegisterNo: "",
-            taxNumber: "",
-            companyAddress: "",
-            phoneNumber: "",
-            email: "",
-            bankAccountNumber: "",
-            websiteURL: "",
-            instagramURL: "",
-            facebookURL: "",
-            tiktokURL: "",
-            linkedinURL: "",
-            shippingPolicy: "",
-            brandlogo: "",
-            digitalCopiesLogo: [],
-            coverPhoto: "",
-            catalogues: [],
-            brandDescription: "",
-            type: [],
-            status: "pending",
-            documents: [],
-            fees: 0,
-            createdAt: "",
-          });
-          // Navigate after a short delay to show the success message
-          setTimeout(() => {
-            navigate("/signin-vendor");
-          }, 2000);
-        }
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Failed to create brand account";
-        showToastMessage(errorMessage, "error");
+        // Navigate after a short delay to show the success message
+        setTimeout(() => {
+          navigate("/signin-vendor");
+        }, 2000);
       }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Failed to create brand account";
+      showToastMessage(errorMessage, "error");
     }
   };
+
+  // Custom styles for text fields
   const whiteTextFieldStyles = {
     "& .MuiInputBase-input": {
-      color: "white", // Text color
+      color: "white",
     },
     "& .MuiInputLabel-root": {
-      color: "white !important", // Label color
+      color: "white",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: "white", // Outline color
+        borderColor: "white",
       },
       "&:hover fieldset": {
-        borderColor: "white", // Outline color on hover
+        borderColor: "white",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "white", // Outline color when focused
-      },
-      "&.Mui-focused": {
-        color: "white !important", // Text color when focused
-        borderColor: "white", // Outline color when focused
+        borderColor: "white",
       },
     },
     "& .MuiFormHelperText-root": {
-      color: "white !important", // Helper text color
+      color: "rgba(255, 255, 255, 0.7)",
     },
-  };
-  const renderPhaseContent = () => {
-    switch (currentPhase) {
-      case 1:
-        return (
-          <>
-            <TextField
-              label="Vendor First Name"
-              helperText={
-                touched.firstName ? errors.firstName : "Enter your first name"
-              }
-              name="firstName"
-              value={vendorData.firstName}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => handleBlur("firstName")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.firstName && !!errors.firstName}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Vendor Last Name"
-              helperText={
-                touched.lastName ? errors.lastName : "Enter your last name"
-              }
-              name="lastName"
-              value={vendorData.lastName}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => handleBlur("lastName")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.lastName && !!errors.lastName}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Vendor Email"
-              helperText={
-                touched.email ? errors.email : "Enter a valid business email"
-              }
-              name="email"
-              type="email"
-              value={vendorData.email}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => handleBlur("email")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.email && !!errors.email}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Vendor Password"
-              helperText={
-                touched.password ? errors.password : "Choose a strong password"
-              }
-              name="password"
-              value={vendorData.password}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => handleBlur("password")}
-              fullWidth
-              margin="normal"
-              type="password"
-              required
-              error={touched.password && !!errors.password}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Vendor Phone Number"
-              helperText={
-                touched.phoneNumber
-                  ? errors.phoneNumber
-                  : "Enter a valid phone number"
-              }
-              name="phoneNumber"
-              value={vendorData.phoneNumber}
-              onChange={(e) => handleInputChange(e, 1)}
-              onBlur={() => handleBlur("phoneNumber")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.phoneNumber && !!errors.phoneNumber}
-              sx={whiteTextFieldStyles}
-            />
-          </>
-        );
-
-      case 2:
-        return (
-          <Box
-            sx={{
-              overflow: "auto",
-              maxHeight: "calc(100vh - 200px)",
-              padding: "20px",
-              "&::-webkit-scrollbar": {
-                background: "#fff",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "#2d2d2d",
-              },
-            }}
-          >
-            <TextField
-              label="Brand Name"
-              helperText={
-                touched.brandName
-                  ? errors.brandName
-                  : "Enter the official brand name"
-              }
-              name="brandName"
-              value={brandData.brandName || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("brandName")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.brandName && !!errors.brandName}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Commercial Register No."
-              helperText={
-                touched.commercialRegisterNo
-                  ? errors.commercialRegisterNo
-                  : "Enter the commercial register number"
-              }
-              name="commercialRegisterNo"
-              value={brandData.commercialRegisterNo || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("commercialRegisterNo")}
-              fullWidth
-              margin="normal"
-              required
-              error={
-                touched.commercialRegisterNo && !!errors.commercialRegisterNo
-              }
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Tax Number"
-              helperText={
-                touched.taxNumber
-                  ? errors.taxNumber
-                  : "Enter the tax identification number"
-              }
-              name="taxNumber"
-              value={brandData.taxNumber || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("taxNumber")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.taxNumber && !!errors.taxNumber}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Company Address"
-              helperText={
-                touched.companyAddress
-                  ? errors.companyAddress
-                  : "Enter the company address"
-              }
-              name="companyAddress"
-              value={brandData.companyAddress || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("companyAddress")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.companyAddress && !!errors.companyAddress}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Phone Number"
-              helperText={
-                touched.brandPhoneNumber
-                  ? errors.brandPhoneNumber
-                  : "Enter a valid contact number"
-              }
-              name="phoneNumber"
-              value={brandData.phoneNumber || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("brandPhoneNumber")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.brandPhoneNumber && !!errors.brandPhoneNumber}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Email"
-              helperText={
-                touched.brandEmail
-                  ? errors.brandEmail
-                  : "Enter the primary business email"
-              }
-              name="email"
-              value={brandData.email || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              onBlur={() => handleBlur("brandEmail")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.brandEmail && !!errors.brandEmail}
-              sx={whiteTextFieldStyles}
-            />
-            {/* 🚀 Added Types Selection */}
-            <FormControl
-              fullWidth
-              margin="normal"
-              sx={{
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                  color: "white",
-                },
-                "& .MuiSvgIcon-root": {
-                  color: "white", // Dropdown icon color
-                },
-                "& .MuiFormHelperText-root": {
-                  color: "white",
-                },
-              }}
-            >
-              <InputLabel>Brand Types</InputLabel>
-              <Select
-                multiple
-                name="type"
-                value={brandData.type}
-                onChange={(e) => {
-                  const selectedValues = e.target.value;
-                  if (selectedValues.length <= 3) {
-                    setBrandData((prevState) => ({
-                      ...prevState,
-                      type: selectedValues,
-                    }));
-                  }
-                }}
-                renderValue={(selected) =>
-                  selected
-                    .map((id) => types.find((type) => type._id === id)?.name)
-                    .join(", ")
-                }
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      backgroundColor: "#6c7c59", // Match your background color
-                      color: "white",
-                      "& .MuiMenuItem-root": {
-                        "&:hover": {
-                          backgroundColor: "rgba(255, 255, 255, 0.1)",
-                        },
-                        "&.Mui-selected": {
-                          backgroundColor: "rgba(255, 255, 255, 0.2)",
-                        },
-                      },
-                    },
-                  },
-                }}
-              >
-                {types.map((type) => (
-                  <MenuItem key={type._id} value={type._id}>
-                    <Checkbox checked={brandData.type.includes(type._id)} />
-                    {type.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>
-                {brandData.type.length >= 3
-                  ? "You can select up to 3 types only."
-                  : "Select up to 3 types"}
-              </FormHelperText>
-            </FormControl>
-            {/* File Upload Section - Fixed UI Issue */}
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <label htmlFor="brandlogo">Brand Logo</label>
-                  <Input
-                    id="brandlogo"
-                    name="brandlogo"
-                    type="file"
-                    onChange={(e) => handleFileChange(e, 2)}
-                    accept="image/*"
-                    sx={{ color: "white" }}
-                  />
-                  <FormHelperText>
-                    Please upload in .png, .jpeg, or .svg format
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth margin="normal">
-                  <label htmlFor="coverPhoto">Cover Photo</label>
-                  <Input
-                    id="coverPhoto"
-                    name="coverPhoto"
-                    type="file"
-                    onChange={(e) => handleFileChange(e, 2)}
-                    accept="image/*"
-                    sx={{ color: "white" }}
-                  />
-                  <FormHelperText>
-                    Upload image with recommended dimensions of 1920x1080px or
-                    16:9 aspect ratio
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
-
-            <TextField
-              label="Brand Description"
-              helperText="Enter a brief brand description, around 50-150 words. Ensure it's consistent in style and tone with the brand's voice"
-              name="brandDescription"
-              value={brandData.brandDescription || ""}
-              onChange={(e) => handleInputChange(e, 2)}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
-          </Box>
-        );
-
-      case 3:
-        return (
-          <Box
-            sx={{
-              overflow: "auto",
-              maxHeight: "calc(100vh - 300px)",
-              padding: "20px",
-              width: "100%",
-              "& .MuiTextField-root": {
-                marginBottom: 2,
-              },
-            }}
-          >
-            <TextField
-              label="Shipping Policy"
-              helperText={
-                touched.shippingPolicy
-                  ? errors.shippingPolicy
-                  : "Describe your shipping policy and fees"
-              }
-              name="shippingPolicy"
-              value={brandData.shippingPolicy || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              onBlur={() => handleBlur("shippingPolicy")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.shippingPolicy && !!errors.shippingPolicy}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Bank Account Number"
-              helperText={
-                touched.bankAccountNumber
-                  ? errors.bankAccountNumber
-                  : "Enter your bank details for payment processing"
-              }
-              name="bankAccountNumber"
-              value={brandData.bankAccountNumber || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              onBlur={() => handleBlur("bankAccountNumber")}
-              fullWidth
-              margin="normal"
-              required
-              error={touched.bankAccountNumber && !!errors.bankAccountNumber}
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Website URL"
-              helperText="Enter your official website link"
-              name="websiteURL"
-              value={brandData.websiteURL || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Instagram URL"
-              helperText="Enter your Instagram profile link"
-              name="instagramURL"
-              value={brandData.instagramURL || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="Facebook URL"
-              helperText="Enter your Facebook page link"
-              name="facebookURL"
-              value={brandData.facebookURL || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="TikTok URL"
-              helperText="Enter your TikTok profile link"
-              name="tiktokURL"
-              value={brandData.tiktokURL || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              fullWidth
-              margin="normal"
-              sx={whiteTextFieldStyles}
-            />
-            <TextField
-              label="LinkedIn URL"
-              helperText="Enter your LinkedIn profile link"
-              name="linkedinURL"
-              value={brandData.linkedinURL || ""}
-              onChange={(e) => handleInputChange(e, 3)}
-              sx={whiteTextFieldStyles}
-              fullWidth
-              margin="normal"
-            />
-          </Box>
-        );
-
-      default:
-        return null;
-    }
+    "& .Mui-error": {
+      color: "#f44336",
+    },
+    "& .MuiFormHelperText-root.Mui-error": {
+      color: "#f44336",
+    },
   };
 
   return (
@@ -907,40 +353,444 @@ function Signupvendor() {
           zIndex: 2,
         }}
       >
-        <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+        <Typography
+          variant="h4"
+          sx={{ textAlign: "center", marginBottom: 2, color: "white" }}
+        >
           Vendor and Brand Registration
         </Typography>
-        <form onSubmit={handleNext}>
-          {renderPhaseContent()}
-          <Button
-            type="submit"
-            fullWidth
-            sx={{
-              marginTop: 2,
-              color: "white",
-              backgroundColor: "#2d2d2d",
-              "&:hover": {
-                backgroundColor: "#4a4a4a",
-              },
+
+        {currentPhase === 1 && (
+          <form onSubmit={handleSubmitPhase1(onSubmitPhase1)}>
+            <TextField
+              label="First Name"
+              {...registerPhase1("firstName")}
+              error={!!errorsPhase1.firstName}
+              helperText={errorsPhase1.firstName?.message}
+              fullWidth
+              margin="normal"
+              sx={whiteTextFieldStyles}
+            />
+
+            <TextField
+              label="Last Name"
+              {...registerPhase1("lastName")}
+              error={!!errorsPhase1.lastName}
+              helperText={errorsPhase1.lastName?.message}
+              fullWidth
+              margin="normal"
+              sx={whiteTextFieldStyles}
+            />
+
+            <TextField
+              label="Email"
+              type="email"
+              {...registerPhase1("email")}
+              error={!!errorsPhase1.email}
+              helperText={errorsPhase1.email?.message}
+              fullWidth
+              margin="normal"
+              sx={whiteTextFieldStyles}
+            />
+
+            <TextField
+              label="Password"
+              type="password"
+              {...registerPhase1("password")}
+              error={!!errorsPhase1.password}
+              helperText={errorsPhase1.password?.message}
+              fullWidth
+              margin="normal"
+              sx={whiteTextFieldStyles}
+            />
+
+            <TextField
+              label="Phone Number"
+              {...registerPhase1("phoneNumber")}
+              error={!!errorsPhase1.phoneNumber}
+              helperText={errorsPhase1.phoneNumber?.message}
+              fullWidth
+              margin="normal"
+              sx={whiteTextFieldStyles}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              sx={{
+                marginTop: 2,
+                color: "white",
+                backgroundColor: "#2d2d2d",
+                "&:hover": {
+                  backgroundColor: "#4a4a4a",
+                },
+              }}
+            >
+              Next
+            </Button>
+          </form>
+        )}
+
+        {currentPhase === 2 && (
+          <form onSubmit={handleSubmitPhase2(onSubmitPhase2)}>
+            <Box
+              sx={{
+                overflow: "auto",
+                maxHeight: "calc(100vh - 200px)",
+                padding: "20px",
+                "&::-webkit-scrollbar": {
+                  background: "#fff",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#2d2d2d",
+                },
+              }}
+            >
+              <TextField
+                label="Brand Name"
+                {...registerPhase2("brandName")}
+                error={!!errorsPhase2.brandName}
+                helperText={errorsPhase2.brandName?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Commercial Register No."
+                {...registerPhase2("commercialRegisterNo")}
+                error={!!errorsPhase2.commercialRegisterNo}
+                helperText={errorsPhase2.commercialRegisterNo?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Tax Number"
+                {...registerPhase2("taxNumber")}
+                error={!!errorsPhase2.taxNumber}
+                helperText={errorsPhase2.taxNumber?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Company Address"
+                {...registerPhase2("companyAddress")}
+                error={!!errorsPhase2.companyAddress}
+                helperText={errorsPhase2.companyAddress?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Phone Number"
+                {...registerPhase2("phoneNumber")}
+                error={!!errorsPhase2.phoneNumber}
+                helperText={errorsPhase2.phoneNumber?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Email"
+                type="email"
+                {...registerPhase2("email")}
+                error={!!errorsPhase2.email}
+                helperText={errorsPhase2.email?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <FormControl
+                fullWidth
+                margin="normal"
+                error={!!errorsPhase2.type}
+                sx={{
+                  ...whiteTextFieldStyles,
+                  "& .MuiSelect-icon": { color: "white" },
+                }}
+              >
+                <InputLabel sx={{ color: "white" }}>Brand Types</InputLabel>
+                <Controller
+                  name="type"
+                  control={controlPhase2}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      multiple
+                      renderValue={(selected) =>
+                        selected
+                          .map(
+                            (id) => types.find((type) => type._id === id)?.name
+                          )
+                          .join(", ")
+                      }
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            backgroundColor: "#6c7c59",
+                            color: "white",
+                            "& .MuiMenuItem-root": {
+                              "&:hover": {
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                              },
+                              "&.Mui-selected": {
+                                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                              },
+                            },
+                          },
+                        },
+                      }}
+                    >
+                      {types.map((type) => (
+                        <MenuItem key={type._id} value={type._id}>
+                          <Checkbox checked={field.value.includes(type._id)} />
+                          {type.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+                <FormHelperText>
+                  {errorsPhase2.type?.message || "Select up to 3 types"}
+                </FormHelperText>
+              </FormControl>
+
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={6}>
+                  <FormControl fullWidth margin="normal">
+                    <label htmlFor="brandlogo" style={{ color: "white" }}>
+                      Brand Logo
+                    </label>
+                    <Input
+                      id="brandlogo"
+                      type="file"
+                      onChange={(e) => handleFileChange(e, "brandlogo")}
+                      accept="image/*"
+                      sx={{ color: "white" }}
+                    />
+                    <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                      Please upload in .png, .jpeg, or .svg format
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl fullWidth margin="normal">
+                    <label htmlFor="coverPhoto" style={{ color: "white" }}>
+                      Cover Photo
+                    </label>
+                    <Input
+                      id="coverPhoto"
+                      type="file"
+                      onChange={(e) => handleFileChange(e, "coverPhoto")}
+                      accept="image/*"
+                      sx={{ color: "white" }}
+                    />
+                    <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                      Upload image with recommended dimensions of 1920x1080px
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              <TextField
+                label="Brand Description"
+                {...registerPhase2("brandDescription")}
+                error={!!errorsPhase2.brandDescription}
+                helperText={
+                  errorsPhase2.brandDescription?.message ||
+                  "Enter a brief brand description, around 50-150 words"
+                }
+                fullWidth
+                margin="normal"
+                multiline
+                rows={4}
+                sx={whiteTextFieldStyles}
+              />
+            </Box>
+
+            <Button
+              type="submit"
+              fullWidth
+              sx={{
+                marginTop: 2,
+                color: "white",
+                backgroundColor: "#2d2d2d",
+                "&:hover": {
+                  backgroundColor: "#4a4a4a",
+                },
+              }}
+            >
+              Next
+            </Button>
+          </form>
+        )}
+
+        {currentPhase === 3 && (
+          <form onSubmit={handleSubmitPhase3(onSubmitPhase3)}>
+            <Box
+              sx={{
+                overflow: "auto",
+                maxHeight: "calc(100vh - 300px)",
+                padding: "20px",
+                width: "100%",
+                "& .MuiTextField-root": {
+                  marginBottom: 2,
+                },
+              }}
+            >
+              <TextField
+                label="Shipping Policy"
+                {...registerPhase3("shippingPolicy")}
+                error={!!errorsPhase3.shippingPolicy}
+                helperText={errorsPhase3.shippingPolicy?.message}
+                fullWidth
+                margin="normal"
+                multiline
+                rows={4}
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Bank Account Number"
+                {...registerPhase3("bankAccountNumber")}
+                error={!!errorsPhase3.bankAccountNumber}
+                helperText={errorsPhase3.bankAccountNumber?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Website URL (optional)"
+                {...registerPhase3("websiteURL")}
+                error={!!errorsPhase3.websiteURL}
+                helperText={errorsPhase3.websiteURL?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Instagram URL (optional)"
+                {...registerPhase3("instagramURL")}
+                error={!!errorsPhase3.instagramURL}
+                helperText={errorsPhase3.instagramURL?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="Facebook URL (optional)"
+                {...registerPhase3("facebookURL")}
+                error={!!errorsPhase3.facebookURL}
+                helperText={errorsPhase3.facebookURL?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="TikTok URL (optional)"
+                {...registerPhase3("tiktokURL")}
+                error={!!errorsPhase3.tiktokURL}
+                helperText={errorsPhase3.tiktokURL?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <TextField
+                label="LinkedIn URL (optional)"
+                {...registerPhase3("linkedinURL")}
+                error={!!errorsPhase3.linkedinURL}
+                helperText={errorsPhase3.linkedinURL?.message}
+                fullWidth
+                margin="normal"
+                sx={whiteTextFieldStyles}
+              />
+
+              <FormControl fullWidth margin="normal">
+                <label htmlFor="catalogues" style={{ color: "white" }}>
+                  Catalogues (PDF only)
+                </label>
+                <Input
+                  id="catalogues"
+                  type="file"
+                  onChange={(e) => handleFileChange(e, "catalogues")}
+                  accept="application/pdf"
+                  multiple
+                  sx={{ color: "white" }}
+                />
+                <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                  Upload your product catalogues in PDF format
+                </FormHelperText>
+              </FormControl>
+
+              <FormControl fullWidth margin="normal">
+                <label htmlFor="documents" style={{ color: "white" }}>
+                  Additional Documents
+                </label>
+                <Input
+                  id="documents"
+                  type="file"
+                  onChange={(e) => handleFileChange(e, "documents")}
+                  multiple
+                  sx={{ color: "white" }}
+                />
+                <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                  Upload any additional documents
+                </FormHelperText>
+              </FormControl>
+            </Box>
+
+            <Button
+              type="submit"
+              fullWidth
+              sx={{
+                marginTop: 2,
+                color: "white",
+                backgroundColor: "#2d2d2d",
+                "&:hover": {
+                  backgroundColor: "#4a4a4a",
+                },
+              }}
+            >
+              Finish
+            </Button>
+          </form>
+        )}
+
+        <Typography
+          variant="subtitle2"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 2,
+            color: "white",
+          }}
+        >
+          Already have an account?{" "}
+          <Link
+            to="/signin-vendor"
+            style={{
+              textDecoration: "none",
+              color: "#f0f0f0",
+              marginLeft: "5px",
             }}
           >
-            {currentPhase === 3 ? "Finish" : "Next"}
-          </Button>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: 2,
-            }}
-          >
-            Already have an account?{" "}
-            <Link to="/signin-vendor" style={{ textDecoration: "none" }}>
-              Sign in
-            </Link>
-          </Typography>
-        </form>
+            Sign in
+          </Link>
+        </Typography>
       </Box>
+
       {showToast && (
         <Toast
           message={toastMessage}
