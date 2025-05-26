@@ -10,9 +10,10 @@ import { useCart } from "../../Context/cartcontext"; // Import CartContext
 import BillSummary from "./billingSummary"; // Assuming you have a BillSummary component
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
 
 function SummaryForm({ billData, onValidate }) {
-  const { cartItems, updateQuantity } = useCart(); // Add updateQuantity
+  const { cartItems, updateQuantity, removeFromCart } = useCart(); // Add removeFromCart
   const { subtotal, shippingFee, total } = billData;
   const [isChecked, setIsChecked] = useState(false);
 
@@ -27,6 +28,9 @@ function SummaryForm({ billData, onValidate }) {
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity >= 1) {
       updateQuantity(itemId, newQuantity);
+    } else if (newQuantity === 0) {
+      // Remove item if quantity would be 0
+      removeFromCart(itemId);
     }
   };
 
@@ -183,19 +187,31 @@ function SummaryForm({ billData, onValidate }) {
                       <IconButton
                         size="small"
                         onClick={() =>
-                          handleQuantityChange(product.id, product.quantity - 1)
+                          product.quantity === 1
+                            ? removeFromCart(product.id)
+                            : handleQuantityChange(
+                                product.id,
+                                product.quantity - 1
+                              )
                         }
                         sx={{
                           padding: "2px",
                           backgroundColor: "#6B7B58",
                           color: "white",
-                          "&:hover": { backgroundColor: "#5a6a47" },
+                          "&:hover": {
+                            backgroundColor:
+                              product.quantity === 1 ? "#f44336" : "#5a6a47",
+                          },
                           width: "20px",
                           height: "20px",
                           minWidth: "20px",
                         }}
                       >
-                        <RemoveIcon fontSize="small" />
+                        {product.quantity === 1 ? (
+                          <DeleteIcon fontSize="small" />
+                        ) : (
+                          <RemoveIcon fontSize="small" />
+                        )}
                       </IconButton>
 
                       <span
