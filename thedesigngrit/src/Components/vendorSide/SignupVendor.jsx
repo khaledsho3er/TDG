@@ -12,6 +12,7 @@ import {
   Select,
   Grid,
   Checkbox,
+  CircularProgress,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -32,6 +33,7 @@ function Signupvendor() {
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [catalogues, setCatalogues] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Define validation schemas for each phase
   const phase1Schema = Yup.object().shape({
@@ -75,11 +77,11 @@ function Signupvendor() {
   const phase3Schema = Yup.object().shape({
     shippingPolicy: Yup.string().required("Shipping policy is required"),
     bankAccountNumber: Yup.string().required("Bank account number is required"),
-    websiteURL: Yup.string().url("Please enter a valid URL").nullable(),
-    instagramURL: Yup.string().url("Please enter a valid URL").nullable(),
-    facebookURL: Yup.string().url("Please enter a valid URL").nullable(),
-    tiktokURL: Yup.string().url("Please enter a valid URL").nullable(),
-    linkedinURL: Yup.string().url("Please enter a valid URL").nullable(),
+    websiteURL: Yup.string().nullable(),
+    instagramURL: Yup.string().nullable(),
+    facebookURL: Yup.string().nullable(),
+    tiktokURL: Yup.string().nullable(),
+    linkedinURL: Yup.string().nullable(),
   });
 
   // Setup react-hook-form for each phase
@@ -138,7 +140,6 @@ function Signupvendor() {
     handleSubmit: handleSubmitPhase2,
     formState: { errors: errorsPhase2 },
     control: controlPhase2,
-    setValue: setValuePhase2,
   } = phase2Form;
 
   const {
@@ -197,6 +198,7 @@ function Signupvendor() {
 
   // Handle form submissions for each phase
   const onSubmitPhase1 = async (data) => {
+    setIsSubmitting(true);
     try {
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/vendors/signup",
@@ -213,6 +215,8 @@ function Signupvendor() {
       const errorMessage =
         error.response?.data?.message || "Failed to create vendor account";
       showToastMessage(errorMessage, "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -221,6 +225,8 @@ function Signupvendor() {
   };
 
   const onSubmitPhase3 = async (data) => {
+    setIsSubmitting(true);
+
     const formData = new FormData();
 
     // Add phase 2 data
@@ -280,26 +286,28 @@ function Signupvendor() {
       const errorMessage =
         error.response?.data?.message || "Failed to create brand account";
       showToastMessage(errorMessage, "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // Custom styles for text fields
   const whiteTextFieldStyles = {
     "& .MuiInputBase-input": {
-      color: "white",
+      color: "white !important",
     },
     "& .MuiInputLabel-root": {
-      color: "white",
+      color: "white !important",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: "white",
+        borderColor: "white !important",
       },
       "&:hover fieldset": {
-        borderColor: "white",
+        borderColor: "white !important",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "white",
+        borderColor: "white !important",
       },
     },
     "& .MuiFormHelperText-root": {
@@ -417,6 +425,7 @@ function Signupvendor() {
             <Button
               type="submit"
               fullWidth
+              disabled={isSubmitting}
               sx={{
                 marginTop: 2,
                 color: "white",
@@ -426,7 +435,11 @@ function Signupvendor() {
                 },
               }}
             >
-              Next
+              {isSubmitting ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Next"
+              )}
             </Button>
           </form>
         )}
@@ -618,6 +631,7 @@ function Signupvendor() {
             <Button
               type="submit"
               fullWidth
+              disabled={isSubmitting}
               sx={{
                 marginTop: 2,
                 color: "white",
@@ -627,7 +641,11 @@ function Signupvendor() {
                 },
               }}
             >
-              Next
+              {isSubmitting ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Next"
+              )}
             </Button>
           </form>
         )}
@@ -670,8 +688,6 @@ function Signupvendor() {
               <TextField
                 label="Website URL (optional)"
                 {...registerPhase3("websiteURL")}
-                error={!!errorsPhase3.websiteURL}
-                helperText={errorsPhase3.websiteURL?.message}
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
@@ -680,8 +696,6 @@ function Signupvendor() {
               <TextField
                 label="Instagram URL (optional)"
                 {...registerPhase3("instagramURL")}
-                error={!!errorsPhase3.instagramURL}
-                helperText={errorsPhase3.instagramURL?.message}
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
@@ -690,8 +704,6 @@ function Signupvendor() {
               <TextField
                 label="Facebook URL (optional)"
                 {...registerPhase3("facebookURL")}
-                error={!!errorsPhase3.facebookURL}
-                helperText={errorsPhase3.facebookURL?.message}
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
@@ -700,8 +712,6 @@ function Signupvendor() {
               <TextField
                 label="TikTok URL (optional)"
                 {...registerPhase3("tiktokURL")}
-                error={!!errorsPhase3.tiktokURL}
-                helperText={errorsPhase3.tiktokURL?.message}
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
@@ -710,8 +720,6 @@ function Signupvendor() {
               <TextField
                 label="LinkedIn URL (optional)"
                 {...registerPhase3("linkedinURL")}
-                error={!!errorsPhase3.linkedinURL}
-                helperText={errorsPhase3.linkedinURL?.message}
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
@@ -754,6 +762,7 @@ function Signupvendor() {
             <Button
               type="submit"
               fullWidth
+              disabled={isSubmitting}
               sx={{
                 marginTop: 2,
                 color: "white",
@@ -761,9 +770,16 @@ function Signupvendor() {
                 "&:hover": {
                   backgroundColor: "#4a4a4a",
                 },
+                "&.Mui-disabled": {
+                  color: "rgba(255, 255, 255, 0.5)",
+                },
               }}
             >
-              Finish
+              {isSubmitting ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : (
+                "Finish"
+              )}
             </Button>
           </form>
         )}
