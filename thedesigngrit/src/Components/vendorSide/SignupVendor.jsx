@@ -523,6 +523,12 @@ function Signupvendor() {
               overflow: "auto",
               maxHeight: "calc(100vh - 200px)",
               padding: "20px",
+              "&::-webkit-scrollbar": {
+                background: "#fff",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#2d2d2d",
+              },
             }}
           >
             <TextField
