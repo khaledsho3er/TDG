@@ -434,10 +434,10 @@ function Signupvendor() {
             textAlign: "center",
             marginBottom: 2,
             color: "#2d2d2d",
-            fontFamily: "montserrat !important",
+            fontFamily: "Horizon",
           }}
         >
-          Vendor and Brand Registration
+          Brand Registration
         </Typography>
 
         {currentPhase === 1 && (
