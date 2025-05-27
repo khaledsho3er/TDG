@@ -183,7 +183,23 @@ const FavoritesOverlay = ({ open, onClose }) => {
                 style={{ cursor: "pointer" }}
               >
                 <h4>{product.name}</h4>
-                <p>{product.price}</p>
+                {product.salePrice ? (
+                  <p
+                    style={{
+                      textDecoration: "line-through",
+                      marginRight: "8px",
+                    }}
+                  >
+                    {product.price.toLocaleString()}
+                  </p>
+                ) : (
+                  <p> {product.price.toLocaleString()}</p>
+                )}
+                {product.salePrice && (
+                  <p style={{ color: "red" }}>
+                    {product.salePrice.toLocaleString()}
+                  </p>
+                )}
                 <span>
                   {product.description.split(" ").slice(0, 10).join(" ") +
                     (product.description.split(" ").length > 10 ? "..." : "")}
