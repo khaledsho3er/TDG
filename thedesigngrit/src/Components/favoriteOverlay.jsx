@@ -188,16 +188,17 @@ const FavoritesOverlay = ({ open, onClose }) => {
                     style={{
                       textDecoration: "line-through",
                       marginRight: "8px",
+                      color: "#ccc",
                     }}
                   >
-                    {product.price.toLocaleString()}
+                    {product.price.toLocaleString()} E£
                   </p>
                 ) : (
-                  <p> {product.price.toLocaleString()}</p>
+                  <p> {product.price.toLocaleString()} E£</p>
                 )}
                 {product.salePrice && (
                   <p style={{ color: "red" }}>
-                    {product.salePrice.toLocaleString()}
+                    {product.salePrice.toLocaleString()} E£
                   </p>
                 )}
                 <span>
