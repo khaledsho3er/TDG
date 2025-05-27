@@ -434,7 +434,7 @@ function Signupvendor() {
             textAlign: "center",
             marginBottom: 2,
             color: "#2d2d2d",
-            fontFamily: "Montserrat",
+            fontFamily: "montserrat !important",
           }}
         >
           Vendor and Brand Registration
