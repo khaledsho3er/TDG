@@ -202,22 +202,24 @@ const QuotationsPage = () => {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
+                readOnly={note !== ""}
               />
 
               <label>Quote Price:</label>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ marginRight: "5px" }}>E£</span>
-                <input
-                  type="number"
-                  value={quotePrice}
-                  onChange={(e) => setQuotePrice(e.target.value)}
-                  required
-                  style={{ flex: 1 }}
-                />
-              </div>
+              <input
+                type="number"
+                value={quotePrice}
+                onChange={(e) => setQuotePrice(e.target.value)}
+                required
+                readOnly={quotePrice !== ""}
+              />
 
               <label>Upload Quotation Invoice (optional):</label>
-              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+              <input
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+                readOnly={file !== null}
+              />
 
               <div
                 style={{
@@ -231,7 +233,7 @@ const QuotationsPage = () => {
                   type="button"
                   onClick={handleDelete}
                   style={{
-                    backgroundColor: "transparent !important",
+                    backgroundColor: "#fff !important",
                     color: "#2d2d2d",
                     border: "1px solid red",
                     padding: "10px 15px",
@@ -298,7 +300,6 @@ const QuotationsPage = () => {
                 ) : (
                   selectedQuotation.productId.price.toLocaleString()
                 )}
-                E£
                 {selectedQuotation.productId.salePrice && (
                   <span style={{ color: "red" }}>
                     {" "}
