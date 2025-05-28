@@ -155,13 +155,21 @@ function TrackQuotation() {
               : "Pending"}
           </Typography>
 
-          <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
-            <Button variant="contained" className="submit-btn">
+          <Box
+            sx={{
+              mt: 3,
+              display: "flex",
+              gap: 2,
+              justifyContent: "end",
+              flexDirection: "row-reverse",
+            }}
+          >
+            <button variant="contained" className="submit-btn">
               Deal
-            </Button>
-            <Button variant="outlined" className="cancel-btn">
+            </button>
+            <button variant="outlined" className="cancel-btn">
               No Deal
-            </Button>
+            </button>
           </Box>
         </Box>
       )}
