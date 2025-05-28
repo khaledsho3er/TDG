@@ -231,7 +231,6 @@ const QuotationsPage = () => {
                 }}
               >
                 <button
-                  type="button"
                   onClick={handleDelete}
                   style={{
                     backgroundColor: "#fff !important",
