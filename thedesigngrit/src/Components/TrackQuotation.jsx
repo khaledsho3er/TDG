@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "../Pages/loadingScreen";
 
@@ -46,7 +39,7 @@ function TrackQuotation() {
 
     try {
       const res = await fetch(
-        `https://api.thedesigngrit.com/api/quotation/${selectedQuotation._id}/client-approval`,
+        `https://api.thedesigngrit.com/api/quotation/quotation/${selectedQuotation._id}/client-approval`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

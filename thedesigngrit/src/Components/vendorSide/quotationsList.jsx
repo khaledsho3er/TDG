@@ -41,8 +41,9 @@ const QuotationsPage = () => {
   const handleVendorConfirm = async () => {
     try {
       const res = await axios.patch(
-        `https://api.thedesigngrit.com/api/quotation/${selectedQuotation._id}/vendor-approval`
+        `https://api.thedesigngrit.com/api/quotation/quotation/${selectedQuotation._id}/vendor-approval`
       );
+      console.log("Vendor approval response:", res.data);
       alert("Quotation approved by vendor!");
       handleClosePopup(); // optional: close modal
       window.location.reload(); // or update state instead
