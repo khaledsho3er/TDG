@@ -205,12 +205,16 @@ const QuotationsPage = () => {
               />
 
               <label>Quote Price:</label>
-              <input
-                type="number"
-                value={quotePrice}
-                onChange={(e) => setQuotePrice(e.target.value)}
-                required
-              />
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <span style={{ marginRight: "5px" }}>E£</span>
+                <input
+                  type="number"
+                  value={quotePrice}
+                  onChange={(e) => setQuotePrice(e.target.value)}
+                  required
+                  style={{ flex: 1 }}
+                />
+              </div>
 
               <label>Upload Quotation Invoice (optional):</label>
               <input type="file" onChange={(e) => setFile(e.target.files[0])} />
@@ -286,29 +290,48 @@ const QuotationsPage = () => {
                 {selectedQuotation.productId.name}
               </Typography>
               <Typography>
-                Price: EGP {selectedQuotation.productId.price}
+                <strong> Price: </strong>{" "}
+                {selectedQuotation.productId.salePrice ? (
+                  <del style={{ color: "#a1a1a1" }}>
+                    {selectedQuotation.productId.price.toLocaleString()}E£
+                  </del>
+                ) : (
+                  selectedQuotation.productId.price.toLocaleString()
+                )}
+                E£
+                {selectedQuotation.productId.salePrice && (
+                  <span style={{ color: "red" }}>
+                    {" "}
+                    {selectedQuotation.productId.salePrice.toLocaleString()}E£
+                  </span>
+                )}
               </Typography>
               <Typography>
-                Sale Price: EGP {selectedQuotation.productId.salePrice}
-              </Typography>
-              <Typography>SKU: {selectedQuotation.productId.sku}</Typography>
-              <Typography>
-                Manufacturer: {selectedQuotation.productId.manufacturer}
+                {" "}
+                <strong> SKU:</strong> {selectedQuotation.productId.sku}
               </Typography>
               <Typography>
-                Collection: {selectedQuotation.productId.collection}
+                <strong> Manufacturer:</strong>{" "}
+                {selectedQuotation.productId.manufacturer}
               </Typography>
               <Typography>
-                Year: {selectedQuotation.productId.manufactureYear}
+                <strong> Collection:</strong>{" "}
+                {selectedQuotation.productId.collection}
               </Typography>
               <Typography>
-                Colors: {selectedQuotation.productId.colors?.join(", ")}
+                <strong> Year:</strong>{" "}
+                {selectedQuotation.productId.manufactureYear}
               </Typography>
               <Typography>
-                Sizes: {selectedQuotation.productId.sizes?.join(", ")}
+                <strong> Colors:</strong>{" "}
+                {selectedQuotation.productId.colors?.join(", ")}
               </Typography>
               <Typography>
-                Dimensions:{" "}
+                <strong> Sizes: </strong>{" "}
+                {selectedQuotation.productId.sizes?.join(", ")}
+              </Typography>
+              <Typography>
+                <strong> Dimensions:</strong>
                 {selectedQuotation.productId.technicalDimensions?.length} x{" "}
                 {selectedQuotation.productId.technicalDimensions?.width} x{" "}
                 {selectedQuotation.productId.technicalDimensions?.height} cm
