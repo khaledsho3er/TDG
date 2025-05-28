@@ -2,12 +2,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "../Pages/loadingScreen";
+import { Link } from "react-router-dom";
+import QuotationDealSuccess from "./quotationDealSuccess";
 
 function TrackQuotation() {
   const { userSession } = useContext(UserContext);
   const [quotations, setQuotations] = useState([]);
   const [selectedQuotation, setSelectedQuotation] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDealSuccess, setShowDealSuccess] = useState(false);
 
   useEffect(() => {
     const fetchQuotations = async () => {
@@ -54,6 +57,9 @@ function TrackQuotation() {
           prev.map((q) => (q._id === data.quotation._id ? data.quotation : q))
         );
         setSelectedQuotation(data.quotation);
+        if (decision === true) {
+          setShowDealSuccess(true);
+        }
       } else {
         console.error("Error updating approval:", data.message);
       }
@@ -189,12 +195,12 @@ function TrackQuotation() {
             ) : selectedQuotation?.status === "rejected" ? (
               <Typography sx={{ color: "#2d2d2d" }}>
                 No Deal. You can consider other{" "}
-                <link
+                <Link
                   to="/products/readytoship"
                   style={{ color: "#6b7b58", textDecoration: "none" }}
                 >
                   Products
-                </link>
+                </Link>
                 .
               </Typography>
             ) : (
@@ -226,6 +232,10 @@ function TrackQuotation() {
           </Box>
         </Box>
       )}
+      <QuotationDealSuccess
+        show={showDealSuccess}
+        closePopup={() => setShowDealSuccess(false)}
+      />
     </Box>
   );
 }
