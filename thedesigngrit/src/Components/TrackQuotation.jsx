@@ -116,11 +116,10 @@ function TrackQuotation() {
           {selectedQuotation.quotationInvoice && (
             <Typography
               variant="body2"
-              color="primary"
               sx={{ mt: 2, cursor: "pointer" }}
               onClick={() => {
                 const link = document.createElement("a");
-                link.href = `https://a29dbeb11704750c5e1d4b4544ae5595.r2.cloudflarestorage.com/files/${selectedQuotation.quotationInvoice}`;
+                link.href = `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${selectedQuotation.quotationInvoice}`;
                 link.setAttribute(
                   "download",
                   selectedQuotation.quotationInvoice
@@ -133,7 +132,7 @@ function TrackQuotation() {
               }}
             >
               <strong>Quotation Invoice:</strong>{" "}
-              {selectedQuotation.quotationInvoice}
+              <u>{selectedQuotation.quotationInvoice}</u>
             </Typography>
           )}
 
