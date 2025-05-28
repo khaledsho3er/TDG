@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
-
+import { LuInfo } from "react-icons/lu";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  IconButton,
+  Box,
+} from "@mui/material";
 const QuotationsPage = () => {
   const { vendor } = useVendor();
   const [quotations, setQuotations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuotation, setSelectedQuotation] = useState(null);
-
+  const [showProductInfo, setShowProductInfo] = useState(false);
   const [note, setNote] = useState("");
   const [quotePrice, setQuotePrice] = useState("");
   const [file, setFile] = useState(null);
@@ -62,6 +72,7 @@ const QuotationsPage = () => {
           },
         }
       );
+      console.log("Update response:", res.data);
       alert("Quotation updated successfully!");
       handleClosePopup();
       window.location.reload();
@@ -140,6 +151,13 @@ const QuotationsPage = () => {
             <span className="close-btn" onClick={handleClosePopup}>
               &times;
             </span>
+            <IconButton
+              aria-label="Product Info"
+              onClick={() => setShowProductInfo(true)}
+              sx={{ float: "right" }}
+            >
+              <LuInfo />
+            </IconButton>
             <h2>
               Quotation For:{" "}
               {selectedQuotation?.productId?.name || "Unnamed Product"}
@@ -204,6 +222,64 @@ const QuotationsPage = () => {
           </div>
         </div>
       )}
+      <Dialog
+        open={showProductInfo}
+        onClose={() => setShowProductInfo(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Product Information</DialogTitle>
+        <DialogContent dividers>
+          {selectedQuotation && (
+            <Box>
+              <img
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation.productId.mainImage}`}
+                alt={selectedQuotation.productId.name}
+                style={{
+                  width: "100%",
+                  height: 200,
+                  objectFit: "cover",
+                  borderRadius: 8,
+                }}
+              />
+              <Typography variant="h6" mt={2}>
+                {selectedQuotation.productId.name}
+              </Typography>
+              <Typography>
+                Price: EGP {selectedQuotation.productId.price}
+              </Typography>
+              <Typography>
+                Sale Price: EGP {selectedQuotation.productId.salePrice}
+              </Typography>
+              <Typography>SKU: {selectedQuotation.productId.sku}</Typography>
+              <Typography>
+                Manufacturer: {selectedQuotation.productId.manufacturer}
+              </Typography>
+              <Typography>
+                Collection: {selectedQuotation.productId.collection}
+              </Typography>
+              <Typography>
+                Year: {selectedQuotation.productId.manufactureYear}
+              </Typography>
+              <Typography>
+                Colors: {selectedQuotation.productId.colors?.join(", ")}
+              </Typography>
+              <Typography>
+                Sizes: {selectedQuotation.productId.sizes?.join(", ")}
+              </Typography>
+              <Typography>
+                Dimensions:{" "}
+                {selectedQuotation.productId.technicalDimensions?.length} x{" "}
+                {selectedQuotation.productId.technicalDimensions?.width} x{" "}
+                {selectedQuotation.productId.technicalDimensions?.height} cm
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowProductInfo(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
