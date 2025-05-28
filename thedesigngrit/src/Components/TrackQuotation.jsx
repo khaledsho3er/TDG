@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  Button,
+} from "@mui/material";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "../Pages/loadingScreen";
 
@@ -147,6 +154,15 @@ function TrackQuotation() {
                 ).toLocaleDateString()
               : "Pending"}
           </Typography>
+
+          <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
+            <Button variant="contained" className="submit-btn">
+              Deal
+            </Button>
+            <Button variant="outlined" className="cancel-btn">
+              No Deal
+            </Button>
+          </Box>
         </Box>
       )}
     </Box>
