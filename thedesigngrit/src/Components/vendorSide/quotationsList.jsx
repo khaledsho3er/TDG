@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
+
 const QuotationsPage = () => {
-  const { vendor } = useVendor(); // Access vendor data from context
+  const { vendor } = useVendor();
   const [quotations, setQuotations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedQuotation, setSelectedQuotation] = useState(null); // State to store the selected quotation for popup
+  const [selectedQuotation, setSelectedQuotation] = useState(null);
 
-  // Fetch quotations for a brand when the component mounts
+  const [note, setNote] = useState("");
+  const [quotePrice, setQuotePrice] = useState("");
+  const [file, setFile] = useState(null);
+
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
@@ -23,16 +27,67 @@ const QuotationsPage = () => {
     };
 
     fetchQuotations();
-  }, [vendor.brandId]); // Add vendor.brandId to the dependencies
+  }, [vendor.brandId]);
 
   const handleCardClick = (quotation) => {
-    setSelectedQuotation(quotation); // Set the clicked quotation to show in the popup
+    setSelectedQuotation(quotation);
+    setNote(quotation.note || "");
+    setQuotePrice(quotation.quotePrice || "");
+    setFile(null);
   };
 
   const handleClosePopup = () => {
-    setSelectedQuotation(null); // Close the popup by resetting the selected quotation
+    setSelectedQuotation(null);
+    setNote("");
+    setQuotePrice("");
+    setFile(null);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("note", note);
+    formData.append("quotePrice", quotePrice);
+    formData.append("dateOfQuotePrice", new Date().toISOString());
+    if (file) formData.append("file", file);
+
+    try {
+      const res = await axios.put(
+        `https://api.thedesigngrit.com/api/quotation/update/${selectedQuotation._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("Quotation updated successfully!");
+      handleClosePopup();
+      window.location.reload();
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("Failed to update quotation.");
+    }
+  };
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this quotation?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(
+        `https://api.thedesigngrit.com/api/quotation/delete/${selectedQuotation._id}`
+      );
+      alert("Quotation deleted successfully!");
+      handleClosePopup();
+      window.location.reload();
+    } catch (error) {
+      console.error("Deletion failed:", error);
+      alert("Failed to delete quotation.");
+    }
+  };
   if (loading) {
     return <div>Loading quotations...</div>;
   }
@@ -40,14 +95,7 @@ const QuotationsPage = () => {
   return (
     <div className="quotations-page">
       <div className="dashboard-header-title" style={{ marginBottom: "20px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: "10px",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <h2>Quotations</h2>
         </div>
         <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
@@ -63,7 +111,7 @@ const QuotationsPage = () => {
         <div className="quotations-list">
           {quotations.map((quotation) => (
             <div
-              key={quotation?._id || Math.random()}
+              key={quotation?._id}
               className="quotation-card"
               onClick={() => handleCardClick(quotation)}
             >
@@ -86,7 +134,6 @@ const QuotationsPage = () => {
         </div>
       )}
 
-      {/* Popup for displaying quotation details */}
       {selectedQuotation && (
         <div className="quotation-popup">
           <div className="quotation-popup-content">
@@ -107,37 +154,53 @@ const QuotationsPage = () => {
               className="quotation-popup-img"
             />
             <p>
-              <strong>Material:</strong> {selectedQuotation?.material || "N/A"}
-            </p>
-            <p>
-              <strong>Size:</strong> {selectedQuotation?.size || "N/A"}
-            </p>
-            <p>
-              <strong>Color:</strong> {selectedQuotation?.color || "N/A"}
-            </p>
-            <p>
-              <strong>Customization:</strong>{" "}
-              {selectedQuotation?.customization || "N/A"}
-            </p>
-            <p>
-              <strong>User:</strong>
-              {selectedQuotation?.userId?.firstName || "Unknown"}
-              {selectedQuotation?.userId?.lastName || " User"}
+              <strong>User:</strong>{" "}
+              {selectedQuotation?.userId?.firstName || "Unknown"}{" "}
+              {selectedQuotation?.userId?.lastName || "User"}
             </p>
             <p>
               <strong>Email:</strong>{" "}
               {selectedQuotation?.userId?.email || "No Email"}
             </p>
             <p>
-              <strong>Number:</strong>{" "}
+              <strong>Phone:</strong>{" "}
               {selectedQuotation?.userId?.phoneNumber || "No Phone Number"}
             </p>
             <p>
-              <strong>Date:</strong>{" "}
-              {selectedQuotation?.createdAt
-                ? new Date(selectedQuotation.createdAt).toLocaleDateString()
-                : "No Date"}
+              <strong>Requested At:</strong>{" "}
+              {new Date(selectedQuotation?.createdAt).toLocaleDateString()}
             </p>
+
+            <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
+              <label>Note:</label>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+              />
+
+              <label>Quote Price:</label>
+              <input
+                type="number"
+                value={quotePrice}
+                onChange={(e) => setQuotePrice(e.target.value)}
+                required
+              />
+
+              <label>Upload Quotation Invoice (optional):</label>
+              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+
+              <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+                <button type="submit">Submit Quotation</button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  style={{ backgroundColor: "#ff4d4d", color: "#fff" }}
+                >
+                  Delete Quotation
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
