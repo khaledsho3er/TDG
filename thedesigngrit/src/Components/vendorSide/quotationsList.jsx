@@ -151,26 +151,33 @@ const QuotationsPage = () => {
             <span className="close-btn" onClick={handleClosePopup}>
               &times;
             </span>
-            <IconButton
-              aria-label="Product Info"
-              onClick={() => setShowProductInfo(true)}
-              sx={{ float: "right" }}
-            >
-              <LuInfo />
-            </IconButton>
             <h2>
               Quotation For:{" "}
               {selectedQuotation?.productId?.name || "Unnamed Product"}
             </h2>
-            <img
-              src={
-                selectedQuotation?.productId?.mainImage
-                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation?.productId?.mainImage}`
-                  : "/default-product-image.jpg"
-              }
-              alt={selectedQuotation?.productId?.name || "Unnamed Product"}
-              className="quotation-popup-img"
-            />
+            <div style={{ position: "relative" }}>
+              <img
+                src={
+                  selectedQuotation?.productId?.mainImage
+                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedQuotation?.productId?.mainImage}`
+                    : "/default-product-image.jpg"
+                }
+                alt={selectedQuotation?.productId?.name || "Unnamed Product"}
+                className="quotation-popup-img"
+              />
+              <IconButton
+                aria-label="Product Info"
+                onClick={() => setShowProductInfo(true)}
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  zIndex: 1,
+                }}
+              >
+                <LuInfo />
+              </IconButton>
+            </div>
             <p>
               <strong>User:</strong>{" "}
               {selectedQuotation?.userId?.firstName || "Unknown"}{" "}
@@ -208,14 +215,47 @@ const QuotationsPage = () => {
               <label>Upload Quotation Invoice (optional):</label>
               <input type="file" onChange={(e) => setFile(e.target.files[0])} />
 
-              <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-                <button type="submit">Submit Quotation</button>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  marginTop: "15px",
+                  justifyContent: "space-around",
+                }}
+              >
                 <button
                   type="button"
                   onClick={handleDelete}
-                  style={{ backgroundColor: "#ff4d4d", color: "#fff" }}
+                  style={{
+                    backgroundColor: "transaparent",
+                    color: "#2d2d2d",
+                    border: "1px solid red",
+                    padding: "10px 20px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "red",
+                      color: "#fff",
+                      transform: "scale(1.1)",
+                      boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+                    },
+                  }}
                 >
                   Delete Quotation
+                </button>
+                <button
+                  type="submit"
+                  style={{
+                    backgroundColor: "#2d2d2d",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor: "#6b7b58",
+                      transform: "scale(1.1)",
+                      boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+                    },
+                  }}
+                >
+                  Submit Quotation
                 </button>
               </div>
             </form>
@@ -277,7 +317,20 @@ const QuotationsPage = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowProductInfo(false)}>Close</Button>
+          <Button
+            sx={{
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#6b7b58",
+                transform: "scale(1.1)",
+                boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+              },
+            }}
+            onClick={() => setShowProductInfo(false)}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
