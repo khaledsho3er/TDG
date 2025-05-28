@@ -1,7 +1,6 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const QuotationDealSuccess = ({ show, closePopup }) => {
   if (!show) return null;
@@ -12,7 +11,10 @@ const QuotationDealSuccess = ({ show, closePopup }) => {
           <IoClose />
         </div>
         <div className="mail-icon">
-          <FontAwesomeIcon icon={faEnvelope} className="animated-mail-icon" />
+          <FontAwesomeIcon
+            icon="fa-regular fa-handshake"
+            className="animated-mail-icon"
+          />
         </div>
 
         <h1>YOUR APPROVAL HAS SENT SUCCESSFULLY!</h1>
