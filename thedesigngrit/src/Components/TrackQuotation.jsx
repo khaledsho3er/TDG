@@ -113,6 +113,29 @@ function TrackQuotation() {
             <strong>Vendor Note:</strong>{" "}
             {selectedQuotation.note || "No note provided by vendor."}
           </Typography>
+          {selectedQuotation.quotationFile && (
+            <Typography
+              variant="body2"
+              color="primary"
+              sx={{ mt: 2, cursor: "pointer" }}
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = `https://a29dbeb11704750c5e1d4b4544ae5595.r2.cloudflarestorage.com/files/${selectedQuotation.quotationInvoice}`;
+                link.setAttribute(
+                  "download",
+                  selectedQuotation.quotationInvoice
+                );
+                link.setAttribute("target", "_blank");
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+            >
+              <strong>Quotation Invoice:</strong>{" "}
+              {selectedQuotation.quotationInvoice}
+            </Typography>
+          )}
 
           <Typography sx={{ color: "gray", mt: 2 }}>
             Requested On:{" "}
