@@ -267,6 +267,10 @@ const QuotationsPage = () => {
         onClose={() => setShowProductInfo(false)}
         maxWidth="sm"
         fullWidth
+        sx={{
+          borderRadius: "8px",
+          height: "80vh",
+        }}
       >
         <DialogTitle>Product Information</DialogTitle>
         <DialogContent dividers>
