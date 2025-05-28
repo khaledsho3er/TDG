@@ -227,17 +227,17 @@ const QuotationsPage = () => {
                 <button
                   onClick={handleDelete}
                   style={{
-                    backgroundColor: "#fff !important",
+                    backgroundColor: "#fff",
                     color: "#2d2d2d",
                     border: "1px solid red",
                     padding: "10px 15px",
                     borderRadius: "4px",
                     cursor: "pointer",
                     "&:hover": {
-                      backgroundColor: "red !important",
-                      color: "#fff !important",
-                      transform: "scale(1.1) !important",
-                      boxShadow: "0 0 10px rgba(0,0,0,0.2) !important",
+                      backgroundColor: "red",
+                      color: "#fff",
+                      transform: "scale(1.1)",
+                      boxShadow: "0 0 10px rgba(0,0,0,0.2)",
                     },
                   }}
                 >
