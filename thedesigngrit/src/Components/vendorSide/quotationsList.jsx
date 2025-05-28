@@ -202,7 +202,6 @@ const QuotationsPage = () => {
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
-                readOnly={note !== ""}
                 style={{ backgroundColor: "#fff" }}
               />
 
@@ -212,15 +211,10 @@ const QuotationsPage = () => {
                 value={quotePrice}
                 onChange={(e) => setQuotePrice(e.target.value)}
                 required
-                readOnly={quotePrice !== ""}
               />
 
               <label>Upload Quotation Invoice (optional):</label>
-              <input
-                type="file"
-                onChange={(e) => setFile(e.target.files[0])}
-                readOnly={file !== null}
-              />
+              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
 
               <div
                 style={{
