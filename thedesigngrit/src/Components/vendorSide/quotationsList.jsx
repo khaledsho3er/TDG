@@ -203,6 +203,7 @@ const QuotationsPage = () => {
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
                 readOnly={note !== ""}
+                style={{ backgroundColor: "#fff" }}
               />
 
               <label>Quote Price:</label>
