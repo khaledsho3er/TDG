@@ -41,6 +41,33 @@ function TrackQuotation() {
 
     fetchQuotations();
   }, [userSession]);
+  const handleDealDecision = async (decision) => {
+    if (!selectedQuotation?._id) return;
+
+    try {
+      const res = await fetch(
+        `https://api.thedesigngrit.com/api/quotation/${selectedQuotation._id}/client-approval`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ approved: decision }),
+        }
+      );
+      const data = await res.json();
+
+      if (res.ok) {
+        // Update the quotation locally
+        setQuotations((prev) =>
+          prev.map((q) => (q._id === data.quotation._id ? data.quotation : q))
+        );
+        setSelectedQuotation(data.quotation);
+      } else {
+        console.error("Error updating approval:", data.message);
+      }
+    } catch (err) {
+      console.error("Request failed:", err);
+    }
+  };
 
   const handleSelectChange = (e) => {
     const selectedId = e.target.value;
@@ -164,12 +191,28 @@ function TrackQuotation() {
               flexDirection: "row-reverse",
             }}
           >
-            <button variant="contained" className="submit-btn">
-              Deal
-            </button>
-            <button variant="outlined" className="cancel-btn">
-              No Deal
-            </button>
+            <Box sx={{ mt: 3, display: "flex", gap: 2, justifyContent: "end" }}>
+              <button
+                onClick={() => handleDealDecision(true)}
+                className="submit-btn"
+                disabled={
+                  selectedQuotation?.ClientApproval ||
+                  selectedQuotation?.status === "rejected"
+                }
+              >
+                Deal
+              </button>
+              <button
+                onClick={() => handleDealDecision(false)}
+                className="cancel-btn"
+                disabled={
+                  selectedQuotation?.ClientApproval ||
+                  selectedQuotation?.status === "rejected"
+                }
+              >
+                No Deal
+              </button>
+            </Box>
           </Box>
         </Box>
       )}

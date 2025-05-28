@@ -38,6 +38,22 @@ const QuotationsPage = () => {
 
     fetchQuotations();
   }, [vendor.brandId]);
+  const handleVendorConfirm = async () => {
+    try {
+      const res = await axios.patch(
+        `https://api.thedesigngrit.com/api/quotation/${selectedQuotation._id}/vendor-approval`
+      );
+      alert("Quotation approved by vendor!");
+      handleClosePopup(); // optional: close modal
+      window.location.reload(); // or update state instead
+    } catch (error) {
+      console.error("Vendor approval failed:", error);
+      alert(
+        error?.response?.data?.message ||
+          "Failed to approve quotation. Try again later."
+      );
+    }
+  };
 
   const handleCardClick = (quotation) => {
     setSelectedQuotation(quotation);
@@ -224,6 +240,26 @@ const QuotationsPage = () => {
                   justifyContent: "space-around",
                 }}
               >
+                <button
+                  onClick={handleVendorConfirm}
+                  disabled={!selectedQuotation?.ClientApproval}
+                  style={{
+                    backgroundColor: selectedQuotation?.ClientApproval
+                      ? "#1e7e34"
+                      : "#ccc",
+                    color: "#fff",
+                    padding: "10px 15px",
+                    borderRadius: "4px",
+                    border: "none",
+                    cursor: selectedQuotation?.ClientApproval
+                      ? "pointer"
+                      : "not-allowed",
+                    marginTop: "15px",
+                  }}
+                >
+                  Confirm
+                </button>
+
                 <button
                   onClick={handleDelete}
                   style={{
