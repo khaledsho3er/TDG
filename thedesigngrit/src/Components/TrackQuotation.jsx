@@ -184,28 +184,45 @@ function TrackQuotation() {
               flexDirection: "row-reverse",
             }}
           >
-            <Box sx={{ mt: 3, display: "flex", gap: 2, justifyContent: "end" }}>
-              <button
-                onClick={() => handleDealDecision(true)}
-                className="submit-btn"
-                disabled={
-                  selectedQuotation?.ClientApproval ||
-                  selectedQuotation?.status === "rejected"
-                }
-              >
-                Deal
-              </button>
-              <button
-                onClick={() => handleDealDecision(false)}
-                className="cancel-btn"
-                disabled={
-                  selectedQuotation?.ClientApproval ||
-                  selectedQuotation?.status === "rejected"
-                }
-              >
-                No Deal
-              </button>
-            </Box>
+            {selectedQuotation?.status === "approved" ? (
+              <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
+            ) : selectedQuotation?.status === "rejected" ? (
+              <Typography sx={{ color: "#2d2d2d" }}>
+                No Deal. You can consider other{" "}
+                <link
+                  to="/products/readytoship"
+                  style={{ color: "#6b7b58", textDecoration: "none" }}
+                >
+                  Products
+                </link>
+                .
+              </Typography>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleDealDecision(true)}
+                  className="submit-btn"
+                  disabled={
+                    selectedQuotation?.ClientApproval ||
+                    selectedQuotation?.status === "rejected" ||
+                    selectedQuotation?.status === "approved"
+                  }
+                >
+                  Deal
+                </button>
+                <button
+                  onClick={() => handleDealDecision(false)}
+                  className="cancel-btn"
+                  disabled={
+                    selectedQuotation?.ClientApproval ||
+                    selectedQuotation?.status === "rejected" ||
+                    selectedQuotation?.status === "approved"
+                  }
+                >
+                  No Deal
+                </button>
+              </>
+            )}
           </Box>
         </Box>
       )}

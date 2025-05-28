@@ -241,25 +241,29 @@ const QuotationsPage = () => {
                   justifyContent: "space-around",
                 }}
               >
-                <button
-                  onClick={handleVendorConfirm}
-                  disabled={!selectedQuotation?.ClientApproval}
-                  style={{
-                    backgroundColor: selectedQuotation?.ClientApproval
-                      ? "#1e7e34"
-                      : "#ccc",
-                    color: "#fff",
-                    padding: "10px 15px",
-                    borderRadius: "4px",
-                    border: "none",
-                    cursor: selectedQuotation?.ClientApproval
-                      ? "pointer"
-                      : "not-allowed",
-                    marginTop: "15px",
-                  }}
-                >
-                  Confirm
-                </button>
+                {selectedQuotation?.vendorApproval ? (
+                  <p style={{ marginTop: "15px" }}>Deal is sealed</p>
+                ) : (
+                  <button
+                    onClick={handleVendorConfirm}
+                    disabled={!selectedQuotation?.ClientApproval}
+                    style={{
+                      backgroundColor: selectedQuotation?.ClientApproval
+                        ? "#1e7e34"
+                        : "#ccc",
+                      color: "#fff",
+                      padding: "10px 15px",
+                      borderRadius: "4px",
+                      border: "none",
+                      cursor: selectedQuotation?.ClientApproval
+                        ? "pointer"
+                        : "not-allowed",
+                      marginTop: "15px",
+                    }}
+                  >
+                    Confirm
+                  </button>
+                )}
 
                 <button
                   onClick={handleDelete}
