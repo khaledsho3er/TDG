@@ -113,7 +113,7 @@ function TrackQuotation() {
             <strong>Vendor Note:</strong>{" "}
             {selectedQuotation.note || "No note provided by vendor."}
           </Typography>
-          {selectedQuotation.quotationFile && (
+          {selectedQuotation.quotationInvoice && (
             <Typography
               variant="body2"
               color="primary"
