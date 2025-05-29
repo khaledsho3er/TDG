@@ -1382,6 +1382,14 @@
   .carsousel-item {
     width: 207px;
   }
+  .ordersummary-cart-item {
+    flex-direction: column;
+    align-items: normal;
+  }
+  .product-header,
+  .product-row {
+    gap: 20px;
+  }
 }
 /* Hide navigation buttons on screens smaller than 1024px */
 @media (max-width: 1023px) {
