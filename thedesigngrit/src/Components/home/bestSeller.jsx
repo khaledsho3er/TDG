@@ -130,11 +130,11 @@ const ProductSlider = () => {
           },
           769: {
             slidesPerView: 3,
-            spaceBetween: 20,
+            spaceBetween: 30,
           },
           961: {
             slidesPerView: 4,
-            spaceBetween: 20,
+            spaceBetween: 30,
           },
           // When window width is >= 1024px (desktop)
           1024: {
