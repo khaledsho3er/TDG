@@ -1487,3 +1487,8 @@
     width: 100%;
   }
 }
+@media (min-width: 769px) and (max-width: 960px) {
+  .product-card {
+    max-width: 218px;
+  }
+}
