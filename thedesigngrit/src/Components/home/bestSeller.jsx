@@ -141,6 +141,10 @@ const ProductSlider = () => {
             slidesPerView: 4,
             spaceBetween: 20,
           },
+          1025: {
+            slidesPerView: 5,
+            spaceBetween: 20,
+          },
         }}
       >
         {products.map((product, index) => (
@@ -149,6 +153,8 @@ const ProductSlider = () => {
               className="product-card"
               style={{
                 cursor: "pointer",
+                maxWidth: "260px",
+                margin: "0 auto",
               }}
               onClick={() => navigate(`/product/${product._id}`)}
             >
