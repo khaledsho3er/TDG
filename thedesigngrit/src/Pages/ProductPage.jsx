@@ -455,7 +455,14 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <h1 className="product-title">
                 {selectedVariant ? selectedVariant.title : product.name}
               </h1>
@@ -472,11 +479,7 @@ function ProductPage() {
               )}
               <IconButton
                 sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                  backgroundColor: "#fff",
-                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                  marginLeft: "8px",
                   "&:hover": { backgroundColor: "#f0f0f0" },
                 }}
                 onClick={(event) => {
