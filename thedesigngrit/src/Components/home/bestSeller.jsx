@@ -117,34 +117,34 @@ const ProductSlider = () => {
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
-        breakpoints={{
-          // When window width is >= 0px (mobile)
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 10,
-          },
-          426: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          769: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-          961: {
-            slidesPerView: 3,
-            spaceBetween: 30,
-          },
-          // When window width is >= 1024px (desktop)
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-          1025: {
-            slidesPerView: 5,
-            spaceBetween: 20,
-          },
-        }}
+        // breakpoints={{
+        //   // When window width is >= 0px (mobile)
+        //   0: {
+        //     slidesPerView: 1,
+        //     spaceBetween: 10,
+        //   },
+        //   426: {
+        //     slidesPerView: 2,
+        //     spaceBetween: 10,
+        //   },
+        //   769: {
+        //     slidesPerView: 3,
+        //     spaceBetween: 20,
+        //   },
+        //   961: {
+        //     slidesPerView: 3,
+        //     spaceBetween: 30,
+        //   },
+        //   // When window width is >= 1024px (desktop)
+        //   1024: {
+        //     slidesPerView: 4,
+        //     spaceBetween: 20,
+        //   },
+        //   1025: {
+        //     slidesPerView: 5,
+        //     spaceBetween: 20,
+        //   },
+        // }}
       >
         {products.map((product, index) => (
           <SwiperSlide key={product._id || index}>
