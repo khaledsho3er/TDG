@@ -1656,7 +1656,18 @@ html {
   flex-direction: column;
   transition: transform 0.3s ease;
 }
+
 .product-card:hover {
+  transform: translateY(-5px);
+}
+.product-card-bestseller {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+.product-card-bestseller:hover {
   transform: translateY(-5px);
 }
 .product-image-home {

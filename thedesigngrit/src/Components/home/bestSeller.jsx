@@ -150,11 +150,9 @@ const ProductSlider = () => {
         {products.map((product, index) => (
           <SwiperSlide key={product._id || index}>
             <div
-              className="product-card"
+              className="product-card-bestseller"
               style={{
                 cursor: "pointer",
-                maxWidth: "260px",
-                margin: "0 auto",
               }}
               onClick={() => navigate(`/product/${product._id}`)}
             >
