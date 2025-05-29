@@ -165,19 +165,25 @@ function ProductPage() {
   }, [selectedColor, selectedSize, variants]);
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (!userSession) return; // Make sure userSession is available
+      if (!userSession || !product) return; // Ensure both userSession and product are loaded
 
-      const response = await fetch(
-        `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
-      );
-      if (response.ok) {
-        const favoritesData = await response.json();
-        const favoriteIds = favoritesData.map((prod) => prod._id);
-        setIsFavorite(favoriteIds.includes(product._id));
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
+        );
+        if (response.ok) {
+          const favoritesData = await response.json();
+          const favoriteIds = favoritesData.map((prod) => prod._id);
+          setIsFavorite(favoriteIds.includes(product._id));
+        }
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
       }
     };
+
     fetchFavorites();
-  }, [userSession, product._id]);
+  }, [userSession, product]); // Only run when both userSession and product are ready
+
   // Toggle the favorite status
   const toggleFavorite = async (event) => {
     event.stopPropagation(); // Prevent triggering card click
