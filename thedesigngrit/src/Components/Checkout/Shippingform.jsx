@@ -203,7 +203,7 @@ function ShippingForm({
         onAddressSelect={handleAddressSelect}
       />
 
-      <Box className="shipping-form-container">
+      <Box className="shipping-form-container" sx={{ width: "85%" }}>
         <Box className="shipping-form">
           <form onSubmit={handleSubmit} className="shippingform-form-container">
             {/* Row 1 */}

@@ -5759,6 +5759,7 @@ iframe {
 /* Form container */
 .checkout-form {
   position: relative;
+  width: 60%;
   height: 50%;
   padding: 2rem;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
@@ -5904,8 +5905,7 @@ iframe {
   flex-direction: column;
   justify-content: center;
   height: 6rem;
-  margin-left: 2rem;
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
 
@@ -5915,7 +5915,6 @@ iframe {
   padding: 10px;
   width: 85%;
   justify-content: space-between;
-  margin-left: 2rem;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
@@ -6050,8 +6049,7 @@ button:hover {
 .shipping-form-container {
   align-items: center;
   justify-content: center;
-  margin-left: 2rem;
-  width: 53rem;
+  width: 85%;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }

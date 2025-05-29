@@ -1344,7 +1344,7 @@
   }
   .shipping-form-container {
     width: 100%;
-    margin-left: 0;
+    padding: 10px 0px;
   }
   .checkout-form form,
   .shippingform-form-container {
