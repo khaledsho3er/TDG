@@ -182,7 +182,7 @@ function BillingForm({
                   type="text"
                   id="firstName"
                   name="firstName"
-                  placeholder="First Name"
+                  placeholder="First Name *"
                   value={billingData.firstName}
                   onChange={handleChange}
                   required
@@ -197,7 +197,7 @@ function BillingForm({
                   type="text"
                   id="lastName"
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder="Last Name *"
                   value={billingData.lastName}
                   onChange={handleChange}
                   required
@@ -214,7 +214,7 @@ function BillingForm({
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Email *"
                 value={billingData.email}
                 onChange={handleChange}
                 required
@@ -230,7 +230,7 @@ function BillingForm({
                 type="text"
                 id="address"
                 name="address"
-                placeholder="Address"
+                placeholder="Address *"
                 value={billingData.address}
                 onChange={handleChange}
                 required
@@ -243,6 +243,7 @@ function BillingForm({
 
             <div className="input-group">
               <PhoneInput
+                placeholder="Phone Number *"
                 country={billingData.userCountryCode || "eg"}
                 value={billingData.phoneNumber}
                 onChange={(phone, countryData) => {
@@ -280,7 +281,7 @@ function BillingForm({
                   type="text"
                   id="country"
                   name="country"
-                  placeholder="Country"
+                  placeholder="Country *"
                   value={billingData.country}
                   onChange={handleChange}
                   required
@@ -291,7 +292,7 @@ function BillingForm({
                   type="text"
                   id="city"
                   name="city"
-                  placeholder="City"
+                  placeholder="City *"
                   value={billingData.city}
                   onChange={handleChange}
                   required
@@ -304,7 +305,7 @@ function BillingForm({
                 type="text"
                 id="zipCode"
                 name="zipCode"
-                placeholder="Zip Code"
+                placeholder="Zip Code *"
                 value={billingData.zipCode}
                 onChange={handleChange}
                 required

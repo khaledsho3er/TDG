@@ -5759,7 +5759,6 @@ iframe {
 /* Form container */
 .checkout-form {
   position: relative;
-  width: 70%;
   height: 50%;
   padding: 2rem;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
@@ -5799,8 +5798,6 @@ iframe {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 20px;
-  margin-left: 19rem;
   width: 50%;
   background-color: #434343;
   border-radius: 8px;
@@ -5808,6 +5805,10 @@ iframe {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: auto;
+  margin-top: 20px;
+  letter-spacing: 5px;
+  font-family: "Montserrat";
 }
 
 .form-navigation button:hover {
@@ -5904,7 +5905,7 @@ iframe {
   justify-content: center;
   height: 6rem;
   margin-left: 2rem;
-  border-radius: 20px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
 
@@ -5915,7 +5916,7 @@ iframe {
   width: 85%;
   justify-content: space-between;
   margin-left: 2rem;
-  border-radius: 20px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
 
@@ -6051,7 +6052,7 @@ button:hover {
   justify-content: center;
   margin-left: 2rem;
   width: 53rem;
-  border-radius: 20px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
 }
 

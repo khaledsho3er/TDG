@@ -213,7 +213,7 @@ function ShippingForm({
                   type="text"
                   id="firstName"
                   name="firstName"
-                  placeholder="First Name"
+                  placeholder="First Name *"
                   value={shippingData.firstName}
                   onChange={handleChange}
                   required
@@ -228,7 +228,7 @@ function ShippingForm({
                   type="text"
                   id="lastName"
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder="Last Name *"
                   value={shippingData.lastName}
                   onChange={handleChange}
                   required
@@ -247,7 +247,7 @@ function ShippingForm({
                   type="text"
                   id="address"
                   name="address"
-                  placeholder="Address"
+                  placeholder="Address *"
                   value={shippingData.address}
                   onChange={handleChange}
                   required
@@ -265,7 +265,6 @@ function ShippingForm({
                   placeholder="Label"
                   value={shippingData.label}
                   onChange={handleChange}
-                  required
                   style={errors.label ? errorStyle : {}}
                 />
                 {errors.label && (
@@ -284,7 +283,6 @@ function ShippingForm({
                   placeholder="Apartment"
                   value={shippingData.apartment}
                   onChange={handleChange}
-                  required
                   style={errors.apartment ? errorStyle : {}}
                 />
                 {errors.apartment && (
@@ -299,7 +297,6 @@ function ShippingForm({
                   placeholder="Floor"
                   value={shippingData.floor}
                   onChange={handleChange}
-                  required
                   style={errors.floor ? errorStyle : {}}
                 />
                 {errors.floor && (
@@ -318,7 +315,6 @@ function ShippingForm({
                   placeholder="Country"
                   value={shippingData.country}
                   onChange={handleChange}
-                  required
                   style={errors.country ? errorStyle : {}}
                 />
                 {errors.country && (
@@ -330,7 +326,7 @@ function ShippingForm({
                   type="text"
                   id="city"
                   name="city"
-                  placeholder="City"
+                  placeholder="City *"
                   value={shippingData.city}
                   onChange={handleChange}
                   required
@@ -349,7 +345,7 @@ function ShippingForm({
                   type="text"
                   id="zipCode"
                   name="zipCode"
-                  placeholder="Zip Code"
+                  placeholder="Zip Code *"
                   value={shippingData.zipCode}
                   onChange={handleChange}
                   required
