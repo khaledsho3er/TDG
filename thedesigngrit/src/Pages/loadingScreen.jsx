@@ -163,7 +163,11 @@ const loadingScreenStyle = {
   left: 0,
   width: "100vw",
   height: "100vh",
-  backgroundColor: "black",
+  backgroundColor: "white",
+  backgroundImage: "url('/Assets/TDGLoadingScreen.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
