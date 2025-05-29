@@ -85,7 +85,7 @@ const SignUpForm = () => {
   useEffect(() => {
     if (watchPassword) {
       calculateStrength(watchPassword);
-      const newRequirements = checkRequirements(watchPassword);
+      checkRequirements(watchPassword);
 
       // Check if all requirements are met to auto-close the popper
       setShowRequirements(true); // Always show on change

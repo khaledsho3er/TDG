@@ -248,7 +248,7 @@ function Checkout() {
         )
       : 0;
 
-    const newTotal = newSubtotal + (shippingFee || 0);
+    // const newTotal = newSubtotal + (shippingFee || 0);
 
     // Update state if needed
     if (subtotal !== newSubtotal) {
@@ -256,7 +256,7 @@ function Checkout() {
       // setSubtotal(newSubtotal);
       // setTotal(newTotal);
     }
-  }, [cartItems]);
+  }, [cartItems, subtotal]);
 
   const steps = [
     {

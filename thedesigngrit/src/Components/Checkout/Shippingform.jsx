@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
 import { UserContext } from "../../utils/userContext";
@@ -48,14 +48,7 @@ function ShippingForm({
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const [hasAddresses, setHasAddresses] = useState(false);
 
-  // Check if user has addresses when component mounts
-  useEffect(() => {
-    if (userSession && userSession.id) {
-      checkForAddresses();
-    }
-  }, [userSession]);
-
-  const checkForAddresses = async () => {
+  const checkForAddresses = useCallback(async () => {
     try {
       const response = await axios.get(
         `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
@@ -72,7 +65,12 @@ function ShippingForm({
       console.error("Error checking for addresses:", error);
       setHasAddresses(false);
     }
-  };
+  }, [userSession?.id]);
+  useEffect(() => {
+    if (userSession && userSession.id) {
+      checkForAddresses();
+    }
+  }, [userSession, checkForAddresses]);
 
   const handleCheckboxChange = (option) => {
     console.log("Checkbox clicked:", option);
