@@ -127,14 +127,9 @@ const ProductSlider = () => {
             slidesPerView: 2,
             spaceBetween: 10,
           },
-          // When window width is >= 768px (tablet)
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 15,
-          },
           769: {
             slidesPerView: 3,
-            spaceBetween: 30,
+            spaceBetween: 20,
           },
           961: {
             slidesPerView: 3,
