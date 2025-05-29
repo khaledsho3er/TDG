@@ -112,21 +112,6 @@ const SignUpForm = () => {
     if (/[\W_]/.test(password)) score += 25;
     setStrength(score);
   };
-
-  // const getBarColors = () => {
-  //   if (strength <= 25) return ["red", "#efebe8", "#efebe8", "#efebe8"];
-  //   if (strength <= 50) return ["orange", "orange", "#efebe8", "#efebe8"];
-  //   if (strength <= 75) return ["yellow", "yellow", "yellow", "#efebe8"];
-  //   return ["green", "green", "green", "green"];
-  // };
-
-  // const getStrengthLabel = () => {
-  //   if (strength <= 25) return "Weak";
-  //   if (strength <= 50) return "Fair";
-  //   if (strength <= 75) return "Good";
-  //   return "Strong";
-  // };
-
   const onSubmit = async (data) => {
     try {
       // Register the user
@@ -217,6 +202,23 @@ const SignUpForm = () => {
           margin: isMediumLaptop ? "0 auto" : "initial",
         }}
       >
+        {(errors.email ||
+          errors.password ||
+          errors.confirmPassword ||
+          errors.firstName ||
+          errors.lastName ||
+          errors.terms) && (
+          <div className="login-error-message">
+            {errors.email?.message && <div>{errors.email.message}</div>}
+            {errors.password?.message && <div>{errors.password.message}</div>}
+            {errors.confirmPassword?.message && (
+              <div>{errors.confirmPassword.message}</div>
+            )}
+            {errors.firstName?.message && <div>{errors.firstName.message}</div>}
+            {errors.lastName?.message && <div>{errors.lastName.message}</div>}
+            {errors.terms?.message && <div>{errors.terms.message}</div>}
+          </div>
+        )}
         <input
           type="email"
           placeholder="E-mail"
@@ -232,7 +234,7 @@ const SignUpForm = () => {
             isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
           }
         />
-        {errors.email && (
+        {/* {errors.email && (
           <p
             className="error-message"
             style={
@@ -243,7 +245,7 @@ const SignUpForm = () => {
           >
             {errors.email.message}
           </p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -254,7 +256,7 @@ const SignUpForm = () => {
             isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
           }
         />
-        {errors.firstName && (
+        {/* {errors.firstName && (
           <p
             className="error-message"
             style={
@@ -265,7 +267,7 @@ const SignUpForm = () => {
           >
             {errors.firstName.message}
           </p>
-        )}
+        )} */}
 
         <input
           type="text"
@@ -276,7 +278,7 @@ const SignUpForm = () => {
             isMediumLaptop ? { marginBottom: "10px", padding: "8px 12px" } : {}
           }
         />
-        {errors.lastName && (
+        {/* {errors.lastName && (
           <p
             className="error-message"
             style={
@@ -287,7 +289,7 @@ const SignUpForm = () => {
           >
             {errors.lastName.message}
           </p>
-        )}
+        )} */}
 
         {/* Password Field */}
         <ClickAwayListener onClickAway={handleClickAway}>
@@ -401,9 +403,9 @@ const SignUpForm = () => {
           </div>
         </ClickAwayListener>
 
-        {errors.password && (
+        {/* {errors.password && (
           <p className="error-message">{errors.password.message}</p>
-        )}
+        )} */}
 
         {/* Confirm Password Field */}
         <div style={{ position: "relative" }}>
@@ -426,9 +428,9 @@ const SignUpForm = () => {
             {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </span>
         </div>
-        {errors.confirmPassword && (
+        {/* {errors.confirmPassword && (
           <p className="error-message">{errors.confirmPassword.message}</p>
-        )}
+        )} */}
 
         <div className="register-policy-container">
           <Checkbox
@@ -447,9 +449,9 @@ const SignUpForm = () => {
             .
           </p>
         </div>
-        {errors.terms && (
+        {/* {errors.terms && (
           <p className="error-message">{errors.terms.message}</p>
-        )}
+        )} */}
 
         <button type="submit" className="btn signin-btn">
           Sign Up
