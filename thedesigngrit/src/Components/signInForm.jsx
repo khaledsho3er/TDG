@@ -101,8 +101,12 @@ function SignInForm() {
 
         <form onSubmit={handleSubmit(handleValidateAndSubmit)}>
           {/* Display general login error at the top of the form */}
-          {loginError && (
-            <div className="login-error-message">{loginError}</div>
+          {(errors.email || errors.password || loginError) && (
+            <div className="login-error-message">
+              {errors.email?.message && <div>{errors.email.message}</div>}
+              {errors.password?.message && <div>{errors.password.message}</div>}
+              {loginError && <div>{loginError}</div>}
+            </div>
           )}
 
           <input
