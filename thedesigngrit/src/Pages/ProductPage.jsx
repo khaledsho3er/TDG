@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Button, useMediaQuery } from "@mui/material";
+import { Box, Button, useMediaQuery, IconButton } from "@mui/material";
 import { FaStar, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -18,11 +18,13 @@ import BrandCursol from "../Components/brandCursol";
 import { BsExclamationOctagon } from "react-icons/bs";
 import RequestQuote from "../Components/product/RequestInfo";
 import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -161,8 +163,58 @@ function ProductPage() {
       setSelectedVariant(null);
     }
   }, [selectedColor, selectedSize, variants]);
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!userSession) return; // Make sure userSession is available
+
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
+      );
+      if (response.ok) {
+        const favoritesData = await response.json();
+        const favoriteIds = favoritesData.map((prod) => prod._id);
+        setIsFavorite(favoriteIds.includes(product._id));
+      }
+    };
+    fetchFavorites();
+  }, [userSession, product._id]);
+  // Toggle the favorite status
+  const toggleFavorite = async (event) => {
+    event.stopPropagation(); // Prevent triggering card click
+
+    if (!userSession) return; // If there's no user session, prevent posting
+
+    const endpoint = isFavorite ? "/remove" : "/add";
+    const requestPayload = {
+      userSession,
+      productId: product._id,
+    };
+
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/favorites${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestPayload),
+        }
+      );
+
+      if (response.ok) {
+        setIsFavorite(!isFavorite); // Toggle the favorite status if successful
+      } else {
+        console.error("Error: Unable to update favorite status.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
   if (!product) return <div>Product not found</div>;
+  // Fetch the user's favorite products on component mount
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
@@ -397,20 +449,42 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <h1 className="product-title">
-              {selectedVariant ? selectedVariant.title : product.name}
-            </h1>
-            {selectedVariant && (
-              <h3
-                style={{
-                  marginBottom: "8px",
-                  fontWeight: "light",
-                  color: "#ccc",
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <h1 className="product-title">
+                {selectedVariant ? selectedVariant.title : product.name}
+              </h1>
+              {selectedVariant && (
+                <h3
+                  style={{
+                    marginBottom: "8px",
+                    fontWeight: "light",
+                    color: "#ccc",
+                  }}
+                >
+                  {product.name}
+                </h3>
+              )}
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  backgroundColor: "#fff",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                  "&:hover": { backgroundColor: "#f0f0f0" },
+                }}
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevent triggering card click when clicking favorite button
+                  toggleFavorite(event);
                 }}
               >
-                {product.name}
-              </h3>
-            )}
+                {isFavorite ? (
+                  <FavoriteIcon sx={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ color: "#000" }} />
+                )}
+              </IconButton>
+            </div>
             <p className="product-brand">{product.brandId.brandName}</p>
             <br />
             {product.readyToShip === true && (
