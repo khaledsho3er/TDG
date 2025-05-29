@@ -16,6 +16,7 @@ import ReadyToShip from "./Pages/ReadyToship";
 import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
 import { FavoritesProvider } from "./Components/favoriteOverlay";
+import Home from "./Pages/home";
 
 // Safari-compatible lazy loading with retry mechanism
 const createSafeLazy = (importFn, componentName) => {
@@ -73,7 +74,7 @@ const createSafeLazy = (importFn, componentName) => {
 };
 
 // Enhanced lazy loading with Safari fixes
-const Home = createSafeLazy(() => import("./Pages/home"), "Home");
+// Instead of lazy loading Home, import it directly
 const LoginPage = createSafeLazy(() => import("./Pages/login"), "LoginPage");
 const SignUpPage = createSafeLazy(() => import("./Pages/signup"), "SignUpPage");
 const AboutUsPage = createSafeLazy(
@@ -199,8 +200,7 @@ const TransitionAwareLoadingScreen = () => {
   const [showFallback, setShowFallback] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowFallback(true), 200);
-    return () => clearTimeout(timer);
+    setShowFallback(true);
   }, []);
 
   if (!showFallback && !isPending) return null;
@@ -257,7 +257,7 @@ const AppRoutes = () => {
     <SafariNavigationWrapper>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<TransitionRoute element={<Home />} />} />
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<TransitionRoute element={<Home />} />} />
         <Route
           path="/login"
