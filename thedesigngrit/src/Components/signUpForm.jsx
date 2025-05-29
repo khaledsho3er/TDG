@@ -319,33 +319,6 @@ const SignUpForm = () => {
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
 
-            {/* Password strength indicator */}
-            {/* <div style={{ marginTop: "8px" }}>
-              <div style={{ display: "flex", gap: "4px" }}>
-                {getBarColors().map((color, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      flex: 1,
-                      height: "8px",
-                      backgroundColor: color,
-                      borderRadius: "4px",
-                    }}
-                  ></div>
-                ))}
-              </div>
-              <div
-                style={{
-                  textAlign: "right",
-                  fontSize: "12px",
-                  marginTop: "4px",
-                  color: getBarColors()[0],
-                }}
-              >
-                {getStrengthLabel()}
-              </div>
-            </div> */}
-
             {/* Password requirements popup */}
             <Popper
               open={showRequirements}

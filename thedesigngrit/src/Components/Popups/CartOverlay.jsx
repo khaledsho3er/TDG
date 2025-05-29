@@ -266,7 +266,10 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                       variant="body2"
                       sx={{ color: "gray", fontFamily: "Montserrat" }}
                     >
-                      {`${item.unitPrice.toFixed(2)}E£`}
+                      {` ${item.unitPrice.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })} E£`}
                     </Typography>
 
                     {/* Existing color and size info... */}
@@ -323,7 +326,10 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             }}
           >
             <Typography sx={{ fontFamily: "Montserrat", fontSize: "18px" }}>
-              {`Total: ${total.toFixed(2)}E£`}
+              {`Total: ${total.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })} E£`}
             </Typography>
           </Box>
 

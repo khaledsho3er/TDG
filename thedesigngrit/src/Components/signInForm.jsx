@@ -103,9 +103,9 @@ function SignInForm() {
             placeholder="E-mail"
             className="input-field"
           />
-          {errors.email && (
+          {/* {errors.email && (
             <p className="error-message-login">{errors.email.message}</p>
-          )}
+          )} */}
 
           <div style={{ position: "relative" }}>
             <input
@@ -147,9 +147,9 @@ function SignInForm() {
           >
             Forgot Password?
           </span>
-          {errors.password && (
+          {/* {errors.password && (
             <p className="error-message-login">{errors.password.message}</p>
-          )}
+          )} */}
 
           <button
             type="submit"

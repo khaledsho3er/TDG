@@ -240,6 +240,7 @@ function ProductPage() {
   };
 
   const handleAddToCart = () => {
+    if (product.stock <= 0) return;
     // Validate color and size selection
     const errors = {
       color: product.colors?.length > 0 && !selectedColor,
@@ -720,12 +721,27 @@ function ProductPage() {
               <p style={{ color: "red" }}>Please select a size</p>
             ) : null}{" "}
             <div className="action-buttons">
-              <button
-                className="action-button button-primary"
-                onClick={() => handleAddToCart(product)}
-              >
-                Add to Cart
-              </button>
+              {product.stock <= 0 ? (
+                <div
+                  className="action-button disabled-text"
+                  style={{
+                    cursor: "not-allowed",
+                    pointerEvents: "none",
+                    backgroundColor: "#f0f0f0",
+                    border: "1px dashed #6b7b58",
+                    color: "#6b7b58",
+                  }}
+                >
+                  Sold Out !
+                </div>
+              ) : (
+                <button
+                  className="action-button button-primary"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              )}
               <button
                 className="action-button button-secondary"
                 onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup

@@ -138,7 +138,7 @@ export default function BrandCursol({
                   <h3 className="carousel-product-name">{product.name}</h3>
                   <p className="carousel-product-price">
                     {product.price
-                      ? `${product.price} E£`
+                      ? `${product.price.toLocaleString()} E£`
                       : "Price Unavailable"}
                   </p>
                 </div>
