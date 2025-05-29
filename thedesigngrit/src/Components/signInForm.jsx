@@ -36,6 +36,7 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
+    trigger, // ✅ Add this
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -73,7 +74,15 @@ function SignInForm() {
       }
     }
   };
-
+  const handleValidateAndSubmit = async (data) => {
+    const isValid = await trigger(); // Validate fields manually
+    if (!isValid) {
+      const firstError = errors.email?.message || errors.password?.message;
+      setLoginError(firstError);
+      return;
+    }
+    onSubmit(data);
+  };
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
@@ -90,7 +99,7 @@ function SignInForm() {
         </div>
         <div className="divider-signIn"> OR</div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleValidateAndSubmit)}>
           {/* Display general login error at the top of the form */}
           {loginError && (
             <div className="login-error-message">{loginError}</div>

@@ -730,6 +730,8 @@ function ProductPage() {
                     backgroundColor: "#f0f0f0",
                     border: "1px dashed #6b7b58",
                     color: "#6b7b58",
+                    width: "100%",
+                    textAlign: "center",
                   }}
                 >
                   Sold Out !
