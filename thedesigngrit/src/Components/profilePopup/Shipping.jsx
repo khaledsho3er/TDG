@@ -69,7 +69,8 @@ const ModalBox = styled(Box)(({ theme }) => ({
   overflow: "auto",
 }));
 
-const ShippingInfoPopup = () => {
+// Add a prop to handle when an address is added
+const ShippingInfoPopup = ({ onAddressAdded }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({ shipmentAddress: [] });
   const [newAddress, setNewAddress] = useState({
@@ -224,6 +225,11 @@ const ShippingInfoPopup = () => {
       }));
 
       setIsEditing(false);
+
+      // Call the callback if provided
+      if (onAddressAdded) {
+        onAddressAdded();
+      }
     } catch (error) {
       console.error("Error updating user data:", error);
     }

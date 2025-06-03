@@ -1,8 +1,10 @@
 import { Box } from "@mui/material";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { styled } from "@mui/system";
-import { UserContext } from "../../utils/userContext"; // adjust path accordingly
+import { UserContext } from "../../utils/userContext";
+import AddressSelectionPopup from "./AddressSelectionPopup";
+import axios from "axios";
 
 // Styled circular checkbox
 const CircularCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -43,47 +45,46 @@ function ShippingForm({
 }) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
+  const [showAddressPopup, setShowAddressPopup] = useState(false);
+  const [hasAddresses, setHasAddresses] = useState(false);
+
+  const checkForAddresses = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
+        { withCredentials: true }
+      );
+
+      const hasShipmentAddresses =
+        response.data &&
+        response.data.shipmentAddress &&
+        response.data.shipmentAddress.length > 0;
+
+      setHasAddresses(hasShipmentAddresses);
+    } catch (error) {
+      console.error("Error checking for addresses:", error);
+      setHasAddresses(false);
+    }
+  }, [userSession?.id]);
+  useEffect(() => {
+    if (userSession && userSession.id) {
+      checkForAddresses();
+    }
+  }, [userSession, checkForAddresses]);
 
   const handleCheckboxChange = (option) => {
     console.log("Checkbox clicked:", option);
-    console.log("User data:", userSession);
-
-    setSelectedOption(option);
 
     if (option === "existing") {
-      console.log("Shipment Addresses:", userSession?.shipmentAddress);
-
-      if (userSession?.shipmentAddress?.length > 0) {
-        let defaultAddress = userSession.shipmentAddress.find(
-          (addr) => addr.isDefault
-        );
-        console.log("Default Address Found:", defaultAddress);
-
-        if (!defaultAddress) {
-          defaultAddress = userSession.shipmentAddress[0];
-          console.log("No default, using first address:", defaultAddress);
-        }
-
-        if (defaultAddress) {
-          onChange({
-            firstName: userSession.firstName || "",
-            lastName: userSession.lastName || "",
-            address: defaultAddress.address1 || "",
-            label: "Home", // Optional
-            apartment: defaultAddress.address2 || "",
-            floor: "1", // Optional
-            country: defaultAddress.country || "",
-            city: defaultAddress.city || "",
-            zipCode: defaultAddress.postalCode || "",
-          });
-        }
+      if (hasAddresses) {
+        setShowAddressPopup(true);
       } else {
-        console.log("No shipment addresses found!");
+        // If no addresses, show popup to add one
+        setShowAddressPopup(true);
       }
-    }
-
-    if (option === "new") {
-      console.log("Switching to empty new address.");
+    } else {
+      // For "new" option, just clear the form
+      setSelectedOption(option);
       onChange({
         firstName: "",
         lastName: "",
@@ -96,6 +97,23 @@ function ShippingForm({
         zipCode: "",
       });
     }
+  };
+
+  const handleAddressSelect = (address) => {
+    setSelectedOption("existing");
+
+    // Map the selected address to the shipping form format
+    onChange({
+      firstName: userSession.firstName || "",
+      lastName: userSession.lastName || "",
+      address: address.address1 || "",
+      label: address.label || "Home",
+      apartment: address.apartment || address.address2 || "",
+      floor: address.floor || "",
+      country: address.country || "",
+      city: address.city || "",
+      zipCode: address.postalCode || "",
+    });
   };
 
   const handleChange = (e) => {
@@ -176,7 +194,14 @@ function ShippingForm({
         />
       </Box>
 
-      <Box className="shipping-form-container">
+      {/* Address Selection Popup */}
+      <AddressSelectionPopup
+        open={showAddressPopup}
+        onClose={() => setShowAddressPopup(false)}
+        onAddressSelect={handleAddressSelect}
+      />
+
+      <Box className="shipping-form-container" sx={{ width: "85%" }}>
         <Box className="shipping-form">
           <form onSubmit={handleSubmit} className="shippingform-form-container">
             {/* Row 1 */}
@@ -186,7 +211,7 @@ function ShippingForm({
                   type="text"
                   id="firstName"
                   name="firstName"
-                  placeholder="First Name"
+                  placeholder="First Name *"
                   value={shippingData.firstName}
                   onChange={handleChange}
                   required
@@ -201,7 +226,7 @@ function ShippingForm({
                   type="text"
                   id="lastName"
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder="Last Name *"
                   value={shippingData.lastName}
                   onChange={handleChange}
                   required
@@ -220,7 +245,7 @@ function ShippingForm({
                   type="text"
                   id="address"
                   name="address"
-                  placeholder="Address"
+                  placeholder="Address *"
                   value={shippingData.address}
                   onChange={handleChange}
                   required
@@ -238,7 +263,6 @@ function ShippingForm({
                   placeholder="Label"
                   value={shippingData.label}
                   onChange={handleChange}
-                  required
                   style={errors.label ? errorStyle : {}}
                 />
                 {errors.label && (
@@ -257,7 +281,6 @@ function ShippingForm({
                   placeholder="Apartment"
                   value={shippingData.apartment}
                   onChange={handleChange}
-                  required
                   style={errors.apartment ? errorStyle : {}}
                 />
                 {errors.apartment && (
@@ -272,7 +295,6 @@ function ShippingForm({
                   placeholder="Floor"
                   value={shippingData.floor}
                   onChange={handleChange}
-                  required
                   style={errors.floor ? errorStyle : {}}
                 />
                 {errors.floor && (
@@ -291,7 +313,6 @@ function ShippingForm({
                   placeholder="Country"
                   value={shippingData.country}
                   onChange={handleChange}
-                  required
                   style={errors.country ? errorStyle : {}}
                 />
                 {errors.country && (
@@ -303,7 +324,7 @@ function ShippingForm({
                   type="text"
                   id="city"
                   name="city"
-                  placeholder="City"
+                  placeholder="City *"
                   value={shippingData.city}
                   onChange={handleChange}
                   required
@@ -322,7 +343,7 @@ function ShippingForm({
                   type="text"
                   id="zipCode"
                   name="zipCode"
-                  placeholder="Zip Code"
+                  placeholder="Zip Code *"
                   value={shippingData.zipCode}
                   onChange={handleChange}
                   required

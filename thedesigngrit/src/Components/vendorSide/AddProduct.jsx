@@ -446,7 +446,7 @@ const ProductForm = () => {
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
-                  placeholder="LE 1000"
+                  placeholder="E£ 1000"
                   required
                 />
               </div>
@@ -457,7 +457,7 @@ const ProductForm = () => {
                   name="salePrice"
                   value={formData.salePrice}
                   onChange={handleChange}
-                  placeholder="LE 450"
+                  placeholder="E£ 450"
                   required
                 />
               </div>

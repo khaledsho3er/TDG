@@ -14,6 +14,7 @@ import { UserContext } from "../../utils/userContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
 
 const ShoppingCartOverlay = ({ open, onClose }) => {
   const { cartItems, removeFromCart, lastAddedItem, updateQuantity } =
@@ -27,6 +28,9 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity >= 1) {
       updateQuantity(itemId, newQuantity);
+    } else if (newQuantity === 0) {
+      // Remove item if quantity would be 0
+      removeFromCart(itemId);
     }
   };
 
@@ -203,19 +207,29 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                       <IconButton
                         size="small"
                         onClick={() =>
-                          handleQuantityChange(item.id, item.quantity - 1)
+                          item.quantity === 1
+                            ? removeFromCart(item.id)
+                            : handleQuantityChange(item.id, item.quantity - 1)
                         }
                         sx={{
                           padding: "2px",
-                          backgroundColor: "#6B7B58",
+                          backgroundColor:
+                            item.quantity === 1 ? "transparent" : "#6B7B58",
                           color: "white",
-                          "&:hover": { backgroundColor: "#5a6a47" },
+                          "&:hover": {
+                            backgroundColor:
+                              item.quantity === 1 ? "transparent" : "#5a6a47",
+                          },
                           width: "20px",
                           height: "20px",
                           minWidth: "20px",
                         }}
                       >
-                        <RemoveIcon fontSize="small" />
+                        {item.quantity === 1 ? (
+                          <DeleteIcon fontSize="small" color="#ccc" />
+                        ) : (
+                          <RemoveIcon fontSize="small" />
+                        )}
                       </IconButton>
 
                       <Typography
@@ -252,7 +266,10 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                       variant="body2"
                       sx={{ color: "gray", fontFamily: "Montserrat" }}
                     >
-                      {`${item.unitPrice.toFixed(2)}LE`}
+                      {` ${item.unitPrice.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })} E£`}
                     </Typography>
 
                     {/* Existing color and size info... */}
@@ -309,7 +326,10 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
             }}
           >
             <Typography sx={{ fontFamily: "Montserrat", fontSize: "18px" }}>
-              {`Total: ${total.toFixed(2)}LE`}
+              {`Total: ${total.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })} E£`}
             </Typography>
           </Box>
 

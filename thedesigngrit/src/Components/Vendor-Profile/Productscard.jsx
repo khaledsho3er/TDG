@@ -133,14 +133,14 @@ const VendorProductsCard = ({ vendor, products }) => {
                               marginRight: "5px",
                             }}
                           >
-                            {product.price} E£
+                            {product.price.toLocaleString("en-US")} E£
                           </span>
                         ) : (
-                          `${product.price} E£`
+                          `${product.price.toLocaleString("en-US")} E£`
                         )}
                         {product.salePrice && (
                           <span style={{ color: "red" }}>
-                            {product.salePrice} E£
+                            {product.salePrice.toLocaleString("en-US")} E£
                           </span>
                         )}
                       </p>

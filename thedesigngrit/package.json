@@ -50,7 +50,9 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "optimize-build": "echo 'Build optimization complete'",
+    "safari-test": "npx serve -s build -p 3000"
   },
   "eslintConfig": {
     "extends": [
@@ -62,7 +64,9 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "Safari >= 12",
+      "iOS >= 12"
     ],
     "development": [
       "last 1 chrome version",

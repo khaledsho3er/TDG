@@ -4,36 +4,43 @@ const LoadingScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [progress, setProgress] = useState(0);
-
   useEffect(() => {
-    // Detect mobile (including iOS Safari)
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     setIsMobile(window.innerWidth <= 768 || isIOS);
 
-    const timer = setTimeout(
+    // Progress interval
+    const interval = setInterval(
       () => {
-        setIsVisible(false);
-        onComplete?.();
+        setProgress((prev) => {
+          const next = prev + 1;
+          if (next >= 100) {
+            clearInterval(interval);
+            setIsVisible(false);
+            onComplete?.();
+          }
+          return next;
+        });
       },
-      isMobile ? 5000 : 10000
-    ); // Faster timeout on mobile
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsVisible(false);
-          onComplete?.();
-          return 100;
+      isMobile ? 50 : 100
+    );
+
+    // On desktop, try to play video to ensure it's ready (Safari fix)
+    if (!isMobile) {
+      const video = document.querySelector("video");
+      if (video) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay might be blocked, ignore error, keep showing loading screen until progress ends
+          });
         }
-        return prev + 1;
-      });
-    }, 50); // Adjust speed here (lower = faster)
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
-  }, [onComplete, isMobile]);
+      }
+    }
+
+    return () => clearInterval(interval);
+  }, [isMobile, onComplete]);
+
+  if (!isVisible) return null;
 
   return (
     isVisible && (
@@ -156,7 +163,11 @@ const loadingScreenStyle = {
   left: 0,
   width: "100vw",
   height: "100vh",
-  backgroundColor: "black",
+  backgroundColor: "white",
+  backgroundImage: "url('/Assets/TDGLoadingScreen.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

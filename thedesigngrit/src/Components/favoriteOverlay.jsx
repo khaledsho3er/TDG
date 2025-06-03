@@ -141,7 +141,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
     <div className="overlay-container-vendor" style={{ right: "30px" }}>
       {/* Header */}
       <div className="overlay-header-vendor">
-        <h3>Favorites ({favoriteProducts.length})</h3>
+        <h3>Wishlist ({favoriteProducts.length})</h3>
         <button
           className="close-button-vendor"
           onClick={onClose}
@@ -183,7 +183,24 @@ const FavoritesOverlay = ({ open, onClose }) => {
                 style={{ cursor: "pointer" }}
               >
                 <h4>{product.name}</h4>
-                <p>{product.price}</p>
+                {product.salePrice ? (
+                  <p
+                    style={{
+                      textDecoration: "line-through",
+                      marginRight: "8px",
+                      color: "#ccc",
+                    }}
+                  >
+                    {product.price.toLocaleString()} E£
+                  </p>
+                ) : (
+                  <p> {product.price.toLocaleString()} E£</p>
+                )}
+                {product.salePrice && (
+                  <p style={{ color: "red" }}>
+                    {product.salePrice.toLocaleString()} E£
+                  </p>
+                )}
                 <span>
                   {product.description.split(" ").slice(0, 10).join(" ") +
                     (product.description.split(" ").length > 10 ? "..." : "")}

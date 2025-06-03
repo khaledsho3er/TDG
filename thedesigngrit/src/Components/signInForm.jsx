@@ -36,6 +36,7 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
+    trigger, // ✅ Add this
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -73,7 +74,15 @@ function SignInForm() {
       }
     }
   };
-
+  const handleValidateAndSubmit = async (data) => {
+    const isValid = await trigger(); // Validate fields manually
+    if (!isValid) {
+      const firstError = errors.email?.message || errors.password?.message;
+      setLoginError(firstError);
+      return;
+    }
+    onSubmit(data);
+  };
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
@@ -90,10 +99,14 @@ function SignInForm() {
         </div>
         <div className="divider-signIn"> OR</div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleValidateAndSubmit)}>
           {/* Display general login error at the top of the form */}
-          {loginError && (
-            <div className="login-error-message">{loginError}</div>
+          {(errors.email || errors.password || loginError) && (
+            <div className="login-error-message">
+              {errors.email?.message && <div>{errors.email.message}</div>}
+              {errors.password?.message && <div>{errors.password.message}</div>}
+              {loginError && <div>{loginError}</div>}
+            </div>
           )}
 
           <input
@@ -103,9 +116,9 @@ function SignInForm() {
             placeholder="E-mail"
             className="input-field"
           />
-          {errors.email && (
+          {/* {errors.email && (
             <p className="error-message-login">{errors.email.message}</p>
-          )}
+          )} */}
 
           <div style={{ position: "relative" }}>
             <input
@@ -147,9 +160,9 @@ function SignInForm() {
           >
             Forgot Password?
           </span>
-          {errors.password && (
+          {/* {errors.password && (
             <p className="error-message-login">{errors.password.message}</p>
-          )}
+          )} */}
 
           <button
             type="submit"

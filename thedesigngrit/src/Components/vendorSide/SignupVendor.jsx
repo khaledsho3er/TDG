@@ -434,10 +434,10 @@ function Signupvendor() {
             textAlign: "center",
             marginBottom: 2,
             color: "#2d2d2d",
-            fontFamily: "Montserrat",
+            fontFamily: "Horizon",
           }}
         >
-          Vendor and Brand Registration
+          Brand Registration
         </Typography>
 
         {currentPhase === 1 && (
@@ -473,7 +473,7 @@ function Signupvendor() {
               sx={whiteTextFieldStyles}
             />
 
-            {/* Password Field with Requirements Popper */}
+            {/* Password Field Requirements Popper */}
             <ClickAwayListener onClickAway={handleClickAway}>
               <div style={{ position: "relative", width: "100%" }}>
                 <TextField

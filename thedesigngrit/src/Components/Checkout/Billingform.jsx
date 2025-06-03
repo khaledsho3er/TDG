@@ -45,6 +45,7 @@ function BillingForm({
   billData,
   errors = {},
   validateOnChange = false,
+  shippingData, // Add shippingData as a prop
 }) {
   const [selectedOption, setSelectedOption] = useState("new");
   const { userSession } = useContext(UserContext);
@@ -71,26 +72,20 @@ function BillingForm({
   const handleCheckboxChange = (option) => {
     setSelectedOption(option);
 
-    if (option === "existing" && userSession) {
-      const defaultAddress =
-        userSession.shipmentAddress?.find((addr) => addr.isDefault) ||
-        userSession.shipmentAddress?.[0]; // fallback to the first one
-      const userCountryCode = defaultAddress?.country?.toLowerCase() || "eg"; // fallback to Egypt
-
-      if (defaultAddress) {
-        const filledData = {
-          firstName: userSession.firstName || "",
-          lastName: userSession.lastName || "",
-          email: userSession.email || "",
-          address: defaultAddress.address1 || "",
-          country: defaultAddress.country || "",
-          city: defaultAddress.city || "",
-          zipCode: defaultAddress.postalCode || "",
-          countryCode: userCountryCode || "+20", // or default based on country
-          phoneNumber: userSession.phoneNumber || "",
-        };
-        onChange(filledData);
-      }
+    if (option === "existing" && shippingData) {
+      // Use the shipping data that was passed from the parent component
+      const filledData = {
+        firstName: userSession.firstName || shippingData.firstName || "",
+        lastName: userSession.lastName || shippingData.lastName || "",
+        email: userSession.email || "",
+        address: shippingData.address || "",
+        country: shippingData.country || "",
+        city: shippingData.city || "",
+        zipCode: shippingData.zipCode || "",
+        countryCode: userSession.countryCode || "+20", // Default or from user data
+        phoneNumber: userSession.phoneNumber || "",
+      };
+      onChange(filledData);
     } else if (option === "new") {
       // If the user chooses to enter new data, clear the form
       onChange({
@@ -187,7 +182,7 @@ function BillingForm({
                   type="text"
                   id="firstName"
                   name="firstName"
-                  placeholder="First Name"
+                  placeholder="First Name *"
                   value={billingData.firstName}
                   onChange={handleChange}
                   required
@@ -202,7 +197,7 @@ function BillingForm({
                   type="text"
                   id="lastName"
                   name="lastName"
-                  placeholder="Last Name"
+                  placeholder="Last Name *"
                   value={billingData.lastName}
                   onChange={handleChange}
                   required
@@ -219,7 +214,7 @@ function BillingForm({
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Email *"
                 value={billingData.email}
                 onChange={handleChange}
                 required
@@ -235,7 +230,7 @@ function BillingForm({
                 type="text"
                 id="address"
                 name="address"
-                placeholder="Address"
+                placeholder="Address *"
                 value={billingData.address}
                 onChange={handleChange}
                 required
@@ -248,6 +243,7 @@ function BillingForm({
 
             <div className="input-group">
               <PhoneInput
+                placeholder="Phone Number *"
                 country={billingData.userCountryCode || "eg"}
                 value={billingData.phoneNumber}
                 onChange={(phone, countryData) => {
@@ -285,7 +281,7 @@ function BillingForm({
                   type="text"
                   id="country"
                   name="country"
-                  placeholder="Country"
+                  placeholder="Country *"
                   value={billingData.country}
                   onChange={handleChange}
                   required
@@ -296,7 +292,7 @@ function BillingForm({
                   type="text"
                   id="city"
                   name="city"
-                  placeholder="City"
+                  placeholder="City *"
                   value={billingData.city}
                   onChange={handleChange}
                   required
@@ -309,7 +305,7 @@ function BillingForm({
                 type="text"
                 id="zipCode"
                 name="zipCode"
-                placeholder="Zip Code"
+                placeholder="Zip Code *"
                 value={billingData.zipCode}
                 onChange={handleChange}
                 required

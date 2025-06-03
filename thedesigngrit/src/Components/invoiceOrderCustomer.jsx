@@ -39,15 +39,15 @@ const InvoicePDF = ({ order }) => (
           <View style={styles.row} key={item._id}>
             <Text>{item.productId.name}</Text>
             <Text>{item.quantity}</Text>
-            <Text>{item.totalPrice} LE</Text>
+            <Text>{item.totalPrice} E£</Text>
           </View>
         ))}
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.boldText}>Subtotal: {order.subtotal} LE</Text>
-        <Text style={styles.boldText}>Shipping: {order.shippingFee} LE</Text>
-        <Text style={styles.boldText}>Total: {order.total} LE</Text>
+        <Text style={styles.boldText}>Subtotal: {order.subtotal} E£</Text>
+        <Text style={styles.boldText}>Shipping: {order.shippingFee} E£</Text>
+        <Text style={styles.boldText}>Total: {order.total} E£</Text>
       </View>
     </Page>
   </Document>

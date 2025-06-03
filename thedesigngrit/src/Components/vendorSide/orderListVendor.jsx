@@ -225,7 +225,7 @@ const RecentPurchases = () => {
                     {order.orderStatus}
                   </span>
                 </td>
-                <td>{order.total.toFixed(2)}LE</td>
+                <td>{order.total.toFixed(2)}E£</td>
               </tr>
             ))}
           </tbody>

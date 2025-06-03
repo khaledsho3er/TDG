@@ -82,25 +82,11 @@ function Checkout() {
   const [shippingErrors, setShippingErrors] = useState({});
   const validateShippingData = () => {
     const errors = {};
-    const {
-      firstName,
-      lastName,
-      address,
-      label,
-      apartment,
-      floor,
-      country,
-      city,
-      zipCode,
-    } = shippingData;
+    const { firstName, lastName, address, city, zipCode } = shippingData;
 
     if (!firstName) errors.firstName = "First name is required";
     if (!lastName) errors.lastName = "Last name is required";
     if (!address) errors.address = "Address is required";
-    if (!label) errors.label = "Label is required";
-    if (!apartment) errors.apartment = "Apartment is required";
-    if (!floor) errors.floor = "Floor is required";
-    if (!country) errors.country = "Country is required";
     if (!city) errors.city = "City is required";
     if (!zipCode) {
       errors.zipCode = "Zip code is required";
@@ -262,7 +248,7 @@ function Checkout() {
         )
       : 0;
 
-    const newTotal = newSubtotal + (shippingFee || 0);
+    // const newTotal = newSubtotal + (shippingFee || 0);
 
     // Update state if needed
     if (subtotal !== newSubtotal) {
@@ -270,7 +256,7 @@ function Checkout() {
       // setSubtotal(newSubtotal);
       // setTotal(newTotal);
     }
-  }, [cartItems]);
+  }, [cartItems, subtotal]);
 
   const steps = [
     {
@@ -295,6 +281,7 @@ function Checkout() {
           billData={{ cartItems, subtotal, shippingFee, total }}
           errors={billingErrors}
           validateOnChange={true}
+          shippingData={shippingData} // Pass shipping data to BillingForm
         />
       ),
     },

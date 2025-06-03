@@ -13,6 +13,7 @@ import Footer from "../Components/Footer";
 import TrackOrder from "./TrackOrder";
 import LoadingScreen from "./loadingScreen";
 import BillingInfo from "../Components/profilePopup/billingInfo";
+import TrackQuotation from "../Components/TrackQuotation";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -75,6 +76,7 @@ const MyAccount = () => {
   const sections = {
     profile: <Profile userData={userData} />, // Pass userData as a prop
     orders: <TrackOrder />,
+    quotation: <TrackQuotation />,
     Password: <ResetPasswordForm />,
     // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,

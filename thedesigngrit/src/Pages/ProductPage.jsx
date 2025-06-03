@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Button, useMediaQuery } from "@mui/material";
+import { Box, Button, useMediaQuery, IconButton } from "@mui/material";
 import { FaStar, FaDownload } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -18,11 +18,13 @@ import BrandCursol from "../Components/brandCursol";
 import { BsExclamationOctagon } from "react-icons/bs";
 import RequestQuote from "../Components/product/RequestInfo";
 import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -161,8 +163,64 @@ function ProductPage() {
       setSelectedVariant(null);
     }
   }, [selectedColor, selectedSize, variants]);
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!userSession || !product) return; // Ensure both userSession and product are loaded
+
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
+        );
+        if (response.ok) {
+          const favoritesData = await response.json();
+          const favoriteIds = favoritesData.map((prod) => prod._id);
+          setIsFavorite(favoriteIds.includes(product._id));
+        }
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+
+    fetchFavorites();
+  }, [userSession, product]); // Only run when both userSession and product are ready
+
+  // Toggle the favorite status
+  const toggleFavorite = async (event) => {
+    event.stopPropagation(); // Prevent triggering card click
+
+    if (!userSession) return; // If there's no user session, prevent posting
+
+    const endpoint = isFavorite ? "/remove" : "/add";
+    const requestPayload = {
+      userSession,
+      productId: product._id,
+    };
+
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/favorites${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestPayload),
+        }
+      );
+
+      if (response.ok) {
+        setIsFavorite(!isFavorite); // Toggle the favorite status if successful
+      } else {
+        console.error("Error: Unable to update favorite status.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   if (loading) return <LoadingScreen onComplete={() => setLoading(false)} />;
   if (!product) return <div>Product not found</div>;
+  // Fetch the user's favorite products on component mount
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
@@ -240,6 +298,7 @@ function ProductPage() {
   };
 
   const handleAddToCart = () => {
+    if (product.stock <= 0) return;
     // Validate color and size selection
     const errors = {
       color: product.colors?.length > 0 && !selectedColor,
@@ -396,20 +455,45 @@ function ProductPage() {
           </div>
 
           <div className="product-details">
-            <h1 className="product-title">
-              {selectedVariant ? selectedVariant.title : product.name}
-            </h1>
-            {selectedVariant && (
-              <h3
-                style={{
-                  marginBottom: "8px",
-                  fontWeight: "light",
-                  color: "#ccc",
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <h1 className="product-title">
+                {selectedVariant ? selectedVariant.title : product.name}
+              </h1>
+              {selectedVariant && (
+                <h3
+                  style={{
+                    marginBottom: "8px",
+                    fontWeight: "light",
+                    color: "#ccc",
+                  }}
+                >
+                  {product.name}
+                </h3>
+              )}
+              <IconButton
+                sx={{
+                  marginLeft: "8px",
+                  "&:hover": { backgroundColor: "#f0f0f0" },
+                }}
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevent triggering card click when clicking favorite button
+                  toggleFavorite(event);
                 }}
               >
-                {product.name}
-              </h3>
-            )}
+                {isFavorite ? (
+                  <FavoriteIcon sx={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ color: "#000" }} />
+                )}
+              </IconButton>
+            </div>
             <p className="product-brand">{product.brandId.brandName}</p>
             <br />
             {product.readyToShip === true && (
@@ -720,12 +804,29 @@ function ProductPage() {
               <p style={{ color: "red" }}>Please select a size</p>
             ) : null}{" "}
             <div className="action-buttons">
-              <button
-                className="action-button button-primary"
-                onClick={() => handleAddToCart(product)}
-              >
-                Add to Cart
-              </button>
+              {product.stock <= 0 ? (
+                <div
+                  className="action-button disabled-text"
+                  style={{
+                    cursor: "not-allowed",
+                    pointerEvents: "none",
+                    backgroundColor: "#f0f0f0",
+                    border: "1px dashed #6b7b58",
+                    color: "#6b7b58",
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  Sold Out !
+                </div>
+              ) : (
+                <button
+                  className="action-button button-primary"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              )}
               <button
                 className="action-button button-secondary"
                 onClick={() => setShowRequestInfoPopup(true)} // Open Request Info Popup
