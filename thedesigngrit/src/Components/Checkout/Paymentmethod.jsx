@@ -88,13 +88,19 @@ function PaymentForm({
         }
 
         // Debug log for initial billing details
-        console.log("Original billing details:", billData.billingDetails);
+        console.log(
+          "Original billing details:",
+          JSON.stringify(billData.billingDetails, null, 2)
+        );
 
         // Use the billing details directly from billData since they're already in the correct format
         const billingDetails = billData.billingDetails;
 
         // Debug log for billing details
-        console.log("Using billing details:", billingDetails);
+        console.log(
+          "Using billing details:",
+          JSON.stringify(billingDetails, null, 2)
+        );
 
         // Validate required fields
         const requiredFields = {
@@ -129,7 +135,10 @@ function PaymentForm({
         };
 
         // Debug log for final payment data
-        console.log("Sending payment data:", paymentData);
+        console.log(
+          "Sending payment data:",
+          JSON.stringify(paymentData, null, 2)
+        );
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
@@ -172,7 +181,7 @@ function PaymentForm({
         error: error,
         message: error.message,
         stack: error.stack,
-        billData: billData,
+        billData: JSON.stringify(billData, null, 2),
       });
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."

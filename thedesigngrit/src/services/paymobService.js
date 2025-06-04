@@ -82,18 +82,28 @@ const paymobService = {
         },
         items: cartItems.map((item) => ({
           name: item.name,
-          amount_cents: item.price * 100, // Convert to cents
+          amount_cents: Math.round(item.price * 100), // Convert to cents and ensure it's an integer
           description: item.description || "",
           quantity: item.quantity,
         })),
       };
 
-      console.log("Sending order data to backend:", orderData);
+      // Log the exact data being sent
+      console.log(
+        "Sending order data to backend:",
+        JSON.stringify(orderData, null, 2)
+      );
 
       // Send the order data to your backend
       const response = await axios.post(
         `https://api.thedesigngrit.com/api/paymob/create-payment`,
-        orderData
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Add any required authentication headers here
+          },
+        }
       );
 
       console.log("Payment initialization response:", response.data);
@@ -110,6 +120,12 @@ const paymobService = {
       }
     } catch (error) {
       console.error("Payment initialization error:", error);
+      // Log the full error response if available
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+      }
       throw new Error(
         error.response?.data?.message ||
           error.message ||
