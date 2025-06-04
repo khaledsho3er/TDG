@@ -90,30 +90,11 @@ function PaymentForm({
         // Debug log for initial billing details
         console.log("Original billing details:", billData.billingDetails);
 
-        // Map the billing details to match the required format
-        const billingDetails = {
-          first_name:
-            billData.billingDetails.firstName ||
-            billData.billingDetails.first_name,
-          last_name:
-            billData.billingDetails.lastName ||
-            billData.billingDetails.last_name,
-          email: billData.billingDetails.email,
-          street:
-            billData.billingDetails.address || billData.billingDetails.street,
-          building: billData.billingDetails.building || "NA",
-          phone_number:
-            billData.billingDetails.phoneNumber ||
-            billData.billingDetails.phone_number,
-          city: billData.billingDetails.city,
-          country: billData.billingDetails.country,
-          state: billData.billingDetails.state || "NA",
-          floor: billData.billingDetails.floor || "NA",
-          apartment: billData.billingDetails.apartment || "NA",
-        };
+        // Use the billing details directly from billData since they're already in the correct format
+        const billingDetails = billData.billingDetails;
 
-        // Debug log for mapped billing details
-        console.log("Mapped billing details:", billingDetails);
+        // Debug log for billing details
+        console.log("Using billing details:", billingDetails);
 
         // Validate required fields
         const requiredFields = {
@@ -139,7 +120,7 @@ function PaymentForm({
           );
         }
 
-        // Initialize Paymob payment with the billing details from previous steps
+        // Initialize Paymob payment with the billing details
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
