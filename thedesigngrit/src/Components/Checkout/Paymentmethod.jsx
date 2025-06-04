@@ -144,21 +144,33 @@ function PaymentForm({
           paymentData
         );
 
-        // Create Paymob iframe
+        // Create a container for the iframe if it doesn't exist
+        let paymentContainer = document.querySelector(
+          ".paymentmethod-card-details"
+        );
+        if (!paymentContainer) {
+          paymentContainer = document.createElement("div");
+          paymentContainer.className = "paymentmethod-card-details";
+          document
+            .querySelector(".paymentmethod-container")
+            .appendChild(paymentContainer);
+        }
+
+        // Clear any existing content
+        paymentContainer.innerHTML = "";
+
+        // Create and style the iframe
         const iframe = document.createElement("iframe");
         iframe.src = iframeUrl;
         iframe.style.width = "100%";
         iframe.style.height = "600px";
         iframe.style.border = "none";
+        iframe.style.marginTop = "20px";
+        iframe.allow = "camera *; microphone *";
+        iframe.title = "Paymob Payment";
 
-        // Replace the payment form with the iframe
-        const paymentContainer = document.querySelector(
-          ".paymentmethod-card-details"
-        );
-        if (paymentContainer) {
-          paymentContainer.innerHTML = "";
-          paymentContainer.appendChild(iframe);
-        }
+        // Add the iframe to the container
+        paymentContainer.appendChild(iframe);
 
         // Listen for payment completion
         window.addEventListener("message", (event) => {
