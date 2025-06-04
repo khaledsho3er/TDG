@@ -334,7 +334,28 @@ function Checkout() {
       <div className="checkout-form">
         <h2>{steps[currentStep - 1].label}</h2>
         {React.cloneElement(steps[currentStep - 1].content, {
-          billData: { cartItems, subtotal, shippingFee, total },
+          billData:
+            currentStep === 4
+              ? {
+                  cartItems,
+                  subtotal,
+                  shippingFee,
+                  total,
+                  billingDetails: {
+                    apartment: "dumy",
+                    first_name: "ala",
+                    last_name: "zain",
+                    street: "dumy",
+                    building: "dumy",
+                    phone_number: "+92345xxxxxxxx",
+                    city: "dumy",
+                    country: "dumy",
+                    email: "ali@gmail.com",
+                    floor: "dumy",
+                    state: "dumy",
+                  },
+                }
+              : { cartItems, subtotal, shippingFee, total },
         })}
         <div className="form-navigation">
           {currentStep < steps.length && (
