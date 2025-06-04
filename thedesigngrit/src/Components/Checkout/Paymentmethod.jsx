@@ -59,6 +59,19 @@ function PaymentForm({
       }
     }
   }, [billData, paymentData, onChange, paymentMethod]);
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin !== "https://accept.paymob.com") return;
+      const { success, error_occured } = event.data;
+      if (success) onSubmit();
+      else if (error_occured)
+        setPaymentError("Payment failed. Please try again.");
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [onSubmit]);
+
   const handleCardDetailsChange = (e) => {
     const { name, value } = e.target;
     const updatedCardDetails = { ...cardDetails, [name]: value };
@@ -118,34 +131,7 @@ function PaymentForm({
           paymentData
         );
 
-        // Create Paymob iframe
-        const iframe = document.createElement("iframe");
-        iframe.src = iframeUrl;
-        iframe.style.width = "100%";
-        iframe.style.height = "600px";
-        iframe.style.border = "none";
-
-        // Replace the payment form with the iframe
-        const paymentContainer = document.querySelector(
-          ".paymentmethod-card-details"
-        );
-        if (paymentContainer) {
-          paymentContainer.innerHTML = "";
-          paymentContainer.appendChild(iframe);
-        }
-
-        // Listen for payment completion
-        window.addEventListener("message", (event) => {
-          console.log("Received message from iframe:", event.data);
-          if (event.origin !== "https://accept.paymob.com") return;
-
-          const { success, error_occured } = event.data;
-          if (success) {
-            onSubmit(); // Trigger the submission in the parent component
-          } else if (error_occured) {
-            setPaymentError("Payment failed. Please try again.");
-          }
-        });
+        setIframeUrl(iframeUrl);
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         onSubmit();
@@ -168,6 +154,7 @@ function PaymentForm({
     }
   };
   //
+  console.log("iframeUrl in render:", iframeUrl);
   return (
     <Box className="paymentmethod-container">
       <Box className="paymentmethod-firstrow-firstcolumn">
