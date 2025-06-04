@@ -80,22 +80,51 @@ function PaymentForm({
       setPaymentError(null);
 
       if (paymentMethod === "card") {
+        // Check if billData and billingDetails exist
+        if (!billData || !billData.billingDetails) {
+          throw new Error(
+            "Billing information is missing. Please complete the billing form first."
+          );
+        }
+
         // Initialize Paymob payment
         const paymentData = {
           parentOrderId: `ORDER-${Date.now()}`,
-          total: billData.total,
-          cartItems: billData.cartItems,
+          total: billData.total || 0,
+          cartItems: billData.cartItems || [],
           billingDetails: {
-            firstName: billData.billingDetails.firstName,
-            lastName: billData.billingDetails.lastName,
-            email: billData.billingDetails.email,
-            phoneNumber: billData.billingDetails.phoneNumber,
-            address: billData.billingDetails.address,
-            city: billData.billingDetails.city,
-            country: billData.billingDetails.country,
-            zipCode: billData.billingDetails.zipCode,
+            firstName: billData.billingDetails.firstName || "",
+            lastName: billData.billingDetails.lastName || "",
+            email: billData.billingDetails.email || "",
+            phoneNumber: billData.billingDetails.phoneNumber || "",
+            address: billData.billingDetails.address || "",
+            city: billData.billingDetails.city || "",
+            country: billData.billingDetails.country || "",
+            zipCode: billData.billingDetails.zipCode || "",
           },
         };
+
+        // Validate required billing information
+        const requiredFields = [
+          "firstName",
+          "lastName",
+          "email",
+          "phoneNumber",
+          "address",
+          "city",
+          "country",
+        ];
+        const missingFields = requiredFields.filter(
+          (field) => !paymentData.billingDetails[field]
+        );
+
+        if (missingFields.length > 0) {
+          throw new Error(
+            `Please complete the following billing information: ${missingFields.join(
+              ", "
+            )}`
+          );
+        }
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
@@ -130,8 +159,7 @@ function PaymentForm({
     } catch (error) {
       console.error("Payment error:", error);
       setPaymentError(
-        error.response?.data?.message ||
-          "Payment initialization failed. Please try again."
+        error.message || "Payment initialization failed. Please try again."
       );
     } finally {
       setIsProcessing(false);
