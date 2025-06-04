@@ -80,38 +80,38 @@ function PaymentForm({
       setPaymentError(null);
 
       if (paymentMethod === "card") {
-        // Debug log for initial billData
-        console.log("Initial billData:", billData);
-        console.log("billingDetails from billData:", billData?.billingDetails);
-
         // Check if billData and billingDetails exist
         if (!billData?.billingDetails) {
-          console.error("Missing billing details:", {
-            billData: billData,
-            billingDetails: billData?.billingDetails,
-          });
           throw new Error(
             "Billing information is missing. Please complete the billing form first."
           );
         }
 
-        // Map the billing details to match the expected format
+        // Debug log for initial billing details
+        console.log("Original billing details:", billData.billingDetails);
+
+        // Map the billing details to match the required format
         const billingDetails = {
           first_name:
             billData.billingDetails.firstName ||
-            billData.billingDetails.first_name,
+            billData.billingDetails.first_name ||
+            "",
           last_name:
             billData.billingDetails.lastName ||
-            billData.billingDetails.last_name,
-          email: billData.billingDetails.email,
+            billData.billingDetails.last_name ||
+            "",
+          email: billData.billingDetails.email || "",
           street:
-            billData.billingDetails.address || billData.billingDetails.street,
+            billData.billingDetails.address ||
+            billData.billingDetails.street ||
+            "",
           building: billData.billingDetails.building || "NA",
           phone_number:
             billData.billingDetails.phoneNumber ||
-            billData.billingDetails.phone_number,
-          city: billData.billingDetails.city,
-          country: billData.billingDetails.country,
+            billData.billingDetails.phone_number ||
+            "",
+          city: billData.billingDetails.city || "",
+          country: billData.billingDetails.country || "",
           state: billData.billingDetails.state || "NA",
           floor: billData.billingDetails.floor || "NA",
           apartment: billData.billingDetails.apartment || "NA",
@@ -131,21 +131,10 @@ function PaymentForm({
           country: "Country",
         };
 
-        // Debug log for validation
+        // Check for missing required fields
         const missingFields = Object.entries(requiredFields)
           .filter(([key]) => !billingDetails[key])
           .map(([_, label]) => label);
-
-        console.log("Missing fields:", missingFields);
-        console.log(
-          "Validation check:",
-          Object.entries(requiredFields).map(([key, label]) => ({
-            field: key,
-            label: label,
-            value: billingDetails[key],
-            isMissing: !billingDetails[key],
-          }))
-        );
 
         if (missingFields.length > 0) {
           throw new Error(
@@ -162,7 +151,7 @@ function PaymentForm({
         };
 
         // Debug log for final payment data
-        console.log("Final payment data being sent:", paymentData);
+        console.log("Sending payment data:", paymentData);
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
