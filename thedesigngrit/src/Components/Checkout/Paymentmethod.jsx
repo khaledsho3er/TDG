@@ -94,24 +94,19 @@ function PaymentForm({
         const billingDetails = {
           first_name:
             billData.billingDetails.firstName ||
-            billData.billingDetails.first_name ||
-            "",
+            billData.billingDetails.first_name,
           last_name:
             billData.billingDetails.lastName ||
-            billData.billingDetails.last_name ||
-            "",
-          email: billData.billingDetails.email || "",
+            billData.billingDetails.last_name,
+          email: billData.billingDetails.email,
           street:
-            billData.billingDetails.address ||
-            billData.billingDetails.street ||
-            "",
+            billData.billingDetails.address || billData.billingDetails.street,
           building: billData.billingDetails.building || "NA",
           phone_number:
             billData.billingDetails.phoneNumber ||
-            billData.billingDetails.phone_number ||
-            "",
-          city: billData.billingDetails.city || "",
-          country: billData.billingDetails.country || "",
+            billData.billingDetails.phone_number,
+          city: billData.billingDetails.city,
+          country: billData.billingDetails.country,
           state: billData.billingDetails.state || "NA",
           floor: billData.billingDetails.floor || "NA",
           apartment: billData.billingDetails.apartment || "NA",
@@ -144,10 +139,12 @@ function PaymentForm({
           );
         }
 
-        // Initialize Paymob payment
+        // Initialize Paymob payment with the billing details from previous steps
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
+          cartItems: billData.cartItems || [],
+          shippingDetails: billData.shippingDetails || {},
         };
 
         // Debug log for final payment data

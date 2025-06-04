@@ -55,39 +55,66 @@ const paymobService = {
   },
 
   // Initialize payment
-  async initializePayment(orderData) {
+  async initializePayment(paymentData) {
     try {
-      // Send order data to backend for processing
+      console.log("Initializing payment with data:", paymentData);
+
+      // Extract billing details from the payment data
+      const { billingDetails, total, cartItems, shippingDetails } = paymentData;
+
+      // Prepare the order data for the backend
+      const orderData = {
+        total_amount: total,
+        billing_data: {
+          apartment: billingDetails.apartment || "NA",
+          email: billingDetails.email,
+          floor: billingDetails.floor || "NA",
+          first_name: billingDetails.first_name,
+          street: billingDetails.street,
+          building: billingDetails.building || "NA",
+          phone_number: billingDetails.phone_number,
+          shipping_method: shippingDetails?.method || "NA",
+          postal_code: shippingDetails?.postalCode || "NA",
+          city: billingDetails.city,
+          country: billingDetails.country,
+          last_name: billingDetails.last_name,
+          state: billingDetails.state || "NA",
+        },
+        items: cartItems.map((item) => ({
+          name: item.name,
+          amount_cents: item.price * 100, // Convert to cents
+          description: item.description || "",
+          quantity: item.quantity,
+        })),
+      };
+
+      console.log("Sending order data to backend:", orderData);
+
+      // Send the order data to your backend
       const response = await axios.post(
-        "https://api.thedesigngrit.com/api/paymob/create-payment",
-        {
-          orderData: {
-            total: orderData.total,
-            billingDetails: {
-              first_name: orderData.billingDetails.first_name,
-              last_name: orderData.billingDetails.last_name,
-              email: orderData.billingDetails.email,
-              street: orderData.billingDetails.street,
-              building: orderData.billingDetails.building,
-              phone_number: orderData.billingDetails.phone_number,
-              city: orderData.billingDetails.city,
-              country: orderData.billingDetails.country,
-              state: orderData.billingDetails.state,
-              floor: orderData.billingDetails.floor,
-              apartment: orderData.billingDetails.apartment,
-            },
-          },
-        }
+        `https://api.thedesigngrit.com/api/paymob/create-payment`,
+        orderData
       );
 
-      return {
-        paymentKey: response.data.paymentKey,
-        orderId: response.data.orderId,
-        iframeUrl: response.data.iframeUrl,
-      };
+      console.log("Payment initialization response:", response.data);
+
+      if (response.data.success) {
+        return {
+          iframeUrl: response.data.iframe_url,
+          orderId: response.data.order_id,
+        };
+      } else {
+        throw new Error(
+          response.data.message || "Failed to initialize payment"
+        );
+      }
     } catch (error) {
-      console.error("Error initializing payment:", error);
-      throw error;
+      console.error("Payment initialization error:", error);
+      throw new Error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to initialize payment"
+      );
     }
   },
 
