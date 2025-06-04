@@ -310,7 +310,19 @@ function Checkout() {
             subtotal,
             shippingFee,
             total,
-            billingDetails: billingData, // Pass the billing data here
+            billingDetails: {
+              apartment: "dumy",
+              first_name: "ala",
+              last_name: "zain",
+              street: "dumy",
+              building: "dumy",
+              phone_number: "+92345xxxxxxxx",
+              city: "dumy",
+              country: "dumy",
+              email: "ali@gmail.com",
+              floor: "dumy",
+              state: "dumy",
+            },
           }}
         />
       ),
