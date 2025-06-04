@@ -80,8 +80,16 @@ function PaymentForm({
       setPaymentError(null);
 
       if (paymentMethod === "card") {
+        // Debug log for initial billData
+        console.log("Initial billData:", billData);
+        console.log("billingDetails from billData:", billData?.billingDetails);
+
         // Check if billData and billingDetails exist
         if (!billData?.billingDetails) {
+          console.error("Missing billing details:", {
+            billData: billData,
+            billingDetails: billData?.billingDetails,
+          });
           throw new Error(
             "Billing information is missing. Please complete the billing form first."
           );
@@ -109,6 +117,9 @@ function PaymentForm({
           apartment: billData.billingDetails.apartment || "NA",
         };
 
+        // Debug log for mapped billing details
+        console.log("Mapped billing details:", billingDetails);
+
         // Validate required fields
         const requiredFields = {
           first_name: "First Name",
@@ -120,9 +131,21 @@ function PaymentForm({
           country: "Country",
         };
 
+        // Debug log for validation
         const missingFields = Object.entries(requiredFields)
           .filter(([key]) => !billingDetails[key])
           .map(([_, label]) => label);
+
+        console.log("Missing fields:", missingFields);
+        console.log(
+          "Validation check:",
+          Object.entries(requiredFields).map(([key, label]) => ({
+            field: key,
+            label: label,
+            value: billingDetails[key],
+            isMissing: !billingDetails[key],
+          }))
+        );
 
         if (missingFields.length > 0) {
           throw new Error(
@@ -138,7 +161,8 @@ function PaymentForm({
           billingDetails: billingDetails,
         };
 
-        console.log("Sending payment data:", paymentData); // Debug log
+        // Debug log for final payment data
+        console.log("Final payment data being sent:", paymentData);
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
@@ -162,6 +186,7 @@ function PaymentForm({
 
         // Listen for payment completion
         window.addEventListener("message", (event) => {
+          console.log("Received message from iframe:", event.data);
           if (event.origin !== "https://accept.paymob.com") return;
 
           const { success, error_occured } = event.data;
@@ -176,7 +201,12 @@ function PaymentForm({
         onSubmit();
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      console.error("Payment error details:", {
+        error: error,
+        message: error.message,
+        stack: error.stack,
+        billData: billData,
+      });
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."
       );
