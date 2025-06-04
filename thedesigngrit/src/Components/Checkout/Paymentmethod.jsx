@@ -87,19 +87,42 @@ function PaymentForm({
           );
         }
 
-        // Validate required billing information
-        const requiredFields = [
-          "firstName",
-          "lastName",
-          "email",
-          "phoneNumber",
-          "address",
-          "city",
-          "country",
-        ];
-        const missingFields = requiredFields.filter(
-          (field) => !billData.billingDetails[field]
-        );
+        // Map the billing details to match the expected format
+        const billingDetails = {
+          first_name:
+            billData.billingDetails.firstName ||
+            billData.billingDetails.first_name,
+          last_name:
+            billData.billingDetails.lastName ||
+            billData.billingDetails.last_name,
+          email: billData.billingDetails.email,
+          street:
+            billData.billingDetails.address || billData.billingDetails.street,
+          building: billData.billingDetails.building || "NA",
+          phone_number:
+            billData.billingDetails.phoneNumber ||
+            billData.billingDetails.phone_number,
+          city: billData.billingDetails.city,
+          country: billData.billingDetails.country,
+          state: billData.billingDetails.state || "NA",
+          floor: billData.billingDetails.floor || "NA",
+          apartment: billData.billingDetails.apartment || "NA",
+        };
+
+        // Validate required fields
+        const requiredFields = {
+          first_name: "First Name",
+          last_name: "Last Name",
+          email: "Email",
+          phone_number: "Phone Number",
+          street: "Street Address",
+          city: "City",
+          country: "Country",
+        };
+
+        const missingFields = Object.entries(requiredFields)
+          .filter(([key]) => !billingDetails[key])
+          .map(([_, label]) => label);
 
         if (missingFields.length > 0) {
           throw new Error(
@@ -111,20 +134,11 @@ function PaymentForm({
 
         // Initialize Paymob payment
         const paymentData = {
-          parentOrderId: `ORDER-${Date.now()}`,
           total: billData.total || 0,
-          cartItems: billData.cartItems || [],
-          billingDetails: {
-            firstName: billData.billingDetails.firstName,
-            lastName: billData.billingDetails.lastName,
-            email: billData.billingDetails.email,
-            phoneNumber: billData.billingDetails.phoneNumber,
-            address: billData.billingDetails.address,
-            city: billData.billingDetails.city,
-            country: billData.billingDetails.country,
-            zipCode: billData.billingDetails.zipCode || "",
-          },
+          billingDetails: billingDetails,
         };
+
+        console.log("Sending payment data:", paymentData); // Debug log
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
@@ -148,8 +162,13 @@ function PaymentForm({
 
         // Listen for payment completion
         window.addEventListener("message", (event) => {
-          if (event.data.type === "payment_completed") {
+          if (event.origin !== "https://accept.paymob.com") return;
+
+          const { success, error_occured } = event.data;
+          if (success) {
             onSubmit(); // Trigger the submission in the parent component
+          } else if (error_occured) {
+            setPaymentError("Payment failed. Please try again.");
           }
         });
       } else if (paymentMethod === "cod") {

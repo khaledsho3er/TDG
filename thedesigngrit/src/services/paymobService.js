@@ -8,8 +8,8 @@ const paymobAxios = axios.create({
 });
 
 const paymobService = {
-  // Create payment intention
-  async createPaymentIntention(orderData) {
+  // Initialize payment
+  async initializePayment(orderData) {
     try {
       // First, get the Paymob configuration from your backend
       const configResponse = await axios.get("/api/paymob/config");
@@ -18,69 +18,100 @@ const paymobService = {
       // Set the authorization header for this request
       paymobAxios.defaults.headers["Authorization"] = `Token ${token}`;
 
-      const response = await paymobAxios.post(
-        "https://accept.paymob.com/v1/intention/",
-        {
-          amount: Math.round(orderData.total * 100), // Convert to cents
-          currency: "EGP",
-          payment_methods: [integrationId, "card"],
-          items: orderData.cartItems.map((item) => ({
-            name: item.name,
-            amount: Math.round(item.totalPrice * 100),
-            description: item.name,
-            quantity: item.quantity,
-          })),
-          billing_data: {
-            apartment: "NA",
-            first_name: orderData.billingDetails.firstName,
-            last_name: orderData.billingDetails.lastName,
-            street: orderData.billingDetails.address,
-            building: "NA",
-            phone_number: orderData.billingDetails.phoneNumber,
-            country: orderData.billingDetails.country,
-            email: orderData.billingDetails.email,
-            floor: "NA",
-            state: "NA",
-          },
-          customer: {
-            first_name: orderData.billingDetails.firstName,
-            last_name: orderData.billingDetails.lastName,
-            email: orderData.billingDetails.email,
-            extras: {
-              order_id: orderData.parentOrderId,
-            },
-          },
-          extras: {
-            order_id: orderData.parentOrderId,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error creating payment intention:", error);
-      throw error;
-    }
-  },
+      // Step 1: Get authentication token
+      const authToken = await this.getAuthToken();
 
-  // Initialize payment
-  async initializePayment(orderData) {
-    try {
-      const paymentIntention = await this.createPaymentIntention(orderData);
+      // Step 2: Create order
+      const order = await this.createOrder(authToken, orderData.total);
 
-      // Get the integration ID from the backend
-      const configResponse = await axios.get("/api/paymob/config");
-      const { integrationId } = configResponse.data;
+      // Step 3: Get payment key
+      const paymentKey = await this.getPaymentKey(authToken, order.id, {
+        amount: orderData.total,
+        ...orderData.billingDetails,
+      });
 
       // Create Paymob iframe URL
-      const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${integrationId}?payment_token=${paymentIntention.token}`;
+      const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${integrationId}?payment_token=${paymentKey.token}`;
 
       return {
-        paymentKey: paymentIntention.token,
-        orderId: paymentIntention.id,
+        paymentKey: paymentKey.token,
+        orderId: order.id,
         iframeUrl: iframeUrl,
       };
     } catch (error) {
       console.error("Error initializing payment:", error);
+      throw error;
+    }
+  },
+
+  // Get authentication token
+  async getAuthToken() {
+    try {
+      const response = await paymobAxios.post(
+        "https://accept.paymob.com/api/auth/tokens",
+        {
+          api_key: process.env.PAYMOB_API_KEY,
+        }
+      );
+      return response.data.token;
+    } catch (error) {
+      console.error("Error getting auth token:", error);
+      throw error;
+    }
+  },
+
+  // Create order
+  async createOrder(authToken, amount) {
+    try {
+      const response = await paymobAxios.post(
+        "https://accept.paymob.com/api/ecommerce/orders",
+        {
+          auth_token: authToken,
+          delivery_needed: false,
+          amount_cents: Math.round(amount * 100),
+          currency: "EGP",
+          items: [],
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      throw error;
+    }
+  },
+
+  // Get payment key
+  async getPaymentKey(authToken, orderId, billingData) {
+    try {
+      const response = await paymobAxios.post(
+        "https://accept.paymob.com/api/acceptance/payment_keys",
+        {
+          auth_token: authToken,
+          amount_cents: Math.round(billingData.amount * 100),
+          expiration: 3600,
+          order_id: orderId,
+          billing_data: {
+            apartment: "NA",
+            email: billingData.email,
+            floor: "NA",
+            first_name: billingData.first_name,
+            street: billingData.street,
+            building: billingData.building,
+            phone_number: billingData.phone_number,
+            shipping_method: "NA",
+            postal_code: "NA",
+            city: billingData.city,
+            country: billingData.country,
+            last_name: billingData.last_name,
+            state: billingData.state,
+          },
+          currency: "EGP",
+          integration_id: process.env.PAYMOB_INTEGRATION_ID,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error getting payment key:", error);
       throw error;
     }
   },
