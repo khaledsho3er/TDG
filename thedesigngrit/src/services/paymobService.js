@@ -7,25 +7,65 @@ const paymobAxios = axios.create({
   },
 });
 
+// Token management
+let authToken = null;
+let tokenExpiry = null;
+const TOKEN_EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes buffer before actual expiry
+
 const paymobService = {
+  // Get or refresh authentication token
+  async getAuthToken() {
+    try {
+      // Check if we have a valid token
+      if (
+        authToken &&
+        tokenExpiry &&
+        Date.now() < tokenExpiry - TOKEN_EXPIRY_BUFFER
+      ) {
+        console.log("Using cached auth token");
+        return authToken;
+      }
+
+      console.log("Getting new auth token");
+      const response = await paymobAxios.post(
+        "https://accept.paymob.com/api/auth/tokens",
+        {
+          api_key: process.env.PAYMOB_API_KEY,
+        }
+      );
+
+      // Store the new token and set expiry (Paymob tokens typically last 1 hour)
+      authToken = response.data.token;
+      tokenExpiry = Date.now() + 60 * 60 * 1000; // 1 hour from now
+
+      return authToken;
+    } catch (error) {
+      console.error("Error getting auth token:", error);
+      // Clear token on error
+      authToken = null;
+      tokenExpiry = null;
+      throw error;
+    }
+  },
+
   // Initialize payment
   async initializePayment(orderData) {
     try {
       // First, get the Paymob configuration from your backend
       const configResponse = await axios.get("/api/paymob/config");
-      const { token, integrationId } = configResponse.data;
+      const { integrationId } = configResponse.data;
+
+      // Get authentication token (will use cached token if available)
+      const token = await this.getAuthToken();
 
       // Set the authorization header for this request
       paymobAxios.defaults.headers["Authorization"] = `Token ${token}`;
 
-      // Step 1: Get authentication token
-      const authToken = await this.getAuthToken();
+      // Step 1: Create order
+      const order = await this.createOrder(token, orderData.total);
 
-      // Step 2: Create order
-      const order = await this.createOrder(authToken, orderData.total);
-
-      // Step 3: Get payment key
-      const paymentKey = await this.getPaymentKey(authToken, order.id, {
+      // Step 2: Get payment key
+      const paymentKey = await this.getPaymentKey(token, order.id, {
         amount: orderData.total,
         ...orderData.billingDetails,
       });
@@ -40,22 +80,6 @@ const paymobService = {
       };
     } catch (error) {
       console.error("Error initializing payment:", error);
-      throw error;
-    }
-  },
-
-  // Get authentication token
-  async getAuthToken() {
-    try {
-      const response = await paymobAxios.post(
-        "https://accept.paymob.com/api/auth/tokens",
-        {
-          api_key: process.env.PAYMOB_API_KEY,
-        }
-      );
-      return response.data.token;
-    } catch (error) {
-      console.error("Error getting auth token:", error);
       throw error;
     }
   },
@@ -114,6 +138,12 @@ const paymobService = {
       console.error("Error getting payment key:", error);
       throw error;
     }
+  },
+
+  // Clear cached token (useful for testing or when token becomes invalid)
+  clearAuthToken() {
+    authToken = null;
+    tokenExpiry = null;
   },
 };
 
