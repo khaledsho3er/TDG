@@ -117,15 +117,6 @@ function PaymentForm({
         );
         setIframeUrl(iframeUrl);
         // Optionally, add event listener for payment completion here
-        window.addEventListener("message", (event) => {
-          if (event.origin !== "https://accept.paymob.com") return;
-          const { success, error_occured } = event.data;
-          if (success) {
-            onSubmit();
-          } else if (error_occured) {
-            setPaymentError("Payment failed. Please try again.");
-          }
-        });
       } else if (paymentMethod === "cod") {
         onSubmit();
       }
@@ -137,7 +128,21 @@ function PaymentForm({
       setIsProcessing(false);
     }
   };
-  //
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.origin !== "https://accept.paymob.com") return;
+      const { success, error_occured } = event.data;
+      if (success) {
+        onSubmit();
+      } else if (error_occured) {
+        setPaymentError("Payment failed. Please try again.");
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [onSubmit]);
+
   return (
     <Box className="paymentmethod-container">
       {/* Always render the iframe if iframeUrl is set */}
@@ -303,7 +308,6 @@ function PaymentForm({
               </RadioGroup>
             </FormControl>
           </Box>
-          <Button onClick={handlePayNow}>Pay Now</Button>
         </Box>
       )}
       <BillSummary
