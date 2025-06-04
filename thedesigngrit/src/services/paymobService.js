@@ -82,7 +82,7 @@ const paymobService = {
         },
         items: cartItems.map((item) => ({
           name: item.name,
-          amount_cents: Math.round(item.price * 100), // Convert to cents and ensure it's an integer
+          amount_cents: Math.round(item.totalPrice * 100), // Convert to cents and ensure it's an integer
           description: item.description || "",
           quantity: item.quantity,
         })),
