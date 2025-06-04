@@ -9,8 +9,11 @@ import {
   FormControlLabel,
   Button,
   TextField,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import BillSummary from "./billingSummary";
+import paymobService from "../../services/paymobService";
 // import { useCart } from "../../Context/cartcontext";
 
 function PaymentForm({
@@ -30,6 +33,8 @@ function PaymentForm({
   });
   const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
   const [showCOD, setShowCOD] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
   // // Add CSS for error styling
   // const errorStyle = {
   //   border: "1px solid red",
@@ -66,10 +71,71 @@ function PaymentForm({
     setCardOptions(["card", "fawry", "valu", "cod"]);
     setPaymentMethod(method);
     onChange({ ...paymentData, paymentMethod: method });
+    setPaymentError(null); // Clear any previous errors when changing payment method
   };
 
-  const handlePayNow = () => {
-    onSubmit(); // Trigger the submission in the parent component
+  const handlePayNow = async () => {
+    try {
+      setIsProcessing(true);
+      setPaymentError(null);
+
+      if (paymentMethod === "card") {
+        // Initialize Paymob payment
+        const paymentData = {
+          parentOrderId: `ORDER-${Date.now()}`,
+          total: billData.total,
+          cartItems: billData.cartItems,
+          billingDetails: {
+            firstName: billData.billingDetails.firstName,
+            lastName: billData.billingDetails.lastName,
+            email: billData.billingDetails.email,
+            phoneNumber: billData.billingDetails.phoneNumber,
+            address: billData.billingDetails.address,
+            city: billData.billingDetails.city,
+            country: billData.billingDetails.country,
+            zipCode: billData.billingDetails.zipCode,
+          },
+        };
+
+        const { iframeUrl } = await paymobService.initializePayment(
+          paymentData
+        );
+
+        // Create Paymob iframe
+        const iframe = document.createElement("iframe");
+        iframe.src = iframeUrl;
+        iframe.style.width = "100%";
+        iframe.style.height = "600px";
+        iframe.style.border = "none";
+
+        // Replace the payment form with the iframe
+        const paymentContainer = document.querySelector(
+          ".paymentmethod-card-details"
+        );
+        if (paymentContainer) {
+          paymentContainer.innerHTML = "";
+          paymentContainer.appendChild(iframe);
+        }
+
+        // Listen for payment completion
+        window.addEventListener("message", (event) => {
+          if (event.data.type === "payment_completed") {
+            onSubmit(); // Trigger the submission in the parent component
+          }
+        });
+      } else if (paymentMethod === "cod") {
+        // Handle Cash on Delivery
+        onSubmit();
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      setPaymentError(
+        error.response?.data?.message ||
+          "Payment initialization failed. Please try again."
+      );
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -110,6 +176,11 @@ function PaymentForm({
 
             {paymentMethod === "card" && (
               <Box className="paymentmethod-card-details">
+                {paymentError && (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {paymentError}
+                  </Alert>
+                )}
                 <TextField
                   fullWidth
                   margin="normal"
@@ -154,8 +225,14 @@ function PaymentForm({
                   color="primary"
                   className="montserrat-font"
                   onClick={handlePayNow}
+                  disabled={isProcessing}
+                  sx={{ mt: 2 }}
                 >
-                  Pay Now
+                  {isProcessing ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Pay Now"
+                  )}
                 </Button>
               </Box>
             )}
