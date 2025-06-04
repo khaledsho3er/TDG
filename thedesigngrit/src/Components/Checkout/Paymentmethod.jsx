@@ -127,11 +127,9 @@ function PaymentForm({
         };
         console.log("Sending payment data:", paymentData);
 
-        const { iframeUrl } = await paymobService.initializePayment(
-          paymentData
-        );
-
-        setIframeUrl(iframeUrl);
+        const result = await paymobService.initializePayment(paymentData);
+        console.log("Result from initializePayment:", result);
+        setIframeUrl(result.iframeUrl || result.iframe_url);
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         onSubmit();
