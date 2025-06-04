@@ -28,7 +28,9 @@ const paymobService = {
 
       console.log("Getting new auth token");
       // Get Paymob configuration from backend
-      const configResponse = await axios.get("/api/paymob/config");
+      const configResponse = await axios.get(
+        "https://api.thedesigngrit.com/api/paymob/config"
+      );
       const { apiKey } = configResponse.data;
 
       const response = await paymobAxios.post(
@@ -56,24 +58,27 @@ const paymobService = {
   async initializePayment(orderData) {
     try {
       // Send order data to backend for processing
-      const response = await axios.post("/api/paymob/create-payment", {
-        orderData: {
-          total: orderData.total,
-          billingDetails: {
-            first_name: orderData.billingDetails.first_name,
-            last_name: orderData.billingDetails.last_name,
-            email: orderData.billingDetails.email,
-            street: orderData.billingDetails.street,
-            building: orderData.billingDetails.building,
-            phone_number: orderData.billingDetails.phone_number,
-            city: orderData.billingDetails.city,
-            country: orderData.billingDetails.country,
-            state: orderData.billingDetails.state,
-            floor: orderData.billingDetails.floor,
-            apartment: orderData.billingDetails.apartment,
+      const response = await axios.post(
+        "https://api.thedesigngrit.com/api/paymob/create-payment",
+        {
+          orderData: {
+            total: orderData.total,
+            billingDetails: {
+              first_name: orderData.billingDetails.first_name,
+              last_name: orderData.billingDetails.last_name,
+              email: orderData.billingDetails.email,
+              street: orderData.billingDetails.street,
+              building: orderData.billingDetails.building,
+              phone_number: orderData.billingDetails.phone_number,
+              city: orderData.billingDetails.city,
+              country: orderData.billingDetails.country,
+              state: orderData.billingDetails.state,
+              floor: orderData.billingDetails.floor,
+              apartment: orderData.billingDetails.apartment,
+            },
           },
-        },
-      });
+        }
+      );
 
       return {
         paymentKey: response.data.paymentKey,
