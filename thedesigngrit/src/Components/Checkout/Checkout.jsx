@@ -304,9 +304,14 @@ function Checkout() {
           onSubmit={handlePaymentSubmit}
           paymentData={paymentData}
           onChange={handlePaymentChange}
-          billData={{ cartItems, subtotal, shippingFee, total }}
           errors={paymentErrors}
-          validateOnChange={true}
+          billData={{
+            cartItems,
+            subtotal,
+            shippingFee,
+            total,
+            billingDetails: billingData, // Pass the billing data here
+          }}
         />
       ),
     },

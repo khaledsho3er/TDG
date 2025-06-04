@@ -81,28 +81,11 @@ function PaymentForm({
 
       if (paymentMethod === "card") {
         // Check if billData and billingDetails exist
-        if (!billData || !billData.billingDetails) {
+        if (!billData?.billingDetails) {
           throw new Error(
             "Billing information is missing. Please complete the billing form first."
           );
         }
-
-        // Initialize Paymob payment
-        const paymentData = {
-          parentOrderId: `ORDER-${Date.now()}`,
-          total: billData.total || 0,
-          cartItems: billData.cartItems || [],
-          billingDetails: {
-            firstName: billData.billingDetails.firstName || "",
-            lastName: billData.billingDetails.lastName || "",
-            email: billData.billingDetails.email || "",
-            phoneNumber: billData.billingDetails.phoneNumber || "",
-            address: billData.billingDetails.address || "",
-            city: billData.billingDetails.city || "",
-            country: billData.billingDetails.country || "",
-            zipCode: billData.billingDetails.zipCode || "",
-          },
-        };
 
         // Validate required billing information
         const requiredFields = [
@@ -115,7 +98,7 @@ function PaymentForm({
           "country",
         ];
         const missingFields = requiredFields.filter(
-          (field) => !paymentData.billingDetails[field]
+          (field) => !billData.billingDetails[field]
         );
 
         if (missingFields.length > 0) {
@@ -125,6 +108,23 @@ function PaymentForm({
             )}`
           );
         }
+
+        // Initialize Paymob payment
+        const paymentData = {
+          parentOrderId: `ORDER-${Date.now()}`,
+          total: billData.total || 0,
+          cartItems: billData.cartItems || [],
+          billingDetails: {
+            firstName: billData.billingDetails.firstName,
+            lastName: billData.billingDetails.lastName,
+            email: billData.billingDetails.email,
+            phoneNumber: billData.billingDetails.phoneNumber,
+            address: billData.billingDetails.address,
+            city: billData.billingDetails.city,
+            country: billData.billingDetails.country,
+            zipCode: billData.billingDetails.zipCode || "",
+          },
+        };
 
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
