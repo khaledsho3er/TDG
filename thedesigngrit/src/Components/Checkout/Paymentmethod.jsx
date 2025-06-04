@@ -35,6 +35,7 @@ function PaymentForm({
   const [showCOD, setShowCOD] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
+  const [iframeUrl, setIframeUrl] = useState(null);
   // // Add CSS for error styling
   // const errorStyle = {
   //   border: "1px solid red",
@@ -80,29 +81,12 @@ function PaymentForm({
       setPaymentError(null);
 
       if (paymentMethod === "card") {
-        // Check if billData and billingDetails exist
         if (!billData?.billingDetails) {
           throw new Error(
             "Billing information is missing. Please complete the billing form first."
           );
         }
-
-        // Debug log for initial billing details
-        console.log(
-          "Original billing details:",
-          JSON.stringify(billData.billingDetails, null, 2)
-        );
-
-        // Use the billing details directly from billData since they're already in the correct format
         const billingDetails = billData.billingDetails;
-
-        // Debug log for billing details
-        console.log(
-          "Using billing details:",
-          JSON.stringify(billingDetails, null, 2)
-        );
-
-        // Validate required fields
         const requiredFields = {
           first_name: "First Name",
           last_name: "Last Name",
@@ -112,12 +96,9 @@ function PaymentForm({
           city: "City",
           country: "Country",
         };
-
-        // Check for missing required fields
         const missingFields = Object.entries(requiredFields)
           .filter(([key]) => !billingDetails[key])
           .map(([_, label]) => label);
-
         if (missingFields.length > 0) {
           throw new Error(
             `Please complete the following billing information: ${missingFields.join(
@@ -125,76 +106,30 @@ function PaymentForm({
             )}`
           );
         }
-
-        // Initialize Paymob payment with the billing details
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
           cartItems: billData.cartItems || [],
           shippingDetails: billData.shippingDetails || {},
         };
-
-        // Debug log for final payment data
-        console.log(
-          "Sending payment data:",
-          JSON.stringify(paymentData, null, 2)
-        );
-
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
         );
-
-        // Create a container for the iframe if it doesn't exist
-        let paymentContainer = document.querySelector(
-          ".paymentmethod-card-details"
-        );
-        if (!paymentContainer) {
-          paymentContainer = document.createElement("div");
-          paymentContainer.className = "paymentmethod-card-details";
-          document
-            .querySelector(".paymentmethod-container")
-            .appendChild(paymentContainer);
-        }
-
-        // Clear any existing content
-        paymentContainer.innerHTML = "";
-
-        // Create and style the iframe
-        const iframe = document.createElement("iframe");
-        iframe.src = iframeUrl;
-        iframe.style.width = "100%";
-        iframe.style.height = "600px";
-        iframe.style.border = "none";
-        iframe.style.marginTop = "20px";
-        iframe.allow = "camera *; microphone *";
-        iframe.title = "Paymob Payment";
-
-        // Add the iframe to the container
-        paymentContainer.appendChild(iframe);
-
-        // Listen for payment completion
+        setIframeUrl(iframeUrl);
+        // Optionally, add event listener for payment completion here
         window.addEventListener("message", (event) => {
-          console.log("Received message from iframe:", event.data);
           if (event.origin !== "https://accept.paymob.com") return;
-
           const { success, error_occured } = event.data;
           if (success) {
-            onSubmit(); // Trigger the submission in the parent component
+            onSubmit();
           } else if (error_occured) {
             setPaymentError("Payment failed. Please try again.");
           }
         });
       } else if (paymentMethod === "cod") {
-        // Handle Cash on Delivery
         onSubmit();
       }
     } catch (error) {
-      console.error("Payment error details:", {
-        error: error,
-        message: error.message,
-        stack: error.stack,
-        billData: JSON.stringify(billData, null, 2),
-      });
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."
       );
@@ -356,6 +291,20 @@ function PaymentForm({
         shippingFee={billData.shippingFee}
         total={billData.total}
       />
+      {/* Render the Paymob iframe if iframeUrl is set */}
+      {iframeUrl && (
+        <iframe
+          src={iframeUrl}
+          style={{
+            width: "100%",
+            height: "600px",
+            border: "none",
+            marginTop: "20px",
+          }}
+          allow="camera *; microphone *"
+          title="Paymob Payment"
+        />
+      )}
     </Box>
   );
 }
