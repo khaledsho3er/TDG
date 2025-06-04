@@ -112,24 +112,54 @@ function PaymentForm({
           cartItems: billData.cartItems || [],
           shippingDetails: billData.shippingDetails || {},
         };
+        console.log("Sending payment data:", paymentData);
+
         const { iframeUrl } = await paymobService.initializePayment(
           paymentData
         );
-        setIframeUrl(iframeUrl);
-        // Optionally, add event listener for payment completion here
+
+        // Create Paymob iframe
+        const iframe = document.createElement("iframe");
+        iframe.src = iframeUrl;
+        iframe.style.width = "100%";
+        iframe.style.height = "600px";
+        iframe.style.border = "none";
+
+        // Replace the payment form with the iframe
+        const paymentContainer = document.querySelector(
+          ".paymentmethod-card-details"
+        );
+        if (paymentContainer) {
+          paymentContainer.innerHTML = "";
+          paymentContainer.appendChild(iframe);
+        }
+
+        // Listen for payment completion
         window.addEventListener("message", (event) => {
+          console.log("Received message from iframe:", event.data);
           if (event.origin !== "https://accept.paymob.com") return;
+
           const { success, error_occured } = event.data;
           if (success) {
-            onSubmit();
+            onSubmit(); // Trigger the submission in the parent component
           } else if (error_occured) {
             setPaymentError("Payment failed. Please try again.");
           }
         });
       } else if (paymentMethod === "cod") {
+        // Handle Cash on Delivery
         onSubmit();
       }
     } catch (error) {
+      setPaymentError(
+        error.message || "Payment initialization failed. Please try again."
+      );
+      console.error("Payment error details:", {
+        error: error,
+        message: error.message,
+        stack: error.stack,
+        billData: billData,
+      });
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."
       );
@@ -297,6 +327,7 @@ function PaymentForm({
           src={iframeUrl}
           style={{
             width: "100%",
+            zIndex: 1000,
             height: "600px",
             border: "none",
             marginTop: "20px",
