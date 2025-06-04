@@ -1,72 +1,68 @@
 import axios from "axios";
 
-// Create axios instance with default headers
+// Axios instance for Paymob requests
 const paymobAxios = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Token management
+// Token cache and expiry logic
 let authToken = null;
 let tokenExpiry = null;
-const TOKEN_EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes buffer before actual expiry
+const TOKEN_EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes buffer
 
 const paymobService = {
-  // Get or refresh authentication token
+  /** ------------------------------
+   * Get or refresh Paymob auth token
+   * ------------------------------ */
   async getAuthToken() {
     try {
-      // Check if we have a valid token
-      if (
+      const isTokenValid =
         authToken &&
         tokenExpiry &&
-        Date.now() < tokenExpiry - TOKEN_EXPIRY_BUFFER
-      ) {
-        console.log("Using cached auth token");
+        Date.now() < tokenExpiry - TOKEN_EXPIRY_BUFFER;
+
+      if (isTokenValid) {
+        console.log("✅ Using cached Paymob token");
         return authToken;
       }
 
-      console.log("Getting new auth token");
-      // Get Paymob configuration from backend
-      const configResponse = await axios.get(
+      console.log("🔄 Fetching new Paymob token...");
+
+      const { data: config } = await axios.get(
         "https://api.thedesigngrit.com/api/paymob/config"
       );
-      const { apiKey } = configResponse.data;
 
       const response = await paymobAxios.post(
         "https://accept.paymob.com/api/auth/tokens",
         {
-          api_key: apiKey,
+          api_key: config.apiKey,
         }
       );
 
-      // Store the new token and set expiry (Paymob tokens typically last 1 hour)
       authToken = response.data.token;
-      tokenExpiry = Date.now() + 60 * 60 * 1000; // 1 hour from now
+      tokenExpiry = Date.now() + 60 * 60 * 1000; // Valid for 1 hour
 
       return authToken;
     } catch (error) {
-      console.error("Error getting auth token:", error);
-      // Clear token on error
+      console.error("❌ Failed to get Paymob auth token:", error);
       authToken = null;
       tokenExpiry = null;
       throw error;
     }
   },
 
-  // Initialize payment
+  /** ------------------------------
+   * Initialize payment via backend
+   * ------------------------------ */
   async initializePayment(paymentData) {
     try {
-      console.log("Initializing payment with data:", paymentData);
-
-      // Extract billing details from the payment data
       const { billingDetails, total, cartItems, shippingDetails } = paymentData;
 
-      // Prepare the order data for the backend
       const orderData = {
         orderData: {
-          // Wrap in orderData object as expected by backend
-          total: total,
+          total,
           billingDetails: {
             apartment: billingDetails.apartment || "NA",
             email: billingDetails.email,
@@ -84,59 +80,51 @@ const paymobService = {
           },
           items: cartItems.map((item) => ({
             name: item.name,
-            amount_cents: Math.round(item.totalPrice * 100), // Convert to cents and ensure it's an integer
+            amount_cents: Math.round(item.totalPrice * 100),
             description: item.description || "",
             quantity: item.quantity,
           })),
         },
       };
 
-      // Log the exact data being sent
       console.log(
-        "Sending order data to backend:",
+        "📦 Sending order data to backend:",
         JSON.stringify(orderData, null, 2)
       );
 
-      // Send the order data to your backend
-      const response = await axios.post(
-        `https://api.thedesigngrit.com/api/paymob/create-payment`,
-        orderData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await paymobAxios.post(
+        "https://api.thedesigngrit.com/api/paymob/create-payment",
+        orderData
       );
-
-      console.log("Payment initialization response:", response.data);
 
       if (response.data.success) {
         return {
           iframeUrl: response.data.iframe_url,
           orderId: response.data.order_id,
         };
-      } else {
-        throw new Error(
-          response.data.message || "Failed to initialize payment"
-        );
       }
+
+      throw new Error(response.data.message || "Failed to initialize payment");
     } catch (error) {
-      console.error("Payment initialization error:", error);
-      // Log the full error response if available
+      console.error("❌ Error during payment initialization:", error);
+
       if (error.response) {
-        console.error("Error response data:", error.response.data);
-        console.error("Error response status:", error.response.status);
-        console.error("Error response headers:", error.response.headers);
+        console.error("🔍 Response Data:", error.response.data);
+        console.error("🔍 Status:", error.response.status);
+        console.error("🔍 Headers:", error.response.headers);
       }
+
       throw new Error(
         error.response?.data?.message ||
           error.message ||
-          "Failed to initialize payment"
+          "Payment initialization failed"
       );
     }
   },
 
-  // Create order
+  /** ------------------------------
+   * Create Paymob Order
+   * ------------------------------ */
   async createOrder(authToken, amount) {
     try {
       const response = await paymobAxios.post(
@@ -151,17 +139,17 @@ const paymobService = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error creating order:", error);
+      console.error("❌ Failed to create order:", error);
       throw error;
     }
   },
 
-  // Get payment key
+  /** ------------------------------
+   * Get Payment Key
+   * ------------------------------ */
   async getPaymentKey(authToken, orderId, billingData) {
     try {
-      // Get Paymob configuration from backend
-      const configResponse = await axios.get("/api/paymob/config");
-      const { integrationId } = configResponse.data;
+      const { data: config } = await axios.get("/api/paymob/config");
 
       const response = await paymobAxios.post(
         "https://accept.paymob.com/api/acceptance/payment_keys",
@@ -171,35 +159,39 @@ const paymobService = {
           expiration: 3600,
           order_id: orderId,
           billing_data: {
-            apartment: "NA",
+            apartment: billingData.apartment || "NA",
             email: billingData.email,
-            floor: "NA",
+            floor: billingData.floor || "NA",
             first_name: billingData.first_name,
-            street: billingData.street,
-            building: billingData.building,
+            street: billingData.street || "NA",
+            building: billingData.building || "NA",
             phone_number: billingData.phone_number,
             shipping_method: "NA",
             postal_code: "NA",
             city: billingData.city,
             country: billingData.country,
             last_name: billingData.last_name,
-            state: billingData.state,
+            state: billingData.state || "NA",
           },
           currency: "EGP",
-          integration_id: integrationId,
+          integration_id: config.integrationId,
         }
       );
+
       return response.data;
     } catch (error) {
-      console.error("Error getting payment key:", error);
+      console.error("❌ Failed to get payment key:", error);
       throw error;
     }
   },
 
-  // Clear cached token (useful for testing or when token becomes invalid)
+  /** ------------------------------
+   * Clear cached token
+   * ------------------------------ */
   clearAuthToken() {
     authToken = null;
     tokenExpiry = null;
+    console.log("🧹 Auth token cleared");
   },
 };
 
