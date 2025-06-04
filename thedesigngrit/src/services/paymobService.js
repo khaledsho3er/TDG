@@ -64,28 +64,31 @@ const paymobService = {
 
       // Prepare the order data for the backend
       const orderData = {
-        total_amount: total,
-        billing_data: {
-          apartment: billingDetails.apartment || "NA",
-          email: billingDetails.email,
-          floor: billingDetails.floor || "NA",
-          first_name: billingDetails.first_name,
-          street: billingDetails.street,
-          building: billingDetails.building || "NA",
-          phone_number: billingDetails.phone_number,
-          shipping_method: shippingDetails?.method || "NA",
-          postal_code: shippingDetails?.postalCode || "NA",
-          city: billingDetails.city,
-          country: billingDetails.country,
-          last_name: billingDetails.last_name,
-          state: billingDetails.state || "NA",
+        orderData: {
+          // Wrap in orderData object as expected by backend
+          total: total,
+          billingDetails: {
+            apartment: billingDetails.apartment || "NA",
+            email: billingDetails.email,
+            floor: billingDetails.floor || "NA",
+            first_name: billingDetails.first_name,
+            street: billingDetails.street,
+            building: billingDetails.building || "NA",
+            phone_number: billingDetails.phone_number,
+            shipping_method: shippingDetails?.method || "NA",
+            postal_code: shippingDetails?.postalCode || "NA",
+            city: billingDetails.city,
+            country: billingDetails.country,
+            last_name: billingDetails.last_name,
+            state: billingDetails.state || "NA",
+          },
+          items: cartItems.map((item) => ({
+            name: item.name,
+            amount_cents: Math.round(item.totalPrice * 100), // Convert to cents and ensure it's an integer
+            description: item.description || "",
+            quantity: item.quantity,
+          })),
         },
-        items: cartItems.map((item) => ({
-          name: item.name,
-          amount_cents: Math.round(item.totalPrice * 100), // Convert to cents and ensure it's an integer
-          description: item.description || "",
-          quantity: item.quantity,
-        })),
       };
 
       // Log the exact data being sent
@@ -101,7 +104,6 @@ const paymobService = {
         {
           headers: {
             "Content-Type": "application/json",
-            // Add any required authentication headers here
           },
         }
       );
