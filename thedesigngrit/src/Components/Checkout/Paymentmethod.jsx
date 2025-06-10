@@ -381,11 +381,14 @@ function PaymentForm({
               border: "none",
               display: "block",
             }}
-            allow="camera *; microphone *"
+            allow="camera; microphone; accelerometer; gyroscope; payment"
+            allowFullScreen
             title="Paymob Payment"
             id="paymob-iframe"
             onLoad={() => console.log("Iframe loaded")}
             onError={(e) => console.error("Iframe error:", e)}
+            referrerPolicy="origin"
+            sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
           />
         </Box>
       ) : paymentMethod === "card" && isProcessing ? (

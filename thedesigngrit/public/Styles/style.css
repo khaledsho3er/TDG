@@ -7781,6 +7781,8 @@ input:focus {
   overflow: hidden;
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 10;
 }
 
 .payment-iframe-container iframe {
@@ -7788,6 +7790,7 @@ input:focus {
   height: 600px;
   border: none;
   display: block;
+  background-color: white;
 }
 
 /* Fix for iframe visibility issues */
