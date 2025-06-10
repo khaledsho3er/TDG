@@ -111,8 +111,17 @@ const paymobService = {
       console.log("Payment initialization response:", response.data);
 
       if (response.data.success) {
+        // Ensure we're getting the iframe URL correctly
+        const iframeUrl = response.data.iframe_url;
+        console.log("Received iframe URL:", iframeUrl);
+
+        if (!iframeUrl) {
+          console.error("No iframe URL received from backend");
+          throw new Error("Payment gateway URL not received");
+        }
+
         return {
-          iframeUrl: response.data.iframe_url,
+          iframeUrl: iframeUrl,
           orderId: response.data.order_id,
         };
       } else {

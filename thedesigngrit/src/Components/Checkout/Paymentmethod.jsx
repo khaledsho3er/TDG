@@ -11,6 +11,7 @@ import {
   TextField,
   Alert,
   CircularProgress,
+  Typography,
 } from "@mui/material";
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
@@ -129,7 +130,23 @@ function PaymentForm({
 
         const result = await paymobService.initializePayment(paymentData);
         console.log("Result from initializePayment:", result);
-        setIframeUrl(result.iframeUrl || result.iframe_url);
+
+        // Fix: Ensure we're getting the iframe URL correctly and log it
+        const frameUrl = result.iframeUrl || result.iframe_url;
+        console.log("Setting iframe URL to:", frameUrl);
+        setIframeUrl(frameUrl);
+
+        // Add a small delay to ensure state is updated before rendering
+        setTimeout(() => {
+          console.log("Iframe URL after timeout:", frameUrl);
+          const iframe = document.querySelector(
+            'iframe[title="Paymob Payment"]'
+          );
+          console.log("Iframe element:", iframe);
+          if (iframe) {
+            iframe.src = frameUrl;
+          }
+        }, 100);
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         onSubmit();
@@ -144,9 +161,6 @@ function PaymentForm({
         stack: error.stack,
         billData: billData,
       });
-      setPaymentError(
-        error.message || "Payment initialization failed. Please try again."
-      );
     } finally {
       setIsProcessing(false);
     }
@@ -306,21 +320,43 @@ function PaymentForm({
         shippingFee={billData.shippingFee}
         total={billData.total}
       />
-      {/* Render the Paymob iframe if iframeUrl is set */}
-      {iframeUrl && (
-        <iframe
-          src={iframeUrl}
-          style={{
+
+      {/* Improved iframe rendering with better debugging */}
+      {iframeUrl ? (
+        <Box
+          sx={{
             width: "100%",
-            zIndex: 1000,
-            height: "600px",
-            border: "none",
             marginTop: "20px",
+            border: "1px solid #eee",
+            borderRadius: "8px",
+            overflow: "hidden",
+            minHeight: "600px",
           }}
-          allow="camera *; microphone *"
-          title="Paymob Payment"
-        />
-      )}
+        >
+          <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
+            Payment Gateway
+          </Typography>
+          <iframe
+            src={iframeUrl}
+            style={{
+              width: "100%",
+              height: "600px",
+              border: "none",
+              display: "block",
+            }}
+            allow="camera *; microphone *"
+            title="Paymob Payment"
+            id="paymob-iframe"
+            onLoad={() => console.log("Iframe loaded")}
+            onError={(e) => console.error("Iframe error:", e)}
+          />
+        </Box>
+      ) : paymentMethod === "card" && isProcessing ? (
+        <Box sx={{ textAlign: "center", my: 4 }}>
+          <CircularProgress size={40} />
+          <Typography sx={{ mt: 2 }}>Preparing payment gateway...</Typography>
+        </Box>
+      ) : null}
     </Box>
   );
 }
