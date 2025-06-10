@@ -74,7 +74,7 @@ const paymobService = {
       }));
 
       console.log("Prepared items for payment:", items);
-
+      console.log("usersession: ", userSession.id || userSession._id);
       // Prepare the order data for the backend
       const orderData = {
         orderData: {
