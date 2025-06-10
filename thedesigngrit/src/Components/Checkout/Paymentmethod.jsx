@@ -176,7 +176,103 @@ function PaymentForm({
               label={<span className="horizon-font">Pay with Card</span>}
               sx={{ borderBottom: "1px solid black", pb: 1 }}
             />
+            {/* Display payment errors prominently */}
+            {paymentError && (
+              <Box
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  bgcolor: "rgba(244, 67, 54, 0.1)",
+                  color: "#f44336",
+                  borderRadius: "8px",
+                  borderLeft: "4px solid #f44336",
+                  animation: "fadeIn 0.3s ease",
+                }}
+              >
+                <Typography variant="body1">{paymentError}</Typography>
+                <Typography variant="body2" sx={{ mt: 1, fontSize: "0.85rem" }}>
+                  If this problem persists, please contact our support team.
+                </Typography>
+              </Box>
+            )}
 
+            {/* Paymob iframe for card payments */}
+            {paymentMethod === "card" && iframeUrl && (
+              <Box className="payment-iframe-container">
+                <Typography
+                  variant="subtitle2"
+                  sx={{ p: 1, bgcolor: "#f5f5f5" }}
+                >
+                  Payment Gateway
+                </Typography>
+                <iframe
+                  src={iframeUrl}
+                  style={{
+                    width: "100%",
+                    height: "600px",
+                    border: "none",
+                    display: "block",
+                  }}
+                  allow="camera; microphone; accelerometer; gyroscope; payment"
+                  allowFullScreen
+                  title="Paymob Payment"
+                  id="paymob-iframe"
+                  onLoad={() => console.log("Iframe loaded")}
+                  onError={(e) => console.error("Iframe error:", e)}
+                  referrerPolicy="origin"
+                  sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
+                />
+              </Box>
+            )}
+
+            {/* Payment buttons */}
+            {paymentMethod === "card" && (
+              <Box sx={{ mt: 3, textAlign: "center" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="montserrat-font"
+                  onClick={handlePayNow}
+                  disabled={isProcessing || iframeUrl}
+                  sx={{
+                    mt: 2,
+                    backgroundColor: "#6B7B58",
+                    "&:hover": { backgroundColor: "#5a6a47" },
+                    display: iframeUrl ? "none" : "inline-flex",
+                  }}
+                >
+                  {isProcessing ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Pay Now"
+                  )}
+                </Button>
+                {isProcessing && !iframeUrl && (
+                  <Typography sx={{ mt: 2 }}>
+                    Preparing payment gateway...
+                  </Typography>
+                )}
+              </Box>
+            )}
+
+            {/* COD button */}
+            {paymentMethod === "cod" && (
+              <Box sx={{ mt: 3, textAlign: "center" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="montserrat-font"
+                  onClick={handlePayNow}
+                  sx={{
+                    mt: 2,
+                    backgroundColor: "#6B7B58",
+                    "&:hover": { backgroundColor: "#5a6a47" },
+                  }}
+                >
+                  Complete Order
+                </Button>
+              </Box>
+            )}
             {/* Cash on Delivery Option */}
             {showCOD ? (
               <FormControlLabel
@@ -220,99 +316,6 @@ function PaymentForm({
         shippingFee={billData.shippingFee}
         total={billData.total}
       />
-
-      {/* Display payment errors prominently */}
-      {paymentError && (
-        <Box
-          sx={{
-            p: 2,
-            mb: 2,
-            bgcolor: "rgba(244, 67, 54, 0.1)",
-            color: "#f44336",
-            borderRadius: "8px",
-            borderLeft: "4px solid #f44336",
-            animation: "fadeIn 0.3s ease",
-          }}
-        >
-          <Typography variant="body1">{paymentError}</Typography>
-          <Typography variant="body2" sx={{ mt: 1, fontSize: "0.85rem" }}>
-            If this problem persists, please contact our support team.
-          </Typography>
-        </Box>
-      )}
-
-      {/* Paymob iframe for card payments */}
-      {paymentMethod === "card" && iframeUrl && (
-        <Box className="payment-iframe-container">
-          <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
-            Payment Gateway
-          </Typography>
-          <iframe
-            src={iframeUrl}
-            style={{
-              width: "100%",
-              height: "600px",
-              border: "none",
-              display: "block",
-            }}
-            allow="camera; microphone; accelerometer; gyroscope; payment"
-            allowFullScreen
-            title="Paymob Payment"
-            id="paymob-iframe"
-            onLoad={() => console.log("Iframe loaded")}
-            onError={(e) => console.error("Iframe error:", e)}
-            referrerPolicy="origin"
-            sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
-          />
-        </Box>
-      )}
-
-      {/* Payment buttons */}
-      {paymentMethod === "card" && (
-        <Box sx={{ mt: 3, textAlign: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            className="montserrat-font"
-            onClick={handlePayNow}
-            disabled={isProcessing || iframeUrl}
-            sx={{
-              mt: 2,
-              backgroundColor: "#6B7B58",
-              "&:hover": { backgroundColor: "#5a6a47" },
-              display: iframeUrl ? "none" : "inline-flex",
-            }}
-          >
-            {isProcessing ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              "Pay Now"
-            )}
-          </Button>
-          {isProcessing && !iframeUrl && (
-            <Typography sx={{ mt: 2 }}>Preparing payment gateway...</Typography>
-          )}
-        </Box>
-      )}
-
-      {/* COD button */}
-      {paymentMethod === "cod" && (
-        <Box sx={{ mt: 3, textAlign: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            className="montserrat-font"
-            onClick={handlePayNow}
-            sx={{
-              mt: 2,
-              backgroundColor: "#6B7B58",
-              "&:hover": { backgroundColor: "#5a6a47" },
-            }}
-          >
-            Complete Order
-          </Button>
-        </Box>
-      )}
     </Box>
   );
 }
