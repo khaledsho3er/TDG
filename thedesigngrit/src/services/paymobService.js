@@ -85,7 +85,7 @@ const paymobService = {
             email: billingDetails.email,
             floor: shippingDetails?.floor || "NA",
             first_name: billingDetails.first_name,
-            street: billingDetails?.address,
+            street: billingDetails?.address || shippingDetails?.address || "NA",
             building: shippingDetails?.apartment || "NA",
             phone_number: billingDetails.phone_number,
             shipping_method: shippingDetails?.address || "NA",
