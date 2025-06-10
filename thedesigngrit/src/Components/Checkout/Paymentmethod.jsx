@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
-
+import { useUser } from "../../utils/userContext";
 function PaymentForm({
   onSubmit,
   paymentData,
@@ -25,6 +25,7 @@ function PaymentForm({
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [iframeUrl, setIframeUrl] = useState(null);
+  const { userSession } = useUser();
 
   useEffect(() => {
     if (billData && billData.total) {
@@ -140,7 +141,10 @@ function PaymentForm({
         console.log("Sending payment data:", paymentData);
 
         try {
-          const result = await paymobService.initializePayment(paymentData);
+          const result = await paymobService.initializePayment(
+            paymentData,
+            userSession
+          );
           console.log("Result from initializePayment:", result);
 
           // Check if we got a valid iframe URL

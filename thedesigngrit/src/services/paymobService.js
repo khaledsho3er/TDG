@@ -55,7 +55,7 @@ const paymobService = {
   },
 
   // Initialize payment
-  async initializePayment(paymentData) {
+  async initializePayment(paymentData, userSession) {
     try {
       console.log("Initializing payment with data:", paymentData);
 
@@ -78,6 +78,7 @@ const paymobService = {
       // Prepare the order data for the backend
       const orderData = {
         orderData: {
+          customerId: userSession._id, // Ensure this is taken from the authenticated user
           total: total,
           billingDetails: {
             apartment: billingDetails.apartment || "NA",
