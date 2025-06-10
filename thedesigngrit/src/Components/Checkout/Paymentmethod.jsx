@@ -108,11 +108,32 @@ function PaymentForm({
             "Some items in your cart are invalid. Please try again or contact support."
           );
         }
+        // Ensure each cart item has productId and brandId
+        const enhancedCartItems = billData.cartItems.map((item) => {
+          // Extract the correct productId
+          const productId = item.productId || item.id;
+
+          // Extract the correct brandId
+          let brandId;
+          if (typeof item.brandId === "object" && item.brandId !== null) {
+            brandId = item.brandId._id || item.brandId.id;
+          } else {
+            brandId = item.brandId;
+          }
+
+          return {
+            ...item,
+            productId,
+            brandId,
+          };
+        });
+
+        console.log("Enhanced cart items with proper IDs:", enhancedCartItems);
 
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
-          cartItems: billData.cartItems || [],
+          cartItems: enhancedCartItems || [],
           shippingDetails: billData.shippingDetails || {},
         };
 

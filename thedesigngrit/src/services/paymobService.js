@@ -68,6 +68,9 @@ const paymobService = {
         amount_cents: Math.round((item.unitPrice || 0) * 100), // Use unitPrice instead of totalPrice
         description: item.description || "",
         quantity: item.quantity,
+        productId: item.productId || item.id, // Ensure productId is included
+        brandId: item.brandId, // Ensure brandId is included
+        variantId: item.variantId || null, // Include variantId if it exists
       }));
 
       console.log("Prepared items for payment:", items);
