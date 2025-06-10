@@ -112,8 +112,7 @@ const paymobService = {
         }
       );
 
-      console.log("Full payment initialization response:", response);
-      console.log("Payment initialization response data:", response.data);
+      console.log("Payment initialization response:", response.data);
 
       // Check if the response contains the iframe URL
       if (response.data && response.data.success) {
@@ -131,7 +130,7 @@ const paymobService = {
 
         return {
           iframeUrl: iframeUrl,
-          orderId: response.data.order_id || null,
+          orderId: response.data.orderId || null,
         };
       } else {
         console.error("Backend response indicates failure:", response.data);
