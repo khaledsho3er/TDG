@@ -100,6 +100,7 @@ function PaymentForm({
             "Billing information is missing. Please complete the billing form first."
           );
         }
+
         const billingDetails = billData.billingDetails;
         const requiredFields = {
           first_name: "First Name",
@@ -110,9 +111,11 @@ function PaymentForm({
           city: "City",
           country: "Country",
         };
+
         const missingFields = Object.entries(requiredFields)
           .filter(([key]) => !billingDetails[key])
           .map(([_, label]) => label);
+
         if (missingFields.length > 0) {
           throw new Error(
             `Please complete the following billing information: ${missingFields.join(
@@ -120,33 +123,56 @@ function PaymentForm({
             )}`
           );
         }
+
+        // Check if cart items have the required properties
+        if (!billData.cartItems || billData.cartItems.length === 0) {
+          throw new Error("Your cart is empty. Please add items to your cart.");
+        }
+
+        // Validate cart items have the necessary properties
+        const invalidItems = billData.cartItems.filter(
+          (item) => !item.name || typeof item.unitPrice === "undefined"
+        );
+
+        if (invalidItems.length > 0) {
+          console.error("Invalid cart items:", invalidItems);
+          throw new Error(
+            "Some items in your cart are invalid. Please try again or contact support."
+          );
+        }
+
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
           cartItems: billData.cartItems || [],
           shippingDetails: billData.shippingDetails || {},
         };
+
         console.log("Sending payment data:", paymentData);
 
-        const result = await paymobService.initializePayment(paymentData);
-        console.log("Result from initializePayment:", result);
+        try {
+          const result = await paymobService.initializePayment(paymentData);
+          console.log("Result from initializePayment:", result);
 
-        // Fix: Ensure we're getting the iframe URL correctly and log it
-        const frameUrl = result.iframeUrl || result.iframe_url;
-        console.log("Setting iframe URL to:", frameUrl);
-        setIframeUrl(frameUrl);
-
-        // Add a small delay to ensure state is updated before rendering
-        setTimeout(() => {
-          console.log("Iframe URL after timeout:", frameUrl);
-          const iframe = document.querySelector(
-            'iframe[title="Paymob Payment"]'
-          );
-          console.log("Iframe element:", iframe);
-          if (iframe) {
-            iframe.src = frameUrl;
+          // Check if we got a valid iframe URL
+          if (!result || !result.iframeUrl) {
+            throw new Error(
+              "Payment gateway URL not received. Please try again later."
+            );
           }
-        }, 100);
+
+          // Set the iframe URL
+          setIframeUrl(result.iframeUrl);
+
+          // Log the iframe URL for debugging
+          console.log("Setting iframe URL to:", result.iframeUrl);
+        } catch (paymentError) {
+          console.error("Payment initialization failed:", paymentError);
+          throw new Error(
+            paymentError.message ||
+              "Failed to connect to payment gateway. Please try again later."
+          );
+        }
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         onSubmit();
@@ -321,18 +347,29 @@ function PaymentForm({
         total={billData.total}
       />
 
-      {/* Improved iframe rendering with better debugging */}
-      {iframeUrl ? (
+      {/* Display payment errors prominently */}
+      {paymentError && (
         <Box
           sx={{
-            width: "100%",
-            marginTop: "20px",
-            border: "1px solid #eee",
+            p: 2,
+            mb: 2,
+            bgcolor: "rgba(244, 67, 54, 0.1)",
+            color: "#f44336",
             borderRadius: "8px",
-            overflow: "hidden",
-            minHeight: "600px",
+            borderLeft: "4px solid #f44336",
+            animation: "fadeIn 0.3s ease",
           }}
         >
+          <Typography variant="body1">{paymentError}</Typography>
+          <Typography variant="body2" sx={{ mt: 1, fontSize: "0.85rem" }}>
+            If this problem persists, please contact our support team.
+          </Typography>
+        </Box>
+      )}
+
+      {/* Improved iframe rendering with better debugging */}
+      {iframeUrl ? (
+        <Box className="payment-iframe-container">
           <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
             Payment Gateway
           </Typography>

@@ -62,10 +62,19 @@ const paymobService = {
       // Extract billing details from the payment data
       const { billingDetails, total, cartItems, shippingDetails } = paymentData;
 
+      // Fix: Ensure amount_cents is properly calculated for each item
+      const items = cartItems.map((item) => ({
+        name: item.name,
+        amount_cents: Math.round((item.unitPrice || 0) * 100), // Use unitPrice instead of totalPrice
+        description: item.description || "",
+        quantity: item.quantity,
+      }));
+
+      console.log("Prepared items for payment:", items);
+
       // Prepare the order data for the backend
       const orderData = {
         orderData: {
-          // Wrap in orderData object as expected by backend
           total: total,
           billingDetails: {
             apartment: billingDetails.apartment || "NA",
@@ -82,12 +91,7 @@ const paymobService = {
             last_name: billingDetails.last_name,
             state: billingDetails.state || "NA",
           },
-          items: cartItems.map((item) => ({
-            name: item.name,
-            amount_cents: Math.round(item.totalPrice * 100), // Convert to cents and ensure it's an integer
-            description: item.description || "",
-            quantity: item.quantity,
-          })),
+          items: items,
         },
       };
 
@@ -108,35 +112,43 @@ const paymobService = {
         }
       );
 
-      console.log("Payment initialization response:", response.data);
+      console.log("Full payment initialization response:", response);
+      console.log("Payment initialization response data:", response.data);
 
-      if (response.data.success) {
+      // Check if the response contains the iframe URL
+      if (response.data && response.data.success) {
         // Ensure we're getting the iframe URL correctly
         const iframeUrl = response.data.iframe_url;
         console.log("Received iframe URL:", iframeUrl);
 
         if (!iframeUrl) {
-          console.error("No iframe URL received from backend");
-          throw new Error("Payment gateway URL not received");
+          console.error(
+            "Backend response is missing iframe_url property:",
+            response.data
+          );
+          throw new Error("Payment gateway URL not received from backend");
         }
 
         return {
           iframeUrl: iframeUrl,
-          orderId: response.data.order_id,
+          orderId: response.data.order_id || null,
         };
       } else {
+        console.error("Backend response indicates failure:", response.data);
         throw new Error(
-          response.data.message || "Failed to initialize payment"
+          response.data?.message || "Failed to initialize payment"
         );
       }
     } catch (error) {
       console.error("Payment initialization error:", error);
+
       // Log the full error response if available
       if (error.response) {
         console.error("Error response data:", error.response.data);
         console.error("Error response status:", error.response.status);
         console.error("Error response headers:", error.response.headers);
       }
+
       throw new Error(
         error.response?.data?.message ||
           error.message ||
