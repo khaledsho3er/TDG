@@ -5,6 +5,7 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Button,
   CircularProgress,
   Typography,
   Alert,
@@ -54,95 +55,95 @@ function PaymentForm({
     setPaymentMethod(method);
     onChange({ ...paymentData, paymentMethod: method });
     setPaymentError(null); // Clear any previous errors when changing payment method
-
-    // If switching to card payment, initialize the iframe
-    if (method === "card" && !iframeUrl) {
-      handleInitializePayment();
-    }
   };
 
-  const handleInitializePayment = async () => {
+  const handlePayNow = async () => {
     try {
       setIsProcessing(true);
       setPaymentError(null);
 
-      if (!billData?.billingDetails) {
-        throw new Error(
-          "Billing information is missing. Please complete the billing form first."
-        );
-      }
-
-      const billingDetails = billData.billingDetails;
-      const requiredFields = {
-        first_name: "First Name",
-        last_name: "Last Name",
-        email: "Email",
-        phone_number: "Phone Number",
-        street: "Street Address",
-        city: "City",
-        country: "Country",
-      };
-
-      const missingFields = Object.entries(requiredFields)
-        .filter(([key]) => !billingDetails[key])
-        .map(([_, label]) => label);
-
-      if (missingFields.length > 0) {
-        throw new Error(
-          `Please complete the following billing information: ${missingFields.join(
-            ", "
-          )}`
-        );
-      }
-
-      // Check if cart items have the required properties
-      if (!billData.cartItems || billData.cartItems.length === 0) {
-        throw new Error("Your cart is empty. Please add items to your cart.");
-      }
-
-      // Validate cart items have the necessary properties
-      const invalidItems = billData.cartItems.filter(
-        (item) => !item.name || typeof item.unitPrice === "undefined"
-      );
-
-      if (invalidItems.length > 0) {
-        console.error("Invalid cart items:", invalidItems);
-        throw new Error(
-          "Some items in your cart are invalid. Please try again or contact support."
-        );
-      }
-
-      const paymentData = {
-        total: billData.total || 0,
-        billingDetails: billingDetails,
-        cartItems: billData.cartItems || [],
-        shippingDetails: billData.shippingDetails || {},
-      };
-
-      console.log("Sending payment data:", paymentData);
-
-      try {
-        const result = await paymobService.initializePayment(paymentData);
-        console.log("Result from initializePayment:", result);
-
-        // Check if we got a valid iframe URL
-        if (!result || !result.iframeUrl) {
+      if (paymentMethod === "card") {
+        if (!billData?.billingDetails) {
           throw new Error(
-            "Payment gateway URL not received. Please try again later."
+            "Billing information is missing. Please complete the billing form first."
           );
         }
 
-        // Set the iframe URL
-        setIframeUrl(result.iframeUrl);
+        const billingDetails = billData.billingDetails;
+        const requiredFields = {
+          first_name: "First Name",
+          last_name: "Last Name",
+          email: "Email",
+          phone_number: "Phone Number",
+          street: "Street Address",
+          city: "City",
+          country: "Country",
+        };
 
-        // Log the iframe URL for debugging
-        console.log("Setting iframe URL to:", result.iframeUrl);
-      } catch (paymentError) {
-        console.error("Payment initialization failed:", paymentError);
-        throw new Error(
-          paymentError.message ||
-            "Failed to connect to payment gateway. Please try again later."
+        const missingFields = Object.entries(requiredFields)
+          .filter(([key]) => !billingDetails[key])
+          .map(([_, label]) => label);
+
+        if (missingFields.length > 0) {
+          throw new Error(
+            `Please complete the following billing information: ${missingFields.join(
+              ", "
+            )}`
+          );
+        }
+
+        // Check if cart items have the required properties
+        if (!billData.cartItems || billData.cartItems.length === 0) {
+          throw new Error("Your cart is empty. Please add items to your cart.");
+        }
+
+        // Validate cart items have the necessary properties
+        const invalidItems = billData.cartItems.filter(
+          (item) => !item.name || typeof item.unitPrice === "undefined"
         );
+
+        if (invalidItems.length > 0) {
+          console.error("Invalid cart items:", invalidItems);
+          throw new Error(
+            "Some items in your cart are invalid. Please try again or contact support."
+          );
+        }
+
+        const paymentData = {
+          total: billData.total || 0,
+          billingDetails: billingDetails,
+          cartItems: billData.cartItems || [],
+          shippingDetails: billData.shippingDetails || {},
+        };
+
+        console.log("Sending payment data:", paymentData);
+
+        try {
+          const result = await paymobService.initializePayment(paymentData);
+          console.log("Result from initializePayment:", result);
+
+          // Check if we got a valid iframe URL
+          if (!result || !result.iframeUrl) {
+            throw new Error(
+              "Payment gateway URL not received. Please try again later."
+            );
+          }
+
+          // Set the iframe URL
+          setIframeUrl(result.iframeUrl);
+
+          // Log the iframe URL for debugging
+          console.log("Setting iframe URL to:", result.iframeUrl);
+        } catch (paymentError) {
+          console.error("Payment initialization failed:", paymentError);
+          throw new Error(
+            paymentError.message ||
+              "Failed to connect to payment gateway. Please try again later."
+          );
+        }
+      } else if (paymentMethod === "cod") {
+        // Handle Cash on Delivery
+        onSubmit();
       }
     } catch (error) {
       setPaymentError(
@@ -156,13 +157,6 @@ function PaymentForm({
       });
     } finally {
       setIsProcessing(false);
-    }
-  };
-
-  const handlePayNow = () => {
-    if (paymentMethod === "cod") {
-      // Handle Cash on Delivery
-      onSubmit();
     }
   };
 
@@ -248,62 +242,75 @@ function PaymentForm({
       )}
 
       {/* Paymob iframe for card payments */}
-      {paymentMethod === "card" && (
-        <>
-          {iframeUrl ? (
-            <Box className="payment-iframe-container">
-              <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
-                Payment Gateway
-              </Typography>
-              <iframe
-                src={iframeUrl}
-                style={{
-                  width: "100%",
-                  height: "600px",
-                  border: "none",
-                  display: "block",
-                }}
-                allow="camera; microphone; accelerometer; gyroscope; payment"
-                allowFullScreen
-                title="Paymob Payment"
-                id="paymob-iframe"
-                onLoad={() => console.log("Iframe loaded")}
-                onError={(e) => console.error("Iframe error:", e)}
-                referrerPolicy="origin"
-                sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
-              />
-            </Box>
-          ) : (
-            <Box sx={{ textAlign: "center", my: 4 }}>
-              <CircularProgress size={40} />
-              <Typography sx={{ mt: 2 }}>
-                Preparing payment gateway...
-              </Typography>
-            </Box>
-          )}
-        </>
+      {paymentMethod === "card" && iframeUrl && (
+        <Box className="payment-iframe-container">
+          <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
+            Payment Gateway
+          </Typography>
+          <iframe
+            src={iframeUrl}
+            style={{
+              width: "100%",
+              height: "600px",
+              border: "none",
+              display: "block",
+            }}
+            allow="camera; microphone; accelerometer; gyroscope; payment"
+            allowFullScreen
+            title="Paymob Payment"
+            id="paymob-iframe"
+            onLoad={() => console.log("Iframe loaded")}
+            onError={(e) => console.error("Iframe error:", e)}
+            referrerPolicy="origin"
+            sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
+          />
+        </Box>
       )}
 
-      {/* Show "Complete Order" button for COD */}
+      {/* Payment buttons */}
+      {paymentMethod === "card" && (
+        <Box sx={{ mt: 3, textAlign: "center" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            className="montserrat-font"
+            onClick={handlePayNow}
+            disabled={isProcessing || iframeUrl}
+            sx={{
+              mt: 2,
+              backgroundColor: "#6B7B58",
+              "&:hover": { backgroundColor: "#5a6a47" },
+              display: iframeUrl ? "none" : "inline-flex",
+            }}
+          >
+            {isProcessing ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Pay Now"
+            )}
+          </Button>
+          {isProcessing && !iframeUrl && (
+            <Typography sx={{ mt: 2 }}>Preparing payment gateway...</Typography>
+          )}
+        </Box>
+      )}
+
+      {/* COD button */}
       {paymentMethod === "cod" && (
         <Box sx={{ mt: 3, textAlign: "center" }}>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
+            className="montserrat-font"
             onClick={handlePayNow}
-            className="checkout-button"
-            style={{
+            sx={{
+              mt: 2,
               backgroundColor: "#6B7B58",
-              color: "white",
-              padding: "12px 24px",
-              border: "none",
-              borderRadius: "4px",
-              fontSize: "16px",
-              fontFamily: "Montserrat, sans-serif",
-              cursor: "pointer",
-              transition: "background-color 0.3s",
+              "&:hover": { backgroundColor: "#5a6a47" },
             }}
           >
             Complete Order
-          </button>
+          </Button>
         </Box>
       )}
     </Box>
