@@ -327,6 +327,16 @@ function Checkout() {
               floor: billingData.floor || "NA",
               state: billingData.state || "NA",
             },
+            shippingDetails: {
+              apartment: shippingData.apartment || "NA",
+              first_name: shippingData.firstName,
+              last_name: shippingData.lastName,
+              street: shippingData.address,
+              label: shippingData.label || "NA",
+              city: shippingData.city,
+              zipCode: shippingData.zipCode,
+              country: shippingData.country,
+            },
           }}
         />
       ),
@@ -357,6 +367,16 @@ function Checkout() {
                     email: billingData.email,
                     floor: billingData.floor || "NA",
                     state: billingData.state || "NA",
+                  },
+                  shippingDetails: {
+                    apartment: shippingData.apartment || "NA",
+                    first_name: shippingData.firstName,
+                    last_name: shippingData.lastName,
+                    street: shippingData.address,
+                    label: shippingData.label || "NA",
+                    city: shippingData.city,
+                    zipCode: shippingData.zipCode,
+                    country: shippingData.country,
                   },
                 }
               : { cartItems, subtotal, shippingFee, total },

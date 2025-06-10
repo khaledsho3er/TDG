@@ -71,6 +71,7 @@ function PaymentForm({
         }
 
         const billingDetails = billData.billingDetails;
+        const shippingDetails = billData.shippingDetails;
         const requiredFields = {
           first_name: "First Name",
           last_name: "Last Name",
@@ -135,7 +136,7 @@ function PaymentForm({
           total: billData.total || 0,
           billingDetails: billingDetails,
           cartItems: enhancedCartItems || [],
-          shippingDetails: billData.shippingDetails || {},
+          shippingDetails: shippingDetails || {},
         };
 
         console.log("Sending payment data:", paymentData);
