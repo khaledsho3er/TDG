@@ -4,18 +4,13 @@ import {
   FormControl,
   RadioGroup,
   Radio,
-  Select,
-  MenuItem,
   FormControlLabel,
-  Button,
-  TextField,
-  Alert,
   CircularProgress,
   Typography,
+  Alert,
 } from "@mui/material";
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
-// import { useCart } from "../../Context/cartcontext";
 
 function PaymentForm({
   onSubmit,
@@ -23,32 +18,13 @@ function PaymentForm({
   onChange,
   billData,
   errors = {},
-  validateOnChange = false,
 }) {
-  const [cardOptions, setCardOptions] = useState([]);
-  const [selectedCard, setSelectedCard] = useState("");
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: paymentData.cardNumber,
-    expiry: paymentData.expiry,
-    cvv: paymentData.cvv,
-  });
   const [paymentMethod, setPaymentMethod] = useState(paymentData.paymentMethod);
   const [showCOD, setShowCOD] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [iframeUrl, setIframeUrl] = useState(null);
-  // // Add CSS for error styling
-  // const errorStyle = {
-  //   border: "1px solid red",
-  //   backgroundColor: "rgba(255, 0, 0, 0.05)",
-  // };
 
-  // const errorMessageStyle = {
-  //   color: "red",
-  //   fontSize: "12px",
-  //   marginTop: "4px",
-  //   textAlign: "left",
-  // };
   useEffect(() => {
     if (billData && billData.total) {
       setShowCOD(billData.total <= 10000);
@@ -73,109 +49,100 @@ function PaymentForm({
     return () => window.removeEventListener("message", handleMessage);
   }, [onSubmit]);
 
-  const handleCardDetailsChange = (e) => {
-    const { name, value } = e.target;
-    const updatedCardDetails = { ...cardDetails, [name]: value };
-
-    setCardDetails(updatedCardDetails);
-    onChange({ ...paymentData, ...updatedCardDetails, paymentMethod });
-  };
-
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
-    setCardOptions(["card", "fawry", "valu", "cod"]);
     setPaymentMethod(method);
     onChange({ ...paymentData, paymentMethod: method });
     setPaymentError(null); // Clear any previous errors when changing payment method
+
+    // If switching to card payment, initialize the iframe
+    if (method === "card" && !iframeUrl) {
+      handleInitializePayment();
+    }
   };
 
-  const handlePayNow = async () => {
+  const handleInitializePayment = async () => {
     try {
       setIsProcessing(true);
       setPaymentError(null);
 
-      if (paymentMethod === "card") {
-        if (!billData?.billingDetails) {
-          throw new Error(
-            "Billing information is missing. Please complete the billing form first."
-          );
-        }
-
-        const billingDetails = billData.billingDetails;
-        const requiredFields = {
-          first_name: "First Name",
-          last_name: "Last Name",
-          email: "Email",
-          phone_number: "Phone Number",
-          street: "Street Address",
-          city: "City",
-          country: "Country",
-        };
-
-        const missingFields = Object.entries(requiredFields)
-          .filter(([key]) => !billingDetails[key])
-          .map(([_, label]) => label);
-
-        if (missingFields.length > 0) {
-          throw new Error(
-            `Please complete the following billing information: ${missingFields.join(
-              ", "
-            )}`
-          );
-        }
-
-        // Check if cart items have the required properties
-        if (!billData.cartItems || billData.cartItems.length === 0) {
-          throw new Error("Your cart is empty. Please add items to your cart.");
-        }
-
-        // Validate cart items have the necessary properties
-        const invalidItems = billData.cartItems.filter(
-          (item) => !item.name || typeof item.unitPrice === "undefined"
+      if (!billData?.billingDetails) {
+        throw new Error(
+          "Billing information is missing. Please complete the billing form first."
         );
+      }
 
-        if (invalidItems.length > 0) {
-          console.error("Invalid cart items:", invalidItems);
+      const billingDetails = billData.billingDetails;
+      const requiredFields = {
+        first_name: "First Name",
+        last_name: "Last Name",
+        email: "Email",
+        phone_number: "Phone Number",
+        street: "Street Address",
+        city: "City",
+        country: "Country",
+      };
+
+      const missingFields = Object.entries(requiredFields)
+        .filter(([key]) => !billingDetails[key])
+        .map(([_, label]) => label);
+
+      if (missingFields.length > 0) {
+        throw new Error(
+          `Please complete the following billing information: ${missingFields.join(
+            ", "
+          )}`
+        );
+      }
+
+      // Check if cart items have the required properties
+      if (!billData.cartItems || billData.cartItems.length === 0) {
+        throw new Error("Your cart is empty. Please add items to your cart.");
+      }
+
+      // Validate cart items have the necessary properties
+      const invalidItems = billData.cartItems.filter(
+        (item) => !item.name || typeof item.unitPrice === "undefined"
+      );
+
+      if (invalidItems.length > 0) {
+        console.error("Invalid cart items:", invalidItems);
+        throw new Error(
+          "Some items in your cart are invalid. Please try again or contact support."
+        );
+      }
+
+      const paymentData = {
+        total: billData.total || 0,
+        billingDetails: billingDetails,
+        cartItems: billData.cartItems || [],
+        shippingDetails: billData.shippingDetails || {},
+      };
+
+      console.log("Sending payment data:", paymentData);
+
+      try {
+        const result = await paymobService.initializePayment(paymentData);
+        console.log("Result from initializePayment:", result);
+
+        // Check if we got a valid iframe URL
+        if (!result || !result.iframeUrl) {
           throw new Error(
-            "Some items in your cart are invalid. Please try again or contact support."
+            "Payment gateway URL not received. Please try again later."
           );
         }
 
-        const paymentData = {
-          total: billData.total || 0,
-          billingDetails: billingDetails,
-          cartItems: billData.cartItems || [],
-          shippingDetails: billData.shippingDetails || {},
-        };
+        // Set the iframe URL
+        setIframeUrl(result.iframeUrl);
 
-        console.log("Sending payment data:", paymentData);
-
-        try {
-          const result = await paymobService.initializePayment(paymentData);
-          console.log("Result from initializePayment:", result);
-
-          // Check if we got a valid iframe URL
-          if (!result || !result.iframeUrl) {
-            throw new Error(
-              "Payment gateway URL not received. Please try again later."
-            );
-          }
-
-          // Set the iframe URL
-          setIframeUrl(result.iframeUrl);
-
-          // Log the iframe URL for debugging
-          console.log("Setting iframe URL to:", result.iframeUrl);
-        } catch (paymentError) {
-          console.error("Payment initialization failed:", paymentError);
-          throw new Error(
-            paymentError.message ||
-              "Failed to connect to payment gateway. Please try again later."
-          );
-        }
-      } else if (paymentMethod === "cod") {
-        // Handle Cash on Delivery
-        onSubmit();
+        // Log the iframe URL for debugging
+        console.log("Setting iframe URL to:", result.iframeUrl);
+      } catch (paymentError) {
+        console.error("Payment initialization failed:", paymentError);
+        throw new Error(
+          paymentError.message ||
+            "Failed to connect to payment gateway. Please try again later."
+        );
       }
     } catch (error) {
       setPaymentError(
@@ -191,7 +158,14 @@ function PaymentForm({
       setIsProcessing(false);
     }
   };
-  //
+
+  const handlePayNow = () => {
+    if (paymentMethod === "cod") {
+      // Handle Cash on Delivery
+      onSubmit();
+    }
+  };
+
   console.log("iframeUrl in render:", iframeUrl);
   return (
     <Box className="paymentmethod-container">
@@ -202,111 +176,14 @@ function PaymentForm({
             onChange={handlePaymentMethodChange}
           >
             {/* Card Payment Option */}
-            <Box className="paymentmethod-radio-dropdown">
-              <FormControlLabel
-                value="card"
-                control={<Radio />}
-                label={<span className="horizon-font">Card</span>}
-              />
-              {paymentMethod === "card" && (
-                <FormControl className="paymentmethod-dropdown">
-                  <Select
-                    value={selectedCard}
-                    onChange={(e) => setSelectedCard(e.target.value)}
-                    displayEmpty
-                    className="montserrat-font"
-                  >
-                    <MenuItem value="" disabled>
-                      Card Type
-                    </MenuItem>
-                    {cardOptions.map((card, index) => (
-                      <MenuItem key={index} value={card.type}>
-                        {card.type}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            </Box>
-
-            {paymentMethod === "card" && (
-              <Box className="paymentmethod-card-details">
-                {paymentError && (
-                  <Alert severity="error" sx={{ mb: 2 }}>
-                    {paymentError}
-                  </Alert>
-                )}
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  label="Card Number"
-                  name="cardNumber"
-                  InputLabelProps={{ className: "montserrat-font" }}
-                  className="montserrat-font"
-                  value={cardDetails.cardNumber}
-                  onChange={handleCardDetailsChange}
-                  error={!!errors.cardNumber}
-                  helperText={errors.cardNumber}
-                />
-                <Box display="flex" gap={2}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    label="MM/YY"
-                    name="expiry"
-                    InputLabelProps={{ className: "montserrat-font" }}
-                    className="montserrat-font"
-                    value={cardDetails.expiry}
-                    onChange={handleCardDetailsChange}
-                    error={!!errors.expiry}
-                    helperText={errors.expiry}
-                  />
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    label="CVV"
-                    name="cvv"
-                    type="password"
-                    InputLabelProps={{ className: "montserrat-font" }}
-                    className="montserrat-font"
-                    value={cardDetails.cvv}
-                    onChange={handleCardDetailsChange}
-                    error={!!errors.cvv}
-                    helperText={errors.cvv}
-                  />
-                </Box>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className="montserrat-font"
-                  onClick={handlePayNow}
-                  disabled={isProcessing}
-                  sx={{ mt: 2 }}
-                >
-                  {isProcessing ? (
-                    <CircularProgress size={24} color="inherit" />
-                  ) : (
-                    "Pay Now"
-                  )}
-                </Button>
-              </Box>
-            )}
-
-            {/* Other Payment Options */}
             <FormControlLabel
-              sx={{ borderBottom: "1px solid black" }}
-              value="valu"
+              value="card"
               control={<Radio />}
-              label={
-                <span className="montserrat-font">Valu, Halan, Saholha</span>
-              }
+              label={<span className="horizon-font">Pay with Card</span>}
+              sx={{ borderBottom: "1px solid black", pb: 1 }}
             />
-            <FormControlLabel
-              sx={{ borderBottom: "1px solid black" }}
-              value="fawry"
-              control={<Radio />}
-              label={<span className="montserrat-font">Fawry Pay</span>}
-            />
+
+            {/* Cash on Delivery Option */}
             {showCOD ? (
               <FormControlLabel
                 value="cod"
@@ -314,6 +191,7 @@ function PaymentForm({
                 label={
                   <span className="montserrat-font">Cash on Delivery</span>
                 }
+                sx={{ pt: 1 }}
               />
             ) : (
               <Box
@@ -324,6 +202,7 @@ function PaymentForm({
                   display: "flex",
                   alignItems: "center",
                   gap: "8px",
+                  pt: 1,
                 }}
                 className="montserrat-font"
               >
@@ -340,6 +219,7 @@ function PaymentForm({
           </RadioGroup>
         </FormControl>
       </Box>
+
       <BillSummary
         cartItems={billData.cartItems}
         subtotal={billData.subtotal}
@@ -367,36 +247,65 @@ function PaymentForm({
         </Box>
       )}
 
-      {/* Improved iframe rendering with better debugging */}
-      {iframeUrl ? (
-        <Box className="payment-iframe-container">
-          <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
-            Payment Gateway
-          </Typography>
-          <iframe
-            src={iframeUrl}
+      {/* Paymob iframe for card payments */}
+      {paymentMethod === "card" && (
+        <>
+          {iframeUrl ? (
+            <Box className="payment-iframe-container">
+              <Typography variant="subtitle2" sx={{ p: 1, bgcolor: "#f5f5f5" }}>
+                Payment Gateway
+              </Typography>
+              <iframe
+                src={iframeUrl}
+                style={{
+                  width: "100%",
+                  height: "600px",
+                  border: "none",
+                  display: "block",
+                }}
+                allow="camera; microphone; accelerometer; gyroscope; payment"
+                allowFullScreen
+                title="Paymob Payment"
+                id="paymob-iframe"
+                onLoad={() => console.log("Iframe loaded")}
+                onError={(e) => console.error("Iframe error:", e)}
+                referrerPolicy="origin"
+                sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
+              />
+            </Box>
+          ) : (
+            <Box sx={{ textAlign: "center", my: 4 }}>
+              <CircularProgress size={40} />
+              <Typography sx={{ mt: 2 }}>
+                Preparing payment gateway...
+              </Typography>
+            </Box>
+          )}
+        </>
+      )}
+
+      {/* Show "Complete Order" button for COD */}
+      {paymentMethod === "cod" && (
+        <Box sx={{ mt: 3, textAlign: "center" }}>
+          <button
+            onClick={handlePayNow}
+            className="checkout-button"
             style={{
-              width: "100%",
-              height: "600px",
+              backgroundColor: "#6B7B58",
+              color: "white",
+              padding: "12px 24px",
               border: "none",
-              display: "block",
+              borderRadius: "4px",
+              fontSize: "16px",
+              fontFamily: "Montserrat, sans-serif",
+              cursor: "pointer",
+              transition: "background-color 0.3s",
             }}
-            allow="camera; microphone; accelerometer; gyroscope; payment"
-            allowFullScreen
-            title="Paymob Payment"
-            id="paymob-iframe"
-            onLoad={() => console.log("Iframe loaded")}
-            onError={(e) => console.error("Iframe error:", e)}
-            referrerPolicy="origin"
-            sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
-          />
+          >
+            Complete Order
+          </button>
         </Box>
-      ) : paymentMethod === "card" && isProcessing ? (
-        <Box sx={{ textAlign: "center", my: 4 }}>
-          <CircularProgress size={40} />
-          <Typography sx={{ mt: 2 }}>Preparing payment gateway...</Typography>
-        </Box>
-      ) : null}
+      )}
     </Box>
   );
 }
