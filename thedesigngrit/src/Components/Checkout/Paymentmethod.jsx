@@ -13,6 +13,8 @@ import {
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
+import OrderSentPopup from "../successMsgs/orderSubmit";
+
 function PaymentForm({
   onSubmit,
   paymentData,
@@ -25,6 +27,7 @@ function PaymentForm({
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [iframeUrl, setIframeUrl] = useState(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const { userSession } = useUser();
 
   useEffect(() => {
@@ -43,9 +46,12 @@ function PaymentForm({
     const handleMessage = (event) => {
       if (event.origin !== "https://accept.paymob.com") return;
       const { success, error_occured } = event.data;
-      if (success) onSubmit();
-      else if (error_occured)
+      if (success) {
+        setShowSuccessPopup(true);
+        onSubmit();
+      } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
+      }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
@@ -341,6 +347,12 @@ function PaymentForm({
         subtotal={billData.subtotal}
         shippingFee={billData.shippingFee}
         total={billData.total}
+      />
+
+      {/* Add OrderSentPopup */}
+      <OrderSentPopup
+        show={showSuccessPopup}
+        closePopup={() => setShowSuccessPopup(false)}
       />
     </Box>
   );
