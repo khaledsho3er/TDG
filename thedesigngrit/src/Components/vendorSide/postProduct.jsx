@@ -847,91 +847,98 @@ const AddProduct = () => {
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
               {/* Customization Options */}
-
-              <label>Customization Types (Select all that apply):</label>
-              <div style={{ marginTop: "10px" }}>
-                {[
-                  "Color Options",
-                  "Size Options",
-                  "Fabric/Material Options",
-                  "Finish Options",
-                  "Engraving/Personalization",
-                  "Design Modifications",
-                  "Other",
-                ].map((option) => (
-                  <div
-                    key={option}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 8,
-                      gap: 8,
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      value={option}
-                      checked={customizationOptions.includes(option)}
-                      onChange={handleCustomizationChange}
-                    />
-                    <span>{option}</span>
-                  </div>
-                ))}
-              </div>
-              {customizationOptions.includes("Other") && (
+              <div className="form-group">
+                <label>Customization Types (Select all that apply):</label>
                 <div style={{ marginTop: "10px" }}>
-                  <label>Other (Please specify):</label>
-                  <textarea
-                    name="otherCustomization"
-                    value={otherCustomization}
-                    onChange={handleOtherCustomizationChange}
-                    placeholder="Specify other customization options"
-                  />
+                  {[
+                    "Color Options",
+                    "Size Options",
+                    "Fabric/Material Options",
+                    "Finish Options",
+                    "Engraving/Personalization",
+                    "Design Modifications",
+                    "Other",
+                  ].map((option) => (
+                    <div key={option}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={option}
+                          checked={customizationOptions.includes(option)}
+                          onChange={handleCustomizationChange}
+                        />
+                        {option}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-              )}
+                {customizationOptions.includes("Other") && (
+                  <div style={{ marginTop: "10px" }}>
+                    <label>Other (Please specify):</label>
+                    <textarea
+                      name="otherCustomization"
+                      value={otherCustomization}
+                      onChange={handleOtherCustomizationChange}
+                      placeholder="Specify other customization options"
+                    />
+                  </div>
+                )}
+              </div>
 
               {/* Additional Costs for Customization */}
-              <label>Additional Costs for Customization (Select one):</label>
-              <div style={{ marginTop: "10px" }}>
-                {[
-                  "Yes, additional cost applies",
-                  "No additional cost",
-                  "Variable based on customization type",
-                ].map((option) => (
-                  <div
-                    key={option}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: 8,
-                      gap: 8,
-                    }}
-                  >
+              <div className="form-group">
+                <label>Additional Costs for Customization (Select one):</label>
+                <div style={{ marginTop: "10px" }}>
+                  <label>
                     <input
                       type="radio"
                       name="additionalCosts"
-                      value={option}
-                      checked={additionalCosts === option}
+                      value="Yes, additional cost applies"
+                      checked={
+                        additionalCosts === "Yes, additional cost applies"
+                      }
                       onChange={handleAdditionalCostsChange}
                     />
-                    <span>
-                      {option === "Variable based on customization type"
-                        ? "Variable based on customization type (please specify breakdown):"
-                        : option}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              {additionalCosts === "Variable based on customization type" && (
-                <div style={{ marginTop: "10px" }}>
-                  <textarea
-                    name="costBreakdown"
-                    value={costBreakdown}
-                    onChange={handleCostBreakdownChange}
-                    placeholder="Specify cost breakdown"
-                  />
+                    Yes, additional cost applies
+                  </label>
+                  <br />
+                  <label>
+                    <input
+                      type="radio"
+                      name="additionalCosts"
+                      value="No additional cost"
+                      checked={additionalCosts === "No additional cost"}
+                      onChange={handleAdditionalCostsChange}
+                    />
+                    No additional cost
+                  </label>
+                  <br />
+                  <label>
+                    <input
+                      type="radio"
+                      name="additionalCosts"
+                      value="Variable based on customization type"
+                      checked={
+                        additionalCosts ===
+                        "Variable based on customization type"
+                      }
+                      onChange={handleAdditionalCostsChange}
+                    />
+                    Variable based on customization type (please specify
+                    breakdown):
+                  </label>
                 </div>
-              )}
+                {additionalCosts === "Variable based on customization type" && (
+                  <div style={{ marginTop: "10px" }}>
+                    <textarea
+                      name="costBreakdown"
+                      value={costBreakdown}
+                      onChange={handleCostBreakdownChange}
+                      placeholder="Specify cost breakdown"
+                    />
+                  </div>
+                )}
+              </div>
             </Box>
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
