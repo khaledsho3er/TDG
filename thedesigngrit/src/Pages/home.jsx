@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Box } from "@mui/material";
 import Header from "../Components/navBar";
+import OrderSentPopup from "../Components/successMsgs/orderSubmit";
 const ShopByCategory = lazy(() => import("../Components/home/Category"));
 const ExploreConcepts = lazy(() => import("../Components/home/concept"));
 const SustainabilitySection = lazy(() =>
@@ -209,6 +210,7 @@ function Home() {
         </ScrollAnimation>
         <Footer />
       </Suspense>
+      <OrderSentPopup />
     </div>
   );
 }
