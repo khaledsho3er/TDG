@@ -5,6 +5,8 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -68,6 +70,17 @@ const AddProduct = () => {
     cadFile: null, // Add CAD field
     // claimProcess: "",
   });
+
+  // Add new state variables for image cropping
+  const [crop, setCrop] = useState({
+    unit: "%",
+    width: 75,
+    aspect: 3 / 4,
+  });
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(null);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -360,22 +373,91 @@ const AddProduct = () => {
   const [images, setImages] = useState([]); // Uploaded images
   const [mainImage, setMainImage] = useState(null); // Main image file
 
-  // Handle image upload
-  const handleImageUpload = (e) => {
+  // Function to handle image selection
+  const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
+    if (files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageToCrop(reader.result);
+        setShowCropModal(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-    setImages((prev) => [...prev, ...files]); // Store actual files
-    setImagePreviews((prev) => [...prev, ...previews]); // Store preview URLs
+  // Function to handle crop completion
+  const handleCropComplete = async (croppedArea, croppedAreaPixels) => {
+    if (!imageToCrop) return;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      images: [...prevData.images, ...files],
-      mainImage: prevData.mainImage || files[0], // Set first uploaded image as main if none exists
-    }));
+    const image = new Image();
+    image.src = imageToCrop;
 
-    setMainImage((prev) => prev || files[0]); // Set first uploaded file as main
-    setMainImagePreview((prev) => prev || previews[0]); // Set first preview as main
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Set minimum dimensions
+    const minWidth = 810;
+    const minHeight = 1080;
+
+    // Calculate dimensions maintaining aspect ratio
+    let width = croppedAreaPixels.width;
+    let height = croppedAreaPixels.height;
+
+    if (width < minWidth) {
+      width = minWidth;
+      height = width * (4 / 3);
+    }
+    if (height < minHeight) {
+      height = minHeight;
+      width = height * (3 / 4);
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.drawImage(
+      image,
+      croppedAreaPixels.x,
+      croppedAreaPixels.y,
+      croppedAreaPixels.width,
+      croppedAreaPixels.height,
+      0,
+      0,
+      width,
+      height
+    );
+
+    // Convert canvas to blob
+    const blob = await new Promise((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", 0.95)
+    );
+    const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
+
+    // Update images state
+    setImages((prev) => [...prev, file]);
+    setImagePreviews((prev) => [...prev, URL.createObjectURL(file)]);
+
+    // If this is the first image, set it as main
+    if (images.length === 0) {
+      setMainImage(file);
+      setMainImagePreview(URL.createObjectURL(file));
+      setFormData((prev) => ({
+        ...prev,
+        mainImage: file,
+        images: [...prev.images, file],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, file],
+      }));
+    }
+
+    // Reset crop state
+    setShowCropModal(false);
+    setImageToCrop(null);
   };
 
   // Handle setting the main image
@@ -1230,31 +1312,37 @@ const AddProduct = () => {
 
             <div className="product-gallery">
               <label>Product Gallery</label>
-
               <div
                 className="drop-zone"
-                onDragOver={(e) => e.preventDefault()} // Prevent default to allow drop
+                onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => {
-                  e.preventDefault(); // Prevent default behavior
-                  const files = Array.from(e.dataTransfer.files); // Access dropped files
-                  handleImageUpload({ target: { files } }); // Pass to handleImageUpload
+                  e.preventDefault();
+                  const files = Array.from(e.dataTransfer.files);
+                  if (files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      setImageToCrop(reader.result);
+                      setShowCropModal(true);
+                    };
+                    reader.readAsDataURL(file);
+                  }
                 }}
               >
                 <span>
                   <strong>
                     (Upload high-quality images with a minimum resolution of
-                    1080x1080px. Use .jpeg or .png format. Ensure clear
-                    visibility of the product from multiple angles. White
-                    background)
+                    810x1080px. Images will be cropped to 3:4 aspect ratio. Use
+                    .jpeg or .png format. Ensure clear visibility of the product
+                    from multiple angles. White background)
                   </strong>
                 </span>
                 <input
                   type="file"
-                  multiple
                   accept="image/jpeg, image/png, image/webp"
-                  onChange={handleImageUpload}
+                  onChange={handleImageSelect}
                   className="file-input"
-                  style={{ display: "none" }} // Hide the input visually
+                  style={{ display: "none" }}
                   id="fileInput"
                 />
                 <label htmlFor="fileInput" className="drop-zone-label">
@@ -1383,6 +1471,66 @@ const AddProduct = () => {
           onCancel={handleCloseDialog}
         />
       </form>
+
+      {/* Add Crop Modal */}
+      {showCropModal && (
+        <div
+          className="crop-modal"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.8)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "8px",
+              maxWidth: "90%",
+              maxHeight: "90%",
+            }}
+          >
+            <h3>Crop Image (3:4 Aspect Ratio)</h3>
+            <ReactCrop
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              onComplete={handleCropComplete}
+              aspect={3 / 4}
+            >
+              <img
+                src={imageToCrop}
+                alt="Crop preview"
+                style={{ maxWidth: "100%", maxHeight: "80vh" }}
+              />
+            </ReactCrop>
+            <div style={{ marginTop: "20px", textAlign: "center" }}>
+              <button
+                onClick={() => setShowCropModal(false)}
+                style={{
+                  padding: "8px 16px",
+                  margin: "0 8px",
+                  backgroundColor: "#8A9A5B",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
