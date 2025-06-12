@@ -57,7 +57,7 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    salePrice: 0,
+    salePrice: null,
     category: "",
     subcategory: "",
     collection: "",
@@ -545,7 +545,7 @@ const AddProduct = () => {
     // Append basic fields
     data.append("name", formData.name);
     data.append("price", formData.price);
-    data.append("salePrice", formData.salePrice || "0" || "");
+    data.append("salePrice", formData.salePrice || null || "");
     data.append("category", formData.category);
     data.append("subcategory", formData.subcategory);
     data.append("collection", formData.collection || "");
