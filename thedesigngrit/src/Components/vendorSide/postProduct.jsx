@@ -189,6 +189,29 @@ const AddProduct = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // Special handling for leadTime and Estimatedtimeleadforcustomization to ensure they're valid ranges
+    if (name === "leadTime" || name === "Estimatedtimeleadforcustomization") {
+      // Allow numbers and a single hyphen
+      const validValue = value.replace(/[^\d-]/g, "");
+      // Ensure only one hyphen
+      const parts = validValue.split("-");
+      if (parts.length > 2) {
+        // If more than one hyphen, keep only the first one
+        const firstPart = parts[0];
+        const secondPart = parts[1];
+        setFormData({
+          ...formData,
+          [name]: `${firstPart}-${secondPart}`,
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [name]: validValue,
+        });
+      }
+      return;
+    }
+
     // Handle bullet points for specific fields
     if (name === "materialCareInstructions") {
       // For material care instructions, just allow normal line breaks
@@ -1132,8 +1155,10 @@ const AddProduct = () => {
                   name="leadTime"
                   value={formData.leadTime}
                   onChange={handleChange}
-                  placeholder="(Enter the guaranteed lead time for delivery in days)"
+                  placeholder="Enter lead time range (e.g., 5-7 days)"
                   required
+                  pattern="\d+-\d+"
+                  title="Please enter a valid range (e.g., 5-7)"
                 />
               </div>
               <div className="form-group">
@@ -1245,7 +1270,19 @@ const AddProduct = () => {
                   name="Estimatedtimeleadforcustomization"
                   value={formData.Estimatedtimeleadforcustomization}
                   onChange={handleChange}
-                  placeholder="Enter the estimated time lead for customization, Guaranteed lead time"
+                  placeholder="Enter time range (e.g., 5-7 days)"
+                  pattern="\d+-\d+"
+                  title="Please enter a valid range (e.g., 5-7)"
+                />
+              </div>
+              <div className="form-group">
+                <label>Stock:</label>
+                <input
+                  type="number"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  placeholder="Enter the stock quantity  Ex:100"
                 />
               </div>
               {/* <div className="form-group">

@@ -687,7 +687,7 @@ const BrandingPage = () => {
                 image={selectedImageSrc}
                 crop={crop}
                 zoom={zoom}
-                aspect={currentCropType === "logo" ? 1 : 16 / 4}
+                aspect={currentCropType === "logo" ? 1 : 16 / 5}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={(_, area) => setCroppedAreaPixels(area)}
