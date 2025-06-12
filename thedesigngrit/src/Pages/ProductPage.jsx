@@ -1053,20 +1053,18 @@ function ProductPage() {
                     <div className="material-collapsible-content">
                       {section === "Delivery & Returns" ? (
                         <ul>
-                          <li>Estimated Time for Customization:</li>{" "}
+                          Estimated Time for Customization:
                           {product.Estimatedtimeleadforcustomization?.split(
                             /(?<=\w)\s(?=[A-Z])/
                           ).map((point, idx) => (
-                            <li key={idx}>{point}</li>
+                            <li key={idx}>{point} Business Days</li>
                           ))}{" "}
-                          Business Days
-                          <li>Lead Time:</li>{" "}
+                          Lead Time:
                           {product.leadTime
                             ?.split(/(?<=\w)\s(?=[A-Z])/)
                             .map((point, idx) => (
-                              <li key={idx}>{point}</li>
+                              <li key={idx}>{point} Business Days</li>
                             ))}{" "}
-                          Business Days
                         </ul>
                       ) : section === "Care Instructions" ? (
                         <ul>
