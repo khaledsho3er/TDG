@@ -851,13 +851,7 @@ const AddProduct = () => {
               {/* Customization Options */}
               <div className="form-group">
                 <label>Customization Types (Select all that apply):</label>
-                <div
-                  style={{
-                    marginTop: "10px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                  }}
-                >
+                <div style={{ marginTop: "10px" }}>
                   {[
                     "Color Options",
                     "Size Options",
@@ -867,8 +861,8 @@ const AddProduct = () => {
                     "Design Modifications",
                     "Other",
                   ].map((option) => (
-                    <div key={option} style={{ marginRight: "10px" }}>
-                      <label style={{ display: "flex", alignItems: "center" }}>
+                    <div key={option}>
+                      <label>
                         <input
                           type="checkbox"
                           value={option}
@@ -1151,7 +1145,10 @@ const AddProduct = () => {
                     onChange={handleCheckboxChange}
                     style={{ width: "auto" }}
                   />
-                  Ready to Ship "That The Product is Ready to Ship or Not"
+                  Ready to Ship{" "}
+                  <span style={{ fontWeight: "normal" }}>
+                    "That The Product is Ready to Ship "
+                  </span>
                 </label>
               </div>
               <div className="form-group">
@@ -1205,32 +1202,41 @@ const AddProduct = () => {
               </div>
               <div className="form-group">
                 <label>Warranty Coverage:</label>
-                {[
-                  "Manufacturer Defects",
-                  "Wear and Tear",
-                  "Damage During Shipping",
-                ].map((coverage) => (
-                  <label
-                    key={coverage}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.warrantyInfo.warrantyCoverage.includes(
-                        coverage
-                      )}
-                      onChange={() => handleWarrantyCoverageChange(coverage)}
-                      style={{ cursor: "pointer" }}
-                    />
-                    {coverage}
-                  </label>
-                ))}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {[
+                    "Manufacturer Defects",
+                    "Wear and Tear",
+                    "Damage During Shipping",
+                  ].map((coverage) => (
+                    <label
+                      key={coverage}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.warrantyInfo.warrantyCoverage.includes(
+                          coverage
+                        )}
+                        onChange={() => handleWarrantyCoverageChange(coverage)}
+                        style={{ cursor: "pointer" }}
+                      />
+                      {coverage}
+                    </label>
+                  ))}
+                </div>
               </div>
             </Box>
             <Box
