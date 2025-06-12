@@ -129,6 +129,7 @@ const BrandingPage = () => {
       setPendingFile(file);
       setCurrentCropType("logo");
       setShowCropModal(true);
+      setOpenLogoModal(true);
     };
     reader.readAsDataURL(file);
   };
@@ -143,6 +144,7 @@ const BrandingPage = () => {
       setPendingFile(file);
       setCurrentCropType("cover");
       setShowCropModal(true);
+      setOpenCoverModal(true);
     };
     reader.readAsDataURL(file);
   };
@@ -160,17 +162,9 @@ const BrandingPage = () => {
       if (currentCropType === "logo") {
         setLogoFile(croppedFile);
         setPreviewLogo(croppedUrl);
-        // Update the preview in the logo modal
-        if (openLogoModal) {
-          setPreviewLogo(croppedUrl);
-        }
       } else {
         setCoverFile(croppedFile);
         setPreviewCover(croppedUrl);
-        // Update the preview in the cover modal
-        if (openCoverModal) {
-          setPreviewCover(croppedUrl);
-        }
       }
 
       setShowCropModal(false);
