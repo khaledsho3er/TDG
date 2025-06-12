@@ -638,9 +638,41 @@ const BrandingPage = () => {
 
       {/* Add Crop Modal */}
       {showCropModal && (
-        <div className="modal-overlay-uploadimage">
-          <div className="modal-content-uploadimage">
-            <div className="cropper-container-uploadimage">
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999, // Higher than the Dialog component
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "8px",
+              width: "90%",
+              maxWidth: "800px",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                height: "400px",
+                width: "100%",
+                background: "#333",
+              }}
+            >
               <Cropper
                 image={selectedImageSrc}
                 crop={crop}
@@ -651,14 +683,42 @@ const BrandingPage = () => {
                 onCropComplete={(_, area) => setCroppedAreaPixels(area)}
               />
             </div>
-            <div className="cropper-buttons-uploadimage">
-              <button onClick={handleCropComplete}>Crop Image</button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+              }}
+            >
+              <button
+                onClick={handleCropComplete}
+                style={{
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontFamily: "Montserrat, sans-serif",
+                  backgroundColor: "#8A9A5B",
+                  color: "white",
+                }}
+              >
+                Crop Image
+              </button>
               <button
                 onClick={() => {
                   setShowCropModal(false);
                   setPendingFile(null);
                   setSelectedImageSrc(null);
                   setCurrentCropType(null);
+                }}
+                style={{
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontFamily: "Montserrat, sans-serif",
+                  backgroundColor: "#f0f0f0",
+                  color: "#333",
                 }}
               >
                 Cancel
