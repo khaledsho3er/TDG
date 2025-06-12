@@ -15,6 +15,35 @@ import axios from "axios";
 import { useVendor } from "../../utils/vendorContext";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineModeEdit } from "react-icons/md";
+import Cropper from "react-easy-crop";
+
+const getCroppedImg = (imageSrc, croppedAreaPixels) => {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = croppedAreaPixels.width;
+      canvas.height = croppedAreaPixels.height;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(
+        image,
+        croppedAreaPixels.x,
+        croppedAreaPixels.y,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height,
+        0,
+        0,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height
+      );
+
+      canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+    };
+  });
+};
+
 const BrandingPage = () => {
   const [catalogs, setCatalogs] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -36,6 +65,15 @@ const BrandingPage = () => {
     pdf: null,
     image: null,
   });
+
+  // Add new state variables for cropping
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
+  const [pendingFile, setPendingFile] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [currentCropType, setCurrentCropType] = useState(null); // 'logo' or 'cover'
 
   const { vendor } = useVendor();
   const brandId = vendor?.brandId;
@@ -84,16 +122,57 @@ const BrandingPage = () => {
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setLogoFile(file);
-    setPreviewLogo(URL.createObjectURL(file));
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSelectedImageSrc(reader.result);
+      setPendingFile(file);
+      setCurrentCropType("logo");
+      setShowCropModal(true);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleCoverChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setCoverFile(file);
-    setPreviewCover(URL.createObjectURL(file));
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSelectedImageSrc(reader.result);
+      setPendingFile(file);
+      setCurrentCropType("cover");
+      setShowCropModal(true);
+    };
+    reader.readAsDataURL(file);
   };
+
+  const handleCropComplete = async () => {
+    if (!selectedImageSrc || !croppedAreaPixels) return;
+
+    try {
+      const blob = await getCroppedImg(selectedImageSrc, croppedAreaPixels);
+      const croppedFile = new File([blob], pendingFile.name, {
+        type: "image/jpeg",
+      });
+
+      if (currentCropType === "logo") {
+        setLogoFile(croppedFile);
+        setPreviewLogo(URL.createObjectURL(blob));
+      } else {
+        setCoverFile(croppedFile);
+        setPreviewCover(URL.createObjectURL(blob));
+      }
+
+      setShowCropModal(false);
+      setPendingFile(null);
+      setSelectedImageSrc(null);
+      setCurrentCropType(null);
+    } catch (error) {
+      console.error("Error cropping image:", error);
+    }
+  };
+
   const handleBrandImageUpload = async () => {
     if (!logoFile && !coverFile) return;
 
@@ -556,6 +635,39 @@ const BrandingPage = () => {
           </Box>
         </Box>
       </Dialog>
+
+      {/* Add Crop Modal */}
+      {showCropModal && (
+        <div className="modal-overlay-uploadimage">
+          <div className="modal-content-uploadimage">
+            <div className="cropper-container-uploadimage">
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={currentCropType === "logo" ? 1 : 16 / 4}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, area) => setCroppedAreaPixels(area)}
+              />
+            </div>
+            <div className="cropper-buttons-uploadimage">
+              <button onClick={handleCropComplete}>Crop Image</button>
+              <button
+                onClick={() => {
+                  setShowCropModal(false);
+                  setPendingFile(null);
+                  setSelectedImageSrc(null);
+                  setCurrentCropType(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
