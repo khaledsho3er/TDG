@@ -33,7 +33,6 @@ const AddProduct = () => {
     salePrice: "",
     category: "",
     subcategory: "",
-    manufacturer: "",
     collection: "",
     type: "",
     manufactureYear: "",
@@ -469,7 +468,6 @@ const AddProduct = () => {
     data.append("salePrice", formData.salePrice || "");
     data.append("category", formData.category);
     data.append("subcategory", formData.subcategory);
-    data.append("manufacturer", formData.manufacturer || "");
     data.append("collection", formData.collection || "");
     data.append("type", formData.type || "");
     data.append("manufactureYear", formData.manufactureYear || "");
@@ -544,7 +542,6 @@ const AddProduct = () => {
         salePrice: "",
         category: "",
         subcategory: "",
-        manufacturer: "",
         collection: "",
         type: "",
         manufactureYear: "",
@@ -869,8 +866,9 @@ const AddProduct = () => {
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
-              <div className="form-group">
-                {/* Rest of the form fields */}
+              <h2>Product Details</h2>
+              {/* <div className="form-group">
+                
                 <label>Manufacturer:</label>
                 <input
                   type="text"
@@ -879,7 +877,7 @@ const AddProduct = () => {
                   onChange={handleChange}
                   placeholder="Ex: Home Essentials"
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Collection:</label>
                 <input

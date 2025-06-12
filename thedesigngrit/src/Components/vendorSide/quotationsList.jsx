@@ -350,10 +350,10 @@ const QuotationsPage = () => {
                 {" "}
                 <strong> SKU:</strong> {selectedQuotation.productId.sku}
               </Typography>
-              <Typography>
+              {/* <Typography>
                 <strong> Manufacturer:</strong>{" "}
                 {selectedQuotation.productId.manufacturer}
-              </Typography>
+              </Typography> */}
               <Typography>
                 <strong> Collection:</strong>{" "}
                 {selectedQuotation.productId.collection}

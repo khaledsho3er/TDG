@@ -27,7 +27,6 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     salePrice: "",
     category: "",
     subcategory: "",
-    manufacturer: "",
     collection: "",
     type: "",
     manufactureYear: "",
@@ -677,8 +676,10 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
-              <div className="form-group">
-                {/* Rest of the form fields */}
+              <h2>Product Details</h2>
+
+              {/* <div className="form-group">
+   
                 <label>Manufacturer:</label>
                 <input
                   type="text"
@@ -686,7 +687,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   value={formData.manufacturer}
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Collection:</label>
                 <input

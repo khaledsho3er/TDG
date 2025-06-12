@@ -870,14 +870,14 @@ function ProductPage() {
                   <div className="collapsible-content">
                     {section === "Overview" && (
                       <div className="product-contents">
-                        <h5
+                        {/* <h5
                           style={{
                             fontSize: isMobile ? "20px" : "25px",
                             marginLeft: "0px",
                           }}
                         >
                           Manufacturer :{product.brandId.brandName}
-                        </h5>
+                        </h5> */}
                         <div className="product-details">
                           <p style={{ fontSize: isMobile ? "13px" : "20px" }}>
                             <span className="label">Collection:</span>
