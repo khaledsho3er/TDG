@@ -2047,3 +2047,48 @@ h1 {
     padding-bottom: 30px;
   }
 }
+.modal-overlay-uploadimage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px); /* Adds blur to the background */
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content-uploadimage {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cropper-container-uploadimage {
+  width: 500px;
+  height: 375px; /* 4:3 aspect */
+  position: relative;
+}
+
+.cropper-buttons-uploadimage {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.cropper-buttons-uploadimage button {
+  background-color: #2d2d2d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

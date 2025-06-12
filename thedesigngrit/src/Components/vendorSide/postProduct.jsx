@@ -395,12 +395,22 @@ const AddProduct = () => {
 
   // Handle image upload
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const file = files[0]; // process one at a time
-    const url = URL.createObjectURL(file);
-    setSelectedImageSrc(url);
-    setPendingFile(file); // ✅ Correct
-    setShowCropModal(true);
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const img = new Image();
+    img.onload = () => {
+      if (img.width < 400 || img.height < 300) {
+        alert("Image too small. Minimum size: 400x300px for 4:3 ratio.");
+        return;
+      }
+
+      const previewUrl = URL.createObjectURL(file);
+      setSelectedImageSrc(previewUrl);
+      setPendingFile(file);
+      setShowCropModal(true);
+    };
+    img.src = URL.createObjectURL(file);
   };
 
   const handleCropComplete = (croppedBlob, croppedUrl) => {
@@ -1431,51 +1441,61 @@ const AddProduct = () => {
         />
       </form>
       {showCropModal && (
-        <div className="modal">
-          <Cropper
-            image={selectedImageSrc}
-            crop={crop}
-            zoom={zoom}
-            aspect={4 / 3}
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={(_, croppedArea) =>
-              setCroppedAreaPixels(croppedArea)
-            }
-          />
-          <button
-            onClick={async () => {
-              const croppedBlob = await getCroppedImg(
-                selectedImageSrc,
-                croppedAreaPixels
-              );
-              const croppedUrl = URL.createObjectURL(croppedBlob);
-              const croppedFile = new File([croppedBlob], pendingFile.name, {
-                type: "image/jpeg",
-              });
+        <div className="modal-overlay-uploadimage">
+          <div className="modal-content-uploadimage">
+            <div className="cropper-container-uploadimage">
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, croppedArea) =>
+                  setCroppedAreaPixels(croppedArea)
+                }
+              />
+              <div className="cropper-buttons-uploadimage">
+                <button
+                  onClick={async () => {
+                    const croppedBlob = await getCroppedImg(
+                      selectedImageSrc,
+                      croppedAreaPixels
+                    );
+                    const croppedUrl = URL.createObjectURL(croppedBlob);
+                    const croppedFile = new File(
+                      [croppedBlob],
+                      pendingFile.name,
+                      {
+                        type: "image/jpeg",
+                      }
+                    );
 
-              setImages((prev) => [...prev, croppedFile]);
-              setImagePreviews((prev) => [...prev, croppedUrl]);
+                    setImages((prev) => [...prev, croppedFile]);
+                    setImagePreviews((prev) => [...prev, croppedUrl]);
 
-              if (!mainImage) {
-                setMainImage(croppedFile);
-                setMainImagePreview(croppedUrl);
-              }
+                    if (!mainImage) {
+                      setMainImage(croppedFile);
+                      setMainImagePreview(croppedUrl);
+                    }
 
-              setFormData((prevData) => ({
-                ...prevData,
-                images: [...prevData.images, croppedFile],
-                mainImage: prevData.mainImage || croppedFile,
-              }));
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      images: [...prevData.images, croppedFile],
+                      mainImage: prevData.mainImage || croppedFile,
+                    }));
 
-              setShowCropModal(false);
-              setSelectedImageSrc(null);
-              setPendingFile(null);
-            }}
-          >
-            Crop Image
-          </button>
-          <button onClick={() => setShowCropModal(false)}>Cancel</button>
+                    setShowCropModal(false);
+                    setSelectedImageSrc(null);
+                    setPendingFile(null);
+                  }}
+                >
+                  Crop Image
+                </button>
+                <button onClick={() => setShowCropModal(false)}>Cancel</button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>
