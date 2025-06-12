@@ -437,7 +437,7 @@ const ProductPageAdmin = () => {
                             >
                               E£{product.price}
                             </span>
-                            {product.salePrice === null && (
+                            {product.salePrice !== null && (
                               <span className="sale-price">
                                 E£{product.salePrice}
                               </span>
@@ -585,7 +585,7 @@ const ProductPageAdmin = () => {
                             >
                               E£{product.price}
                             </span>
-                            {product.salePrice > 0 && (
+                            {product.salePrice !== null && (
                               <span className="sale-price">
                                 E£{product.salePrice}
                               </span>

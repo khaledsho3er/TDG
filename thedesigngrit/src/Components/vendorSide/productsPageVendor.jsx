@@ -357,7 +357,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                           >
                             E£{product.price}
                           </span>
-                          {product.salePrice === null && (
+                          {product.salePrice !== null && (
                             <span className="sale-price">
                               E£{product.salePrice}
                             </span>
@@ -482,7 +482,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                           >
                             E£{product.price}
                           </span>
-                          {product.salePrice === null && (
+                          {product.salePrice !== null && (
                             <span className="sale-price">
                               E£{product.salePrice}
                             </span>
