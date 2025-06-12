@@ -5,6 +5,33 @@ import { useVendor } from "../../utils/vendorContext";
 // import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
+import Cropper from "react-easy-crop";
+const getCroppedImg = (imageSrc, croppedAreaPixels) => {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = croppedAreaPixels.width;
+      canvas.height = croppedAreaPixels.height;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(
+        image,
+        croppedAreaPixels.x,
+        croppedAreaPixels.y,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height,
+        0,
+        0,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height
+      );
+
+      canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+    };
+  });
+};
 
 const AddProduct = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -359,63 +386,43 @@ const AddProduct = () => {
   const [mainImagePreview, setMainImagePreview] = useState(null); // Main image preview
   const [images, setImages] = useState([]); // Uploaded images
   const [mainImage, setMainImage] = useState(null); // Main image file
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
+  const [pendingFile, setPendingFile] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  // Add new function to validate image dimensions
-  const validateImageDimensions = (file) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        const width = img.width;
-        const height = img.height;
-        const aspectRatio = width / height;
-        const is4to3 = Math.abs(aspectRatio - 4 / 3) < 0.01; // Allow small floating point differences
-        const meetsMinDimensions = width >= 1080 && height >= 810;
-
-        if (is4to3 && meetsMinDimensions) {
-          resolve(true);
-        } else {
-          reject(
-            new Error(
-              `Image must be in 4:3 aspect ratio (landscape) with minimum dimensions of 1080×810 pixels. 
-            Current dimensions: ${width}×${height}`
-            )
-          );
-        }
-      };
-      img.onerror = () => reject(new Error("Failed to load image"));
-      img.src = URL.createObjectURL(file);
-    });
+  // Handle image upload
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const file = files[0]; // process one at a time
+    const url = URL.createObjectURL(file);
+    setSelectedImageSrc(url);
+    setPendingFile(file); // ✅ Correct
+    setShowCropModal(true);
   };
 
-  // Update handleImageUpload to include dimension validation
-  const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    const validFiles = [];
-    const previews = [];
+  const handleCropComplete = (croppedBlob, croppedUrl) => {
+    const croppedFile = new File([croppedBlob], "cropped.jpg", {
+      type: "image/jpeg",
+    });
 
-    for (const file of files) {
-      try {
-        await validateImageDimensions(file);
-        validFiles.push(file);
-        previews.push(URL.createObjectURL(file));
-      } catch (error) {
-        alert(error.message);
-      }
+    setImages((prev) => [...prev, croppedFile]);
+    setImagePreviews((prev) => [...prev, croppedUrl]);
+
+    if (!mainImage) {
+      setMainImage(croppedFile);
+      setMainImagePreview(croppedUrl);
     }
 
-    if (validFiles.length > 0) {
-      setImages((prev) => [...prev, ...validFiles]);
-      setImagePreviews((prev) => [...prev, ...previews]);
+    setFormData((prevData) => ({
+      ...prevData,
+      images: [...prevData.images, croppedFile],
+      mainImage: prevData.mainImage || croppedFile,
+    }));
 
-      setFormData((prevData) => ({
-        ...prevData,
-        images: [...prevData.images, ...validFiles],
-        mainImage: prevData.mainImage || validFiles[0],
-      }));
-
-      setMainImage((prev) => prev || validFiles[0]);
-      setMainImagePreview((prev) => prev || previews[0]);
-    }
+    setShowCropModal(false);
   };
 
   // Handle setting the main image
@@ -822,22 +829,16 @@ const AddProduct = () => {
                     "Design Modifications",
                     "Other",
                   ].map((option) => (
-                    <div
-                      key={option}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        value={option}
-                        checked={customizationOptions.includes(option)}
-                        onChange={handleCustomizationChange}
-                        style={{ marginRight: "8px" }}
-                      />
-                      <label style={{ margin: 0 }}>{option}</label>
+                    <div key={option}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={option}
+                          checked={customizationOptions.includes(option)}
+                          onChange={handleCustomizationChange}
+                        />
+                        {option}
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -858,13 +859,7 @@ const AddProduct = () => {
               <div className="form-group">
                 <label>Additional Costs for Customization (Select one):</label>
                 <div style={{ marginTop: "10px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "8px",
-                    }}
-                  >
+                  <label>
                     <input
                       type="radio"
                       name="additionalCosts"
@@ -873,36 +868,22 @@ const AddProduct = () => {
                         additionalCosts === "Yes, additional cost applies"
                       }
                       onChange={handleAdditionalCostsChange}
-                      style={{ marginRight: "8px" }}
                     />
-                    <label style={{ margin: 0 }}>
-                      Yes, additional cost applies
-                    </label>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "8px",
-                    }}
-                  >
+                    Yes, additional cost applies
+                  </label>
+                  <br />
+                  <label>
                     <input
                       type="radio"
                       name="additionalCosts"
                       value="No additional cost"
                       checked={additionalCosts === "No additional cost"}
                       onChange={handleAdditionalCostsChange}
-                      style={{ marginRight: "8px" }}
                     />
-                    <label style={{ margin: 0 }}>No additional cost</label>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "8px",
-                    }}
-                  >
+                    No additional cost
+                  </label>
+                  <br />
+                  <label>
                     <input
                       type="radio"
                       name="additionalCosts"
@@ -912,13 +893,10 @@ const AddProduct = () => {
                         "Variable based on customization type"
                       }
                       onChange={handleAdditionalCostsChange}
-                      style={{ marginRight: "8px" }}
                     />
-                    <label style={{ margin: 0 }}>
-                      Variable based on customization type (please specify
-                      breakdown):
-                    </label>
-                  </div>
+                    Variable based on customization type (please specify
+                    breakdown):
+                  </label>
                 </div>
                 {additionalCosts === "Variable based on customization type" && (
                   <div style={{ marginTop: "10px" }}>
@@ -1125,16 +1103,18 @@ const AddProduct = () => {
                 />
               </div>
               <div className="form-group">
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <label
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
                   <input
                     type="checkbox"
                     name="readyToShip"
                     checked={formData.readyToShip}
                     onChange={handleCheckboxChange}
-                    style={{ marginRight: "8px" }}
+                    style={{ width: "auto" }}
                   />
-                  <label style={{ margin: 0 }}>Ready to Ship</label>
-                </div>
+                  Ready to Ship
+                </label>
               </div>
               <div className="form-group">
                 <label>Lead Time:</label>
@@ -1188,8 +1168,8 @@ const AddProduct = () => {
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
+                    flexDirection: "row",
+                    gap: "10px",
                     marginTop: "10px",
                   }}
                 >
@@ -1198,9 +1178,15 @@ const AddProduct = () => {
                     "Wear and Tear",
                     "Damage During Shipping",
                   ].map((coverage) => (
-                    <div
+                    <label
                       key={coverage}
-                      style={{ display: "flex", alignItems: "center" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                      }}
                     >
                       <input
                         type="checkbox"
@@ -1208,10 +1194,10 @@ const AddProduct = () => {
                           coverage
                         )}
                         onChange={() => handleWarrantyCoverageChange(coverage)}
-                        style={{ marginRight: "8px" }}
+                        style={{ cursor: "pointer" }}
                       />
-                      <label style={{ margin: 0 }}>{coverage}</label>
-                    </div>
+                      {coverage}
+                    </label>
                   ))}
                 </div>
               </div>
@@ -1291,21 +1277,22 @@ const AddProduct = () => {
 
             <div className="product-gallery">
               <label>Product Gallery</label>
+
               <div
                 className="drop-zone"
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={async (e) => {
-                  e.preventDefault();
-                  const files = Array.from(e.dataTransfer.files);
-                  await handleImageUpload({ target: { files } });
+                onDragOver={(e) => e.preventDefault()} // Prevent default to allow drop
+                onDrop={(e) => {
+                  e.preventDefault(); // Prevent default behavior
+                  const files = Array.from(e.dataTransfer.files); // Access dropped files
+                  handleImageUpload({ target: { files } }); // Pass to handleImageUpload
                 }}
               >
                 <span>
                   <strong>
-                    (Upload high-quality images in 4:3 aspect ratio (landscape)
-                    with minimum dimensions of 1080×810 pixels. Use .jpeg or
-                    .png format. Ensure clear visibility of the product from
-                    multiple angles. White background)
+                    (Upload high-quality images with a minimum resolution of
+                    1080x1080px. Use .jpeg or .png format. Ensure clear
+                    visibility of the product from multiple angles. White
+                    background)
                   </strong>
                 </span>
                 <input
@@ -1314,7 +1301,7 @@ const AddProduct = () => {
                   accept="image/jpeg, image/png, image/webp"
                   onChange={handleImageUpload}
                   className="file-input"
-                  style={{ display: "none" }}
+                  style={{ display: "none" }} // Hide the input visually
                   id="fileInput"
                 />
                 <label htmlFor="fileInput" className="drop-zone-label">
@@ -1443,6 +1430,54 @@ const AddProduct = () => {
           onCancel={handleCloseDialog}
         />
       </form>
+      {showCropModal && (
+        <div className="modal">
+          <Cropper
+            image={selectedImageSrc}
+            crop={crop}
+            zoom={zoom}
+            aspect={4 / 3}
+            onCropChange={setCrop}
+            onZoomChange={setZoom}
+            onCropComplete={(_, croppedArea) =>
+              setCroppedAreaPixels(croppedArea)
+            }
+          />
+          <button
+            onClick={async () => {
+              const croppedBlob = await getCroppedImg(
+                selectedImageSrc,
+                croppedAreaPixels
+              );
+              const croppedUrl = URL.createObjectURL(croppedBlob);
+              const croppedFile = new File([croppedBlob], pendingFile.name, {
+                type: "image/jpeg",
+              });
+
+              setImages((prev) => [...prev, croppedFile]);
+              setImagePreviews((prev) => [...prev, croppedUrl]);
+
+              if (!mainImage) {
+                setMainImage(croppedFile);
+                setMainImagePreview(croppedUrl);
+              }
+
+              setFormData((prevData) => ({
+                ...prevData,
+                images: [...prevData.images, croppedFile],
+                mainImage: prevData.mainImage || croppedFile,
+              }));
+
+              setShowCropModal(false);
+              setSelectedImageSrc(null);
+              setPendingFile(null);
+            }}
+          >
+            Crop Image
+          </button>
+          <button onClick={() => setShowCropModal(false)}>Cancel</button>
+        </div>
+      )}
     </>
   );
 };
