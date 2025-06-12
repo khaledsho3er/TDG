@@ -75,7 +75,7 @@ const AddProduct = () => {
   const [crop, setCrop] = useState({
     unit: "%",
     width: 75,
-    aspect: 3 / 4,
+    aspect: 4 / 3,
   });
   const [imageToCrop, setImageToCrop] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -398,8 +398,8 @@ const AddProduct = () => {
     const ctx = canvas.getContext("2d");
 
     // Set minimum dimensions
-    const minWidth = 810;
-    const minHeight = 1080;
+    const minWidth = 1080;
+    const minHeight = 810;
 
     // Calculate dimensions maintaining aspect ratio
     let width = croppedAreaPixels.width;
@@ -407,11 +407,11 @@ const AddProduct = () => {
 
     if (width < minWidth) {
       width = minWidth;
-      height = width * (4 / 3);
+      height = width * (3 / 4);
     }
     if (height < minHeight) {
       height = minHeight;
-      width = height * (3 / 4);
+      width = height * (4 / 3);
     }
 
     canvas.width = width;
@@ -435,29 +435,38 @@ const AddProduct = () => {
     );
     const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
 
+    // Store the cropped image temporarily
+    setCroppedImage(file);
+  };
+
+  // Add new function to handle the final crop submission
+  const handleCropSubmit = () => {
+    if (!croppedImage) return;
+
     // Update images state
-    setImages((prev) => [...prev, file]);
-    setImagePreviews((prev) => [...prev, URL.createObjectURL(file)]);
+    setImages((prev) => [...prev, croppedImage]);
+    setImagePreviews((prev) => [...prev, URL.createObjectURL(croppedImage)]);
 
     // If this is the first image, set it as main
     if (images.length === 0) {
-      setMainImage(file);
-      setMainImagePreview(URL.createObjectURL(file));
+      setMainImage(croppedImage);
+      setMainImagePreview(URL.createObjectURL(croppedImage));
       setFormData((prev) => ({
         ...prev,
-        mainImage: file,
-        images: [...prev.images, file],
+        mainImage: croppedImage,
+        images: [...prev.images, croppedImage],
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        images: [...prev.images, file],
+        images: [...prev.images, croppedImage],
       }));
     }
 
     // Reset crop state
     setShowCropModal(false);
     setImageToCrop(null);
+    setCroppedImage(null);
   };
 
   // Handle setting the main image
@@ -1472,7 +1481,7 @@ const AddProduct = () => {
         />
       </form>
 
-      {/* Add Crop Modal */}
+      {/* Update Crop Modal */}
       {showCropModal && (
         <div
           className="crop-modal"
@@ -1499,12 +1508,12 @@ const AddProduct = () => {
               maxHeight: "90%",
             }}
           >
-            <h3>Crop Image (3:4 Aspect Ratio)</h3>
+            <h3>Crop Image (4:3 Aspect Ratio)</h3>
             <ReactCrop
               crop={crop}
               onChange={(c) => setCrop(c)}
               onComplete={handleCropComplete}
-              aspect={3 / 4}
+              aspect={4 / 3}
             >
               <img
                 src={imageToCrop}
@@ -1512,12 +1521,19 @@ const AddProduct = () => {
                 style={{ maxWidth: "100%", maxHeight: "80vh" }}
               />
             </ReactCrop>
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <div
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+            >
               <button
                 onClick={() => setShowCropModal(false)}
                 style={{
                   padding: "8px 16px",
-                  margin: "0 8px",
                   backgroundColor: "#8A9A5B",
                   color: "white",
                   border: "none",
@@ -1526,6 +1542,19 @@ const AddProduct = () => {
                 }}
               >
                 Cancel
+              </button>
+              <button
+                onClick={handleCropSubmit}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Done
               </button>
             </div>
           </div>
