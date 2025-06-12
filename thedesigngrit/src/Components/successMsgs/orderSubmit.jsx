@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const OrderSentPopup = ({ show, closePopup }) => {
+const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [show, setShow] = useState(propShow || false);
+
+  useEffect(() => {
+    // Check URL parameters for success
+    const searchParams = new URLSearchParams(location.search);
+    const orderId = searchParams.get("order");
+    const status = searchParams.get("status");
+
+    if (orderId && status === "success") {
+      setShow(true);
+      // Clear the URL parameters without refreshing the page
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location]);
+
+  const handleClose = () => {
+    setShow(false);
+    if (propClosePopup) {
+      propClosePopup();
+    }
+  };
+
   if (!show) return null;
+
   return (
     <div className="Job-sent-popup-overlay">
       <div className="Job-sent-popup-container">
-        <div className="Job-sent-popup-close-icon" onClick={closePopup}>
+        <div className="Job-sent-popup-close-icon" onClick={handleClose}>
           <IoClose />
         </div>
         <div
@@ -34,7 +58,7 @@ const OrderSentPopup = ({ show, closePopup }) => {
 
           <h1>YOUR ORDER HAS BEEN SUBMITTED SUCCESSFULLY!</h1>
           <p>
-            <strong>THANKS,</strong> For Chosing us.
+            <strong>THANKS,</strong> For Choosing us.
             <br />
           </p>
         </div>
@@ -42,7 +66,7 @@ const OrderSentPopup = ({ show, closePopup }) => {
           className="Job-sent-popup-button"
           onClick={() => {
             navigate("/");
-            closePopup();
+            handleClose();
           }}
         >
           Done

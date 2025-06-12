@@ -14,6 +14,7 @@ import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
 import OrderSentPopup from "../successMsgs/orderSubmit";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function PaymentForm({
   onSubmit,
@@ -29,6 +30,21 @@ function PaymentForm({
   const [iframeUrl, setIframeUrl] = useState(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const { userSession } = useUser();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Check URL for payment success
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const orderId = searchParams.get("order");
+    const status = searchParams.get("status");
+
+    if (orderId && status === "success") {
+      setShowSuccessPopup(true);
+      // Clear the URL parameters without refreshing the page
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (billData && billData.total) {
@@ -47,7 +63,6 @@ function PaymentForm({
       if (event.origin !== "https://accept.paymob.com") return;
       const { success, error_occured } = event.data;
       if (success) {
-        setShowSuccessPopup(true);
         onSubmit();
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
@@ -176,6 +191,7 @@ function PaymentForm({
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         onSubmit();
+        setShowSuccessPopup(true);
       }
     } catch (error) {
       setPaymentError(
@@ -190,6 +206,11 @@ function PaymentForm({
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    navigate("/");
   };
 
   console.log("iframeUrl in render:", iframeUrl);
@@ -350,10 +371,7 @@ function PaymentForm({
       />
 
       {/* Add OrderSentPopup */}
-      <OrderSentPopup
-        show={showSuccessPopup}
-        closePopup={() => setShowSuccessPopup(false)}
-      />
+      <OrderSentPopup show={showSuccessPopup} closePopup={handleClosePopup} />
     </Box>
   );
 }
