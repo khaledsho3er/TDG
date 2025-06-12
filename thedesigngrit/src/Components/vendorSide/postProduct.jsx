@@ -51,8 +51,6 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
-  const [variants, setVariants] = useState([]);
-
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -861,16 +859,26 @@ const AddProduct = () => {
                     "Design Modifications",
                     "Other",
                   ].map((option) => (
-                    <div key={option}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          value={option}
-                          checked={customizationOptions.includes(option)}
-                          onChange={handleCustomizationChange}
-                        />
-                        {option}
-                      </label>
+                    <div
+                      key={option}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        value={option}
+                        checked={customizationOptions.includes(option)}
+                        onChange={handleCustomizationChange}
+                        style={{
+                          marginRight: 8,
+                          verticalAlign: "middle",
+                          transform: "translateY(1px)", // tweak alignment
+                        }}
+                      />
+                      <label style={{ margin: 0 }}>{option}</label>
                     </div>
                   ))}
                 </div>
@@ -891,44 +899,38 @@ const AddProduct = () => {
               <div className="form-group">
                 <label>Additional Costs for Customization (Select one):</label>
                 <div style={{ marginTop: "10px" }}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="Yes, additional cost applies"
-                      checked={
-                        additionalCosts === "Yes, additional cost applies"
-                      }
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    Yes, additional cost applies
-                  </label>
-                  <br />
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="No additional cost"
-                      checked={additionalCosts === "No additional cost"}
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    No additional cost
-                  </label>
-                  <br />
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="Variable based on customization type"
-                      checked={
-                        additionalCosts ===
-                        "Variable based on customization type"
-                      }
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    Variable based on customization type (please specify
-                    breakdown):
-                  </label>
+                  {[
+                    "Yes, additional cost applies",
+                    "No additional cost",
+                    "Variable based on customization type",
+                  ].map((option) => (
+                    <div
+                      key={option}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="additionalCosts"
+                        value={option}
+                        checked={additionalCosts === option}
+                        onChange={handleAdditionalCostsChange}
+                        style={{
+                          marginRight: 8,
+                          verticalAlign: "middle",
+                          transform: "translateY(1px)", // tweak for consistent baseline
+                        }}
+                      />
+                      <label style={{ margin: 0 }}>
+                        {option === "Variable based on customization type"
+                          ? "Variable based on customization type (please specify breakdown):"
+                          : option}
+                      </label>
+                    </div>
+                  ))}
                 </div>
                 {additionalCosts === "Variable based on customization type" && (
                   <div style={{ marginTop: "10px" }}>
