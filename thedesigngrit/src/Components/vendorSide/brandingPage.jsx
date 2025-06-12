@@ -155,13 +155,22 @@ const BrandingPage = () => {
       const croppedFile = new File([blob], pendingFile.name, {
         type: "image/jpeg",
       });
+      const croppedUrl = URL.createObjectURL(blob);
 
       if (currentCropType === "logo") {
         setLogoFile(croppedFile);
-        setPreviewLogo(URL.createObjectURL(blob));
+        setPreviewLogo(croppedUrl);
+        // Update the preview in the logo modal
+        if (openLogoModal) {
+          setPreviewLogo(croppedUrl);
+        }
       } else {
         setCoverFile(croppedFile);
-        setPreviewCover(URL.createObjectURL(blob));
+        setPreviewCover(croppedUrl);
+        // Update the preview in the cover modal
+        if (openCoverModal) {
+          setPreviewCover(croppedUrl);
+        }
       }
 
       setShowCropModal(false);
@@ -277,6 +286,92 @@ const BrandingPage = () => {
     }
     handleMenuClose();
   };
+
+  // Update the Logo Edit Modal
+  const LogoEditModal = (
+    <Dialog open={openLogoModal} onClose={handleCloseLogoModal}>
+      <Box sx={{ p: 3, width: "400px" }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Edit Brand Logo
+        </Typography>
+
+        {previewLogo && (
+          <img
+            src={previewLogo}
+            alt="Current Logo"
+            style={{
+              width: "100%",
+              height: "auto",
+              maxHeight: "300px",
+              objectFit: "contain",
+              marginBottom: "16px",
+            }}
+          />
+        )}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleLogoChange}
+          style={{ marginBottom: "16px" }}
+        />
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+          <Button onClick={handleCloseLogoModal}>Cancel</Button>
+          <Button
+            variant="contained"
+            onClick={handleBrandImageUpload}
+            disabled={!logoFile || loading}
+          >
+            {loading ? <CircularProgress size={24} /> : "Save"}
+          </Button>
+        </Box>
+      </Box>
+    </Dialog>
+  );
+
+  // Update the Cover Edit Modal
+  const CoverEditModal = (
+    <Dialog open={openCoverModal} onClose={handleCloseCoverModal}>
+      <Box sx={{ p: 3, width: "400px" }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Edit Cover Photo
+        </Typography>
+
+        {previewCover && (
+          <img
+            src={previewCover}
+            alt="Current Cover"
+            style={{
+              width: "100%",
+              height: "auto",
+              maxHeight: "300px",
+              objectFit: "contain",
+              marginBottom: "16px",
+            }}
+          />
+        )}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleCoverChange}
+          style={{ marginBottom: "16px" }}
+        />
+
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+          <Button onClick={handleCloseCoverModal}>Cancel</Button>
+          <Button
+            variant="contained"
+            onClick={handleBrandImageUpload}
+            disabled={!coverFile || loading}
+          >
+            {loading ? <CircularProgress size={24} /> : "Save"}
+          </Button>
+        </Box>
+      </Box>
+    </Dialog>
+  );
 
   return (
     <div className="branding-page-form">
@@ -554,87 +649,8 @@ const BrandingPage = () => {
           </button>
         </Box>
       </Dialog>
-      {/* Logo Edit Modal */}
-      <Dialog open={openLogoModal} onClose={handleCloseLogoModal}>
-        <Box sx={{ p: 3, width: "400px" }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Edit Brand Logo
-          </Typography>
-
-          {previewLogo && (
-            <img
-              src={previewLogo}
-              alt="Current Logo"
-              style={{
-                width: "100%",
-                height: "auto",
-                maxHeight: "300px",
-                objectFit: "contain",
-                marginBottom: "16px",
-              }}
-            />
-          )}
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleLogoChange}
-            style={{ marginBottom: "16px" }}
-          />
-
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-            <Button onClick={handleCloseLogoModal}>Cancel</Button>
-            <Button
-              variant="contained"
-              onClick={handleBrandImageUpload}
-              disabled={!logoFile || loading}
-            >
-              {loading ? <CircularProgress size={24} /> : "Save"}
-            </Button>
-          </Box>
-        </Box>
-      </Dialog>
-
-      {/* Cover Edit Modal */}
-      <Dialog open={openCoverModal} onClose={handleCloseCoverModal}>
-        <Box sx={{ p: 3, width: "400px" }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Edit Cover Photo
-          </Typography>
-
-          {previewCover && (
-            <img
-              src={previewCover}
-              alt="Current Cover"
-              style={{
-                width: "100%",
-                height: "auto",
-                maxHeight: "300px",
-                objectFit: "contain",
-                marginBottom: "16px",
-              }}
-            />
-          )}
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleCoverChange}
-            style={{ marginBottom: "16px" }}
-          />
-
-          <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
-            <Button onClick={handleCloseCoverModal}>Cancel</Button>
-            <Button
-              variant="contained"
-              onClick={handleBrandImageUpload}
-              disabled={!coverFile || loading}
-            >
-              {loading ? <CircularProgress size={24} /> : "Save"}
-            </Button>
-          </Box>
-        </Box>
-      </Dialog>
+      {LogoEditModal}
+      {CoverEditModal}
 
       {/* Add Crop Modal */}
       {showCropModal && (
