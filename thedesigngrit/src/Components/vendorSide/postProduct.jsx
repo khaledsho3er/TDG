@@ -434,27 +434,27 @@ const AddProduct = () => {
     img.src = URL.createObjectURL(file);
   };
 
-  const handleCropComplete = (croppedBlob, croppedUrl) => {
-    const croppedFile = new File([croppedBlob], "cropped.jpg", {
-      type: "image/jpeg",
-    });
+  // const handleCropComplete = (croppedBlob, croppedUrl) => {
+  //   const croppedFile = new File([croppedBlob], "cropped.jpg", {
+  //     type: "image/jpeg",
+  //   });
 
-    setImages((prev) => [...prev, croppedFile]);
-    setImagePreviews((prev) => [...prev, croppedUrl]);
+  //   setImages((prev) => [...prev, croppedFile]);
+  //   setImagePreviews((prev) => [...prev, croppedUrl]);
 
-    if (!mainImage) {
-      setMainImage(croppedFile);
-      setMainImagePreview(croppedUrl);
-    }
+  //   if (!mainImage) {
+  //     setMainImage(croppedFile);
+  //     setMainImagePreview(croppedUrl);
+  //   }
 
-    setFormData((prevData) => ({
-      ...prevData,
-      images: [...prevData.images, croppedFile],
-      mainImage: prevData.mainImage || croppedFile,
-    }));
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     images: [...prevData.images, croppedFile],
+  //     mainImage: prevData.mainImage || croppedFile,
+  //   }));
 
-    setShowCropModal(false);
-  };
+  //   setShowCropModal(false);
+  // };
 
   // Handle setting the main image
   const handleSetMainImage = (index) => {
@@ -865,6 +865,7 @@ const AddProduct = () => {
                         display: "flex",
                         alignItems: "center",
                         marginBottom: 8,
+                        gap: 8,
                       }}
                     >
                       <input
@@ -872,13 +873,8 @@ const AddProduct = () => {
                         value={option}
                         checked={customizationOptions.includes(option)}
                         onChange={handleCustomizationChange}
-                        style={{
-                          marginRight: 8,
-                          verticalAlign: "middle",
-                          transform: "translateY(1px)", // tweak alignment
-                        }}
                       />
-                      <label style={{ margin: 0 }}>{option}</label>
+                      <span>{option}</span>
                     </div>
                   ))}
                 </div>
@@ -910,6 +906,7 @@ const AddProduct = () => {
                         display: "flex",
                         alignItems: "center",
                         marginBottom: 8,
+                        gap: 8,
                       }}
                     >
                       <input
@@ -918,17 +915,12 @@ const AddProduct = () => {
                         value={option}
                         checked={additionalCosts === option}
                         onChange={handleAdditionalCostsChange}
-                        style={{
-                          marginRight: 8,
-                          verticalAlign: "middle",
-                          transform: "translateY(1px)", // tweak for consistent baseline
-                        }}
                       />
-                      <label style={{ margin: 0 }}>
+                      <span>
                         {option === "Variable based on customization type"
                           ? "Variable based on customization type (please specify breakdown):"
                           : option}
-                      </label>
+                      </span>
                     </div>
                   ))}
                 </div>

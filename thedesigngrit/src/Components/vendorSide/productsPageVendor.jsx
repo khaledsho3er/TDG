@@ -28,8 +28,6 @@ const ProductsPageVendor = ({ setActivePage }) => {
   // State for toggling sections
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [pendingSubmission, setPendingSubmission] = useState(false);
   const [openVariantDialog, setOpenVariantDialog] = useState(false);
   const [variants, setVariants] = useState([]);
   const handleVariantSubmit = async (variantData) => {
