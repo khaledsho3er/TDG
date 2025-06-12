@@ -851,7 +851,13 @@ const AddProduct = () => {
               {/* Customization Options */}
               <div className="form-group">
                 <label>Customization Types (Select all that apply):</label>
-                <div style={{ marginTop: "10px" }}>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                  }}
+                >
                   {[
                     "Color Options",
                     "Size Options",
@@ -861,8 +867,8 @@ const AddProduct = () => {
                     "Design Modifications",
                     "Other",
                   ].map((option) => (
-                    <div key={option}>
-                      <label>
+                    <div key={option} style={{ marginRight: "10px" }}>
+                      <label style={{ display: "flex", alignItems: "center" }}>
                         <input
                           type="checkbox"
                           value={option}
@@ -1145,7 +1151,7 @@ const AddProduct = () => {
                     onChange={handleCheckboxChange}
                     style={{ width: "auto" }}
                   />
-                  Ready to Ship
+                  Ready to Ship "That The Product is Ready to Ship or Not"
                 </label>
               </div>
               <div className="form-group">
@@ -1199,41 +1205,32 @@ const AddProduct = () => {
               </div>
               <div className="form-group">
                 <label>Warranty Coverage:</label>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: "10px",
-                    marginTop: "10px",
-                  }}
-                >
-                  {[
-                    "Manufacturer Defects",
-                    "Wear and Tear",
-                    "Damage During Shipping",
-                  ].map((coverage) => (
-                    <label
-                      key={coverage}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.warrantyInfo.warrantyCoverage.includes(
-                          coverage
-                        )}
-                        onChange={() => handleWarrantyCoverageChange(coverage)}
-                        style={{ cursor: "pointer" }}
-                      />
-                      {coverage}
-                    </label>
-                  ))}
-                </div>
+                {[
+                  "Manufacturer Defects",
+                  "Wear and Tear",
+                  "Damage During Shipping",
+                ].map((coverage) => (
+                  <label
+                    key={coverage}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.warrantyInfo.warrantyCoverage.includes(
+                        coverage
+                      )}
+                      onChange={() => handleWarrantyCoverageChange(coverage)}
+                      style={{ cursor: "pointer" }}
+                    />
+                    {coverage}
+                  </label>
+                ))}
               </div>
             </Box>
             <Box
@@ -1275,16 +1272,7 @@ const AddProduct = () => {
                   title="Please enter a valid range (e.g., 5-7)"
                 />
               </div>
-              <div className="form-group">
-                <label>Stock:</label>
-                <input
-                  type="number"
-                  name="stock"
-                  value={formData.stock}
-                  onChange={handleChange}
-                  placeholder="Enter the stock quantity  Ex:100"
-                />
-              </div>
+
               {/* <div className="form-group">
                 <label>Claim Process:</label>
                 <textarea
