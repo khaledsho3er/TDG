@@ -181,9 +181,10 @@ const ProductCard = ({ product }) => {
         <Typography
           variant="body2"
           sx={{
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Montserrat",
-            color: "#757575",
+            color: "#777777",
+            fontWeight: 600,
             marginTop: "4px",
           }}
         >

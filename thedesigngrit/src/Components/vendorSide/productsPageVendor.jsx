@@ -222,23 +222,18 @@ const ProductsPageVendor = ({ setActivePage }) => {
             <p> Home &gt; All Products</p>
           </div>
           <div className="dashboard-date-vendor">
-            <button
+            <Button
               onClick={() => setActivePage("AddProduct")}
+              variant="contained"
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
                 backgroundColor: "#2d2d2d",
                 color: "white",
-                padding: "15px 15px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "14px",
+                marginLeft: "10px",
+                marginTop: "20px",
               }}
             >
               <CiCirclePlus /> Add Product
-            </button>
+            </Button>
             <Button
               onClick={() => setOpenVariantDialog(true)}
               variant="contained"
@@ -349,14 +344,24 @@ const ProductsPageVendor = ({ setActivePage }) => {
                         </div>
 
                         <div className="price-container">
-                          <span className="original-price">
+                          <span
+                            className="original-price"
+                            style={{
+                              textDecoration:
+                                product.salePrice !== null
+                                  ? "line-through"
+                                  : "none",
+                              color:
+                                product.salePrice !== null ? "#999" : "#2d2d2d",
+                            }}
+                          >
                             E£{product.price}
                           </span>
-                          {product.salePrice > 0 && (
+                          {product.salePrice === null && (
                             <span className="sale-price">
                               E£{product.salePrice}
                             </span>
-                          )}
+                          )}{" "}
                         </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...
@@ -464,14 +469,24 @@ const ProductsPageVendor = ({ setActivePage }) => {
                         </div>
 
                         <div className="price-container">
-                          <span className="original-price">
+                          <span
+                            className="original-price"
+                            style={{
+                              textDecoration:
+                                product.salePrice !== null
+                                  ? "line-through"
+                                  : "none",
+                              color:
+                                product.salePrice !== null ? "#999" : "#2d2d2d",
+                            }}
+                          >
                             E£{product.price}
                           </span>
-                          {product.salePrice > 0 && (
+                          {product.salePrice === null && (
                             <span className="sale-price">
                               E£{product.salePrice}
                             </span>
-                          )}
+                          )}{" "}
                         </div>
                         <p className="product-summary">
                           {product.description.substring(0, 100)}...

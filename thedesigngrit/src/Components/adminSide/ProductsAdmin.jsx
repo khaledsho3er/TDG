@@ -425,14 +425,19 @@ const ProductPageAdmin = () => {
                             <span
                               className="original-price"
                               style={{
-                                textDecoration: product.salePrice
-                                  ? "line-through"
-                                  : "none",
+                                textDecoration:
+                                  product.salePrice !== null
+                                    ? "line-through"
+                                    : "none",
+                                color:
+                                  product.salePrice !== null
+                                    ? "#999"
+                                    : "#2d2d2d",
                               }}
                             >
                               E£{product.price}
                             </span>
-                            {product.salePrice > 0 && (
+                            {product.salePrice === null && (
                               <span className="sale-price">
                                 E£{product.salePrice}
                               </span>
@@ -564,13 +569,18 @@ const ProductPageAdmin = () => {
                             <span
                               className="original-price"
                               style={{
-                                textDecoration: product.salePrice
-                                  ? "line-through"
-                                  : "none",
-                                color: product.salePrice ? "#999" : "#2d2d2d",
-                                fontWeight: product.salePrice
-                                  ? "normal"
-                                  : "bold",
+                                textDecoration:
+                                  product.salePrice !== null
+                                    ? "line-through"
+                                    : "none",
+                                color:
+                                  product.salePrice !== null
+                                    ? "#999"
+                                    : "#2d2d2d",
+                                fontWeight:
+                                  product.salePrice !== null
+                                    ? "normal"
+                                    : "bold",
                               }}
                             >
                               E£{product.price}
