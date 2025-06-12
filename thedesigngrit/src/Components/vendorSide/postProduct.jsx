@@ -1451,49 +1451,43 @@ const AddProduct = () => {
                 aspect={4 / 3}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
-                onCropComplete={(_, croppedArea) =>
-                  setCroppedAreaPixels(croppedArea)
-                }
+                onCropComplete={(_, area) => setCroppedAreaPixels(area)}
               />
-              <div className="cropper-buttons-uploadimage">
-                <button
-                  onClick={async () => {
-                    const croppedBlob = await getCroppedImg(
-                      selectedImageSrc,
-                      croppedAreaPixels
-                    );
-                    const croppedUrl = URL.createObjectURL(croppedBlob);
-                    const croppedFile = new File(
-                      [croppedBlob],
-                      pendingFile.name,
-                      {
-                        type: "image/jpeg",
-                      }
-                    );
+            </div>
+            <div className="cropper-buttons-uploadimage">
+              <button
+                onClick={async () => {
+                  const blob = await getCroppedImg(
+                    selectedImageSrc,
+                    croppedAreaPixels
+                  );
+                  const url = URL.createObjectURL(blob);
+                  const croppedFile = new File([blob], pendingFile.name, {
+                    type: "image/jpeg",
+                  });
 
-                    setImages((prev) => [...prev, croppedFile]);
-                    setImagePreviews((prev) => [...prev, croppedUrl]);
+                  setImages((prev) => [...prev, croppedFile]);
+                  setImagePreviews((prev) => [...prev, url]);
 
-                    if (!mainImage) {
-                      setMainImage(croppedFile);
-                      setMainImagePreview(croppedUrl);
-                    }
+                  if (!mainImage) {
+                    setMainImage(croppedFile);
+                    setMainImagePreview(url);
+                  }
 
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      images: [...prevData.images, croppedFile],
-                      mainImage: prevData.mainImage || croppedFile,
-                    }));
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    images: [...prevData.images, croppedFile],
+                    mainImage: prevData.mainImage || croppedFile,
+                  }));
 
-                    setShowCropModal(false);
-                    setSelectedImageSrc(null);
-                    setPendingFile(null);
-                  }}
-                >
-                  Crop Image
-                </button>
-                <button onClick={() => setShowCropModal(false)}>Cancel</button>
-              </div>
+                  setShowCropModal(false);
+                  setPendingFile(null);
+                  setSelectedImageSrc(null);
+                }}
+              >
+                Crop Image
+              </button>
+              <button onClick={() => setShowCropModal(false)}>Cancel</button>
             </div>
           </div>
         </div>
