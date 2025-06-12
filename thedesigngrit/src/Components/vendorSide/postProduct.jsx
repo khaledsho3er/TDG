@@ -57,7 +57,7 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    salePrice: "",
+    salePrice: 0,
     category: "",
     subcategory: "",
     collection: "",
@@ -522,7 +522,7 @@ const AddProduct = () => {
     // Append basic fields
     data.append("name", formData.name);
     data.append("price", formData.price);
-    data.append("salePrice", formData.salePrice || "");
+    data.append("salePrice", formData.salePrice || "0" || "");
     data.append("category", formData.category);
     data.append("subcategory", formData.subcategory);
     data.append("collection", formData.collection || "");
@@ -705,7 +705,7 @@ const AddProduct = () => {
                   required
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Sale Price:</label>
                 <input
                   type="number"
@@ -714,8 +714,7 @@ const AddProduct = () => {
                   onChange={handleChange}
                   placeholder="Ex: 1000.00"
                 />
-              </div>
-              {/* Category Dropdown */}
+              </div> */}
               {/* Category Dropdown */}
               <div className="form-group">
                 <label>Category:</label>
