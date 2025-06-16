@@ -13,6 +13,7 @@ const NavbarVendor = ({ setActivePage }) => {
   const navigate = useNavigate();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Dashboard");
   console.log("Vendor Data:", vendor); // Log vendor data for debugging
   // Fetch brand data based on vendor.brandId
   useEffect(() => {
@@ -103,7 +104,9 @@ const NavbarVendor = ({ setActivePage }) => {
         </span>
         {/* <FaBell className="icon-vendor-bar" onClick={toggleOverlay} /> */}
         <select
+          value={selectedOption}
           onChange={(e) => {
+            setSelectedOption(e.target.value);
             if (e.target.value === "Logout") setLogoutConfirmOpen(true);
             if (e.target.value === "Profile") setProfileOpen(true);
           }}
@@ -130,7 +133,10 @@ const NavbarVendor = ({ setActivePage }) => {
         <ProfileCardVendor
           vendor={vendor}
           brandName={brandData?.brandName}
-          onClose={() => setProfileOpen(false)}
+          onClose={() => {
+            setProfileOpen(false);
+            setSelectedOption("Dashboard");
+          }}
         />
       )}
     </nav>
