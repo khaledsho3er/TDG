@@ -21,19 +21,12 @@ import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import CloseIcon from "@mui/icons-material/Close";
-import { Typography, Chip } from "@mui/material";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
-
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -485,40 +478,23 @@ function ProductPage() {
                   {product.name}
                 </h3>
               )}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: "4px",
+
+              <IconButton
+                sx={{
+                  marginLeft: "8px",
+                  "&:hover": { backgroundColor: "#f0f0f0" },
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleFavorite(event);
                 }}
               >
-                <IconButton
-                  sx={{
-                    marginLeft: "8px",
-                    "&:hover": { backgroundColor: "#f0f0f0" },
-                  }}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    toggleFavorite(event);
-                  }}
-                >
-                  {isFavorite ? (
-                    <FavoriteIcon sx={{ color: "red" }} />
-                  ) : (
-                    <FavoriteBorderIcon sx={{ color: "#000" }} />
-                  )}
-                </IconButton>
-                <IconButton
-                  sx={{
-                    marginLeft: "4px",
-                    "&:hover": { backgroundColor: "#f0f0f0" },
-                  }}
-                  onClick={() => setInfoOpen(true)}
-                >
-                  <InfoOutlinedIcon sx={{ color: "#6b7b58" }} />
-                </IconButton>
-              </div>
+                {isFavorite ? (
+                  <FavoriteIcon sx={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ color: "#000" }} />
+                )}
+              </IconButton>
             </div>
             <p className="product-brand">{product.brandId.brandName}</p>
             <br />
@@ -1331,7 +1307,7 @@ function ProductPage() {
           </div>
         </div>
       )}
-      <Dialog
+      {/* <Dialog
         open={infoOpen}
         onClose={() => setInfoOpen(false)}
         PaperProps={{
@@ -1467,7 +1443,7 @@ function ProductPage() {
             )}
           </Box>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 }
