@@ -4879,8 +4879,8 @@ iframe {
   transform: translateY(698%);
   background: white;
   border: none;
-  padding: 8px;
-  border-radius: 50%;
+  padding: 10px;
+  border-radius: 42%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   width: auto;
