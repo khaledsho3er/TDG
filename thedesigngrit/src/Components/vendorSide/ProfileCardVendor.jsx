@@ -28,7 +28,7 @@ const ProfileCardVendor = ({ vendor, brandName, onClose }) => (
             <strong>Brand:</strong> {brandName}
           </p>
         </div>
-        <button className="close-btn" onClick={onClose}>
+        <button className="profile-card-close-btn" onClick={onClose}>
           Close
         </button>
       </div>

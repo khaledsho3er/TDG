@@ -2121,7 +2121,7 @@ h1 {
 .profile-card-front {
   background: #6b7b58;
   color: #fff;
-  border-radius: 18px;
+  border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   padding: 32px 24px;
   width: 100%;
@@ -2147,7 +2147,7 @@ h1 {
   width: 100%;
 }
 
-.close-btn {
+.profile-card-close-btn {
   margin-top: 24px;
   background: #fff;
   color: #6b7b58;
@@ -2160,7 +2160,7 @@ h1 {
   font-weight: bold;
   transition: background 0.2s, color 0.2s;
 }
-.close-btn:hover {
+.profile-card-close-btn:hover {
   background: #2d2d2d;
   color: #fff;
 }
