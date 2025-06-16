@@ -219,6 +219,11 @@ function PaymentForm({
     navigate("/");
   };
 
+  const handleCloseIframeModal = () => {
+    setIframeModalOpen(false);
+    setIframeUrl(null); // This will unmount the iframe
+  };
+
   console.log("iframeUrl in render:", iframeUrl);
   return (
     <Box className="paymentmethod-container">
@@ -381,7 +386,7 @@ function PaymentForm({
 
       <Dialog
         open={iframeModalOpen}
-        onClose={() => setIframeModalOpen(false)}
+        onClose={handleCloseIframeModal}
         maxWidth="md"
         fullWidth
         PaperProps={{
@@ -401,7 +406,7 @@ function PaymentForm({
           }}
         >
           Complete Payment
-          <IconButton onClick={() => setIframeModalOpen(false)}>
+          <IconButton onClick={handleCloseIframeModal}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
