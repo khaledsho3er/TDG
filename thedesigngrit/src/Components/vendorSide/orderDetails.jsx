@@ -717,6 +717,8 @@ const OrderDetails = ({ order, onBack }) => {
                     ? "Cash on Delivery"
                     : "Visa"
                 }
+                width={"50px"}
+                height={"35px"}
               />
             </Box>
             <Box
