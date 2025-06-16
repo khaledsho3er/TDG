@@ -193,6 +193,7 @@ function PaymentForm({
               "Failed to connect to payment gateway. Please try again later."
           );
         }
+        onSuccess(); // ✅ Trigger success popup in parent
         resetCart();
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
