@@ -37,6 +37,10 @@ const OrderDetails = ({ order, onBack }) => {
   const [notePostedAt, setNotePostedAt] = useState(order?.notePostedAt || null);
   const [isReadOnly, setIsReadOnly] = useState(!!order?.note);
   const [showButton, setShowButton] = useState(!!order?.note);
+  const [paymentStatus, setPaymentStatus] = useState(
+    order.paymentDetails.paymentStatus || "Pending"
+  );
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
   // Filter products based on vendor's brandId
   const filteredProducts = order.cartItems.filter((product) => {
@@ -92,6 +96,10 @@ const OrderDetails = ({ order, onBack }) => {
 
     console.log("Filtered Products:", filteredProducts);
   }, [order, vendor, filteredProducts]);
+
+  useEffect(() => {
+    setPaymentStatus(order.paymentDetails.paymentStatus || "Pending");
+  }, [order.paymentDetails.paymentStatus]);
 
   if (error) return <p>Error: {error}</p>; // Show error message if any
 
@@ -221,6 +229,27 @@ const OrderDetails = ({ order, onBack }) => {
       setShowButton(false);
     } catch (error) {
       console.error("Error posting note:", error);
+    }
+  };
+
+  const handlePaymentStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setIsUpdatingStatus(true);
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/orders/${order._id}/payment-status`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentStatus: newStatus }),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to update payment status");
+      setPaymentStatus(newStatus);
+    } catch (err) {
+      alert("Failed to update payment status. Please try again.");
+    } finally {
+      setIsUpdatingStatus(false);
     }
   };
 
@@ -654,8 +683,33 @@ const OrderDetails = ({ order, onBack }) => {
                 </Box>
                 <Box sx={{ textAlign: "right" }}>
                   <p>{order.paymentDetails.paymentMethod}</p>
-                  <p>{order.paymentDetails.transactionId || "120002554"}</p>
-                  <p>{order.paymentDetails.paymentStatus || "Pending"}</p>
+                  <p>
+                    {order.paymentDetails.transactionId || "Cash Dont Have ID"}
+                  </p>
+                  <p>
+                    {order.paymentDetails.paymentMethod === "cod" ? (
+                      <select
+                        value={paymentStatus}
+                        onChange={handlePaymentStatusChange}
+                        disabled={isUpdatingStatus}
+                        style={{
+                          padding: "6px 12px",
+                          borderRadius: "6px",
+                          fontFamily: "Montserrat",
+                          fontWeight: "bold",
+                          background: "#f5f5f5",
+                          color: "#2d2d2d",
+                          border: "1px solid #6b7b58",
+                        }}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Failed">Failed</option>
+                      </select>
+                    ) : (
+                      paymentStatus
+                    )}
+                  </p>
                 </Box>
               </Box>
             </Box>
