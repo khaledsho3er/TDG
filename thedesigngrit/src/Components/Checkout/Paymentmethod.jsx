@@ -9,12 +9,16 @@ import {
   CircularProgress,
   Typography,
   Alert,
+  Dialog,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
 import OrderSentPopup from "../successMsgs/orderSubmit";
 import { useLocation, useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 function PaymentForm({
   onSubmit,
@@ -32,6 +36,7 @@ function PaymentForm({
   const { userSession } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
+  const [iframeModalOpen, setIframeModalOpen] = useState(false);
 
   // Check URL for payment success
   useEffect(() => {
@@ -178,6 +183,7 @@ function PaymentForm({
 
           // Set the iframe URL
           setIframeUrl(result.iframeUrl);
+          setIframeModalOpen(true);
 
           // Log the iframe URL for debugging
           console.log("Setting iframe URL to:", result.iframeUrl);
@@ -372,6 +378,51 @@ function PaymentForm({
 
       {/* Add OrderSentPopup */}
       <OrderSentPopup show={showSuccessPopup} closePopup={handleClosePopup} />
+
+      <Dialog
+        open={iframeModalOpen}
+        onClose={() => setIframeModalOpen(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            background: "#fff",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+            p: 2,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Complete Payment
+          <IconButton onClick={() => setIframeModalOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <Box sx={{ p: 2 }}>
+          <iframe
+            src={iframeUrl}
+            style={{
+              width: "100%",
+              height: "600px",
+              border: "none",
+              display: "block",
+            }}
+            allow="camera; microphone; accelerometer; gyroscope; payment"
+            allowFullScreen
+            title="Paymob Payment"
+            id="paymob-iframe"
+            referrerPolicy="origin"
+            sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
+          />
+        </Box>
+      </Dialog>
     </Box>
   );
 }
