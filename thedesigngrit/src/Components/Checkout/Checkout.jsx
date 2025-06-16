@@ -3,7 +3,7 @@ import BillingForm from "./Billingform.jsx";
 import ShippingForm from "./Shippingform.jsx";
 import SummaryForm from "./ordersummary.jsx";
 import PaymentForm from "./Paymentmethod.jsx";
-// import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/cartcontext.js";
 import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
@@ -15,6 +15,7 @@ function Checkout() {
   const [currentStep, setCurrentStep] = useState(1);
   const validateCheckboxRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
   const [billingData, setBillingData] = useState({
     firstName: "",
     lastName: "",
@@ -221,11 +222,7 @@ function Checkout() {
       );
       // Show the order submit popup
       setShowPopup(true);
-      if (setShowPopup === true) {
-        console.log("setShowSuccessPopup(true) called");
-      } else {
-        console.log("failed to show order submit popup ");
-      } // Reset the cart after successful order placement
+      // Reset the cart after successful order placement
       resetCart();
     } catch (error) {
       console.log("Error creating orders:", error);
@@ -266,6 +263,10 @@ function Checkout() {
       // setTotal(newTotal);
     }
   }, [cartItems, subtotal]);
+
+  useEffect(() => {
+    console.log("showPopup changed:", showPopup);
+  }, [showPopup]);
 
   const steps = [
     {
@@ -410,7 +411,14 @@ function Checkout() {
           )}
         </div>
       </div>
-      <OrderSentPopup show={showPopup} closePopup={() => setShowPopup(false)} />
+
+      <OrderSentPopup
+        show={showPopup}
+        closePopup={() => {
+          setShowPopup(false);
+          navigate("/"); // Only navigate after closing the popup
+        }}
+      />
     </div>
   );
 }

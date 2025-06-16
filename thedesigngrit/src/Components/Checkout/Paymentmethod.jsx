@@ -18,6 +18,7 @@ import { useUser } from "../../utils/userContext";
 import OrderSentPopup from "../successMsgs/orderSubmit";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
+import { useCart } from "../../Context/cartcontext.js";
 
 function PaymentForm({
   onSubmit,
@@ -36,6 +37,7 @@ function PaymentForm({
   const location = useLocation();
   const navigate = useNavigate();
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
+  const { resetCart } = useCart(); //  Get cart items from CartContexts
 
   // Check URL for payment success
   useEffect(() => {
@@ -193,17 +195,13 @@ function PaymentForm({
               "Failed to connect to payment gateway. Please try again later."
           );
         }
+        resetCart();
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         console.log("COD selected, calling onSubmit()");
         await onSubmit();
         console.log("onSubmit finished, setting showSuccessPopup");
         // setShowSuccessPopup(true);
-        // if (setShowSuccessPopup === true) {
-        //   console.log("setShowSuccessPopup(true) called");
-        // } else {
-        //   console.log("failed to show order submit popup ");
-        // }
       }
     } catch (error) {
       setPaymentError(
