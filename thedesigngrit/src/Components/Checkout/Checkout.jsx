@@ -154,6 +154,7 @@ function Checkout() {
   // };
 
   const handlePaymentSubmit = async () => {
+    console.log("handlePaymentSubmit called");
     if (!cartItems || cartItems.length === 0) {
       console.error("Cart is empty.");
       return;
@@ -218,10 +219,14 @@ function Checkout() {
         "Orders created successfully:",
         responses.map((res) => res.data)
       );
-
-      // Reset the cart after successful order placement
+      // Show the order submit popup
+      setShowPopup(true);
+      if (setShowPopup === true) {
+        console.log("setShowSuccessPopup(true) called");
+      } else {
+        console.log("failed to show order submit popup ");
+      } // Reset the cart after successful order placement
       resetCart();
-      setShowPopup(true); // Show the popup
     } catch (error) {
       console.log("Error creating orders:", error);
       console.error("Failed to create orders:", error);

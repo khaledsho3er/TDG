@@ -195,8 +195,15 @@ function PaymentForm({
         }
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
+        console.log("COD selected, calling onSubmit()");
         await onSubmit();
+        console.log("onSubmit finished, setting showSuccessPopup");
         setShowSuccessPopup(true);
+        if (setShowSuccessPopup === true) {
+          console.log("setShowSuccessPopup(true) called");
+        } else {
+          console.log("failed to show order submit popup ");
+        }
       }
     } catch (error) {
       setPaymentError(
