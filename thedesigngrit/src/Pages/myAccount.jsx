@@ -14,6 +14,7 @@ import TrackOrder from "./TrackOrder";
 import LoadingScreen from "./loadingScreen";
 import BillingInfo from "../Components/profilePopup/billingInfo";
 import TrackQuotation from "../Components/TrackQuotation";
+import ConfirmationDialog from "../Components/confirmationMsg";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -30,6 +31,7 @@ const MyAccount = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   useEffect(() => {
     if (location.state?.section) {
       setSelectedSection(location.state.section);
@@ -66,10 +68,20 @@ const MyAccount = () => {
     fetchData();
   }, [userSession, navigate]); // Add `navigate` to the dependencies
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setLogoutConfirmOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
     logout(); // Call logout from context
     navigate("/home"); // Redirect to home or login page
+    setLogoutConfirmOpen(false);
   };
+
+  const handleLogoutCancel = () => {
+    setLogoutConfirmOpen(false);
+  };
+
   if (loading) {
     return <LoadingScreen onComplete={() => setLoading(false)} />;
   }
@@ -84,10 +96,7 @@ const MyAccount = () => {
     wishlist: <WishlistPage />,
     // Render logout as a clickable word that performs the logout directly
     logout: (
-      <span
-        style={{ cursor: "pointer" }}
-        onClick={handleLogout} // Trigger logout directly without interfering with section logic
-      >
+      <span style={{ cursor: "pointer" }} onClick={handleLogoutClick}>
         Logout
       </span>
     ),
@@ -134,6 +143,13 @@ const MyAccount = () => {
         </div>
       </Box>
       <Footer />
+      <ConfirmationDialog
+        open={logoutConfirmOpen}
+        title="Confirm Logout"
+        content="Are you sure you want to logout?"
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
     </Box>
   );
 };

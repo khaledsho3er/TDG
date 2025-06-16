@@ -13,6 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ConfirmationDialog from "./confirmationMsg";
 // import FloatingButton from "./ChatButton";
 import ProfilePopup from "./profilePopUp";
 // import Stickedbutton from "./MoodboardButton";
@@ -32,6 +33,7 @@ function Header() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [favoritesOpen, setFavoritesOpen] = useState(false);
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false); // State to toggle categories visibility
   const [menuData, setMenuData] = useState([
@@ -277,9 +279,19 @@ function Header() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setLogoutConfirmOpen(true);
+    handleMenuClose();
+  };
+
+  const handleLogoutConfirm = () => {
     logout(); // Call logout from context
     navigate("/home"); // Redirect to home or login page
+    setLogoutConfirmOpen(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutConfirmOpen(false);
   };
 
   const handleMyAccount = () => {
@@ -528,7 +540,10 @@ function Header() {
                   )}
 
                   {userSession ? (
-                    <Typography onClick={handleLogout} className="menu-item">
+                    <Typography
+                      onClick={handleLogoutClick}
+                      className="menu-item"
+                    >
                       Logout
                     </Typography>
                   ) : (
@@ -784,7 +799,7 @@ function Header() {
                   }}
                 >
                   <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
-                  <MenuItem onClick={handleLogout}>
+                  <MenuItem onClick={handleLogoutClick}>
                     <IoLogOutOutline style={{ marginRight: "10px" }} /> Logout
                   </MenuItem>
                 </Menu>
@@ -897,6 +912,13 @@ function Header() {
       <ProfilePopup open={popupOpen} onClose={handlePopupToggle} />
       <ShoppingCartOverlay open={cartOpen} onClose={handleCartToggle} />
       <FavoritesOverlay open={favoritesOpen} onClose={handleFavoritesToggle} />
+      <ConfirmationDialog
+        open={logoutConfirmOpen}
+        title="Confirm Logout"
+        content="Are you sure you want to logout?"
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
     </Box>
   );
 }
