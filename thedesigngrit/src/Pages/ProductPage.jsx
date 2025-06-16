@@ -20,11 +20,19 @@ import RequestQuote from "../Components/product/RequestInfo";
 import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import CloseIcon from "@mui/icons-material/Close";
+import { Typography, Chip } from "@mui/material";
+
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility
   const [isRequestInfoOpen] = useState(true);
   const { userSession } = useContext(UserContext);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
 
   const isMobile = useMediaQuery("(max-width:768px)");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -483,7 +491,7 @@ function ProductPage() {
                   "&:hover": { backgroundColor: "#f0f0f0" },
                 }}
                 onClick={(event) => {
-                  event.stopPropagation(); // Prevent triggering card click when clicking favorite button
+                  event.stopPropagation();
                   toggleFavorite(event);
                 }}
               >
@@ -492,6 +500,15 @@ function ProductPage() {
                 ) : (
                   <FavoriteBorderIcon sx={{ color: "#000" }} />
                 )}
+              </IconButton>
+              <IconButton
+                sx={{
+                  marginLeft: "4px",
+                  "&:hover": { backgroundColor: "#f0f0f0" },
+                }}
+                onClick={() => setInfoOpen(true)}
+              >
+                <InfoOutlinedIcon sx={{ color: "#6b7b58" }} />
               </IconButton>
             </div>
             <p className="product-brand">{product.brandId.brandName}</p>
@@ -1305,6 +1322,118 @@ function ProductPage() {
           </div>
         </div>
       )}
+      <Dialog
+        open={infoOpen}
+        onClose={() => setInfoOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            background: "#f8f7f3",
+            minWidth: 400,
+            maxWidth: 500,
+            p: 2,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontFamily: "Horizon, Montserrat",
+            fontWeight: "bold",
+            color: "#2d2d2d",
+            background: "#f3f1ea",
+            borderRadius: "16px 16px 0 0",
+            fontSize: "1.3rem",
+            letterSpacing: "1px",
+            textAlign: "center",
+            mb: 1,
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          More Info
+          <IconButton onClick={() => setInfoOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ p: 2 }}>
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "#6b7b58" }}
+            >
+              Customization Options
+            </Typography>
+            <Typography>
+              {Array.isArray(product.Customizationoptions) &&
+              product.Customizationoptions.length > 0
+                ? product.Customizationoptions.join(", ")
+                : "No customization options"}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "#6b7b58" }}
+            >
+              Additional Details
+            </Typography>
+            <Typography>
+              {product.Additionaldetails
+                ? product.Additionaldetails
+                : "No additional details"}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "#6b7b58" }}
+            >
+              Additional Costs
+            </Typography>
+            <Chip
+              label={product.Additionalcosts || "N/A"}
+              sx={{
+                background: product.Additionalcosts?.toLowerCase().includes(
+                  "yes"
+                )
+                  ? "#d4edda"
+                  : product.Additionalcosts?.toLowerCase().includes("no")
+                  ? "#f8d7da"
+                  : product.Additionalcosts
+                  ? "#fff3cd"
+                  : "#e0e0e0",
+                color: product.Additionalcosts?.toLowerCase().includes("yes")
+                  ? "#155724"
+                  : product.Additionalcosts?.toLowerCase().includes("no")
+                  ? "#721c24"
+                  : product.Additionalcosts
+                  ? "#856404"
+                  : "#333",
+                fontWeight: "bold",
+              }}
+            />
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: "bold", color: "#6b7b58" }}
+            >
+              Warranty Info
+            </Typography>
+            <Typography>
+              {product.warrantyInfo
+                ? `Years: ${product.warrantyInfo.warrantyYears}, Coverage: ${
+                    Array.isArray(product.warrantyInfo.warrantyCoverage)
+                      ? product.warrantyInfo.warrantyCoverage.join(", ")
+                      : product.warrantyInfo.warrantyCoverage
+                  }`
+                : "No warranty info"}
+            </Typography>
+          </Box>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
