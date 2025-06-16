@@ -634,6 +634,8 @@ const OrderDetails = ({ order, onBack }) => {
                       // maxWidth: "400px",
                     }}
                   >
+                    <p style={{ fontWeight: "bold", margin: 0 }}></p>
+                    <span style={{ margin: 0 }}></span>
                     {/* Row 1 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
                     <span style={{ margin: 0 }}>
