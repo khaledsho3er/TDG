@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Adjust the import path
 import NotificationOverlayVendor from "./notificationOverlay";
 import ConfirmationDialog from "../confirmationMsg";
+import ProfileCardVendor from "./ProfileCardVendor";
 
 const NavbarVendor = ({ setActivePage }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
@@ -11,6 +12,7 @@ const NavbarVendor = ({ setActivePage }) => {
   const { vendor, logout } = useVendor(); // Access vendor and logout from context
   const navigate = useNavigate();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   console.log("Vendor Data:", vendor); // Log vendor data for debugging
   // Fetch brand data based on vendor.brandId
   useEffect(() => {
@@ -103,6 +105,7 @@ const NavbarVendor = ({ setActivePage }) => {
         <select
           onChange={(e) => {
             if (e.target.value === "Logout") setLogoutConfirmOpen(true);
+            if (e.target.value === "Profile") setProfileOpen(true);
           }}
         >
           <option>Profile</option>
@@ -122,6 +125,13 @@ const NavbarVendor = ({ setActivePage }) => {
         onConfirm={handleLogoutConfirm}
         onCancel={handleLogoutCancel}
       />
+      {profileOpen && (
+        <ProfileCardVendor
+          vendor={vendor}
+          brandName={brandData?.brandName}
+          onClose={() => setProfileOpen(false)}
+        />
+      )}
     </nav>
   );
 };
