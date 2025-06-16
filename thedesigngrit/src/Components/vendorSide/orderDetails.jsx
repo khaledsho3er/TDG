@@ -700,7 +700,24 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               <h4>Payment Info</h4>
-              <img src="/Assets/visa-logo.webp" alt="Visa" />
+              <img
+                src={
+                  order.paymentDetails.paymentMethod?.toLowerCase() === "paymob"
+                    ? "/Assets/paymobpng.png"
+                    : order.paymentDetails.paymentMethod?.toLowerCase() ===
+                      "cod"
+                    ? "/Assets/cashondelpng.png"
+                    : "/Assets/visa-logo.webp"
+                }
+                alt={
+                  order.paymentDetails.paymentMethod?.toLowerCase() === "paymob"
+                    ? "Paymob"
+                    : order.paymentDetails.paymentMethod?.toLowerCase() ===
+                      "cod"
+                    ? "Cash on Delivery"
+                    : "Visa"
+                }
+              />
             </Box>
             <Box
               sx={{
