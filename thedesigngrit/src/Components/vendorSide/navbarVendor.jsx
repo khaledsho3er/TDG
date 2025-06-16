@@ -108,6 +108,7 @@ const NavbarVendor = ({ setActivePage }) => {
             if (e.target.value === "Profile") setProfileOpen(true);
           }}
         >
+          <option>Dashboard</option>
           <option>Profile</option>
           <option>Logout</option>
         </select>
