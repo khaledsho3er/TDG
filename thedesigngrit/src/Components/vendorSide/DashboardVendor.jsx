@@ -240,31 +240,38 @@ const DashboardVendor = () => {
   }, [vendor]);
 
   useEffect(() => {
+    function aggregateAndSort(data, key) {
+      // Aggregate sales for duplicate keys
+      const map = {};
+      data.forEach((item) => {
+        if (!map[item[key]]) map[item[key]] = 0;
+        map[item[key]] += Number(item.sales) || 0;
+      });
+      // Convert to array and sort
+      return Object.entries(map)
+        .map(([k, v]) => ({ [key]: Number(k), sales: v }))
+        .sort((a, b) => a[key] - b[key]);
+    }
+
     let formattedData = [];
     switch (activeTab) {
       case "weekly":
-        formattedData =
-          weeklySales.map((item) => ({
-            ...item,
-            week: `Week ${item.week}`,
-            sales: item.sales || 0,
-          })) || [];
+        formattedData = aggregateAndSort(weeklySales, "week").map((item) => ({
+          ...item,
+          week: `Week ${item.week}`,
+        }));
         break;
       case "monthly":
-        formattedData =
-          monthlySales.map((item) => ({
-            ...item,
-            month: `Month ${item.month}`,
-            sales: item.sales || 0,
-          })) || [];
+        formattedData = aggregateAndSort(monthlySales, "month").map((item) => ({
+          ...item,
+          month: `Month ${item.month}`,
+        }));
         break;
       case "yearly":
-        formattedData =
-          yearlySales.map((item) => ({
-            ...item,
-            year: `${item.year}`,
-            sales: item.sales || 0,
-          })) || [];
+        formattedData = aggregateAndSort(yearlySales, "year").map((item) => ({
+          ...item,
+          year: `${item.year}`,
+        }));
         break;
       default:
         formattedData = [];
