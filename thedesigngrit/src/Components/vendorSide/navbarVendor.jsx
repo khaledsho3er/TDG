@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useVendor } from "../../utils/vendorContext"; // Adjust the import path
 import NotificationOverlayVendor from "./notificationOverlay";
+import ConfirmationDialog from "../confirmationMsg";
 
 const NavbarVendor = ({ setActivePage }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [brandData, setBrandData] = useState(null); // State for brand data
   const { vendor, logout } = useVendor(); // Access vendor and logout from context
   const navigate = useNavigate();
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
 
   // Fetch brand data based on vendor.brandId
   useEffect(() => {
@@ -66,17 +68,43 @@ const NavbarVendor = ({ setActivePage }) => {
     }
   };
 
+  const handleLogoutConfirm = async () => {
+    setLogoutConfirmOpen(false);
+    await handleLogout();
+  };
+
+  const handleLogoutCancel = () => {
+    setLogoutConfirmOpen(false);
+  };
+
   return (
     <nav className="navbar-vendor">
-      <div className="navbar-logo-vendor">
+      <div
+        className="navbar-logo-vendor"
+        style={{ display: "flex", alignItems: "center", gap: "10px" }}
+      >
         <img
           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brandData?.brandlogo}`}
           alt="Vendor Logo"
+          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
         />
+        <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+          {brandData?.brandName}
+        </span>
       </div>
-      <div className="navbar-actions-vendor">
+      <div
+        className="navbar-actions-vendor"
+        style={{ display: "flex", alignItems: "center", gap: "16px" }}
+      >
+        <span style={{ fontSize: "16px" }}>
+          Welcome, {vendor?.name || "Vendor"}
+        </span>
         {/* <FaBell className="icon-vendor-bar" onClick={toggleOverlay} /> */}
-        <select onChange={(e) => e.target.value === "Logout" && handleLogout()}>
+        <select
+          onChange={(e) => {
+            if (e.target.value === "Logout") setLogoutConfirmOpen(true);
+          }}
+        >
           <option>Profile</option>
           <option>Logout</option>
         </select>
@@ -87,6 +115,13 @@ const NavbarVendor = ({ setActivePage }) => {
           />
         )}
       </div>
+      <ConfirmationDialog
+        open={logoutConfirmOpen}
+        title="Confirm Logout"
+        content="Are you sure you want to logout?"
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
     </nav>
   );
 };
