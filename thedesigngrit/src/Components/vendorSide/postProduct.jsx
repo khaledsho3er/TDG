@@ -759,6 +759,7 @@ const AddProduct = () => {
                   placeholder="Add tag and press Enter  Ex: Sofa, Living Room"
                   onKeyDown={handleAddTag}
                   className="tag-input"
+                  style={{ margin: "10px 0px" }}
                 />
 
                 {/* Display Selected Tags */}
@@ -948,7 +949,7 @@ const AddProduct = () => {
                   placeholder="Ex: Small, Medium, Large"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Main Image URL:</label>
                 <input
                   type="text"
@@ -957,7 +958,7 @@ const AddProduct = () => {
                   onChange={handleChange}
                   readOnly
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Description:</label>
                 <textarea
@@ -1095,9 +1096,9 @@ const AddProduct = () => {
                     onChange={handleCheckboxChange}
                     style={{ width: "auto" }}
                   />
-                  Ready to Ship{" "}
+                  Ready to Ship
                   <span style={{ fontWeight: "normal" }}>
-                    "That The Product is Ready to Ship "
+                    (That The Product is Ready to Ship )
                   </span>
                 </label>
               </div>

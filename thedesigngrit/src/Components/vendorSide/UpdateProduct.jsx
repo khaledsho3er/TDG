@@ -502,6 +502,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   placeholder="Add tag and press Enter"
                   onKeyDown={handleAddTag}
                   className="tag-input"
+                  style={{ margin: "10px 0px" }}
                 />
                 <br />
                 <div className="tags">
@@ -572,7 +573,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   onChange={(e) => handleArrayChange(e, "sizes")}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Main Image URL:</label>
                 <input
                   type="text"
@@ -580,7 +581,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   value={formData.mainImage}
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Description:</label>
                 <textarea
