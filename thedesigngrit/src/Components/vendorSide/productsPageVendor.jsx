@@ -304,9 +304,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                           alt={product.name}
                           className="promotion-image"
                         />
-                        <div className="discount-badge">
-                          {product.discountPercentage}% OFF
-                        </div>
+                        {product.discountPercentage && (
+                          <div className="discount-badge">
+                            {product.discountPercentage}% OFF
+                          </div>
+                        )}
                       </div>
                       <div className="promotion-details">
                         <div
@@ -429,9 +431,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                           alt={product.name}
                           className="promotion-image"
                         />
-                        <div className="discount-badge">
-                          {product.discountPercentage}% OFF
-                        </div>
+                        {product.discountPercentage && (
+                          <div className="discount-badge">
+                            {product.discountPercentage}% OFF
+                          </div>
+                        )}
                       </div>
                       <div className="promotion-details">
                         <div
