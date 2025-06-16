@@ -680,7 +680,7 @@ const OrderDetails = ({ order, onBack }) => {
                   padding: "10px",
                   height: "150px",
                   fontFamily: "Montserrat",
-                  color: isReadOnly ? "#666" : "#ddd",
+                  color: isReadOnly ? "#2d2d2d" : "#2d2d2d",
                   backgroundColor: isReadOnly ? "#f5f5f5" : "white",
                   cursor: isReadOnly ? "not-allowed" : "text",
                 }}
@@ -782,10 +782,48 @@ const OrderDetails = ({ order, onBack }) => {
         </table>
 
         {/* Set Delivery Date Dialog */}
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Set Sub-Delivery Date</DialogTitle>
-          <DialogContent>
-            {/* Product Selection */}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            sx: {
+              borderRadius: 4,
+              background: "rgba(107, 123, 88, 0.97)", // Brand green with opacity
+              boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+              backdropFilter: "blur(8px)",
+              minWidth: 400,
+              color: "#fff",
+              fontFamily: "Montserrat",
+              p: 2,
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              fontFamily: "Horizon, Montserrat",
+              fontWeight: "bold",
+              color: "#fff",
+              background: "rgba(107, 123, 88, 0.85)",
+              borderRadius: "16px 16px 0 0",
+              fontSize: "1.5rem",
+              letterSpacing: "1px",
+              textAlign: "center",
+              mb: 1,
+              p: 2,
+            }}
+          >
+            Set Sub-Delivery Date
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              background: "rgba(255,255,255,0.05)",
+              borderRadius: 2,
+              p: 2,
+            }}
+          >
             <Select
               value={selectedProduct ? selectedProduct._id : ""}
               onChange={(e) => {
@@ -796,6 +834,12 @@ const OrderDetails = ({ order, onBack }) => {
               }}
               fullWidth
               margin="normal"
+              sx={{
+                background: "#fff",
+                borderRadius: 2,
+                mb: 2,
+                fontFamily: "Montserrat",
+              }}
             >
               {filteredProducts.map((product) => (
                 <MenuItem key={product._id} value={product._id}>
@@ -803,17 +847,34 @@ const OrderDetails = ({ order, onBack }) => {
                 </MenuItem>
               ))}
             </Select>
-
-            {/* Delivery Date Input */}
             <TextField
               type="date"
               fullWidth
               margin="normal"
               value={subDeliveryDate}
               onChange={handleSubDateChange}
+              sx={{
+                background: "#fff",
+                borderRadius: 2,
+                fontFamily: "Montserrat",
+              }}
+              InputLabelProps={{
+                style: { color: "#6b7b58" },
+              }}
+              inputProps={{
+                style: { color: "#2d2d2d" },
+              }}
             />
           </DialogContent>
-          <DialogActions>
+          <DialogActions
+            sx={{
+              background: "rgba(255,255,255,0.05)",
+              borderRadius: "0 0 16px 16px",
+              p: 2,
+              justifyContent: "center",
+              gap: 2,
+            }}
+          >
             <Button className="cancel-btn" onClick={handleClose}>
               Cancel
             </Button>
