@@ -53,7 +53,6 @@ const AddProduct = () => {
   const [tags, setTags] = useState([]); // Tags array
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [pendingSubmission, setPendingSubmission] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   // Form data state

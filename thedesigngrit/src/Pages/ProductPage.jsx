@@ -20,7 +20,6 @@ import RequestQuote from "../Components/product/RequestInfo";
 import ShoppingCartOverlay from "../Components/Popups/CartOverlay";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function ProductPage() {
   const [showRequestInfoPopup, setShowRequestInfoPopup] = useState(false); // State for Request Info Popup visibility

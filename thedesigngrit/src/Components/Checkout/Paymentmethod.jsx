@@ -8,7 +8,6 @@ import {
   Button,
   CircularProgress,
   Typography,
-  Alert,
   Dialog,
   DialogTitle,
   IconButton,
@@ -196,7 +195,7 @@ function PaymentForm({
         }
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
-        onSubmit();
+        await onSubmit();
         setShowSuccessPopup(true);
       }
     } catch (error) {
