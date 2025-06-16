@@ -22,6 +22,7 @@ import { useCart } from "../../Context/cartcontext.js";
 
 function PaymentForm({
   onSubmit,
+  onSuccess,
   paymentData,
   onChange,
   billData,
@@ -32,7 +33,6 @@ function PaymentForm({
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState(null);
   const [iframeUrl, setIframeUrl] = useState(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const { userSession } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function PaymentForm({
     const status = searchParams.get("status");
 
     if (orderId && status === "success") {
-      setShowSuccessPopup(true);
+      onSuccess(); // ✅ Use parent trigger
       // Clear the URL parameters without refreshing the page
       window.history.replaceState({}, document.title, window.location.pathname);
     }
@@ -201,7 +201,7 @@ function PaymentForm({
         console.log("COD selected, calling onSubmit()");
         await onSubmit();
         console.log("onSubmit finished, setting showSuccessPopup");
-        // setShowSuccessPopup(true);
+        onSuccess(); // ✅ Trigger success popup in parent
       }
     } catch (error) {
       setPaymentError(
@@ -229,7 +229,7 @@ function PaymentForm({
   };
 
   console.log("iframeUrl in render:", iframeUrl);
-  setShowSuccessPopup(true);
+
   return (
     <Box className="paymentmethod-container">
       <Box className="paymentmethod-firstrow-firstcolumn">
@@ -387,7 +387,7 @@ function PaymentForm({
       />
 
       {/* Add OrderSentPopup */}
-      <OrderSentPopup show={showSuccessPopup} closePopup={handleClosePopup} />
+      {/* <OrderSentPopup show={showSuccessPopup} closePopup={handleClosePopup} /> */}
 
       <Dialog
         open={iframeModalOpen}

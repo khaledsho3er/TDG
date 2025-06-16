@@ -8,17 +8,20 @@ const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
   const [show, setShow] = useState(propShow || false);
 
   useEffect(() => {
-    // Check URL parameters for success
     const searchParams = new URLSearchParams(location.search);
     const orderId = searchParams.get("order");
     const status = searchParams.get("status");
 
     if (orderId && status === "success") {
       setShow(true);
-      // Clear the URL parameters without refreshing the page
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [location]);
+
+  // ✅ Add this effect to listen to prop changes
+  useEffect(() => {
+    setShow(propShow);
+  }, [propShow]);
 
   const handleClose = () => {
     setShow(false);

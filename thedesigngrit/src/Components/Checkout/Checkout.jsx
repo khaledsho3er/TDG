@@ -312,6 +312,7 @@ function Checkout() {
       content: (
         <PaymentForm
           onSubmit={handlePaymentSubmit}
+          onSuccess={() => setShowPopup(true)} // ✅ Central control
           paymentData={paymentData}
           onChange={handlePaymentChange}
           errors={paymentErrors}
