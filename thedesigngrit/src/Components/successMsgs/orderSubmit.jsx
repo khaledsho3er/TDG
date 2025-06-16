@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [show, setShow] = useState(propShow || false);
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const orderId = searchParams.get("order");
-    const status = searchParams.get("status");
-
-    if (orderId && status === "success") {
-      setShow(true);
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [location]);
 
   // ✅ Add this effect to listen to prop changes
   useEffect(() => {

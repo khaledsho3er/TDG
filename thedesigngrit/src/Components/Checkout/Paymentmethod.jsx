@@ -15,7 +15,6 @@ import {
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
-import { useLocation } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "../../Context/cartcontext.js";
 
@@ -33,22 +32,8 @@ function PaymentForm({
   const [paymentError, setPaymentError] = useState(null);
   const [iframeUrl, setIframeUrl] = useState(null);
   const { userSession } = useUser();
-  const location = useLocation();
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
   const { resetCart } = useCart(); //  Get cart items from CartContexts
-
-  // Check URL for payment success
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const orderId = searchParams.get("order");
-    const status = searchParams.get("status");
-
-    if (orderId && status === "success") {
-      onSuccess(); // ✅ Use parent trigger
-      // Clear the URL parameters without refreshing the page
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [location, onSuccess]);
 
   useEffect(() => {
     if (billData && billData.total) {
