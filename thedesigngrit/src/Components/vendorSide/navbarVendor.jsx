@@ -11,7 +11,7 @@ const NavbarVendor = ({ setActivePage }) => {
   const { vendor, logout } = useVendor(); // Access vendor and logout from context
   const navigate = useNavigate();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
-
+  console.log("Vendor Data:", vendor); // Log vendor data for debugging
   // Fetch brand data based on vendor.brandId
   useEffect(() => {
     const fetchBrandData = async () => {
