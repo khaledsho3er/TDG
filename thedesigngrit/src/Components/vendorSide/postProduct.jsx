@@ -44,10 +44,6 @@ const AddProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState(""); // Selected category
   const [selectedSubCategory, setSelectedSubCategory] = useState(""); // Selected subcategory
   const [tags, setTags] = useState([]); // Tags array
-  const [customizationOptions, setCustomizationOptions] = useState([]); // Customization options
-  const [otherCustomization, setOtherCustomization] = useState(""); // Other customization details
-  const [additionalCosts, setAdditionalCosts] = useState(""); // Additional costs selection
-  const [costBreakdown, setCostBreakdown] = useState(""); // Cost breakdown for variable option
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
@@ -87,9 +83,7 @@ const AddProduct = () => {
     materialCareInstructions: "",
     productSpecificRecommendations: "",
     Estimatedtimeleadforcustomization: "",
-    Customizationoptions: [], // Customization options in formData
-    Additionaldetails: "",
-    Additionalcosts: "",
+
     cadFile: null, // Add CAD field
     // claimProcess: "",
   });
@@ -355,54 +349,6 @@ const AddProduct = () => {
     setTags(newTags); // Update local state
     setFormData({ ...formData, tags: newTags }); // Update formData
   };
-
-  // Handle customization options change
-  const handleCustomizationChange = (e) => {
-    const { value, checked } = e.target;
-    let updatedOptions = [...customizationOptions];
-
-    if (checked) {
-      updatedOptions.push(value); // Add option if checked
-    } else {
-      updatedOptions = updatedOptions.filter((option) => option !== value); // Remove option if unchecked
-    }
-
-    setCustomizationOptions(updatedOptions);
-    setFormData({
-      ...formData,
-      Customizationoptions: updatedOptions, // Update formData
-    });
-  };
-
-  // Handle other customization details
-  const handleOtherCustomizationChange = (e) => {
-    const { value } = e.target;
-    setOtherCustomization(value);
-    setFormData({
-      ...formData,
-      Additionaldetails: value, // Update formData
-    });
-  };
-
-  // Handle additional costs selection
-  const handleAdditionalCostsChange = (e) => {
-    const { value } = e.target;
-    setAdditionalCosts(value);
-    setFormData({
-      ...formData,
-      Additionalcosts: value, // Update formData
-    });
-  };
-
-  // Handle cost breakdown for variable option
-  const handleCostBreakdownChange = (e) => {
-    const { value } = e.target;
-    setCostBreakdown(value);
-    setFormData({
-      ...formData,
-      Additionaldetails: value, // Update formData
-    });
-  };
   const [imagePreviews, setImagePreviews] = useState([]); // Preview URLs
   const [mainImagePreview, setMainImagePreview] = useState(null); // Main image preview
   const [images, setImages] = useState([]); // Uploaded images
@@ -568,9 +514,6 @@ const AddProduct = () => {
       "Estimatedtimeleadforcustomization",
       formData.Estimatedtimeleadforcustomization || ""
     );
-    data.append("Additionaldetails", formData.Additionaldetails || "");
-    data.append("Additionalcosts", formData.Additionalcosts || "");
-
     // Append array fields
     formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
     formData.colors.forEach((color, index) =>
@@ -579,10 +522,6 @@ const AddProduct = () => {
     formData.sizes.forEach((size, index) =>
       data.append(`sizes[${index}]`, size)
     );
-    formData.Customizationoptions.forEach((option, index) =>
-      data.append(`Customizationoptions[${index}]`, option)
-    );
-
     // Append nested objects
     data.append(
       "technicalDimensions",
@@ -632,12 +571,9 @@ const AddProduct = () => {
         materialCareInstructions: "",
         productSpecificRecommendations: "",
         Estimatedtimeleadforcustomization: "",
-        Additionaldetails: "",
-        Additionalcosts: "",
         tags: [],
         colors: [],
         sizes: [],
-        Customizationoptions: [],
         technicalDimensions: {
           length: "",
           width: "",
@@ -843,18 +779,17 @@ const AddProduct = () => {
                 </div>
               </div>
             </Box>
-            <Box
+            {/* <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >
-              {/* Customization Options */}
+              // Customization Options 
               <div className="form-group">
                 <label>Customization Types (Select all that apply):</label>
                 <div
                   style={{
                     marginTop: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
+                    display: "inline",
+
                     alignItems: "flex-start",
                   }}
                 >
@@ -881,9 +816,11 @@ const AddProduct = () => {
                         value={option}
                         checked={customizationOptions.includes(option)}
                         onChange={handleCustomizationChange}
-                        style={{ marginRight: "8px", marginTop: "3px" }}
+                        style={{ marginRight: "8px" }}
                       />
-                      <label style={{ width: "100%" }}>{option}</label>
+                      <label style={{ width: "100%", marginBottom: "1px" }}>
+                        {option}
+                      </label>
                     </div>
                   ))}
                 </div>
@@ -900,7 +837,7 @@ const AddProduct = () => {
                 )}
               </div>
 
-              {/* Additional Costs for Customization */}
+              //Additional Costs for Customization 
               <div className="form-group">
                 <label>Additional Costs for Customization (Select one):</label>
                 <div style={{ marginTop: "10px" }}>
@@ -954,7 +891,7 @@ const AddProduct = () => {
                   </div>
                 )}
               </div>
-            </Box>
+            </Box> */}
             <Box
               sx={{ display: "flex", flexDirection: "column", width: "100%" }}
             >

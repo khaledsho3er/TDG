@@ -17,10 +17,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   const [tags, setTags] = useState([]); // Tags array
-  const [customizationOptions, setCustomizationOptions] = useState([]); // Customization options
-  const [otherCustomization, setOtherCustomization] = useState(""); // Other customization details
-  const [additionalCosts, setAdditionalCosts] = useState(""); // Additional costs selection
-  const [costBreakdown, setCostBreakdown] = useState(""); // Cost breakdown for variable option
+
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -55,10 +52,6 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     materialCareInstructions: "",
     productSpecificRecommendations: "",
     Estimatedtimeleadforcustomization: "",
-    Customizationoptions: [], // Customization options in formData
-    Additionaldetails: "",
-    Additionalcosts: "",
-    // claimProcess: "",
   });
 
   // Fetch categories on mount
@@ -248,54 +241,6 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     setFormData({
       ...formData,
       tags: newTags, // Update formData tags
-    });
-  };
-
-  // Handle customization options change
-  const handleCustomizationChange = (e) => {
-    const { value, checked } = e.target;
-    let updatedOptions = [...customizationOptions];
-
-    if (checked) {
-      updatedOptions.push(value); // Add option if checked
-    } else {
-      updatedOptions = updatedOptions.filter((option) => option !== value); // Remove option if unchecked
-    }
-
-    setCustomizationOptions(updatedOptions);
-    setFormData({
-      ...formData,
-      Customizationoptions: updatedOptions, // Update formData
-    });
-  };
-
-  // Handle other customization details
-  const handleOtherCustomizationChange = (e) => {
-    const { value } = e.target;
-    setOtherCustomization(value);
-    setFormData({
-      ...formData,
-      Additionaldetails: value, // Update formData
-    });
-  };
-
-  // Handle additional costs selection
-  const handleAdditionalCostsChange = (e) => {
-    const { value } = e.target;
-    setAdditionalCosts(value);
-    setFormData({
-      ...formData,
-      Additionalcosts: value, // Update formData
-    });
-  };
-
-  // Handle cost breakdown for variable option
-  const handleCostBreakdownChange = (e) => {
-    const { value } = e.target;
-    setCostBreakdown(value);
-    setFormData({
-      ...formData,
-      Additionaldetails: value, // Update formData
     });
   };
 
@@ -574,103 +519,6 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     </span>
                   ))}
                 </div>
-              </div>
-            </Box>
-            <Box
-              sx={{ display: "flex", flexDirection: "column", width: "100%" }}
-            >
-              {/* Customization Options */}
-              <div className="form-group">
-                <label>Customization Types (Select all that apply):</label>
-                <div style={{ marginTop: "10px" }}>
-                  {[
-                    "Color Options",
-                    "Size Options",
-                    "Fabric/Material Options",
-                    "Finish Options",
-                    "Engraving/Personalization",
-                    "Design Modifications",
-                    "Other",
-                  ].map((option) => (
-                    <div key={option}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          value={option}
-                          checked={customizationOptions.includes(option)}
-                          onChange={handleCustomizationChange}
-                        />
-                        {option}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                {customizationOptions.includes("Other") && (
-                  <div style={{ marginTop: "10px" }}>
-                    <label>Other (Please specify):</label>
-                    <textarea
-                      name="otherCustomization"
-                      value={otherCustomization}
-                      onChange={handleOtherCustomizationChange}
-                      placeholder="Specify other customization options"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Additional Costs for Customization */}
-              <div className="form-group">
-                <label>Additional Costs for Customization (Select one):</label>
-                <div style={{ marginTop: "10px" }}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="Yes, additional cost applies"
-                      checked={
-                        additionalCosts === "Yes, additional cost applies"
-                      }
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    Yes, additional cost applies
-                  </label>
-                  <br />
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="No additional cost"
-                      checked={additionalCosts === "No additional cost"}
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    No additional cost
-                  </label>
-                  <br />
-                  <label>
-                    <input
-                      type="radio"
-                      name="additionalCosts"
-                      value="Variable based on customization type"
-                      checked={
-                        additionalCosts ===
-                        "Variable based on customization type"
-                      }
-                      onChange={handleAdditionalCostsChange}
-                    />
-                    Variable based on customization type (please specify
-                    breakdown):
-                  </label>
-                </div>
-                {additionalCosts === "Variable based on customization type" && (
-                  <div style={{ marginTop: "10px" }}>
-                    <textarea
-                      name="costBreakdown"
-                      value={costBreakdown}
-                      onChange={handleCostBreakdownChange}
-                      placeholder="Specify cost breakdown"
-                    />
-                  </div>
-                )}
               </div>
             </Box>
             <Box
