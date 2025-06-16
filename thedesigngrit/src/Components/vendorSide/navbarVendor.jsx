@@ -86,7 +86,7 @@ const NavbarVendor = ({ setActivePage }) => {
         <img
           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${brandData?.brandlogo}`}
           alt="Vendor Logo"
-          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+          style={{ width: "50px", height: "50px", borderRadius: "14%" }}
         />
         <span style={{ fontWeight: "bold", fontSize: "18px" }}>
           {brandData?.brandName}
@@ -97,7 +97,7 @@ const NavbarVendor = ({ setActivePage }) => {
         style={{ display: "flex", alignItems: "center", gap: "16px" }}
       >
         <span style={{ fontSize: "16px" }}>
-          Welcome, {vendor?.name || "Vendor"}
+          Welcome, {vendor?.firstName || "Vendor"}
         </span>
         {/* <FaBell className="icon-vendor-bar" onClick={toggleOverlay} /> */}
         <select

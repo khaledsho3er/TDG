@@ -3,9 +3,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f8f8f8;
+  padding: 12px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-logo-vendor img {
@@ -50,7 +50,7 @@
 .sidebar-vendor {
   font-family: Montserrat;
   width: 250px;
-  background-color: #f8f9fa;
+  background-color: #f8f8f8;
   border-right: 1px solid #ddd;
   padding: 20px;
 }
@@ -67,7 +67,7 @@
   font-size: 13px;
   padding: 10px 15px;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   gap: 10px;
   transition: background-color 0.3s;
 }
@@ -76,13 +76,13 @@
   padding: 10px 15px;
   cursor: pointer;
   background-color: #6a8452;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #fff;
 }
 
 .sidebar-item-vendor.active {
   background-color: #6a8452;
-  border-radius: 14px;
+  border-radius: 6px;
   color: #fff;
 }
 
