@@ -292,7 +292,7 @@ const AppRoutes = () => {
           element={<TransitionRoute element={<TermsOfService />} />}
         />
         <Route
-          path="/product/:id"
+          path="/product/:name/:id"
           element={<TransitionRoute element={<ProductPage />} />}
         />
         <Route

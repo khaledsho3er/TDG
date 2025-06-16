@@ -32,7 +32,7 @@ function ProductPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const { id } = useParams();
+  const { id, name } = useParams();
   const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -85,24 +85,38 @@ function ProductPage() {
     setIsRequestQuoteOpen(false);
   };
 
-  // Fetch product details by ID
+  // Add a function to format product name for URL
+  const formatProductNameForUrl = (productName) => {
+    return productName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric chars with hyphens
+      .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+  };
+
+  // Update the useEffect to handle the new URL structure
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
           `https://api.thedesigngrit.com/api/products/getsingle/${id}`
-        ); // Make an API call to fetch the product by ID
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch product details");
         }
         const data = await response.json();
-        setProduct(data); // Set the fetched product to state
-        setActiveProduct(data); // Initialize active product with parent product
+        setProduct(data);
+        setActiveProduct(data);
         fetchReviews(data._id);
+
+        // Check if the URL name matches the product name
+        const formattedProductName = formatProductNameForUrl(data.name);
+        if (name !== formattedProductName) {
+          // If URL name doesn't match, redirect to the correct URL
+          navigate(`/product/${formattedProductName}/${id}`, { replace: true });
+        }
       } catch (error) {
         console.log(error);
-
-        setError(error.message); // Set error if something goes wrong
+        setError(error.message);
       } finally {
         setTimeout(() => {
           setLoading(false);
@@ -125,8 +139,8 @@ function ProductPage() {
       }
     };
 
-    fetchProduct(); // Fetch product on component mount
-  }, [id, error, loading, activeProduct]); // Refetch if the ID in the URL changes
+    fetchProduct();
+  }, [id, name, navigate]);
 
   // Add this useEffect to fetch variants when the product loads
   useEffect(() => {
