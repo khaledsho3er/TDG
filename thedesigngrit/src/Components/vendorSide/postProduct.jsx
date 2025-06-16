@@ -6,6 +6,13 @@ import { useVendor } from "../../utils/vendorContext";
 import { Box } from "@mui/material";
 import ConfirmationDialog from "../confirmationMsg";
 import Cropper from "react-easy-crop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 const getCroppedImg = (imageSrc, croppedAreaPixels) => {
   return new Promise((resolve) => {
     const image = new Image();
@@ -47,6 +54,8 @@ const AddProduct = () => {
   const [tagOptions, setTagOptions] = useState({}); // Store tags per category
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [pendingSubmission, setPendingSubmission] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -483,7 +492,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
-    setPendingSubmission(true);
+    setIsSubmitting(true);
     const data = new FormData();
 
     // Append basic fields
@@ -552,48 +561,13 @@ const AddProduct = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       console.log("Product created successfully:", response.data);
-      alert("Product added successfully!");
-      setFormData({
-        name: "",
-        price: "",
-        salePrice: "",
-        category: "",
-        subcategory: "",
-        collection: "",
-        type: "",
-        manufactureYear: "",
-        description: "",
-        brandId: "",
-        brandName: "",
-        leadTime: "",
-        stock: "",
-        sku: "",
-        materialCareInstructions: "",
-        productSpecificRecommendations: "",
-        Estimatedtimeleadforcustomization: "",
-        tags: [],
-        colors: [],
-        sizes: [],
-        technicalDimensions: {
-          length: "",
-          width: "",
-          height: "",
-          weight: "",
-        },
-        warrantyInfo: {
-          warrantyYears: "",
-          warrantyCoverage: [],
-        },
-        cadFile: null, // Changed from 'cad' to 'cadFile'
-        images: [],
-        mainImage: "",
-        readyToShip: false,
-      });
+      setShowSuccessDialog(true);
     } catch (error) {
       console.error("Error creating product:", error.response?.data || error);
       alert("Failed to add product. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-    setPendingSubmission(false);
   };
 
   // Add this new function near your other handlers
@@ -618,6 +592,12 @@ const AddProduct = () => {
         },
       };
     });
+  };
+
+  // Add success dialog
+  const handleCloseSuccessDialog = () => {
+    setShowSuccessDialog(false);
+    window.location.reload();
   };
 
   return (
@@ -1405,11 +1385,10 @@ const AddProduct = () => {
             className="btn update"
             type="button"
             onClick={handleOpenDialog}
-            disabled={pendingSubmission}
+            disabled={isSubmitting}
           >
-            ADD
+            {isSubmitting ? <CircularProgress size={24} /> : "ADD"}
           </button>
-          <button className="btn delete">DELETE</button>
           <button className="btn cancel">CANCEL</button>
         </div>{" "}
         {/* Confirmation Dialog */}
@@ -1420,6 +1399,17 @@ const AddProduct = () => {
           onConfirm={handleSubmit}
           onCancel={handleCloseDialog}
         />
+        <Dialog open={showSuccessDialog} onClose={handleCloseSuccessDialog}>
+          <DialogTitle>Success</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Product added successfully!</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseSuccessDialog} color="primary">
+              Done
+            </Button>
+          </DialogActions>
+        </Dialog>
       </form>
       {showCropModal && (
         <div className="modal-overlay-uploadimage">
