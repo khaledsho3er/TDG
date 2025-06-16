@@ -849,7 +849,15 @@ const AddProduct = () => {
               {/* Customization Options */}
               <div className="form-group">
                 <label>Customization Types (Select all that apply):</label>
-                <div style={{ marginTop: "10px" }}>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                    alignItems: "flex-start",
+                  }}
+                >
                   {[
                     "Color Options",
                     "Size Options",
@@ -863,6 +871,7 @@ const AddProduct = () => {
                       key={option}
                       style={{
                         display: "flex",
+                        flexDirection: "row",
                         alignItems: "center",
                         marginBottom: "8px",
                       }}
@@ -872,9 +881,9 @@ const AddProduct = () => {
                         value={option}
                         checked={customizationOptions.includes(option)}
                         onChange={handleCustomizationChange}
-                        style={{ marginRight: "8px" }}
+                        style={{ marginRight: "8px", marginTop: "3px" }}
                       />
-                      <label style={{ margin: 0 }}>{option}</label>
+                      <label style={{ width: "100%" }}>{option}</label>
                     </div>
                   ))}
                 </div>
