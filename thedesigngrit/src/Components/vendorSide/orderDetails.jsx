@@ -687,7 +687,8 @@ const OrderDetails = ({ order, onBack }) => {
                     {order.paymentDetails.transactionId || "Cash Dont Have ID"}
                   </p>
                   <p>
-                    {order.paymentDetails.paymentMethod === "cod" ? (
+                    {order.paymentDetails.paymentMethod === "cod" &&
+                    paymentStatus === "Pending" ? (
                       <select
                         value={paymentStatus}
                         onChange={handlePaymentStatusChange}
@@ -707,7 +708,7 @@ const OrderDetails = ({ order, onBack }) => {
                         <option value="Failed">Failed</option>
                       </select>
                     ) : (
-                      paymentStatus
+                      <span>{paymentStatus}</span>
                     )}
                   </p>
                 </Box>
