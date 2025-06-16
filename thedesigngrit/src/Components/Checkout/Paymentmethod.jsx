@@ -15,8 +15,7 @@ import {
 import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
-import OrderSentPopup from "../successMsgs/orderSubmit";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "../../Context/cartcontext.js";
 
@@ -35,7 +34,6 @@ function PaymentForm({
   const [iframeUrl, setIframeUrl] = useState(null);
   const { userSession } = useUser();
   const location = useLocation();
-  const navigate = useNavigate();
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
   const { resetCart } = useCart(); //  Get cart items from CartContexts
 
@@ -50,7 +48,7 @@ function PaymentForm({
       // Clear the URL parameters without refreshing the page
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [location]);
+  }, [location, onSuccess]);
 
   useEffect(() => {
     if (billData && billData.total) {
@@ -218,10 +216,10 @@ function PaymentForm({
     }
   };
 
-  const handleClosePopup = () => {
-    setShowSuccessPopup(false);
-    navigate("/");
-  };
+  // const handleClosePopup = () => {
+  //   setShowSuccessPopup(false);
+  //   navigate("/");
+  // };
 
   const handleCloseIframeModal = () => {
     setIframeModalOpen(false);
