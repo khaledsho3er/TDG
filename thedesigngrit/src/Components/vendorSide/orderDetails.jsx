@@ -515,7 +515,7 @@ const OrderDetails = ({ order, onBack }) => {
                   >
                     <span> {order.customerId.firstName}</span>
                     <span> {order.customerId.email}</span>
-                    <span> {order.customerId.phoneNumber}</span>
+                    <span> {order.billingDetails.phoneNumber}</span>
                   </div>
                 </div>
               </div>
@@ -580,6 +580,51 @@ const OrderDetails = ({ order, onBack }) => {
                 <div
                   style={{
                     fontFamily: "Montserrat",
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "10px 20px",
+                      alignItems: "center",
+                      padding: "10px",
+                      borderRadius: "5px",
+                      // maxWidth: "400px",
+                    }}
+                  >
+                    {/* Row 1 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.address}
+                    </span>
+
+                    {/* Row 2 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.label}
+                    </span>
+
+                    {/* Row 3 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.apartment}
+                    </span>
+
+                    {/* Row 4 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.floor}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    fontFamily: "Montserrat",
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr",
                     gap: "10px 20px",
@@ -590,21 +635,21 @@ const OrderDetails = ({ order, onBack }) => {
                   }}
                 >
                   {/* Row 1 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.address}
+                    {order.shippingDetails.Country}
                   </span>
 
                   {/* Row 2 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
+                  <p style={{ fontWeight: "bold", margin: 0 }}>City:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.label}
+                    {order.shippingDetails.city}
                   </span>
 
                   {/* Row 3 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
+                  <p style={{ fontWeight: "bold", margin: 0 }}>Zip Code:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.apartment}
+                    {order.shippingDetails.zipCode}
                   </span>
 
                   {/* Row 4 */}
