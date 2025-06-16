@@ -513,9 +513,9 @@ const OrderDetails = ({ order, onBack }) => {
                       gap: "12px",
                     }}
                   >
-                    <span> {order.customerId.firstName}</span>
-                    <span> {order.customerId.email}</span>
-                    <span> {order.billingDetails.phoneNumber}</span>
+                    <span> {order.customerId.firstName || "N/A"}</span>
+                    <span> {order.customerId.email || "N/A"}</span>
+                    <span> {order.billingDetails.phoneNumber || "N/A"}</span>
                   </div>
                 </div>
               </div>
@@ -600,25 +600,25 @@ const OrderDetails = ({ order, onBack }) => {
                     {/* Row 1 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.address}
+                      {order.shippingDetails.address || "N/A"}
                     </span>
 
                     {/* Row 2 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.label}
+                      {order.shippingDetails.label || "N/A"}
                     </span>
 
                     {/* Row 3 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.apartment}
+                      {order.shippingDetails.apartment || "N/A"}
                     </span>
 
                     {/* Row 4 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.floor}
+                      {order.shippingDetails.floor || "N/A"}
                     </span>
                   </div>
 
@@ -637,25 +637,19 @@ const OrderDetails = ({ order, onBack }) => {
                     {/* Row 1 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.Country}
+                      {order.shippingDetails.country || "N/A"}
                     </span>
 
                     {/* Row 2 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>City:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.city}
+                      {order.shippingDetails.city || "N/A"}
                     </span>
 
                     {/* Row 3 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Zip Code:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.zipCode}
-                    </span>
-
-                    {/* Row 4 */}
-                    <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
-                    <span style={{ margin: 0 }}>
-                      {order.shippingDetails.floor}
+                      {order.shippingDetails.zipCode || "N/A"}
                     </span>
                   </div>
                 </div>
@@ -728,7 +722,7 @@ const OrderDetails = ({ order, onBack }) => {
                   <p>Payment Status:</p>
                 </Box>
                 <Box sx={{ textAlign: "right" }}>
-                  <p>{order.paymentDetails.paymentMethod}</p>
+                  <p>{order.paymentDetails.paymentMethod || "N/A"}</p>
                   <p>
                     {order.paymentDetails.transactionId || "Cash Dont Have ID"}
                   </p>
@@ -754,7 +748,7 @@ const OrderDetails = ({ order, onBack }) => {
                         <option value="Failed">Failed</option>
                       </select>
                     ) : (
-                      <span>{paymentStatus}</span>
+                      <span>{paymentStatus || "N/A"}</span>
                     )}
                   </p>
                 </Box>
