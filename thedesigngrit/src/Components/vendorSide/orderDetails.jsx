@@ -62,6 +62,12 @@ const OrderDetails = ({ order, onBack }) => {
     }
   }, [order.note, order.notePostedAt]);
 
+  useEffect(() => {
+    if (filteredProducts.length > 0 && !selectedProduct) {
+      setSelectedProduct(filteredProducts[0]);
+    }
+  }, [filteredProducts, selectedProduct]);
+
   // Debug logging effect
   useEffect(() => {
     console.log("Order:", order);
