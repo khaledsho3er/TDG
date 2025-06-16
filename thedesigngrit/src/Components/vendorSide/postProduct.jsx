@@ -859,16 +859,22 @@ const AddProduct = () => {
                     "Design Modifications",
                     "Other",
                   ].map((option) => (
-                    <div key={option}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          value={option}
-                          checked={customizationOptions.includes(option)}
-                          onChange={handleCustomizationChange}
-                        />
-                        {option}
-                      </label>
+                    <div
+                      key={option}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        value={option}
+                        checked={customizationOptions.includes(option)}
+                        onChange={handleCustomizationChange}
+                        style={{ marginRight: "8px" }}
+                      />
+                      <label style={{ margin: 0 }}>{option}</label>
                     </div>
                   ))}
                 </div>

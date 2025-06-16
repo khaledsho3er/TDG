@@ -1338,8 +1338,8 @@ function ProductPage() {
           sx: {
             borderRadius: 4,
             background: "#f8f7f3",
-            minWidth: 400,
-            maxWidth: 500,
+            minWidth: 500,
+            maxWidth: 600,
             p: 2,
           },
         }}
