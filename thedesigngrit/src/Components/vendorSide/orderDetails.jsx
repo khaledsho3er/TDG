@@ -621,42 +621,43 @@ const OrderDetails = ({ order, onBack }) => {
                       {order.shippingDetails.floor}
                     </span>
                   </div>
-                </div>
-                <div
-                  style={{
-                    fontFamily: "Montserrat",
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "10px 20px",
-                    alignItems: "center",
-                    padding: "10px",
-                    borderRadius: "5px",
-                    // maxWidth: "400px",
-                  }}
-                >
-                  {/* Row 1 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
-                  <span style={{ margin: 0 }}>
-                    {order.shippingDetails.Country}
-                  </span>
 
-                  {/* Row 2 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>City:</p>
-                  <span style={{ margin: 0 }}>
-                    {order.shippingDetails.city}
-                  </span>
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "10px 20px",
+                      alignItems: "center",
+                      padding: "10px",
+                      borderRadius: "5px",
+                      // maxWidth: "400px",
+                    }}
+                  >
+                    {/* Row 1 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.Country}
+                    </span>
 
-                  {/* Row 3 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Zip Code:</p>
-                  <span style={{ margin: 0 }}>
-                    {order.shippingDetails.zipCode}
-                  </span>
+                    {/* Row 2 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>City:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.city}
+                    </span>
 
-                  {/* Row 4 */}
-                  <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
-                  <span style={{ margin: 0 }}>
-                    {order.shippingDetails.floor}
-                  </span>
+                    {/* Row 3 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Zip Code:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.zipCode}
+                    </span>
+
+                    {/* Row 4 */}
+                    <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
+                    <span style={{ margin: 0 }}>
+                      {order.shippingDetails.floor}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Box>
