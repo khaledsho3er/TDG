@@ -485,31 +485,40 @@ function ProductPage() {
                   {product.name}
                 </h3>
               )}
-              <IconButton
-                sx={{
-                  marginLeft: "8px",
-                  "&:hover": { backgroundColor: "#f0f0f0" },
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleFavorite(event);
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "4px",
                 }}
               >
-                {isFavorite ? (
-                  <FavoriteIcon sx={{ color: "red" }} />
-                ) : (
-                  <FavoriteBorderIcon sx={{ color: "#000" }} />
-                )}
-              </IconButton>
-              <IconButton
-                sx={{
-                  marginLeft: "4px",
-                  "&:hover": { backgroundColor: "#f0f0f0" },
-                }}
-                onClick={() => setInfoOpen(true)}
-              >
-                <InfoOutlinedIcon sx={{ color: "#6b7b58" }} />
-              </IconButton>
+                <IconButton
+                  sx={{
+                    marginLeft: "8px",
+                    "&:hover": { backgroundColor: "#f0f0f0" },
+                  }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleFavorite(event);
+                  }}
+                >
+                  {isFavorite ? (
+                    <FavoriteIcon sx={{ color: "red" }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ color: "#000" }} />
+                  )}
+                </IconButton>
+                <IconButton
+                  sx={{
+                    marginLeft: "4px",
+                    "&:hover": { backgroundColor: "#f0f0f0" },
+                  }}
+                  onClick={() => setInfoOpen(true)}
+                >
+                  <InfoOutlinedIcon sx={{ color: "#6b7b58" }} />
+                </IconButton>
+              </div>
             </div>
             <p className="product-brand">{product.brandId.brandName}</p>
             <br />
@@ -1365,12 +1374,18 @@ function ProductPage() {
             >
               Customization Options
             </Typography>
-            <Typography>
-              {Array.isArray(product.Customizationoptions) &&
-              product.Customizationoptions.length > 0
-                ? product.Customizationoptions.join(", ")
-                : "No customization options"}
-            </Typography>
+            {Array.isArray(product.Customizationoptions) &&
+            product.Customizationoptions.length > 0 ? (
+              <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
+                {product.Customizationoptions.map((option, idx) => (
+                  <li key={idx} style={{ fontSize: "1rem", color: "#333" }}>
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Typography>No customization options</Typography>
+            )}
           </Box>
           <Box sx={{ mb: 2 }}>
             <Typography
@@ -1422,15 +1437,34 @@ function ProductPage() {
             >
               Warranty Info
             </Typography>
-            <Typography>
-              {product.warrantyInfo
-                ? `Years: ${product.warrantyInfo.warrantyYears}, Coverage: ${
-                    Array.isArray(product.warrantyInfo.warrantyCoverage)
-                      ? product.warrantyInfo.warrantyCoverage.join(", ")
-                      : product.warrantyInfo.warrantyCoverage
-                  }`
-                : "No warranty info"}
-            </Typography>
+            {product.warrantyInfo ? (
+              <>
+                <Typography sx={{ fontWeight: "bold", mb: 1 }}>
+                  Years: {product.warrantyInfo.warrantyYears} years
+                </Typography>
+                <Typography sx={{ fontWeight: "bold", color: "#6b7b58" }}>
+                  Coverage:
+                </Typography>
+                <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
+                  {Array.isArray(product.warrantyInfo.warrantyCoverage)
+                    ? product.warrantyInfo.warrantyCoverage.map((item, idx) => (
+                        <li
+                          key={idx}
+                          style={{ fontSize: "1rem", color: "#333" }}
+                        >
+                          {item}
+                        </li>
+                      ))
+                    : product.warrantyInfo.warrantyCoverage && (
+                        <li style={{ fontSize: "1rem", color: "#333" }}>
+                          {product.warrantyInfo.warrantyCoverage}
+                        </li>
+                      )}
+                </ul>
+              </>
+            ) : (
+              "No warranty info"
+            )}
           </Box>
         </DialogContent>
       </Dialog>
