@@ -229,6 +229,7 @@ function PaymentForm({
   };
 
   console.log("iframeUrl in render:", iframeUrl);
+  setShowSuccessPopup(true);
   return (
     <Box className="paymentmethod-container">
       <Box className="paymentmethod-firstrow-firstcolumn">
