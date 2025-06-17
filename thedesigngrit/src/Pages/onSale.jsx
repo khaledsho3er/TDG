@@ -168,7 +168,7 @@ function OnSale() {
           xs={12}
           sm={4}
           md={3}
-          sx={{ paddingRight: "150px !important" }}
+          sx={{ paddingLeft: "150px !important" }}
         >
           <FilterSection
             onFilterChange={handleFilterChange}
@@ -176,14 +176,7 @@ function OnSale() {
             currentFilters={filters}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={9}
-          container
-          spacing={3}
-          sx={{ paddingRight: "150px !important" }}
-        >
+        <Grid item xs={12} md={9} sx={{ paddingLeft: "150px !important" }}>
           {isLoading ? (
             <Grid
               item
