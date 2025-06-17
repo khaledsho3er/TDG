@@ -111,7 +111,24 @@ const ExploreConcepts = () => {
                     onClick={() => navigate(`/product/${node.productId._id}`)}
                   >
                     <Tooltip
-                      sx={{ backgroundColor: "#fff" }}
+                      slotProps={{
+                        popper: {
+                          sx: {
+                            "& .MuiTooltip-tooltip": {
+                              backgroundColor: "#fff",
+                              color: "#2d2d2d",
+                              borderRadius: "8px",
+                              boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                              padding: 0,
+                            },
+                            "& .MuiTooltip-arrow": {
+                              color: "#fff",
+                            },
+                          },
+                        },
+                      }}
+                      arrow
+                      placement="top"
                       title={
                         <Box
                           sx={{
@@ -145,8 +162,6 @@ const ExploreConcepts = () => {
                           <MdOutlineArrowForwardIos />
                         </Box>
                       }
-                      placement="top"
-                      arrow
                     >
                       <Box
                         sx={{

@@ -482,7 +482,7 @@ const SignUpForm = () => {
       <AccountSentPopup show={isPopupVisible} closePopup={closePopup} />
       <AccountExistsPopup
         show={emailExistsPopup}
-        onClose={() => {
+        closePopup={() => {
           setEmailExistsPopup(false);
           navigate("/signup");
         }}
