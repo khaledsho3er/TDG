@@ -186,7 +186,8 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     <Typography
                       variant="body1"
                       sx={{
-                        fontFamily: "Montserrat",
+                        fontFamily: "Horizon",
+                        fontSize: "0.8rem !important",
                         fontWeight:
                           highlightedItem === item.id ? "bold" : "normal",
                       }}
@@ -265,7 +266,11 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
 
                     <Typography
                       variant="body2"
-                      sx={{ color: "gray", fontFamily: "Montserrat" }}
+                      sx={{
+                        color: "gray",
+                        fontFamily: "Montserrat",
+                        fontWeight: "bold",
+                      }}
                     >
                       {` ${item.unitPrice.toLocaleString("en-US", {
                         minimumFractionDigits: 2,

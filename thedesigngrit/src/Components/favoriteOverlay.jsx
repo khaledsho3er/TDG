@@ -201,10 +201,7 @@ const FavoritesOverlay = ({ open, onClose }) => {
                     {product.salePrice.toLocaleString()} E£
                   </p>
                 )}
-                <span>
-                  {product.description.split(" ").slice(0, 10).join(" ") +
-                    (product.description.split(" ").length > 10 ? "..." : "")}
-                </span>
+                <span>{product.brandId.brandName}</span>
               </div>
               <div className="notification-actions-vendor">
                 <div

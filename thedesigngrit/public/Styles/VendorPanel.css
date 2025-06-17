@@ -370,11 +370,13 @@
 }
 .notification-details-vendor {
   flex: 1;
+  font-family: "Montserrat";
 }
 
 .notification-details-vendor h4 {
   margin: 0;
   font-size: 14px;
+  font-family: "Horizon";
 }
 
 .notification-details-vendor p {
