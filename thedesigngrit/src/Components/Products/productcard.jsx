@@ -111,7 +111,11 @@ const ProductCard = ({ product }) => {
             component="img"
             sx={{
               width: "100%",
-              height: "100%",
+              aspectRatio: {
+                xs: "1 / 1", // square on mobile
+                sm: "4 / 3", // wider on tablet
+                md: "16 / 9", // widescreen on big screens
+              },
               objectFit: "cover",
             }}
             image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
