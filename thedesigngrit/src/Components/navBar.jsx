@@ -799,7 +799,13 @@ function Header() {
                   }}
                 >
                   <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
-                  <hr style={{ color: "rgba(255, 255, 255, 0.5)" }} />
+                  <hr
+                    style={{
+                      color: "rgba(255, 255, 255, 0.5)",
+                      width: "90%",
+                      margin: "0 auto",
+                    }}
+                  />
                   <MenuItem onClick={handleLogoutClick}>
                     <IoLogOutOutline style={{ marginRight: "10px" }} /> Logout
                   </MenuItem>

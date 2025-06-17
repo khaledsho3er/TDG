@@ -53,13 +53,17 @@ function PaymentForm({
       const { success, error_occured } = event.data;
       if (success) {
         onSubmit();
+        onSuccess(); // Show success popup in parent
+        resetCart(); // Clear cart only on success
+        setIframeModalOpen(false); // Close iframe
+        setIframeUrl(null); // Clean iframe src
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [onSubmit]);
+  }, [onSubmit, onSuccess]);
 
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
@@ -178,8 +182,6 @@ function PaymentForm({
               "Failed to connect to payment gateway. Please try again later."
           );
         }
-        onSuccess(); // ✅ Trigger success popup in parent
-        resetCart();
       } else if (paymentMethod === "cod") {
         // Handle Cash on Delivery
         console.log("COD selected, calling onSubmit()");
