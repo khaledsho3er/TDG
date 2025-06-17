@@ -6,7 +6,10 @@ function VendorsProductsGrid({ vendor }) {
   const isMobile = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
-    if (!vendor?._id) return;
+    if (!vendor?._id) {
+      setProducts([]);
+      return;
+    }
 
     fetch(
       `https://api.thedesigngrit.com/api/products/getproducts/brand/${vendor._id}`
@@ -21,7 +24,10 @@ function VendorsProductsGrid({ vendor }) {
         console.log("Fetched Products:", data);
         setProducts(data);
       })
-      .catch((error) => console.error("Error fetching products:", error));
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setProducts([]);
+      });
   }, [vendor._id]);
 
   return (
