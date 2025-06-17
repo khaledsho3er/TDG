@@ -55,22 +55,23 @@ const TopFilter = ({
   return (
     <Box
       sx={{
+        width: "100%",
         display: "flex",
-        justifyContent: "space-between", // pushes children to edges
+        justifyContent: "space-between",
         alignItems: "center",
-        padding: { xs: "15px", sm: "20px", md: "25px 70px" },
-        flexDirection: { xs: "column", sm: "row" }, // stack on mobile, row on desktop
+        padding: { xs: "15px", sm: "20px", md: "25px" },
         gap: { xs: 2, sm: 3 },
+        flexDirection: { xs: "column", sm: "row" },
       }}
     >
+      {/* Left side - Filter buttons */}
       <Box
         sx={{
           display: "flex",
           gap: 2,
           justifyContent: "flex-start",
-          width: { xs: "100%", sm: "auto", md: "100%", lg: "100%" }, // full width on mobile, auto on desktop
-          flexWrap: { xs: "wrap", sm: "nowrap" },
-          paddingLeft: { sm: 0, md: 0, lg: 20 }, // remove extra left padding on desktop if any
+          width: { xs: "100%", sm: "auto" },
+          flexWrap: "wrap",
         }}
       >
         <Button
@@ -93,20 +94,21 @@ const TopFilter = ({
         </Button>
       </Box>
 
+      {/* Right side - Sort dropdown */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           gap: 2,
           justifyContent: "flex-end",
-          width: { xs: "100%", sm: "auto" }, // full width on mobile, auto on desktop
-          marginTop: { xs: 2, sm: 0 }, // margin top on mobile only
+          width: { xs: "100%", sm: "auto" },
         }}
       >
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
             fontSize: { xs: 12, sm: 13 },
+            whiteSpace: "nowrap",
           }}
         >
           Sort By
@@ -114,7 +116,7 @@ const TopFilter = ({
         <FormControl
           size="small"
           sx={{
-            minWidth: 140,
+            minWidth: { xs: "100%", sm: 140 },
             "& .MuiOutlinedInput-root": {
               fontSize: 13,
               "& fieldset": { border: "none" },
