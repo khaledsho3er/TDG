@@ -159,14 +159,27 @@ function ReadyToShip() {
         />{" "}
       </Box>
       <Grid container spacing={2} sx={{ padding: 2 }}>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid
+          item
+          xs={12}
+          sm={4}
+          md={3}
+          sx={{ paddingRight: "150px !important" }}
+        >
           <FilterSection
             onFilterChange={handleFilterChange}
             products={products}
             currentFilters={filters}
           />
         </Grid>
-        <Grid item xs={12} md={9} container spacing={3}>
+        <Grid
+          item
+          xs={12}
+          md={9}
+          container
+          spacing={3}
+          sx={{ paddingRight: "150px !important" }}
+        >
           {isLoading ? (
             <Grid
               item

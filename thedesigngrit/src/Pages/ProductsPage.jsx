@@ -209,7 +209,7 @@ function ProductsPage() {
             currentFilters={filters}
           />
         </Grid>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={9} sx={{ paddingLeft: "150px !important" }}>
           {isLoading ? (
             <Box
               sx={{
