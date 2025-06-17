@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useUser } from "../utils/userContext";
+import AccountExistsPopup from "./successMsgs/accountExists";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -50,6 +51,8 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState(0);
   const [showRequirements, setShowRequirements] = useState(false);
+  const [emailExistsPopup, setEmailExistsPopup] = useState(false);
+
   const passwordFieldRef = useRef(null);
 
   // Add media query for medium-sized laptops
@@ -169,9 +172,11 @@ const SignUpForm = () => {
         error.response.data.message &&
         error.response.data.message.toLowerCase().includes("email")
       ) {
+        setEmailExistsPopup(true);
+
         setError("email", {
           type: "manual",
-          message: "This email is already in use",
+          message: "This email is already exists.",
         });
       }
     }
@@ -475,6 +480,10 @@ const SignUpForm = () => {
         </p>
       </form>
       <AccountSentPopup show={isPopupVisible} closePopup={closePopup} />
+      <AccountExistsPopup
+        show={emailExistsPopup}
+        onClose={() => setEmailExistsPopup(false)}
+      />
     </Box>
   );
 };
