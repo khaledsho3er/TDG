@@ -218,7 +218,8 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                           color: "white",
                           "&:hover": {
                             backgroundColor:
-                              item.quantity === 1 ? "transparent" : "#5a6a47",
+                              item.quantity === 1 ? "#2d2d2d" : "#5a6a47",
+                            cursor: item.quantity === 1 ? "pointer" : "pointer",
                           },
                           width: "20px",
                           height: "20px",
