@@ -56,11 +56,11 @@ const TopFilter = ({
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
-        justifyContent: "space-between",
+        justifyContent: "space-between", // pushes children to edges
         alignItems: "center",
-        gap: { xs: 2, sm: 3 },
         padding: { xs: "15px", sm: "20px", md: "25px 70px" },
+        flexDirection: { xs: "column", sm: "row" }, // stack on mobile, row on desktop
+        gap: { xs: 2, sm: 3 },
       }}
     >
       <Box
@@ -70,7 +70,7 @@ const TopFilter = ({
           justifyContent: "flex-start",
           width: { xs: "100%", sm: "auto", md: "100%", lg: "100%" }, // full width on mobile, auto on desktop
           flexWrap: { xs: "wrap", sm: "nowrap" },
-          paddingLeft: { sm: 0, md: 0, lg: 0 }, // remove extra left padding on desktop if any
+          paddingLeft: { sm: 0, md: 0, lg: 20 }, // remove extra left padding on desktop if any
         }}
       >
         <Button
@@ -93,7 +93,16 @@ const TopFilter = ({
         </Button>
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          justifyContent: "flex-end",
+          width: { xs: "100%", sm: "auto" }, // full width on mobile, auto on desktop
+          marginTop: { xs: 2, sm: 0 }, // margin top on mobile only
+        }}
+      >
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
