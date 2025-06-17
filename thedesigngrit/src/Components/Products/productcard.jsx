@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
   return (
     <Box
       sx={{
-        width: "110%",
+        width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -84,7 +84,7 @@ const ProductCard = ({ product }) => {
     >
       <Card
         sx={{
-          width: "80%",
+          width: "100%",
           borderRadius: "16px",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
@@ -96,15 +96,28 @@ const ProductCard = ({ product }) => {
         onClick={handleCardClick}
       >
         {/* Product Image */}
-        <CardMedia
-          component="img"
+        <Box
           sx={{
-            height: { xs: 280, sm: 330, md: "100%" },
-            objectFit: "cover",
+            width: "100%",
+            aspectRatio: {
+              xs: "4 / 3",
+              sm: "4 / 3",
+              md: "16 / 9",
+            },
+            overflow: "hidden",
           }}
-          image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-          alt={product.name}
-        />
+        >
+          <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+            image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+            alt={product.name}
+          />
+        </Box>
         {product.stock === 0 ? (
           <Box
             sx={{
@@ -172,11 +185,11 @@ const ProductCard = ({ product }) => {
       </Card>
 
       {/* Product Information */}
-      <CardContent sx={{ padding: "10px", width: "250px" }}>
+      <CardContent sx={{ p: 2 }}>
         <Typography
           variant="h6"
           sx={{
-            fontSize: "16px",
+            fontSize: { xs: "14px", sm: "16px" },
             fontWeight: 700,
             fontFamily: "Montserrat",
             textTransform: "uppercase",
