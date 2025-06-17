@@ -106,11 +106,12 @@ const ExploreConcepts = () => {
                       top: `${node.y * 100}%`,
                       transform: "translate(-50%, -50%)",
                       zIndex: 10,
+                      backgroundColor: "transparent",
                     }}
                     onClick={() => navigate(`/product/${node.productId._id}`)}
                   >
                     <Tooltip
-                      sx={{ backgroundColor: "transparent" }}
+                      sx={{ backgroundColor: "#fff" }}
                       title={
                         <Box
                           sx={{
