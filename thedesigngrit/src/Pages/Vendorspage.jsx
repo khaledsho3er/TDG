@@ -13,9 +13,9 @@ function Vendorspage() {
     <Box>
       <Header />
       <PageDescription
-        name={"Partners"}
+        name={"Brands"}
         description={
-          "Welcome to our Partners Showcase, where innovation meets collaboration! Discover an exclusive lineup of visionary organisations and influential allies that drive our success. Each partner is a testament to shared ambition and excellence, contributing to a vibrant ecosystem of mutual growth. Dive into dynamic profiles to learn about their groundbreaking work and how our synergies pave the way for transformative impacts. Join us in celebrating these powerful partnerships that empower us to push boundaries and achieve new heights together. Explore, connect, and be inspired by the incredible force of our collective journey!"
+          "Explore the heart of TheDesignGrit—our brands. They are the foundation of our mission, each bringing unique artistry and unmatched quality to the platform. By showcasing these creators, we’re building a collective that empowers local talent and delivers authentic Egyptian craftsmanship to your home."
         }
       />
       <Box

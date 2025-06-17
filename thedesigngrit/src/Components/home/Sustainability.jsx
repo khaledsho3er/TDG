@@ -79,7 +79,7 @@ const SustainabilitySection = () => {
               }}
               onClick={() => navigate("/about")}
             >
-              Find more
+              Find Out More
             </button>
           </CardActions>
         </CardContent>

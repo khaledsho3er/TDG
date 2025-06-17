@@ -183,7 +183,7 @@ const ExploreConcepts = () => {
                   </Box>
                 ))}
 
-                <CardContent className="concept-card-content">
+                {/* <CardContent className="concept-card-content">
                   <IconButton
                     className="concept-shopping-icon"
                     onClick={() =>
@@ -194,7 +194,7 @@ const ExploreConcepts = () => {
                   >
                     <ShoppingBagIcon />
                   </IconButton>
-                </CardContent>
+                </CardContent> */}
               </Card>
             );
           })
