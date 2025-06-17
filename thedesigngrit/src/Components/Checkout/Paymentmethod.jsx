@@ -17,8 +17,7 @@ import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "../../Context/cartcontext.js";
-import { useLocation, useNavigate } from "react-router-dom";
-import OrderSentPopup from "../successMsgs/orderSubmit.jsx";
+import { useLocation } from "react-router-dom";
 
 function PaymentForm({
   onSubmit,
@@ -37,8 +36,6 @@ function PaymentForm({
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
   const { resetCart } = useCart(); //  Get cart items from CartContexts
   const location = useLocation();
-  const navigate = useNavigate();
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   // Check URL for payment success
   useEffect(() => {
@@ -47,8 +44,7 @@ function PaymentForm({
     const status = searchParams.get("status");
 
     if (orderId && status === "success") {
-      setShowSuccessPopup(true);
-
+      onSuccess(); // ✅ Trigger success popup in parent
       // Clear the URL parameters without refreshing the page
       window.history.replaceState({}, document.title, window.location.pathname);
     }
@@ -71,13 +67,14 @@ function PaymentForm({
       const { success, error_occured } = event.data;
       if (success) {
         onSubmit();
+        onSuccess(); // ✅ Trigger success popup in parent
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [onSubmit, resetCart]);
+  }, [onSubmit, onSuccess, resetCart]);
 
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
@@ -186,8 +183,7 @@ function PaymentForm({
           // Set the iframe URL
           setIframeUrl(result.iframeUrl);
           setIframeModalOpen(true);
-
-          // Log the iframe URL for debugging
+          onSuccess(); // ✅ Trigger success popup in parent
           console.log("Setting iframe URL to:", result.iframeUrl);
         } catch (paymentError) {
           console.error("Payment initialization failed:", paymentError);
@@ -218,10 +214,10 @@ function PaymentForm({
     }
   };
 
-  const handleClosePopup = () => {
-    setShowSuccessPopup(false);
-    navigate("/");
-  };
+  // const handleClosePopup = () => {
+  //   setShowSuccessPopup(false);
+  //   navigate("/");
+  // };
 
   const handleCloseIframeModal = () => {
     setIframeModalOpen(false);
@@ -382,10 +378,6 @@ function PaymentForm({
         shippingFee={billData.shippingFee}
         total={billData.total}
       />
-
-      {/* Add OrderSentPopup */}
-      <OrderSentPopup show={showSuccessPopup} closePopup={handleClosePopup} />
-
       <Dialog
         open={iframeModalOpen}
         onClose={handleCloseIframeModal}
