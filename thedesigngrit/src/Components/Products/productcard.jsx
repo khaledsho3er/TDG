@@ -77,7 +77,7 @@ const ProductCard = ({ product }) => {
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Card
         sx={{
-          width: "80%",
+          width: "70%",
           borderRadius: "16px",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
