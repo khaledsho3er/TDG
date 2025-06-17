@@ -10,8 +10,9 @@ import { BsExclamationOctagon } from "react-icons/bs";
 const RelatedProducts = ({ productId }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   // const [categories, setCategories] = useState([]);
-  const [categoryNames, setCategoryNames] = useState({});
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // Update window width on resize
   useEffect(() => {
     const handleResize = () => {
@@ -40,33 +41,24 @@ const RelatedProducts = ({ productId }) => {
   }, [productId]);
   // Fetch categories
   useEffect(() => {
-    const fetchCategoryName = async (id) => {
+    const fetchCategories = async () => {
+      setIsLoading(true);
       try {
-        const res = await axios.get(
-          `https://api.thedesigngrit.com/api/categories/categories/${id}`
+        const response = await fetch(
+          "https://api.thedesigngrit.com/api/categories/categories/"
         );
-        return res.data.name;
+        const data = await response.json();
+        setCategories(data);
       } catch (error) {
-        console.error("Error fetching category name:", error);
-        return "Unknown Category";
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    const fetchAllCategoryNames = async () => {
-      const namesMap = {};
-      for (const product of relatedProducts) {
-        if (!categoryNames[product.category]) {
-          const name = await fetchCategoryName(product.category);
-          namesMap[product.category] = name;
-        }
-      }
-      setCategoryNames((prev) => ({ ...prev, ...namesMap }));
-    };
+    fetchCategories();
+  }, []);
 
-    if (relatedProducts.length > 0) {
-      fetchAllCategoryNames();
-    }
-  }, [relatedProducts, categoryNames]);
   return (
     <div className="related-products-container">
       {relatedProducts.length > 0 ? (
@@ -96,6 +88,10 @@ const RelatedProducts = ({ productId }) => {
           className="related-swiper"
         >
           {relatedProducts.map((product) => {
+            const category = categories.find(
+              (cat) => cat._id === product.category
+            );
+            const categoryName = category ? category.name : "Unknown Category";
             return (
               <SwiperSlide key={product._id}>
                 <Link
@@ -112,7 +108,7 @@ const RelatedProducts = ({ productId }) => {
                     </div>
                     <div className="related-info">
                       <p className="related-category">
-                        {categoryNames[product.category] || "Loading..."}
+                        {categoryName || "Category"}
                       </p>
                       <h3 className="related-name">{product.name}</h3>
                       {product.salePrice ? (
