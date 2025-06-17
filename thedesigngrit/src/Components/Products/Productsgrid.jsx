@@ -41,7 +41,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                 sm: "repeat(2, 1fr)",
                 md: "repeat(3, 1fr)",
               },
-              gap: { xs: 2, sm: 3 },
+              gap: { xs: 1, sm: 2 },
             }}
           >
             {currentProducts.map((product) => (

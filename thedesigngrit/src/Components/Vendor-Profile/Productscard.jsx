@@ -124,7 +124,7 @@ const VendorProductsCard = ({ vendor, products }) => {
                       </h3>
                       <p
                         className="related-price"
-                        style={{ fontSize: "15px", color: "#ccc" }}
+                        style={{ fontSize: "15px", color: "#2d2d2d" }}
                       >
                         {product.salePrice ? (
                           <span
