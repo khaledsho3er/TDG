@@ -321,6 +321,7 @@ function Checkout() {
         <PaymentForm
           onSubmit={handlePaymentSubmit}
           onSuccess={() => setShowPopup(true)} // ✅ Central control
+          resetCart={resetCart}
           paymentData={paymentData}
           onChange={handlePaymentChange}
           errors={paymentErrors}

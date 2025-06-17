@@ -22,6 +22,7 @@ import { useLocation } from "react-router-dom";
 function PaymentForm({
   onSubmit,
   onSuccess,
+  resetCart,
   paymentData,
   onChange,
   billData,
@@ -34,7 +35,6 @@ function PaymentForm({
   const [iframeUrl, setIframeUrl] = useState(null);
   const { userSession } = useUser();
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
-  const { resetCart } = useCart(); //  Get cart items from CartContexts
   const location = useLocation();
 
   // Check URL for payment success
@@ -68,6 +68,7 @@ function PaymentForm({
       if (success) {
         onSubmit();
         onSuccess(); // ✅ Trigger success popup in parent
+        resetCart(); // Reset cart after successful payment
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
       }
@@ -184,6 +185,7 @@ function PaymentForm({
           setIframeUrl(result.iframeUrl);
           setIframeModalOpen(true);
           onSuccess(); // ✅ Trigger success popup in parent
+          resetCart();
           console.log("Setting iframe URL to:", result.iframeUrl);
         } catch (paymentError) {
           console.error("Payment initialization failed:", paymentError);
