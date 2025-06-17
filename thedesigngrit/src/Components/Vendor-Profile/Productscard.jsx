@@ -19,9 +19,10 @@ const VendorProductsCard = ({ vendor, products = [] }) => {
           "https://api.thedesigngrit.com/api/categories/categories/"
         );
         const data = await response.json();
-        setCategories(data);
+        setCategories(Array.isArray(data) ? data : []); // Ensure data is an array
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setCategories([]); // Set to empty array on error
       } finally {
         setIsLoading(false);
       }
@@ -95,9 +96,9 @@ const VendorProductsCard = ({ vendor, products = [] }) => {
         centeredSlides={products.length === 1}
       >
         {products.map((product) => {
-          const category = categories.find(
-            (cat) => cat._id === product.category
-          );
+          const category = Array.isArray(categories)
+            ? categories.find((cat) => cat._id === product.category)
+            : undefined;
           const categoryName = category ? category.name : "Unknown Category";
 
           return (

@@ -26,10 +26,10 @@ function VendorCatalogs({ vendorID }) {
         );
         if (!response.ok) throw new Error("Failed to fetch catalogs");
         const data = await response.json();
-        setCatalogs(data);
+        setCatalogs(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching catalogs:", error);
-        setCatalogs([]); // fallback to empty array
+        setCatalogs([]);
       } finally {
         setIsLoading(false);
       }
@@ -38,10 +38,9 @@ function VendorCatalogs({ vendorID }) {
     if (vendorID) fetchCatalogs();
   }, [vendorID]);
 
-  const visibleItems = catalogs.slice(
-    currentIndex,
-    currentIndex + itemsPerPage
-  );
+  const visibleItems = Array.isArray(catalogs)
+    ? catalogs.slice(currentIndex, currentIndex + itemsPerPage)
+    : [];
 
   // const handleNext = () => {
   //   if (currentIndex + itemsPerPage < catalogs.length) {
@@ -88,7 +87,7 @@ function VendorCatalogs({ vendorID }) {
           <Typography sx={{ textAlign: "center", mt: 5 }}>
             Loading catalogs...
           </Typography>
-        ) : catalogs.length === 0 ? (
+        ) : Array.isArray(catalogs) && catalogs.length === 0 ? (
           <Box
             sx={{
               padding: "40px 0",
@@ -103,7 +102,6 @@ function VendorCatalogs({ vendorID }) {
             </Typography>
           </Box>
         ) : isMobile ? (
-          // Mobile view with Swiper
           <Box sx={{ position: "relative" }}>
             <Swiper
               modules={[Navigation, Pagination]}
@@ -114,8 +112,8 @@ function VendorCatalogs({ vendorID }) {
                 el: ".swiper-pagination",
                 type: "bullets",
               }}
-              loop={catalogs.length > 1}
-              navigation={false} // Disable default navigation
+              loop={Array.isArray(catalogs) && catalogs.length > 1}
+              navigation={false}
               onSwiper={(swiper) => {
                 swiperRef.current = swiper;
               }}
@@ -145,84 +143,27 @@ function VendorCatalogs({ vendorID }) {
               ))}
             </Swiper>
 
-            {/* Custom navigation and pagination container */}
             <Box
+              className="swiper-pagination"
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "20px 0",
-                marginTop: "10px",
-                flexDirection: "row-reverse",
+                justifyContent: "flex-start",
+                "& .swiper-pagination-bullet": {
+                  backgroundColor: "#2d2d2d",
+                  opacity: 0.5,
+                  margin: "0 4px",
+                },
+                "& .swiper-pagination-bullet-active": {
+                  opacity: 1,
+                  backgroundColor: "#2d2d2d",
+                },
               }}
-            >
-              {/* Pagination dots on the left */}
-              <Box
-                className="swiper-pagination"
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  "& .swiper-pagination-bullet": {
-                    backgroundColor: "#2d2d2d",
-                    opacity: 0.5,
-                    margin: "0 4px",
-                  },
-                  "& .swiper-pagination-bullet-active": {
-                    opacity: 1,
-                    backgroundColor: "#2d2d2d",
-                  },
-                }}
-              />
-
-              {/* Navigation buttons on the right */}
-              {/* <Box sx={{ display: "flex", gap: "10px" }}>
-                <IconButton
-                  onClick={() => swiperRef.current?.slidePrev()}
-                  sx={{
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
-                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                    width: "35px",
-                    height: "35px",
-                  }}
-                >
-                  <ArrowBackIosNewIcon sx={{ fontSize: "16px" }} />
-                </IconButton>
-                <IconButton
-                  onClick={() => swiperRef.current?.slideNext()}
-                  sx={{
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
-                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                    width: "35px",
-                    height: "35px",
-                  }}
-                >
-                  <ArrowForwardIosIcon sx={{ fontSize: "16px" }} />
-                </IconButton>
-              </Box> */}
-            </Box>
+            />
           </Box>
         ) : (
           // Desktop view with Grid
-          <>
-            {/* <IconButton
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              sx={{
-                position: "absolute",
-                left: "50px",
-                top: "95%",
-                transform: "translateY(-50%)",
-                zIndex: 1,
-                backgroundColor: "rgba(255, 255, 255, 0.7)",
-                "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
-                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <ArrowBackIosNewIcon />
-            </IconButton> */}
-
+          Array.isArray(catalogs) &&
+          catalogs.length > 0 && (
             <Grid container spacing={2}>
               {visibleItems.map((item) => (
                 <Grid item xs={12} sm={6} md={2.4} key={item._id}>
@@ -245,24 +186,7 @@ function VendorCatalogs({ vendorID }) {
                 </Grid>
               ))}
             </Grid>
-
-            {/* <IconButton
-              onClick={handleNext}
-              disabled={currentIndex + itemsPerPage >= catalogs.length}
-              sx={{
-                position: "absolute",
-                right: "50px",
-                top: "95%",
-                transform: "translateY(-50%)",
-                zIndex: 1,
-                backgroundColor: "rgba(255, 255, 255, 0.7)",
-                "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
-                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <ArrowForwardIosIcon />
-            </IconButton> */}
-          </>
+          )
         )}
       </Box>
     </Box>

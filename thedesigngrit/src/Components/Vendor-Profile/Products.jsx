@@ -22,7 +22,7 @@ function VendorsProductsGrid({ vendor }) {
       })
       .then((data) => {
         console.log("Fetched Products:", data);
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
@@ -87,7 +87,16 @@ function VendorsProductsGrid({ vendor }) {
           margin: "0 auto",
         }}
       >
-        <VendorProductsCard vendor={vendor} products={products} />
+        {Array.isArray(products) && products.length > 0 ? (
+          <VendorProductsCard vendor={vendor} products={products} />
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{ textAlign: "center", mt: 4, color: "gray", width: "100%" }}
+          >
+            No products available for this vendor yet.
+          </Typography>
+        )}
       </Grid>
     </Box>
   );

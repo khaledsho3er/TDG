@@ -68,9 +68,13 @@ function VendorProfile() {
       <Header />
       <VendorProfileHero vendor={vendor} />
       <VendorProfileHeader vendor={vendor} />
-      <VendorCatalogs vendorID={vendor._id} />
-      <VendorCategoriesGrid vendor={vendor} />
-      <VendorsProductsGrid vendor={vendor} />
+      {vendor?._id && (
+        <>
+          <VendorCatalogs vendorID={vendor._id} />
+          <VendorCategoriesGrid vendor={vendor} />
+          <VendorsProductsGrid vendor={vendor} />
+        </>
+      )}
       <Footer />
     </Box>
   );

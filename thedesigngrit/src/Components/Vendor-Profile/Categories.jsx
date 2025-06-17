@@ -16,19 +16,34 @@ const VendorCategoriesgrid = ({ vendor }) => {
   const isTablet = useMediaQuery("(max-width:1024px)");
 
   useEffect(() => {
-    fetch(`https://api.thedesigngrit.com/api/brand/${vendor._id}/types`)
-      .then((response) => {
+    const fetchTypes = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/brand/${vendor._id}/types`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
-        return response.json();
-      })
-      .then((data) => setTypes(data))
-      .catch((error) => console.error("Error fetching types:", error))
-      .finally(() => setIsLoading(false));
+        const data = await response.json();
+        setTypes(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching types:", error);
+        setTypes([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (vendor?._id) {
+      fetchTypes();
+    }
   }, [vendor._id]);
 
   const getSlidesPerView = () => {
+    if (!Array.isArray(types) || types.length === 0) {
+      return 1;
+    }
     if (isMobile) return 1;
     if (isTablet) return 2;
     return 3;
@@ -78,33 +93,35 @@ const VendorCategoriesgrid = ({ vendor }) => {
           {vendor.brandName}'s Types
         </Typography>
 
-        {types.length > 3 && !isMobile && (
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton
-              onClick={handlePrev}
-              sx={{
-                bgcolor: "#f5f5f5",
-                "&:hover": { bgcolor: "#e0e0e0" },
-              }}
-            >
-              <ChevronLeft />
-            </IconButton>
-            <IconButton
-              onClick={handleNext}
-              sx={{
-                bgcolor: "#f5f5f5",
-                "&:hover": { bgcolor: "#e0e0e0" },
-              }}
-            >
-              <ChevronRight />
-            </IconButton>
-          </Box>
-        )}
+        {Array.isArray(types) &&
+          types.length > getSlidesPerView() &&
+          !isMobile && (
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <IconButton
+                onClick={handlePrev}
+                sx={{
+                  bgcolor: "#f5f5f5",
+                  "&:hover": { bgcolor: "#e0e0e0" },
+                }}
+              >
+                <ChevronLeft />
+              </IconButton>
+              <IconButton
+                onClick={handleNext}
+                sx={{
+                  bgcolor: "#f5f5f5",
+                  "&:hover": { bgcolor: "#e0e0e0" },
+                }}
+              >
+                <ChevronRight />
+              </IconButton>
+            </Box>
+          )}
       </Box>
 
       {isLoading ? (
         <Typography sx={{ p: 2, color: "gray" }}>Loading...</Typography>
-      ) : types.length === 0 ? (
+      ) : Array.isArray(types) && types.length === 0 ? (
         <Box
           sx={{
             padding: "40px 0",
@@ -129,7 +146,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
             spaceBetween={20}
             slidesPerView={getSlidesPerView()}
             pagination={isMobile ? { clickable: true } : false}
-            loop={types.length > getSlidesPerView()}
+            loop={Array.isArray(types) && types.length > getSlidesPerView()}
             navigation={false}
             className="vendor-types-swiper"
             style={{ padding: "10px 0 30px 0" }}
