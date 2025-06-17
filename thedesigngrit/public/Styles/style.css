@@ -543,7 +543,7 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 11px;
+  gap: 6px;
 }
 /* Favorites overlay styling */
 .notification-actions-vendor {

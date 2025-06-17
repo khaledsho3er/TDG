@@ -744,9 +744,9 @@ function Header() {
                   onClick={handleAvatarClick}
                   sx={{
                     cursor: "pointer",
-                    width: "35px",
-                    height: "35px",
-                    marginTop: "4px",
+                    width: "30px",
+                    height: "30px",
+                    marginTop: "0px",
                   }}
                 >
                   {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
@@ -774,7 +774,7 @@ function Header() {
                       backdropFilter: "blur(10px)",
                       backgroundColor: "rgba(45, 45, 45, 0.1)",
                       borderRadius: 2,
-                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      border: "1px solid #fff",
                       boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
                       overflow: "hidden",
                       position: "relative",
@@ -785,8 +785,9 @@ function Header() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        backgroundImage:
-                          "url('https://www.transparenttextures.com/patterns/asfalt-light.png')",
+                        border: "1px solid #2d2d2d",
+                        backgroundColor: "#2f3a21",
+
                         opacity: 0.2,
                         zIndex: 0,
                       },
