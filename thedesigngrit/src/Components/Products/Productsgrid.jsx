@@ -29,25 +29,15 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
         </Box>
       ) : (
         <>
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              width: "100%",
-              margin: 0,
-              display: "grid",
-              gridTemplateColumns: {
-                xs: "1fr",
-                sm: "repeat(2, 1fr)",
-                md: "repeat(3, 1fr)",
-              },
-            }}
-          >
+          <Grid container spacing={2}>
             {currentProducts.map((product) => (
               <Grid
                 item
                 key={product._id}
-                sx={{ width: "100%", height: "100%" }}
+                xs={6} // 2 per row on small screens
+                sm={6} // 2 per row on tablets
+                md={4} // 3 per row on medium screens
+                lg={3} // 4 per row on large screens
               >
                 <ProductCard
                   product={product}
