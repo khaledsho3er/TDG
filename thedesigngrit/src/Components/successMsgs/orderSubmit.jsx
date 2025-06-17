@@ -6,7 +6,6 @@ const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(propShow || false);
   const location = useLocation();
-  const [setOpen] = useState(false);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -14,7 +13,7 @@ const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
     const status = queryParams.get("status");
 
     if (order && status === "success") {
-      setOpen(true);
+      setShow(true); // ✅ use correct state
 
       // Remove query params from the URL
       navigate("/home", { replace: true });
