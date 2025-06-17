@@ -196,7 +196,7 @@ function ProductsPage() {
           pb: 4,
         }}
       >
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={4} md={3} sx={{ paddingLeft: "150px" }}>
           <FilterSection
             onFilterChange={handleFilterChange}
             products={products}
