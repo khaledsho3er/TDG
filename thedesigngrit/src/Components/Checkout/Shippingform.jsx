@@ -72,19 +72,35 @@ function ShippingForm({
     }
   }, [userSession, checkForAddresses]);
 
-  const handleCheckboxChange = (option) => {
-    console.log("Checkbox clicked:", option);
-
+  const handleCheckboxChange = async (option) => {
     if (option === "existing") {
+      setSelectedOption("existing");
+
       if (hasAddresses) {
-        setShowAddressPopup(true);
+        try {
+          const response = await axios.get(
+            `https://api.thedesigngrit.com/api/getUserById/${userSession.id}`,
+            { withCredentials: true }
+          );
+
+          const addresses = response.data?.shipmentAddress || [];
+          const defaultAddress = addresses.find((addr) => addr.isDefault);
+
+          if (defaultAddress) {
+            handleAddressSelect(defaultAddress); // auto-fill
+            setShowAddressPopup(false);
+          } else {
+            setShowAddressPopup(true);
+          }
+        } catch (err) {
+          console.error("Error loading default address:", err);
+          setShowAddressPopup(true);
+        }
       } else {
-        // If no addresses, show popup to add one
         setShowAddressPopup(true);
       }
     } else {
-      // For "new" option, just clear the form
-      setSelectedOption(option);
+      setSelectedOption("new");
       onChange({
         firstName: "",
         lastName: "",
