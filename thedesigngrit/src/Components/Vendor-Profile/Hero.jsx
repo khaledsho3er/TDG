@@ -12,20 +12,28 @@ function VendorProfileHero({ vendor }) {
   return (
     <Box
       sx={{
-        width: "100vw", // Full viewport width
-        height: "500px", // Fixed height
-        overflow: "hidden", // Prevents content overflow
-        display: "flex", // Ensures proper alignment
-        justifyContent: "center", // Centers content if needed
+        width: { xs: "100%", md: "80%", lg: "70%" },
+        maxWidth: "1200px",
+        height: { xs: "220px", sm: "320px", md: "400px", lg: "420px" },
+        margin: "32px auto 0 auto",
+        background: "#fff",
+        borderRadius: "24px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: { xs: "0", md: "0" },
       }}
     >
       <img
-        src={fullImagePath} // Use dynamic photo or default if not available
+        src={fullImagePath}
         alt="Vendor Hero"
         style={{
-          width: "100%", // Scale the image to fit the width of the screen
-          height: "100%", // Fixed height
-          objectFit: "cover", // Ensures the image is contained proportionally
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          borderRadius: "24px",
         }}
       />
     </Box>

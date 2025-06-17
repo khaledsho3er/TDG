@@ -9,13 +9,21 @@ function VendorProfileHeader({ vendor }) {
   return (
     <Box
       sx={{
+        background: "#fff",
+        borderRadius: "24px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        mt: { xs: 2, md: 4 },
+        mb: { xs: 2, md: 4 },
+        px: { xs: 2, md: 6 },
+        py: { xs: 2, md: 4 },
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
         justifyContent: { md: "space-between" },
         alignItems: { xs: "center", md: "flex-start" },
-        padding: { xs: "20px", md: "20px 60px" },
         gap: { xs: "20px", md: "0" },
-        borderBottom: "2px solid #ddd", // Added bottom border
+        borderBottom: "none",
       }}
     >
       {/* Logo Section */}
@@ -32,12 +40,12 @@ function VendorProfileHeader({ vendor }) {
           "&:hover": {
             transform: "translateY(-5px)",
           },
-          marginRight: "20px",
+          marginRight: { xs: 0, md: "20px" },
         }}
       >
         <CardMedia
           component="img"
-          src={fullImagePath || "//Assets/TDG_Logo_Black.webp"} // Use dynamic logo or fallback
+          src={fullImagePath || "//Assets/TDG_Logo_Black.webp"}
           alt="Logo"
           sx={{
             width: { xs: "100px", md: "120px" },
@@ -47,7 +55,6 @@ function VendorProfileHeader({ vendor }) {
           }}
         />
       </Box>
-
       {/* Content Section */}
       <Box
         sx={{
@@ -74,9 +81,8 @@ function VendorProfileHeader({ vendor }) {
               margin: 0,
             }}
           >
-            {vendor.brandName} {/* Vendor Name */}
+            {vendor.brandName}
           </Typography>
-
           <Box
             sx={{
               display: "flex",
@@ -119,20 +125,19 @@ function VendorProfileHeader({ vendor }) {
             </Button>
           </Box>
         </Box>
-
         {/* Description Text */}
         <Typography
           sx={{
             fontFamily: "Arial, sans-serif",
             color: "gray",
             fontSize: "14px",
-            marginTop: "8px", // Space between title and description
-            lineHeight: "1.5", // Line height for readability
-            textAlign: { xs: "justify", md: "left" }, // Centered for small screens
+            marginTop: "8px",
+            lineHeight: "1.5",
+            textAlign: { xs: "justify", md: "left" },
             padding: "10px",
           }}
         >
-          {vendor.brandDescription} {/* Vendor Description */}
+          {vendor.brandDescription}
         </Typography>
       </Box>
     </Box>
