@@ -51,8 +51,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
       sx={{
         background: "#fff",
         borderRadius: "24px",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
-        maxWidth: "1200px",
+        maxWidth: "1700px",
         margin: "0 auto",
         mt: { xs: 2, md: 4 },
         mb: { xs: 2, md: 4 },
@@ -68,7 +67,14 @@ const VendorCategoriesgrid = ({ vendor }) => {
           mb: 2,
         }}
       >
-        <Typography variant="h1" className="vendorcategories-title">
+        <Typography
+          sx={{
+            fontFamily: "Horizon",
+            fontWeight: "bold",
+            fontSize: isMobile ? "18px" : "20px",
+            padding: isMobile ? "15px 0" : "25px",
+          }}
+        >
           {vendor.brandName}'s Types
         </Typography>
 
