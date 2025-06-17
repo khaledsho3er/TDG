@@ -189,17 +189,19 @@ const ProductCard = ({ product }) => {
       </Card>
 
       {/* Product Information */}
-      <CardContent sx={{ p: 2 }}>
+      <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
         <Typography
           variant="h6"
           sx={{
-            fontSize: { xs: "14px", sm: "16px" },
+            fontSize: { xs: "14px", sm: "16px" }, // smaller font on mobile, bigger on desktop
             fontWeight: 700,
             fontFamily: "Montserrat",
             textTransform: "uppercase",
             width: "100%",
             color: "#2d2d2d",
-            maxWidth: "80%",
+            maxWidth: { xs: "100%", sm: "80%" }, // full width on mobile, limit on larger screens
+            whiteSpace: "normal", // allow wrapping on mobile
+            overflowWrap: "break-word", // break long words
           }}
         >
           {product.name}
@@ -208,11 +210,13 @@ const ProductCard = ({ product }) => {
         <Typography
           variant="body2"
           sx={{
-            fontSize: "14px",
+            fontSize: { xs: "12px", sm: "14px" }, // smaller font on mobile
             fontFamily: "Montserrat",
             color: "#777777",
             fontWeight: 600,
             marginTop: "4px",
+            whiteSpace: "normal",
+            overflowWrap: "break-word",
           }}
         >
           {product.brandId?.brandName || "Unknown Brand"}
@@ -221,11 +225,13 @@ const ProductCard = ({ product }) => {
         <Typography
           variant="body1"
           sx={{
-            fontSize: "14px",
+            fontSize: { xs: "12px", sm: "14px" }, // smaller font on mobile
             fontWeight: 500,
             fontFamily: "Montserrat",
             color: "#2d2d2d",
             marginTop: "8px",
+            whiteSpace: "normal",
+            overflowWrap: "break-word",
           }}
         >
           {product.salePrice ? (

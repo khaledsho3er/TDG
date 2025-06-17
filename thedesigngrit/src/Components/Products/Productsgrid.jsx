@@ -37,7 +37,7 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                 xs={6} // 2 per row on small screens
                 sm={6} // 2 per row on tablets
                 md={4} // 3 per row on medium screens
-                lg={3} // 4 per row on large screens
+                lg={4} // 4 per row on large screens
               >
                 <ProductCard
                   product={product}
