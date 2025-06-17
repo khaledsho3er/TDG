@@ -794,7 +794,7 @@ function Header() {
                       "& .MuiMenuItem-root": {
                         position: "relative",
                         zIndex: 1,
-                        color: "#2d2d2d",
+                        color: "#fff",
                       },
                     },
                   }}
