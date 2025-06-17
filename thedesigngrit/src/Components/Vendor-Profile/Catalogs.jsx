@@ -1,14 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Box,
-  Typography,
-  IconButton,
-  Grid,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Typography, Grid, useMediaQuery } from "@mui/material";
 import VendorCatalogCard from "./CatalogCard";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -49,17 +43,17 @@ function VendorCatalogs({ vendorID }) {
     currentIndex + itemsPerPage
   );
 
-  const handleNext = () => {
-    if (currentIndex + itemsPerPage < catalogs.length) {
-      setCurrentIndex(currentIndex + itemsPerPage);
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentIndex + itemsPerPage < catalogs.length) {
+  //     setCurrentIndex(currentIndex + itemsPerPage);
+  //   }
+  // };
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - itemsPerPage);
-    }
-  };
+  // const handlePrev = () => {
+  //   if (currentIndex > 0) {
+  //     setCurrentIndex(currentIndex - itemsPerPage);
+  //   }
+  // };
 
   return (
     <Box>
@@ -201,7 +195,7 @@ function VendorCatalogs({ vendorID }) {
         ) : (
           // Desktop view with Grid
           <>
-            <IconButton
+            {/* <IconButton
               onClick={handlePrev}
               disabled={currentIndex === 0}
               sx={{
@@ -216,7 +210,7 @@ function VendorCatalogs({ vendorID }) {
               }}
             >
               <ArrowBackIosNewIcon />
-            </IconButton>
+            </IconButton> */}
 
             <Grid container spacing={2}>
               {visibleItems.map((item) => (
@@ -241,7 +235,7 @@ function VendorCatalogs({ vendorID }) {
               ))}
             </Grid>
 
-            <IconButton
+            {/* <IconButton
               onClick={handleNext}
               disabled={currentIndex + itemsPerPage >= catalogs.length}
               sx={{
@@ -256,7 +250,7 @@ function VendorCatalogs({ vendorID }) {
               }}
             >
               <ArrowForwardIosIcon />
-            </IconButton>
+            </IconButton> */}
           </>
         )}
       </Box>

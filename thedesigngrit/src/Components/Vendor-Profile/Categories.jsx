@@ -119,6 +119,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
             {types.map((type) => (
               <SwiperSlide key={type._id}>
                 <VendorCategoryCard
+                  id={type._id}
                   name={type.name}
                   description={type.description}
                   image={type.image}

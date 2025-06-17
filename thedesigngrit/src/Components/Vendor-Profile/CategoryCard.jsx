@@ -1,8 +1,16 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const VendorCategoryCard = ({ name, description, image }) => {
+const VendorCategoryCard = ({ id, name, description, image }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    const typeName = encodeURIComponent(
+      name.toLowerCase().replace(/\s+/g, "-")
+    );
+    navigate(`/products/${id}/${typeName}`);
+  };
   return (
     <Box
       component={motion.div}
@@ -10,6 +18,7 @@ const VendorCategoryCard = ({ name, description, image }) => {
         y: -5,
         transition: { duration: 0.3 },
       }}
+      onClick={handleClick}
       sx={{
         position: "relative",
         width: "100%",
