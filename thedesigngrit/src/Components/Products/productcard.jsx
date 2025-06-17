@@ -162,70 +162,64 @@ const ProductCard = ({ product }) => {
             <FavoriteBorderIcon sx={{ color: "#000" }} />
           )}
         </IconButton>
+      </Card>
 
-        {/* Product Information */}
-        <CardContent
+      {/* Product Information */}
+      <CardContent sx={{ padding: "10px", width: "250px" }}>
+        <Typography
+          variant="h6"
           sx={{
-            padding: "16px",
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
+            fontSize: "16px",
+            fontWeight: 700,
+            fontFamily: "Montserrat",
+            textTransform: "uppercase",
+            width: "100%",
+            color: "#2d2d2d",
+            maxWidth: "80%",
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              fontSize: { xs: "14px", sm: "16px" },
-              fontWeight: 700,
-              fontFamily: "Montserrat",
-              textTransform: "uppercase",
-              color: "#2d2d2d",
-              lineHeight: 1.2,
-            }}
-          >
-            {product.name}
-          </Typography>
+          {product.name}
+        </Typography>
 
-          <Typography
-            variant="body2"
-            sx={{
-              fontSize: { xs: "12px", sm: "14px" },
-              fontFamily: "Montserrat",
-              color: "#777777",
-              fontWeight: 600,
-            }}
-          >
-            {product.brandId?.brandName || "Unknown Brand"}
-          </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontSize: "14px",
+            fontFamily: "Montserrat",
+            color: "#777777",
+            fontWeight: 600,
+            marginTop: "4px",
+          }}
+        >
+          {product.brandId?.brandName || "Unknown Brand"}
+        </Typography>
 
-          <Typography
-            variant="body1"
-            sx={{
-              fontSize: { xs: "13px", sm: "14px" },
-              fontWeight: 500,
-              fontFamily: "Montserrat",
-              color: "#2d2d2d",
-              mt: "auto",
-            }}
-          >
-            {product.salePrice ? (
-              <span
-                style={{ textDecoration: "line-through", marginRight: "5px" }}
-              >
-                {Number(product.price).toLocaleString()} E£
-              </span>
-            ) : (
-              Number(product.price).toLocaleString() + "E£"
-            )}
-            {product.salePrice && (
-              <span style={{ color: "red" }}>
-                {Number(product.salePrice).toLocaleString()}E£
-              </span>
-            )}
-          </Typography>
-        </CardContent>
-      </Card>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "14px",
+            fontWeight: 500,
+            fontFamily: "Montserrat",
+            color: "#2d2d2d",
+            marginTop: "8px",
+          }}
+        >
+          {product.salePrice ? (
+            <span
+              style={{ textDecoration: "line-through", marginRight: "5px" }}
+            >
+              {Number(product.price).toLocaleString()} E£
+            </span>
+          ) : (
+            Number(product.price).toLocaleString() + "E£"
+          )}
+          {product.salePrice && (
+            <span style={{ color: "red" }}>
+              {Number(product.salePrice).toLocaleString()}E£
+            </span>
+          )}
+        </Typography>
+      </CardContent>
     </Box>
   );
 };
