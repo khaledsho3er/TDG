@@ -88,10 +88,15 @@ const RelatedProducts = ({ productId }) => {
           className="related-swiper"
         >
           {relatedProducts.map((product) => {
-            const category = categories.find(
-              (cat) => cat._id === product.category
-            );
-            const categoryName = category ? category.name : "Unknown Category";
+            const categoryId =
+              typeof product.category === "object"
+                ? product.category._id
+                : product.category;
+
+            const category = categories.find((cat) => cat._id === categoryId);
+            const categoryName = isLoading
+              ? "Loading..."
+              : category?.name || "Unknown Category";
             return (
               <SwiperSlide key={product._id}>
                 <Link
@@ -107,9 +112,7 @@ const RelatedProducts = ({ productId }) => {
                       />
                     </div>
                     <div className="related-info">
-                      <p className="related-category">
-                        {categoryName || "Category"}
-                      </p>
+                      <p className="related-category">{categoryName}</p>
                       <h3 className="related-name">{product.name}</h3>
                       {product.salePrice ? (
                         <>
@@ -166,7 +169,7 @@ const RelatedProducts = ({ productId }) => {
         >
           <BsExclamationOctagon size={50} color="#ccc" />
 
-          <p className="no-reviews">No related products yet </p>
+          <p className="no-reviews">No products yet </p>
         </div>
       )}
     </div>

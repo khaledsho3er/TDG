@@ -16,7 +16,6 @@ import BillSummary from "./billingSummary";
 import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
 import CloseIcon from "@mui/icons-material/Close";
-import { useCart } from "../../Context/cartcontext.js";
 import { useLocation } from "react-router-dom";
 
 function PaymentForm({
