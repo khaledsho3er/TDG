@@ -12,7 +12,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AccountSentPopup from "./successMsgs/successfullyRegistered";
-import AccountExistsPopup from "./successMsgs/accountExists";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -48,8 +47,6 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isAccountExistsPopupVisible, setIsAccountExistsPopupVisible] =
-    useState(false);
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState(0);
   const [showRequirements, setShowRequirements] = useState(false);
@@ -77,6 +74,7 @@ const SignUpForm = () => {
     formState: { errors },
     setValue,
     watch,
+    setError, // <== ADD THIS
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -163,21 +161,24 @@ const SignUpForm = () => {
       }
     } catch (error) {
       console.error("Sign-up error:", error);
+
+      // If backend returns email in use error
       if (
-        error.response?.data?.message?.toLowerCase().includes("already exists")
+        error.response &&
+        error.response.data &&
+        error.response.data.message &&
+        error.response.data.message.toLowerCase().includes("email")
       ) {
-        setIsAccountExistsPopupVisible(true);
+        setError("email", {
+          type: "manual",
+          message: "This email is already in use",
+        });
       }
     }
   };
 
   const closePopup = () => {
     setIsPopupVisible(false);
-    navigate("/login");
-  };
-
-  const closeAccountExistsPopup = () => {
-    setIsAccountExistsPopupVisible(false);
     navigate("/login");
   };
 
@@ -474,10 +475,6 @@ const SignUpForm = () => {
         </p>
       </form>
       <AccountSentPopup show={isPopupVisible} closePopup={closePopup} />
-      <AccountExistsPopup
-        show={isAccountExistsPopupVisible}
-        closePopup={closeAccountExistsPopup}
-      />
     </Box>
   );
 };
