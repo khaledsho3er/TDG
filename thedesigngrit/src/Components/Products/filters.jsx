@@ -91,7 +91,7 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
         width: isMobile ? "90vw" : 300,
         p: isMobile ? "80px 0px 80px 42px" : "16px 0px 16px 0px",
         position: "relative",
-        paddingRight: isMobile ? 0 : "55px",
+        paddingRight: isMobile ? 0 : "0px",
       }}
     >
       {isMobile && (
