@@ -56,7 +56,19 @@ function VendorCatalogs({ vendorID }) {
   // };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        background: "#fff",
+        borderRadius: "24px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        mt: { xs: 2, md: 4 },
+        mb: { xs: 2, md: 4 },
+        px: { xs: 2, md: 6 },
+        py: { xs: 2, md: 4 },
+      }}
+    >
       <Typography
         sx={{
           fontFamily: "Horizon",

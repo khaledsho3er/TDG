@@ -47,7 +47,19 @@ const VendorCategoriesgrid = ({ vendor }) => {
   };
 
   return (
-    <Box className="vendorcategories-grid-container">
+    <Box
+      sx={{
+        background: "#fff",
+        borderRadius: "24px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        mt: { xs: 2, md: 4 },
+        mb: { xs: 2, md: 4 },
+        px: { xs: 2, md: 6 },
+        py: { xs: 2, md: 4 },
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -112,7 +124,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
             slidesPerView={getSlidesPerView()}
             pagination={isMobile ? { clickable: true } : false}
             loop={types.length > getSlidesPerView()}
-            navigation={false} // We're using custom navigation
+            navigation={false}
             className="vendor-types-swiper"
             style={{ padding: "10px 0 30px 0" }}
           >
