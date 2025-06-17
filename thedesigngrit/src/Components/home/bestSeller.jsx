@@ -165,31 +165,44 @@ const ProductSlider = () => {
                 />
               </div>
 
-              <div className="product-info-bestseller">
-                <h3 className="product-title-bestseller">{product.name}</h3>
-                <h4 className="product-title-bestseller">
-                  {product?.brandName || "Unknown Brand"}
-                </h4>
-                <div className="product-price-bestseller">
-                  {product.salePrice != null ? (
-                    <span>
-                      <span
-                        style={{
-                          textDecoration: "line-through",
-                          marginRight: "5px",
-                        }}
-                      >
-                        {Number(product.price).toLocaleString()} E£
-                      </span>
-                      <br />
-                      <span style={{ color: "red" }}>
-                        {Number(product.salePrice).toLocaleString()} E£
-                      </span>
-                    </span>
-                  ) : (
-                    <span>{Number(product.price).toLocaleString()} E£</span>
-                  )}
-                </div>
+              <div className="related-info">
+                <p className="related-category">{product?.brandName}</p>
+                <h3 className="related-name">{product.name}</h3>
+                {product.salePrice ? (
+                  <>
+                    <p
+                      className="related-price"
+                      style={{
+                        textDecoration: "line-through",
+                        color: "#999",
+                      }}
+                    >
+                      {product.price.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      E£
+                    </p>
+                    <p
+                      className="related-price"
+                      style={{ color: "#e74c3c", fontWeight: "bold" }}
+                    >
+                      {product.salePrice.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      E£
+                    </p>
+                  </>
+                ) : (
+                  <p className="related-price">
+                    {product.price.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    E£
+                  </p>
+                )}
               </div>
             </div>
           </SwiperSlide>
