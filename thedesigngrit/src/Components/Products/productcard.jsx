@@ -92,7 +92,7 @@ const ProductCard = ({ product }) => {
         <CardMedia
           component="img"
           sx={{
-            height: { xs: 200, sm: 250, md: 300 },
+            height: { xs: 280, sm: 330, md: "100%" },
             objectFit: "cover",
           }}
           image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
