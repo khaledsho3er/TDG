@@ -28,7 +28,7 @@ const VendorCatalogCard = ({ title, year, image, type, pdf, isMobile }) => {
           borderRadius: 2,
           overflow: "hidden",
           position: "relative",
-          width: "100%",
+          width: isMobile ? "40%" : "100%",
           cursor: "pointer", // Make the card clickable
         }}
         onClick={handleClick} // Set the click event on the entire card

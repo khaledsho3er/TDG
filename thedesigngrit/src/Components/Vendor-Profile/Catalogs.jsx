@@ -71,7 +71,7 @@ function VendorCatalogs({ vendorID }) {
       <Box
         position="relative"
         overflow="hidden"
-        sx={{ padding: isMobile ? "10px 25px 30px" : "10px 50px 50px" }}
+        sx={{ padding: isMobile ? "10px 25px 30px" : "10px 116px 50px" }}
       >
         {isLoading ? (
           <Typography sx={{ textAlign: "center", mt: 5 }}>

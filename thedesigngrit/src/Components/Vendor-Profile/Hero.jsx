@@ -13,7 +13,7 @@ function VendorProfileHero({ vendor }) {
     <Box
       sx={{
         width: "100vw", // Full viewport width
-        height: "300px", // Fixed height
+        height: "500px", // Fixed height
         overflow: "hidden", // Prevents content overflow
         display: "flex", // Ensures proper alignment
         justifyContent: "center", // Centers content if needed
@@ -24,7 +24,7 @@ function VendorProfileHero({ vendor }) {
         alt="Vendor Hero"
         style={{
           width: "100%", // Scale the image to fit the width of the screen
-          height: "300px", // Fixed height
+          height: "100%", // Fixed height
           objectFit: "cover", // Ensures the image is contained proportionally
         }}
       />
