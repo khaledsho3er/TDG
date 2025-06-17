@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -11,118 +11,91 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
+const toggleButtonSx = {
+  borderRadius: "10px",
+  borderColor: "black",
+  padding: "6px 10px",
+  display: "flex",
+  alignItems: "center",
+  gap: 1,
+  color: "black",
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: { xs: "10px", sm: "12px" },
+  "&:hover": {
+    backgroundColor: "#2d2d2d",
+    color: "white",
+  },
+};
+
 const TopFilter = ({
   sortOption,
   setSortOption,
   onCADFilterChange,
   onSalePriceFilterChange,
 }) => {
-  const [forSaleChecked, setForSaleChecked] = React.useState(false);
-  const [bimCadChecked, setBimCadChecked] = React.useState(false);
+  const [forSaleChecked, setForSaleChecked] = useState(false);
+  const [bimCadChecked, setBimCadChecked] = useState(false);
 
-  // Update the button handlers
   const handleForSaleToggle = () => {
-    const newValue = !forSaleChecked;
-    setForSaleChecked(newValue);
-    onSalePriceFilterChange(newValue);
+    setForSaleChecked((prev) => {
+      const newValue = !prev;
+      onSalePriceFilterChange(newValue);
+      return newValue;
+    });
   };
 
   const handleBimCadToggle = () => {
-    const newValue = !bimCadChecked;
-    setBimCadChecked(newValue);
-    onCADFilterChange(newValue);
+    setBimCadChecked((prev) => {
+      const newValue = !prev;
+      onCADFilterChange(newValue);
+      return newValue;
+    });
   };
 
   return (
     <Box
       sx={{
         display: "flex",
-        width: "100%",
-        justifyContent: "space-between",
-        padding: { xs: "15px", sm: "20px", md: "25px 70px" },
         flexDirection: { xs: "column", sm: "row" },
+        justifyContent: "space-between",
+        alignItems: "center",
         gap: { xs: 2, sm: 3 },
-        alignItems: { xs: "flex-end", sm: "flex-end", md: "center" },
+        padding: { xs: "15px", sm: "20px", md: "25px 70px" },
       }}
     >
-      {/* Toggle Buttons */}
-      <Box sx={{ display: "flex" }}>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            justifyContent: "flex-start",
-            paddingLeft: {
-              xs: "20px",
-              sm: "50px",
-              md: "100px",
-              lg: "300px",
-              xl: "200px",
-            },
-          }}
-        >
-          <Button
-            variant="outlined"
-            sx={{
-              borderRadius: "10px",
-              borderColor: "black",
-              padding: "6px 10px",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              color: "black",
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: { xs: "10px", sm: "12px" },
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-                color: "white",
-              },
-            }}
-            onClick={handleForSaleToggle}
-          >
-            {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-            For Sale
-            <ShoppingCartIcon fontSize="small" />
-          </Button>
-
-          <Button
-            variant="outlined"
-            sx={{
-              borderRadius: "10px",
-              borderColor: "black",
-              padding: "6px 10px",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              color: "black",
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: { xs: "10px", sm: "12px" },
-              "&:hover": {
-                backgroundColor: "#2d2d2d",
-                color: "white",
-              },
-            }}
-            onClick={handleBimCadToggle}
-          >
-            {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-            BIM/CAD
-          </Button>
-        </Box>
-      </Box>
-      {/* Sort By and Select */}
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
           gap: 2,
-          justifyContent: "flex-end",
-          flexDirection: { xs: "row", sm: "row" },
+          justifyContent: "flex-start",
+          px: { xs: 2, sm: 6, md: 12, lg: 38, xl: 25 },
         }}
       >
+        <Button
+          sx={toggleButtonSx}
+          onClick={handleForSaleToggle}
+          variant="outlined"
+        >
+          {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          For Sale
+          <ShoppingCartIcon fontSize="small" />
+        </Button>
+
+        <Button
+          sx={toggleButtonSx}
+          onClick={handleBimCadToggle}
+          variant="outlined"
+        >
+          {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          BIM/CAD
+        </Button>
+      </Box>
+
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
         <Typography
           sx={{
             fontFamily: "Montserrat, sans-serif",
-            fontSize: { xs: "12px", sm: "13px" },
+            fontSize: { xs: 12, sm: 13 },
           }}
         >
           Sort By
@@ -130,9 +103,9 @@ const TopFilter = ({
         <FormControl
           size="small"
           sx={{
-            minWidth: "auto",
+            minWidth: 140,
             "& .MuiOutlinedInput-root": {
-              fontSize: "13px",
+              fontSize: 13,
               "& fieldset": { border: "none" },
             },
           }}
