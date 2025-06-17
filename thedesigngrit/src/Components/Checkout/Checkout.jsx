@@ -230,11 +230,6 @@ function Checkout() {
     }
   };
 
-  // Get the bill data passed from ShoppingCart
-  // const location = useLocation();
-  // const { cartItems, subtotal, shippingFee, total, resetCart } =
-  //   location.state || {};
-
   const subtotal = cartItems?.length
     ? cartItems.reduce(
         (sum, item) => sum + (item.unitPrice || 0) * (item.quantity || 1),

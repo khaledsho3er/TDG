@@ -6,19 +6,20 @@ const OrderSentPopup = ({ show: propShow, closePopup: propClosePopup }) => {
   const navigate = useNavigate();
   const [show, setShow] = useState(propShow || false);
   const location = useLocation();
+  const [setOpen] = useState(false);
 
   useEffect(() => {
-    // Check URL parameters for success
-    const searchParams = new URLSearchParams(location.search);
-    const orderId = searchParams.get("order");
-    const status = searchParams.get("status");
+    const queryParams = new URLSearchParams(location.search);
+    const order = queryParams.get("order");
+    const status = queryParams.get("status");
 
-    if (orderId && status === "success") {
-      setShow(true);
-      // Clear the URL parameters without refreshing the page
-      window.history.replaceState({}, document.title, window.location.pathname);
+    if (order && status === "success") {
+      setOpen(true);
+
+      // Remove query params from the URL
+      navigate("/home", { replace: true });
     }
-  }, [location]);
+  }, [location.search, navigate]);
 
   // ✅ Add this effect to listen to prop changes
   useEffect(() => {

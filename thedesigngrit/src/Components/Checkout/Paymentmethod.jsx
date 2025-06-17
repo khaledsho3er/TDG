@@ -77,7 +77,7 @@ function PaymentForm({
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [onSubmit, onSuccess, resetCart]);
+  }, [onSubmit, resetCart]);
 
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
