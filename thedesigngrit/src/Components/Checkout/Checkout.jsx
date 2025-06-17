@@ -8,6 +8,7 @@ import { useCart } from "../../Context/cartcontext.js";
 import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 import OrderSentPopup from "../successMsgs/orderSubmit.jsx";
+import { useLocation } from "react-router-dom";
 
 function Checkout() {
   const { userSession } = useUser();
@@ -15,6 +16,18 @@ function Checkout() {
   const [currentStep, setCurrentStep] = useState(1);
   const validateCheckboxRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const order = query.get("order");
+    const status = query.get("status");
+
+    if (order && status === "success") {
+      setShowPopup(true);
+      // Clean up the URL so the popup doesn't keep appearing
+      window.history.replaceState({}, document.title, "/checkout");
+    }
+  }, [location.search]);
   const navigate = useNavigate();
   const [billingData, setBillingData] = useState({
     firstName: "",
