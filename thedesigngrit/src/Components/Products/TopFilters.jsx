@@ -68,9 +68,9 @@ const TopFilter = ({
           display: "flex",
           gap: 2,
           justifyContent: "flex-start",
-          width: { xs: "100%", sm: "auto" }, // full width on mobile, auto on desktop
+          width: { xs: "100%", sm: "auto", md: "100%", lg: "100%" }, // full width on mobile, auto on desktop
           flexWrap: { xs: "wrap", sm: "nowrap" },
-          paddingLeft: { sm: 0, md: 0 }, // remove extra left padding on desktop if any
+          paddingLeft: { sm: 0, md: 0, lg: 0 }, // remove extra left padding on desktop if any
         }}
       >
         <Button
