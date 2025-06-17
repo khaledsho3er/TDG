@@ -167,7 +167,7 @@ function ReadyToShip() {
           sx={{
             paddingLeft: { xs: 0, md: 0, lg: 0, xl: 0 },
             "@media (min-width:1025px)": {
-              paddingLeft: "150px !important",
+              paddingLeft: "66px !important",
             },
           }}
         >
@@ -177,17 +177,7 @@ function ReadyToShip() {
             currentFilters={filters}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={9}
-          sx={{
-            paddingLeft: { xs: 0, md: 0, lg: 0, xl: 0 },
-            "@media (min-width:1025px)": {
-              paddingLeft: "150px !important",
-            },
-          }}
-        >
+        <Grid item xs={12} md={9}>
           {isLoading ? (
             <Grid
               item

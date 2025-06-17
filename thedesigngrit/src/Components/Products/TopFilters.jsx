@@ -39,7 +39,7 @@ const TopFilter = ({
         display: "flex",
         width: "100%",
         justifyContent: "space-between",
-        padding: { xs: "15px", sm: "20px", md: "25px 70px" },
+        padding: { xs: "15px", sm: "20px", md: "25px 25px 25px 265px" },
         flexDirection: { xs: "column", sm: "row" },
         gap: { xs: 2, sm: 3 },
         alignItems: { xs: "flex-end", sm: "flex-end", md: "center" },
