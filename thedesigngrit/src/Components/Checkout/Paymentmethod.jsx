@@ -17,6 +17,7 @@ import paymobService from "../../services/paymobService";
 import { useUser } from "../../utils/userContext";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "../../Context/cartcontext.js";
+import { useLocation } from "react-router-dom";
 
 function PaymentForm({
   onSubmit,
@@ -34,7 +35,20 @@ function PaymentForm({
   const { userSession } = useUser();
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
   const { resetCart } = useCart(); //  Get cart items from CartContexts
+  const location = useLocation();
 
+  // Check URL for payment success
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const orderId = searchParams.get("order");
+    const status = searchParams.get("status");
+
+    if (orderId && status === "success") {
+      onSuccess(); // Show success popup in parent
+      // Clear the URL parameters without refreshing the page
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location, onSuccess]);
   useEffect(() => {
     if (billData && billData.total) {
       setShowCOD(billData.total <= 10000);
@@ -63,7 +77,7 @@ function PaymentForm({
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [onSubmit, onSuccess]);
+  }, [onSubmit, onSuccess, resetCart]);
 
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
