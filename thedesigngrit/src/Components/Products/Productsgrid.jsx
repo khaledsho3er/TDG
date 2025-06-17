@@ -5,82 +5,56 @@ import ProductCard from "./productcard";
 const ProductCards = ({ products = [], onToggleFavorite }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [favorites] = useState([]);
-  const productsPerPage = 12; // Consistent 12 products per page
+  const productsPerPage = 12;
 
-  // Ensure products is always an array
   const safeProducts = Array.isArray(products) ? products : [];
-
-  // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = safeProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
   const totalPages = Math.ceil(safeProducts.length / productsPerPage);
 
-  // Handle page change and scroll to top
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     window.scrollTo(0, 0);
   };
 
   return (
-    <Box
-      sx={{
-        margin: { xs: "auto", md: 0 },
-        marginTop: { xs: "0", md: "70px 70px 0px " },
-      }}
-    >
+    <Box sx={{ width: "100%", padding: { xs: 2, md: 3 } }}>
       {safeProducts.length === 0 ? (
         <Box sx={{ textAlign: "center", marginTop: 4 }}>
           <h2>No products found in this category.</h2>
         </Box>
       ) : (
         <>
-          {/* Grid Layout with responsive columns */}
           <Grid
             container
             spacing={3}
             sx={{
               width: "100%",
-              margin: "0",
+              margin: 0,
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "24px",
-              "@media (max-width: 1024px)": {
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "20px",
-                marginTop: "70px",
-                margin: "61px",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
               },
-              "@media (max-width: 768px)": {
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "16px",
-                margin: "0px",
-                marginTop: "20px",
-              },
-              "@media (max-width: 480px)": {
-                gridTemplateColumns: "repeat(1, 1fr)",
-                gap: "16px",
-                margin: "0px",
-                marginTop: "20px",
-              },
+              gap: { xs: 2, sm: 3 },
             }}
           >
             {currentProducts.map((product) => (
-              <Box key={product._id}>
+              <Grid item key={product._id} sx={{ width: "100%" }}>
                 <ProductCard
                   product={product}
                   onToggleFavorite={onToggleFavorite}
                   isFavorite={favorites.some((fav) => fav._id === product._id)}
                 />
-              </Box>
+              </Grid>
             ))}
           </Grid>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <Box
               sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}
@@ -91,8 +65,6 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
                 onChange={handlePageChange}
                 color="primary"
                 sx={{
-                  display: "flex",
-                  justifyContent: "center",
                   "& .MuiPaginationItem-root": {
                     backgroundColor: "#fff",
                     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",

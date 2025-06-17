@@ -169,18 +169,33 @@ function ProductsPage() {
     setFilters((prev) => ({ ...prev, hasSalePrice: value }));
   };
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
       <PageDescription name={typeName} description={typeDescription} />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          px: { xs: 2, md: 3 },
+          py: 2,
+        }}
+      >
         <TopFilter
           sortOption={sortOption}
           setSortOption={setSortOption}
           onCADFilterChange={handleCADFilterChange}
           onSalePriceFilterChange={handleSalePriceFilterChange}
-        />{" "}
+        />
       </Box>
-      <Grid container spacing={2} sx={{ padding: 2 }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          flex: 1,
+          px: { xs: 2, md: 3 },
+          pb: 4,
+        }}
+      >
         <Grid item xs={12} sm={4} md={3}>
           <FilterSection
             onFilterChange={handleFilterChange}
@@ -188,11 +203,9 @@ function ProductsPage() {
             currentFilters={filters}
           />
         </Grid>
-        <Grid item xs={12} md={9} container spacing={3}>
+        <Grid item xs={12} md={9}>
           {isLoading ? (
-            <Grid
-              item
-              xs={12}
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -205,19 +218,17 @@ function ProductsPage() {
                 thickness={4}
                 sx={{ color: "#6b7b58" }}
               />
-            </Grid>
+            </Box>
           ) : filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
           ) : products.length === 0 ? (
-            <Grid item xs={12}>
-              <Typography>No products available.</Typography>
-            </Grid>
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No products available.
+            </Typography>
           ) : (
-            <Grid item xs={12}>
-              <Typography>
-                No products match your filters. Try adjusting your criteria.
-              </Typography>
-            </Grid>
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No products match your filters. Try adjusting your criteria.
+            </Typography>
           )}
         </Grid>
       </Grid>

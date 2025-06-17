@@ -74,26 +74,29 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Box style={{ cursor: "pointer" }}>
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Card
         sx={{
-          width: 250,
+          width: "100%",
           borderRadius: "16px",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
           overflow: "hidden",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
         }}
-        onClick={handleCardClick} // Card click for navigation
+        onClick={handleCardClick}
       >
         {/* Product Image */}
         <CardMedia
           component="img"
-          height="250"
-          image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-          alt={product.name}
           sx={{
+            height: { xs: 200, sm: 250, md: 300 },
             objectFit: "cover",
           }}
+          image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+          alt={product.name}
         />
         {product.stock === 0 ? (
           <Box
@@ -149,7 +152,7 @@ const ProductCard = ({ product }) => {
             "&:hover": { backgroundColor: "#f0f0f0" },
           }}
           onClick={(event) => {
-            event.stopPropagation(); // Prevent triggering card click when clicking favorite button
+            event.stopPropagation();
             toggleFavorite(event);
           }}
         >
@@ -159,64 +162,70 @@ const ProductCard = ({ product }) => {
             <FavoriteBorderIcon sx={{ color: "#000" }} />
           )}
         </IconButton>
+
+        {/* Product Information */}
+        <CardContent
+          sx={{
+            padding: "16px",
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "14px", sm: "16px" },
+              fontWeight: 700,
+              fontFamily: "Montserrat",
+              textTransform: "uppercase",
+              color: "#2d2d2d",
+              lineHeight: 1.2,
+            }}
+          >
+            {product.name}
+          </Typography>
+
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: { xs: "12px", sm: "14px" },
+              fontFamily: "Montserrat",
+              color: "#777777",
+              fontWeight: 600,
+            }}
+          >
+            {product.brandId?.brandName || "Unknown Brand"}
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: { xs: "13px", sm: "14px" },
+              fontWeight: 500,
+              fontFamily: "Montserrat",
+              color: "#2d2d2d",
+              mt: "auto",
+            }}
+          >
+            {product.salePrice ? (
+              <span
+                style={{ textDecoration: "line-through", marginRight: "5px" }}
+              >
+                {Number(product.price).toLocaleString()} E£
+              </span>
+            ) : (
+              Number(product.price).toLocaleString() + "E£"
+            )}
+            {product.salePrice && (
+              <span style={{ color: "red" }}>
+                {Number(product.salePrice).toLocaleString()}E£
+              </span>
+            )}
+          </Typography>
+        </CardContent>
       </Card>
-
-      {/* Product Information */}
-      <CardContent sx={{ padding: "10px", width: "250px" }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontSize: "16px",
-            fontWeight: 700,
-            fontFamily: "Montserrat",
-            textTransform: "uppercase",
-            width: "100%",
-            color: "#2d2d2d",
-            maxWidth: "80%",
-          }}
-        >
-          {product.name}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{
-            fontSize: "14px",
-            fontFamily: "Montserrat",
-            color: "#777777",
-            fontWeight: 600,
-            marginTop: "4px",
-          }}
-        >
-          {product.brandId?.brandName || "Unknown Brand"}
-        </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: "14px",
-            fontWeight: 500,
-            fontFamily: "Montserrat",
-            color: "#2d2d2d",
-            marginTop: "8px",
-          }}
-        >
-          {product.salePrice ? (
-            <span
-              style={{ textDecoration: "line-through", marginRight: "5px" }}
-            >
-              {Number(product.price).toLocaleString()} E£
-            </span>
-          ) : (
-            Number(product.price).toLocaleString() + "E£"
-          )}
-          {product.salePrice && (
-            <span style={{ color: "red" }}>
-              {Number(product.salePrice).toLocaleString()}E£
-            </span>
-          )}
-        </Typography>
-      </CardContent>
     </Box>
   );
 };
