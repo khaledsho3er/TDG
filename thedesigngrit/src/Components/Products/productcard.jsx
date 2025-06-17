@@ -74,7 +74,14 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        width: "110%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Card
         sx={{
           width: "70%",
