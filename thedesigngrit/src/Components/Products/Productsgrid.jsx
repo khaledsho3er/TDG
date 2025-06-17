@@ -45,7 +45,11 @@ const ProductCards = ({ products = [], onToggleFavorite }) => {
             }}
           >
             {currentProducts.map((product) => (
-              <Grid item key={product._id} sx={{ width: "100%" }}>
+              <Grid
+                item
+                key={product._id}
+                sx={{ width: "120%", height: "120%" }}
+              >
                 <ProductCard
                   product={product}
                   onToggleFavorite={onToggleFavorite}
