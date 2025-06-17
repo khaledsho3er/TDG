@@ -170,7 +170,7 @@ function VendorCatalogs({ vendorID }) {
               />
 
               {/* Navigation buttons on the right */}
-              <Box sx={{ display: "flex", gap: "10px" }}>
+              {/* <Box sx={{ display: "flex", gap: "10px" }}>
                 <IconButton
                   onClick={() => swiperRef.current?.slidePrev()}
                   sx={{
@@ -195,7 +195,7 @@ function VendorCatalogs({ vendorID }) {
                 >
                   <ArrowForwardIosIcon sx={{ fontSize: "16px" }} />
                 </IconButton>
-              </Box>
+              </Box> */}
             </Box>
           </Box>
         ) : (
