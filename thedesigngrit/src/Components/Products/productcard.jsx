@@ -84,12 +84,12 @@ const ProductCard = ({ product }) => {
     >
       <Card
         sx={{
-          width: "70%",
+          width: "80%",
           borderRadius: "16px",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           position: "relative",
           overflow: "hidden",
-          height: "55%",
+          height: "auto",
           display: "flex",
           flexDirection: "column",
         }}
