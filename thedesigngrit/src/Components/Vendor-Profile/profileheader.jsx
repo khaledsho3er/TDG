@@ -12,6 +12,7 @@ function VendorProfileHeader({ vendor }) {
         background: "#fff",
         borderRadius: "24px",
         boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        width: { xs: "70%", sm: "80%", md: "80%", lg: "70%" },
         maxWidth: "1200px",
         margin: "0 auto",
         mt: { xs: 2, md: 4 },

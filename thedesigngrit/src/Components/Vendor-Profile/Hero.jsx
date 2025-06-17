@@ -12,9 +12,9 @@ function VendorProfileHero({ vendor }) {
   return (
     <Box
       sx={{
-        width: { xs: "100%", md: "80%", lg: "70%" },
+        width: { xs: "70%", md: "80%", lg: "70%" },
         maxWidth: "1200px",
-        height: { xs: "220px", sm: "320px", md: "400px", lg: "420px" },
+        height: { xs: "220px", sm: "320px", md: "400px", lg: "450px" },
         margin: "32px auto 0 auto",
         background: "#fff",
         borderRadius: "24px",

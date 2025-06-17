@@ -71,7 +71,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
           sx={{
             fontFamily: "Horizon",
             fontWeight: "bold",
-            fontSize: isMobile ? "18px" : "20px",
+            fontSize: isMobile ? "18px" : "32px",
             padding: isMobile ? "15px 0" : "25px",
           }}
         >
