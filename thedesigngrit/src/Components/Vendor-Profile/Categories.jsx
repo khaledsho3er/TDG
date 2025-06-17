@@ -104,7 +104,7 @@ const VendorCategoriesgrid = ({ vendor }) => {
           </Typography>
         </Box>
       ) : (
-        <Box sx={{ position: "relative" }}>
+        <Box sx={{ position: "relative", padding: "32px 71px" }}>
           <Swiper
             ref={swiperRef}
             modules={[Navigation, Pagination]}
