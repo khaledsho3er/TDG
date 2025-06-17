@@ -165,7 +165,8 @@ function ReadyToShip() {
           sm={4}
           md={3}
           sx={{
-            "@media (max-width: 1025px)": {
+            paddingLeft: { xs: 0, md: 0, lg: 0, xl: 0 },
+            "@media (min-width:1025px)": {
               paddingLeft: "150px !important",
             },
           }}
@@ -181,7 +182,8 @@ function ReadyToShip() {
           xs={12}
           md={9}
           sx={{
-            "@media (max-width: 1025px)": {
+            paddingLeft: { xs: 0, md: 0, lg: 0, xl: 0 },
+            "@media (min-width:1025px)": {
               paddingLeft: "150px !important",
             },
           }}
