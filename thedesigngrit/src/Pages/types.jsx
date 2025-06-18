@@ -188,12 +188,41 @@ function TypesPage() {
       />
 
       <Container maxWidth="xl" sx={{ flexGrow: 1, py: 4 }}>
+        {/* Section Title and Description */}
+        <Box sx={{ mb: 4, textAlign: { xs: "center", md: "left" } }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 800,
+              fontFamily: "Montserrat",
+              color: "#222",
+              mb: 1,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+            }}
+          >
+            {subcategory.name}
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "#555",
+              fontFamily: "Montserrat",
+              maxWidth: 700,
+              fontSize: { xs: 14, md: 16 },
+              mx: { xs: "auto", md: 0 },
+            }}
+          >
+            {subcategory.description}
+          </Typography>
+        </Box>
         <Grid
           container
-          spacing={3}
+          spacing={{ xs: 2, sm: 3, md: 4 }}
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: { xs: "center", md: "flex-start" },
+            alignItems: "stretch",
           }}
         >
           {types.length > 0 ? (
@@ -211,64 +240,78 @@ function TypesPage() {
                   component={Link}
                   to={`/products/${type._id}/${type.name}`}
                   sx={{
-                    position: "relative",
-                    textDecoration: "none",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                    height: 300,
-                    width: "100%",
-                    backgroundImage: `url(${encodeURI(
-                      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                        type.image ? type.image : "Assets/signin.jpeg"
-                      }`
-                    )})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
                     display: "flex",
-                    alignItems: "flex-end",
+                    flexDirection: "column",
+                    alignItems: "center",
                     justifyContent: "flex-start",
-                    padding: 2,
-                    transition: "all 0.3s ease-in-out",
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    width: "100%",
+                    background: "#fff",
+                    borderRadius: 3,
+                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.07)",
+                    overflow: "hidden",
+                    textDecoration: "none",
+                    transition:
+                      "transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s cubic-bezier(.4,2,.6,1)",
+                    minHeight: 320,
                     "&:hover": {
-                      transform: "translateY(-5px)",
-                      boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+                      transform: "translateY(-6px) scale(1.03)",
+                      boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
                     },
                   }}
                 >
-                  {/* Add image preloading */}
-                  <link
-                    rel="preload"
-                    as="image"
-                    href={encodeURI(
-                      `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                        type.image ? type.image : "Assets/signin.jpeg"
-                      }`
-                    )}
-                  />
+                  {/* Image with fixed aspect ratio */}
                   <Box
                     sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
                       width: "100%",
-                      height: "100%",
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)",
-                    }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      position: "relative",
-                      color: "white",
-                      fontSize: { xs: 20, md: 24 },
-                      fontWeight: "bold",
-                      textShadow: "1px 1px 3px rgba(0,0,0,0.5)",
+                      aspectRatio: "4/3",
+                      background: "#f6f6f6",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
                     }}
                   >
-                    {type.name}
-                  </Typography>
+                    <img
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+                        type.image ? type.image : "Assets/signin.jpeg"
+                      }`}
+                      alt={type.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderTopLeftRadius: 12,
+                        borderTopRightRadius: 12,
+                        display: "block",
+                      }}
+                      loading="lazy"
+                    />
+                  </Box>
+                  {/* Type Name */}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        fontWeight: 700,
+                        fontFamily: "Montserrat",
+                        color: "#222",
+                        textTransform: "uppercase",
+                        fontSize: { xs: 16, md: 18 },
+                        mb: 0.5,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {type.name}
+                    </Typography>
+                  </Box>
                 </Box>
               </Grid>
             ))
