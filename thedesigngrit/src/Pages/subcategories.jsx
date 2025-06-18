@@ -128,11 +128,11 @@ function Subcategories() {
                       display: "flex",
                       flexDirection: "column",
                       borderRadius: 3,
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                      transition: "all 0.3s ease-in-out",
+                      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+                      transition: "all 0.18s ease",
                       "&:hover": {
-                        transform: "translateY(-8px)",
-                        boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+                        transform: "translateY(-4px)",
+                        boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
                       },
                       overflow: "hidden",
                     }}
@@ -144,9 +144,9 @@ function Subcategories() {
                       alt={subCategory.name}
                       sx={{
                         objectFit: "cover",
-                        transition: "transform 0.3s ease-in-out",
+                        transition: "transform 0.18s ease",
                         "&:hover": {
-                          transform: "scale(1.05)",
+                          transform: "scale(1.035)",
                         },
                       }}
                     />
@@ -191,12 +191,12 @@ function Subcategories() {
                       <Button
                         component={Link}
                         to={`/types/${subCategory._id}`}
-                        variant="outlined"
+                        variant="contained"
                         size="large"
                         sx={{
                           mt: 2,
-                          borderColor: "#2d2d2d",
-                          color: "#2d2d2d",
+                          backgroundColor: "#6b7b58",
+                          color: "#fff",
                           fontFamily: "Montserrat, sans-serif",
                           fontWeight: 500,
                           borderRadius: 2,
@@ -204,13 +204,16 @@ function Subcategories() {
                           py: 1.5,
                           textTransform: "none",
                           fontSize: "1rem",
-                          transition: "all 0.3s ease-in-out",
+                          boxShadow: "0 4px 12px rgba(107, 123, 88, 0.3)",
+                          transition: "all 0.18s ease",
                           "&:hover": {
-                            backgroundColor: "#2d2d2d",
-                            color: "#fff",
-                            borderColor: "#2d2d2d",
+                            backgroundColor: "#5a6a47",
                             transform: "translateY(-2px)",
-                            boxShadow: "0 4px 12px rgba(45,45,45,0.3)",
+                            boxShadow: "0 6px 20px rgba(107, 123, 88, 0.4)",
+                          },
+                          "&:active": {
+                            transform: "translateY(0px)",
+                            boxShadow: "0 2px 8px rgba(107, 123, 88, 0.3)",
                           },
                         }}
                       >
