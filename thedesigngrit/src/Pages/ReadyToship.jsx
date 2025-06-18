@@ -36,10 +36,7 @@ function ReadyToShip() {
           "https://api.thedesigngrit.com/api/products/getproducts/readytoship"
         );
         const approvedReadyToShipProducts = data.filter(
-          (product) =>
-            product.status === true &&
-            product.readyToShip === true &&
-            product.promotionApproved === true
+          (product) => product.status === true && product.readyToShip === true
         );
         setProducts(approvedReadyToShipProducts);
         setFilteredProducts(approvedReadyToShipProducts);

@@ -234,7 +234,7 @@ const ProductCard = ({ product }) => {
             overflowWrap: "break-word",
           }}
         >
-          {product.salePrice ? (
+          {product.salePrice && product.promotionApproved === true ? (
             <span
               style={{ textDecoration: "line-through", marginRight: "5px" }}
             >
