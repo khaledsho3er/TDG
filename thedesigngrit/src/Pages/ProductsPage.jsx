@@ -58,7 +58,8 @@ function ProductsPage() {
         console.log("Raw API response:", data); // Add this line
 
         const approvedProducts = data.filter(
-          (product) => product.status === true
+          (product) =>
+            product.status === true && product.promotionApproved === true
         );
 
         setProducts(approvedProducts);
