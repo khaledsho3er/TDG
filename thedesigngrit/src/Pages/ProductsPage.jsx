@@ -180,24 +180,24 @@ function ProductsPage() {
       <Header />
       <PageDescription name={typeName} description={typeDescription} />
 
-      {/* Hide TopFilter on mobile - it will be in the drawer */}
-      {!isMobile && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            px: { xs: 2, md: 3 },
-            py: 2,
-          }}
-        >
-          <TopFilter
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-            onCADFilterChange={handleCADFilterChange}
-            onSalePriceFilterChange={handleSalePriceFilterChange}
-          />
-        </Box>
-      )}
+      {/* TopFilter - hidden on mobile, visible on desktop */}
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
+          justifyContent: "flex-end",
+          px: { xs: 2, md: 3 },
+          py: 2,
+        }}
+      >
+        <TopFilter
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onCADFilterChange={handleCADFilterChange}
+          onSalePriceFilterChange={handleSalePriceFilterChange}
+          hasCAD={filters.hasCAD}
+          hasSalePrice={filters.hasSalePrice}
+        />
+      </Box>
 
       <Grid
         container

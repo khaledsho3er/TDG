@@ -124,6 +124,8 @@ const FilterSection = ({
           onCADFilterChange={onCADFilterChange}
           onSalePriceFilterChange={onSalePriceFilterChange}
           isMobile={true}
+          hasCAD={currentFilters.hasCAD}
+          hasSalePrice={currentFilters.hasSalePrice}
         />
       )}
 

@@ -52,24 +52,15 @@ const TopFilter = ({
   onCADFilterChange,
   onSalePriceFilterChange,
   isMobile = false,
+  hasCAD = false,
+  hasSalePrice = false,
 }) => {
-  const [forSaleChecked, setForSaleChecked] = useState(false);
-  const [bimCadChecked, setBimCadChecked] = useState(false);
-
   const handleForSaleToggle = () => {
-    setForSaleChecked((prev) => {
-      const newValue = !prev;
-      onSalePriceFilterChange(newValue);
-      return newValue;
-    });
+    onSalePriceFilterChange(!hasSalePrice);
   };
 
   const handleBimCadToggle = () => {
-    setBimCadChecked((prev) => {
-      const newValue = !prev;
-      onCADFilterChange(newValue);
-      return newValue;
-    });
+    onCADFilterChange(!hasCAD);
   };
 
   if (isMobile) {
@@ -96,7 +87,7 @@ const TopFilter = ({
           onClick={handleForSaleToggle}
           variant="outlined"
         >
-          {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          {hasSalePrice ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
           For Sale
           <ShoppingCartIcon fontSize="small" />
         </Button>
@@ -106,7 +97,7 @@ const TopFilter = ({
           onClick={handleBimCadToggle}
           variant="outlined"
         >
-          {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          {hasCAD ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
           BIM/CAD
         </Button>
 
@@ -187,7 +178,7 @@ const TopFilter = ({
           onClick={handleForSaleToggle}
           variant="outlined"
         >
-          {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          {hasSalePrice ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
           For Sale
           <ShoppingCartIcon fontSize="small" />
         </Button>
@@ -197,7 +188,7 @@ const TopFilter = ({
           onClick={handleBimCadToggle}
           variant="outlined"
         >
-          {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          {hasCAD ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
           BIM/CAD
         </Button>
       </Box>
