@@ -16,8 +16,17 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
+import TopFilter from "./TopFilters";
 
-const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
+const FilterSection = ({
+  onFilterChange,
+  products = [],
+  currentFilters,
+  sortOption,
+  setSortOption,
+  onCADFilterChange,
+  onSalePriceFilterChange,
+}) => {
   const [selectedFilters, setSelectedFilters] = useState(currentFilters);
   const [brands, setBrands] = useState([]);
   const isMobile = useMediaQuery("(max-width:768px)");
@@ -106,6 +115,17 @@ const FilterSection = ({ onFilterChange, products = [], currentFilters }) => {
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Filters
       </Typography>
+
+      {/* Top Filters for Mobile */}
+      {isMobile && (
+        <TopFilter
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onCADFilterChange={onCADFilterChange}
+          onSalePriceFilterChange={onSalePriceFilterChange}
+          isMobile={true}
+        />
+      )}
 
       {/* Selected filter chips */}
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>

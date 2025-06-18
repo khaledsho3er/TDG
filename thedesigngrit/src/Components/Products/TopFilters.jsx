@@ -27,11 +27,31 @@ const toggleButtonSx = {
   },
 };
 
+const mobileToggleButtonSx = {
+  borderRadius: "10px",
+  borderColor: "black",
+  padding: "8px 12px",
+  display: "flex",
+  alignItems: "center",
+  gap: 1,
+  color: "black",
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: "14px",
+  width: "100%",
+  justifyContent: "center",
+  marginBottom: 1,
+  "&:hover": {
+    backgroundColor: "#2d2d2d",
+    color: "white",
+  },
+};
+
 const TopFilter = ({
   sortOption,
   setSortOption,
   onCADFilterChange,
   onSalePriceFilterChange,
+  isMobile = false,
 }) => {
   const [forSaleChecked, setForSaleChecked] = useState(false);
   const [bimCadChecked, setBimCadChecked] = useState(false);
@@ -51,6 +71,90 @@ const TopFilter = ({
       return newValue;
     });
   };
+
+  if (isMobile) {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          marginBottom: 3,
+        }}
+      >
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ marginBottom: 1, fontFamily: "Montserrat, sans-serif" }}
+        >
+          Quick Filters
+        </Typography>
+
+        <Button
+          sx={mobileToggleButtonSx}
+          onClick={handleForSaleToggle}
+          variant="outlined"
+        >
+          {forSaleChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          For Sale
+          <ShoppingCartIcon fontSize="small" />
+        </Button>
+
+        <Button
+          sx={mobileToggleButtonSx}
+          onClick={handleBimCadToggle}
+          variant="outlined"
+        >
+          {bimCadChecked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+          BIM/CAD
+        </Button>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            marginTop: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            Sort By
+          </Typography>
+          <FormControl
+            size="small"
+            sx={{
+              width: "100%",
+              "& .MuiOutlinedInput-root": {
+                fontSize: 14,
+                "& fieldset": { border: "1px solid #2d2d2d" },
+                borderRadius: "10px",
+              },
+            }}
+          >
+            <Select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              displayEmpty
+              sx={{ fontSize: "14px", color: "black" }}
+            >
+              <MenuItem value="Newest">Newest</MenuItem>
+              <MenuItem value="Price: Low to High">Price: Low to High</MenuItem>
+              <MenuItem value="Price: High to Low">Price: High to Low</MenuItem>
+              <MenuItem value="Alphabetical: A-Z">Alphabetical: A-Z</MenuItem>
+              <MenuItem value="Alphabetical: Z-A">Alphabetical: Z-A</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -105,7 +209,7 @@ const TopFilter = ({
           alignItems: "center",
           gap: 2,
           justifyContent: "flex-end",
-          width: { xs: "100%", sm: "auto" },
+          width: { xs: "21%", sm: "auto" },
         }}
       >
         <Typography

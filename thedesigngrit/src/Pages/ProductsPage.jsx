@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+  useMediaQuery,
+} from "@mui/material";
 import axios from "axios";
 import Header from "../Components/navBar";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -22,6 +28,7 @@ function ProductsPage() {
     priceRange: [0, 600000], // Wider range initially
   });
   const [isLoading, setIsLoading] = useState(true);
+  const isMobile = useMediaQuery("(max-width:768px)");
 
   // Fetch Type Details
   useEffect(() => {
@@ -172,21 +179,26 @@ function ProductsPage() {
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
       <PageDescription name={typeName} description={typeDescription} />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          px: { xs: 2, md: 3 },
-          py: 2,
-        }}
-      >
-        <TopFilter
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-          onCADFilterChange={handleCADFilterChange}
-          onSalePriceFilterChange={handleSalePriceFilterChange}
-        />
-      </Box>
+
+      {/* Hide TopFilter on mobile - it will be in the drawer */}
+      {!isMobile && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            px: { xs: 2, md: 3 },
+            py: 2,
+          }}
+        >
+          <TopFilter
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            onCADFilterChange={handleCADFilterChange}
+            onSalePriceFilterChange={handleSalePriceFilterChange}
+          />
+        </Box>
+      )}
+
       <Grid
         container
         spacing={2}
@@ -212,6 +224,10 @@ function ProductsPage() {
             onFilterChange={handleFilterChange}
             products={products}
             currentFilters={filters}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            onCADFilterChange={handleCADFilterChange}
+            onSalePriceFilterChange={handleSalePriceFilterChange}
           />
         </Grid>
         <Grid item xs={12} md={9}>
