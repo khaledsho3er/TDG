@@ -267,7 +267,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                     <Typography
                       variant="body2"
                       sx={{
-                        color: "gray",
+                        color: "#2d2d2d",
                         fontFamily: "Montserrat",
                         fontWeight: "bold",
                       }}
