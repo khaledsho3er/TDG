@@ -127,8 +127,7 @@ function SignInForm() {
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <button className="btn social-btn google-btn">
-            Continue with Google
+          <div className="btn social-btn google-btn">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
@@ -147,7 +146,7 @@ function SignInForm() {
                 fontWeight: "500",
               }}
             />
-          </button>
+          </div>
           {/* <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
