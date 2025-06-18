@@ -13,6 +13,7 @@ import PageDicription from "../Components/Topheader";
 import LoadingScreen from "./loadingScreen";
 import Footer from "../Components/Footer";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 function Subcategories() {
   const [subCategories, setSubCategories] = useState([]);
@@ -20,6 +21,7 @@ function Subcategories() {
   const [error, setError] = useState(null);
   const { categoryId } = useParams();
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -134,7 +136,12 @@ function Subcategories() {
                       boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
                       transition: { duration: 0.18 },
                     }}
-                    to={`/types/${subCategory._id}`}
+                    S
+                    // component={Link}
+                    onClick={() => {
+                      navigate(`/types/${subCategory._id}`);
+                    }}
+                    // to={`/types/${subCategory._id}`}
                     sx={{
                       position: "relative",
                       width: "100%",
