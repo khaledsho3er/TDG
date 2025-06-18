@@ -499,6 +499,7 @@ const FilterSection = ({
         variant="outlined"
         sx={{
           mb: 2,
+          mt: 2,
           color: "#2d2d2d",
           backgroundColor: "transparent",
           border: "1px solid #2d2d2d",
