@@ -7,7 +7,7 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/navBar";
 import LoadingScreen from "./loadingScreen";
@@ -200,154 +200,157 @@ function TypesPage() {
           }}
         >
           {types.length > 0 ? (
-            types.map((type) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={type._id}
-                sx={{ display: "flex" }}
-              >
-                <Box
-                  component={motion.div}
-                  whileHover={{ y: -5, transition: { duration: 0.3 } }}
-                  onClick={() => {
-                    const typeName = encodeURIComponent(
-                      type.name.toLowerCase().replace(/\s+/g, "-")
-                    );
-                    window.location.href = `/products/${type._id}/${typeName}`;
-                  }}
-                  sx={{
-                    position: "relative",
-                    width: "100%",
-                    height: "220px",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-                    cursor: "pointer",
-                    background: "#fff",
-                    "&::before": {
-                      content: '""',
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 60%)",
-                      zIndex: 1,
-                      transition: "opacity 0.3s ease",
-                      opacity: 0.7,
-                    },
-                    "&:hover::before": {
-                      opacity: 0.9,
-                    },
-                  }}
+            types.map((type) => {
+              const typeName = type?.name
+                ? encodeURIComponent(
+                    type.name.toLowerCase().replace(/\s+/g, "-")
+                  )
+                : "undefined";
+              const imageUrl = type?.image
+                ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${type.image}`
+                : `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/Assets/signin.jpeg`;
+              const displayName = type?.name || "Undefined";
+              const displayDescription = type?.description || "";
+              const navigate = useNavigate();
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  key={type._id}
+                  sx={{ display: "flex" }}
                 >
                   <Box
-                    component={motion.img}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.5 }}
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
-                      type.image ? type.image : "Assets/signin.jpeg"
-                    }`}
-                    alt={type.name}
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      transition: "transform 0.5s ease",
-                    }}
-                  />
-                  <Box
                     component={motion.div}
-                    initial={{ opacity: 0.9, y: 0 }}
                     whileHover={{
-                      opacity: 1,
-                      y: -3,
-                      transition: { duration: 0.3 },
+                      y: -4,
+                      boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
+                      transition: { duration: 0.18 },
                     }}
+                    onClick={() =>
+                      navigate(`/products/${type._id}/${typeName}`)
+                    }
                     sx={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      padding: "16px",
-                      zIndex: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
+                      position: "relative",
+                      width: "100%",
+                      height: "220px",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+                      cursor: "pointer",
+                      background: "#fff",
+                      "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 60%)",
+                        zIndex: 1,
+                        transition: "opacity 0.18s ease",
+                        opacity: 0.7,
+                      },
+                      "&:hover::before": {
+                        opacity: 0.9,
+                      },
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      component={motion.h6}
-                      initial={{ y: 0 }}
-                      whileHover={{ y: -2 }}
-                      sx={{
-                        color: "white",
-                        fontFamily: "Horizon",
-                        fontWeight: "bold",
-                        marginBottom: "4px",
-                        fontSize: "16px",
-                        textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                        position: "relative",
-                        "&::after": {
-                          content: '""',
-                          position: "absolute",
-                          bottom: -5,
-                          left: 0,
-                          width: "30px",
-                          height: "2px",
-                          backgroundColor: "#6b7b58",
-                          transition: "width 0.3s ease",
-                        },
-                        "&:hover::after": {
-                          width: "100%",
-                        },
-                      }}
-                    >
-                      {type.name}
-                    </Typography>
-                    {type.description && (
-                      <Typography
-                        variant="body2"
-                        component={motion.p}
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        sx={{
-                          color: "rgba(255,255,255,0.8)",
-                          fontFamily: "Montserrat",
-                          fontSize: "12px",
-                          maxWidth: "90%",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {type.description}
-                      </Typography>
-                    )}
                     <Box
-                      component={motion.div}
-                      initial={{ width: 0 }}
-                      whileHover={{ width: "100%" }}
+                      component={motion.img}
+                      whileHover={{
+                        scale: 1.035,
+                        transition: { duration: 0.18 },
+                      }}
+                      src={imageUrl}
+                      alt={displayName}
+                      loading="lazy"
                       sx={{
-                        height: "2px",
-                        backgroundColor: "white",
-                        marginTop: "auto",
-                        transition: "width 0.3s ease",
-                        alignSelf: "flex-start",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        transition: "transform 0.18s ease",
                       }}
                     />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        padding: "16px",
+                        zIndex: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: "white",
+                          fontFamily: "Horizon",
+                          fontWeight: "bold",
+                          marginBottom: "4px",
+                          fontSize: "16px",
+                          textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                          position: "relative",
+                          "&::after": {
+                            content: '""',
+                            position: "absolute",
+                            bottom: -5,
+                            left: 0,
+                            width: "30px",
+                            height: "2px",
+                            backgroundColor: "#6b7b58",
+                            transition: "width 0.18s ease",
+                          },
+                          "&:hover::after": {
+                            width: "100%",
+                          },
+                        }}
+                      >
+                        {displayName}
+                      </Typography>
+                      {displayDescription && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgba(255,255,255,0.8)",
+                            fontFamily: "Montserrat",
+                            fontSize: "12px",
+                            maxWidth: "90%",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                          }}
+                        >
+                          {displayDescription}
+                        </Typography>
+                      )}
+                      <Box
+                        sx={{
+                          height: "2px",
+                          backgroundColor: "white",
+                          marginTop: "auto",
+                          transition: "width 0.18s ease",
+                          alignSelf: "flex-start",
+                          width: 0,
+                          ...(type?.name && {
+                            "&:hover": { width: "100%" },
+                          }),
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              </Grid>
-            ))
+                </Grid>
+              );
+            })
           ) : (
             <Box sx={{ textAlign: "center", py: 5, width: "100%" }}>
               <Typography variant="h6" color="text.secondary" gutterBottom>
