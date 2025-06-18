@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -41,8 +41,6 @@ function SignInForm() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const googleLoginRef = useRef();
 
   // Google OAuth handlers
   const handleGoogleSuccess = async (credentialResponse) => {
@@ -129,27 +127,8 @@ function SignInForm() {
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          {/* Custom Google button */}
-          <button
-            type="button"
-            className="btn social-btn google-btn"
-            onClick={() =>
-              googleLoginRef.current && googleLoginRef.current.click()
-            }
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              marginBottom: 12,
-            }}
-          >
-            <FcGoogle style={{ fontSize: 22, marginRight: 8 }} />
+          <button className="btn social-btn google-btn">
             Continue with Google
-          </button>
-          {/* Hidden GoogleLogin component for popup trigger */}
-          <div style={{ display: "none" }}>
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
@@ -160,9 +139,15 @@ function SignInForm() {
               shape="rectangular"
               logo_alignment="left"
               width="100%"
-              ref={googleLoginRef}
+              style={{
+                width: "100%",
+                height: "40px",
+                fontFamily: "Montserrat",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
             />
-          </div>
+          </button>
           {/* <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
