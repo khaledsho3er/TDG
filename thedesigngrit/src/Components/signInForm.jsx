@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
+import React, { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useUser } from "../utils/userContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ForgotPasswordDialog from "./forgetPassword";
 import ConfirmationDialog from "./confirmationMsg";
+import jwt_decode from "jwt-decode";
+
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -37,42 +36,57 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    trigger, // ✅ Add this
+    trigger,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  // Google OAuth handlers
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      setLoginError(""); // Clear previous error messages
+  // Load Google Identity Services
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      google.accounts.id.initialize({
+        client_id: "YOUR_GOOGLE_CLIENT_ID", // 🔁 Replace this with your actual client ID
+        callback: handleGoogleSuccess,
+      });
+    }
+  }, []);
 
-      const response = await axios.post(
+  const handleGoogleClick = () => {
+    if (window.google) {
+      google.accounts.id.prompt(); // this shows the One Tap, optional
+      google.accounts.id.renderButton(document.getElementById("google-btn"), {
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        shape: "rectangular",
+      });
+
+      // Trigger the actual login
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed()) {
+          handleGoogleError();
+        }
+      });
+    }
+  };
+
+  const handleGoogleSuccess = async (response) => {
+    try {
+      setLoginError("");
+      const credential = response.credential;
+
+      const res = await axios.post(
         "https://api.thedesigngrit.com/api/google-auth/google",
-        {
-          credential: credentialResponse.credential,
-        },
+        { credential },
         { withCredentials: true }
       );
 
-      setUserSession(response.data.user);
+      setUserSession(res.data.user);
       navigate("/");
     } catch (error) {
-      console.error("Error during Google sign-in:", error.response || error);
-
-      if (error.response) {
-        if (error.response.status === 401) {
-          setLoginError("Google authentication failed. Please try again.");
-        } else if (error.response.data && error.response.data.message) {
-          setLoginError(error.response.data.message);
-        } else {
-          setLoginError("Google login failed. Please try again.");
-        }
-      } else {
-        setLoginError(
-          "Network error. Please check your connection and try again."
-        );
-      }
+      console.error("Error during Google sign-in:", error);
+      setLoginError("Google login failed. Please try again.");
     }
   };
 
@@ -82,39 +96,22 @@ function SignInForm() {
 
   const onSubmit = async (data) => {
     try {
-      setLoginError(""); // Clear previous error messages
-
+      setLoginError("");
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/signin",
         data,
         { withCredentials: true }
       );
-
       setUserSession(response.data.user);
       navigate("/");
     } catch (error) {
-      console.error("Error during sign-in:", error.response || error);
-
-      // Set appropriate error message based on the error response
-      if (error.response) {
-        if (error.response.status === 401) {
-          setLoginError("Invalid email or password. Please try again.");
-        } else if (error.response.data && error.response.data.message) {
-          setLoginError(error.response.data.message);
-        } else {
-          setLoginError(
-            "Login failed. Please check your credentials and try again."
-          );
-        }
-      } else {
-        setLoginError(
-          "Network error. Please check your connection and try again."
-        );
-      }
+      console.error("Error during sign-in:", error);
+      setLoginError("Invalid email or password. Please try again.");
     }
   };
+
   const handleValidateAndSubmit = async (data) => {
-    const isValid = await trigger(); // Validate fields manually
+    const isValid = await trigger();
     if (!isValid) {
       const firstError = errors.email?.message || errors.password?.message;
       setLoginError(firstError);
@@ -122,38 +119,25 @@ function SignInForm() {
     }
     onSubmit(data);
   };
+
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            useOneTap
-            theme="outline"
-            size="large"
-            text="continue_with"
-            shape="rectangular"
-            logo_alignment="left"
-            width="100%"
-            style={{
-              width: "100%",
-              height: "40px",
-              fontFamily: "Montserrat",
-              fontSize: "14px",
-              fontWeight: "500",
-            }}
-          />
-          <button className="btn social-btn facebook-btn">
-            <FaFacebook className="facebook-icon" />
-            Continue with Facebook
+          <button
+            id="google-btn"
+            className="btn social-btn google-btn"
+            onClick={handleGoogleClick}
+          >
+            <FcGoogle size={20} style={{ marginRight: "8px" }} />
+            Continue with Google
           </button>
         </div>
+
         <div className="divider-signIn"> OR</div>
 
         <form onSubmit={handleSubmit(handleValidateAndSubmit)}>
-          {/* Display general login error at the top of the form */}
           {(errors.email || errors.password || loginError) && (
             <div className="login-error-message">
               {errors.email?.message && <div>{errors.email.message}</div>}
@@ -164,19 +148,14 @@ function SignInForm() {
 
           <input
             type="email"
-            name="email"
             {...register("email")}
             placeholder="E-mail"
             className="input-field"
           />
-          {/* {errors.email && (
-            <p className="error-message-login">{errors.email.message}</p>
-          )} */}
 
           <div style={{ position: "relative" }}>
             <input
               type={showPassword ? "text" : "password"}
-              name="password"
               {...register("password")}
               placeholder="Password"
               className="input-field"
@@ -190,12 +169,12 @@ function SignInForm() {
                 transform: "translateY(-50%)",
                 cursor: "pointer",
                 color: "#6b7b58",
-                fontFamily: "Montserrat",
               }}
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
           </div>
+
           <span
             onClick={() => setForgotPasswordDialogOpen(true)}
             style={{
@@ -205,28 +184,15 @@ function SignInForm() {
               color: "#e0e0e0",
               cursor: "pointer",
               fontFamily: "Montserrat",
-
-              "@media (max-width: 768px)": {
-                right: "40px",
-              },
             }}
           >
             Forgot Password?
           </span>
-          {/* {errors.password && (
-            <p className="error-message-login">{errors.password.message}</p>
-          )} */}
 
           <button
             type="submit"
             className="btn signin-btn"
-            style={{
-              marginTop: "24px",
-              marginBottom: "-20px",
-              "@media (max-width: 768px)": {
-                marginBottom: "-15px",
-              },
-            }}
+            style={{ marginTop: "24px" }}
           >
             Sign In
           </button>
@@ -236,6 +202,7 @@ function SignInForm() {
           If you don't have an account? <a href="/signup">Register</a>
         </p>
       </div>
+
       <ForgotPasswordDialog
         open={forgotPasswordDialogOpen}
         onClose={() => setForgotPasswordDialogOpen(false)}
