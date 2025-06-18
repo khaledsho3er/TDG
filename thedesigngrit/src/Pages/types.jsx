@@ -22,7 +22,7 @@ function TypesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     let isMounted = true;
 
@@ -211,7 +211,7 @@ function TypesPage() {
                 : `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/Assets/signin.jpeg`;
               const displayName = type?.name || "Undefined";
               const displayDescription = type?.description || "";
-              const navigate = useNavigate();
+
               return (
                 <Grid
                   item
