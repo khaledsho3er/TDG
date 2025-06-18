@@ -235,18 +235,18 @@ const ProductCard = ({ product }) => {
           }}
         >
           {product.salePrice && product.promotionApproved === true ? (
-            <span
-              style={{ textDecoration: "line-through", marginRight: "5px" }}
-            >
-              {Number(product.price).toLocaleString()} E£
-            </span>
+            <>
+              <span
+                style={{ textDecoration: "line-through", marginRight: "5px" }}
+              >
+                {Number(product.price).toLocaleString()} E£
+              </span>
+              <span style={{ color: "red" }}>
+                {Number(product.salePrice).toLocaleString()}E£
+              </span>
+            </>
           ) : (
             Number(product.price).toLocaleString() + "E£"
-          )}
-          {product.salePrice && (
-            <span style={{ color: "red" }}>
-              {Number(product.salePrice).toLocaleString()}E£
-            </span>
           )}
         </Typography>
       </CardContent>

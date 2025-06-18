@@ -635,7 +635,7 @@ function ProductPage() {
                   </>
                 )
               ) : // Show parent product pricing when no variant is selected
-              product.salePrice ? (
+              product.salePrice && product.promotionApproved === true ? (
                 // Parent product has sale price
                 <>
                   <span

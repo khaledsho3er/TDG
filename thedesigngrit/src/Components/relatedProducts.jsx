@@ -114,7 +114,8 @@ const RelatedProducts = ({ productId }) => {
                     <div className="related-info">
                       <p className="related-category">{categoryName}</p>
                       <h3 className="related-name">{product.name}</h3>
-                      {product.salePrice ? (
+                      {product.salePrice &&
+                      product.promotionApproved === true ? (
                         <>
                           <p
                             className="related-price"
