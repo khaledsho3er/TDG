@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+  useMediaQuery,
+} from "@mui/material";
 import axios from "axios";
 import Header from "../Components/navBar";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -19,6 +25,8 @@ function OnSale() {
     tags: [],
     priceRange: [0, 600000], // Wider range initially
   });
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   // 🟢 Fetch products
   useEffect(() => {
     const fetchReadyToShipProducts = async () => {
@@ -47,7 +55,6 @@ function OnSale() {
   }, []);
 
   // 🟢 Apply filters and sorting
-  // Apply filters and sorting
   useEffect(() => {
     const applyFiltersAndSorting = () => {
       let filtered = [...products];
@@ -147,22 +154,43 @@ function OnSale() {
   const handleSalePriceFilterChange = (value) => {
     setFilters((prev) => ({ ...prev, hasSalePrice: value }));
   };
+
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
       <PageDescription
         name="On Sale Products"
         description="Discover products that are in Sale and hurry up!"
       />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+
+      {/* TopFilter - hidden on mobile, visible on desktop */}
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
+          justifyContent: "flex-end",
+          px: { xs: 2, md: 3 },
+          py: 2,
+        }}
+      >
         <TopFilter
           sortOption={sortOption}
           setSortOption={setSortOption}
           onCADFilterChange={handleCADFilterChange}
           onSalePriceFilterChange={handleSalePriceFilterChange}
-        />{" "}
+          hasCAD={filters.hasCAD}
+          hasSalePrice={filters.hasSalePrice}
+        />
       </Box>
-      <Grid container spacing={2} sx={{ padding: 2 }}>
+
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          flex: 1,
+          px: { xs: 2, md: 3 },
+          pb: 4,
+        }}
+      >
         <Grid
           item
           xs={12}
@@ -179,13 +207,15 @@ function OnSale() {
             onFilterChange={handleFilterChange}
             products={products}
             currentFilters={filters}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            onCADFilterChange={handleCADFilterChange}
+            onSalePriceFilterChange={handleSalePriceFilterChange}
           />
         </Grid>
         <Grid item xs={12} md={9}>
           {isLoading ? (
-            <Grid
-              item
-              xs={12}
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -198,13 +228,17 @@ function OnSale() {
                 thickness={4}
                 sx={{ color: "#6b7b58" }}
               />
-            </Grid>
+            </Box>
           ) : filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
+          ) : products.length === 0 ? (
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No products have sale at the moment.
+            </Typography>
           ) : (
-            <Grid item xs={12}>
-              <Typography>No products have sale at the moment.</Typography>
-            </Grid>
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No products match your filters. Try adjusting your criteria.
+            </Typography>
           )}
         </Grid>
       </Grid>
