@@ -75,7 +75,7 @@ const PromotionModal = ({ open, onClose, onSave, product }) => {
 
     try {
       const response = await fetch(
-        `http://api.thedesigngrit.com/api/products/promotion/${product._id}`,
+        `https://api.thedesigngrit.com/api/products/promotion/${product._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
