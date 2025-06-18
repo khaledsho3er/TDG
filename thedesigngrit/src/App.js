@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { CartProvider } from "./Context/cartcontext";
 import { UserProvider } from "./utils/userContext";
 import { VendorProvider } from "./utils/vendorContext";
@@ -435,21 +436,23 @@ function App() {
   }, []);
 
   return (
-    <UserProvider>
-      <VendorProvider>
-        <AdminProvider>
-          <CartProvider>
-            <FavoritesProvider>
-              <Router>
-                <ScrollToTop />
-                <AppRoutes />
-                <Analytics />
-              </Router>
-            </FavoritesProvider>
-          </CartProvider>
-        </AdminProvider>
-      </VendorProvider>
-    </UserProvider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <UserProvider>
+        <VendorProvider>
+          <AdminProvider>
+            <CartProvider>
+              <FavoritesProvider>
+                <Router>
+                  <ScrollToTop />
+                  <AppRoutes />
+                  <Analytics />
+                </Router>
+              </FavoritesProvider>
+            </CartProvider>
+          </AdminProvider>
+        </VendorProvider>
+      </UserProvider>
+    </GoogleOAuthProvider>
   );
 }
 

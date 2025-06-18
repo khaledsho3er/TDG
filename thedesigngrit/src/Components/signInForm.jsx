@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
@@ -40,6 +41,44 @@ function SignInForm() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  // Google OAuth handlers
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoginError(""); // Clear previous error messages
+
+      const response = await axios.post(
+        "https://api.thedesigngrit.com/api/google-auth/google",
+        {
+          credential: credentialResponse.credential,
+        },
+        { withCredentials: true }
+      );
+
+      setUserSession(response.data.user);
+      navigate("/");
+    } catch (error) {
+      console.error("Error during Google sign-in:", error.response || error);
+
+      if (error.response) {
+        if (error.response.status === 401) {
+          setLoginError("Google authentication failed. Please try again.");
+        } else if (error.response.data && error.response.data.message) {
+          setLoginError(error.response.data.message);
+        } else {
+          setLoginError("Google login failed. Please try again.");
+        }
+      } else {
+        setLoginError(
+          "Network error. Please check your connection and try again."
+        );
+      }
+    }
+  };
+
+  const handleGoogleError = () => {
+    setLoginError("Google sign-in was cancelled or failed. Please try again.");
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -88,10 +127,24 @@ function SignInForm() {
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <button className="btn social-btn google-btn">
-            <FcGoogle className="google-icon" />
-            Continue with Google
-          </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            useOneTap
+            theme="outline"
+            size="large"
+            text="continue_with"
+            shape="rectangular"
+            logo_alignment="left"
+            width="100%"
+            style={{
+              width: "100%",
+              height: "40px",
+              fontFamily: "Montserrat",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+          />
           <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
@@ -180,7 +233,7 @@ function SignInForm() {
         </form>
 
         <p className="register-link">
-          If you don’t have an account? <a href="/signup">Register</a>
+          If you don't have an account? <a href="/signup">Register</a>
         </p>
       </div>
       <ForgotPasswordDialog
