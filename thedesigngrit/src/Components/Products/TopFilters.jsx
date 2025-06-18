@@ -120,7 +120,7 @@ const TopFilter = ({
         <FormControl
           size="small"
           sx={{
-            minWidth: { xs: "100%", sm: 140 },
+            minWidth: { xs: "100%", sm: 10 },
             "& .MuiOutlinedInput-root": {
               fontSize: 13,
               "& fieldset": { border: "none" },
