@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,11 +12,16 @@ import { Navigation, Pagination, Keyboard, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { UserContext } from "../../utils/userContext";
 
 const ProductSlider = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [favorites, setFavorites] = useState({});
   const navigate = useNavigate();
+  const { userSession } = useContext(UserContext);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const swiperRef = useRef(null);
   const sliderContainerRef = useRef(null);
@@ -30,6 +41,69 @@ const ProductSlider = () => {
   const isMobile = windowWidth <= 768;
   const isTablet = windowWidth > 768 && windowWidth <= 1024;
   const visibleCount = isMobile ? 1 : isTablet ? 3 : 5;
+
+  // Fetch the user's favorite products on component mount
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!userSession) return;
+
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/favorites/${userSession.id}`
+        );
+        if (response.ok) {
+          const favoritesData = await response.json();
+          const favoriteIds = favoritesData.map((prod) => prod._id);
+          const favoritesMap = {};
+          favoriteIds.forEach((id) => {
+            favoritesMap[id] = true;
+          });
+          setFavorites(favoritesMap);
+        }
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+    fetchFavorites();
+  }, [userSession]);
+
+  // Toggle the favorite status
+  const toggleFavorite = async (event, productId) => {
+    event.stopPropagation(); // Prevent triggering card click
+
+    if (!userSession) return; // If there's no user session, prevent posting
+
+    const isFavorite = favorites[productId];
+    const endpoint = isFavorite ? "/remove" : "/add";
+    const requestPayload = {
+      userSession,
+      productId: productId,
+    };
+
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/favorites${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestPayload),
+        }
+      );
+
+      if (response.ok) {
+        setFavorites((prev) => ({
+          ...prev,
+          [productId]: !isFavorite,
+        }));
+      } else {
+        console.error("Error: Unable to update favorite status.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const fetchBestSellers = useCallback(async () => {
     try {
@@ -152,9 +226,38 @@ const ProductSlider = () => {
               className="product-card-bestseller"
               style={{
                 cursor: "pointer",
+                position: "relative",
               }}
               onClick={() => navigate(`/product/${product._id}`)}
             >
+              {/* Favorite Icon */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "8px",
+                  right: "8px",
+                  zIndex: 10,
+                  backgroundColor: "#fff",
+                  borderRadius: "50%",
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                  cursor: "pointer",
+                }}
+                onClick={(event) => toggleFavorite(event, product._id)}
+              >
+                {favorites[product._id] ? (
+                  <FavoriteIcon style={{ color: "red", fontSize: "20px" }} />
+                ) : (
+                  <FavoriteBorderIcon
+                    style={{ color: "#000", fontSize: "20px" }}
+                  />
+                )}
+              </div>
+
               <div className="product-image-home">
                 <img
                   src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=250&height=200&format=webp`}
