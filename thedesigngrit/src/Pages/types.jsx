@@ -189,33 +189,6 @@ function TypesPage() {
 
       <Container maxWidth="xl" sx={{ flexGrow: 1, py: 4 }}>
         {/* Section Title and Description */}
-        <Box sx={{ mb: 4, textAlign: { xs: "center", md: "left" } }}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 800,
-              fontFamily: "Montserrat",
-              color: "#222",
-              mb: 1,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-            }}
-          >
-            {subcategory.name}
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{
-              color: "#555",
-              fontFamily: "Montserrat",
-              maxWidth: 700,
-              fontSize: { xs: 14, md: 16 },
-              mx: { xs: "auto", md: 0 },
-            }}
-          >
-            {subcategory.description}
-          </Typography>
-        </Box>
         <Grid
           container
           spacing={{ xs: 2, sm: 3, md: 4 }}
