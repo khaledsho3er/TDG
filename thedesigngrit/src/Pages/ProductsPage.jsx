@@ -211,13 +211,12 @@ function ProductsPage() {
         <Grid
           item
           xs={12}
-          sm={4}
           md={3}
           sx={{
-            paddingLeft: { xs: 0, md: 0, lg: 0, xl: 0 },
-            "@media (min-width:1025px)": {
-              paddingLeft: "66px !important",
-            },
+            width: "100%",
+            maxWidth: { xs: "100%", sm: "100%", md: "300px" },
+            flexShrink: 0,
+            px: { xs: 0, sm: 0, md: 1 },
           }}
         >
           <FilterSection
