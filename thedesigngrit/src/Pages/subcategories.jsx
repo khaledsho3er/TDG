@@ -3,10 +3,6 @@ import {
   Box,
   Typography,
   Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
   Container,
   useTheme,
   useMediaQuery,
@@ -16,6 +12,7 @@ import Header from "../Components/navBar";
 import PageDicription from "../Components/Topheader";
 import LoadingScreen from "./loadingScreen";
 import Footer from "../Components/Footer";
+import { motion } from "framer-motion";
 
 function Subcategories() {
   const [subCategories, setSubCategories] = useState([]);
@@ -102,163 +99,182 @@ function Subcategories() {
         description={category?.description}
       />
 
-      <Container maxWidth="lg" sx={{ flex: 1, py: 4 }}>
-        {subCategories.length > 0 ? (
-          <Box>
-            <Typography
-              variant="h4"
-              component="h2"
-              sx={{
-                textAlign: "center",
-                mb: 4,
-                fontWeight: 600,
-                color: "#2d2d2d",
-                fontFamily: "Montserrat, sans-serif",
-              }}
-            >
-              Explore {category?.name}
-            </Typography>
+      <Container maxWidth="xl" sx={{ flexGrow: 1, py: 4 }}>
+        <Grid
+          container
+          spacing={{ xs: 2, sm: 3, md: 4 }}
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-start" },
+            alignItems: "stretch",
+          }}
+        >
+          {subCategories.length > 0 ? (
+            subCategories.map((subCategory, index) => {
+              const imageUrl = subCategory?.image
+                ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${subCategory.image}`
+                : `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/Assets/signin.jpeg`;
+              const displayName = subCategory?.name || "Undefined";
+              const displayDescription = subCategory?.description || "";
 
-            <Grid container spacing={3}>
-              {subCategories.map((subCategory, index) => (
-                <Grid item xs={12} sm={6} md={4} key={subCategory._id}>
-                  <Card
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  key={subCategory._id}
+                  sx={{ display: "flex" }}
+                >
+                  <Box
+                    component={motion.div}
+                    whileHover={{
+                      y: -4,
+                      boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
+                      transition: { duration: 0.18 },
+                    }}
+                    component={Link}
+                    to={`/types/${subCategory._id}`}
                     sx={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      borderRadius: 3,
-                      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-                      transition: "all 0.18s ease",
-                      "&:hover": {
-                        transform: "translateY(-4px)",
-                        boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
-                      },
+                      position: "relative",
+                      width: "100%",
+                      height: "220px",
+                      borderRadius: "12px",
                       overflow: "hidden",
+                      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+                      cursor: "pointer",
+                      background: "#fff",
+                      textDecoration: "none",
+                      "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 60%)",
+                        zIndex: 1,
+                        transition: "opacity 0.18s ease",
+                        opacity: 0.7,
+                      },
+                      "&:hover::before": {
+                        opacity: 0.9,
+                      },
                     }}
                   >
-                    <CardMedia
-                      component="img"
-                      height="240"
-                      image={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${subCategory.image}`}
-                      alt={subCategory.name}
+                    <Box
+                      component={motion.img}
+                      whileHover={{
+                        scale: 1.035,
+                        transition: { duration: 0.18 },
+                      }}
+                      src={imageUrl}
+                      alt={displayName}
+                      loading="lazy"
                       sx={{
+                        width: "100%",
+                        height: "100%",
                         objectFit: "cover",
                         transition: "transform 0.18s ease",
-                        "&:hover": {
-                          transform: "scale(1.035)",
-                        },
                       }}
                     />
-                    <CardContent
+                    <Box
                       sx={{
-                        flexGrow: 1,
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        padding: "16px",
+                        zIndex: 2,
                         display: "flex",
                         flexDirection: "column",
-                        justifyContent: "space-between",
-                        p: 3,
+                        alignItems: "flex-start",
                       }}
                     >
-                      <Box>
-                        <Typography
-                          variant="h5"
-                          component="h3"
-                          sx={{
-                            fontWeight: 600,
-                            color: "#2d2d2d",
-                            fontFamily: "Montserrat, sans-serif",
-                            mb: 2,
-                            lineHeight: 1.2,
-                          }}
-                        >
-                          {subCategory.name}
-                        </Typography>
-                        {subCategory.description && (
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{
-                              mb: 2,
-                              fontFamily: "Montserrat, sans-serif",
-                              lineHeight: 1.6,
-                            }}
-                          >
-                            {subCategory.description}
-                          </Typography>
-                        )}
-                      </Box>
-
-                      <Button
-                        component={Link}
-                        to={`/types/${subCategory._id}`}
-                        variant="contained"
-                        size="large"
+                      <Typography
+                        variant="h6"
                         sx={{
-                          mt: 2,
-                          backgroundColor: "#6b7b58",
-                          color: "#fff",
-                          fontFamily: "Montserrat, sans-serif",
-                          fontWeight: 500,
-                          borderRadius: 2,
-                          px: 3,
-                          py: 1.5,
-                          textTransform: "none",
-                          fontSize: "1rem",
-                          boxShadow: "0 4px 12px rgba(107, 123, 88, 0.3)",
-                          transition: "all 0.18s ease",
-                          "&:hover": {
-                            backgroundColor: "#5a6a47",
-                            transform: "translateY(-2px)",
-                            boxShadow: "0 6px 20px rgba(107, 123, 88, 0.4)",
+                          color: "white",
+                          fontFamily: "Horizon",
+                          fontWeight: "bold",
+                          marginBottom: "4px",
+                          fontSize: "16px",
+                          textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                          position: "relative",
+                          "&::after": {
+                            content: '""',
+                            position: "absolute",
+                            bottom: -5,
+                            left: 0,
+                            width: "30px",
+                            height: "2px",
+                            backgroundColor: "#6b7b58",
+                            transition: "width 0.18s ease",
                           },
-                          "&:active": {
-                            transform: "translateY(0px)",
-                            boxShadow: "0 2px 8px rgba(107, 123, 88, 0.3)",
+                          "&:hover::after": {
+                            width: "100%",
                           },
                         }}
                       >
-                        Shop Now
-                      </Button>
-                    </CardContent>
-                  </Card>
+                        {displayName}
+                      </Typography>
+                      {displayDescription && (
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: "rgba(255,255,255,0.8)",
+                            fontFamily: "Montserrat",
+                            fontSize: "12px",
+                            maxWidth: "90%",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                          }}
+                        >
+                          {displayDescription}
+                        </Typography>
+                      )}
+                      <Box
+                        sx={{
+                          height: "2px",
+                          backgroundColor: "white",
+                          marginTop: "auto",
+                          transition: "width 0.18s ease",
+                          alignSelf: "flex-start",
+                          width: 0,
+                          ...(subCategory?.name && {
+                            "&:hover": { width: "100%" },
+                          }),
+                        }}
+                      />
+                    </Box>
+                  </Box>
                 </Grid>
-              ))}
-            </Grid>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: "400px",
-              textAlign: "center",
-            }}
-          >
-            <Typography
-              variant="h5"
-              sx={{
-                color: "#666",
-                fontFamily: "Montserrat, sans-serif",
-                mb: 2,
-              }}
-            >
-              No subcategories found
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: "#999",
-                fontFamily: "Montserrat, sans-serif",
-              }}
-            >
-              We're working on adding more categories to this section.
-            </Typography>
-          </Box>
-        )}
+              );
+            })
+          ) : (
+            <Box sx={{ textAlign: "center", py: 5, width: "100%" }}>
+              <Typography variant="h6" color="text.secondary" gutterBottom>
+                No subcategories found for this category.
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Please check back later or explore other categories.
+              </Typography>
+              <Box sx={{ mt: 3 }}>
+                <Link to="/" style={{ textDecoration: "none" }}>
+                  <Typography variant="button" color="primary">
+                    Return to Home
+                  </Typography>
+                </Link>
+              </Box>
+            </Box>
+          )}
+        </Grid>
       </Container>
-
       <Footer />
     </Box>
   );
