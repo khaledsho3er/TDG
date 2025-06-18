@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+  useMediaQuery,
+} from "@mui/material";
 import axios from "axios";
 import Header from "../Components/navBar";
 import ProductCards from "../Components/Products/Productsgrid";
@@ -19,6 +25,8 @@ function ReadyToShip() {
     tags: [],
     priceRange: [0, 600000], // Wider range initially
   });
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   // 🟢 Fetch ready-to-ship products
   useEffect(() => {
     const fetchReadyToShipProducts = async () => {
@@ -43,7 +51,6 @@ function ReadyToShip() {
   }, []);
 
   // 🟢 Apply filters and sorting
-  // Apply filters and sorting
   useEffect(() => {
     const applyFiltersAndSorting = () => {
       let filtered = [...products];
@@ -143,22 +150,43 @@ function ReadyToShip() {
   const handleSalePriceFilterChange = (value) => {
     setFilters((prev) => ({ ...prev, hasSalePrice: value }));
   };
+
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
       <PageDescription
         name="Ready to Ship"
         description="Discover products that are in stock and ready to ship immediately!"
       />
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+
+      {/* TopFilter - hidden on mobile, visible on desktop */}
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
+          justifyContent: "flex-end",
+          px: { xs: 2, md: 3 },
+          py: 2,
+        }}
+      >
         <TopFilter
           sortOption={sortOption}
           setSortOption={setSortOption}
           onCADFilterChange={handleCADFilterChange}
           onSalePriceFilterChange={handleSalePriceFilterChange}
-        />{" "}
+          hasCAD={filters.hasCAD}
+          hasSalePrice={filters.hasSalePrice}
+        />
       </Box>
-      <Grid container spacing={2} sx={{ padding: 2 }}>
+
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          flex: 1,
+          px: { xs: 2, md: 3 },
+          pb: 4,
+        }}
+      >
         <Grid
           item
           xs={12}
@@ -175,13 +203,15 @@ function ReadyToShip() {
             onFilterChange={handleFilterChange}
             products={products}
             currentFilters={filters}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            onCADFilterChange={handleCADFilterChange}
+            onSalePriceFilterChange={handleSalePriceFilterChange}
           />
         </Grid>
         <Grid item xs={12} md={9}>
           {isLoading ? (
-            <Grid
-              item
-              xs={12}
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -194,13 +224,17 @@ function ReadyToShip() {
                 thickness={4}
                 sx={{ color: "#6b7b58" }}
               />
-            </Grid>
+            </Box>
           ) : filteredProducts.length > 0 ? (
             <ProductCards products={filteredProducts} />
+          ) : products.length === 0 ? (
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No ready-to-ship products available.
+            </Typography>
           ) : (
-            <Grid item xs={12}>
-              <Typography>No ready-to-ship products available.</Typography>
-            </Grid>
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              No products match your filters. Try adjusting your criteria.
+            </Typography>
           )}
         </Grid>
       </Grid>
