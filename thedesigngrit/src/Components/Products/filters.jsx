@@ -32,12 +32,10 @@ const FilterSection = ({
   const isMobile = useMediaQuery("(max-width:768px)");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Sync filters from parent
   useEffect(() => {
     setSelectedFilters(currentFilters);
   }, [currentFilters]);
 
-  // Fetch brands from backend
   useEffect(() => {
     const fetchBrands = async () => {
       try {
@@ -50,11 +48,9 @@ const FilterSection = ({
         console.error("Error fetching brands:", err);
       }
     };
-
     fetchBrands();
   }, []);
 
-  // Helper to update filters
   const handleFilterChange = (type, value) => {
     const updated = selectedFilters[type].includes(value)
       ? selectedFilters[type].filter((item) => item !== value)
@@ -65,14 +61,12 @@ const FilterSection = ({
     onFilterChange(newFilters);
   };
 
-  // Price change handler
   const handlePriceChange = (_, newRange) => {
     const newFilters = { ...selectedFilters, priceRange: newRange };
     setSelectedFilters(newFilters);
     onFilterChange(newFilters);
   };
 
-  // Clear all filters
   const clearFilters = () => {
     const reset = {
       brands: [],
@@ -84,7 +78,6 @@ const FilterSection = ({
     onFilterChange(reset);
   };
 
-  // Extract unique colors and tags
   const allColors = Array.from(
     new Set(products.flatMap((p) => p.colors || []))
   );
@@ -93,7 +86,32 @@ const FilterSection = ({
   const getFilterLabel = (label, count) =>
     count > 0 ? `${label} (${count})` : label;
 
-  // UI Section for all filters
+  const renderAccordion = (label, type, items) => (
+    <Accordion disableGutters elevation={0} square sx={accordionStyle}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={summaryStyle}>
+        <Typography>
+          {getFilterLabel(label, selectedFilters[type].length)}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={detailsStyle}>
+        {items.map((item) => (
+          <FormControlLabel
+            key={item._id || item}
+            control={
+              <Checkbox
+                checked={selectedFilters[type].includes(item.brandName || item)}
+                onChange={() =>
+                  handleFilterChange(type, item.brandName || item)
+                }
+              />
+            }
+            label={item.brandName || item}
+          />
+        ))}
+      </AccordionDetails>
+    </Accordion>
+  );
+
   const renderFilterContent = () => (
     <Box
       sx={{
@@ -116,7 +134,6 @@ const FilterSection = ({
         Filters
       </Typography>
 
-      {/* Top Filters for Mobile */}
       {isMobile && (
         <TopFilter
           sortOption={sortOption}
@@ -129,7 +146,6 @@ const FilterSection = ({
         />
       )}
 
-      {/* Selected filter chips */}
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
         {["brands", "colors", "tags"].map((type) =>
           selectedFilters[type]?.map((item) => (
@@ -151,360 +167,39 @@ const FilterSection = ({
         Clear All
       </Button>
 
-      {/* Accordion Filters */}
-      <Accordion
-        disableGutters
-        elevation={0}
-        square
-        sx={{
-          border: "1px solid #2d2d2d",
-          borderRadius: "10px",
-          backgroundColor: "transparent",
-          fontFamily: "Montserrat",
-          mb: 2,
-          "&:before": { display: "none" }, // removes default divider line
-          "&:hover": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-          "&.Mui-expanded": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            "& .MuiAccordionSummary-content": {
-              fontFamily: "Montserrat",
-              fontWeight: "normal",
-              color: "#2d2d2d",
-            },
-            "&:hover": {
-              backgroundColor: "transparent",
-              color: "#fff",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "transparent",
-              color: "#2d2d2d",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-            "&:hover .MuiSvgIcon-root": {
-              color: "#fff",
-            },
-            "&.Mui-expanded .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-          }}
-        >
-          <Typography>
-            {getFilterLabel("Brands", selectedFilters.brands.length)}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            display: "inline-grid",
-            height: "253px",
-            overflow: "auto",
-            width: "96%",
-            fontFamily: "Montserrat",
-            fontWeight: "normal",
-          }}
-        >
-          {brands.map((brand) => (
-            <FormControlLabel
-              key={brand._id}
-              control={
-                <Checkbox
-                  checked={selectedFilters.brands.includes(brand.brandName)}
-                  onChange={() => handleFilterChange("brands", brand.brandName)}
-                />
-              }
-              label={brand.brandName}
-            />
-          ))}
-        </AccordionDetails>
-      </Accordion>
+      {renderAccordion("Brands", "brands", brands)}
 
-      <Accordion
-        disableGutters
-        elevation={0}
-        square
-        sx={{
-          border: "1px solid #2d2d2d",
-          borderRadius: "10px",
-          backgroundColor: "transparent",
-          fontFamily: "Montserrat",
-
-          mb: 2,
-          "&:before": { display: "none" }, // removes default divider line
-          "&:hover": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-          "&.Mui-expanded": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            "& .MuiAccordionSummary-content": {
-              fontFamily: "Montserrat",
-              fontWeight: "normal",
-              color: "#2d2d2d",
-            },
-            "&:hover": {
-              backgroundColor: "transparent",
-              color: "#fff",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "transparent",
-              color: "#2d2d2d",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-            "&:hover .MuiSvgIcon-root": {
-              color: "#fff",
-            },
-            "&.Mui-expanded .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-          }}
-        >
+      <Accordion disableGutters elevation={0} square sx={accordionStyle}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={summaryStyle}>
           <Typography>Price</Typography>
         </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
+        <AccordionDetails sx={priceDetailsStyle}>
           <Typography variant="body2">
-            Range:
-            {selectedFilters.priceRange[0].toLocaleString()} E£ -{" "}
+            Range: {selectedFilters.priceRange[0].toLocaleString()} E£ -{" "}
             {selectedFilters.priceRange[1].toLocaleString()}E£
           </Typography>
-
           <Slider
             value={selectedFilters.priceRange}
             onChange={handlePriceChange}
             valueLabelDisplay="auto"
             min={0}
             max={600000}
-            sx={(t) => ({
-              color: "rgba(0,0,0,0.87)",
-              "& .MuiSlider-track": {
-                border: "none",
-              },
-              "& .MuiSlider-thumb": {
-                width: 24,
-                height: 24,
-                backgroundColor: "#fff",
-                "&::before": {
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
-                },
-                "&:hover, &.Mui-focusVisible, &.Mui-active": {
-                  boxShadow: "none",
-                },
-              },
-              ...t.applyStyles("dark", {
-                color: "#fff",
-              }),
-            })}
+            sx={sliderStyle}
           />
         </AccordionDetails>
       </Accordion>
 
-      <Accordion
-        disableGutters
-        elevation={0}
-        square
-        sx={{
-          border: "1px solid #2d2d2d",
-          borderRadius: "10px",
-          backgroundColor: "transparent",
-          fontFamily: "Montserrat",
-
-          mb: 2,
-          "&:before": { display: "none" }, // removes default divider line
-          "&:hover": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-          "&.Mui-expanded": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            "& .MuiAccordionSummary-content": {
-              fontFamily: "Montserrat",
-              fontWeight: "normal",
-              color: "#2d2d2d",
-            },
-            "&:hover": {
-              backgroundColor: "transparent",
-              color: "#fff",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "transparent",
-              color: "#2d2d2d",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-            "&:hover .MuiSvgIcon-root": {
-              color: "#fff",
-            },
-            "&.Mui-expanded .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-          }}
-        >
-          <Typography>
-            {getFilterLabel("Colors", selectedFilters.colors.length)}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            display: "inline-grid",
-            height: "253px",
-            overflow: "auto",
-            width: "96%",
-            fontFamily: "Montserrat",
-            fontWeight: "normal",
-          }}
-        >
-          {allColors.map((color) => (
-            <FormControlLabel
-              key={color}
-              control={
-                <Checkbox
-                  checked={selectedFilters.colors.includes(color)}
-                  onChange={() => handleFilterChange("colors", color)}
-                />
-              }
-              label={color}
-            />
-          ))}
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion
-        disableGutters
-        elevation={0}
-        square
-        sx={{
-          border: "1px solid #2d2d2d",
-          borderRadius: "10px",
-          backgroundColor: "transparent",
-          fontFamily: "Montserrat",
-
-          mb: 2,
-          "&:before": { display: "none" }, // removes default divider line
-          "&:hover": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-          "&.Mui-expanded": {
-            backgroundColor: "transparent",
-            color: "#2d2d2d",
-          },
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            "& .MuiAccordionSummary-content": {
-              fontFamily: "Montserrat",
-              fontWeight: "normal",
-              color: "#2d2d2d",
-            },
-            "&:hover": {
-              backgroundColor: "transparent",
-              color: "#fff",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "transparent",
-              color: "#2d2d2d",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-            "&:hover .MuiSvgIcon-root": {
-              color: "#fff",
-            },
-            "&.Mui-expanded .MuiSvgIcon-root": {
-              color: "#2d2d2d",
-            },
-          }}
-        >
-          <Typography>
-            {getFilterLabel("Tags", selectedFilters.tags.length)}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            display: "inline-grid",
-            height: "253px",
-            overflow: "auto",
-            width: "96%",
-            fontFamily: "Montserrat",
-            fontWeight: "normal",
-          }}
-        >
-          {allTags.map((tag) => (
-            <FormControlLabel
-              key={tag}
-              control={
-                <Checkbox
-                  checked={selectedFilters.tags.includes(tag)}
-                  onChange={() => handleFilterChange("tags", tag)}
-                />
-              }
-              label={tag}
-            />
-          ))}
-        </AccordionDetails>
-      </Accordion>
+      {renderAccordion("Colors", "colors", allColors)}
+      {renderAccordion("Tags", "tags", allTags)}
     </Box>
   );
 
-  // Return: Drawer (mobile) or Sidebar (desktop)
   return isMobile ? (
     <>
       <Button
         onClick={() => setDrawerOpen(true)}
         variant="outlined"
-        sx={{
-          mb: 2,
-          mt: 2,
-          color: "#2d2d2d",
-          backgroundColor: "transparent",
-          border: "1px solid #2d2d2d",
-          "&:hover": { backgroundColor: "#2d2d2d", color: "#fff" },
-        }}
+        sx={drawerButtonStyle}
       >
         Show Filters
       </Button>
@@ -519,6 +214,97 @@ const FilterSection = ({
   ) : (
     renderFilterContent()
   );
+};
+
+const accordionStyle = {
+  border: "1px solid #2d2d2d",
+  borderRadius: "10px",
+  backgroundColor: "transparent",
+  fontFamily: "Montserrat",
+  mb: 2,
+  "&:before": { display: "none" },
+  "&:hover": {
+    backgroundColor: "transparent",
+    color: "#2d2d2d",
+  },
+  "&.Mui-expanded": {
+    backgroundColor: "transparent",
+    color: "#2d2d2d",
+  },
+};
+
+const summaryStyle = {
+  backgroundColor: "transparent",
+  borderRadius: "10px",
+  "& .MuiAccordionSummary-content": {
+    fontFamily: "Montserrat",
+    fontWeight: "normal",
+    color: "#2d2d2d",
+  },
+  "&:hover": {
+    backgroundColor: "transparent",
+    color: "#fff",
+  },
+  "&.Mui-expanded": {
+    backgroundColor: "transparent",
+    color: "#2d2d2d",
+  },
+  "& .MuiSvgIcon-root": {
+    color: "#2d2d2d",
+  },
+  "&:hover .MuiSvgIcon-root": {
+    color: "#fff",
+  },
+  "&.Mui-expanded .MuiSvgIcon-root": {
+    color: "#2d2d2d",
+  },
+};
+
+const detailsStyle = {
+  display: "inline-grid",
+  height: "253px",
+  overflow: "auto",
+  width: "96%",
+  fontFamily: "Montserrat",
+  fontWeight: "normal",
+};
+
+const priceDetailsStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  flexDirection: "column",
+  gap: 1,
+};
+
+const sliderStyle = (t) => ({
+  color: "rgba(0,0,0,0.87)",
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    width: 24,
+    height: 24,
+    backgroundColor: "#fff",
+    "&::before": {
+      boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
+    },
+    "&:hover, &.Mui-focusVisible, &.Mui-active": {
+      boxShadow: "none",
+    },
+  },
+  ...t.applyStyles("dark", {
+    color: "#fff",
+  }),
+});
+
+const drawerButtonStyle = {
+  mb: 2,
+  mt: 2,
+  color: "#2d2d2d",
+  backgroundColor: "transparent",
+  border: "1px solid #2d2d2d",
+  "&:hover": { backgroundColor: "#2d2d2d", color: "#fff" },
 };
 
 export default FilterSection;
