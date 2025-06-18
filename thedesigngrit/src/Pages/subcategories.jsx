@@ -105,7 +105,7 @@ function Subcategories() {
           spacing={{ xs: 2, sm: 3, md: 4 }}
           sx={{
             display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" },
+            justifyContent: "center",
             alignItems: "stretch",
           }}
         >
@@ -134,7 +134,6 @@ function Subcategories() {
                       boxShadow: "0 8px 24px 0 rgba(0,0,0,0.13)",
                       transition: { duration: 0.18 },
                     }}
-                    component={Link}
                     to={`/types/${subCategory._id}`}
                     sx={{
                       position: "relative",
