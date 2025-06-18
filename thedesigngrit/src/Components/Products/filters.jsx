@@ -115,10 +115,14 @@ const FilterSection = ({
   const renderFilterContent = () => (
     <Box
       sx={{
-        width: isMobile ? "90vw" : 300,
-        p: isMobile ? "80px 0px 80px 42px" : "16px 50px 16px 16px",
+        width: isMobile ? "90vw" : { xs: "90vw", sm: 300, md: 280, lg: 300 },
+        p: {
+          xs: "80px 16px 80px 16px",
+          sm: "60px 24px 60px 24px",
+          md: "24px",
+        },
         position: "relative",
-        paddingRight: isMobile ? 0 : "0px",
+        // paddingRight: isMobile ? 0 : "0px",
       }}
     >
       {isMobile && (
@@ -262,9 +266,11 @@ const summaryStyle = {
 
 const detailsStyle = {
   display: "inline-grid",
-  height: "253px",
+  maxHeight: 300,
+  overflowY: "auto",
+
   overflow: "auto",
-  width: "96%",
+  width: "100%",
   fontFamily: "Montserrat",
   fontWeight: "normal",
 };
