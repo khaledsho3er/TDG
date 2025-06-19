@@ -226,7 +226,7 @@ function Subcategories() {
                       >
                         {displayName}
                       </Typography>
-                      {displayDescription && (
+                      {/* {displayDescription && (
                         <Typography
                           variant="body2"
                           sx={{
@@ -243,7 +243,7 @@ function Subcategories() {
                         >
                           {displayDescription}
                         </Typography>
-                      )}
+                      )} */}
                       <Box
                         sx={{
                           height: "2px",

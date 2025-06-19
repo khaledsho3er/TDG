@@ -315,7 +315,7 @@ function TypesPage() {
                       >
                         {displayName}
                       </Typography>
-                      {displayDescription && (
+                      {/* {displayDescription && (
                         <Typography
                           variant="body2"
                           sx={{
@@ -332,7 +332,7 @@ function TypesPage() {
                         >
                           {displayDescription}
                         </Typography>
-                      )}
+                      )} */}
                       <Box
                         sx={{
                           height: "2px",
