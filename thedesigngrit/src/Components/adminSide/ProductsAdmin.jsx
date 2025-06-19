@@ -25,7 +25,7 @@ const ProductPageAdmin = () => {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-  const [menuOpen, setMenuOpen] = useState(null); // State to track which menu is open
+  const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
@@ -151,11 +151,14 @@ const ProductPageAdmin = () => {
     (product) => product.status === true
   );
   const toggleMenu = (productId) => {
-    setMenuOpen((prevId) => (prevId === productId ? null : productId));
+    setMenuOpen((prevState) => ({
+      ...prevState,
+      [productId]: !prevState[productId], // Toggle specific menu state
+    }));
   };
 
   const closeAllMenus = () => {
-    setMenuOpen(null); // Close all menus
+    setMenuOpen({}); // Close all menus
   };
 
   const handleEdit = (product) => {
@@ -391,7 +394,7 @@ const ProductPageAdmin = () => {
                                 }}
                                 className="three-dots-icon"
                               />
-                              {menuOpen === product._id && (
+                              {menuOpen[product.id] && (
                                 <div className="menu-dropdown">
                                   <button onClick={() => handleEdit(product)}>
                                     Edit
