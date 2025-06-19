@@ -438,19 +438,33 @@ function ProductPage() {
               onClick={() => handleImageClick(0)}
             />
             <div className="thumbnail-container">
-              {displayImages && displayImages.length > 0 ? (
-                displayImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
-                    alt={`Thumbnail ${index + 1}`}
-                    className="thumbnail-image"
-                    onClick={() => handleImageClick(index)}
-                  />
-                ))
-              ) : (
-                <p>No thumbnails available</p>
-              )}
+              {loading || !(displayImages && displayImages.length > 0)
+                ? // Show 4 grey blurry squares as placeholders
+                  Array.from({ length: 4 }).map((_, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        marginRight: 8,
+                        borderRadius: 8,
+                        background:
+                          "linear-gradient(135deg, #e0e0e0 60%, #f5f5f5 100%)",
+                        filter: "blur(1.5px)",
+                        display: "inline-block",
+                        animation: "pulse 1.2s infinite",
+                      }}
+                    />
+                  ))
+                : displayImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
+                      alt={`Thumbnail ${index + 1}`}
+                      className="thumbnail-image"
+                      onClick={() => handleImageClick(index)}
+                    />
+                  ))}
             </div>
           </div>
 
