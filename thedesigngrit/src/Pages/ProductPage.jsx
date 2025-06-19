@@ -438,38 +438,19 @@ function ProductPage() {
               onClick={() => handleImageClick(0)}
             />
             <div className="thumbnail-container">
-              {loading || !(displayImages && displayImages.length > 0)
-                ? // Show 4 grey blurry squares as placeholders
-                  Array.from({ length: 4 }).map((_, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        width: "100px",
-                        height: "70px",
-                        borderRadius: 2,
-                        overflow: "hidden",
-                        border: "1px solid #ddd",
-                        background: `linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)`,
-                        opacity: 0.7,
-                        filter: "blur(0.5px)",
-                        animation: "pulse 2s infinite ease-in-out",
-                        "@keyframes pulse": {
-                          "0%": { opacity: 0.7 },
-                          "50%": { opacity: 0.5 },
-                          "100%": { opacity: 0.7 },
-                        },
-                      }}
-                    />
-                  ))
-                : displayImages.map((image, index) => (
-                    <img
-                      key={index}
-                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
-                      alt={`Thumbnail ${index + 1}`}
-                      className="thumbnail-image"
-                      onClick={() => handleImageClick(index)}
-                    />
-                  ))}
+              {displayImages && displayImages.length > 0 ? (
+                displayImages.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`}
+                    alt={`Thumbnail ${index + 1}`}
+                    className="thumbnail-image"
+                    onClick={() => handleImageClick(index)}
+                  />
+                ))
+              ) : (
+                <p>No thumbnails available</p>
+              )}
             </div>
           </div>
 
