@@ -52,8 +52,18 @@ const NavbarAdmin = () => {
   return (
     <nav className="navbar-vendor" style={{ position: "relative" }}>
       {/* Logo */}
-      <div className="navbar-logo-vendor">
-        <img src="/Assets/TDG_Logo_Black.webp" alt="ProjectLogo" />
+      <div
+        className="navbar-logo-vendor"
+        style={{ display: "flex", alignItems: "center", gap: "10px" }}
+      >
+        <img
+          src="/Assets/TDG_Logo_Black.webp"
+          alt="ProjectLogo"
+          style={{ width: "50px", height: "50px", borderRadius: "14%" }}
+        />
+        <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+          The Design Grit
+        </span>
       </div>
 
       {/* Actions */}
