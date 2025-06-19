@@ -141,7 +141,9 @@ const FavoritesOverlay = ({ open, onClose }) => {
     <div className="overlay-container-vendor" style={{ right: "30px" }}>
       {/* Header */}
       <div className="overlay-header-vendor">
-        <h3>Wishlist ({favoriteProducts.length})</h3>
+        <h3 style={{ fontFamily: "Horizon", fontWeight: "bold" }}>
+          Wishlist ({favoriteProducts.length})
+        </h3>
         <button
           className="close-button-vendor"
           onClick={onClose}

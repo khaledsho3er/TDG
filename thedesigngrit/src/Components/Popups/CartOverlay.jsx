@@ -75,7 +75,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
         position: "fixed",
         top: 50,
         right: isMobile ? 0 : 20,
-        width: "360px",
+        width: "400px",
         backgroundColor: "white",
         boxShadow: "-2px 0 5px rgba(0,0,0,0.2)",
         display: "flex",
@@ -102,7 +102,7 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
           borderBottom: "1px solid #ddd",
         }}
       >
-        <Typography variant="h6">Shopping Cart</Typography>
+        <Typography variant="h6">Shopping Cart ({cartItems.length})</Typography>
         <CloseIcon
           sx={{ cursor: "pointer", fontSize: "24px", color: "#333" }}
           onClick={onClose}
@@ -178,11 +178,19 @@ const ShoppingCartOverlay = ({ open, onClose }) => {
                         highlightedItem === item.id
                           ? "scale(1.05)"
                           : "scale(1)",
+                      width: "50%",
+                      height: "110px",
                     }}
                   />
 
                   {/* Right: Name, Price, and Quantity controls */}
-                  <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "5px",
+                    }}
+                  >
                     <Typography
                       variant="body1"
                       sx={{
