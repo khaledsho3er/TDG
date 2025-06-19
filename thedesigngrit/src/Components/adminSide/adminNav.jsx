@@ -50,17 +50,16 @@ const NavbarAdmin = () => {
   };
 
   return (
-    <nav className="navbar-vendor" style={{ position: "relative" }}>
+    <nav
+      className="navbar-vendor"
+      style={{ position: "relative", boxShadow: "0px 0px 0px 0px" }}
+    >
       {/* Logo */}
       <div
         className="navbar-logo-vendor"
         style={{ display: "flex", alignItems: "center", gap: "10px" }}
       >
-        <img
-          src="/Assets/TDG_Logo_Black.webp"
-          alt="ProjectLogo"
-          style={{ width: "50px", height: "50px", borderRadius: "14%" }}
-        />
+        <img src="/Assets/TDG_Logo_Black.webp" alt="ProjectLogo" />
         <span style={{ fontWeight: "bold", fontSize: "18px" }}>
           The Design Grit
         </span>
