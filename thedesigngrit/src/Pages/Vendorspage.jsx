@@ -5,6 +5,7 @@ import PageDescription from "../Components/Topheader";
 import FilterVSection from "../Components/VendorsPage/Filters";
 import VendorsGrid from "../Components/VendorsPage/VendorsGrid";
 import TopVButtons from "../Components/VendorsPage/TopButtons";
+import Footer from "../Components/Footer";
 
 function Vendorspage() {
   const [selectedCategory, setSelectedCategory] = useState(""); // Manage category filter
@@ -31,6 +32,8 @@ function Vendorspage() {
         />
         <VendorsGrid selectedCategory={selectedCategory} />
       </Box>
+
+      <Footer />
     </Box>
   );
 }

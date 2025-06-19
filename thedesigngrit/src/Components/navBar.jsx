@@ -655,16 +655,35 @@ function Header() {
                                     color: "#ccc",
                                   }}
                                 >
-                                  E£{suggestion.price}
+                                  E£
+                                  {suggestion.price > 1000
+                                    ? new Intl.NumberFormat("en-US", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      }).format(suggestion.price)
+                                    : suggestion.price.toFixed(2)}
                                 </span>
                                 <span
                                   style={{ color: "red", marginLeft: "5px" }}
                                 >
-                                  E£{suggestion.salePrice}
+                                  E£
+                                  {suggestion.salePrice > 1000
+                                    ? new Intl.NumberFormat("en-US", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      }).format(suggestion.salePrice)
+                                    : suggestion.salePrice.toFixed(2)}
                                 </span>
                               </>
                             ) : (
-                              `E£${suggestion.price}`
+                              `E£${
+                                suggestion.price > 1000
+                                  ? new Intl.NumberFormat("en-US", {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }).format(suggestion.price)
+                                  : suggestion.price.toFixed(2)
+                              }`
                             )}
                           </Typography>
                         </>

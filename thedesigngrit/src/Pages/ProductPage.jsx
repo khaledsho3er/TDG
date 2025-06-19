@@ -444,8 +444,8 @@ function ProductPage() {
                     <Box
                       key={index}
                       sx={{
-                        width: "100%",
-                        height: "100%",
+                        width: "100px",
+                        height: "70px",
                         borderRadius: 2,
                         overflow: "hidden",
                         border: "1px solid #ddd",
