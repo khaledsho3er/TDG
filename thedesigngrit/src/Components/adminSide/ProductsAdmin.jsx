@@ -394,7 +394,7 @@ const ProductPageAdmin = () => {
                                 }}
                                 className="three-dots-icon"
                               />
-                              {menuOpen[product.id] && (
+                              {menuOpen === product._id && (
                                 <div className="menu-dropdown">
                                   <button onClick={() => handleEdit(product)}>
                                     Edit

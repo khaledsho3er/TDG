@@ -20,7 +20,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
-  const [menuOpen, setMenuOpen] = useState({}); // State to track which menu is open
+  const [menuOpen, setMenuOpen] = useState(null); // Track the open menu by productId or null
   const [showUpdate, setShowUpdate] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
@@ -137,14 +137,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
   );
 
   const toggleMenu = (productId) => {
-    setMenuOpen((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId], // Toggle specific menu state
-    }));
+    setMenuOpen((prevId) => (prevId === productId ? null : productId));
   };
 
   const closeAllMenus = () => {
-    setMenuOpen({}); // Close all menus
+    setMenuOpen(null); // Close menu
   };
 
   const handleEdit = (product) => {
@@ -327,7 +324,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                               }}
                               className="three-dots-icon"
                             />
-                            {menuOpen[product.id] && (
+                            {menuOpen === product.id && (
                               <div className="menu-dropdown">
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
@@ -454,7 +451,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                               }}
                               className="three-dots-icon"
                             />
-                            {menuOpen[product.id] && (
+                            {menuOpen === product.id && (
                               <div className="menu-dropdown">
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
