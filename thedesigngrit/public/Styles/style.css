@@ -407,6 +407,9 @@ body::-webkit-scrollbar:hover {
   width: 100%;
   font-family: Montserrat;
   z-index: 2;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-container.sticky {
@@ -415,8 +418,10 @@ body::-webkit-scrollbar:hover {
   width: 100%;
   z-index: 1000; /* or higher to stay above everything */
   background: white; /* Or whatever background you want */
-  backdrop-filter: blur(10px); /* Nice blur effect */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional, for effect */
+
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-top {
@@ -429,6 +434,8 @@ body::-webkit-scrollbar:hover {
   box-sizing: border-box;
   z-index: 2;
   overflow: hidden;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* For desktop (multiple cards in a row) */
