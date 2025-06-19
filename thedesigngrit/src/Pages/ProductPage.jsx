@@ -440,19 +440,24 @@ function ProductPage() {
             <div className="thumbnail-container">
               {loading || !(displayImages && displayImages.length > 0)
                 ? // Show 4 grey blurry squares as placeholders
-                  Array.from({ length: 4 }).map((_, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        marginRight: 8,
-                        borderRadius: 8,
-                        background:
-                          "linear-gradient(135deg, #e0e0e0 60%, #f5f5f5 100%)",
-                        filter: "blur(1.5px)",
-                        display: "inline-block",
-                        animation: "pulse 1.2s infinite",
+                  Array.from({ length: 4 }).map((_, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: 2,
+                        overflow: "hidden",
+                        border: "1px solid #ddd",
+                        background: `linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)`,
+                        opacity: 0.7,
+                        filter: "blur(0.5px)",
+                        animation: "pulse 2s infinite ease-in-out",
+                        "@keyframes pulse": {
+                          "0%": { opacity: 0.7 },
+                          "50%": { opacity: 0.5 },
+                          "100%": { opacity: 0.7 },
+                        },
                       }}
                     />
                   ))
