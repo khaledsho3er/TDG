@@ -606,55 +606,54 @@ function Header() {
                 {suggestions.map((suggestion) => (
                   <Box
                     key={suggestion._id}
-                    className="suggestion-item"
+                    className="suggestion-item suggestion-item-large"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
                     {/* Image - handle both product and brand */}
-                    {suggestion.resultType === "product" &&
-                    suggestion.mainImage ? (
-                      <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.mainImage}`}
-                        alt={suggestion.name}
-                        className="suggestion-image"
-                      />
-                    ) : suggestion.resultType === "brand" &&
-                      suggestion.brandlogo ? (
-                      <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.brandlogo}`}
-                        alt={suggestion.brandName}
-                        className="suggestion-image"
-                      />
-                    ) : (
-                      <Box className="suggestion-image-placeholder"></Box>
-                    )}
+                    <div className="suggestion-image-large-container">
+                      {suggestion.resultType === "product" &&
+                      suggestion.mainImage ? (
+                        <img
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.mainImage}`}
+                          alt={suggestion.name}
+                          className="suggestion-image-large"
+                        />
+                      ) : suggestion.resultType === "brand" &&
+                        suggestion.brandlogo ? (
+                        <img
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${suggestion.brandlogo}`}
+                          alt={suggestion.brandName}
+                          className="suggestion-image-large"
+                        />
+                      ) : (
+                        <Box className="suggestion-image-placeholder-large"></Box>
+                      )}
+                    </div>
 
                     {/* Content - handle both product and brand */}
-                    <Box className="suggestion-text">
+                    <Box className="suggestion-info-large">
                       {suggestion.resultType === "product" ? (
                         // Product suggestion
                         <>
-                          <Typography className="suggestion-name">
+                          <div className="suggestion-name-large">
                             {suggestion.name}
-                          </Typography>
-                          {suggestion.category && (
-                            <Typography className="suggestion-category">
-                              {suggestion.category.name}
-                            </Typography>
-                          )}
-                          {suggestion.brandId && (
-                            <Typography className="suggestion-info">
-                              {suggestion.brandId.brandName}
-                            </Typography>
-                          )}
-                          <Typography className="suggestion-info">
+                          </div>
+                          <div className="suggestion-meta-large">
+                            {suggestion.category && (
+                              <span className="suggestion-category-large">
+                                {suggestion.category.name}
+                              </span>
+                            )}
+                            {suggestion.brandId && (
+                              <span className="suggestion-brand-large">
+                                {suggestion.brandId.brandName}
+                              </span>
+                            )}
+                          </div>
+                          <div className="suggestion-price-row-large">
                             {suggestion.salePrice ? (
                               <>
-                                <span
-                                  style={{
-                                    textDecoration: "line-through",
-                                    color: "#ccc",
-                                  }}
-                                >
+                                <span className="suggestion-old-price-large">
                                   E£
                                   {suggestion.price > 1000
                                     ? new Intl.NumberFormat("en-US", {
@@ -663,9 +662,7 @@ function Header() {
                                       }).format(suggestion.price)
                                     : suggestion.price.toFixed(2)}
                                 </span>
-                                <span
-                                  style={{ color: "red", marginLeft: "5px" }}
-                                >
+                                <span className="suggestion-sale-price-large">
                                   E£
                                   {suggestion.salePrice > 1000
                                     ? new Intl.NumberFormat("en-US", {
@@ -676,42 +673,43 @@ function Header() {
                                 </span>
                               </>
                             ) : (
-                              `E£${
-                                suggestion.price > 1000
+                              <span className="suggestion-regular-price-large">
+                                E£
+                                {suggestion.price > 1000
                                   ? new Intl.NumberFormat("en-US", {
                                       minimumFractionDigits: 2,
                                       maximumFractionDigits: 2,
                                     }).format(suggestion.price)
-                                  : suggestion.price.toFixed(2)
-                              }`
+                                  : suggestion.price.toFixed(2)}
+                              </span>
                             )}
-                          </Typography>
+                          </div>
                         </>
                       ) : (
                         // Brand suggestion
                         <>
-                          <Typography
-                            className="suggestion-name"
-                            sx={{ fontWeight: "bold" }}
+                          <div
+                            className="suggestion-name-large"
+                            style={{ fontWeight: "bold" }}
                           >
                             {suggestion.brandName}
-                          </Typography>
-                          <Typography
-                            className="suggestion-category"
-                            sx={{ fontStyle: "italic" }}
+                          </div>
+                          <div
+                            className="suggestion-category-large"
+                            style={{ fontStyle: "italic" }}
                           >
                             Brand
-                          </Typography>
+                          </div>
                           {suggestion.brandDescription && (
-                            <Typography
-                              className="suggestion-info"
-                              sx={{ fontSize: "0.8rem" }}
+                            <div
+                              className="suggestion-info-large"
+                              style={{ fontSize: "0.9rem" }}
                             >
                               {suggestion.brandDescription.substring(0, 60)}
                               {suggestion.brandDescription.length > 60
                                 ? "..."
                                 : ""}
-                            </Typography>
+                            </div>
                           )}
                         </>
                       )}
