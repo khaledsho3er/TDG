@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
@@ -80,6 +80,13 @@ function SignInForm() {
     setLoginError("Google sign-in was cancelled or failed. Please try again.");
   };
 
+  // Custom Google login hook
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleGoogleSuccess,
+    onError: handleGoogleError,
+    flow: "implicit", // or "auth-code" if your backend supports it
+  });
+
   const onSubmit = async (data) => {
     try {
       setLoginError(""); // Clear previous error messages
@@ -127,26 +134,25 @@ function SignInForm() {
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <div className="btn social-btn google-btn">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              useOneTap
-              theme="outline"
-              size="large"
-              text="continue_with"
-              shape="rectangular"
-              logo_alignment="left"
-              width="100%"
-              style={{
-                width: "100%",
-                height: "40px",
-                fontFamily: "Montserrat",
-                fontSize: "14px",
-                fontWeight: "500",
-              }}
-            />
-          </div>
+          <button
+            type="button"
+            className="btn social-btn google-btn"
+            onClick={() => googleLogin()}
+            style={{
+              width: "100%",
+              height: "40px",
+              fontFamily: "Montserrat",
+              fontSize: "14px",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+            }}
+          >
+            <FcGoogle style={{ fontSize: "20px" }} />
+            Continue with Google
+          </button>
           {/* <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
