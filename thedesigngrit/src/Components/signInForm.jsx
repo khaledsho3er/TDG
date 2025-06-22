@@ -204,7 +204,7 @@ function SignInForm() {
           <button
             type="button"
             className="btn social-btn google-btn"
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleSuccess}
           >
             <FcGoogle style={{ marginRight: 8 }} />
             Continue with Google
