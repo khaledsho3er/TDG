@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import NavBar from "../Components/navBar";
 import Footer from "../Components/Footer";
+import { Helmet } from "react-helmet-async";
 
 function FAQs() {
   const [activeTab, setActiveTab] = useState("popular");
@@ -31,6 +32,45 @@ function FAQs() {
 
   return (
     <Box className="job-Page">
+      <Helmet>
+        <title>Frequently Asked Questions (FAQs) | TheDesignGrit</title>
+        <meta
+          name="description"
+          content="Find answers to common questions about TheDesignGrit. Learn about shopping, shipping, returns, and more in our FAQ section."
+        />
+        <meta
+          name="keywords"
+          content="TheDesignGrit FAQs, customer support, furniture delivery, shopping guide, returns policy"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://thedesigngrit.com/faqs" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="FAQs | TheDesignGrit" />
+        <meta
+          property="og:description"
+          content="Need help? Explore frequently asked questions about orders, returns, and shopping at TheDesignGrit."
+        />
+        <meta property="og:url" content="https://thedesigngrit.com/faqs" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://thedesigngrit.com/Assets/faq-cover.webp"
+        />
+
+        {/* Twitter Card (optional) */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FAQs | TheDesignGrit" />
+        <meta
+          name="twitter:description"
+          content="Explore frequently asked questions about orders, returns, and more at TheDesignGrit."
+        />
+        <meta
+          name="twitter:image"
+          content="https://thedesigngrit.com/Assets/faq-cover.webp"
+        />
+      </Helmet>
+
       <NavBar />
       <Box className="hero-job-container-faq">
         <Box className="hero-text-faq">

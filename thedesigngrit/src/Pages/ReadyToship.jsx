@@ -13,6 +13,7 @@ import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 import PageDescription from "../Components/Topheader";
+import { Helmet } from "react-helmet-async";
 
 function ReadyToShip() {
   const [products, setProducts] = useState([]);
@@ -153,6 +154,57 @@ function ReadyToShip() {
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Helmet>
+        <title>Ready to Ship Furniture | TheDesignGrit</title>
+        <meta
+          name="description"
+          content="Explore premium Egyptian furniture that’s in stock and ready to ship. No waiting—just quick delivery of beautiful designs."
+        />
+        <meta
+          name="keywords"
+          content="ready to ship furniture, in-stock furniture Egypt, fast delivery furniture, TheDesignGrit"
+        />
+        <meta name="robots" content="index, follow" />
+        <link
+          rel="canonical"
+          href="https://thedesigngrit.com/products/readytoship"
+        />
+
+        {/* Open Graph (Facebook, LinkedIn) */}
+        <meta
+          property="og:title"
+          content="Ready to Ship Furniture | TheDesignGrit"
+        />
+        <meta
+          property="og:description"
+          content="Find furniture that's available now and ready for fast delivery. Quality meets speed at TheDesignGrit."
+        />
+        <meta
+          property="og:image"
+          content="https://thedesigngrit.com/Assets/readytoship-banner.webp"
+        />
+        <meta
+          property="og:url"
+          content="https://thedesigngrit.com/products/readytoship"
+        />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter (optional) */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Ready to Ship Furniture | TheDesignGrit"
+        />
+        <meta
+          name="twitter:description"
+          content="In-stock designer furniture with fast shipping from Egypt's top brands. Shop ready-to-ship now!"
+        />
+        <meta
+          name="twitter:image"
+          content="https://thedesigngrit.com/Assets/readytoship-banner.webp"
+        />
+      </Helmet>
+
       <Header />
       <PageDescription
         name="Ready to Ship"

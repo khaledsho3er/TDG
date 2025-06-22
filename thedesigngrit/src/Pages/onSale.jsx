@@ -13,7 +13,7 @@ import FilterSection from "../Components/Products/filters";
 import TopFilter from "../Components/Products/TopFilters";
 import Footer from "../Components/Footer";
 import PageDescription from "../Components/Topheader";
-
+import { Helmet } from "react-helmet-async";
 function OnSale() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -157,6 +157,50 @@ function OnSale() {
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Helmet>
+        <title>On Sale Furniture | TheDesignGrit</title>
+        <meta
+          name="description"
+          content="Explore premium Egyptian-designed furniture at discounted prices. Limited-time offers on stylish and high-quality products at TheDesignGrit."
+        />
+        <meta
+          name="keywords"
+          content="furniture sale, discounts, TheDesignGrit, Egyptian furniture, modern deals, home decor sale"
+        />
+        <meta name="robots" content="index, follow" />
+        <link
+          rel="canonical"
+          href="https://thedesigngrit.com/products/onsale"
+        />
+
+        {/* Open Graph for Facebook/LinkedIn/etc. */}
+        <meta property="og:title" content="On Sale Furniture | TheDesignGrit" />
+        <meta
+          property="og:description"
+          content="Browse our collection of furniture on sale. Elevate your home with elegant, affordable pieces crafted by top Egyptian designers."
+        />
+        <meta
+          property="og:image"
+          content="https://thedesigngrit.com/Assets/sale-banner.webp"
+        />
+        <meta
+          property="og:url"
+          content="https://thedesigngrit.com/products/onsale"
+        />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card (optional but good practice) */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="On Sale Furniture | TheDesignGrit"
+        />
+        <meta
+          name="twitter:description"
+          content="Discounted designer furniture from Egypt's top brands. Shop now at TheDesignGrit."
+        />
+      </Helmet>
+
       <Header />
       <PageDescription
         name="On Sale Products"

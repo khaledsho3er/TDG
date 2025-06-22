@@ -18,6 +18,7 @@ import { AdminProvider } from "./utils/adminContext";
 import OnSale from "./Pages/onSale";
 import { FavoritesProvider } from "./Components/favoriteOverlay";
 import Home from "./Pages/home";
+import { HelmetProvider } from "react-helmet-async";
 
 // Safari-compatible lazy loading with retry mechanism
 const createSafeLazy = (importFn, componentName) => {
@@ -436,23 +437,25 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <UserProvider>
-        <VendorProvider>
-          <AdminProvider>
-            <CartProvider>
-              <FavoritesProvider>
-                <Router>
-                  <ScrollToTop />
-                  <AppRoutes />
-                  <Analytics />
-                </Router>
-              </FavoritesProvider>
-            </CartProvider>
-          </AdminProvider>
-        </VendorProvider>
-      </UserProvider>
-    </GoogleOAuthProvider>
+    <HelmetProvider>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <UserProvider>
+          <VendorProvider>
+            <AdminProvider>
+              <CartProvider>
+                <FavoritesProvider>
+                  <Router>
+                    <ScrollToTop />
+                    <AppRoutes />
+                    <Analytics />
+                  </Router>
+                </FavoritesProvider>
+              </CartProvider>
+            </AdminProvider>
+          </VendorProvider>
+        </UserProvider>
+      </GoogleOAuthProvider>
+    </HelmetProvider>
   );
 }
 

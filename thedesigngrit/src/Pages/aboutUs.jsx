@@ -5,6 +5,8 @@ import MeetOurTeam from "../Components/About/ourTeam";
 import { Box } from "@mui/material";
 import Footer from "../Components/Footer";
 import LoadingScreen from "./loadingScreen";
+import { Helmet } from "react-helmet-async";
+
 function AboutUsPage() {
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
@@ -15,6 +17,35 @@ function AboutUsPage() {
   }
   return (
     <Box className="">
+      <Helmet>
+        <title>About Us | TheDesignGrit</title>
+        <meta
+          name="description"
+          content="Learn about TheDesignGrit's mission to showcase Egyptian craftsmanship, empower local brands, and redefine the future of furniture design in Egypt."
+        />
+        <meta
+          name="keywords"
+          content="About TheDesignGrit, Egyptian design, local brands, furniture mission, team, heritage"
+        />
+        <meta name="robots" content="index, follow" />
+
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://thedesigngrit.com/about" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:title" content="About Us | TheDesignGrit" />
+        <meta
+          property="og:description"
+          content="Discover our story, mission, and vision at TheDesignGrit. We empower Egyptian designers and connect customers with timeless furniture."
+        />
+        <meta
+          property="og:image"
+          content="https://thedesigngrit.com/Assets/AboutUs.webp"
+        />
+        <meta property="og:url" content="https://thedesigngrit.com/about" />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       <NavBar />
       <Box>
         <HeroAbout
