@@ -134,25 +134,33 @@ function SignInForm() {
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <button
-            type="button"
-            className="btn social-btn google-btn"
-            onClick={() => googleLogin()}
-            style={{
-              width: "100%",
-              height: "40px",
-              fontFamily: "Montserrat",
-              fontSize: "14px",
-              fontWeight: "500",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-            }}
-          >
-            <FcGoogle style={{ fontSize: "20px" }} />
-            Continue with Google
-          </button>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            useOneTap={false}
+            render={(renderProps) => (
+              <button
+                type="button"
+                className="btn social-btn google-btn"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  fontFamily: "Montserrat",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
+              >
+                <FcGoogle style={{ fontSize: "20px" }} />
+                Continue with Google
+              </button>
+            )}
+          />
           {/* <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
