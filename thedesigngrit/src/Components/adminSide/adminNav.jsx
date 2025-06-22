@@ -1,40 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaBell } from "react-icons/fa";
 import { useAdmin } from "../../utils/adminContext";
 import { useNavigate } from "react-router-dom"; // Import useHistory for navigation
 
 const NavbarAdmin = () => {
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [requests, setRequests] = useState([]); // State for partner requests
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { logout } = useAdmin(); // Access admin data and logout function from context
   const navigate = useNavigate(); // Get history for navigation
-
-  // Function to fetch data (partner requests)
-  const fetchRequests = async () => {
-    try {
-      const response = await fetch("/json/partnersRequest.json"); // Path to your requests JSON file
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setRequests(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRequests(); // Fetch partner requests on mount
-  }, []);
-
-  // Toggle notification overlay visibility
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-  };
 
   // Handle logout
   const handleLogout = () => {
@@ -68,11 +38,6 @@ const NavbarAdmin = () => {
       {/* Actions */}
       <div className="navbar-actions-vendor">
         {/* Bell Icon */}
-        <FaBell
-          className="icon-vendor-bar"
-          style={{ cursor: "pointer" }}
-          onClick={toggleNotifications} // Toggle notifications on click
-        />
         <select onChange={handleSelectChange}>
           {" "}
           {/* Added onChange handler */}
@@ -81,7 +46,7 @@ const NavbarAdmin = () => {
         </select>
       </div>
 
-      {/* Notification Overlay */}
+      {/* Notification Overlay
       {showNotifications && (
         <div
           className="notifications-overlay"
@@ -111,12 +76,8 @@ const NavbarAdmin = () => {
               ✕
             </button>
           </div>
-
-          {/* Loading or Error */}
           {loading && <p>Loading...</p>}
           {error && <p>Error: {error}</p>}
-
-          {/* Notification Items (Requests) */}
           {requests.length > 0 ? (
             requests.map((request) => (
               <div
@@ -190,7 +151,6 @@ const NavbarAdmin = () => {
             <p>No new requests</p>
           )}
 
-          {/* Footer */}
           <div style={{ marginTop: "10px", textAlign: "center" }}>
             <button
               style={{
@@ -206,7 +166,7 @@ const NavbarAdmin = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </nav>
   );
 };

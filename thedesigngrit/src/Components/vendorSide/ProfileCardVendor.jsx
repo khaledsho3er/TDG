@@ -1,7 +1,10 @@
 import React from "react";
 
 const ProfileCardVendor = ({ vendor, brandName, onClose }) => (
-  <div className="profile-card-flip-container">
+  <div
+    className="profile-card-flip-container"
+    style={{ backdropFilter: "blur(5px)" }}
+  >
     <div className="profile-card-flip">
       <div className="profile-card-front">
         <h2>Employee Card</h2>
