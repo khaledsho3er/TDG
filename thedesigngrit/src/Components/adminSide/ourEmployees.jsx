@@ -157,7 +157,14 @@ const OurEmployees = () => {
         </div>
         {editPopupVisible && currentAdmin && (
           <div className="requestInfo-popup-overlay">
-            <div className="requestInfo-popup">
+            <div
+              className="requestInfo-popup"
+              style={{
+                width: "700px",
+                height: "400px",
+                backdropFilter: "blur(5px)",
+              }}
+            >
               <div className="requestInfo-popup-header">
                 <h2>Edit Admin</h2>
                 <IconButton
