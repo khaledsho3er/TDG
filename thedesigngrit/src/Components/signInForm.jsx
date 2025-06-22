@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FaFacebook } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { GoogleLogin } from "@react-oauth/google";
@@ -25,6 +24,7 @@ const schema = yup.object().shape({
 function SignInForm() {
   const { setUserSession } = useUser();
   const navigate = useNavigate();
+  const googleLoginClient = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
   const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
@@ -41,7 +41,54 @@ function SignInForm() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  // Init Google client
+  useEffect(() => {
+    const loadGoogleScript = () => {
+      if (!window.google) {
+        const script = document.createElement("script");
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        script.defer = true;
+        script.onload = initializeGoogleClient;
+        document.body.appendChild(script);
+      } else {
+        initializeGoogleClient();
+      }
+    };
 
+    const initializeGoogleClient = () => {
+      googleLoginClient.current = window.google.accounts.oauth2.initTokenClient(
+        {
+          client_id: "YOUR_GOOGLE_CLIENT_ID", // ✅ Replace with your Google client ID
+          scope: "email profile openid",
+          callback: async (tokenResponse) => {
+            if (tokenResponse?.access_token) {
+              try {
+                const response = await axios.post(
+                  "https://api.thedesigngrit.com/api/google-auth/google",
+                  { credential: tokenResponse.access_token },
+                  { withCredentials: true }
+                );
+                setUserSession(response.data.user);
+                navigate("/");
+              } catch (error) {
+                console.error("Google sign-in error:", error.response || error);
+                if (error.response?.data?.message) {
+                  setLoginError(error.response.data.message);
+                } else {
+                  setLoginError("Google login failed. Please try again.");
+                }
+              }
+            } else {
+              setLoginError("Google authentication failed. No access token.");
+            }
+          },
+        }
+      );
+    };
+
+    loadGoogleScript();
+  }, [navigate, setUserSession]);
   // Google OAuth handlers
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
@@ -122,13 +169,20 @@ function SignInForm() {
     }
     onSubmit(data);
   };
+  const handleGoogleLogin = () => {
+    if (googleLoginClient.current) {
+      googleLoginClient.current.requestAccessToken();
+    } else {
+      setLoginError("Google login is not initialized.");
+    }
+  };
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          <div className="btn social-btn google-btn">
-            <GoogleLogin
+          {/*<div className="btn social-btn google-btn">
+          <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
               useOneTap
@@ -145,8 +199,16 @@ function SignInForm() {
                 fontSize: "14px",
                 fontWeight: "500",
               }}
-            />
-          </div>
+            /> 
+          </div>*/}
+          <button
+            type="button"
+            className="btn social-btn google-btn"
+            onClick={handleGoogleLogin}
+          >
+            <FcGoogle style={{ marginRight: 8 }} />
+            Continue with Google
+          </button>
           {/* <button className="btn social-btn facebook-btn">
             <FaFacebook className="facebook-icon" />
             Continue with Facebook
