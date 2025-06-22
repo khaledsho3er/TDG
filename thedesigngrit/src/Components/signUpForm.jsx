@@ -17,6 +17,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useUser } from "../utils/userContext";
 import AccountExistsPopup from "./successMsgs/accountExists";
+import { GoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -202,6 +204,44 @@ const SignUpForm = () => {
     setShowRequirements(false);
   };
 
+  // Google Signup handler
+  const handleGoogleSignupSuccess = async (credentialResponse) => {
+    try {
+      const googleCredential = credentialResponse.credential;
+      const response = await axios.post(
+        "https://api.thedesigngrit.com/api/signup",
+        { googleCredential },
+        { withCredentials: true }
+      );
+      // Set user session
+      setUserSession(response.data.user);
+      setIsPopupVisible(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      // If backend returns email in use error
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message &&
+        error.response.data.message.toLowerCase().includes("email")
+      ) {
+        setEmailExistsPopup(true);
+        setError("email", {
+          type: "manual",
+          message: "This email is already exists.",
+        });
+      }
+    }
+  };
+  const handleGoogleSignupError = () => {
+    setError("email", {
+      type: "manual",
+      message: "Google signup failed. Please try again.",
+    });
+  };
+
   return (
     <Box>
       <h1
@@ -212,6 +252,36 @@ const SignUpForm = () => {
       >
         Register
       </h1>
+      {/* Google Signup Button */}
+      <div className="social-btns-section" style={{ marginBottom: 16 }}>
+        <GoogleLogin
+          onSuccess={handleGoogleSignupSuccess}
+          onError={handleGoogleSignupError}
+          useOneTap={false}
+          render={(renderProps) => (
+            <button
+              type="button"
+              className="btn social-btn google-btn"
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              style={{
+                width: "100%",
+                height: "40px",
+                fontFamily: "Montserrat",
+                fontSize: "14px",
+                fontWeight: "500",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              <FcGoogle style={{ fontSize: "20px" }} />
+              Sign up with Google
+            </button>
+          )}
+        />
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="signup-form"
