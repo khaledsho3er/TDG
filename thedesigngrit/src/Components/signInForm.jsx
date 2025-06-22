@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
@@ -79,13 +78,6 @@ function SignInForm() {
   const handleGoogleError = () => {
     setLoginError("Google sign-in was cancelled or failed. Please try again.");
   };
-
-  // Custom Google login hook
-  const googleLogin = useGoogleLogin({
-    onSuccess: handleGoogleSuccess,
-    onError: handleGoogleError,
-    flow: "implicit", // or "auth-code" if your backend supports it
-  });
 
   const onSubmit = async (data) => {
     try {
