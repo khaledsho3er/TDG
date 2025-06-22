@@ -100,7 +100,7 @@ const ContactUsRequests = () => {
                   Email
                 </th>
                 <th style={{ padding: "12px 16px", textAlign: "left" }}>
-                  Phone
+                  Subject
                 </th>
                 <th style={{ padding: "12px 16px", textAlign: "left" }}>
                   Message
@@ -150,7 +150,7 @@ const ContactUsRequests = () => {
                         {req.name}
                       </td>
                       <td style={{ padding: "16px" }}>{req.email}</td>
-                      <td style={{ padding: "16px" }}>{req.phone}</td>
+                      <td style={{ padding: "16px" }}>{req.subject}</td>
                       <td
                         style={{
                           padding: "16px",
@@ -175,7 +175,7 @@ const ContactUsRequests = () => {
                       >
                         <button
                           style={{
-                            backgroundColor: "#2d2d2d",
+                            backgroundColor: "#6a8452",
                             color: "white",
                             border: "none",
                             padding: "8px 16px",
@@ -233,7 +233,7 @@ const ContactUsRequests = () => {
                 Email: {selectedRequest.email}
               </Typography>
               <Typography variant="body1">
-                Phone: {selectedRequest.phone}
+                Subject: {selectedRequest.subject}
               </Typography>
               <Typography variant="body1">Message:</Typography>
               <Paper variant="outlined" sx={{ p: 2, borderRadius: 2 }}>
