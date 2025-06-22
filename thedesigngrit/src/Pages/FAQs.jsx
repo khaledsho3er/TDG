@@ -8,7 +8,6 @@ function FAQs() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [questions, setQuestions] = useState([]);
 
-  // Fetch questions data
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
