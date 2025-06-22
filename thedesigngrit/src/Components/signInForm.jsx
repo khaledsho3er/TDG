@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
@@ -10,6 +10,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ForgotPasswordDialog from "./forgetPassword";
 import ConfirmationDialog from "./confirmationMsg";
+
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID; // 🔁 Replace with your real client ID
+
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -24,7 +27,6 @@ const schema = yup.object().shape({
 function SignInForm() {
   const { setUserSession } = useUser();
   const navigate = useNavigate();
-  const googleLoginClient = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
   const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
@@ -37,63 +39,25 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    trigger, // ✅ Add this
+    trigger,
   } = useForm({
     resolver: yupResolver(schema),
   });
-  // Init Google client
+
+  // Google OAuth
   useEffect(() => {
-    const loadGoogleScript = () => {
-      if (!window.google) {
-        const script = document.createElement("script");
-        script.src = "https://accounts.google.com/gsi/client";
-        script.async = true;
-        script.defer = true;
-        script.onload = initializeGoogleClient;
-        document.body.appendChild(script);
-      } else {
-        initializeGoogleClient();
-      }
-    };
+    /* global google */
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleSuccess,
+      });
+    }
+  }, []);
 
-    const initializeGoogleClient = () => {
-      googleLoginClient.current = window.google.accounts.oauth2.initTokenClient(
-        {
-          client_id: "YOUR_GOOGLE_CLIENT_ID", // ✅ Replace with your Google client ID
-          scope: "email profile openid",
-          callback: async (tokenResponse) => {
-            if (tokenResponse?.access_token) {
-              try {
-                const response = await axios.post(
-                  "https://api.thedesigngrit.com/api/google-auth/google",
-                  { credential: tokenResponse.access_token },
-                  { withCredentials: true }
-                );
-                setUserSession(response.data.user);
-                navigate("/");
-              } catch (error) {
-                console.error("Google sign-in error:", error.response || error);
-                if (error.response?.data?.message) {
-                  setLoginError(error.response.data.message);
-                } else {
-                  setLoginError("Google login failed. Please try again.");
-                }
-              }
-            } else {
-              setLoginError("Google authentication failed. No access token.");
-            }
-          },
-        }
-      );
-    };
-
-    loadGoogleScript();
-  }, [navigate, setUserSession]);
-  // Google OAuth handlers
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      setLoginError(""); // Clear previous error messages
-
+      setLoginError("");
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/google-auth/google",
         {
@@ -101,16 +65,14 @@ function SignInForm() {
         },
         { withCredentials: true }
       );
-
       setUserSession(response.data.user);
       navigate("/");
     } catch (error) {
       console.error("Error during Google sign-in:", error.response || error);
-
       if (error.response) {
         if (error.response.status === 401) {
           setLoginError("Google authentication failed. Please try again.");
-        } else if (error.response.data && error.response.data.message) {
+        } else if (error.response.data?.message) {
           setLoginError(error.response.data.message);
         } else {
           setLoginError("Google login failed. Please try again.");
@@ -127,26 +89,32 @@ function SignInForm() {
     setLoginError("Google sign-in was cancelled or failed. Please try again.");
   };
 
+  const handleGoogleClick = () => {
+    if (window.google) {
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          handleGoogleError();
+        }
+      });
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
-      setLoginError(""); // Clear previous error messages
-
+      setLoginError("");
       const response = await axios.post(
         "https://api.thedesigngrit.com/api/signin",
         data,
         { withCredentials: true }
       );
-
       setUserSession(response.data.user);
       navigate("/");
     } catch (error) {
       console.error("Error during sign-in:", error.response || error);
-
-      // Set appropriate error message based on the error response
       if (error.response) {
         if (error.response.status === 401) {
           setLoginError("Invalid email or password. Please try again.");
-        } else if (error.response.data && error.response.data.message) {
+        } else if (error.response.data?.message) {
           setLoginError(error.response.data.message);
         } else {
           setLoginError(
@@ -160,8 +128,9 @@ function SignInForm() {
       }
     }
   };
+
   const handleValidateAndSubmit = async (data) => {
-    const isValid = await trigger(); // Validate fields manually
+    const isValid = await trigger();
     if (!isValid) {
       const firstError = errors.email?.message || errors.password?.message;
       setLoginError(firstError);
@@ -169,55 +138,24 @@ function SignInForm() {
     }
     onSubmit(data);
   };
-  const handleGoogleLogin = () => {
-    if (googleLoginClient.current) {
-      googleLoginClient.current.requestAccessToken();
-    } else {
-      setLoginError("Google login is not initialized.");
-    }
-  };
+
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          {/*<div className="btn social-btn google-btn">
-          <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              useOneTap
-              theme="outline"
-              size="large"
-              text="continue_with"
-              shape="rectangular"
-              logo_alignment="left"
-              width="100%"
-              style={{
-                width: "100%",
-                height: "40px",
-                fontFamily: "Montserrat",
-                fontSize: "14px",
-                fontWeight: "500",
-              }}
-            /> 
-          </div>*/}
           <button
-            type="button"
+            onClick={handleGoogleClick}
             className="btn social-btn google-btn"
-            onClick={handleGoogleSuccess}
           >
-            <FcGoogle style={{ marginRight: 8 }} />
+            <FcGoogle style={{ marginRight: "8px" }} />
             Continue with Google
           </button>
-          {/* <button className="btn social-btn facebook-btn">
-            <FaFacebook className="facebook-icon" />
-            Continue with Facebook
-          </button> */}
         </div>
+
         <div className="divider-signIn"> OR</div>
 
         <form onSubmit={handleSubmit(handleValidateAndSubmit)}>
-          {/* Display general login error at the top of the form */}
           {(errors.email || errors.password || loginError) && (
             <div className="login-error-message">
               {errors.email?.message && <div>{errors.email.message}</div>}
@@ -233,9 +171,6 @@ function SignInForm() {
             placeholder="E-mail"
             className="input-field"
           />
-          {/* {errors.email && (
-            <p className="error-message-login">{errors.email.message}</p>
-          )} */}
 
           <div style={{ position: "relative" }}>
             <input
@@ -246,7 +181,7 @@ function SignInForm() {
               className="input-field"
             />
             <span
-              onClick={() => setShowPassword((prevState) => !prevState)}
+              onClick={() => setShowPassword((prev) => !prev)}
               style={{
                 position: "absolute",
                 right: "18px",
@@ -260,6 +195,7 @@ function SignInForm() {
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
           </div>
+
           <span
             onClick={() => setForgotPasswordDialogOpen(true)}
             style={{
@@ -269,28 +205,15 @@ function SignInForm() {
               color: "#e0e0e0",
               cursor: "pointer",
               fontFamily: "Montserrat",
-
-              "@media (max-width: 768px)": {
-                right: "40px",
-              },
             }}
           >
             Forgot Password?
           </span>
-          {/* {errors.password && (
-            <p className="error-message-login">{errors.password.message}</p>
-          )} */}
 
           <button
             type="submit"
             className="btn signin-btn"
-            style={{
-              marginTop: "24px",
-              marginBottom: "-20px",
-              "@media (max-width: 768px)": {
-                marginBottom: "-15px",
-              },
-            }}
+            style={{ marginTop: "24px", marginBottom: "-20px" }}
           >
             Sign In
           </button>
@@ -300,11 +223,13 @@ function SignInForm() {
           If you don't have an account? <a href="/signup">Register</a>
         </p>
       </div>
+
       <ForgotPasswordDialog
         open={forgotPasswordDialogOpen}
         onClose={() => setForgotPasswordDialogOpen(false)}
         onSend={() => setForgotPasswordSuccessDialogOpen(true)}
       />
+
       <ConfirmationDialog
         open={forgotPasswordSuccessDialogOpen}
         title="Reset Link Sent"
