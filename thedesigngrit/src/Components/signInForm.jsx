@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../utils/userContext";
@@ -11,7 +11,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ForgotPasswordDialog from "./forgetPassword";
 import ConfirmationDialog from "./confirmationMsg";
-
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -38,7 +37,7 @@ function SignInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    trigger,
+    trigger, // ✅ Add this
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -81,34 +80,6 @@ function SignInForm() {
     setLoginError("Google sign-in was cancelled or failed. Please try again.");
   };
 
-  // Custom Google login using useGoogleLogin hook
-  const googleLogin = useGoogleLogin({
-    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-    onSuccess: async (tokenResponse) => {
-      try {
-        setLoginError("");
-
-        // Get user info from Google using the access token
-        const userInfoResponse = await axios.get(
-          `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
-        );
-
-        // Create a credential-like object to match your backend expectations
-        // You may need to adjust this based on your backend implementation
-        const credentialResponse = {
-          credential: tokenResponse.access_token,
-          userInfo: userInfoResponse.data,
-        };
-
-        await handleGoogleSuccess(credentialResponse);
-      } catch (error) {
-        console.error("Error getting user info:", error);
-        handleGoogleError();
-      }
-    },
-    onError: handleGoogleError,
-  });
-
   const onSubmit = async (data) => {
     try {
       setLoginError(""); // Clear previous error messages
@@ -142,7 +113,6 @@ function SignInForm() {
       }
     }
   };
-
   const handleValidateAndSubmit = async (data) => {
     const isValid = await trigger(); // Validate fields manually
     if (!isValid) {
@@ -152,26 +122,12 @@ function SignInForm() {
     }
     onSubmit(data);
   };
-
   return (
     <div>
       <h1 className="form-title-signin">Login</h1>
       <div className="signin-form">
         <div className="social-btns-section">
-          {/* Custom Google Button */}
-          <button
-            className="btn social-btn google-btn"
-            onClick={() => googleLogin()}
-            type="button"
-          >
-            <FcGoogle className="google-icon" />
-            Continue with Google
-          </button>
-
-          {/* Alternative approach - if you need to keep the original GoogleLogin component */}
-          {/* You can uncomment this and comment out the button above */}
-          {/*
-          <div className="btn social-btn google-btn" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="btn social-btn google-btn">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
@@ -184,15 +140,17 @@ function SignInForm() {
               width="100%"
               style={{
                 width: "100%",
-                height: "100%",
-                border: "none",
+                height: "40px",
                 fontFamily: "Montserrat",
                 fontSize: "14px",
                 fontWeight: "500",
               }}
             />
           </div>
-          */}
+          {/* <button className="btn social-btn facebook-btn">
+            <FaFacebook className="facebook-icon" />
+            Continue with Facebook
+          </button> */}
         </div>
         <div className="divider-signIn"> OR</div>
 
@@ -213,6 +171,9 @@ function SignInForm() {
             placeholder="E-mail"
             className="input-field"
           />
+          {/* {errors.email && (
+            <p className="error-message-login">{errors.email.message}</p>
+          )} */}
 
           <div style={{ position: "relative" }}>
             <input
@@ -254,6 +215,9 @@ function SignInForm() {
           >
             Forgot Password?
           </span>
+          {/* {errors.password && (
+            <p className="error-message-login">{errors.password.message}</p>
+          )} */}
 
           <button
             type="submit"
