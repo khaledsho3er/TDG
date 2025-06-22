@@ -234,16 +234,16 @@ const RecentPurchasesAdmin = () => {
                 <tr
                   onClick={() => setSelectedOrder(order)}
                   style={{ cursor: "pointer" }}
-                  key={order._id}
+                  key={order?._id}
                 >
-                  <td>{order.cartItems[0]?.name || "N/A"}</td>
-                  <td>{order._id}</td>
-                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                  <td>{order?.cartItems[0]?.name || "N/A"}</td>
+                  <td>{order?._id || "N/A"}</td>
+                  <td>{new Date(order?.orderDate).toLocaleDateString()}</td>
                   <td>
-                    {order.customerId.firstName}
-                    {order.customerId.lastName}
+                    {order.customerId?.firstName || "N/A"}
+                    {order.customerId?.lastName || "N/A"}
                   </td>
-                  <td>{order.cartItems[0]?.brandId.brandName}</td>
+                  <td>{order.cartItems[0]?.brandId.brandName || "N/A"}</td>
                   <td>
                     <span
                       style={{
@@ -267,10 +267,10 @@ const RecentPurchasesAdmin = () => {
                         minWidth: "80px",
                       }}
                     >
-                      {order.orderStatus}
+                      {order?.orderStatus || "N/A"}
                     </span>
                   </td>
-                  <td>{order.total} E£</td>
+                  <td>{order?.total || "N/A"} E£</td>
                 </tr>
               ))}
             </tbody>

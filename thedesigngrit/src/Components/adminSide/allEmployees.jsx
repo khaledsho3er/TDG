@@ -260,14 +260,14 @@ const AllEmployees = () => {
               ) : (
                 <tbody>
                   {currentEmployees.map((vendor) => (
-                    <tr key={vendor._id}>
-                      <td>{vendor.firstName}</td>
-                      <td>{vendor.lastName}</td>
-                      <td>{vendor.email}</td>
-                      <td>{vendor.employeeNumber}</td>
-                      <td>{vendor.phoneNumber}</td>
-                      <td>{vendor.tier}</td>
-                      <td>{vendor.brandId?.brandName}</td>
+                    <tr key={vendor?._id}>
+                      <td>{vendor?.firstName || "N/A"}</td>
+                      <td>{vendor?.lastName || "N/A"}</td>
+                      <td>{vendor?.email || "N/A"}</td>
+                      <td>{vendor?.employeeNumber || "N/A"}</td>
+                      <td>{vendor?.phoneNumber || "N/A"}</td>
+                      <td>{vendor?.tier || "N/A"}</td>
+                      <td>{vendor?.brandId?.brandName || "N/A"}</td>
                       <td style={{ display: "flex", gap: "5px" }}>
                         <button
                           onClick={() => handleEdit(vendor)}
@@ -283,7 +283,7 @@ const AllEmployees = () => {
                           Update
                         </button>
                         <button
-                          onClick={() => handleDelete(vendor._id)}
+                          onClick={() => handleDelete(vendor?._id)}
                           style={{
                             backgroundColor: "#d9534f",
                             color: "white",

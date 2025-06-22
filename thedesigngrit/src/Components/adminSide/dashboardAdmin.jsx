@@ -212,11 +212,11 @@ const DashboardAdmin = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <td> {order.cartItems[0]?.name || "N/A"}</td>
-                    <td>{order._id}</td>
+                    <td>{order._id || "N/A"}</td>
                     <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                     <td>
-                      {order.customerId.firstName} {""}
-                      {order.customerId.lastName}
+                      {order.customerId?.firstName || "N/A"} {""}
+                      {order.customerId?.lastName || "N/A"}
                     </td>
                     <td>
                       <span
@@ -242,10 +242,10 @@ const DashboardAdmin = () => {
                           minWidth: "80px",
                         }}
                       >
-                        {order.orderStatus}
+                        {order?.orderStatus || "N/A"}
                       </span>
                     </td>
-                    <td>E£ {order.total}</td>
+                    <td>E£ {order?.total || "N/A"}</td>
                   </tr>
                 ))}
               </tbody>

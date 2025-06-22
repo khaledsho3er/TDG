@@ -289,9 +289,9 @@ const AdminOrderDetails = ({ order, onBack }) => {
                       gap: "12px",
                     }}
                   >
-                    <span> {order.customerId.firstName}</span>
-                    <span> {order.customerId.email}</span>
-                    <span> {order.customerId.phoneNumber}</span>
+                    <span> {order.customerId?.firstName || "N/A"}</span>
+                    <span> {order.customerId?.email || "N/A"}</span>
+                    <span> {order.customerId?.phoneNumber || "N/A"}</span>
                   </div>
                 </div>
               </div>
@@ -358,22 +358,22 @@ const AdminOrderDetails = ({ order, onBack }) => {
                 >
                   <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.address}
+                    {order.shippingDetails?.address || "N/A"}
                   </span>
 
                   <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.label}
+                    {order.shippingDetails?.label || "N/A"}
                   </span>
 
                   <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.apartment}
+                    {order.shippingDetails?.apartment || "N/A"}
                   </span>
 
                   <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
                   <span style={{ margin: 0 }}>
-                    {order.shippingDetails.floor}
+                    {order.shippingDetails?.floor || "N/A"}
                   </span>
                 </div>
               </div>
@@ -436,9 +436,9 @@ const AdminOrderDetails = ({ order, onBack }) => {
                   <p>Payment Status:</p>
                 </Box>
                 <Box sx={{ textAlign: "right" }}>
-                  <p>{order.paymentDetails.paymentMethod}</p>
-                  <p>{order.paymentDetails.transactionId || "120002554"}</p>
-                  <p>{order.paymentDetails.paymentStatus || "Pending"}</p>
+                  <p>{order.paymentDetails?.paymentMethod || "N/A"}</p>
+                  <p>{order.paymentDetails?.transactionId || "120002554"}</p>
+                  <p>{order.paymentDetails?.paymentStatus || "Pending"}</p>
                 </Box>
               </Box>
             </Box>
@@ -509,9 +509,9 @@ const AdminOrderDetails = ({ order, onBack }) => {
           <tbody>
             {filteredProducts.map((product, index) => (
               <tr key={index}>
-                <td>{product.name}</td>
-                <td>{product._id}</td>
-                <td>{product.quantity} Item</td>
+                <td>{product?.name || "N/A"}</td>
+                <td>{product?._id || "N/A"}</td>
+                <td>{product?.quantity || "N/A"} Item</td>
                 <td>
                   <span
                     style={{
@@ -535,10 +535,10 @@ const AdminOrderDetails = ({ order, onBack }) => {
                       minWidth: "80px",
                     }}
                   >
-                    {product.subOrderStatus}
+                    {product?.subOrderStatus || "N/A"}
                   </span>
                 </td>
-                <td>{product.totalPrice} E£</td>
+                <td>{product?.totalPrice || "N/A"} E£</td>
               </tr>
             ))}
           </tbody>
@@ -563,11 +563,11 @@ const AdminOrderDetails = ({ order, onBack }) => {
             <h4>Total:</h4>
           </Box>
           <Box>
-            <p>E£ {order.subtotal}</p>
-            <p> {order.tax || 20}%</p>
-            <p> E£ {order.discount || 0}</p>
-            <p> E£ {order.shippingFee}</p>
-            <h4> E£ {order.total}</h4>
+            <p>E£ {order?.subtotal || "N/A"}</p>
+            <p> {order?.tax || 20}%</p>
+            <p> E£ {order?.discount || 0}</p>
+            <p> E£ {order?.shippingFee || "N/A"}</p>
+            <h4> E£ {order?.total || "N/A"}</h4>
           </Box>
         </div>
       </div>
