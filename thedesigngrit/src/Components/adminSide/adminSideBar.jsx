@@ -80,7 +80,13 @@ const SidebarAdmin = ({ setActivePage }) => {
           onClick={() => setActivePage("AllEmployees")}
           className="sidebar-item-vendor"
         >
-          All Employees
+          Brands Employees
+        </li>
+        <li
+          onClick={() => setActivePage("ourEmployees")}
+          className="sidebar-item-vendor"
+        >
+          Our Employees
         </li>
       </ul>
     </aside>

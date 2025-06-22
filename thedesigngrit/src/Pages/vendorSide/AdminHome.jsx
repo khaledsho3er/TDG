@@ -16,6 +16,7 @@ import PromotionsPageAdmin from "../../Components/adminSide/promotionsAdmin";
 import BrandManagement from "../../Components/adminSide/brandsAdmin";
 import AdminNotificationPage from "../../Components/adminSide/adminNotifications";
 import ContactUsRequests from "../../Components/adminSide/contactusRequests";
+import OurEmployees from "../../Components/adminSide/ourEmployees";
 
 const AdminHome = () => {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ const AdminHome = () => {
         return <AdminNotificationPage />;
       case "contactusRequests":
         return <ContactUsRequests />;
+      case "ourEmployees":
+        return <OurEmployees />;
       default:
         return "DashboardVendor";
     }
