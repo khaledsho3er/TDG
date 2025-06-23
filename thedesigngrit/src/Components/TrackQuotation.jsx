@@ -8,6 +8,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import paymobService from "../services/paymobService";
 
 function TrackQuotation() {
   const { userSession } = useContext(UserContext);
@@ -86,21 +87,18 @@ function TrackQuotation() {
     setPayError("");
     setPayLoading(true);
     try {
-      const res = await fetch(
-        `https://api.thedesigngrit.com/api/paymob/quotation/${selectedQuotation._id}/pay`,
-        { method: "POST" }
+      const result = await paymobService.initializePayment(
+        { quotationId: selectedQuotation._id },
+        userSession
       );
-      const data = await res.json();
-      if (res.ok && data.success && data.iframe_url) {
-        setIframeUrl(data.iframe_url);
+      if (result.iframeUrl) {
+        setIframeUrl(result.iframeUrl);
         setIframeModalOpen(true);
       } else {
-        setPayError(
-          data.error || "Payment could not be initiated. Please try again."
-        );
+        setPayError("Payment could not be initiated. Please try again.");
       }
     } catch (err) {
-      setPayError("Network error. Please try again.");
+      setPayError(err.message || "Network error. Please try again.");
     } finally {
       setPayLoading(false);
     }
