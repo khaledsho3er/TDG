@@ -9,6 +9,7 @@ import { useUser } from "../../utils/userContext";
 import axios from "axios"; // Import axios for making HTTP requests
 import OrderSentPopup from "../successMsgs/orderSubmit.jsx";
 import { useLocation } from "react-router-dom";
+import OrderFailedPopup from "../successMsgs/orderFailed.jsx";
 
 function Checkout() {
   const { userSession } = useUser();
@@ -17,6 +18,7 @@ function Checkout() {
   const validateCheckboxRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
   const location = useLocation();
+  const [showFailedPopup, setShowFailedPopup] = useState(false);
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const order = query.get("order");
@@ -276,6 +278,15 @@ function Checkout() {
     console.log("showPopup changed:", showPopup);
   }, [showPopup]);
 
+  useEffect(() => {
+    // Check if the URL contains the payment-failed path
+    if (window.location.pathname === "/home/payment-failed") {
+      setShowFailedPopup(true);
+      // Clean up the URL so the popup doesn't keep appearing
+      window.history.replaceState({}, document.title, "/checkout");
+    }
+  }, []);
+
   const steps = [
     {
       id: 1,
@@ -427,6 +438,14 @@ function Checkout() {
         closePopup={() => {
           setShowPopup(false);
           navigate("/"); // Only navigate after closing the popup
+        }}
+      />
+
+      <OrderFailedPopup
+        show={showFailedPopup}
+        closePopup={() => {
+          setShowFailedPopup(false);
+          navigate("/"); // Or wherever you want to send the user after closing
         }}
       />
     </div>
