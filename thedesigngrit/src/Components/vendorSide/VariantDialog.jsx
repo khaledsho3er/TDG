@@ -840,10 +840,11 @@ export default function VariantDialog({
             width: "100vw",
             height: "100vh",
             background: "rgba(0,0,0,0.7)",
-            zIndex: 1300,
+            zIndex: 9999,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            backdropFilter: "blur (5px)",
           }}
         >
           <div
