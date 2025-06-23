@@ -11,6 +11,8 @@ function TrackQuotation() {
   const [selectedQuotation, setSelectedQuotation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDealSuccess, setShowDealSuccess] = useState(false);
+  const [payError, setPayError] = useState("");
+  const [payLoading, setPayLoading] = useState(false);
 
   useEffect(() => {
     const fetchQuotations = async () => {
@@ -72,6 +74,30 @@ function TrackQuotation() {
     const selectedId = e.target.value;
     const quotation = quotations.find((q) => q._id === selectedId);
     setSelectedQuotation(quotation);
+  };
+
+  const handlePayNow = async () => {
+    setPayError("");
+    setPayLoading(true);
+    try {
+      const res = await fetch(
+        `https://api.thedesigngrit.com/api/paymob/quotation/${selectedQuotation._id}/pay`,
+        { method: "POST" }
+      );
+      const data = await res.json();
+      if (res.ok && data.success && data.iframe_url) {
+        // Open the Paymob payment iframe in a new tab
+        window.open(data.iframe_url, "_blank");
+      } else {
+        setPayError(
+          data.error || "Payment could not be initiated. Please try again."
+        );
+      }
+    } catch (err) {
+      setPayError("Network error. Please try again.");
+    } finally {
+      setPayLoading(false);
+    }
   };
 
   if (loading) return <LoadingScreen />;
@@ -190,6 +216,18 @@ function TrackQuotation() {
               flexDirection: "row-reverse",
             }}
           >
+            {selectedQuotation?.ClientApproval === true &&
+              selectedQuotation?.vendorApproval === true &&
+              selectedQuotation?.quotePrice && (
+                <button
+                  onClick={handlePayNow}
+                  className="submit-btn"
+                  disabled={payLoading}
+                  style={{ marginRight: 8 }}
+                >
+                  {payLoading ? "Processing..." : "Pay Now"}
+                </button>
+              )}
             {selectedQuotation?.status === "approved" ? (
               <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
             ) : selectedQuotation?.status === "rejected" ? (
@@ -230,6 +268,11 @@ function TrackQuotation() {
               </>
             )}
           </Box>
+          {payError && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {payError}
+            </Typography>
+          )}
         </Box>
       )}
       <QuotationDealSuccess
