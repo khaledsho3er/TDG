@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-
+import Cropper from "react-easy-crop";
+import CircularProgress from "@mui/material/CircularProgress";
 // Define the sage green color
 const sageGreen = "#6a8452";
 
@@ -55,6 +56,14 @@ export default function VariantDialog({
   // Add state for product colors and sizes
   const [productColors, setProductColors] = useState([]);
   const [productSizes, setProductSizes] = useState([]);
+
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
+  const [pendingFiles, setPendingFiles] = useState([]); // queue of files to crop
+  const [pendingFileIndex, setPendingFileIndex] = useState(0);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   // Fetch SKUs when dialog opens
   useEffect(() => {
@@ -262,34 +271,37 @@ export default function VariantDialog({
 
     setVariants(updatedVariants);
   };
-
+  const getCroppedImg = (imageSrc, croppedAreaPixels) => {
+    return new Promise((resolve) => {
+      const image = new window.Image();
+      image.src = imageSrc;
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = croppedAreaPixels.width;
+        canvas.height = croppedAreaPixels.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(
+          image,
+          croppedAreaPixels.x,
+          croppedAreaPixels.y,
+          croppedAreaPixels.width,
+          croppedAreaPixels.height,
+          0,
+          0,
+          croppedAreaPixels.width,
+          croppedAreaPixels.height
+        );
+        canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+      };
+    });
+  };
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
-
-    const previews = files.map((file) => URL.createObjectURL(file));
-
-    const updatedVariants = [...variants];
-    updatedVariants[currentVariant] = {
-      ...updatedVariants[currentVariant],
-      images: [...updatedVariants[currentVariant].images, ...files],
-      mainImage: updatedVariants[currentVariant].mainImage || files[0],
-    };
-
-    const updatedPreviews = [...imagePreviews];
-    if (!updatedPreviews[currentVariant]) {
-      updatedPreviews[currentVariant] = [];
-    }
-    updatedPreviews[currentVariant] = [
-      ...updatedPreviews[currentVariant],
-      ...previews,
-    ];
-
-    setVariants(updatedVariants);
-    setImagePreviews(updatedPreviews);
-
-    console.log("Images added:", files.length);
-    console.log("Current previews:", updatedPreviews[currentVariant]);
+    setPendingFiles(files);
+    setPendingFileIndex(0);
+    setSelectedImageSrc(URL.createObjectURL(files[0]));
+    setShowCropModal(true);
   };
 
   const handleSetMainImage = (index) => {
@@ -337,7 +349,45 @@ export default function VariantDialog({
     console.log("Removed image at index:", index);
     console.log("Remaining images:", updatedImages.length);
   };
+  const handleCropComplete = async () => {
+    const file = pendingFiles[pendingFileIndex];
+    const blob = await getCroppedImg(selectedImageSrc, croppedAreaPixels);
+    const croppedFile = new File([blob], file.name, { type: "image/jpeg" });
+    const previewUrl = URL.createObjectURL(blob);
 
+    // Add to images and previews for the current variant
+    const updatedVariants = [...variants];
+    updatedVariants[currentVariant].images = [
+      ...updatedVariants[currentVariant].images,
+      croppedFile,
+    ];
+    if (!updatedVariants[currentVariant].mainImage) {
+      updatedVariants[currentVariant].mainImage = croppedFile;
+    }
+
+    const updatedPreviews = [...imagePreviews];
+    if (!updatedPreviews[currentVariant]) updatedPreviews[currentVariant] = [];
+    updatedPreviews[currentVariant] = [
+      ...updatedPreviews[currentVariant],
+      previewUrl,
+    ];
+
+    setVariants(updatedVariants);
+    setImagePreviews(updatedPreviews);
+
+    // Move to next file or close modal
+    if (pendingFileIndex + 1 < pendingFiles.length) {
+      setPendingFileIndex(pendingFileIndex + 1);
+      setSelectedImageSrc(
+        URL.createObjectURL(pendingFiles[pendingFileIndex + 1])
+      );
+    } else {
+      setShowCropModal(false);
+      setPendingFiles([]);
+      setPendingFileIndex(0);
+      setSelectedImageSrc(null);
+    }
+  };
   // Modify addVariant to use same SKU and productId as first variant
   const addVariant = () => {
     const firstVariant = variants[0];
