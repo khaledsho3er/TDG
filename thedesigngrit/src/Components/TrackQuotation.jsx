@@ -4,6 +4,10 @@ import { UserContext } from "../utils/userContext";
 import LoadingScreen from "../Pages/loadingScreen";
 import { Link } from "react-router-dom";
 import QuotationDealSuccess from "./quotationDealSuccess";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 function TrackQuotation() {
   const { userSession } = useContext(UserContext);
@@ -13,6 +17,8 @@ function TrackQuotation() {
   const [showDealSuccess, setShowDealSuccess] = useState(false);
   const [payError, setPayError] = useState("");
   const [payLoading, setPayLoading] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState(null);
+  const [iframeModalOpen, setIframeModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchQuotations = async () => {
@@ -86,8 +92,8 @@ function TrackQuotation() {
       );
       const data = await res.json();
       if (res.ok && data.success && data.iframe_url) {
-        // Open the Paymob payment iframe in a new tab
-        window.open(data.iframe_url, "_blank");
+        setIframeUrl(data.iframe_url);
+        setIframeModalOpen(true);
       } else {
         setPayError(
           data.error || "Payment could not be initiated. Please try again."
@@ -98,6 +104,11 @@ function TrackQuotation() {
     } finally {
       setPayLoading(false);
     }
+  };
+
+  const handleCloseIframeModal = () => {
+    setIframeModalOpen(false);
+    setIframeUrl(null);
   };
 
   if (loading) return <LoadingScreen />;
@@ -279,6 +290,53 @@ function TrackQuotation() {
         show={showDealSuccess}
         closePopup={() => setShowDealSuccess(false)}
       />
+      {/* Paymob Iframe Modal */}
+      <Dialog
+        open={iframeModalOpen}
+        onClose={handleCloseIframeModal}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            background: "#fff",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+            p: 2,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Complete Payment
+          <IconButton onClick={handleCloseIframeModal}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <Box sx={{ p: 2 }}>
+          {iframeUrl && (
+            <iframe
+              src={iframeUrl}
+              style={{
+                width: "100%",
+                height: "600px",
+                border: "none",
+                display: "block",
+              }}
+              allow="camera; microphone; accelerometer; gyroscope; payment"
+              allowFullScreen
+              title="Paymob Payment"
+              id="paymob-iframe"
+              referrerPolicy="origin"
+              sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-popups"
+            />
+          )}
+        </Box>
+      </Dialog>
     </Box>
   );
 }
