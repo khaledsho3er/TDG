@@ -162,12 +162,7 @@ function Checkout() {
     setPaymentData(data);
   };
 
-  // const handleNext = () => {
-  //   if (validateCheckboxRef.current && !validateCheckboxRef.current()) {
-  //     return; // Stop if validation fails
-  //   }
-  //   console.log("Proceed to next step");
-  // };
+  const handlePaymentFailed = () => setShowFailedPopup(true);
 
   const handlePaymentSubmit = async () => {
     console.log("handlePaymentSubmit called");
@@ -331,7 +326,8 @@ function Checkout() {
       content: (
         <PaymentForm
           onSubmit={handlePaymentSubmit}
-          onSuccess={() => setShowPopup(true)} // ✅ Central control
+          onSuccess={() => setShowPopup(true)}
+          onFailed={handlePaymentFailed}
           resetCart={resetCart}
           paymentData={paymentData}
           onChange={handlePaymentChange}

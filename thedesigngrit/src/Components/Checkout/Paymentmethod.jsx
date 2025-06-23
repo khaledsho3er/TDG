@@ -21,6 +21,7 @@ import { useLocation } from "react-router-dom";
 function PaymentForm({
   onSubmit,
   onSuccess,
+  onFailed,
   resetCart,
   paymentData,
   onChange,
@@ -204,6 +205,8 @@ function PaymentForm({
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."
       );
+      if (onFailed) onFailed(); // <-- show the failed popup
+
       console.error("Payment error details:", {
         error: error,
         message: error.message,
