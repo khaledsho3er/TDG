@@ -11,24 +11,7 @@ const PartnersSection = lazy(() => import("../Components/home/partners"));
 const ProductSlider = lazy(() => import("../Components/home/bestSeller"));
 const Footer = lazy(() => import("../Components/Footer"));
 const ScrollAnimation = lazy(() => import("../Context/scrollingAnimation"));
-useEffect(() => {
-  const script = document.createElement("script");
-  script.src =
-    "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-  document.body.appendChild(script);
 
-  window.googleTranslateElementInit = () => {
-    new window.google.translate.TranslateElement(
-      {
-        pageLanguage: "en",
-        includedLanguages: "en,ar,fr,de,es,it,ja,zh-CN,zh-TW,ar,ru", // Add more languages as needed
-        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false,
-      },
-      "google_translate_element"
-    );
-  };
-}, []);
 const videos = [
   {
     webm: "/Assets/Video-hero/herovideo2.webm",
@@ -127,7 +110,24 @@ function Home() {
     setCurrentVideoIndex(index);
     setProgress(0);
   };
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.body.appendChild(script);
 
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          includedLanguages: "en,ar,fr,de,es,it,ja,zh-CN,zh-TW,ar,ru", // Add more languages as needed
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false,
+        },
+        "google_translate_element"
+      );
+    };
+  }, []);
   return (
     <div className="home">
       <div className="background-layer">
