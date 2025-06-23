@@ -280,7 +280,7 @@ function Checkout() {
 
   useEffect(() => {
     // Check if the URL contains the payment-failed path
-    if (window.location.pathname === "/home/payment-failed") {
+    if (window.location.pathname === "/home?payment-failed") {
       setShowFailedPopup(true);
       // Clean up the URL so the popup doesn't keep appearing
       window.history.replaceState({}, document.title, "/checkout");
