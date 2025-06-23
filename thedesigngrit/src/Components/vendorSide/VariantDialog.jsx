@@ -520,308 +520,375 @@ export default function VariantDialog({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <span>
-            Add Product Variant {currentVariant + 1}/{variants.length}
-          </span>
-          <IconButton
-            color="primary"
-            onClick={addVariant}
-            sx={{
-              backgroundColor: sageGreen,
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#5a7342",
-              },
-            }}
+    <>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+        <DialogTitle>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            <AddIcon />
-          </IconButton>
-        </Box>
-      </DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>SKU</InputLabel>
-                  <Select
-                    value={variants[currentVariant].sku}
-                    onChange={handleSkuSelect}
-                    label="SKU"
-                    name="sku"
-                  >
-                    {skuOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Title"
-                  name="title"
-                  fullWidth
-                  value={variants[currentVariant].title}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Color</InputLabel>
-                  <Select
-                    value={variants[currentVariant].color}
-                    onChange={handleChange}
-                    label="Color"
-                    name="color"
-                  >
-                    {productColors && productColors.length > 0 ? (
-                      productColors.map((color) => (
-                        <MenuItem key={color} value={color}>
-                          {color}
+            <span>
+              Add Product Variant {currentVariant + 1}/{variants.length}
+            </span>
+            <IconButton
+              color="primary"
+              onClick={addVariant}
+              sx={{
+                backgroundColor: sageGreen,
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#5a7342",
+                },
+              }}
+            >
+              <AddIcon />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel>SKU</InputLabel>
+                    <Select
+                      value={variants[currentVariant].sku}
+                      onChange={handleSkuSelect}
+                      label="SKU"
+                      name="sku"
+                    >
+                      {skuOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem value="" disabled>
-                        No colors available
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel>Size</InputLabel>
-                  <Select
-                    value={variants[currentVariant].size}
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Title"
+                    name="title"
+                    fullWidth
+                    value={variants[currentVariant].title}
                     onChange={handleChange}
-                    label="Size"
-                    name="size"
-                  >
-                    {productSizes && productSizes.length > 0 ? (
-                      productSizes.map((size) => (
-                        <MenuItem key={size} value={size}>
-                          {size}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel>Color</InputLabel>
+                    <Select
+                      value={variants[currentVariant].color}
+                      onChange={handleChange}
+                      label="Color"
+                      name="color"
+                    >
+                      {productColors && productColors.length > 0 ? (
+                        productColors.map((color) => (
+                          <MenuItem key={color} value={color}>
+                            {color}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem value="" disabled>
+                          No colors available
                         </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem value="" disabled>
-                        No sizes available
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Price"
-                  name="price"
-                  type="number"
-                  fullWidth
-                  value={variants[currentVariant].price}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  label="Stock"
-                  name="stock"
-                  type="number"
-                  fullWidth
-                  value={variants[currentVariant].stock}
-                  onChange={handleChange}
-                />
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel>Size</InputLabel>
+                    <Select
+                      value={variants[currentVariant].size}
+                      onChange={handleChange}
+                      label="Size"
+                      name="size"
+                    >
+                      {productSizes && productSizes.length > 0 ? (
+                        productSizes.map((size) => (
+                          <MenuItem key={size} value={size}>
+                            {size}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem value="" disabled>
+                          No sizes available
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Price"
+                    name="price"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].price}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Stock"
+                    name="stock"
+                    type="number"
+                    fullWidth
+                    value={variants[currentVariant].stock}
+                    onChange={handleChange}
+                  />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
 
-          <Grid item xs={12} md={6}>
-            {/* Technical Dimensions */}
-            <Box sx={{ mb: 2 }}>
-              <h3>Technical Dimensions</h3>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Length (CM)"
-                    name="dimensions.length"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.length}
-                    onChange={handleChange}
-                  />
+            <Grid item xs={12} md={6}>
+              {/* Technical Dimensions */}
+              <Box sx={{ mb: 2 }}>
+                <h3>Technical Dimensions</h3>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Length (CM)"
+                      name="dimensions.length"
+                      type="number"
+                      fullWidth
+                      value={variants[currentVariant].dimensions.length}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Width (CM)"
+                      name="dimensions.width"
+                      type="number"
+                      fullWidth
+                      value={variants[currentVariant].dimensions.width}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Height (CM)"
+                      name="dimensions.height"
+                      type="number"
+                      fullWidth
+                      value={variants[currentVariant].dimensions.height}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Weight (KG)"
+                      name="dimensions.weight"
+                      type="number"
+                      fullWidth
+                      value={variants[currentVariant].dimensions.weight}
+                      onChange={handleChange}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Width (CM)"
-                    name="dimensions.width"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.width}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Height (CM)"
-                    name="dimensions.height"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.height}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Weight (KG)"
-                    name="dimensions.weight"
-                    type="number"
-                    fullWidth
-                    value={variants[currentVariant].dimensions.weight}
-                    onChange={handleChange}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
+              </Box>
 
-            {/* Image Upload Section */}
-            <Box sx={{ mb: 2 }}>
-              <div
-                className="image-placeholder"
-                style={{
-                  height: "150px",
-                  border: "1px dashed #ccc",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                }}
-              >
-                {variants[currentVariant].mainImage ? (
-                  <img
-                    src={URL.createObjectURL(
-                      variants[currentVariant].mainImage
-                    )}
-                    alt="Main Preview"
-                    style={{ maxHeight: "100%", maxWidth: "100%" }}
+              {/* Image Upload Section */}
+              <Box sx={{ mb: 2 }}>
+                <div
+                  className="image-placeholder"
+                  style={{
+                    height: "150px",
+                    border: "1px dashed #ccc",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {variants[currentVariant].mainImage ? (
+                    <img
+                      src={URL.createObjectURL(
+                        variants[currentVariant].mainImage
+                      )}
+                      alt="Main Preview"
+                      style={{ maxHeight: "100%", maxWidth: "100%" }}
+                    />
+                  ) : (
+                    <p>Main Image Preview</p>
+                  )}
+                </div>
+
+                <div
+                  className="drop-zone"
+                  style={{
+                    border: "1px dashed #ccc",
+                    padding: "10px",
+                    textAlign: "center",
+                  }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const files = Array.from(e.dataTransfer.files);
+                    handleImageUpload({ target: { files } });
+                  }}
+                >
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/jpeg, image/png, image/webp"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                    id="variantFileInput"
                   />
-                ) : (
-                  <p>Main Image Preview</p>
-                )}
-              </div>
+                  <label
+                    htmlFor="variantFileInput"
+                    style={{ cursor: "pointer" }}
+                  >
+                    Drop images here, or click to browse
+                  </label>
+                </div>
 
-              <div
-                className="drop-zone"
-                style={{
-                  border: "1px dashed #ccc",
-                  padding: "10px",
-                  textAlign: "center",
-                }}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const files = Array.from(e.dataTransfer.files);
-                  handleImageUpload({ target: { files } });
-                }}
-              >
-                <input
-                  type="file"
-                  multiple
-                  accept="image/jpeg, image/png, image/webp"
-                  onChange={handleImageUpload}
-                  style={{ display: "none" }}
-                  id="variantFileInput"
-                />
-                <label htmlFor="variantFileInput" style={{ cursor: "pointer" }}>
-                  Drop images here, or click to browse
-                </label>
-              </div>
-
-              {/* Image Thumbnails for Selection */}
-              <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
-                {imagePreviews[currentVariant] &&
-                  imagePreviews[currentVariant].map((preview, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        position: "relative",
-                        width: "80px",
-                        height: "80px",
-                        border:
-                          variants[currentVariant].mainImage ===
-                          variants[currentVariant].images[index]
-                            ? "2px solid #6a8452"
-                            : "1px solid #ccc",
-                        borderRadius: "4px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <img
-                        src={preview}
-                        alt={`Thumbnail ${index}`}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => handleSetMainImage(index)}
-                      />
-                      <IconButton
-                        size="small"
+                {/* Image Thumbnails for Selection */}
+                <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
+                  {imagePreviews[currentVariant] &&
+                    imagePreviews[currentVariant].map((preview, index) => (
+                      <Box
+                        key={index}
                         sx={{
-                          position: "absolute",
-                          top: "2px",
-                          right: "2px",
-                          backgroundColor: "rgba(255,255,255,0.7)",
-                          padding: "2px",
-                          "&:hover": { backgroundColor: "rgba(255,0,0,0.2)" },
+                          position: "relative",
+                          width: "80px",
+                          height: "80px",
+                          border:
+                            variants[currentVariant].mainImage ===
+                            variants[currentVariant].images[index]
+                              ? "2px solid #6a8452"
+                              : "1px solid #ccc",
+                          borderRadius: "4px",
+                          overflow: "hidden",
                         }}
-                        onClick={() => handleRemoveImage(index)}
                       >
-                        ✕
-                      </IconButton>
-                      {variants[currentVariant].mainImage ===
-                        variants[currentVariant].images[index] && (
-                        <Box
+                        <img
+                          src={preview}
+                          alt={`Thumbnail ${index}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleSetMainImage(index)}
+                        />
+                        <IconButton
+                          size="small"
                           sx={{
                             position: "absolute",
-                            bottom: "2px",
-                            left: "2px",
-                            backgroundColor: "rgba(106,132,82,0.7)",
-                            color: "white",
-                            fontSize: "10px",
-                            padding: "2px 4px",
-                            borderRadius: "2px",
+                            top: "2px",
+                            right: "2px",
+                            backgroundColor: "rgba(255,255,255,0.7)",
+                            padding: "2px",
+                            "&:hover": { backgroundColor: "rgba(255,0,0,0.2)" },
                           }}
+                          onClick={() => handleRemoveImage(index)}
                         >
-                          Main
-                        </Box>
-                      )}
-                    </Box>
-                  ))}
+                          ✕
+                        </IconButton>
+                        {variants[currentVariant].mainImage ===
+                          variants[currentVariant].images[index] && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              bottom: "2px",
+                              left: "2px",
+                              backgroundColor: "rgba(106,132,82,0.7)",
+                              color: "white",
+                              fontSize: "10px",
+                              padding: "2px 4px",
+                              borderRadius: "2px",
+                            }}
+                          >
+                            Main
+                          </Box>
+                        )}
+                      </Box>
+                    ))}
+                </Box>
               </Box>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          color="primary"
-          variant="contained"
-          disabled={isSubmitting}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : "Save Variants"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {showCropModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.7)",
+            zIndex: 1300,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          {isSubmitting ? "Saving..." : "Save Variants"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <div
+            style={{
+              background: "#fff",
+              padding: 24,
+              borderRadius: 8,
+              maxWidth: 500,
+              width: "90vw",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ width: 400, height: 300, position: "relative" }}>
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, area) => setCroppedAreaPixels(area)}
+              />
+            </div>
+            <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCropComplete}
+              >
+                Crop Image
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setShowCropModal(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
