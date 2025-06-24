@@ -95,16 +95,18 @@ const paymobService = {
               shippingDetails?.street ||
               "NA",
             address:
-              billingDetails?.address || shippingDetails?.address || "N/A",
+              billingDetails?.address ||
+              shippingDetails?.address ||
+              billingDetails?.street ||
+              shippingDetails?.street ||
+              "N/A",
             phone_number: billingDetails?.phone_number || "N/A",
             shipping_method:
               billingDetails?.shipping_method ||
               shippingDetails?.shipping_method ||
               "NA",
             postal_code:
-              billingDetails?.postal_code ||
-              shippingDetails?.postal_code ||
-              "NA",
+              billingDetails?.zipCode || shippingDetails?.zipCode || "NA",
             city: billingDetails?.city || shippingDetails?.city || "N/A",
             country:
               billingDetails?.country || shippingDetails?.country || "N/A",
