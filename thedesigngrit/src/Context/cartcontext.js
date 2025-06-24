@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [lastAddedItem, setLastAddedItem] = useState(null); // Track last added item for highlighting
   const [cartTimeoutId, setCartTimeoutId] = useState(null); // Abandoned cart timer
-  const { user } = useUser(); // Access user data from user context
+  const { userSession } = useUser(); // Access user data from user context
   // Load cart items from localStorage if available
   useEffect(() => {
     const storedCartItems = localStorage.getItem("cartItems");
@@ -24,20 +24,23 @@ export const CartProvider = ({ children }) => {
   // ⏰ Setup abandoned cart timer
   useEffect(() => {
     console.log("🪵 Cart changed. Current items:", cartItems);
-    console.log("🪵 User info:", user?.email, user?.emailConsent);
+    console.log("🪵 User info:", userSession?.email);
 
     if (cartTimeoutId) clearTimeout(cartTimeoutId);
 
-    if (cartItems.length && user?.email && user?.emailConsent) {
+    if (cartItems.length && userSession?.email) {
       console.log(
-        `🕒 Starting abandoned cart timer for ${user.email} (30 minutes)`
+        `🕒 Starting abandoned cart timer for ${userSession.email} (30 minutes)`
       );
 
       const timeout = setTimeout(() => {
         axios.post("/api/mailchimp/abandoned-cart", {
-          email: user.email,
+          email: userSession.email,
         });
-        console.log("📧 Abandoned cart email trigger sent for:", user.email);
+        console.log(
+          "📧 Abandoned cart email trigger sent for:",
+          userSession.email
+        );
       }, 30 * 60 * 1000);
 
       setCartTimeoutId(timeout);
