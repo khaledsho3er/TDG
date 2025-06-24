@@ -34,9 +34,12 @@ export const CartProvider = ({ children }) => {
       );
 
       const timeout = setTimeout(() => {
-        axios.post("/api/mailchimp/abandoned-cart", {
-          email: userSession.email,
-        });
+        axios.post(
+          "https://api.thedesigngrit.com/api/mailchimp/abandoned-cart",
+          {
+            email: userSession.email,
+          }
+        );
         console.log(
           "📧 Abandoned cart email trigger sent for:",
           userSession.email
