@@ -38,6 +38,8 @@ export const CartProvider = ({ children }) => {
           "https://api.thedesigngrit.com/api/mailchimp/abandoned-cart",
           {
             email: userSession.email,
+            firstName: userSession.firstName || "Valued Customer",
+            lastName: userSession.lastName || "",
           }
         );
         console.log(
