@@ -24,8 +24,7 @@ const PendingBrandUpdates = () => {
   const [pendingBrands, setPendingBrands] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false); // Main dialog for all pending brands
-  const [openBrandDialog, setOpenBrandDialog] = useState(false); // Nested dialog for brand details
+  const [openDialog, setOpenDialog] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -33,10 +32,9 @@ const PendingBrandUpdates = () => {
     severity: "success",
   });
 
-  // Only fetch when dialog is opened
   useEffect(() => {
-    if (openDialog) fetchPendingBrands();
-  }, [openDialog]);
+    fetchPendingBrands();
+  }, []);
 
   const fetchPendingBrands = async () => {
     try {
@@ -58,11 +56,11 @@ const PendingBrandUpdates = () => {
 
   const handleCardClick = (brand) => {
     setSelectedBrand(brand);
-    setOpenBrandDialog(true);
+    setOpenDialog(true);
   };
 
-  const handleCloseBrandDialog = () => {
-    setOpenBrandDialog(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
     setSelectedBrand(null);
   };
 
@@ -79,7 +77,7 @@ const PendingBrandUpdates = () => {
         severity: "success",
       });
       fetchPendingBrands();
-      handleCloseBrandDialog();
+      handleCloseDialog();
     } catch (error) {
       setSnackbar({
         open: true,
@@ -104,7 +102,7 @@ const PendingBrandUpdates = () => {
         severity: "success",
       });
       fetchPendingBrands();
-      handleCloseBrandDialog();
+      handleCloseDialog();
     } catch (error) {
       setSnackbar({
         open: true,
@@ -120,18 +118,24 @@ const PendingBrandUpdates = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  // Helper to show both current and pending values
+  // Helper to safely render any value (stringify objects)
+  const renderValue = (val) => {
+    if (val === null || val === undefined) return "N/A";
+    if (typeof val === "object") return JSON.stringify(val, null, 2);
+    return val;
+  };
+
   const renderFieldDiff = (field, current, pending) => {
-    if (current === pending) {
-      return <Typography variant="body1">{current || "N/A"}</Typography>;
+    if (JSON.stringify(current) === JSON.stringify(pending)) {
+      return <Typography variant="body1">{renderValue(current)}</Typography>;
     }
     return (
       <Box>
         <Typography variant="body2" color="text.secondary">
-          Current: {current || "N/A"}
+          Current: {renderValue(current)}
         </Typography>
         <Typography variant="body2" color="primary">
-          Pending: {pending || "N/A"}
+          Pending: {renderValue(pending)}
         </Typography>
       </Box>
     );
@@ -221,50 +225,21 @@ const PendingBrandUpdates = () => {
   };
 
   return (
-    <>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpenDialog(true)}
-      >
-        View Pending Brand Updates
-      </Button>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Pending Brand Updates
+      </Typography>
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
+        </Box>
+      ) : (
+        <Box>{renderBrandCards(pendingBrands)}</Box>
+      )}
+      {/* Brand Details Dialog */}
       <Dialog
         open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        maxWidth="lg"
-        fullWidth
-      >
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          Pending Brand Updates
-          <IconButton onClick={() => setOpenDialog(false)}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent dividers>
-          {loading ? (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-              <CircularProgress
-                size={60}
-                thickness={4}
-                sx={{ color: "#6b7b58" }}
-              />
-            </Box>
-          ) : (
-            <Box>{renderBrandCards(pendingBrands)}</Box>
-          )}
-        </DialogContent>
-      </Dialog>
-      {/* Nested Brand Details Dialog */}
-      <Dialog
-        open={openBrandDialog}
-        onClose={handleCloseBrandDialog}
+        onClose={handleCloseDialog}
         maxWidth="md"
         fullWidth
       >
@@ -276,7 +251,7 @@ const PendingBrandUpdates = () => {
           }}
         >
           {selectedBrand?.brandName}
-          <IconButton onClick={handleCloseBrandDialog}>
+          <IconButton onClick={handleCloseDialog}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -309,7 +284,7 @@ const PendingBrandUpdates = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 };
 
