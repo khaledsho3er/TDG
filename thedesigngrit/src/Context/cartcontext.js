@@ -48,7 +48,7 @@ export const CartProvider = ({ children }) => {
           userSession.firstName,
           userSession.lastName
         );
-      }, 1 * 60 * 1000);
+      }, 30 * 60 * 1000);
 
       setCartTimeoutId(timeout);
     }
