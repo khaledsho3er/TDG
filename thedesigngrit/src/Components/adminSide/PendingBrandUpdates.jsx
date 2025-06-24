@@ -40,7 +40,7 @@ const PendingBrandUpdates = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://api.thedesigngrit.com/api/brands/admin/brands/pending"
+        "https://api.thedesigngrit.com/api/brand/admin/brands/pending"
       );
       setPendingBrands(response.data || []);
     } catch (error) {
@@ -69,7 +69,7 @@ const PendingBrandUpdates = () => {
     setActionLoading(true);
     try {
       await axios.post(
-        `https://api.thedesigngrit.com/api/brands/admin/brands/${selectedBrand._id}/approve`
+        `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}/approve`
       );
       setSnackbar({
         open: true,
@@ -94,7 +94,7 @@ const PendingBrandUpdates = () => {
     setActionLoading(true);
     try {
       await axios.post(
-        `https://api.thedesigngrit.com/api/brands/admin/brands/${selectedBrand._id}/reject`
+        `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}/reject`
       );
       setSnackbar({
         open: true,
