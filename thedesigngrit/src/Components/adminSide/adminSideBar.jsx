@@ -71,6 +71,12 @@ const SidebarAdmin = ({ setActivePage }) => {
           Brands
         </li>
         <li
+          onClick={() => setActivePage("PendingBrandUpdates")}
+          className="sidebar-item-vendor"
+        >
+          Brands Changes
+        </li>{" "}
+        <li
           onClick={() => setActivePage("contactusRequests")}
           className="sidebar-item-vendor"
         >
