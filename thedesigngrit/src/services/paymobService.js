@@ -82,21 +82,21 @@ const paymobService = {
           total: total,
           billingDetails: {
             apartment:
-              billingDetails?.apartment || shippingDetails?.apartment || "NA",
-            email: billingDetails?.email || "NA",
-            floor: billingDetails?.floor || shippingDetails?.floor || "NA",
-            first_name: billingDetails?.first_name || "NA",
-            last_name: billingDetails?.last_name || "NA",
+              billingDetails?.apartment || shippingDetails?.apartment || "N/A",
+            email: billingDetails?.email || "N/A",
+            floor: billingDetails?.floor || shippingDetails?.floor || "N/A",
+            first_name: billingDetails?.first_name || "N/A",
+            last_name: billingDetails?.last_name || "N/A",
             building:
-              billingDetails?.building || shippingDetails?.building || "NA",
+              billingDetails?.apartment || shippingDetails?.apartment || "N/A",
             street:
               billingDetails?.street ||
               billingDetails?.address ||
               shippingDetails?.street ||
               "NA",
             address:
-              billingDetails?.address || shippingDetails?.address || "NA",
-            phone_number: billingDetails?.phone_number || "NA",
+              billingDetails?.address || shippingDetails?.address || "N/A",
+            phone_number: billingDetails?.phone_number || "N/A",
             shipping_method:
               billingDetails?.shipping_method ||
               shippingDetails?.shipping_method ||
@@ -105,15 +105,15 @@ const paymobService = {
               billingDetails?.postal_code ||
               shippingDetails?.postal_code ||
               "NA",
-            city: billingDetails?.city || shippingDetails?.city || "NA",
+            city: billingDetails?.city || shippingDetails?.city || "N/A",
             country:
-              billingDetails?.country || shippingDetails?.country || "NA",
+              billingDetails?.country || shippingDetails?.country || "N/A",
             state:
               billingDetails?.state ||
               billingDetails?.city ||
               shippingDetails?.state ||
               shippingDetails?.city ||
-              "NA",
+              "N/A",
           },
 
           items: items,
