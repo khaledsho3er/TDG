@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
           "📧 Abandoned cart email trigger sent for:",
           userSession.email
         );
-      }, 30 * 60 * 1000);
+      }, 1 * 60 * 1000);
 
       setCartTimeoutId(timeout);
     }
