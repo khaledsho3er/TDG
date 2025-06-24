@@ -120,7 +120,6 @@ function ProductPage() {
         const data = await response.json();
         setReviews(data); // Assuming the response is an array of reviews
       } catch (error) {
-        console.log(error);
         setError(error.message);
       }
     };

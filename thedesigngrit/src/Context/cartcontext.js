@@ -23,6 +23,9 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
   // ⏰ Setup abandoned cart timer
   useEffect(() => {
+    console.log("🪵 Cart changed. Current items:", cartItems);
+    console.log("🪵 User info:", user?.email, user?.emailConsent);
+
     if (cartTimeoutId) clearTimeout(cartTimeoutId);
 
     if (cartItems.length && user?.email && user?.emailConsent) {
@@ -35,7 +38,7 @@ export const CartProvider = ({ children }) => {
           email: user.email,
         });
         console.log("📧 Abandoned cart email trigger sent for:", user.email);
-      }, 1 * 60 * 1000); // 30 minutes
+      }, 30 * 60 * 1000);
 
       setCartTimeoutId(timeout);
     }
@@ -47,6 +50,7 @@ export const CartProvider = ({ children }) => {
       }
     };
   }, [cartItems]);
+
   const addToCart = (product) => {
     console.log("Adding product to cart:", product); // Debug log
     console.log("Current unit Price:", product.unitPrice); // Debug log
