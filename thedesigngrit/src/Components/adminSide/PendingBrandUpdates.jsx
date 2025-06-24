@@ -233,6 +233,12 @@ const PendingBrandUpdates = () => {
         <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
           <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
         </Box>
+      ) : pendingBrands.length === 0 ? (
+        <Box sx={{ textAlign: "center", mt: 6 }}>
+          <Typography variant="h6" color="text.secondary">
+            No brand updates pending approval.
+          </Typography>
+        </Box>
       ) : (
         <Box>{renderBrandCards(pendingBrands)}</Box>
       )}
