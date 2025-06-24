@@ -56,33 +56,6 @@ const paymobService = {
 
   // Initialize payment
   async initializePayment(paymentData, userSession) {
-    // If paymentData.quotationId is present, use the quotation payment endpoint
-    if (paymentData.quotationId) {
-      try {
-        const response = await axios.post(
-          `https://api.thedesigngrit.com/api/paymob/quotation/${paymentData.quotationId}/pay`,
-          {},
-          { headers: { "Content-Type": "application/json" } }
-        );
-        if (
-          response.data &&
-          response.data.success &&
-          response.data.iframe_url
-        ) {
-          return { iframeUrl: response.data.iframe_url };
-        } else {
-          throw new Error(
-            response.data?.error || "Failed to initialize payment for quotation"
-          );
-        }
-      } catch (error) {
-        throw new Error(
-          error.response?.data?.error ||
-            error.message ||
-            "Failed to initialize payment for quotation"
-        );
-      }
-    }
     try {
       console.log("Initializing payment with data:", paymentData);
 
