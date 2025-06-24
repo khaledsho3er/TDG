@@ -68,7 +68,7 @@ const PendingBrandUpdates = () => {
     if (!selectedBrand) return;
     setActionLoading(true);
     try {
-      await axios.post(
+      await axios.put(
         `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}/approve`
       );
       setSnackbar({
@@ -93,7 +93,7 @@ const PendingBrandUpdates = () => {
     if (!selectedBrand) return;
     setActionLoading(true);
     try {
-      await axios.post(
+      await axios.put(
         `https://api.thedesigngrit.com/api/brand/admin/brands/${selectedBrand._id}/reject`
       );
       setSnackbar({
