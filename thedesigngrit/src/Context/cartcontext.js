@@ -44,7 +44,9 @@ export const CartProvider = ({ children }) => {
         );
         console.log(
           "📧 Abandoned cart email trigger sent for:",
-          userSession.email
+          userSession.email,
+          userSession.firstName,
+          userSession.lastName
         );
       }, 1 * 60 * 1000);
 
