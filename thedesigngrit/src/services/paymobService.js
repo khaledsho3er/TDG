@@ -81,22 +81,41 @@ const paymobService = {
           customerId: userSession.id || userSession._id, // Ensure this is taken from the authenticated user
           total: total,
           billingDetails: {
-            apartment: shippingDetails?.apartment || "NA",
-            email: billingDetails.email,
-            floor: shippingDetails?.floor || "NA",
-            first_name: billingDetails.first_name,
+            apartment:
+              billingDetails?.apartment || shippingDetails?.apartment || "NA",
+            email: billingDetails?.email || "NA",
+            floor: billingDetails?.floor || shippingDetails?.floor || "NA",
+            first_name: billingDetails?.first_name || "NA",
+            last_name: billingDetails?.last_name || "NA",
+            building:
+              billingDetails?.building || shippingDetails?.building || "NA",
+            street:
+              billingDetails?.street ||
+              billingDetails?.address ||
+              shippingDetails?.street ||
+              "NA",
             address:
               billingDetails?.address || shippingDetails?.address || "NA",
-            street: billingDetails?.address || shippingDetails?.address || "NA",
-            building: shippingDetails?.apartment || "NA",
-            phone_number: billingDetails.phone_number,
-            shipping_method: shippingDetails?.address || "NA",
-            postal_code: shippingDetails?.zipCode || "NA",
-            city: billingDetails?.city || shippingDetails?.city || "N/A",
-            country: billingDetails.country,
-            last_name: billingDetails.last_name,
-            state: billingDetails.city || "NA",
+            phone_number: billingDetails?.phone_number || "NA",
+            shipping_method:
+              billingDetails?.shipping_method ||
+              shippingDetails?.shipping_method ||
+              "NA",
+            postal_code:
+              billingDetails?.postal_code ||
+              shippingDetails?.postal_code ||
+              "NA",
+            city: billingDetails?.city || shippingDetails?.city || "NA",
+            country:
+              billingDetails?.country || shippingDetails?.country || "NA",
+            state:
+              billingDetails?.state ||
+              billingDetails?.city ||
+              shippingDetails?.state ||
+              shippingDetails?.city ||
+              "NA",
           },
+
           items: items,
         },
       };
