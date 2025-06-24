@@ -229,18 +229,11 @@ const PendingBrandUpdates = () => {
       <Typography variant="h4" gutterBottom>
         Pending Brand Updates
       </Typography>
-      {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-          <CircularProgress size={60} thickness={4} sx={{ color: "#6b7b58" }} />
-        </Box>
-      ) : (
-        <Box>{renderBrandCards(pendingBrands)}</Box>
-      )}
       {/* Brand Details Dialog */}
       <Dialog
         open={openDialog}
-        onClose={handleCloseDialog}
-        maxWidth="md"
+        onClose={() => setOpenDialog(false)}
+        maxWidth="lg"
         fullWidth
       >
         <DialogTitle
@@ -250,12 +243,39 @@ const PendingBrandUpdates = () => {
             alignItems: "center",
           }}
         >
-          {selectedBrand?.brandName}
-          <IconButton onClick={handleCloseDialog}>
+          Pending Brand Updates
+          <IconButton onClick={() => setOpenDialog(false)}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers>{renderBrandDetails()}</DialogContent>
+        <DialogContent dividers>
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+              <CircularProgress
+                size={60}
+                thickness={4}
+                sx={{ color: "#6b7b58" }}
+              />
+            </Box>
+          ) : pendingBrands.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: 300,
+                color: "grey.500",
+              }}
+            >
+              <Typography variant="h6" color="grey.600">
+                No brands changed anything
+              </Typography>
+            </Box>
+          ) : (
+            <Box>{renderBrandCards(pendingBrands)}</Box>
+          )}
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleReject} color="error" disabled={actionLoading}>
             {actionLoading ? "Rejecting..." : "Reject"}
