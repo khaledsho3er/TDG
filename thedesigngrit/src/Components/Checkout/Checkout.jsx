@@ -217,7 +217,8 @@ function Checkout() {
           orderStatus: "Pending",
         };
         console.log("Creating order:", orderData);
-
+        console.log("Shipping Data:", shippingData);
+        console.log("Billing Data:", billingData);
         return axios.post(
           "https://api.thedesigngrit.com/api/orders/",
           orderData

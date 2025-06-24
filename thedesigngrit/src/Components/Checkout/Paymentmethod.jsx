@@ -157,7 +157,8 @@ function PaymentForm({
         });
 
         console.log("Enhanced cart items with proper IDs:", enhancedCartItems);
-
+        console.log("Billing details in paymentMethod:", billingDetails);
+        console.log("Shipping details in paymentMethod:", shippingDetails);
         const paymentData = {
           total: billData.total || 0,
           billingDetails: billingDetails,
