@@ -26,6 +26,10 @@ export const CartProvider = ({ children }) => {
     if (cartTimeoutId) clearTimeout(cartTimeoutId);
 
     if (cartItems.length && user?.email && user?.emailConsent) {
+      console.log(
+        `🕒 Starting abandoned cart timer for ${user.email} (30 minutes)`
+      );
+
       const timeout = setTimeout(() => {
         axios.post("/api/mailchimp/abandoned-cart", {
           email: user.email,
@@ -37,7 +41,10 @@ export const CartProvider = ({ children }) => {
     }
 
     return () => {
-      if (cartTimeoutId) clearTimeout(cartTimeoutId);
+      if (cartTimeoutId) {
+        console.log("🛑 Clearing previous abandoned cart timer");
+        clearTimeout(cartTimeoutId);
+      }
     };
   }, [cartItems]);
   const addToCart = (product) => {
