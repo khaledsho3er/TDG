@@ -40,7 +40,8 @@ function OnSale() {
           (product) =>
             product.salePrice &&
             product.status === true &&
-            product.promotionApproved === true
+            product.promotionApproved === true &&
+            product.brandId.status === "active"
         );
         setProducts(onSaleProducts);
         setFilteredProducts(onSaleProducts);
