@@ -273,7 +273,8 @@ const BrandSignup = () => {
 
         {saveSuccess && (
           <Alert severity="success" sx={{ mb: 3 }}>
-            Brand information updated successfully!
+            Brand information updated successfully Waiting for approvals from
+            the admin!
           </Alert>
         )}
 
