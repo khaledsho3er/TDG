@@ -255,12 +255,20 @@ const AdminNotificationPage = () => {
             </Typography>
           </Box>
         ) : (
-          <Box sx={{ overflowX: "auto" }}>
+          <Box
+            sx={{
+              overflowX: "auto",
+              width: "100%",
+              maxWidth: "100vw", // Ensures it doesn't overflow the viewport
+              minWidth: "600px", // Optional: set a min width for usability
+            }}
+          >
             <table
               style={{
                 width: "100%",
                 borderCollapse: "separate",
                 borderSpacing: "0 8px",
+                minWidth: "900px",
               }}
             >
               <thead>
