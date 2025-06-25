@@ -132,6 +132,7 @@ function TrackQuotation() {
         material: selectedQuotation.material || undefined,
         customization: selectedQuotation.customization || undefined,
       };
+      console.log("Adding to cart:", cartItem);
       addToCart(cartItem);
       setPayLoading(false);
       navigate("/checkout");
