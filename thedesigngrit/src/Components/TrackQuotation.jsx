@@ -264,7 +264,15 @@ function TrackQuotation() {
           >
             {selectedQuotation?.ClientApproval === true &&
               selectedQuotation?.vendorApproval === true &&
-              selectedQuotation?.quotePrice && (
+              selectedQuotation?.quotePrice &&
+              (selectedQuotation?.paid === true ||
+              selectedQuotation?.paymentStatus === "Paid" ? (
+                <Typography
+                  sx={{ fontWeight: "bold", color: "#6b7b58", mr: 2 }}
+                >
+                  Paid
+                </Typography>
+              ) : (
                 <button
                   onClick={handlePayNow}
                   className="submit-btn"
@@ -273,7 +281,7 @@ function TrackQuotation() {
                 >
                   {payLoading ? "Processing..." : "Pay Now"}
                 </button>
-              )}
+              ))}
             {selectedQuotation?.status === "approved" ? (
               <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
             ) : selectedQuotation?.status === "rejected" ? (
