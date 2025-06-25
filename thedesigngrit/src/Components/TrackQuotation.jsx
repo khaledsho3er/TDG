@@ -223,6 +223,7 @@ function TrackQuotation() {
               gap: 2,
               justifyContent: "end",
               flexDirection: "row-reverse",
+              alignItems: "baseline",
             }}
           >
             {selectedQuotation?.ClientApproval === true &&
