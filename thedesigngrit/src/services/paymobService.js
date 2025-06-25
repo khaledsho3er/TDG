@@ -63,15 +63,26 @@ const paymobService = {
       const { billingDetails, total, cartItems, shippingDetails } = paymentData;
 
       // Fix: Ensure amount_cents is properly calculated for each item
-      const items = cartItems.map((item) => ({
-        name: item.name,
-        amount_cents: Math.round((item.unitPrice || 0) * 100), // Use unitPrice instead of totalPrice
-        description: item.description || "",
-        quantity: item.quantity,
-        productId: item.productId || item.id, // Ensure productId is included
-        brandId: item.brandId, // Ensure brandId is included
-        variantId: item.variantId || null, // Include variantId if it exists
-      }));
+      const items = cartItems.map((item) => {
+        const base = {
+          name: item.name,
+          amount_cents: Math.round((item.unitPrice || 0) * 100),
+          description: item.description || "",
+          quantity: item.quantity,
+          productId: item.productId || item.id,
+          brandId: item.brandId,
+          variantId: item.variantId || null,
+        };
+        if (item.fromQuotation && item.quotationId) {
+          base.fromQuotation = true;
+          base.quotationId = item.quotationId;
+          if (item.color) base.color = item.color;
+          if (item.size) base.size = item.size;
+          if (item.material) base.material = item.material;
+          if (item.customization) base.customization = item.customization;
+        }
+        return base;
+      });
 
       console.log("Prepared items for payment:", items);
       console.log("usersession: ", userSession.id || userSession._id);
