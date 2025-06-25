@@ -79,6 +79,7 @@ const paymobService = {
       const orderData = {
         orderData: {
           customerId: userSession.id || userSession._id, // Ensure this is taken from the authenticated user
+          quotationId: paymentData.quotationId || null, // ✅ Only for quotations
           total: total,
           billingDetails: {
             apartment:
