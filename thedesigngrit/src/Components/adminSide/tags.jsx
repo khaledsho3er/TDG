@@ -27,7 +27,7 @@ const TAG_CATEGORIES = [
 const TagsTable = () => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [setSelectedTag] = useState(null);
+  const [selectedTag, setSelectedTag] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [tagName, setTagName] = useState("");
@@ -154,7 +154,13 @@ const TagsTable = () => {
                         <td>{tag.id}</td>
                         <td>{tag.name}</td>
                         <td>{tag.category}</td>
-                        <td>
+                        <td
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            flexDirection: "row",
+                          }}
+                        >
                           <button
                             onClick={() => handleEditClick(tag)}
                             style={{
