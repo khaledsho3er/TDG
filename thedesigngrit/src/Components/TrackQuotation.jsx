@@ -2,13 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import { UserContext } from "../utils/userContext";
 import LoadingScreen from "../Pages/loadingScreen";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import QuotationDealSuccess from "./quotationDealSuccess";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import paymobService from "../services/paymobService";
+import { useCart } from "../Context/cartcontext";
 
 function TrackQuotation() {
   const { userSession } = useContext(UserContext);
@@ -20,6 +21,8 @@ function TrackQuotation() {
   const [payLoading, setPayLoading] = useState(false);
   const [iframeUrl, setIframeUrl] = useState(null);
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
+  const { addToCart, cartItems } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuotations = async () => {
@@ -83,23 +86,56 @@ function TrackQuotation() {
     setSelectedQuotation(quotation);
   };
 
-  const handlePayNow = async () => {
+  const handlePayNow = () => {
     setPayError("");
     setPayLoading(true);
     try {
-      const result = await paymobService.initializePayment(
-        { quotationId: selectedQuotation._id },
-        userSession
-      );
-      if (result.iframeUrl) {
-        setIframeUrl(result.iframeUrl);
-        setIframeModalOpen(true);
-      } else {
-        setPayError("Payment could not be initiated. Please try again.");
+      if (!selectedQuotation) {
+        setPayError("No quotation selected.");
+        setPayLoading(false);
+        return;
       }
+      // Prevent duplicate quotation in cart
+      const alreadyInCart = cartItems.some(
+        (item) =>
+          item.fromQuotation && item.quotationId === selectedQuotation._id
+      );
+      if (alreadyInCart) {
+        setPayError("This quotation is already in your cart.");
+        setPayLoading(false);
+        navigate("/checkout");
+        return;
+      }
+      // Generate a unique id for the cart item
+      let uniqueId;
+      try {
+        // Try to use nanoid if available
+        // eslint-disable-next-line global-require
+        uniqueId = require("nanoid").nanoid();
+      } catch {
+        uniqueId = Date.now().toString();
+      }
+      const cartItem = {
+        id: uniqueId,
+        productId: selectedQuotation.productId?._id,
+        name: selectedQuotation.productId?.name || "Quoted Product",
+        unitPrice: selectedQuotation.quotePrice,
+        quantity: 1,
+        description: selectedQuotation.note || "",
+        brandId: selectedQuotation.productId?.brandId,
+        variantId: selectedQuotation.variantId || null,
+        fromQuotation: true,
+        quotationId: selectedQuotation._id,
+        color: selectedQuotation.color || undefined,
+        size: selectedQuotation.size || undefined,
+        material: selectedQuotation.material || undefined,
+        customization: selectedQuotation.customization || undefined,
+      };
+      addToCart(cartItem);
+      setPayLoading(false);
+      navigate("/checkout");
     } catch (err) {
-      setPayError(err.message || "Network error. Please try again.");
-    } finally {
+      setPayError(err.message || "Failed to add quotation to cart.");
       setPayLoading(false);
     }
   };
