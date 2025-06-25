@@ -120,6 +120,7 @@ function TrackQuotation() {
         productId: selectedQuotation.productId?._id,
         name: selectedQuotation.productId?.name || "Quoted Product",
         unitPrice: selectedQuotation.quotePrice,
+        mainImage: selectedQuotation.productId?.mainImage || "",
         quantity: 1,
         description: selectedQuotation.note || "",
         brandId: selectedQuotation.productId?.brandId,
