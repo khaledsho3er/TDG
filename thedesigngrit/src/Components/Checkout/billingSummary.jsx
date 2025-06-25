@@ -46,7 +46,10 @@ function BillSummary({ cartItems }) {
             <Box key={index} className="ordersummary-cart-item">
               {/* Product Image */}
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}`}
+                src={
+                  `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}` ||
+                  `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.mainImage}`
+                }
                 alt={item.name}
                 className="ordersummary-cart-item-image"
               />

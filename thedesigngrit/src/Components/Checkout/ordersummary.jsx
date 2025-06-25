@@ -127,7 +127,10 @@ function SummaryForm({ billData, onValidate }) {
                         }}
                       >
                         <img
-                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}`}
+                          src={
+                            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.image}` ||
+                            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`
+                          }
                           alt={product.name}
                           className="product-image"
                           style={{
