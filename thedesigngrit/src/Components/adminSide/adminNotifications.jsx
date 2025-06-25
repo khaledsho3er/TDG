@@ -259,16 +259,15 @@ const AdminNotificationPage = () => {
             sx={{
               overflowX: "auto",
               width: "100%",
-              maxWidth: "100vw", // Ensures it doesn't overflow the viewport
-              minWidth: "600px", // Optional: set a min width for usability
+              maxWidth: "100%", // Match the page/component width
             }}
           >
             <table
               style={{
-                width: "100%",
+                width: "100%", // Always fill the container
                 borderCollapse: "separate",
                 borderSpacing: "0 8px",
-                minWidth: isAdminNotification ? "900px" : "1100px", // Wider for Brand Notifications
+                minWidth: 0, // Remove forced min-width
               }}
             >
               <thead>
