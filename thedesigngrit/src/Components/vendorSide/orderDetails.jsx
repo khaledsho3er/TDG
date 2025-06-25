@@ -380,12 +380,12 @@ const OrderDetails = ({ order, onBack }) => {
             </InvoiceDownload>
 
             {order.orderStatus === "Delivered"
-              ? POD && (
+              ? order.POD && (
                   <button
                     className="submit-btn"
                     onClick={() =>
                       window.open(
-                        `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${POD}`,
+                        `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${order.POD}`,
                         "_blank"
                       )
                     }
