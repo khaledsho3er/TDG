@@ -268,7 +268,7 @@ const AdminNotificationPage = () => {
                 width: "100%",
                 borderCollapse: "separate",
                 borderSpacing: "0 8px",
-                minWidth: "900px",
+                minWidth: isAdminNotification ? "900px" : "1100px", // Wider for Brand Notifications
               }}
             >
               <thead>
@@ -567,7 +567,7 @@ const AdminNotificationPage = () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  gap: "20px",
                   marginBottom: "20px",
                 }}
               >
