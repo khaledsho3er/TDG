@@ -41,6 +41,7 @@ const OrderDetails = ({ order, onBack }) => {
     order.paymentDetails.paymentStatus || "Pending"
   );
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [POD, setPOD] = useState(null); // Added POD state
 
   // Filter products based on vendor's brandId
   const filteredProducts = order.cartItems.filter((product) => {
@@ -378,13 +379,27 @@ const OrderDetails = ({ order, onBack }) => {
               <IoMdPrint style={{ color: "#fff", fontSize: "20px" }} />
             </InvoiceDownload>
 
-            {filteredProducts.every(
-              (item) => item.subOrderStatus === "Confirmed"
-            ) && (
-              <button className="submit-btn" onClick={handleFileDialogOpen}>
-                Upload File
-              </button>
-            )}
+            {order.orderStatus === "Delivered"
+              ? POD && (
+                  <button
+                    className="submit-btn"
+                    onClick={() =>
+                      window.open(
+                        `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${POD}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    View POD
+                  </button>
+                )
+              : filteredProducts.every(
+                  (item) => item.subOrderStatus === "Confirmed"
+                ) && (
+                  <button className="submit-btn" onClick={handleFileDialogOpen}>
+                    Upload File
+                  </button>
+                )}
           </Box>
           <Dialog open={openDialog} onClose={handleDialogClose}>
             <DialogTitle>Set Delivery Date</DialogTitle>
