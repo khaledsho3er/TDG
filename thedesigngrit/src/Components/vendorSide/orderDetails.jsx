@@ -20,6 +20,7 @@ import axios from "axios";
 // import { MdOutlineShoppingBag } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { LuInfo } from "react-icons/lu";
 
 const InvoiceDownload = React.lazy(() => import("./invoice"));
 const OrderDetails = ({ order, onBack }) => {
@@ -42,6 +43,9 @@ const OrderDetails = ({ order, onBack }) => {
   );
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [POD, setPOD] = useState(null); // Added POD state
+  const [openQuotationDialog, setOpenQuotationDialog] = useState(false);
+  const [selectedQuotationDetails, setSelectedQuotationDetails] =
+    useState(null);
 
   // Filter products based on vendor's brandId
   const filteredProducts = order.cartItems.filter((product) => {
@@ -870,6 +874,7 @@ const OrderDetails = ({ order, onBack }) => {
               <th>Quantity</th>
               <th>Status</th>
               <th>Total</th>
+              <th>Quotation Details</th>
             </tr>
           </thead>
           <tbody>
@@ -906,11 +911,32 @@ const OrderDetails = ({ order, onBack }) => {
                     </span>
                   </td>
                   <td>{product.totalPrice} E£</td>
+                  <td style={{ textAlign: "center" }}>
+                    {product.fromQuotation && product.quotationId ? (
+                      <IconButton
+                        onClick={() => {
+                          setSelectedQuotationDetails({
+                            color: product.color,
+                            size: product.size,
+                            material: product.material,
+                            customization: product.customization,
+                          });
+                          setOpenQuotationDialog(true);
+                        }}
+                        size="small"
+                        aria-label="View Quotation Details"
+                      >
+                        <LuInfo color="#6b7b58" size={22} />
+                      </IconButton>
+                    ) : (
+                      <span style={{ color: "#aaa" }}>—</span>
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
+                <td colSpan="6" style={{ textAlign: "center" }}>
                   No products found for this brand.
                 </td>
               </tr>
@@ -1047,6 +1073,42 @@ const OrderDetails = ({ order, onBack }) => {
           </Box>
         </div>
       </div>
+
+      {/* Quotation Details Dialog */}
+      <Dialog
+        open={openQuotationDialog}
+        onClose={() => setOpenQuotationDialog(false)}
+      >
+        <DialogTitle>Quotation Details</DialogTitle>
+        <DialogContent>
+          {selectedQuotationDetails ? (
+            <Box sx={{ fontFamily: "Montserrat", minWidth: 300 }}>
+              <p>
+                <strong>Color:</strong>{" "}
+                {selectedQuotationDetails.color || "N/A"}
+              </p>
+              <p>
+                <strong>Size:</strong> {selectedQuotationDetails.size || "N/A"}
+              </p>
+              <p>
+                <strong>Material:</strong>{" "}
+                {selectedQuotationDetails.material || "N/A"}
+              </p>
+              <p>
+                <strong>Customization:</strong>{" "}
+                {selectedQuotationDetails.customization || "N/A"}
+              </p>
+            </Box>
+          ) : (
+            <p>No details available.</p>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenQuotationDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
