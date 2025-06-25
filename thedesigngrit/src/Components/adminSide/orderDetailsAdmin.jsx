@@ -202,28 +202,30 @@ const AdminOrderDetails = ({ order, onBack }) => {
             >
               Ping Brand
             </Button>
-            <Button
-              className="submit-btn"
-              onClick={() =>
-                window.open(
-                  `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${order.POD}`,
-                  "_blank"
-                )
-              }
-              sx={{
-                backgroundColor: "#2d2d2d",
-                color: "white",
-                "&:hover": {
+            {order.orderStatus === "Delivered" && order.POD && (
+              <Button
+                className="submit-btn"
+                onClick={() =>
+                  window.open(
+                    `https://pub-64ea2c5c4ba5460991425897a370f20c.r2.dev/${order.POD}`,
+                    "_blank"
+                  )
+                }
+                sx={{
                   backgroundColor: "#2d2d2d",
-                },
-                padding: "7px 20px",
-                borderRadius: "5px",
-                fontFamily: "Montserrat, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              View POD
-            </Button>
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#2d2d2d",
+                  },
+                  padding: "7px 20px",
+                  borderRadius: "5px",
+                  fontFamily: "Montserrat, sans-serif",
+                  fontWeight: "bold",
+                }}
+              >
+                View POD
+              </Button>
+            )}
           </Box>
         </Box>
         <Box
