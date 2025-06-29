@@ -469,7 +469,7 @@ const DashboardVendor = () => {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart
                   data={chartData}
-                  margin={{ top: 20, right: 30, left: 40, bottom: 40 }} // Add this line
+                  margin={{ top: 20, right: 30, left: 40, bottom: 20 }} // Add this line
                 >
                   <XAxis
                     dataKey={
