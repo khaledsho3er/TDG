@@ -448,7 +448,7 @@ const DashboardVendor = () => {
             ) : (
               <div
                 style={{
-                  height: "18.75rem",
+                  height: "17.75rem",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
