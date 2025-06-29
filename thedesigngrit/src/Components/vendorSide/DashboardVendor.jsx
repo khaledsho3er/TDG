@@ -1,7 +1,15 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import { SlCalender } from "react-icons/sl";
 import { Box } from "@mui/material";
-import { FaBox, FaTruck, FaCheckCircle, FaRedo } from "react-icons/fa"; // React Icons
+import {
+  FaBox,
+  FaTruck,
+  FaCheckCircle,
+  FaRedo,
+  FaChartLine,
+  FaShoppingBag,
+  FaClipboardList,
+} from "react-icons/fa"; // React Icons
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useVendor } from "../../utils/vendorContext";
 import {
@@ -440,15 +448,37 @@ const DashboardVendor = () => {
             ) : (
               <div
                 style={{
-                  height: "300px",
+                  height: "18.75rem",
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "8px",
+                  backgroundColor: "#f8f9fa",
+                  borderRadius: "12px",
+                  border: "2px dashed #dee2e6",
+                  color: "#6c757d",
+                  padding: "2rem",
                 }}
               >
-                No sales data available
+                <FaChartLine
+                  style={{
+                    fontSize: "3rem",
+                    marginBottom: "1rem",
+                    color: "#adb5bd",
+                  }}
+                />
+                <h4 style={{ margin: "0 0 0.5rem 0", color: "#495057" }}>
+                  No Sales Data Available
+                </h4>
+                <p
+                  style={{
+                    margin: "0",
+                    textAlign: "center",
+                    maxWidth: "300px",
+                  }}
+                >
+                  Sales data will appear here once you start receiving orders
+                </p>
               </div>
             )}
           </div>
@@ -482,8 +512,32 @@ const DashboardVendor = () => {
                 ))}
               </ul>
             ) : (
-              <div style={{ textAlign: "center", padding: "1rem" }}>
-                No best sellers data available
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "2rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  color: "#6c757d",
+                }}
+              >
+                <FaShoppingBag
+                  style={{
+                    fontSize: "2.5rem",
+                    marginBottom: "1rem",
+                    color: "#adb5bd",
+                  }}
+                />
+                <h4 style={{ margin: "0 0 0.5rem 0", color: "#495057" }}>
+                  No Best Sellers Yet
+                </h4>
+                <p style={{ margin: "0", maxWidth: "250px" }}>
+                  Your top-performing products will appear here once you start
+                  selling
+                </p>
               </div>
             )}
           </div>
@@ -575,13 +629,32 @@ const DashboardVendor = () => {
             <div
               style={{
                 textAlign: "center",
-                padding: "2rem",
-                backgroundColor: "#f5f5f5",
-                borderRadius: "8px",
+                padding: "3rem 2rem",
+                backgroundColor: "#f8f9fa",
+                borderRadius: "12px",
                 margin: "1rem 0",
+                border: "2px dashed #dee2e6",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: "200px",
               }}
             >
-              No orders available
+              <FaClipboardList
+                style={{
+                  fontSize: "3rem",
+                  marginBottom: "1rem",
+                  color: "#adb5bd",
+                }}
+              />
+              <h4 style={{ margin: "0 0 0.5rem 0", color: "#495057" }}>
+                No Orders Available
+              </h4>
+              <p style={{ margin: "0", maxWidth: "300px", color: "#6c757d" }}>
+                Orders will appear here once customers start placing orders for
+                your products
+              </p>
             </div>
           )}
         </div>
