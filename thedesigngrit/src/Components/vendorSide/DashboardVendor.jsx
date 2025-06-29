@@ -262,17 +262,13 @@ const DashboardVendor = () => {
     }
 
     function formatWeekLabel(weekNumber) {
-      const currentDate = new Date();
-      const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
-      const days = Math.floor(
-        (currentDate - startOfYear) / (24 * 60 * 60 * 1000)
-      );
-      const weekOfYear = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+      // Simple approach: show week number with a more readable format
+      const currentYear = new Date().getFullYear();
+      const startOfYear = new Date(currentYear, 0, 1);
 
       // Calculate the date for the given week number
-      const targetWeek = weekNumber;
       const targetDate = new Date(startOfYear);
-      targetDate.setDate(startOfYear.getDate() + (targetWeek - 1) * 7);
+      targetDate.setDate(startOfYear.getDate() + (weekNumber - 1) * 7);
 
       const monthNames = [
         "Jan",
@@ -490,7 +486,7 @@ const DashboardVendor = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="sales" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
