@@ -261,18 +261,66 @@ const DashboardVendor = () => {
         .sort((a, b) => a[key] - b[key]);
     }
 
+    function formatWeekLabel(weekNumber) {
+      const currentDate = new Date();
+      const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+      const days = Math.floor(
+        (currentDate - startOfYear) / (24 * 60 * 60 * 1000)
+      );
+      const weekOfYear = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+
+      // Calculate the date for the given week number
+      const targetWeek = weekNumber;
+      const targetDate = new Date(startOfYear);
+      targetDate.setDate(startOfYear.getDate() + (targetWeek - 1) * 7);
+
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return `${monthNames[targetDate.getMonth()]} ${targetDate.getDate()}`;
+    }
+
+    function formatMonthLabel(monthNumber) {
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return monthNames[monthNumber - 1] || `Month ${monthNumber}`;
+    }
+
     let formattedData = [];
     switch (activeTab) {
       case "weekly":
         formattedData = aggregateAndSort(weeklySales, "week").map((item) => ({
           ...item,
-          week: `Week ${item.week}`,
+          week: formatWeekLabel(item.week),
         }));
         break;
       case "monthly":
         formattedData = aggregateAndSort(monthlySales, "month").map((item) => ({
           ...item,
-          month: `Month ${item.month}`,
+          month: formatMonthLabel(item.month),
         }));
         break;
       case "yearly":
@@ -442,7 +490,7 @@ const DashboardVendor = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+                  <Line type="monotone" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
