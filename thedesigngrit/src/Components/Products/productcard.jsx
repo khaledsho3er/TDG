@@ -248,7 +248,7 @@ const ProductCard = ({ product }) => {
           variant="body1"
           sx={{
             fontSize: { xs: "12px", sm: "14px" }, // smaller font on mobile
-            fontWeight: 500,
+            fontWeight: 700,
             fontFamily: "Montserrat",
             color: "#2d2d2d",
             marginTop: "8px",

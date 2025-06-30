@@ -586,7 +586,35 @@ function ProductPage() {
                 }}
               >
                 {product.discountPercentage ? (
-                  `${product.discountPercentage}% off`
+                  <>
+                    {`${product.discountPercentage}% off`}
+                    {product.promotionStartDate && product.promotionEndDate && (
+                      <span
+                        style={{
+                          display: "block",
+                          fontFamily: "Montserrat",
+                          fontWeight: 700,
+                          fontSize: "14px",
+                          color: "#2d2d2d",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {`From: ${new Date(
+                          product.promotionStartDate
+                        ).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })} - To: ${new Date(
+                          product.promotionEndDate
+                        ).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}`}
+                      </span>
+                    )}
+                  </>
                 ) : (
                   <span style={{ display: "none" }}></span>
                 )}
