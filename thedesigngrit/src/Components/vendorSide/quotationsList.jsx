@@ -235,11 +235,13 @@ const QuotationsPage = () => {
                   : "#FF7518",
                 border: "1px solid #d4edda",
                 backgroundColor: selectedQuotation?.ClientApproval
-                  ? "#d4edda"
+                  ? "#def9bf"
                   : "#FF7518",
                 borderRadius: "5px",
                 padding: "5px",
                 marginTop: "15px",
+                width: "30%",
+                textAlign: "center",
               }}
             >
               {selectedQuotation?.ClientApproval
