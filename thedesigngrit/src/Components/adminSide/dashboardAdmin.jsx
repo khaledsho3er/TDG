@@ -15,6 +15,14 @@ const DashboardAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [activeOrdersStats, setActiveOrdersStats] = useState({
+    count: 0,
+    totalSum: 0,
+  });
+  const [completedOrdersStats, setCompletedOrdersStats] = useState({
+    count: 0,
+    totalSum: 0,
+  });
 
   // Fetch order data from JSON
   const fetchOrders = async () => {
@@ -42,9 +50,36 @@ const DashboardAdmin = () => {
     }
   };
 
+  // Fetch active and completed orders stats
+  const fetchActiveOrdersStats = async () => {
+    try {
+      const response = await fetch(
+        "https://api.thedesigngrit.com/api/orders/admin/get-active-orders"
+      );
+      const data = await response.json();
+      setActiveOrdersStats(data);
+    } catch (error) {
+      console.error("Error fetching active orders stats:", error);
+    }
+  };
+
+  const fetchCompletedOrdersStats = async () => {
+    try {
+      const response = await fetch(
+        "https://api.thedesigngrit.com/api/orders/admin/get-completed-orders"
+      );
+      const data = await response.json();
+      setCompletedOrdersStats(data);
+    } catch (error) {
+      console.error("Error fetching completed orders stats:", error);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
     fetchBestSellers();
+    fetchActiveOrdersStats();
+    fetchCompletedOrdersStats();
   }, []);
 
   if (selectedOrder) {
@@ -88,8 +123,12 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders</h3>
-            <p>E£ 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            <p>
+              E£ {activeOrdersStats.totalSum.toLocaleString()} <br />
+              <span style={{ fontSize: "0.9em" }}>
+                ({activeOrdersStats.count} orders)
+              </span>
+            </p>
           </div>
         </div>
         <div className="overview-card-vendor">
@@ -98,8 +137,12 @@ const DashboardAdmin = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders</h3>
-            <p>E£ 126,500</p>
-            <span>▲ 34.7% Compared to Oct 2023</span>
+            <p>
+              E£ {completedOrdersStats.totalSum.toLocaleString()} <br />
+              <span style={{ fontSize: "0.9em" }}>
+                ({completedOrdersStats.count} orders)
+              </span>
+            </p>
           </div>
         </div>
         <div className="overview-card-vendor">

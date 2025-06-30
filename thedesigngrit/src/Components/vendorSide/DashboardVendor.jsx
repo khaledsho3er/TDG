@@ -55,6 +55,15 @@ const DashboardVendor = () => {
   const [yearlySales, setYearlySales] = useState([]);
   const [chartData, setChartData] = useState([]);
 
+  const [activeOrdersStats, setActiveOrdersStats] = useState({
+    count: 0,
+    totalSum: 0,
+  });
+  const [completedOrdersStats, setCompletedOrdersStats] = useState({
+    count: 0,
+    totalSum: 0,
+  });
+
   // Add date calculation
   const getCurrentDateRange = () => {
     const today = new Date();
@@ -331,6 +340,36 @@ const DashboardVendor = () => {
     setChartData(formattedData);
   }, [activeTab, weeklySales, monthlySales, yearlySales]);
 
+  // Fetch active and completed orders stats for vendor
+  useEffect(() => {
+    const fetchActiveOrdersStats = async () => {
+      if (!vendor?.brandId) return;
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/orders/brand/orders/active-stats/${vendor.brandId}`
+        );
+        const data = await response.json();
+        setActiveOrdersStats(data);
+      } catch (error) {
+        console.error("Error fetching active orders stats:", error);
+      }
+    };
+    const fetchCompletedOrdersStats = async () => {
+      if (!vendor?.brandId) return;
+      try {
+        const response = await fetch(
+          `https://api.thedesigngrit.com/api/orders/brand/orders/completed-stats/${vendor.brandId}`
+        );
+        const data = await response.json();
+        setCompletedOrdersStats(data);
+      } catch (error) {
+        console.error("Error fetching completed orders stats:", error);
+      }
+    };
+    fetchActiveOrdersStats();
+    fetchCompletedOrdersStats();
+  }, [vendor]);
+
   if (selectedOrder) {
     return (
       <Suspense fallback={<div>Loading...</div>}>
@@ -395,11 +434,11 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders sales</h3>
-            <p>E£ {confirmedSales}</p>
+            <p>E£ {activeOrdersStats.totalSum}</p>
             <h3>Active Orders </h3>
-            <p> {activeOrders}</p>
+            <p>{activeOrdersStats.count}</p>
             <span>
-              ▲ {confirmedSalesPercentageChange}% Compared to Last Month
+              {/* You can add a percentage or trend here if you want */}
             </span>
           </div>
         </div>
@@ -410,11 +449,11 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders sales</h3>
-            <p>E£ {deliveredSales}</p>
+            <p>E£ {completedOrdersStats.totalSum}</p>
             <h3>Completed Orders</h3>
-            <p> {completedOrders}</p>
+            <p>{completedOrdersStats.count}</p>
             <span>
-              ▲ {deliveredSalesPercentageChange}% Compared to Last Month
+              {/* You can add a percentage or trend here if you want */}
             </span>
           </div>
         </div>
