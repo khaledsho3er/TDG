@@ -116,11 +116,16 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     if (existingProduct && existingProduct.images) {
       setImages(existingProduct.images);
       setImagePreviews(
-        existingProduct.images.map((img) =>
-          typeof img === "string"
-            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${img}`
-            : URL.createObjectURL(img)
-        )
+        existingProduct.images.map((img) => {
+          if (typeof img === "string") {
+            return `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${img}`;
+          } else {
+            if (!(img instanceof File)) {
+              console.warn("Tried to createObjectURL on non-File:", img);
+            }
+            return URL.createObjectURL(img);
+          }
+        })
       );
       if (existingProduct.mainImage) {
         setMainImage(existingProduct.mainImage);
@@ -372,18 +377,23 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
   const handleCropComplete = async () => {
     const blob = await getCroppedImg(selectedImageSrc, croppedAreaPixels);
+    if (!(blob instanceof Blob)) {
+      console.warn("Tried to createObjectURL on non-Blob:", blob);
+    }
+    const url = URL.createObjectURL(blob);
     const croppedFile = new File([blob], pendingFile.name, {
       type: "image/jpeg",
     });
-    setNewImages((prev) => [...prev, croppedFile]);
-    // Set as mainImage if it's the first image
+    setImages((prev) => [...prev, croppedFile]);
+    setImagePreviews((prev) => [...prev, url]);
     if (!mainImage) {
-      setMainImage(croppedFile.name);
+      setMainImage(croppedFile);
+      setMainImagePreview(url);
     }
     setFormData((prevData) => ({
       ...prevData,
-      images: [...images, ...newImages, croppedFile],
-      mainImage: prevData.mainImage || croppedFile.name,
+      images: [...prevData.images, croppedFile],
+      mainImage: prevData.mainImage || croppedFile,
     }));
     setShowCropModal(false);
     setPendingFile(null);
@@ -391,31 +401,33 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   };
 
   // Image gallery logic: remove image from either array
-  const handleRemoveImage = (index, isExisting) => {
-    if (isExisting) {
-      const updated = images.filter((_, i) => i !== index);
-      setImages(updated);
-      // If mainImage was removed, update mainImage
-      if (images[index] === mainImage) {
-        setMainImage(updated[0] || (newImages[0] && newImages[0].name) || "");
-      }
-    } else {
-      const updated = newImages.filter((_, i) => i !== index);
-      setNewImages(updated);
-      if (newImages[index].name === mainImage) {
-        setMainImage(images[0] || (updated[0] && updated[0].name) || "");
-      }
+  const handleRemoveImage = (index) => {
+    const updatedImages = images.filter((_, i) => i !== index);
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
+    // If the removed image was the main image, update the main image
+    if (
+      images[index] === mainImage ||
+      imagePreviews[index] === mainImagePreview
+    ) {
+      setMainImage(updatedImages[0] || null);
+      setMainImagePreview(updatedPreviews[0] || null);
+      setFormData((prevData) => ({
+        ...prevData,
+        mainImage: updatedImages[0] || "",
+      }));
     }
+    setFormData((prevData) => ({
+      ...prevData,
+      images: updatedImages,
+    }));
   };
 
   // Set main image from gallery
   const handleSetMainImage = (index) => {
     setMainImage(images[index]);
-    setMainImagePreview(
-      typeof images[index] === "string"
-        ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${images[index]}`
-        : URL.createObjectURL(images[index])
-    );
+    setMainImagePreview(imagePreviews[index]);
     setFormData((prevData) => ({
       ...prevData,
       mainImage: images[index],
@@ -1129,94 +1141,28 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     }`}
                     key={index}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
+                    <img
+                      src={imagePreviews[index]}
+                      alt={`Thumbnail ${index}`}
+                      className="image-thumbnail"
+                      onClick={() => handleSetMainImage(index)}
+                    />
+                    <span>Product thumbnail.png</span>
+                    <span className="checkmark">
+                      {mainImage &&
+                      ((typeof mainImage === "string" && mainImage === image) ||
+                        (mainImage instanceof File &&
+                          image instanceof File &&
+                          mainImage.name === image.name))
+                        ? "✔ Main"
+                        : "✔"}
+                    </span>
+                    <span
+                      className="remove-thumbnail"
+                      onClick={() => handleRemoveImage(index)}
                     >
-                      <img
-                        src={
-                          typeof image === "string"
-                            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
-                            : URL.createObjectURL(image)
-                        }
-                        alt={`Thumbnail ${index}`}
-                        className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index)}
-                      />
-                      <span>Product thumbnail.png</span>
-                      <span className="checkmark">
-                        {mainImage &&
-                        ((typeof mainImage === "string" &&
-                          mainImage === image) ||
-                          (mainImage instanceof File &&
-                            image instanceof File &&
-                            mainImage.name === image.name))
-                          ? "✔ Main"
-                          : "✔"}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
-                    >
-                      <span
-                        className="remove-thumbnail"
-                        onClick={() => handleRemoveImage(index)}
-                      >
-                        ✖
-                      </span>
-                    </div>
-                  </div>
-                ))}
-                {newImages.map((image, index) => (
-                  <div
-                    className={`thumbnail ${
-                      image.name === mainImage ? "main-thumbnail" : ""
-                    }`}
-                    key={index}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
-                    >
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt={`Thumbnail ${index}`}
-                        className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index)}
-                      />
-                      <span>Product thumbnail.png</span>
-                      <span className="checkmark">
-                        {image.name === mainImage ? "✔ Main" : "✔"}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
-                    >
-                      <span
-                        className="remove-thumbnail"
-                        onClick={() => handleRemoveImage(index)}
-                      >
-                        ✖
-                      </span>
-                    </div>
+                      ✖
+                    </span>
                   </div>
                 ))}
               </div>
