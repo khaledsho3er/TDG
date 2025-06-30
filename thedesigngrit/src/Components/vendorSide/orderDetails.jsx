@@ -42,7 +42,6 @@ const OrderDetails = ({ order, onBack }) => {
     order.paymentDetails.paymentStatus || "Pending"
   );
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
-  const [POD, setPOD] = useState(null); // Added POD state
   const [openQuotationDialog, setOpenQuotationDialog] = useState(false);
   const [selectedQuotationDetails, setSelectedQuotationDetails] =
     useState(null);

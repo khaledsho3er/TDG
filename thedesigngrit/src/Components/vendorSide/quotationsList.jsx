@@ -333,20 +333,22 @@ const QuotationsPage = () => {
                 >
                   Delete Quotation
                 </button>
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: "#2d2d2d",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor: "#6b7b58",
-                      transform: "scale(1.1) !important",
-                      boxShadow: "0 0 10px rgba(0,0,0,0.2) !important",
-                    },
-                  }}
-                >
-                  Submit Quotation
-                </button>
+                {!selectedQuotation.quotePrice && (
+                  <button
+                    type="submit"
+                    style={{
+                      backgroundColor: "#2d2d2d",
+                      color: "#fff",
+                      "&:hover": {
+                        backgroundColor: "#6b7b58",
+                        transform: "scale(1.1) !important",
+                        boxShadow: "0 0 10px rgba(0,0,0,0.2) !important",
+                      },
+                    }}
+                  >
+                    Submit Quotation
+                  </button>
+                )}
               </div>
             </form>
           </div>
