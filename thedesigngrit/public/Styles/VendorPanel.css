@@ -64,7 +64,7 @@
 }
 
 .sidebar-item-vendor {
-  font-size: 13px;
+  font-size: 15px;
   padding: 10px 15px;
   cursor: pointer;
   border-radius: 6px;
@@ -84,6 +84,27 @@
   background-color: #6a8452;
   border-radius: 6px;
   color: #fff;
+}
+
+.sidebar-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-item-icon {
+  font-size: 20px;
+  min-width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-item-text {
+  font-size: 15px;
+  font-family: Montserrat, sans-serif;
+  display: flex;
+  align-items: center;
 }
 
 /* Content Styles */

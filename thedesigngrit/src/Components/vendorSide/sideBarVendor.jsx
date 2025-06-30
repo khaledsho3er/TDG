@@ -82,61 +82,75 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           onClick={() => setActivePage("dashboard")}
           className={getActiveClass("dashboard")}
         >
-          <RiDashboard3Fill size={20} style={{ marginRight: "5px" }} />
-          Dashboard
+          <span className="sidebar-item-content">
+            <RiDashboard3Fill className="sidebar-item-icon" />
+            <span className="sidebar-item-text">Dashboard</span>
+          </span>
         </li>
         <li
           onClick={() => setActivePage("notifications")}
           className={getActiveClass("notifications")}
         >
-          <FaBell size={20} style={{ marginRight: "5px" }} />
-          Notifications
+          <span className="sidebar-item-content">
+            <FaBell className="sidebar-item-icon" />
+            <span className="sidebar-item-text">Notifications</span>
+          </span>
         </li>
         <li
           onClick={() => setActivePage("allProducts")}
           className={getActiveClass("allProducts")}
         >
-          <LuPackageOpen size={20} style={{ marginRight: "5px" }} />
-          All Products
+          <span className="sidebar-item-content">
+            <LuPackageOpen className="sidebar-item-icon" />
+            <span className="sidebar-item-text">All Products</span>
+          </span>
         </li>
         <li
           onClick={() => setActivePage("orderList")}
           className={getActiveClass("orderList")}
         >
-          <TbTruckDelivery size={20} style={{ marginRight: "5px" }} />
-          Order List
+          <span className="sidebar-item-content">
+            <TbTruckDelivery className="sidebar-item-icon" />
+            <span className="sidebar-item-text">Order List</span>
+          </span>
         </li>
         <li
           onClick={() => setActivePage("quotationsList")}
           className={getActiveClass("quotationsList")}
         >
-          <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
-          Quotation List
+          <span className="sidebar-item-content">
+            <FaMoneyBill className="sidebar-item-icon" />
+            <span className="sidebar-item-text">Quotation List</span>
+          </span>
         </li>
         <li
           onClick={() => setActivePage("ViewInStoreVendor")}
           className={getActiveClass("ViewInStoreVendor")}
         >
-          <HiBuildingStorefront size={20} style={{ marginRight: "5px" }} />
-          View In Store
+          <span className="sidebar-item-content">
+            <HiBuildingStorefront className="sidebar-item-icon" />
+            <span className="sidebar-item-text">View In Store</span>
+          </span>
         </li>
-
         <li
           onClick={() => setActivePage("promotionsPage")}
           className={getActiveClass("promotionsPage")}
         >
-          <FaMoneyBill size={20} style={{ marginRight: "5px" }} />
-          Promotions
+          <span className="sidebar-item-content">
+            <FaMoneyBill className="sidebar-item-icon" />
+            <span className="sidebar-item-text">Promotions</span>
+          </span>
         </li>
-
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("BrandForm")}
             className={getActiveClass("BrandForm")}
           >
-            <FaWpforms size={20} style={{ marginRight: "5px" }} />
-            Brand Form
+            <span className="sidebar-item-content">
+              <FaWpforms className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Brand Form</span>
+            </span>
           </li>
         )}
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
@@ -145,8 +159,10 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("BrandingPage")}
             className={getActiveClass("BrandingPage")}
           >
-            <ImProfile size={20} style={{ marginRight: "5px" }} />
-            Brand Profile
+            <span className="sidebar-item-content">
+              <ImProfile className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Brand Profile</span>
+            </span>
           </li>
         )}
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
@@ -155,19 +171,22 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("Accounting")}
             className={getActiveClass("Accounting")}
           >
-            <MdAccountBalance size={20} style={{ marginRight: "5px" }} />
-            Accounting
+            <span className="sidebar-item-content">
+              <MdAccountBalance className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Accounting</span>
+            </span>
           </li>
         )}
-
         {/* Render "Employee Page" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("EmployeePage")}
             className={getActiveClass("EmployeePage")}
           >
-            <FaUsers size={20} style={{ marginRight: "5px" }} />
-            Employees
+            <span className="sidebar-item-content">
+              <FaUsers className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Employees</span>
+            </span>
           </li>
         )}
       </ul>
