@@ -409,12 +409,17 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   };
 
   // Set main image from gallery
-  const handleSetMainImage = (index, isExisting) => {
-    if (isExisting) {
-      setMainImage(images[index]);
-    } else {
-      setMainImage(newImages[index].name);
-    }
+  const handleSetMainImage = (index) => {
+    setMainImage(images[index]);
+    setMainImagePreview(
+      typeof images[index] === "string"
+        ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${images[index]}`
+        : URL.createObjectURL(images[index])
+    );
+    setFormData((prevData) => ({
+      ...prevData,
+      mainImage: images[index],
+    }));
   };
 
   // Handle cancel
@@ -1114,7 +1119,13 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 {images.map((image, index) => (
                   <div
                     className={`thumbnail ${
-                      image === mainImage ? "main-thumbnail" : ""
+                      mainImage &&
+                      ((typeof mainImage === "string" && mainImage === image) ||
+                        (mainImage instanceof File &&
+                          image instanceof File &&
+                          mainImage.name === image.name))
+                        ? "main-thumbnail"
+                        : ""
                     }`}
                     key={index}
                   >
@@ -1127,14 +1138,25 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                       }}
                     >
                       <img
-                        src={image}
+                        src={
+                          typeof image === "string"
+                            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
+                            : URL.createObjectURL(image)
+                        }
                         alt={`Thumbnail ${index}`}
                         className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index, true)}
+                        onClick={() => handleSetMainImage(index)}
                       />
                       <span>Product thumbnail.png</span>
                       <span className="checkmark">
-                        {image === mainImage ? "✔ Main" : "✔"}
+                        {mainImage &&
+                        ((typeof mainImage === "string" &&
+                          mainImage === image) ||
+                          (mainImage instanceof File &&
+                            image instanceof File &&
+                            mainImage.name === image.name))
+                          ? "✔ Main"
+                          : "✔"}
                       </span>
                     </div>
                     <div
@@ -1147,7 +1169,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     >
                       <span
                         className="remove-thumbnail"
-                        onClick={() => handleRemoveImage(index, true)}
+                        onClick={() => handleRemoveImage(index)}
                       >
                         ✖
                       </span>
@@ -1173,7 +1195,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                         src={URL.createObjectURL(image)}
                         alt={`Thumbnail ${index}`}
                         className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index, false)}
+                        onClick={() => handleSetMainImage(index)}
                       />
                       <span>Product thumbnail.png</span>
                       <span className="checkmark">
@@ -1190,7 +1212,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     >
                       <span
                         className="remove-thumbnail"
-                        onClick={() => handleRemoveImage(index, false)}
+                        onClick={() => handleRemoveImage(index)}
                       >
                         ✖
                       </span>
