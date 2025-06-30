@@ -232,6 +232,9 @@ const ProductCard = ({ product }) => {
             marginTop: "8px",
             whiteSpace: "normal",
             overflowWrap: "break-word",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
           }}
         >
           {product.salePrice && product.promotionApproved === true ? (
@@ -244,9 +247,43 @@ const ProductCard = ({ product }) => {
               <span style={{ color: "red" }}>
                 {Number(product.salePrice).toLocaleString()}E£
               </span>
+              {product.discountPercentage && product.discountPercentage > 0 && (
+                <span
+                  style={{
+                    background: "#e74c3c",
+                    color: "#fff",
+                    borderRadius: "5px",
+                    padding: "2px 8px",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    marginLeft: "10px",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {product.discountPercentage}% OFF
+                </span>
+              )}
             </>
           ) : (
-            Number(product.price).toLocaleString() + "E£"
+            <>
+              {Number(product.price).toLocaleString() + "E£"}
+              {product.discountPercentage && product.discountPercentage > 0 && (
+                <span
+                  style={{
+                    background: "#e74c3c",
+                    color: "#fff",
+                    borderRadius: "5px",
+                    padding: "2px 8px",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    marginLeft: "10px",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  {product.discountPercentage}% OFF
+                </span>
+              )}
+            </>
           )}
         </Typography>
       </CardContent>
