@@ -4,6 +4,8 @@ const SidebarAdmin = ({ setActivePage }) => {
   return (
     <aside className="sidebar-vendor">
       <ul className="sidebar-menu-vendor">
+        {/* General */}
+        <li className="sidebar-section-title">General</li>
         <li
           onClick={() => setActivePage("dashboard")}
           className="sidebar-item-vendor"
@@ -16,6 +18,9 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Notifications
         </li>
+
+        {/* Management */}
+        <li className="sidebar-section-title">Management</li>
         <li
           onClick={() => setActivePage("allProducts")}
           className="sidebar-item-vendor"
@@ -34,12 +39,6 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Requests
         </li>
-        {/* <li
-          onClick={() => setActivePage("createCategory")}
-          className="sidebar-item-vendor"
-        >
-          Categories
-        </li> */}
         <li
           onClick={() => setActivePage("categoriesList")}
           className="sidebar-item-vendor"
@@ -71,24 +70,6 @@ const SidebarAdmin = ({ setActivePage }) => {
           Brands
         </li>
         <li
-          onClick={() => setActivePage("PendingBrandUpdates")}
-          className="sidebar-item-vendor"
-        >
-          Brands Changes
-        </li>{" "}
-        <li
-          onClick={() => setActivePage("PendingProductsUpdates")}
-          className="sidebar-item-vendor"
-        >
-          Products Changes
-        </li>{" "}
-        <li
-          onClick={() => setActivePage("contactusRequests")}
-          className="sidebar-item-vendor"
-        >
-          ContactUs Requests
-        </li>
-        <li
           onClick={() => setActivePage("AllEmployees")}
           className="sidebar-item-vendor"
         >
@@ -100,6 +81,31 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Our Employees
         </li>
+        <li
+          onClick={() => setActivePage("contactusRequests")}
+          className="sidebar-item-vendor"
+        >
+          ContactUs Requests
+        </li>
+
+        {/* Changes */}
+        <li className="sidebar-section-title">Changes</li>
+        <li
+          onClick={() => setActivePage("PendingBrandUpdates")}
+          className="sidebar-item-vendor"
+        >
+          Brands Changes
+        </li>
+        <li
+          onClick={() => setActivePage("PendingProductsUpdates")}
+          className="sidebar-item-vendor"
+        >
+          Products Changes
+        </li>
+
+        {/* Accounting (add items here if needed) */}
+        {/* <li className="sidebar-section-title">Accounting</li>
+        <li onClick={() => setActivePage("accountingPage")} className="sidebar-item-vendor">Accounting</li> */}
       </ul>
     </aside>
   );
