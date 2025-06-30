@@ -591,21 +591,19 @@ function ProductPage() {
                     {product.promotionStartDate && product.promotionEndDate && (
                       <span
                         style={{
-                          display: "block",
-                          fontFamily: "Montserrat",
-                          fontWeight: 700,
-                          fontSize: "14px",
-                          color: "#2d2d2d",
-                          marginTop: "2px",
+                          display: product.discountPercentage
+                            ? "block"
+                            : "none",
+                          alignSelf: "end",
                         }}
                       >
-                        {`From: ${new Date(
+                        {` ${new Date(
                           product.promotionStartDate
                         ).toLocaleDateString("en-GB", {
                           day: "2-digit",
                           month: "short",
                           year: "numeric",
-                        })} - To: ${new Date(
+                        })} - ${new Date(
                           product.promotionEndDate
                         ).toLocaleDateString("en-GB", {
                           day: "2-digit",
