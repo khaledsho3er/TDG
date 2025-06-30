@@ -40,7 +40,7 @@ const PendingProductUpdates = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://api.thedesigngrit.com/api/admin/products/pending"
+        "https://api.thedesigngrit.com/api/products/admin/products/pending"
       );
       setPendingProducts(response.data || []);
     } catch (error) {
@@ -69,7 +69,7 @@ const PendingProductUpdates = () => {
     setActionLoading(true);
     try {
       await axios.patch(
-        `https://api.thedesigngrit.com/api/admin/products/approve/${selectedProduct._id}`
+        `https://api.thedesigngrit.com/api/products/admin/products/approve/${selectedProduct._id}`
       );
       setSnackbar({
         open: true,
@@ -94,7 +94,7 @@ const PendingProductUpdates = () => {
     setActionLoading(true);
     try {
       await axios.patch(
-        `https://api.thedesigngrit.com/api/admin/products/reject/${selectedProduct._id}`
+        `https://api.thedesigngrit.com/api/products/admin/products/reject/${selectedProduct._id}`
       );
       setSnackbar({
         open: true,
