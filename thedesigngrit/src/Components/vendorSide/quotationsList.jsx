@@ -231,12 +231,12 @@ const QuotationsPage = () => {
             <label
               style={{
                 color: selectedQuotation?.ClientApproval
-                  ? "#721c24"
-                  : "#FF7518",
+                  ? "#155724"
+                  : "#721c24",
                 border: "1px solid #d4edda",
                 backgroundColor: selectedQuotation?.ClientApproval
                   ? "#def9bf"
-                  : "#FF7518",
+                  : "#f8d7da",
                 borderRadius: "5px",
                 padding: "5px",
                 marginTop: "15px",
