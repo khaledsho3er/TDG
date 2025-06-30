@@ -14,6 +14,31 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
+const getCroppedImg = (imageSrc, croppedAreaPixels) => {
+  return new Promise((resolve) => {
+    const image = new window.Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = croppedAreaPixels.width;
+      canvas.height = croppedAreaPixels.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(
+        image,
+        croppedAreaPixels.x,
+        croppedAreaPixels.y,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height,
+        0,
+        0,
+        croppedAreaPixels.width,
+        croppedAreaPixels.height
+      );
+      canvas.toBlob((blob) => resolve(blob), "image/jpeg");
+    };
+  });
+};
+
 const UpdateProduct = ({ existingProduct, onBack }) => {
   const { vendor } = useVendor(); // Access vendor data from context
 
@@ -545,7 +570,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
           <p>Home &gt; Update Products</p>
         </div>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <div className="product-form">
           <div className="form-left">
             <h1>Update Product</h1>
@@ -587,7 +612,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 <label>Category:</label>
                 <select
                   name="category"
-                  value={formData.category} // Link to formData.category
+                  value={formData.category}
                   onChange={handleCategoryChange}
                   required
                 >
@@ -606,7 +631,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 <label>Subcategory:</label>
                 <select
                   name="subcategory"
-                  value={formData.subcategory} // Link to formData.subcategory
+                  value={formData.subcategory}
                   onChange={handleSubCategoryChange}
                 >
                   <option value="" disabled>
@@ -637,14 +662,31 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   ))}
                 </select>
               </div>
-
-              {/* Tags Input */}
+              {/* Tags Input and Dropdowns */}
               <div className="form-group">
                 <label>Tag</label>
+                <div className="dropdown-container">
+                  {Object.entries(tagOptions).map(([category, options]) => (
+                    <select
+                      key={category}
+                      onChange={(e) => {
+                        handleSelectTag(category, e.target.value);
+                        e.target.value = "";
+                      }}
+                    >
+                      <option value="">{`Select ${category}`}</option>
+                      {options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ))}
+                </div>
                 <input
                   type="text"
                   name="tags"
-                  placeholder="Add tag and press Enter"
+                  placeholder="Add tag and press Enter  Ex: Sofa, Living Room"
                   onKeyDown={handleAddTag}
                   className="tag-input"
                   style={{ margin: "10px 0px" }}
@@ -659,8 +701,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                         onClick={() => handleRemoveTag(index)}
                         className="remove-tag-btn"
                       >
-                        <TiDeleteOutline size={18} />{" "}
-                        {/* TiDeleteOutline icon */}
+                        <TiDeleteOutline size={18} />
                       </button>
                     </span>
                   ))}
@@ -815,7 +856,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   type="text"
                   name="brandId"
                   value={formData.brandId}
-                  readOnly // Make it read-only since it's fetched from vendor
+                  readOnly
                 />
               </div>
               <div className="form-group">
@@ -827,6 +868,23 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   onChange={handleChange}
                   readOnly
                 />
+              </div>
+              <div className="form-group">
+                <label
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <input
+                    type="checkbox"
+                    name="readyToShip"
+                    checked={formData.readyToShip}
+                    onChange={handleCheckboxChange}
+                    style={{ width: "auto" }}
+                  />
+                  Ready to Ship
+                  <span style={{ fontWeight: "normal" }}>
+                    (That The Product is Ready to Ship )
+                  </span>
+                </label>
               </div>
               <div className="form-group">
                 {/* Stock and SKU */}
@@ -873,19 +931,42 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 />
               </div>
               <div className="form-group">
-                <label>Warranty Coverage (comma separated):</label>
-                <input
-                  type="text"
-                  name="warrantyCoverage"
-                  value={
-                    formData.warrantyInfo.warrantyCoverage
-                      ? formData.warrantyInfo.warrantyCoverage.join(",")
-                      : ""
-                  } // Check if warrantyCoverage is defined
-                  onChange={(e) =>
-                    handleArrayChange(e, "warrantyCoverage", "warrantyInfo")
-                  }
-                />
+                <label>Warranty Coverage:</label>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {[
+                    "Manufacturer Defects",
+                    "Wear and Tear",
+                    "Damage During Shipping",
+                  ].map((coverage) => (
+                    <label
+                      key={coverage}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.warrantyInfo.warrantyCoverage.includes(
+                          coverage
+                        )}
+                        onChange={() => handleWarrantyCoverageChange(coverage)}
+                        style={{ cursor: "pointer" }}
+                      />
+                      {coverage}
+                    </label>
+                  ))}
+                </div>
               </div>
             </Box>
             <Box
@@ -899,6 +980,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="materialCareInstructions"
                   value={formData.materialCareInstructions}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter the material care instructions"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -907,6 +991,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="productSpecificRecommendations"
                   value={formData.productSpecificRecommendations}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter the product specific recommendations"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -1044,8 +1131,13 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
           </div>
         </div>
         <div className="form-actions">
-          <button className="btn update" type="submit">
-            UPDATE
+          <button
+            className="btn update"
+            type="button"
+            onClick={handleOpenDialog}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? <CircularProgress size={24} /> : "UPDATE"}
           </button>
           <button className="btn cancel" onClick={handleCancel}>
             CANCEL
@@ -1054,17 +1146,43 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       </form>
       <ConfirmationDialog
         open={isDialogOpen}
-        onClose={handleCloseDialog}
-        onConfirm={handleSubmit}
         title="Confirm Product Update"
         content="Are you sure you want to update this product?"
+        onConfirm={handleSubmit}
+        onCancel={handleCloseDialog}
       />
-      <ConfirmationDialog
-        open={showSuccessDialog}
-        onClose={handleCloseSuccessDialog}
-        title="Product Updated Successfully"
-        content="The product has been updated successfully!"
-      />
+      <Dialog open={showSuccessDialog} onClose={handleCloseSuccessDialog}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Product updated successfully!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSuccessDialog} color="primary">
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {showCropModal && (
+        <div className="modal-overlay-uploadimage">
+          <div className="modal-content-uploadimage">
+            <div className="cropper-container-uploadimage">
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, area) => setCroppedAreaPixels(area)}
+              />
+            </div>
+            <div className="cropper-buttons-uploadimage">
+              <button onClick={handleCropComplete}>Crop Image</button>
+              <button onClick={() => setShowCropModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
