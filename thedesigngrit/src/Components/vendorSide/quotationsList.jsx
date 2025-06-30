@@ -267,7 +267,7 @@ const QuotationsPage = () => {
                   justifyContent: "space-around",
                 }}
               >
-                {paymentDetails.paid && (
+                {selectedQuotation?.paymentDetails.paid && (
                   <label
                     style={{
                       backgroundColor: "transparent",
