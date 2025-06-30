@@ -586,33 +586,7 @@ function ProductPage() {
                 }}
               >
                 {product.discountPercentage ? (
-                  <>
-                    {`${product.discountPercentage}% off`}
-                    {product.promotionStartDate && product.promotionEndDate && (
-                      <span
-                        style={{
-                          display: product.discountPercentage
-                            ? "block"
-                            : "none",
-                          alignSelf: "end",
-                        }}
-                      >
-                        {` ${new Date(
-                          product.promotionStartDate
-                        ).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })} - ${new Date(
-                          product.promotionEndDate
-                        ).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}`}
-                      </span>
-                    )}
-                  </>
+                  `${product.discountPercentage}% off`
                 ) : (
                   <span style={{ display: "none" }}></span>
                 )}
