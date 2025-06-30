@@ -212,26 +212,33 @@ const QuotationsPage = () => {
               <strong>Requested At:</strong>{" "}
               {new Date(selectedQuotation?.createdAt).toLocaleDateString()}
             </p>
-            <h3>Quotation Details</h3>
+            <h3 style={{ marginTop: "20px", marginBottom: "10px" }}>
+              Quotation Details:{" "}
+            </h3>
             <p>
-              <strong>Requested Material:</strong>{" "}
-              {new Date(selectedQuotation?.material).toLocaleDateString()}
+              <strong>Requested Material:</strong> {selectedQuotation?.material}
             </p>
             <p>
-              <strong>Requested size:</strong>{" "}
-              {new Date(selectedQuotation?.size).toLocaleDateString()}
+              <strong>Requested size:</strong> {selectedQuotation?.size}
             </p>
             <p>
-              <strong>Requested color:</strong>{" "}
-              {new Date(selectedQuotation?.color).toLocaleDateString()}
+              <strong>Requested color:</strong> {selectedQuotation?.color}
             </p>
             <p>
               <strong>Requested customization:</strong>{" "}
-              {new Date(selectedQuotation?.customization).toLocaleDateString()}
+              {selectedQuotation?.customization}
             </p>
             <label
               style={{
-                color: selectedQuotation?.ClientApproval ? "green" : "red",
+                color: selectedQuotation?.ClientApproval
+                  ? "#721c24"
+                  : "#FF7518",
+                border: "1px solid #d4edda",
+                backgroundColor: selectedQuotation?.ClientApproval
+                  ? "#d4edda"
+                  : "#FF7518",
+                borderRadius: "5px",
+                padding: "5px",
                 marginTop: "15px",
               }}
             >
@@ -265,13 +272,15 @@ const QuotationsPage = () => {
                   gap: "10px",
                   marginTop: "15px",
                   justifyContent: "space-around",
+                  alignItems: "baseline",
                 }}
               >
                 {selectedQuotation?.paymentDetails.paid && (
                   <label
                     style={{
-                      backgroundColor: "transparent",
-                      border: "1px solid #2d2d2d",
+                      backgroundColor: "#d4edda",
+                      border: "1px solid #d4edda",
+                      color: "#155724",
                       padding: "5px",
                       borderRadius: "5px",
                     }}
