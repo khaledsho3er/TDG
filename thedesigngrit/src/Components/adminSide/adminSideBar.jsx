@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 
 const SidebarAdmin = ({ setActivePage }) => {
   // State for each section
@@ -19,36 +21,26 @@ const SidebarAdmin = ({ setActivePage }) => {
   return (
     <aside className="sidebar-vendor">
       <ul className="sidebar-menu-vendor">
-        {/* General */}
         <li
-          className="sidebar-section-title"
-          onClick={() => toggleSection("general")}
+          onClick={() => setActivePage("dashboard")}
+          className="sidebar-item-vendor"
         >
-          General {openSections.general ? "▼" : "►"}
+          Dashboard
         </li>
-        {openSections.general && (
-          <>
-            <li
-              onClick={() => setActivePage("dashboard")}
-              className="sidebar-item-vendor"
-            >
-              Dashboard
-            </li>
-            <li
-              onClick={() => setActivePage("adminNotificationPage")}
-              className="sidebar-item-vendor"
-            >
-              Notifications
-            </li>
-          </>
-        )}
+        <li
+          onClick={() => setActivePage("adminNotificationPage")}
+          className="sidebar-item-vendor"
+        >
+          Notifications
+        </li>
 
         {/* Management */}
         <li
           className="sidebar-section-title"
           onClick={() => toggleSection("management")}
         >
-          Management {openSections.management ? "▼" : "►"}
+          Management{" "}
+          {openSections.management ? <IoIosArrowForward /> : <IoIosArrowDown />}
         </li>
         {openSections.management && (
           <>
@@ -126,7 +118,8 @@ const SidebarAdmin = ({ setActivePage }) => {
           className="sidebar-section-title"
           onClick={() => toggleSection("changes")}
         >
-          Changes {openSections.changes ? "▼" : "►"}
+          Changes{" "}
+          {openSections.changes ? <IoIosArrowForward /> : <IoIosArrowDown />}
         </li>
         {openSections.changes && (
           <>
