@@ -4,6 +4,15 @@ import { TiDeleteOutline } from "react-icons/ti"; // Import the delete icon
 import { useVendor } from "../../utils/vendorContext";
 import { Box, IconButton } from "@mui/material";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import ConfirmationDialog from "../confirmationMsg";
+import Cropper from "react-easy-crop";
+import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 const UpdateProduct = ({ existingProduct, onBack }) => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -53,6 +62,24 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     productSpecificRecommendations: "",
     Estimatedtimeleadforcustomization: "",
   });
+
+  // Add states for new features
+  const [readyToShip, setReadyToShip] = useState(
+    existingProduct.readyToShip || false
+  );
+  const [cadFile, setCadFile] = useState(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
+  const [pendingFile, setPendingFile] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [mainImagePreview, setMainImagePreview] = useState(null);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [tagOptions, setTagOptions] = useState({});
 
   // Fetch categories on mount
   useEffect(() => {
@@ -130,6 +157,34 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       fetchSubCategoriesAndTypes();
     }
   }, [existingProduct, selectedCategory, selectedSubCategory]);
+
+  // Fetch tag options for dropdowns
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const categories = [
+          "Color",
+          "Shape",
+          "Size",
+          "Material",
+          "Style",
+          "Finish",
+          "Functionality",
+        ];
+        const fetchedTags = {};
+        for (const category of categories) {
+          const response = await axios.get(
+            `https://api.thedesigngrit.com/api/tags/tags/${category}`
+          );
+          fetchedTags[category] = response.data.map((tag) => tag.name);
+        }
+        setTagOptions(fetchedTags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    fetchTags();
+  }, []);
 
   // Handle category change
   const handleCategoryChange = async (e) => {
@@ -225,23 +280,19 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const handleAddTag = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
-      setTags([...tags, newTag]); // Update local tags state
-      setFormData({
-        ...formData,
-        tags: [...formData.tags, newTag], // Update formData tags
-      });
-      e.target.value = ""; // Clear input
+      if (!tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+        setFormData({ ...formData, tags: [...formData.tags, newTag] });
+      }
+      e.target.value = "";
     }
   };
 
   // Function to remove a tag by index
   const handleRemoveTag = (index) => {
     const newTags = tags.filter((_, i) => i !== index);
-    setTags(newTags); // Update local tags state
-    setFormData({
-      ...formData,
-      tags: newTags, // Update formData tags
-    });
+    setTags(newTags);
+    setFormData({ ...formData, tags: newTags });
   };
 
   const [images, setImages] = useState(existingProduct.images || []); // Initialize with existing images
@@ -249,43 +300,42 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
   // Handle image upload
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to array
+    const file = e.target.files[0];
+    if (!file) return;
+    const img = new window.Image();
+    img.onload = () => {
+      if (img.width < 400 || img.height < 300) {
+        alert("Image too small. Minimum size: 400x300px for 4:3 ratio.");
+        return;
+      }
+      const previewUrl = URL.createObjectURL(file);
+      setSelectedImageSrc(previewUrl);
+      setPendingFile(file);
+      setShowCropModal(true);
+    };
+    img.src = URL.createObjectURL(file);
+  };
 
-    // Create image previews
-    const imagePreviews = files.map((file) => URL.createObjectURL(file));
-
-    // If no main image is set, set the first image as the main image
-    if (!mainImage && imagePreviews.length > 0) {
-      setMainImage(imagePreviews[0]);
+  const handleCropComplete = async () => {
+    const blob = await getCroppedImg(selectedImageSrc, croppedAreaPixels);
+    const url = URL.createObjectURL(blob);
+    const croppedFile = new File([blob], pendingFile.name, {
+      type: "image/jpeg",
+    });
+    setImages((prev) => [...prev, croppedFile]);
+    setImagePreviews((prev) => [...prev, url]);
+    if (!mainImage) {
+      setMainImage(croppedFile);
+      setMainImagePreview(url);
     }
-
-    // Update the images array
-    setImages([...images, ...imagePreviews]);
-
-    // Prepare FormData to send files to the backend
-    const formData = new FormData();
-    files.forEach((file) => formData.append("images", file));
-
-    // Send files to the backend
-    axios
-      .post("https://api.thedesigngrit.com/api/products/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("Images uploaded successfully:", response.data);
-
-        // Update formData with the uploaded image paths
-        setFormData((prevData) => ({
-          ...prevData,
-          images: [...prevData.images, ...response.data.filePaths], // Add new file paths
-          mainImage: prevData.mainImage || response.data.filePaths[0], // Set main image if not already set
-        }));
-      })
-      .catch((error) => {
-        console.error("Error uploading images:", error);
-      });
+    setFormData((prevData) => ({
+      ...prevData,
+      images: [...prevData.images, croppedFile],
+      mainImage: prevData.mainImage || croppedFile,
+    }));
+    setShowCropModal(false);
+    setPendingFile(null);
+    setSelectedImageSrc(null);
   };
 
   // Handle setting the main image
@@ -323,62 +373,157 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     onBack();
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Prepare form data
-    const data = new FormData();
-
-    // Append non-file fields to FormData
-    for (const key in formData) {
-      if (key === "technicalDimensions" || key === "warrantyInfo") {
-        // Stringify nested objects
-        data.append(key, JSON.stringify(formData[key]));
-      } else if (Array.isArray(formData[key])) {
-        // Append each array item individually
-        formData[key].forEach((item, index) => {
-          data.append(`${key}[${index}]`, item);
-        });
-      } else {
-        // Append regular fields
-        data.append(key, formData[key]);
+  // Add handlers for new features
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+  const handleCADUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const allowedTypes = [".dwg", ".dxf", ".stp", ".step", ".igs", ".iges"];
+      const fileExtension = "." + file.name.split(".").pop().toLowerCase();
+      if (!allowedTypes.includes(fileExtension)) {
+        alert(
+          "Please upload a valid CAD file (DWG, DXF, STP, STEP, IGS, or IGES format)"
+        );
+        return;
       }
-    }
-
-    // Append images to FormData
-    images.forEach((image, index) => {
-      if (image instanceof File) {
-        data.append("images", image);
-      } else {
-        console.error("Invalid image file at index:", index, image);
-      }
-    });
-
-    // Append the main image
-    if (mainImage instanceof File) {
-      data.append("mainImage", mainImage);
-    }
-
-    try {
-      // Send the form data to the backend
-      const response = await axios.put(
-        `https://api.thedesigngrit.com/api/products/${formData._id}`, // Use the product ID for updating
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Product updated successfully:", response.data);
-      alert("Product updated successfully!");
-    } catch (error) {
-      console.error("Error updating product:", error);
-      alert("Failed to update product. Please try again.");
+      setCadFile(file);
+      setFormData((prevData) => ({ ...prevData, cadFile: file }));
     }
   };
+  const handleRemoveCAD = () => {
+    setCadFile(null);
+    setFormData((prevData) => ({ ...prevData, cadFile: null }));
+  };
+  const handleWarrantyCoverageChange = (coverage) => {
+    setFormData((prevState) => {
+      const currentCoverage = prevState.warrantyInfo.warrantyCoverage;
+      let newCoverage;
+      if (currentCoverage.includes(coverage)) {
+        newCoverage = currentCoverage.filter((item) => item !== coverage);
+      } else {
+        newCoverage = [...currentCoverage, coverage];
+      }
+      return {
+        ...prevState,
+        warrantyInfo: {
+          ...prevState.warrantyInfo,
+          warrantyCoverage: newCoverage,
+        },
+      };
+    });
+  };
+  const handleSelectTag = (category, value) => {
+    if (value && !tags.includes(value)) {
+      setTags([...tags, value]);
+      setFormData({ ...formData, tags: [...formData.tags, value] });
+    }
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const { name } = e.target;
+      if (name === "productSpecificRecommendations") {
+        setFormData((prev) => ({
+          ...prev,
+          productSpecificRecommendations:
+            (prev.productSpecificRecommendations
+              ? prev.productSpecificRecommendations + "\n• "
+              : "• ") + e.target.value.slice(e.target.selectionStart),
+        }));
+      } else if (name === "materialCareInstructions") {
+        setFormData((prev) => ({
+          ...prev,
+          materialCareInstructions:
+            (prev.materialCareInstructions
+              ? prev.materialCareInstructions + "\n"
+              : "") + e.target.value.slice(e.target.selectionStart),
+        }));
+      }
+    }
+  };
+
+  // Update handleSubmit to match AddProduct logic
+  const handleOpenDialog = () => setDialogOpen(true);
+  const handleCloseDialog = () => setDialogOpen(false);
+  const handleCloseSuccessDialog = () => {
+    setShowSuccessDialog(false);
+    onBack();
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setDialogOpen(false);
+    setIsSubmitting(true);
+    const data = new FormData();
+    // Append all fields as in AddProduct
+    data.append("name", formData.name);
+    data.append("price", formData.price);
+    data.append("salePrice", formData.salePrice || null || "");
+    data.append("category", formData.category);
+    data.append("subcategory", formData.subcategory);
+    data.append("collection", formData.collection || "");
+    data.append("type", formData.type || "");
+    data.append("manufactureYear", formData.manufactureYear || "");
+    data.append("description", formData.description || "");
+    data.append("brandId", formData.brandId || "");
+    data.append("brandName", formData.brandName || "");
+    data.append("leadTime", formData.leadTime || "");
+    data.append("stock", formData.stock || "");
+    data.append("sku", formData.sku || "");
+    data.append("readyToShip", formData.readyToShip);
+    data.append(
+      "materialCareInstructions",
+      formData.materialCareInstructions || ""
+    );
+    data.append(
+      "productSpecificRecommendations",
+      formData.productSpecificRecommendations || ""
+    );
+    data.append(
+      "Estimatedtimeleadforcustomization",
+      formData.Estimatedtimeleadforcustomization || ""
+    );
+    formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
+    formData.colors.forEach((color, index) =>
+      data.append(`colors[${index}]`, color)
+    );
+    formData.sizes.forEach((size, index) =>
+      data.append(`sizes[${index}]`, size)
+    );
+    data.append(
+      "technicalDimensions",
+      JSON.stringify(formData.technicalDimensions)
+    );
+    data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
+    // Images
+    images.forEach((file) => {
+      if (file instanceof File) {
+        data.append("images", file);
+      }
+    });
+    // CAD file
+    if (cadFile) {
+      data.append("cadFile", cadFile);
+    }
+    try {
+      const response = await axios.put(
+        `https://api.thedesigngrit.com/api/products/${formData._id}`,
+        data,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      setShowSuccessDialog(true);
+    } catch (error) {
+      alert("Failed to update product. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <header className="dashboard-header-vendor">
@@ -907,6 +1052,19 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
           </button>
         </div>
       </form>
+      <ConfirmationDialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleSubmit}
+        title="Confirm Product Update"
+        content="Are you sure you want to update this product?"
+      />
+      <ConfirmationDialog
+        open={showSuccessDialog}
+        onClose={handleCloseSuccessDialog}
+        title="Product Updated Successfully"
+        content="The product has been updated successfully!"
+      />
     </>
   );
 };
