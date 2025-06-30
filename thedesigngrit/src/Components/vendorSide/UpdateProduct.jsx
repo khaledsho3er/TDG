@@ -100,68 +100,11 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [mainImage, setMainImage] = useState(null);
   const [mainImagePreview, setMainImagePreview] = useState(null);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [tagOptions, setTagOptions] = useState({});
-
-  // Add state for existing and new images
-  const [images, setImages] = useState([]); // Array of File objects or filenames
-  const [newImages, setNewImages] = useState([]); // File objects
-
-  // On initial load, populate images/imagePreviews/mainImage/mainImagePreview from existingProduct
-  useEffect(() => {
-    if (existingProduct && existingProduct.images) {
-      setImages(existingProduct.images);
-      setImagePreviews(
-        existingProduct.images.map((img) => {
-          if (typeof img === "string") {
-            return `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${img}`;
-          } else {
-            if (!(img instanceof File)) {
-              console.warn("Tried to createObjectURL on non-File:", img);
-            }
-            return URL.createObjectURL(img);
-          }
-        })
-      );
-      if (existingProduct.mainImage) {
-        setMainImage(existingProduct.mainImage);
-        setMainImagePreview(
-          typeof existingProduct.mainImage === "string"
-            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${existingProduct.mainImage}`
-            : URL.createObjectURL(existingProduct.mainImage)
-        );
-      } else if (existingProduct.images.length > 0) {
-        setMainImage(existingProduct.images[0]);
-        setMainImagePreview(
-          typeof existingProduct.images[0] === "string"
-            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${existingProduct.images[0]}`
-            : URL.createObjectURL(existingProduct.images[0])
-        );
-      }
-    }
-    // Fetch subcategories and types based on existing product data
-    if (existingProduct) {
-      const fetchSubCategoriesAndTypes = async () => {
-        try {
-          const subCategoryResponse = await axios.get(
-            `https://api.thedesigngrit.com/api/subcategories/byCategory/${existingProduct.category}`
-          );
-          setSubCategories(subCategoryResponse.data);
-          const typeResponse = await axios.get(
-            `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${existingProduct.subcategory}`
-          );
-          setTypes(typeResponse.data);
-        } catch (error) {
-          console.error("Error fetching subcategories or types:", error);
-        }
-      };
-      fetchSubCategoriesAndTypes();
-    }
-  }, [existingProduct]);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -217,6 +160,26 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       setTags(existingProduct.tags || []);
       setSelectedCategory(existingProduct.category);
       setSelectedSubCategory(existingProduct.subcategory);
+      setImages(existingProduct.images || []); // Set existing images
+      setMainImage(existingProduct.mainImage || ""); // Set existing main image
+
+      // Fetch subcategories and types based on existing product data
+      const fetchSubCategoriesAndTypes = async () => {
+        try {
+          const subCategoryResponse = await axios.get(
+            `https://api.thedesigngrit.com/api/subcategories/byCategory/${existingProduct.category}`
+          );
+          setSubCategories(subCategoryResponse.data);
+
+          const typeResponse = await axios.get(
+            `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${existingProduct.subcategory}`
+          );
+          setTypes(typeResponse.data);
+        } catch (error) {
+          console.error("Error fetching subcategories or types:", error);
+        }
+      };
+      fetchSubCategoriesAndTypes();
     }
   }, [existingProduct, selectedCategory, selectedSubCategory]);
 
@@ -357,6 +320,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     setFormData({ ...formData, tags: newTags });
   };
 
+  const [images, setImages] = useState(existingProduct.images || []); // Initialize with existing images
+  const [mainImage, setMainImage] = useState(existingProduct.mainImage || ""); // Initialize with existing main image
+
   // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -377,9 +343,6 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
   const handleCropComplete = async () => {
     const blob = await getCroppedImg(selectedImageSrc, croppedAreaPixels);
-    if (!(blob instanceof Blob)) {
-      console.warn("Tried to createObjectURL on non-Blob:", blob);
-    }
     const url = URL.createObjectURL(blob);
     const croppedFile = new File([blob], pendingFile.name, {
       type: "image/jpeg",
@@ -400,37 +363,33 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     setSelectedImageSrc(null);
   };
 
-  // Image gallery logic: remove image from either array
-  const handleRemoveImage = (index) => {
-    const updatedImages = images.filter((_, i) => i !== index);
-    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
-    setImages(updatedImages);
-    setImagePreviews(updatedPreviews);
-    // If the removed image was the main image, update the main image
-    if (
-      images[index] === mainImage ||
-      imagePreviews[index] === mainImagePreview
-    ) {
-      setMainImage(updatedImages[0] || null);
-      setMainImagePreview(updatedPreviews[0] || null);
-      setFormData((prevData) => ({
-        ...prevData,
-        mainImage: updatedImages[0] || "",
-      }));
-    }
+  // Handle setting the main image
+  const handleSetMainImage = (index) => {
+    setMainImage(images[index]);
     setFormData((prevData) => ({
       ...prevData,
-      images: updatedImages,
+      mainImage: images[index], // Update mainImage in formData
     }));
   };
 
-  // Set main image from gallery
-  const handleSetMainImage = (index) => {
-    setMainImage(images[index]);
-    setMainImagePreview(imagePreviews[index]);
+  // Handle removing an image
+  const handleRemoveImage = (index) => {
+    const updatedImages = images.filter((_, i) => i !== index);
+    setImages(updatedImages);
+
+    // If the removed image was the main image, update the main image
+    if (images[index] === mainImage) {
+      setMainImage(updatedImages[0] || null);
+      setFormData((prevData) => ({
+        ...prevData,
+        mainImage: updatedImages[0] || "", // Update mainImage in formData
+      }));
+    }
+
+    // Remove the image path from formData
     setFormData((prevData) => ({
       ...prevData,
-      mainImage: images[index],
+      images: prevData.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -566,16 +525,12 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       JSON.stringify(formData.technicalDimensions)
     );
     data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
-    // Append existing image filenames
-    images.forEach((filename, idx) => {
-      data.append(`images[${idx}]`, filename);
+    // Images
+    images.forEach((file) => {
+      if (file instanceof File) {
+        data.append("images", file);
+      }
     });
-    // Append new image files
-    newImages.forEach((file) => {
-      data.append("images", file);
-    });
-    // Set mainImage as filename
-    data.append("mainImage", mainImage);
     // CAD file
     if (cadFile) {
       data.append("cadFile", cadFile);
@@ -1064,7 +1019,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
             <div className="image-placeholder">
               {mainImage ? (
                 <img
-                  src={mainImagePreview}
+                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
                   alt="Main Preview"
                   className="main-image"
                 />
@@ -1131,38 +1086,44 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 {images.map((image, index) => (
                   <div
                     className={`thumbnail ${
-                      mainImage &&
-                      ((typeof mainImage === "string" && mainImage === image) ||
-                        (mainImage instanceof File &&
-                          image instanceof File &&
-                          mainImage.name === image.name))
-                        ? "main-thumbnail"
-                        : ""
+                      image === mainImage ? "main-thumbnail" : ""
                     }`}
                     key={index}
                   >
-                    <img
-                      src={imagePreviews[index]}
-                      alt={`Thumbnail ${index}`}
-                      className="image-thumbnail"
-                      onClick={() => handleSetMainImage(index)}
-                    />
-                    <span>Product thumbnail.png</span>
-                    <span className="checkmark">
-                      {mainImage &&
-                      ((typeof mainImage === "string" && mainImage === image) ||
-                        (mainImage instanceof File &&
-                          image instanceof File &&
-                          mainImage.name === image.name))
-                        ? "✔ Main"
-                        : "✔"}
-                    </span>
-                    <span
-                      className="remove-thumbnail"
-                      onClick={() => handleRemoveImage(index)}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                      }}
                     >
-                      ✖
-                    </span>
+                      <img
+                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`} // Adjust the URL as needed
+                        alt={`Thumbnail ${index}`}
+                        className="image-thumbnail"
+                        onClick={() => handleSetMainImage(index)}
+                      />
+                      <span>Product thumbnail.png</span>
+                      <span className="checkmark">
+                        {image === mainImage ? "✔ Main" : "✔"}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                      }}
+                    >
+                      <span
+                        className="remove-thumbnail"
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        ✖
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
