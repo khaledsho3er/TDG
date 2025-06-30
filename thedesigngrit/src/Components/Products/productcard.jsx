@@ -95,6 +95,28 @@ const ProductCard = ({ product }) => {
         }}
         onClick={handleCardClick}
       >
+        {/* Discount Percentage Label - Top Left */}
+        {product.discountPercentage && product.discountPercentage > 0 && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 8,
+              left: 8,
+              background: "#e74c3c",
+              color: "#fff",
+              borderRadius: "5px",
+              padding: "4px 10px",
+              fontSize: "13px",
+              fontWeight: 700,
+              letterSpacing: "1px",
+              zIndex: 2,
+              fontFamily: "Montserrat",
+              boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+            }}
+          >
+            {product.discountPercentage}% OFF
+          </Box>
+        )}
         {/* Product Image */}
         <Box
           sx={{
@@ -244,46 +266,12 @@ const ProductCard = ({ product }) => {
               >
                 {Number(product.price).toLocaleString()} E£
               </span>
-              <span style={{ color: "red" }}>
+              <span style={{ color: "red", fontWeight: "700" }}>
                 {Number(product.salePrice).toLocaleString()}E£
               </span>
-              {product.discountPercentage && product.discountPercentage > 0 && (
-                <span
-                  style={{
-                    background: "#e74c3c",
-                    color: "#fff",
-                    borderRadius: "5px",
-                    padding: "2px 8px",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    marginLeft: "10px",
-                    letterSpacing: "1px",
-                  }}
-                >
-                  {product.discountPercentage}% OFF
-                </span>
-              )}
             </>
           ) : (
-            <>
-              {Number(product.price).toLocaleString() + "E£"}
-              {product.discountPercentage && product.discountPercentage > 0 && (
-                <span
-                  style={{
-                    background: "#e74c3c",
-                    color: "#fff",
-                    borderRadius: "5px",
-                    padding: "2px 8px",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    marginLeft: "10px",
-                    letterSpacing: "1px",
-                  }}
-                >
-                  {product.discountPercentage}% OFF
-                </span>
-              )}
-            </>
+            Number(product.price).toLocaleString() + "E£"
           )}
         </Typography>
       </CardContent>
