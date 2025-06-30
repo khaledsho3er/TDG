@@ -212,7 +212,33 @@ const QuotationsPage = () => {
               <strong>Requested At:</strong>{" "}
               {new Date(selectedQuotation?.createdAt).toLocaleDateString()}
             </p>
-
+            <h3>Quotation Details</h3>
+            <p>
+              <strong>Requested Material:</strong>{" "}
+              {new Date(selectedQuotation?.material).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Requested size:</strong>{" "}
+              {new Date(selectedQuotation?.size).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Requested color:</strong>{" "}
+              {new Date(selectedQuotation?.color).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Requested customization:</strong>{" "}
+              {new Date(selectedQuotation?.customization).toLocaleDateString()}
+            </p>
+            <label
+              style={{
+                color: selectedQuotation?.ClientApproval ? "green" : "red",
+                marginTop: "15px",
+              }}
+            >
+              {selectedQuotation?.ClientApproval
+                ? "Client Approved"
+                : "Client Not Approved"}
+            </label>
             <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
               <label>Note:</label>
               <textarea
@@ -241,6 +267,18 @@ const QuotationsPage = () => {
                   justifyContent: "space-around",
                 }}
               >
+                {paymentDetails.paid && (
+                  <label
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "1px solid #2d2d2d",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Paid
+                  </label>
+                )}
                 {selectedQuotation?.vendorApproval ? (
                   <p style={{ marginTop: "15px" }}>Deal is sealed</p>
                 ) : (
