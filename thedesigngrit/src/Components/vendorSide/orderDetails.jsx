@@ -257,6 +257,24 @@ const OrderDetails = ({ order, onBack }) => {
     }
   };
 
+  // Calculate values with fallback to "N/A"
+  const subtotal = typeof order.subtotal === "number" ? order.subtotal : "N/A";
+  const shippingFee =
+    typeof order.shippingFee === "number" ? order.shippingFee : "N/A";
+  const discount = typeof order.discount === "number" ? order.discount : 0;
+
+  // Calculate tax (14% of subtotal) if subtotal is a number
+  const tax =
+    typeof subtotal === "number" ? +(subtotal * 0.14).toFixed(2) : "N/A";
+
+  // Calculate total if all values are numbers
+  const total =
+    typeof subtotal === "number" &&
+    typeof tax === "number" &&
+    typeof shippingFee === "number"
+      ? +(subtotal + tax + shippingFee - discount).toFixed(2)
+      : "N/A";
+
   return (
     <div>
       <header className="dashboard-header-vendor">
@@ -1058,17 +1076,17 @@ const OrderDetails = ({ order, onBack }) => {
         >
           <Box>
             <p>Subtotal:</p>
-            <p>Tax (20%):</p>
+            <p>Tax (14%):</p>
             <p>Discount:</p>
             <p>Shipping Rate:</p>
             <h4>Total:</h4>
           </Box>
           <Box>
-            <p>E£ {order.subtotal}</p>
-            <p> {order.tax || 20}%</p>
-            <p> E£ {order.discount || 0}</p>
-            <p> E£ {order.shippingFee}</p>
-            <h4> E£ {order.total}</h4>
+            <p>{subtotal !== "N/A" ? `E£ ${subtotal}` : "N/A"}</p>
+            <p>{tax !== "N/A" ? `E£ ${tax}` : "N/A"}</p>
+            <p>{discount !== 0 ? `E£ ${discount}` : "E£ 0"}</p>
+            <p>{shippingFee !== "N/A" ? `E£ ${shippingFee}` : "N/A"}</p>
+            <h4>{total !== "N/A" ? `E£ ${total}` : "N/A"}</h4>
           </Box>
         </div>
       </div>
