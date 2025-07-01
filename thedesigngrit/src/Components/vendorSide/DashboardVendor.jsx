@@ -525,12 +525,7 @@ const DashboardVendor = () => {
                   <YAxis />
                   <Tooltip />
                   <Legend style={{ marginTop: "10px" }} />
-                  <Line
-                    type="monotone"
-                    dataKey=" "
-                    stroke="#8884d8"
-                    style={{ display: "none" }}
-                  />
+                  <Line type="monotone" dataKey="sale" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
