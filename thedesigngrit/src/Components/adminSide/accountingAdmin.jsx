@@ -29,7 +29,7 @@ import {
   Legend,
 } from "recharts";
 import axios from "axios";
-import { format, parse, parseISO } from "date-fns";
+import { format } from "date-fns";
 import {
   FaMoneyBillWave,
   FaPiggyBank,
@@ -301,13 +301,10 @@ const AccountingAdmin = () => {
 
   // Calculator logic
   const handleCalculate = () => {
-    if (!calcBrand) {
-      setCalcResult("Please select a brand.");
-      return;
-    }
-    const brandLogs = logs.filter(
-      (log) => log.brandId?.brandName === calcBrand
-    );
+    // If calcBrand is empty string, calculate for all brands
+    const brandLogs = !calcBrand
+      ? logs
+      : logs.filter((log) => log.brandId?.brandName === calcBrand);
     if (!brandLogs.length) {
       setCalcResult("No data for this brand.");
       return;
@@ -317,19 +314,18 @@ const AccountingAdmin = () => {
       0
     );
     setCalcResult(
-      `${
-        calculatorOptions.find((opt) => opt.value === calcType).label
-      } for ${calcBrand}: ${formatMoney(sum)}`
+      `${calculatorOptions.find((opt) => opt.value === calcType).label} for ${
+        calcBrand || "All Brands"
+      }: ${formatMoney(sum)}`
     );
   };
 
   // Calculator export logic
   const handleExport = () => {
-    if (!calcBrand) return;
-    const brandLogs = logs.filter(
-      (log) => log.brandId?.brandName === calcBrand
-    );
-    exportToCSV(brandLogs, calcBrand);
+    const brandLogs = !calcBrand
+      ? logs
+      : logs.filter((log) => log.brandId?.brandName === calcBrand);
+    exportToCSV(brandLogs, calcBrand || "all_brands");
   };
 
   // Chart filtered logs
@@ -374,7 +370,7 @@ const AccountingAdmin = () => {
   // Reset to first page if filters change and current page is out of range
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(1);
-  }, [totalPages]);
+  }, [totalPages, currentPage]);
 
   // Totals from filtered logs (sortedLogs)
   const totalVat = useMemo(
@@ -576,11 +572,7 @@ const AccountingAdmin = () => {
         </Box>
       </Box>
       {/* Chart Section */}
-      <Box
-        mb={4}
-        p={2}
-        sx={{ background: "#fff", borderRadius: 3, boxShadow: 1 }}
-      >
+      <Box mb={4} p={2} sx={{ background: "#fff", borderRadius: 3 }}>
         <Box display="flex" alignItems="center" gap={2} mb={2} flexWrap="wrap">
           <Typography
             variant="h6"
@@ -606,6 +598,10 @@ const AccountingAdmin = () => {
                   chartPeriod === period.value ? "#f5f5f5" : "transparent",
                 boxShadow: "none",
                 textTransform: "none",
+                "&:hover": {
+                  background: "none",
+                  color: chartPeriod === period.value ? "#2d2d2d" : "#888",
+                },
               }}
               onClick={() => {
                 setChartPeriod(period.value);
@@ -717,7 +713,7 @@ const AccountingAdmin = () => {
             label="Brand"
             onChange={(e) => setCalcBrand(e.target.value)}
           >
-            <MenuItem value="">Select Brand</MenuItem>
+            <MenuItem value="">All Brands</MenuItem>
             {brands.map((brand) => (
               <MenuItem key={brand} value={brand}>
                 {brand}
@@ -750,7 +746,7 @@ const AccountingAdmin = () => {
           variant="outlined"
           style={{ marginLeft: 8 }}
           onClick={handleExport}
-          disabled={!calcBrand}
+          disabled={calcBrand === null}
         >
           Export CSV
         </Button>
