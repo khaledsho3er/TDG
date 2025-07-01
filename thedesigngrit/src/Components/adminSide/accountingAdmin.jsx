@@ -85,6 +85,7 @@ const calculatorOptions = [
   { value: "brandPayout", label: "Brand Payout" },
   { value: "total", label: "Total Sales" },
   { value: "commission", label: "Commission" },
+  { value: "netAdminProfit", label: "Profit Admin" },
 ];
 
 function exportToCSV(data, brandName, calcType = null) {
