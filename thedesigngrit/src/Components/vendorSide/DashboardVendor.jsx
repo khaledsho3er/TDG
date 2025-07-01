@@ -270,9 +270,23 @@ const DashboardVendor = () => {
         }));
         break;
       case "monthly":
+        const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
         formattedData = aggregateAndSort(monthlySales, "month").map((item) => ({
           ...item,
-          month: `Month ${item.month}`,
+          month: monthNames[item.month - 1] || `Month ${item.month}`,
         }));
         break;
       case "yearly":
