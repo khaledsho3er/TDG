@@ -18,7 +18,6 @@ import {
   Typography,
   TableSortLabel,
 } from "@mui/material";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
 
 const columns = [
@@ -54,7 +53,6 @@ const MoneyCell = ({ value }) =>
     <span>N/A</span>
   ) : (
     <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
-      E£
       {formatMoney(value)}
     </span>
   );
