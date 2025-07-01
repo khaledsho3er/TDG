@@ -17,8 +17,6 @@ import {
   CircularProgress,
   Typography,
   TableSortLabel,
-  Grid,
-  Slider,
 } from "@mui/material";
 import {
   LineChart,
@@ -31,6 +29,7 @@ import {
   Legend,
 } from "recharts";
 import axios from "axios";
+import { format, parse, parseISO } from "date-fns";
 
 const columns = [
   { id: "orderId", label: "Order ID" },
@@ -181,6 +180,37 @@ function groupLogsByPeriod(logs, period) {
     .map(([label, total]) => ({ label, total: Number(total.toFixed(2)) }));
 }
 
+function getMonthYearLabel(label) {
+  // label: '2025-06' => 'Jun 2025'
+  if (!label) return "";
+  const [year, month] = label.split("-");
+  if (!year || !month) return label;
+  const date = new Date(Number(year), Number(month) - 1, 1);
+  return format(date, "MMM yyyy");
+}
+
+function getWeekLabel(label) {
+  // label: '2025-W23' => 'W23 2025'
+  if (!label) return "";
+  const [year, week] = label.split("-W");
+  if (!year || !week) return label;
+  return `W${week} ${year}`;
+}
+
+function getXAxisLabel(label, period) {
+  if (period === "month") return getMonthYearLabel(label);
+  if (period === "week") return getWeekLabel(label);
+  return label;
+}
+
+function getAvailableMonths(data) {
+  // Returns array of { value: '2025-06', label: 'Jun 2025' }
+  return data.map((d) => ({
+    value: d.label,
+    label: getMonthYearLabel(d.label),
+  }));
+}
+
 const AccountingAdmin = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -201,6 +231,7 @@ const AccountingAdmin = () => {
   const [chartBrand, setChartBrand] = useState("");
   const [chartDateFrom, setChartDateFrom] = useState("");
   const [chartDateTo, setChartDateTo] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -308,6 +339,20 @@ const AccountingAdmin = () => {
     [chartFilteredLogs, chartPeriod]
   );
 
+  // Filter chartData by selectedMonth if in months mode
+  const displayedChartData = useMemo(() => {
+    if (chartPeriod === "month" && selectedMonth) {
+      return chartData.filter((d) => d.label === selectedMonth);
+    }
+    return chartData;
+  }, [chartData, chartPeriod, selectedMonth]);
+
+  // Available months for select menu
+  const availableMonths = useMemo(() => {
+    if (chartPeriod !== "month") return [];
+    return getAvailableMonths(chartData);
+  }, [chartData, chartPeriod]);
+
   if (loading)
     return (
       <Box
@@ -365,7 +410,10 @@ const AccountingAdmin = () => {
                 boxShadow: "none",
                 textTransform: "none",
               }}
-              onClick={() => setChartPeriod(period.value)}
+              onClick={() => {
+                setChartPeriod(period.value);
+                setSelectedMonth("");
+              }}
             >
               {period.label}
             </Button>
@@ -385,6 +433,23 @@ const AccountingAdmin = () => {
               ))}
             </Select>
           </FormControl>
+          {chartPeriod === "month" && availableMonths.length > 0 && (
+            <FormControl size="small" sx={{ minWidth: 140 }}>
+              <InputLabel>Month</InputLabel>
+              <Select
+                value={selectedMonth}
+                label="Month"
+                onChange={(e) => setSelectedMonth(e.target.value)}
+              >
+                <MenuItem value="">All Months</MenuItem>
+                {availableMonths.map((m) => (
+                  <MenuItem key={m.value} value={m.value}>
+                    {m.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <TextField
             label="From"
             type="date"
@@ -406,13 +471,23 @@ const AccountingAdmin = () => {
         </Box>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
-            data={chartData}
+            data={displayedChartData}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="label" style={{ fontFamily: "Montserrat" }} />
-            <YAxis style={{ fontFamily: "Montserrat" }} />
-            <Tooltip formatter={(value) => formatMoney(value)} />
+            <XAxis
+              dataKey="label"
+              style={{ fontFamily: "Montserrat" }}
+              tickFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+            />
+            <YAxis
+              style={{ fontFamily: "Montserrat" }}
+              tickFormatter={(value) => value.toLocaleString("en-US")}
+            />
+            <Tooltip
+              formatter={(value) => formatMoney(value)}
+              labelFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+            />
             <Legend />
             <Line
               type="monotone"
@@ -427,107 +502,66 @@ const AccountingAdmin = () => {
       </Box>
       {/* Calculator Section */}
       <Box
-        component={Paper}
-        elevation={4}
+        mb={4}
+        p={2}
         sx={{
-          maxWidth: 600,
-          mx: "auto",
-          my: 4,
-          p: 4,
-          borderRadius: 4,
-          boxShadow: 6,
           background: "#fff",
+          borderRadius: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          flexWrap: "wrap",
         }}
       >
-        <Typography variant="h5" align="center" fontWeight={700} mb={1}>
-          Outcome calculator simulator
-        </Typography>
-        <Typography align="center" color="text.secondary" mb={3}>
-          Maths is confusing. However, maths are a crucial part of your
-          compensation.
-          <br />
-          This tool will help you estimate the value of your generic package.
-        </Typography>
-
-        <Typography variant="subtitle1" fontWeight={700} mb={2}>
-          Company information
-        </Typography>
-
-        <TextField
-          label="Company name"
-          placeholder="Placeholder"
-          fullWidth
-          margin="normal"
-        />
-
-        <Grid container spacing={2} mb={2}>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel>Country</InputLabel>
-              <Select
-                value="UK"
-                startAdornment={
-                  <span role="img" aria-label="UK">
-                    🇬🇧
-                  </span>
-                }
-              >
-                <MenuItem value="UK">United Kingdom</MenuItem>
-                {/* Add more countries */}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl fullWidth>
-              <InputLabel>Currency</InputLabel>
-              <Select value="GBP">
-                <MenuItem value="GBP">£ GBP</MenuItem>
-                {/* Add more currencies */}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={2} mb={2}>
-          <Grid item xs={6}>
-            <TextField label="Annual amount" placeholder="£" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField label="Quantity of options" placeholder="£" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField label="Strike price" placeholder="£" fullWidth />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Total amount of outstanding shares"
-              placeholder="£"
-              fullWidth
-            />
-          </Grid>
-        </Grid>
-
-        <Box
-          sx={{
-            mt: 3,
-            p: 2,
-            borderRadius: 3,
-            background: "#f9f9fb",
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-          }}
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>Brand</InputLabel>
+          <Select
+            value={calcBrand}
+            label="Brand"
+            onChange={(e) => setCalcBrand(e.target.value)}
+          >
+            <MenuItem value="">Select Brand</MenuItem>
+            {brands.map((brand) => (
+              <MenuItem key={brand} value={brand}>
+                {brand}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>Calculation</InputLabel>
+          <Select
+            value={calcType}
+            label="Calculation"
+            onChange={(e) => setCalcType(e.target.value)}
+          >
+            {calculatorOptions.map((opt) => (
+              <MenuItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#2d2d2d", color: "white" }}
+          onClick={handleCalculate}
         >
-          <Typography fontWeight={600} flex={1}>
-            Expected additional dilution
+          Calculate
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ marginLeft: 8 }}
+          onClick={handleExport}
+          disabled={!calcBrand}
+        >
+          Export CSV
+        </Button>
+        {calcResult && (
+          <Typography sx={{ ml: 2, fontWeight: 600, color: "#2d2d2d" }}>
+            {calcResult}
           </Typography>
-          <Slider value={10} min={0} max={100} sx={{ flex: 2 }} />
-          <TextField
-            value={10}
-            InputProps={{ endAdornment: <span>%</span> }}
-            sx={{ width: 70 }}
-          />
-        </Box>
+        )}
       </Box>
       {/* Filters and Table Section */}
       <Box
