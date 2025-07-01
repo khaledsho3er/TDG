@@ -30,6 +30,13 @@ import {
 } from "recharts";
 import axios from "axios";
 import { format, parse, parseISO } from "date-fns";
+import {
+  FaMoneyBillWave,
+  FaPiggyBank,
+  FaCreditCard,
+  FaHandHoldingUsd,
+  FaChartBar,
+} from "react-icons/fa";
 
 const columns = [
   { id: "orderId", label: "Order ID" },
@@ -369,6 +376,34 @@ const AccountingAdmin = () => {
     if (currentPage > totalPages) setCurrentPage(1);
   }, [totalPages]);
 
+  // Totals from filtered logs (sortedLogs)
+  const totalVat = useMemo(
+    () => sortedLogs.reduce((acc, log) => acc + (Number(log.vat) || 0), 0),
+    [sortedLogs]
+  );
+  const totalProfit = useMemo(
+    () =>
+      sortedLogs.reduce(
+        (acc, log) => acc + (Number(log.netAdminProfit) || 0),
+        0
+      ),
+    [sortedLogs]
+  );
+  const totalPaymob = useMemo(
+    () =>
+      sortedLogs.reduce((acc, log) => acc + (Number(log.paymobFee) || 0), 0),
+    [sortedLogs]
+  );
+  const totalBrandPayout = useMemo(
+    () =>
+      sortedLogs.reduce((acc, log) => acc + (Number(log.brandPayout) || 0), 0),
+    [sortedLogs]
+  );
+  const totalSales = useMemo(
+    () => sortedLogs.reduce((acc, log) => acc + (Number(log.total) || 0), 0),
+    [sortedLogs]
+  );
+
   if (loading)
     return (
       <Box
@@ -394,6 +429,152 @@ const AccountingAdmin = () => {
 
   return (
     <Box p={3}>
+      {/* Summary Cards Section */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 3,
+          mb: 4,
+          flexWrap: "wrap",
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            background: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FaMoneyBillWave size={28} style={{ color: "#6b7b58" }} />
+          <Box>
+            <h4 style={{ margin: 0, fontSize: "1.1em", fontWeight: 700 }}>
+              Total Taxes
+            </h4>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: "1.1em" }}>
+              {totalVat.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              E£
+            </p>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            background: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FaPiggyBank size={28} style={{ color: "#6b7b58" }} />
+          <Box>
+            <h4 style={{ margin: 0, fontSize: "1.1em", fontWeight: 700 }}>
+              Total Profit
+            </h4>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: "1.1em" }}>
+              {totalProfit.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              E£
+            </p>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            background: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FaCreditCard size={28} style={{ color: "#6b7b58" }} />
+          <Box>
+            <h4 style={{ margin: 0, fontSize: "1.1em", fontWeight: 700 }}>
+              Total Paymob Fees
+            </h4>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: "1.1em" }}>
+              {totalPaymob.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              E£
+            </p>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            background: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FaHandHoldingUsd size={28} style={{ color: "#6b7b58" }} />
+          <Box>
+            <h4 style={{ margin: 0, fontSize: "1.1em", fontWeight: 700 }}>
+              Total Brand Payout
+            </h4>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: "1.1em" }}>
+              {totalBrandPayout.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              E£
+            </p>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            background: "#fff",
+            borderRadius: 2,
+            boxShadow: 1,
+            p: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FaChartBar size={28} style={{ color: "#6b7b58" }} />
+          <Box>
+            <h4 style={{ margin: 0, fontSize: "1.1em", fontWeight: 700 }}>
+              Total Sales
+            </h4>
+            <p style={{ margin: 0, fontWeight: 600, fontSize: "1.1em" }}>
+              {totalSales.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              E£
+            </p>
+          </Box>
+        </Box>
+      </Box>
       {/* Chart Section */}
       <Box
         mb={4}
