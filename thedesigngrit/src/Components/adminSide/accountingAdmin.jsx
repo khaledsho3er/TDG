@@ -81,7 +81,7 @@ const calculatorOptions = [
   { value: "commission", label: "Commission" },
 ];
 
-function exportToCSV(data, brandName) {
+function exportToCSV(data, brandName, calcType = null) {
   if (!data.length) return;
   const headers = [
     "Order ID",
@@ -132,6 +132,22 @@ function exportToCSV(data, brandName) {
     }
     return val;
   });
+
+  // If a calculation type is provided, add a label to the totals row for that column
+  if (calcType) {
+    const colIdx = {
+      total: 2,
+      vat: 3,
+      shippingFee: 4,
+      paymobFee: 5,
+      commission: 6,
+      brandPayout: 7,
+      netAdminProfit: 8,
+    }[calcType];
+    if (colIdx !== undefined) {
+      totalsRow[colIdx] = `SUM: ${totalsRow[colIdx]}`;
+    }
+  }
 
   let csvContent = headers.join(",") + "\n";
   rows.forEach((row) => {
@@ -325,7 +341,11 @@ const AccountingAdmin = () => {
     const brandLogs = !calcBrand
       ? logs
       : logs.filter((log) => log.brandId?.brandName === calcBrand);
-    exportToCSV(brandLogs, calcBrand || "all_brands");
+    exportToCSV(
+      brandLogs,
+      calcBrand || "all_brands",
+      calcBrand && calcType ? calcType : null
+    );
   };
 
   // Chart filtered logs
