@@ -210,6 +210,8 @@ function getAvailableMonths(data) {
   }));
 }
 
+const ROWS_PER_PAGE = 12;
+
 const AccountingAdmin = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -231,6 +233,8 @@ const AccountingAdmin = () => {
   const [chartDateFrom, setChartDateFrom] = useState("");
   const [chartDateTo, setChartDateTo] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -353,6 +357,17 @@ const AccountingAdmin = () => {
       /^[0-9]{4}-[0-9]{2}$/.test(m.value)
     );
   }, [chartData, chartPeriod]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedLogs.length / ROWS_PER_PAGE);
+  const indexOfLastRow = currentPage * ROWS_PER_PAGE;
+  const indexOfFirstRow = indexOfLastRow - ROWS_PER_PAGE;
+  const currentRows = sortedLogs.slice(indexOfFirstRow, indexOfLastRow);
+
+  // Reset to first page if filters change and current page is out of range
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(1);
+  }, [totalPages]);
 
   if (loading)
     return (
@@ -672,7 +687,7 @@ const AccountingAdmin = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedLogs.map((log) => (
+            {currentRows.map((log) => (
               <TableRow key={log._id}>
                 <TableCell>{log.orderId?._id || "N/A"}</TableCell>
                 <TableCell>{log.brandId?.brandName || "N/A"}</TableCell>
@@ -702,7 +717,7 @@ const AccountingAdmin = () => {
                 </TableCell>
               </TableRow>
             ))}
-            {sortedLogs.length === 0 && (
+            {currentRows.length === 0 && (
               <TableRow>
                 <TableCell colSpan={columns.length} align="center">
                   No data found.
@@ -712,6 +727,33 @@ const AccountingAdmin = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {/* Pagination */}
+      <Box
+        className="pagination"
+        sx={{ display: "flex", justifyContent: "center", mt: 2, gap: 1 }}
+      >
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={currentPage === index + 1 ? "active" : ""}
+            style={{
+              border: "1px solid #2d2d2d",
+              background: currentPage === index + 1 ? "#2d2d2d" : "#fff",
+              color: currentPage === index + 1 ? "#fff" : "#2d2d2d",
+              borderRadius: 4,
+              padding: "4px 12px",
+              fontWeight: 600,
+              cursor: "pointer",
+              margin: "0 2px",
+              outline: "none",
+              minWidth: 32,
+            }}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </Box>
     </Box>
   );
 };
