@@ -257,23 +257,11 @@ const OrderDetails = ({ order, onBack }) => {
     }
   };
 
-  // Calculate values with fallback to "N/A"
-  const subtotal = typeof order.subtotal === "number" ? order.subtotal : "N/A";
-  const shippingFee =
-    typeof order.shippingFee === "number" ? order.shippingFee : "N/A";
-  const discount = typeof order.discount === "number" ? order.discount : 0;
-
-  // Calculate tax (14% of subtotal) if subtotal is a number
-  const tax =
-    typeof subtotal === "number" ? +(subtotal * 0.14).toFixed(2) : "N/A";
-
-  // Calculate total if all values are numbers
-  const total =
-    typeof subtotal === "number" &&
-    typeof tax === "number" &&
-    typeof shippingFee === "number"
-      ? +(subtotal + tax + shippingFee - discount).toFixed(2)
-      : "N/A";
+  const subtotal = order.subtotal ?? "N/A";
+  const tax = order.taxAmount ?? order.tax ?? "N/A"; // Use taxAmount if available, else tax, else N/A
+  const shippingFee = order.shippingFee ?? "N/A";
+  const discount = order.discount ?? 0;
+  const total = order.total ?? "N/A";
 
   return (
     <div>
