@@ -181,10 +181,9 @@ function groupLogsByPeriod(logs, period) {
 }
 
 function getMonthYearLabel(label) {
-  // label: '2025-06' => 'Jun 2025'
-  if (!label) return "";
+  // Only parse if label matches YYYY-MM
+  if (!label || !/^[0-9]{4}-[0-9]{2}$/.test(label)) return label;
   const [year, month] = label.split("-");
-  if (!year || !month) return label;
   const date = new Date(Number(year), Number(month) - 1, 1);
   return format(date, "MMM yyyy");
 }
@@ -350,7 +349,9 @@ const AccountingAdmin = () => {
   // Available months for select menu
   const availableMonths = useMemo(() => {
     if (chartPeriod !== "month") return [];
-    return getAvailableMonths(chartData);
+    return getAvailableMonths(chartData).filter((m) =>
+      /^[0-9]{4}-[0-9]{2}$/.test(m.value)
+    );
   }, [chartData, chartPeriod]);
 
   if (loading)
