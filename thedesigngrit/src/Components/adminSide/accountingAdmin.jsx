@@ -89,10 +89,38 @@ function exportToCSV(data, brandName) {
     log.netAdminProfit ?? "N/A",
     log.date ? new Date(log.date).toLocaleDateString() : "N/A",
   ]);
+
+  // Calculate totals for each money column
+  const sum = (key) =>
+    data.reduce((acc, log) => acc + (Number(log[key]) || 0), 0);
+  const totalsRow = [
+    "", // Order ID
+    "TOTAL", // Brand
+    sum("total"),
+    sum("vat"),
+    sum("shippingFee"),
+    sum("paymobFee"),
+    sum("commission"),
+    sum("brandPayout"),
+    sum("netAdminProfit"),
+    "", // Date
+  ].map((val, idx) => {
+    // Format money columns
+    if ([2, 3, 4, 5, 6, 7, 8].includes(idx) && typeof val === "number") {
+      return val.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+    return val;
+  });
+
   let csvContent = headers.join(",") + "\n";
   rows.forEach((row) => {
     csvContent += row.join(",") + "\n";
   });
+  csvContent += totalsRow.join(",") + "\n";
+
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
@@ -295,7 +323,18 @@ const AccountingAdmin = () => {
         )}
       </Box>
       {/* Filters and Table Section */}
-      <Box display="flex" gap={2} mb={2} flexWrap="wrap">
+      <Box
+        mb={4}
+        p={2}
+        sx={{
+          background: "#fff",
+          borderRadius: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          flexWrap: "wrap",
+        }}
+      >
         <FormControl sx={{ minWidth: 180 }}>
           <InputLabel>Brand</InputLabel>
           <Select
@@ -358,7 +397,6 @@ const AccountingAdmin = () => {
             backgroundColor: "#2d2d2d",
             color: "white",
             marginLeft: "10px",
-            marginTop: "20px",
           }}
           onClick={() => {
             setBrandFilter("");
