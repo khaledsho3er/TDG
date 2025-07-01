@@ -18,6 +18,16 @@ import {
   Typography,
   TableSortLabel,
 } from "@mui/material";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+} from "recharts";
 import axios from "axios";
 
 const columns = [
@@ -130,6 +140,45 @@ function exportToCSV(data, brandName) {
   document.body.removeChild(link);
 }
 
+const chartPeriods = [
+  { value: "week", label: "Weeks" },
+  { value: "month", label: "Months" },
+  { value: "year", label: "Years" },
+];
+
+function groupLogsByPeriod(logs, period) {
+  // Returns [{ label, total }]
+  if (!logs.length) return [];
+  const result = {};
+  logs.forEach((log) => {
+    if (!log.date) return;
+    const date = new Date(log.date);
+    let label = "";
+    if (period === "week") {
+      // Week of year: YYYY-WW
+      const year = date.getFullYear();
+      const firstJan = new Date(date.getFullYear(), 0, 1);
+      const week = Math.ceil(
+        ((date - firstJan) / 86400000 + firstJan.getDay() + 1) / 7
+      );
+      label = `${year}-W${week}`;
+    } else if (period === "month") {
+      label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}`;
+    } else if (period === "year") {
+      label = `${date.getFullYear()}`;
+    }
+    if (!result[label]) result[label] = 0;
+    result[label] += Number(log.total) || 0;
+  });
+  // Sort labels
+  return Object.entries(result)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([label, total]) => ({ label, total: Number(total.toFixed(2)) }));
+}
+
 const AccountingAdmin = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -144,6 +193,12 @@ const AccountingAdmin = () => {
   const [calcBrand, setCalcBrand] = useState("");
   const [calcType, setCalcType] = useState("brandPayout");
   const [calcResult, setCalcResult] = useState(null);
+
+  // Chart states
+  const [chartPeriod, setChartPeriod] = useState("month");
+  const [chartBrand, setChartBrand] = useState("");
+  const [chartDateFrom, setChartDateFrom] = useState("");
+  const [chartDateTo, setChartDateTo] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -234,6 +289,23 @@ const AccountingAdmin = () => {
     exportToCSV(brandLogs, calcBrand);
   };
 
+  // Chart filtered logs
+  const chartFilteredLogs = useMemo(() => {
+    return logs.filter((log) => {
+      if (chartBrand && log.brandId?.brandName !== chartBrand) return false;
+      if (chartDateFrom && new Date(log.date) < new Date(chartDateFrom))
+        return false;
+      if (chartDateTo && new Date(log.date) > new Date(chartDateTo))
+        return false;
+      return true;
+    });
+  }, [logs, chartBrand, chartDateFrom, chartDateTo]);
+
+  const chartData = useMemo(
+    () => groupLogsByPeriod(chartFilteredLogs, chartPeriod),
+    [chartFilteredLogs, chartPeriod]
+  );
+
   if (loading)
     return (
       <Box
@@ -259,6 +331,98 @@ const AccountingAdmin = () => {
 
   return (
     <Box p={3}>
+      {/* Chart Section */}
+      <Box
+        mb={4}
+        p={2}
+        sx={{ background: "#fff", borderRadius: 3, boxShadow: 1 }}
+      >
+        <Box display="flex" alignItems="center" gap={2} mb={2} flexWrap="wrap">
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            fontFamily="Montserrat"
+            sx={{ flex: 1 }}
+          >
+            Sales Overview
+          </Typography>
+          {chartPeriods.map((period) => (
+            <Button
+              key={period.value}
+              variant={chartPeriod === period.value ? "outlined" : "text"}
+              size="small"
+              sx={{
+                borderColor: "#2d2d2d",
+                color: chartPeriod === period.value ? "#2d2d2d" : "#888",
+                fontWeight: 600,
+                borderRadius: 2,
+                minWidth: 70,
+                px: 1.5,
+                background:
+                  chartPeriod === period.value ? "#f5f5f5" : "transparent",
+                boxShadow: "none",
+                textTransform: "none",
+              }}
+              onClick={() => setChartPeriod(period.value)}
+            >
+              {period.label}
+            </Button>
+          ))}
+          <FormControl size="small" sx={{ minWidth: 140 }}>
+            <InputLabel>Brand</InputLabel>
+            <Select
+              value={chartBrand}
+              label="Brand"
+              onChange={(e) => setChartBrand(e.target.value)}
+            >
+              <MenuItem value="">All Brands</MenuItem>
+              {brands.map((brand) => (
+                <MenuItem key={brand} value={brand}>
+                  {brand}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            label="From"
+            type="date"
+            size="small"
+            InputLabelProps={{ shrink: true }}
+            value={chartDateFrom}
+            onChange={(e) => setChartDateFrom(e.target.value)}
+            sx={{ minWidth: 120 }}
+          />
+          <TextField
+            label="To"
+            type="date"
+            size="small"
+            InputLabelProps={{ shrink: true }}
+            value={chartDateTo}
+            onChange={(e) => setChartDateTo(e.target.value)}
+            sx={{ minWidth: 120 }}
+          />
+        </Box>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="label" style={{ fontFamily: "Montserrat" }} />
+            <YAxis style={{ fontFamily: "Montserrat" }} />
+            <Tooltip formatter={(value) => formatMoney(value)} />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="total"
+              name="Total Sales"
+              stroke="#2d2d2d"
+              strokeWidth={2}
+              dot={{ r: 3 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
       {/* Calculator Section */}
       <Box
         mb={4}
