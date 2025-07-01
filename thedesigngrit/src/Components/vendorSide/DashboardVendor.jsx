@@ -55,15 +55,6 @@ const DashboardVendor = () => {
   const [yearlySales, setYearlySales] = useState([]);
   const [chartData, setChartData] = useState([]);
 
-  const [activeOrdersStats, setActiveOrdersStats] = useState({
-    count: 0,
-    totalSum: 0,
-  });
-  const [completedOrdersStats, setCompletedOrdersStats] = useState({
-    count: 0,
-    totalSum: 0,
-  });
-
   // Add date calculation
   const getCurrentDateRange = () => {
     const today = new Date();
@@ -270,62 +261,18 @@ const DashboardVendor = () => {
         .sort((a, b) => a[key] - b[key]);
     }
 
-    function formatWeekLabel(weekNumber) {
-      // Simple approach: show week number with a more readable format
-      const currentYear = new Date().getFullYear();
-      const startOfYear = new Date(currentYear, 0, 1);
-
-      // Calculate the date for the given week number
-      const targetDate = new Date(startOfYear);
-      targetDate.setDate(startOfYear.getDate() + (weekNumber - 1) * 7);
-
-      const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      return `${monthNames[targetDate.getMonth()]} ${targetDate.getDate()}`;
-    }
-
-    function formatMonthLabel(monthNumber) {
-      const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      return monthNames[monthNumber - 1] || `Month ${monthNumber}`;
-    }
-
     let formattedData = [];
     switch (activeTab) {
       case "weekly":
         formattedData = aggregateAndSort(weeklySales, "week").map((item) => ({
           ...item,
-          week: formatWeekLabel(item.week),
+          week: `Week ${item.week}`,
         }));
         break;
       case "monthly":
         formattedData = aggregateAndSort(monthlySales, "month").map((item) => ({
           ...item,
-          month: formatMonthLabel(item.month),
+          month: `Month ${item.month}`,
         }));
         break;
       case "yearly":
@@ -339,36 +286,6 @@ const DashboardVendor = () => {
     }
     setChartData(formattedData);
   }, [activeTab, weeklySales, monthlySales, yearlySales]);
-
-  // Fetch active and completed orders stats for vendor
-  useEffect(() => {
-    const fetchActiveOrdersStats = async () => {
-      if (!vendor?.brandId) return;
-      try {
-        const response = await fetch(
-          `https://api.thedesigngrit.com/api/orders/brand/orders/active-stats/${vendor.brandId}`
-        );
-        const data = await response.json();
-        setActiveOrdersStats(data);
-      } catch (error) {
-        console.error("Error fetching active orders stats:", error);
-      }
-    };
-    const fetchCompletedOrdersStats = async () => {
-      if (!vendor?.brandId) return;
-      try {
-        const response = await fetch(
-          `https://api.thedesigngrit.com/api/orders/brand/orders/completed-stats/${vendor.brandId}`
-        );
-        const data = await response.json();
-        setCompletedOrdersStats(data);
-      } catch (error) {
-        console.error("Error fetching completed orders stats:", error);
-      }
-    };
-    fetchActiveOrdersStats();
-    fetchCompletedOrdersStats();
-  }, [vendor]);
 
   if (selectedOrder) {
     return (
@@ -434,11 +351,11 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Active Orders sales</h3>
-            <p>E£ {activeOrdersStats.totalSum}</p>
+            <p>E£ {confirmedSales}</p>
             <h3>Active Orders </h3>
-            <p>{activeOrdersStats.count}</p>
+            <p> {activeOrders}</p>
             <span>
-              {/* You can add a percentage or trend here if you want */}
+              ▲ {confirmedSalesPercentageChange}% Compared to Last Month
             </span>
           </div>
         </div>
@@ -449,11 +366,11 @@ const DashboardVendor = () => {
           </div>
           <div className="card-content-vendor">
             <h3>Completed Orders sales</h3>
-            <p>E£ {completedOrdersStats.totalSum}</p>
+            <p>E£ {deliveredSales}</p>
             <h3>Completed Orders</h3>
-            <p>{completedOrdersStats.count}</p>
+            <p> {completedOrders}</p>
             <span>
-              {/* You can add a percentage or trend here if you want */}
+              ▲ {deliveredSalesPercentageChange}% Compared to Last Month
             </span>
           </div>
         </div>
@@ -524,8 +441,8 @@ const DashboardVendor = () => {
                   />
                   <YAxis />
                   <Tooltip />
-                  <Legend style={{ marginTop: "10px" }} />
-                  <Line type="monotone" dataKey="sale" stroke="#8884d8" />
+                  <Legend />
+                  <Line type="monotone" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
