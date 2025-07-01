@@ -57,6 +57,51 @@ const MoneyCell = ({ value }) =>
     </span>
   );
 
+const calculatorOptions = [
+  { value: "brandPayout", label: "Brand Payout" },
+  { value: "total", label: "Total Sales" },
+  { value: "commission", label: "Commission" },
+];
+
+function exportToCSV(data, brandName) {
+  if (!data.length) return;
+  const headers = [
+    "Order ID",
+    "Brand",
+    "Total (EGP)",
+    "VAT",
+    "Shipping",
+    "Paymob Fee",
+    "Commission",
+    "Brand Payout",
+    "Admin Profit",
+    "Date",
+  ];
+  const rows = data.map((log) => [
+    log.orderId?._id || "N/A",
+    log.brandId?.brandName || "N/A",
+    log.total ?? "N/A",
+    log.vat ?? "N/A",
+    log.shippingFee ?? "N/A",
+    log.paymobFee ?? "N/A",
+    log.commission ?? "N/A",
+    log.brandPayout ?? "N/A",
+    log.netAdminProfit ?? "N/A",
+    log.date ? new Date(log.date).toLocaleDateString() : "N/A",
+  ]);
+  let csvContent = headers.join(",") + "\n";
+  rows.forEach((row) => {
+    csvContent += row.join(",") + "\n";
+  });
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", `${brandName || "all_brands"}_financials.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 const AccountingAdmin = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,6 +111,11 @@ const AccountingAdmin = () => {
   const [dateTo, setDateTo] = useState("");
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
+
+  // Calculator states
+  const [calcBrand, setCalcBrand] = useState("");
+  const [calcType, setCalcType] = useState("brandPayout");
+  const [calcResult, setCalcResult] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -123,6 +173,39 @@ const AccountingAdmin = () => {
     return sorted;
   }, [filteredLogs, sortBy, sortOrder]);
 
+  // Calculator logic
+  const handleCalculate = () => {
+    if (!calcBrand) {
+      setCalcResult("Please select a brand.");
+      return;
+    }
+    const brandLogs = logs.filter(
+      (log) => log.brandId?.brandName === calcBrand
+    );
+    if (!brandLogs.length) {
+      setCalcResult("No data for this brand.");
+      return;
+    }
+    const sum = brandLogs.reduce(
+      (acc, log) => acc + (Number(log[calcType]) || 0),
+      0
+    );
+    setCalcResult(
+      `${
+        calculatorOptions.find((opt) => opt.value === calcType).label
+      } for ${calcBrand}: ${formatMoney(sum)}`
+    );
+  };
+
+  // Calculator export logic
+  const handleExport = () => {
+    if (!calcBrand) return;
+    const brandLogs = logs.filter(
+      (log) => log.brandId?.brandName === calcBrand
+    );
+    exportToCSV(brandLogs, calcBrand);
+  };
+
   if (loading)
     return (
       <Box
@@ -148,9 +231,70 @@ const AccountingAdmin = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h4" mb={3} fontWeight={700} fontFamily="Montserrat">
-        Admin Accounting
-      </Typography>
+      {/* Calculator Section */}
+      <Box
+        mb={4}
+        p={2}
+        sx={{
+          background: "#f5f5f5",
+          borderRadius: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          flexWrap: "wrap",
+        }}
+      >
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>Brand</InputLabel>
+          <Select
+            value={calcBrand}
+            label="Brand"
+            onChange={(e) => setCalcBrand(e.target.value)}
+          >
+            <MenuItem value="">Select Brand</MenuItem>
+            {brands.map((brand) => (
+              <MenuItem key={brand} value={brand}>
+                {brand}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>Calculation</InputLabel>
+          <Select
+            value={calcType}
+            label="Calculation"
+            onChange={(e) => setCalcType(e.target.value)}
+          >
+            {calculatorOptions.map((opt) => (
+              <MenuItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: "#2d2d2d", color: "white" }}
+          onClick={handleCalculate}
+        >
+          Calculate
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ marginLeft: 8 }}
+          onClick={handleExport}
+          disabled={!calcBrand}
+        >
+          Export CSV
+        </Button>
+        {calcResult && (
+          <Typography sx={{ ml: 2, fontWeight: 600, color: "#2d2d2d" }}>
+            {calcResult}
+          </Typography>
+        )}
+      </Box>
+      {/* Filters and Table Section */}
       <Box display="flex" gap={2} mb={2} flexWrap="wrap">
         <FormControl sx={{ minWidth: 180 }}>
           <InputLabel>Brand</InputLabel>
