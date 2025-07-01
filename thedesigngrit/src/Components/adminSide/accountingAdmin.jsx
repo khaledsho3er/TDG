@@ -17,6 +17,8 @@ import {
   CircularProgress,
   Typography,
   TableSortLabel,
+  Grid,
+  Slider,
 } from "@mui/material";
 import {
   LineChart,
@@ -425,66 +427,107 @@ const AccountingAdmin = () => {
       </Box>
       {/* Calculator Section */}
       <Box
-        mb={4}
-        p={2}
+        component={Paper}
+        elevation={4}
         sx={{
-          background: "#f5f5f5",
-          borderRadius: 2,
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-          flexWrap: "wrap",
+          maxWidth: 600,
+          mx: "auto",
+          my: 4,
+          p: 4,
+          borderRadius: 4,
+          boxShadow: 6,
+          background: "#fff",
         }}
       >
-        <FormControl sx={{ minWidth: 180 }}>
-          <InputLabel>Brand</InputLabel>
-          <Select
-            value={calcBrand}
-            label="Brand"
-            onChange={(e) => setCalcBrand(e.target.value)}
-          >
-            <MenuItem value="">Select Brand</MenuItem>
-            {brands.map((brand) => (
-              <MenuItem key={brand} value={brand}>
-                {brand}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ minWidth: 180 }}>
-          <InputLabel>Calculation</InputLabel>
-          <Select
-            value={calcType}
-            label="Calculation"
-            onChange={(e) => setCalcType(e.target.value)}
-          >
-            {calculatorOptions.map((opt) => (
-              <MenuItem key={opt.value} value={opt.value}>
-                {opt.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "#2d2d2d", color: "white" }}
-          onClick={handleCalculate}
+        <Typography variant="h5" align="center" fontWeight={700} mb={1}>
+          Outcome calculator simulator
+        </Typography>
+        <Typography align="center" color="text.secondary" mb={3}>
+          Maths is confusing. However, maths are a crucial part of your
+          compensation.
+          <br />
+          This tool will help you estimate the value of your generic package.
+        </Typography>
+
+        <Typography variant="subtitle1" fontWeight={700} mb={2}>
+          Company information
+        </Typography>
+
+        <TextField
+          label="Company name"
+          placeholder="Placeholder"
+          fullWidth
+          margin="normal"
+        />
+
+        <Grid container spacing={2} mb={2}>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel>Country</InputLabel>
+              <Select
+                value="UK"
+                startAdornment={
+                  <span role="img" aria-label="UK">
+                    🇬🇧
+                  </span>
+                }
+              >
+                <MenuItem value="UK">United Kingdom</MenuItem>
+                {/* Add more countries */}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel>Currency</InputLabel>
+              <Select value="GBP">
+                <MenuItem value="GBP">£ GBP</MenuItem>
+                {/* Add more currencies */}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={2} mb={2}>
+          <Grid item xs={6}>
+            <TextField label="Annual amount" placeholder="£" fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Quantity of options" placeholder="£" fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField label="Strike price" placeholder="£" fullWidth />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Total amount of outstanding shares"
+              placeholder="£"
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            mt: 3,
+            p: 2,
+            borderRadius: 3,
+            background: "#f9f9fb",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
         >
-          Calculate
-        </Button>
-        <Button
-          variant="outlined"
-          style={{ marginLeft: 8 }}
-          onClick={handleExport}
-          disabled={!calcBrand}
-        >
-          Export CSV
-        </Button>
-        {calcResult && (
-          <Typography sx={{ ml: 2, fontWeight: 600, color: "#2d2d2d" }}>
-            {calcResult}
+          <Typography fontWeight={600} flex={1}>
+            Expected additional dilution
           </Typography>
-        )}
+          <Slider value={10} min={0} max={100} sx={{ flex: 2 }} />
+          <TextField
+            value={10}
+            InputProps={{ endAdornment: <span>%</span> }}
+            sx={{ width: 70 }}
+          />
+        </Box>
       </Box>
       {/* Filters and Table Section */}
       <Box
