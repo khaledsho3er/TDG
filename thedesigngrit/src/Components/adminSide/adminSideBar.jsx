@@ -100,6 +100,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Our Employees
         </li>
+        <li
+          onClick={() => setActivePage("AccountingAdmin")}
+          className="sidebar-item-vendor"
+        >
+          Accounting
+        </li>
       </ul>
     </aside>
   );
