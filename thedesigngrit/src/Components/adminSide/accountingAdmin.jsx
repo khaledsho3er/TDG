@@ -18,18 +18,19 @@ import {
   Typography,
   TableSortLabel,
 } from "@mui/material";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import axios from "axios";
 
 const columns = [
   { id: "orderId", label: "Order ID" },
   { id: "brand", label: "Brand" },
-  { id: "total", label: "Total (EGP)" },
-  { id: "vat", label: "VAT" },
-  { id: "shippingFee", label: "Shipping" },
-  { id: "paymobFee", label: "Paymob Fee" },
-  { id: "commission", label: "Commission" },
-  { id: "brandPayout", label: "Brand Payout" },
-  { id: "netAdminProfit", label: "Admin Profit" },
+  { id: "total", label: "Total (EGP)", money: true },
+  { id: "vat", label: "VAT", money: true },
+  { id: "shippingFee", label: "Shipping", money: true },
+  { id: "paymobFee", label: "Paymob Fee", money: true },
+  { id: "commission", label: "Commission", money: true },
+  { id: "brandPayout", label: "Brand Payout", money: true },
+  { id: "netAdminProfit", label: "Admin Profit", money: true },
   { id: "date", label: "Date" },
 ];
 
@@ -39,6 +40,27 @@ const sortOptions = [
   { value: "brandPayout", label: "Brand Payout" },
   { value: "date", label: "Date" },
 ];
+
+function formatMoney(value) {
+  if (value === null || value === undefined || value === "N/A") return "N/A";
+  return `${Number(value).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })} E£`;
+}
+
+const MoneyCell = ({ value }) =>
+  value === "N/A" ? (
+    <span>N/A</span>
+  ) : (
+    <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <AttachMoneyIcon
+        fontSize="small"
+        sx={{ color: "#6b7b58", verticalAlign: "middle" }}
+      />
+      {formatMoney(value)}
+    </span>
+  );
 
 const AccountingAdmin = () => {
   const [logs, setLogs] = useState([]);
@@ -229,13 +251,27 @@ const AccountingAdmin = () => {
               <TableRow key={log._id}>
                 <TableCell>{log.orderId?._id || "N/A"}</TableCell>
                 <TableCell>{log.brandId?.brandName || "N/A"}</TableCell>
-                <TableCell>{log.total ?? "N/A"}</TableCell>
-                <TableCell>{log.vat ?? "N/A"}</TableCell>
-                <TableCell>{log.shippingFee ?? "N/A"}</TableCell>
-                <TableCell>{log.paymobFee ?? "N/A"}</TableCell>
-                <TableCell>{log.commission ?? "N/A"}</TableCell>
-                <TableCell>{log.brandPayout ?? "N/A"}</TableCell>
-                <TableCell>{log.netAdminProfit ?? "N/A"}</TableCell>
+                <TableCell>
+                  <MoneyCell value={log.total} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.vat} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.shippingFee} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.paymobFee} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.commission} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.brandPayout} />
+                </TableCell>
+                <TableCell>
+                  <MoneyCell value={log.netAdminProfit} />
+                </TableCell>
                 <TableCell>
                   {log.date ? new Date(log.date).toLocaleDateString() : "N/A"}
                 </TableCell>
