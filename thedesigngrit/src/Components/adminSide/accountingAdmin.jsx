@@ -17,6 +17,11 @@ import {
   CircularProgress,
   Typography,
   TableSortLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
 } from "@mui/material";
 import {
   LineChart,
@@ -37,6 +42,7 @@ import {
   FaHandHoldingUsd,
   FaChartBar,
 } from "react-icons/fa";
+import CloseIcon from "@mui/icons-material/Close";
 
 const columns = [
   { id: "orderId", label: "Order ID" },
@@ -265,6 +271,7 @@ const AccountingAdmin = () => {
   const [selectedMonth, setSelectedMonth] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLog, setSelectedLog] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -892,7 +899,11 @@ const AccountingAdmin = () => {
           </TableHead>
           <TableBody>
             {currentRows.map((log) => (
-              <TableRow key={log._id}>
+              <TableRow
+                key={log._id}
+                style={{ cursor: "pointer" }}
+                onClick={() => setSelectedLog(log)}
+              >
                 <TableCell>{log.orderId?._id || "N/A"}</TableCell>
                 <TableCell>{log.brandId?.brandName || "N/A"}</TableCell>
                 <TableCell>
@@ -958,6 +969,88 @@ const AccountingAdmin = () => {
           </button>
         ))}
       </Box>
+      {/* Details Dialog */}
+      <Dialog
+        open={!!selectedLog}
+        onClose={() => setSelectedLog(null)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          Row Details
+          <IconButton onClick={() => setSelectedLog(null)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          {selectedLog && (
+            <Box
+              sx={{
+                fontFamily: "Montserrat",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+              }}
+            >
+              <div>
+                <strong>Order ID:</strong> {selectedLog.orderId?._id || "N/A"}
+              </div>
+              <div>
+                <strong>Brand:</strong>{" "}
+                {selectedLog.brandId?.brandName || "N/A"}
+              </div>
+              <div>
+                <strong>Total (EGP):</strong> {formatMoney(selectedLog.total)}
+              </div>
+              <div>
+                <strong>VAT:</strong> {formatMoney(selectedLog.vat)}
+              </div>
+              <div>
+                <strong>Shipping:</strong>{" "}
+                {formatMoney(selectedLog.shippingFee)}
+              </div>
+              <div>
+                <strong>Paymob Fee:</strong>{" "}
+                {formatMoney(selectedLog.paymobFee)}
+              </div>
+              <div>
+                <strong>Commission:</strong>{" "}
+                {formatMoney(selectedLog.commission)}
+              </div>
+              <div>
+                <strong>Brand Payout:</strong>{" "}
+                {formatMoney(selectedLog.brandPayout)}
+              </div>
+              <div>
+                <strong>Admin Profit:</strong>{" "}
+                {formatMoney(selectedLog.netAdminProfit)}
+              </div>
+              <div>
+                <strong>Date:</strong>{" "}
+                {selectedLog.date
+                  ? new Date(selectedLog.date).toLocaleDateString()
+                  : "N/A"}
+              </div>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setSelectedLog(null)}
+            color="primary"
+            variant="contained"
+            sx={{ background: "#2d2d2d" }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
