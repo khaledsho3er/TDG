@@ -95,23 +95,24 @@ function exportToCSV(data, brandName, calcType = null) {
     "Admin Profit",
     "Date",
   ];
+  const wrap = (val) => `"${val}"`;
   const rows = data.map((log) => [
-    log.orderId?._id || "N/A",
-    log.brandId?.brandName || "N/A",
-    log.total ?? "N/A",
-    log.vat ?? "N/A",
-    log.shippingFee ?? "N/A",
-    log.paymobFee ?? "N/A",
-    log.commission ?? "N/A",
-    log.brandPayout ?? "N/A",
-    log.netAdminProfit ?? "N/A",
-    log.date ? new Date(log.date).toLocaleDateString() : "N/A",
+    wrap(log.orderId?._id || "N/A"),
+    wrap(log.brandId?.brandName || "N/A"),
+    wrap(log.total ?? "N/A"),
+    wrap(log.vat ?? "N/A"),
+    wrap(log.shippingFee ?? "N/A"),
+    wrap(log.paymobFee ?? "N/A"),
+    wrap(log.commission ?? "N/A"),
+    wrap(log.brandPayout ?? "N/A"),
+    wrap(log.netAdminProfit ?? "N/A"),
+    wrap(log.date ? new Date(log.date).toLocaleDateString() : "N/A"),
   ]);
 
   // Calculate totals for each money column
   const sum = (key) =>
     data.reduce((acc, log) => acc + (Number(log[key]) || 0), 0);
-  const totalsRow = [
+  let totalsRow = [
     "", // Order ID
     "TOTAL", // Brand
     sum("total"),
@@ -149,7 +150,13 @@ function exportToCSV(data, brandName, calcType = null) {
     }
   }
 
-  let csvContent = headers.join(",") + "\n";
+  // Ensure totalsRow matches header length and wrap all values
+  totalsRow = totalsRow.map(wrap);
+  while (totalsRow.length < headers.length) totalsRow.push(wrap(""));
+  while (totalsRow.length > headers.length)
+    totalsRow = totalsRow.slice(0, headers.length);
+
+  let csvContent = headers.map(wrap).join(",") + "\n";
   rows.forEach((row) => {
     csvContent += row.join(",") + "\n";
   });
