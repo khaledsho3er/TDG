@@ -1,16 +1,19 @@
-// BillSummary.js
 import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import PaymentIcons from "../paymentsIcons";
 
 function BillSummary({ cartItems }) {
-  // Calculate subtotal, shipping, and total
+  // Calculate subtotal, VAT, shipping, and total
   const subtotal = cartItems.reduce(
-    (total, item) => total + (item.unitPrice || item.salePrice) * item.quantity,
+    (total, item) =>
+      total + (item.unitPrice || item.salePrice || 0) * (item.quantity || 1),
     0
   );
-  const shipping = 100; // Example fixed shipping cost
-  const total = subtotal + shipping;
+
+  const vatRate = 0.14;
+  const vatAmount = Math.round(subtotal * vatRate);
+  const shipping = 100;
+  const total = subtotal + vatAmount + shipping;
 
   return (
     <Box className="Ordersummary-firstrow-secondcolumn">
@@ -44,7 +47,6 @@ function BillSummary({ cartItems }) {
         >
           {cartItems.map((item, index) => (
             <Box key={index} className="ordersummary-cart-item">
-              {/* Product Image */}
               <img
                 src={
                   `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${item.image}` ||
@@ -106,6 +108,10 @@ function BillSummary({ cartItems }) {
           <span>{subtotal.toLocaleString()} E£</span>
         </div>
         <div className="ordersummary-cart-summary-row">
+          <span>VAT (14%):</span>
+          <span>{vatAmount.toLocaleString()} E£</span>
+        </div>
+        <div className="ordersummary-cart-summary-row">
           <span>Shipping:</span>
           <span>{shipping.toLocaleString()} E£</span>
         </div>
@@ -114,6 +120,7 @@ function BillSummary({ cartItems }) {
           <span>{total.toLocaleString()} E£</span>
         </div>
       </Box>
+
       <Box className="Ordersummary-firstrow-secondcolumn-secondrow">
         <PaymentIcons />
       </Box>
