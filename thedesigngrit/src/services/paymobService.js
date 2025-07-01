@@ -60,7 +60,15 @@ const paymobService = {
       console.log("Initializing payment with data:", paymentData);
 
       // Extract billing details from the payment data
-      const { billingDetails, total, cartItems, shippingDetails } = paymentData;
+      const {
+        billingDetails,
+        subtotal = 0,
+        taxAmount = 0,
+        shippingFee = 0,
+        total = 0,
+        cartItems = [],
+        shippingDetails,
+      } = paymentData;
 
       // Fix: Ensure amount_cents is properly calculated for each item
       const items = cartItems.map((item) => {
@@ -86,11 +94,18 @@ const paymobService = {
 
       console.log("Prepared items for payment:", items);
       console.log("usersession: ", userSession.id || userSession._id);
+      const finalAmountCents = Math.round(
+        (subtotal + taxAmount + shippingFee) * 100
+      );
+
       // Prepare the order data for the backend
       const orderData = {
         orderData: {
           customerId: userSession.id || userSession._id, // Ensure this is taken from the authenticated user
-          total: total,
+          total: finalAmountCents / 100, // Store total in EGP
+          subtotal,
+          taxAmount,
+          shippingFee,
           billingDetails: {
             apartment:
               billingDetails?.apartment || shippingDetails?.apartment || "N/A",

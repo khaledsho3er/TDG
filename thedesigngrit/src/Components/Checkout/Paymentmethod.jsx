@@ -159,11 +159,18 @@ function PaymentForm({
         console.log("Enhanced cart items with proper IDs:", enhancedCartItems);
         console.log("Billing details in paymentMethod:", billingDetails);
         console.log("Shipping details in paymentMethod:", shippingDetails);
+        const subtotal = billData.subtotal || 0;
+        const shippingFee = billData.shippingFee || 0;
+        const taxAmount = +(subtotal * 0.14).toFixed(2);
+        const finalTotal = +(subtotal + taxAmount + shippingFee).toFixed(2);
         const paymentData = {
-          total: billData.total || 0,
+          total: finalTotal,
           billingDetails: billingDetails,
           cartItems: enhancedCartItems || [],
           shippingDetails: shippingDetails || {},
+          subtotal,
+          taxAmount,
+          shippingFee,
         };
 
         console.log("Sending payment data:", paymentData);
