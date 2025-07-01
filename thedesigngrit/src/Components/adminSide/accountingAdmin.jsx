@@ -54,10 +54,7 @@ const MoneyCell = ({ value }) =>
     <span>N/A</span>
   ) : (
     <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
-      <AttachMoneyIcon
-        fontSize="small"
-        sx={{ color: "#6b7b58", verticalAlign: "middle" }}
-      />
+      E£
       {formatMoney(value)}
     </span>
   );
@@ -214,7 +211,13 @@ const AccountingAdmin = () => {
           </Select>
         </FormControl>
         <Button
-          variant="outlined"
+          variant="contained"
+          style={{
+            backgroundColor: "#2d2d2d",
+            color: "white",
+            marginLeft: "10px",
+            marginTop: "20px",
+          }}
           onClick={() => {
             setBrandFilter("");
             setDateFrom("");
