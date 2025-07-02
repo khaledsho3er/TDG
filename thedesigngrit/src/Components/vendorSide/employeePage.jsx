@@ -206,7 +206,15 @@ const EmployeePage = () => {
         {editPopupVisible && currentVendor && (
           <div
             className="requestInfo-popup-overlay"
-            style={{ backgroundColor: "white" }}
+            style={{
+              backgroundColor: "white",
+              minHeight: "100vh",
+              minWidth: "100vw",
+              position: "fixed",
+              top: 0,
+              left: 0,
+              zIndex: 1000,
+            }}
           >
             <div className="requestInfo-popup">
               <div className="requestInfo-popup-header">

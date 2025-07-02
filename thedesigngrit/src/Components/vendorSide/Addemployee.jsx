@@ -13,9 +13,12 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
 import * as Yup from "yup"; // Import Yup
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const VendorSignup = ({ open, onClose, refreshList }) => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
@@ -32,6 +35,7 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
   const [errors, setErrors] = useState({}); // State to hold error messages
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [brandName, setBrandName] = useState(""); // State to store the brand name
+  const [showPassword, setShowPassword] = useState(false);
 
   // Define the validation schema
   const validationSchema = Yup.object().shape({
@@ -209,13 +213,37 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
               <TextField
                 label="Set Password"
                 fullWidth
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 error={!!errors.password}
-                helperText={errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{ mt: 0.5 }}
+              >
+                Password must be at least 6 characters.
+              </Typography>
+              {errors.password && (
+                <Typography variant="caption" color="error">
+                  {errors.password}
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
