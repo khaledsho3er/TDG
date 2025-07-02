@@ -96,10 +96,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             isLocked("dashboard") ? { pointerEvents: "none", opacity: 0.5 } : {}
           }
         >
-          <span className="sidebar-item-content">
-            <RiDashboard3Fill className="sidebar-item-icon" />
-            <span className="sidebar-item-text">Dashboard</span>
-            {isLocked("dashboard") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <RiDashboard3Fill className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Dashboard</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("dashboard") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -113,10 +126,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               : {}
           }
         >
-          <span className="sidebar-item-content">
-            <FaBell className="sidebar-item-icon" />
-            <span className="sidebar-item-text">Notifications</span>
-            {isLocked("notifications") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <FaBell className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Notifications</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("notifications") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -130,10 +156,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               : {}
           }
         >
-          <span className="sidebar-item-content">
-            <LuPackageOpen className="sidebar-item-icon" />
-            <span className="sidebar-item-text">All Products</span>
-            {isLocked("allProducts") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <LuPackageOpen className="sidebar-item-icon" />
+              <span className="sidebar-item-text">All Products</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("allProducts") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -143,10 +182,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             isLocked("orderList") ? { pointerEvents: "none", opacity: 0.5 } : {}
           }
         >
-          <span className="sidebar-item-content">
-            <TbTruckDelivery className="sidebar-item-icon" />
-            <span className="sidebar-item-text">Order List</span>
-            {isLocked("orderList") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <TbTruckDelivery className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Order List</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("orderList") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -163,10 +215,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               : {}
           }
         >
-          <span className="sidebar-item-content">
-            <FaMoneyBill className="sidebar-item-icon" />
-            <span className="sidebar-item-text">Quotation List</span>
-            {isLocked("quotationsList") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <FaMoneyBill className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Quotation List</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("quotationsList") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -183,12 +248,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               : {}
           }
         >
-          <span className="sidebar-item-content">
-            <HiBuildingStorefront className="sidebar-item-icon" />
-            <span className="sidebar-item-text">View In Store</span>
-            {isLocked("ViewInStoreVendor") && (
-              <FaLock style={{ marginLeft: 8 }} />
-            )}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <HiBuildingStorefront className="sidebar-item-icon" />
+              <span className="sidebar-item-text">View In Store</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("ViewInStoreVendor") && <FaLock />}
+            </span>
           </span>
         </li>
         <li
@@ -205,10 +281,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               : {}
           }
         >
-          <span className="sidebar-item-content">
-            <FaMoneyBill className="sidebar-item-icon" />
-            <span className="sidebar-item-text">Promotions</span>
-            {isLocked("promotionsPage") && <FaLock style={{ marginLeft: 8 }} />}
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <FaMoneyBill className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Promotions</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("promotionsPage") && <FaLock />}
+            </span>
           </span>
         </li>
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
@@ -217,9 +306,19 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("BrandForm")}
             className={getActiveClass("BrandForm", false)}
           >
-            <span className="sidebar-item-content">
-              <FaWpforms className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Brand Form</span>
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <FaWpforms className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Brand Form</span>
+              </span>
+              <span style={{ width: 24 }}></span>
             </span>
           </li>
         )}
@@ -229,9 +328,19 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             onClick={() => setActivePage("BrandingPage")}
             className={getActiveClass("BrandingPage", false)}
           >
-            <span className="sidebar-item-content">
-              <ImProfile className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Brand Profile</span>
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <ImProfile className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Brand Profile</span>
+              </span>
+              <span style={{ width: 24 }}></span>
             </span>
           </li>
         )}
@@ -248,10 +357,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 : {}
             }
           >
-            <span className="sidebar-item-content">
-              <MdAccountBalance className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Accounting</span>
-              {isLocked("Accounting") && <FaLock style={{ marginLeft: 8 }} />}
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <MdAccountBalance className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Accounting</span>
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("Accounting") && <FaLock />}
+              </span>
             </span>
           </li>
         )}
@@ -268,10 +390,23 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 : {}
             }
           >
-            <span className="sidebar-item-content">
-              <FaUsers className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Employees</span>
-              {isLocked("EmployeePage") && <FaLock style={{ marginLeft: 8 }} />}
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <FaUsers className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Employees</span>
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("EmployeePage") && <FaLock />}
+              </span>
             </span>
           </li>
         )}
