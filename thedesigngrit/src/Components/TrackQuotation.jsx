@@ -325,7 +325,8 @@ function TrackQuotation() {
                 </Link>
                 .
               </Typography>
-            ) : selectedQuotation?.quotePrice ? (
+            ) : selectedQuotation?.quotePrice &&
+              selectedQuotation?.ClientApproval === true ? (
               <>
                 <button
                   onClick={() => handleDealDecision(true)}
