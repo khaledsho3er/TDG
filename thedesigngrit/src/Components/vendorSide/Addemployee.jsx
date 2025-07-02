@@ -134,7 +134,13 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      sx={{ borderRadius: "15px" }}
+    >
       <DialogTitle style={{ fontWeight: "Bold", fontFamily: "Horizon" }}>
         Add New Employee
       </DialogTitle>

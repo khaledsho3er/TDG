@@ -204,10 +204,13 @@ const EmployeePage = () => {
           </>
         )}
         {editPopupVisible && currentVendor && (
-          <div className="requestInfo-popup-overlay">
+          <div
+            className="requestInfo-popup-overlay"
+            style={{ backgroundColor: "white" }}
+          >
             <div className="requestInfo-popup">
               <div className="requestInfo-popup-header">
-                <h2>Edit Vendor</h2>
+                <h2 style={{ color: "#2d2d2d" }}>Edit Vendor</h2>
                 <IconButton
                   onClick={handleEditClose}
                   sx={{
