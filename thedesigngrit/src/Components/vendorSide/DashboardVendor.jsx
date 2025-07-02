@@ -472,7 +472,7 @@ const DashboardVendor = () => {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "#f8f9fa",
+                  backgroundColor: "transparent",
                   borderRadius: "12px",
                   border: "2px dashed #dee2e6",
                   color: "#6c757d",
@@ -649,7 +649,7 @@ const DashboardVendor = () => {
               style={{
                 textAlign: "center",
                 padding: "3rem 2rem",
-                backgroundColor: "#f8f9fa",
+                backgroundColor: "transparent",
                 borderRadius: "12px",
                 margin: "1rem 0",
                 border: "2px dashed #dee2e6",
