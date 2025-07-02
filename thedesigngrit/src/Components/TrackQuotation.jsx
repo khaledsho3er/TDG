@@ -217,13 +217,12 @@ function TrackQuotation() {
             />
           )}
           {/* Customization Lead Time */}
-          {selectedQuotation.productId.Estimatedtimeleadforcustomization && (
-            <Typography sx={{ mt: 2 }}>
-              Customization Lead Time:{" "}
-              {selectedQuotation.productId.Estimatedtimeleadforcustomization}{" "}
-              Business Days
-            </Typography>
-          )}
+          <Typography sx={{ mt: 2 }}>
+            Customization Lead Time:{" "}
+            {selectedQuotation.productId.Estimatedtimeleadforcustomization ||
+              "N/A"}
+            Business Days
+          </Typography>
 
           <Typography sx={{ mt: 2 }}>
             <strong>Color:</strong> {selectedQuotation.color || "N/A"}
