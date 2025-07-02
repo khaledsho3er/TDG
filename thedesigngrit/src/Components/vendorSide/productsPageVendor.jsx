@@ -325,11 +325,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             <BsThreeDotsVertical
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent the click from triggering the document listener
-                                toggleMenu(product.id);
+                                toggleMenu(product._id);
                               }}
                               className="three-dots-icon"
                             />
-                            {menuOpen === product.id && (
+                            {menuOpen === product._id && (
                               <div className="menu-dropdown">
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
@@ -457,11 +457,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             <BsThreeDotsVertical
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent the click from triggering the document listener
-                                toggleMenu(product.id);
+                                toggleMenu(product._id);
                               }}
                               className="three-dots-icon"
                             />
-                            {menuOpen === product.id && (
+                            {menuOpen === product._id && (
                               <div className="menu-dropdown">
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
