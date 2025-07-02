@@ -4353,9 +4353,10 @@ iframe {
 
 .right-side-content {
   width: 50%; /* Occupy 35% of the page */
-  padding: 20px;
+  padding: 0px 20px;
   font-family: Montserrat;
   color: #2d2d2d;
+  margin-top: -20px;
 }
 .Products-Materials {
   display: flex;

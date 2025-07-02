@@ -1028,7 +1028,7 @@ function ProductPage() {
             )}
           </div>
           <div className="right-side-content">
-            <div className="Products-Materials">
+            {/* <div className="Products-Materials">
               <h4>NATURAL AND RECYCLED MATERIALS</h4>
               <ul>
                 <li>R-LENO - Recycled Wool</li>
@@ -1040,7 +1040,7 @@ function ProductPage() {
                 <li>Inner Sole - Ortholite®</li>
                 <span>Removable and ergonomic</span>
               </ul>
-            </div>
+            </div> */}
             <div className="material-collapsible-container">
               {[
                 "Delivery & Returns",
