@@ -356,8 +356,8 @@ function TrackQuotation() {
               </>
             ) : selectedQuotation?.quotePrice &&
               !(
-                selectedQuotation?.ClientApproval === true &&
-                selectedQuotation?.status === "pending"
+                selectedQuotation?.ClientApproval === false &&
+                selectedQuotation?.status === "rejected"
               ) ? (
               <div
                 style={{
