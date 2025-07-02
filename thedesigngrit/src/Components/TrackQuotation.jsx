@@ -217,10 +217,11 @@ function TrackQuotation() {
             />
           )}
           {/* Customization Lead Time */}
-          {selectedQuotation.productId.customizationLeadTime && (
+          {selectedQuotation.productId.Estimatedtimeleadforcustomization && (
             <Typography sx={{ mt: 2 }}>
               Customization Lead Time:{" "}
-              {selectedQuotation.productId.customizationLeadTime}
+              {selectedQuotation.productId.Estimatedtimeleadforcustomization}{" "}
+              Business Days
             </Typography>
           )}
 

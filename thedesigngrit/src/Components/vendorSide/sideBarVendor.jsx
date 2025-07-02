@@ -8,7 +8,7 @@ import { FaMoneyBill } from "react-icons/fa6";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { MdAccountBalance } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
-import { FaWpforms, FaBell, FaUsers } from "react-icons/fa";
+import { FaWpforms, FaBell, FaUsers, FaLock } from "react-icons/fa";
 import LoadingScreen from "../../Pages/loadingScreen";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
@@ -59,10 +59,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
   }, [vendor]);
 
   // Function to handle active page highlighting
-  const getActiveClass = (page) => {
-    return activePage === page
-      ? "sidebar-item-vendor active"
-      : "sidebar-item-vendor";
+  const getActiveClass = (page, locked) => {
+    let base =
+      activePage === page
+        ? "sidebar-item-vendor active"
+        : "sidebar-item-vendor";
+    return locked ? base + " locked" : base;
+  };
+
+  // Helper to determine if an item should be locked
+  const isLocked = (page) => {
+    if (brandStatus === "pending") {
+      // Only BrandForm and BrandingPage are open
+      return !(page === "BrandForm" || page === "BrandingPage");
+    }
+    return false;
   };
 
   // Return a loading spinner or message until vendor data is loaded
@@ -79,73 +90,132 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
     <aside className="sidebar-vendor">
       <ul className="sidebar-menu-vendor">
         <li
-          onClick={() => setActivePage("dashboard")}
-          className={getActiveClass("dashboard")}
+          onClick={() => !isLocked("dashboard") && setActivePage("dashboard")}
+          className={getActiveClass("dashboard", isLocked("dashboard"))}
+          style={
+            isLocked("dashboard") ? { pointerEvents: "none", opacity: 0.5 } : {}
+          }
         >
           <span className="sidebar-item-content">
             <RiDashboard3Fill className="sidebar-item-icon" />
             <span className="sidebar-item-text">Dashboard</span>
+            {isLocked("dashboard") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("notifications")}
-          className={getActiveClass("notifications")}
+          onClick={() =>
+            !isLocked("notifications") && setActivePage("notifications")
+          }
+          className={getActiveClass("notifications", isLocked("notifications"))}
+          style={
+            isLocked("notifications")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
         >
           <span className="sidebar-item-content">
             <FaBell className="sidebar-item-icon" />
             <span className="sidebar-item-text">Notifications</span>
+            {isLocked("notifications") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("allProducts")}
-          className={getActiveClass("allProducts")}
+          onClick={() =>
+            !isLocked("allProducts") && setActivePage("allProducts")
+          }
+          className={getActiveClass("allProducts", isLocked("allProducts"))}
+          style={
+            isLocked("allProducts")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
         >
           <span className="sidebar-item-content">
             <LuPackageOpen className="sidebar-item-icon" />
             <span className="sidebar-item-text">All Products</span>
+            {isLocked("allProducts") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("orderList")}
-          className={getActiveClass("orderList")}
+          onClick={() => !isLocked("orderList") && setActivePage("orderList")}
+          className={getActiveClass("orderList", isLocked("orderList"))}
+          style={
+            isLocked("orderList") ? { pointerEvents: "none", opacity: 0.5 } : {}
+          }
         >
           <span className="sidebar-item-content">
             <TbTruckDelivery className="sidebar-item-icon" />
             <span className="sidebar-item-text">Order List</span>
+            {isLocked("orderList") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("quotationsList")}
-          className={getActiveClass("quotationsList")}
+          onClick={() =>
+            !isLocked("quotationsList") && setActivePage("quotationsList")
+          }
+          className={getActiveClass(
+            "quotationsList",
+            isLocked("quotationsList")
+          )}
+          style={
+            isLocked("quotationsList")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
         >
           <span className="sidebar-item-content">
             <FaMoneyBill className="sidebar-item-icon" />
             <span className="sidebar-item-text">Quotation List</span>
+            {isLocked("quotationsList") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("ViewInStoreVendor")}
-          className={getActiveClass("ViewInStoreVendor")}
+          onClick={() =>
+            !isLocked("ViewInStoreVendor") && setActivePage("ViewInStoreVendor")
+          }
+          className={getActiveClass(
+            "ViewInStoreVendor",
+            isLocked("ViewInStoreVendor")
+          )}
+          style={
+            isLocked("ViewInStoreVendor")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
         >
           <span className="sidebar-item-content">
             <HiBuildingStorefront className="sidebar-item-icon" />
             <span className="sidebar-item-text">View In Store</span>
+            {isLocked("ViewInStoreVendor") && (
+              <FaLock style={{ marginLeft: 8 }} />
+            )}
           </span>
         </li>
         <li
-          onClick={() => setActivePage("promotionsPage")}
-          className={getActiveClass("promotionsPage")}
+          onClick={() =>
+            !isLocked("promotionsPage") && setActivePage("promotionsPage")
+          }
+          className={getActiveClass(
+            "promotionsPage",
+            isLocked("promotionsPage")
+          )}
+          style={
+            isLocked("promotionsPage")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
         >
           <span className="sidebar-item-content">
             <FaMoneyBill className="sidebar-item-icon" />
             <span className="sidebar-item-text">Promotions</span>
+            {isLocked("promotionsPage") && <FaLock style={{ marginLeft: 8 }} />}
           </span>
         </li>
         {/* Render "Brand Form" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("BrandForm")}
-            className={getActiveClass("BrandForm")}
+            className={getActiveClass("BrandForm", false)}
           >
             <span className="sidebar-item-content">
               <FaWpforms className="sidebar-item-icon" />
@@ -157,7 +227,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         {vendor?.tier >= 3 && (
           <li
             onClick={() => setActivePage("BrandingPage")}
-            className={getActiveClass("BrandingPage")}
+            className={getActiveClass("BrandingPage", false)}
           >
             <span className="sidebar-item-content">
               <ImProfile className="sidebar-item-icon" />
@@ -168,24 +238,40 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         {/* Render "Add Employee" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
-            onClick={() => setActivePage("Accounting")}
-            className={getActiveClass("Accounting")}
+            onClick={() =>
+              !isLocked("Accounting") && setActivePage("Accounting")
+            }
+            className={getActiveClass("Accounting", isLocked("Accounting"))}
+            style={
+              isLocked("Accounting")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
           >
             <span className="sidebar-item-content">
               <MdAccountBalance className="sidebar-item-icon" />
               <span className="sidebar-item-text">Accounting</span>
+              {isLocked("Accounting") && <FaLock style={{ marginLeft: 8 }} />}
             </span>
           </li>
         )}
         {/* Render "Employee Page" only if vendor tier is 3 or higher */}
         {vendor?.tier >= 3 && (
           <li
-            onClick={() => setActivePage("EmployeePage")}
-            className={getActiveClass("EmployeePage")}
+            onClick={() =>
+              !isLocked("EmployeePage") && setActivePage("EmployeePage")
+            }
+            className={getActiveClass("EmployeePage", isLocked("EmployeePage"))}
+            style={
+              isLocked("EmployeePage")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
           >
             <span className="sidebar-item-content">
               <FaUsers className="sidebar-item-icon" />
               <span className="sidebar-item-text">Employees</span>
+              {isLocked("EmployeePage") && <FaLock style={{ marginLeft: 8 }} />}
             </span>
           </li>
         )}
