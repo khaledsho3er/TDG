@@ -24,6 +24,7 @@ function TrackQuotation() {
   const [iframeModalOpen, setIframeModalOpen] = useState(false);
   const { addToCart, cartItems } = useCart();
   const navigate = useNavigate();
+  const [isPaying, setIsPaying] = useState(false);
 
   useEffect(() => {
     const fetchQuotations = async () => {
@@ -71,7 +72,7 @@ function TrackQuotation() {
         );
         setSelectedQuotation(data.quotation);
         if (decision === true) {
-          // setShowDealSuccess(true);
+          setIsPaying(true); // Start payment flow
           handlePayNow();
         }
       } else {
@@ -314,7 +315,11 @@ function TrackQuotation() {
                 //   {payLoading ? "Processing..." : "Pay Now"}
                 // </button>
               ))}
-            {selectedQuotation?.status === "approved" ? (
+            {isPaying ? (
+              <Typography sx={{ fontWeight: "bold", color: "#6b7b58" }}>
+                Redirecting to payment...
+              </Typography>
+            ) : selectedQuotation?.status === "approved" ? (
               <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
             ) : selectedQuotation?.status === "rejected" ? (
               <Typography sx={{ color: "#2d2d2d" }}>
