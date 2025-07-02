@@ -9,6 +9,7 @@ import { useVendor } from "../../utils/vendorContext"; // Import vendor context
 import UpdateProduct from "./UpdateProduct"; // Import UpdateProduct
 import { Button } from "@mui/material";
 import VariantDialog from "./VariantDialog";
+import ConfirmationDialog from "../confirmationMsg";
 // import ProductAnalyticsGraph from "./ProductAnalyticsGraph";
 
 const ProductsPageVendor = ({ setActivePage }) => {
@@ -30,6 +31,9 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [showTrueStatus, setShowTrueStatus] = useState(true);
   const [openVariantDialog, setOpenVariantDialog] = useState(false);
   const [variants, setVariants] = useState([]);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+
   const handleVariantSubmit = async (variantData) => {
     try {
       const res = await axios.post(
@@ -149,21 +153,24 @@ const ProductsPageVendor = ({ setActivePage }) => {
     setShowUpdate(true);
   };
 
-  const handleDelete = async (product) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-    if (confirmDelete) {
-      try {
-        await axios.delete(
-          `https://api.thedesigngrit.com/api/products/${product._id}`
-        ); // Use the correct endpoint
-        setProducts(products.filter((p) => p._id !== product._id)); // Update the state to remove the deleted product
-        alert("Product deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting product:", error);
-        alert("Failed to delete product. Please try again.");
-      }
+  const handleDelete = async () => {
+    if (!productToDelete) return;
+    let success = false;
+    try {
+      await axios.delete(
+        `https://api.thedesigngrit.com/api/products/${productToDelete._id}`
+      );
+      setProducts((prev) => prev.filter((p) => p._id !== productToDelete._id));
+      success = true;
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+    setConfirmDialogOpen(false);
+    setProductToDelete(null);
+    if (success) {
+      alert("Product deleted successfully!");
+    } else {
+      alert("Failed to delete product. Please try again.");
     }
   };
 
@@ -329,7 +336,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
                                 </button>
-                                <button onClick={() => handleDelete(product)}>
+                                <button
+                                  onClick={() => {
+                                    setProductToDelete(product);
+                                    setConfirmDialogOpen(true);
+                                  }}
+                                >
                                   Delete
                                 </button>
                                 <button onClick={() => handleInsights(product)}>
@@ -456,7 +468,12 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                 <button onClick={() => handleEdit(product)}>
                                   Edit
                                 </button>
-                                <button onClick={() => handleDelete(product)}>
+                                <button
+                                  onClick={() => {
+                                    setProductToDelete(product);
+                                    setConfirmDialogOpen(true);
+                                  }}
+                                >
                                   Delete
                                 </button>
                                 <button onClick={() => handleInsights(product)}>
@@ -565,6 +582,16 @@ const ProductsPageVendor = ({ setActivePage }) => {
             product={selectedProduct}
           />
         )}
+        <ConfirmationDialog
+          open={confirmDialogOpen}
+          title="Delete Product"
+          content="Are you sure you want to delete this product?"
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setConfirmDialogOpen(false);
+            setProductToDelete(null);
+          }}
+        />
       </div>
     </>
   );
