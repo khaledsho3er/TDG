@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { IconButton } from "@mui/material";
-import { IoIosClose } from "react-icons/io";
+import CloseIcon from "@mui/icons-material/Close";
 import ConfirmationDialog from "../confirmationMsg"; // Import ConfirmationDialog
 import { UserContext } from "../../utils/userContext"; // Assuming you have UserContext
 import axios from "axios"; // Import axios for API calls
 import * as Yup from "yup"; // Import Yup for validation
+import { Close } from "@mui/icons-material";
 
 const RequestQuote = ({ onClose, productId }) => {
   const { userSession } = useContext(UserContext); // Get user data from context
@@ -219,7 +220,7 @@ const RequestQuote = ({ onClose, productId }) => {
                 color: "#2d2d2d",
               }}
             >
-              <IoIosClose size={30} color="#fff" />
+              <CloseIcon size={30} color="#fff" />
             </IconButton>
           </div>
           <div className="requestInfo-popup-content">
@@ -244,17 +245,21 @@ const RequestQuote = ({ onClose, productId }) => {
               position: "absolute",
               top: "16px",
               right: "16px",
-              color: "#2d2d2d",
+              color: "#fff",
+              background: "rgba(0,0,0,0.2)",
+              "&:hover": {
+                background: "rgba(0,0,0,0.3)",
+              },
             }}
           >
-            <IoIosClose size={30} color="#fff" />
+            <CloseIcon />
           </IconButton>
         </div>
 
         {/* Show confirmation message if confirmed */}
         {isConfirmed ? (
           <div className="confirmation-message">
-            <h3>
+            <h3 style={{ color: "#2d2d2d" }}>
               Thank you for your request! We will get back to you shortly.
             </h3>
             <button onClick={onClose}>Close</button>
