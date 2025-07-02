@@ -354,6 +354,19 @@ function TrackQuotation() {
                   Reject
                 </button>
               </>
+            ) : selectedQuotation?.quotePrice &&
+              !(
+                selectedQuotation?.ClientApproval === true &&
+                selectedQuotation?.status === "pending"
+              ) ? (
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#2d2d2d",
+                  fontWeight: 500,
+                  marginTop: 16,
+                }}
+              ></div>
             ) : (
               <div
                 style={{
