@@ -16,6 +16,9 @@ import {
 } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
 import * as Yup from "yup"; // Import Yup
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 
 const VendorSignup = ({ open, onClose, refreshList }) => {
   const { vendor } = useVendor(); // Get vendor data (including brandId)
@@ -32,6 +35,8 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
   const [errors, setErrors] = useState({}); // State to hold error messages
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [brandName, setBrandName] = useState(""); // State to store the brand name
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Define the validation schema
   const validationSchema = Yup.object().shape({
@@ -203,24 +208,57 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
               <TextField
                 label="Set Password"
                 fullWidth
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 error={!!errors.password}
                 helperText={errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((show) => !show)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <Typography variant="caption" color="textSecondary">
+                Password must be at least 6 characters.
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Confirm Password"
                 fullWidth
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle confirm password visibility"
+                        onClick={() => setShowConfirmPassword((show) => !show)}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
