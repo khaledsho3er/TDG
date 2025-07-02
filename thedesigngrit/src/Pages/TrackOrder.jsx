@@ -10,6 +10,7 @@ import { GiConfirmed } from "react-icons/gi";
 import { pdf } from "@react-pdf/renderer";
 import { CiUndo } from "react-icons/ci";
 import InvoicePDF from "../Components/invoiceOrderCustomer";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -381,8 +382,28 @@ function TrackOrder() {
                           alignItems: "center",
                           marginTop: "10px",
                           margin: "auto",
+                          position: "relative",
                         }}
                       >
+                        {/* Info Icon - right side, opposite to image */}
+                        {selectedSubOrder.productId && (
+                          <a
+                            href={`https://thedesigngrit.com/product/${selectedSubOrder.productId._id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              position: "absolute",
+                              top: 8,
+                              right: 8,
+                              color: "#2d2d2d",
+                              textDecoration: "none",
+                              zIndex: 2,
+                            }}
+                            title="View Product Page"
+                          >
+                            <InfoOutlinedIcon fontSize="medium" />
+                          </a>
+                        )}
                         <img
                           src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
                           alt={selectedSubOrder.productId.name}

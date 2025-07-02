@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import paymobService from "../services/paymobService";
 import { useCart } from "../Context/cartcontext";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function TrackQuotation() {
   const { userSession } = useContext(UserContext);
@@ -175,8 +176,30 @@ function TrackQuotation() {
             borderRadius: "8px",
             padding: "16px",
             backgroundColor: "#f9f9f9",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
+          {/* Info Icon - top right, opposite to image */}
+          {selectedQuotation.productId && (
+            <a
+              href={`https://thedesigngrit.com/product/${selectedQuotation.productId._id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                position: "absolute",
+                top: 16,
+                right: 16,
+                color: "#2d2d2d",
+                textDecoration: "none",
+                zIndex: 2,
+              }}
+              title="View Product Page"
+            >
+              <InfoOutlinedIcon fontSize="large" />
+            </a>
+          )}
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Quotation Summary
           </Typography>
@@ -265,7 +288,6 @@ function TrackQuotation() {
             }}
           >
             {selectedQuotation?.ClientApproval === true &&
-              selectedQuotation?.vendorApproval === true &&
               selectedQuotation?.quotePrice &&
               (selectedQuotation?.paymentDetails?.paid === true ? (
                 <Typography
@@ -307,7 +329,7 @@ function TrackQuotation() {
                     selectedQuotation?.status === "approved"
                   }
                 >
-                  Deal
+                  Pay
                 </button>
                 <button
                   onClick={() => handleDealDecision(false)}
@@ -318,7 +340,7 @@ function TrackQuotation() {
                     selectedQuotation?.status === "approved"
                   }
                 >
-                  No Deal
+                  Reject
                 </button>
               </>
             )}
