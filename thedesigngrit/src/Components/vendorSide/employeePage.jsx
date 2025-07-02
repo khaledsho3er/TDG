@@ -3,16 +3,19 @@ import axios from "axios";
 import { Box } from "@mui/system";
 import { IconButton } from "@mui/material";
 import { IoIosClose } from "react-icons/io";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
+
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
   const [currentVendor, setCurrentVendor] = useState(null);
   const [signupPopupVisible, setSignupPopupVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleOpenSignup = () => {
     setSignupPopupVisible(true);
@@ -77,6 +80,23 @@ const EmployeePage = () => {
       console.error("Error deleting vendor", error);
     }
   };
+
+  const passwordGuide = (
+    <ul
+      style={{
+        fontSize: "12px",
+        color: "#666",
+        margin: "8px 0 0 0",
+        paddingLeft: "18px",
+      }}
+    >
+      <li>At least 8 characters</li>
+      <li>At least one uppercase letter</li>
+      <li>At least one lowercase letter</li>
+      <li>At least one number</li>
+      <li>At least one special character (!@#$...)</li>
+    </ul>
+  );
 
   return (
     <div style={{ padding: "70px" }}>
@@ -311,6 +331,35 @@ const EmployeePage = () => {
                       Tier 3 - Full Access + Financials
                     </option>
                   </select>
+                </div>
+                <div className="requestInfo-form-group">
+                  <label>Password</label>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={currentVendor.password || ""}
+                      onChange={(e) =>
+                        setCurrentVendor({
+                          ...currentVendor,
+                          password: e.target.value,
+                        })
+                      }
+                      placeholder="Enter new password"
+                      autoComplete="new-password"
+                    />
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      size="small"
+                      style={{ marginLeft: 4 }}
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible />
+                      ) : (
+                        <AiOutlineEye />
+                      )}
+                    </IconButton>
+                  </div>
+                  {passwordGuide}
                 </div>
                 <div
                   style={{
