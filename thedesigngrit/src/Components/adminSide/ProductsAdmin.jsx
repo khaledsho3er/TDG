@@ -368,11 +368,13 @@ const ProductPageAdmin = () => {
                     {falseStatusProducts.map((product) => (
                       <div className="promotion-card" key={product.id}>
                         <div className="promotion-image-container">
-                          <img
-                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                            alt={product.name}
-                            className="promotion-image"
-                          />
+                          {product && product.mainImage && (
+                            <img
+                              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product?.mainImage}`}
+                              alt={product?.name || "Product"}
+                              className="promotion-image"
+                            />
+                          )}
                           {product.discountPercentage && (
                             <div className="discount-badge">
                               {product.discountPercentage}% OFF
@@ -517,11 +519,13 @@ const ProductPageAdmin = () => {
                     {trueStatusProducts.map((product) => (
                       <div className="promotion-card" key={product.id}>
                         <div className="promotion-image-container">
-                          <img
-                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                            alt={product.name}
-                            className="promotion-image"
-                          />
+                          {product && product.mainImage && (
+                            <img
+                              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product?.mainImage}`}
+                              alt={product?.name || "Product"}
+                              className="promotion-image"
+                            />
+                          )}
                           {product.discountPercentage && (
                             <div className="discount-badge">
                               {product.discountPercentage}% OFF

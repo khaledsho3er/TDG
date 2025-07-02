@@ -173,11 +173,13 @@ const FavoritesOverlay = ({ open, onClose }) => {
                 style={{ cursor: "pointer" }}
               >
                 {/* Assuming `product.mainImage` is the image path */}
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                  alt={product.title}
-                  className="notification-image-vendor-image"
-                />
+                {product && product.mainImage && (
+                  <img
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product?.mainImage}`}
+                    alt={product?.name || "Product"}
+                    className="notification-image-vendor-image"
+                  />
+                )}
               </div>
               <div
                 className="notification-details-vendor"
