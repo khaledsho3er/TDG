@@ -71,7 +71,7 @@ function TrackQuotation() {
         );
         setSelectedQuotation(data.quotation);
         if (decision === true) {
-          setShowDealSuccess(true);
+          // setShowDealSuccess(true);
           handlePayNow();
         }
       } else {
