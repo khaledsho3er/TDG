@@ -55,6 +55,7 @@ const AddProduct = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -597,6 +598,21 @@ const AddProduct = () => {
   const handleCloseSuccessDialog = () => {
     setShowSuccessDialog(false);
     window.location.reload();
+  };
+
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.name.trim()) errors.push("Product Name");
+    if (!formData.price || isNaN(formData.price)) errors.push("Product Price");
+    if (!formData.sku.trim()) errors.push("SKU");
+    if (!formData.collection.trim()) errors.push("Collection");
+    if (!formData.stock || isNaN(formData.stock)) errors.push("Stock");
+    if (!formData.leadTime.trim()) errors.push("Lead Time");
+    if (!formData.description.trim()) errors.push("Description");
+    if (!formData.images || formData.images.length === 0)
+      errors.push("At least one image");
+    if (!formData.mainImage) errors.push("Main Image");
+    return errors;
   };
 
   return (
@@ -1380,10 +1396,24 @@ const AddProduct = () => {
           </div>
         </div>
         <div className="form-actions">
+          {validationErrors.length > 0 && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              Please fill the following required fields:{" "}
+              {validationErrors.join(", ")}
+            </div>
+          )}
           <button
             className="btn update"
             type="button"
-            onClick={handleOpenDialog}
+            onClick={() => {
+              const errors = validateForm();
+              if (errors.length > 0) {
+                setValidationErrors(errors);
+                return;
+              }
+              setValidationErrors([]);
+              handleOpenDialog();
+            }}
             disabled={isSubmitting}
           >
             {isSubmitting ? <CircularProgress size={24} /> : "ADD"}
