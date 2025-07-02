@@ -70,8 +70,9 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           borderRadius: "20px",
           padding: isMobile ? "16px" : "24px",
           position: "relative",
-          background: "rgba(255, 255, 255, 0.1)",
+          // background: "rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(15px)",
+          backgroundColor: "white",
           boxShadow: "0 8px 32px rgba(31, 38, 135, 0.2)",
           border: "1px solid rgba(255, 255, 255, 0.18)",
         },
@@ -98,7 +99,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           textAlign: "center",
           fontSize: "24px",
           fontWeight: "bold",
-          color: "#fff",
+          color: "#2d2d2d",
         }}
       >
         {confirmationMessage ? "Submission Successful" : "Confirm Your Details"}
@@ -110,6 +111,8 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
           justifyContent: "center",
           alignItems: "center",
           padding: isMobile ? "0px" : "24px",
+          boxShadow: "none",
+          backgroundColor: "white",
         }}
       >
         {confirmationMessage ? (
@@ -118,7 +121,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
               variant="h6"
               sx={{
                 fontWeight: "bold",
-                color: "#fff",
+                color: "#2d2d2d",
                 marginBottom: "16px",
               }}
               gutterBottom
@@ -136,7 +139,7 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                 variant="h6"
                 sx={{
                   fontWeight: "bold",
-                  color: "#fff",
+                  color: "#2d2d2d",
                   textAlign: "center",
                   marginBottom: "16px",
                 }}
@@ -159,18 +162,22 @@ const ViewInStorePopup = ({ open, onClose, productId }) => {
                 <Grid item xs={8}>
                   <Typography
                     variant="body1"
-                    sx={{ color: "#fff", fontWeight: "bold" }}
+                    sx={{ color: "#2d2d2d", fontWeight: "bold" }}
                   >
                     Product Name: {productId.name}
                   </Typography>
                   <Box display="flex" flexDirection="column">
-                    <Typography variant="body2" sx={{ color: "#cce7c9" }}>
+                    <Typography variant="body2" sx={{ color: "#6b7b58" }}>
                       Vendor: {productId.brandId.brandName}
                     </Typography>
                     <img
                       src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${productId.brandId.brandlogo}`}
                       alt="Vendor Logo"
-                      style={{ width: "100px", height: "auto" }}
+                      style={{
+                        width: "100px",
+                        height: "auto",
+                        borderRadius: "10px",
+                      }}
                     />
                   </Box>
                 </Grid>

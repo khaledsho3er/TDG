@@ -216,7 +216,7 @@ const RequestQuote = ({ onClose, productId }) => {
                 position: "absolute",
                 top: "16px",
                 right: "16px",
-                color: "#fff",
+                color: "#2d2d2d",
               }}
             >
               <IoIosClose size={30} color="#fff" />
@@ -244,7 +244,7 @@ const RequestQuote = ({ onClose, productId }) => {
               position: "absolute",
               top: "16px",
               right: "16px",
-              color: "#fff",
+              color: "#2d2d2d",
             }}
           >
             <IoIosClose size={30} color="#fff" />

@@ -60,7 +60,8 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
         PaperProps={{
           sx: {
             backdropFilter: "blur(12px)",
-            backgroundColor: "rgba(255, 255, 255, 0.15)",
+            // backgroundColor: "rgba(255, 255, 255, 0.15)",
+            backgroundColor: "white",
             boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
             borderRadius: "20px",
             border: "1px solid rgba(255, 255, 255, 0.18)",
@@ -88,7 +89,9 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
             paddingTop: "32px",
           }}
         >
-          <h2 style={{ color: "#fff", fontSize: isMobile ? "16px" : "24px" }}>
+          <h2
+            style={{ color: "#2d2d2d", fontSize: isMobile ? "16px" : "24px" }}
+          >
             {" "}
             Choose an Option
           </h2>
@@ -113,7 +116,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
               backdropFilter: "blur(6px)",
               borderRadius: "12px",
               padding: "12px 24px",
-              color: "#fff",
+              color: "#2d2d2d",
               fontWeight: "500",
               cursor: "pointer",
               width: isMobile ? "100%" : "40%",
@@ -130,7 +133,7 @@ const RequestInfoPopup = ({ open, onClose, productId }) => {
               backdropFilter: "blur(6px)",
               borderRadius: "12px",
               padding: "12px 24px",
-              color: "#fff",
+              color: "#2d2d2d",
               fontWeight: "500",
               cursor: "pointer",
               width: isMobile ? "100%" : "40%",
