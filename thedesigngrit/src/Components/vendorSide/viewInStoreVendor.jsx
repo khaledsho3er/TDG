@@ -19,7 +19,11 @@ const ViewInStoreVendor = () => {
         const response = await axios.get(
           `https://api.thedesigngrit.com/api/view-in-store/brand/${vendor.brandId}`
         );
-        setViewInStores(response.data);
+        setViewInStores(
+          (response.data || [])
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        );
         setLoading(false);
       } catch (err) {
         setError("Failed to load ViewInStore entries");

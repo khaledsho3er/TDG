@@ -28,7 +28,11 @@ const QuotationsPage = () => {
         const response = await axios.get(
           `https://api.thedesigngrit.com/api/quotation/quotations/brand/${vendor.brandId}`
         );
-        setQuotations(response.data);
+        setQuotations(
+          (response.data || [])
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        );
       } catch (err) {
         console.error("Error fetching quotations:", err);
       } finally {
@@ -382,7 +386,7 @@ const QuotationsPage = () => {
                 {selectedQuotation.productId.name}
               </Typography>
               <Typography>
-                <strong> Price: </strong>{" "}
+                <strong> Price: E£</strong>{" "}
                 {selectedQuotation.productId.salePrice ? (
                   <del style={{ color: "#a1a1a1" }}>
                     {selectedQuotation.productId.price.toLocaleString()}E£
