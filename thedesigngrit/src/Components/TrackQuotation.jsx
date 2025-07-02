@@ -72,6 +72,7 @@ function TrackQuotation() {
         setSelectedQuotation(data.quotation);
         if (decision === true) {
           setShowDealSuccess(true);
+          handlePayNow();
         }
       } else {
         console.error("Error updating approval:", data.message);
@@ -303,14 +304,15 @@ function TrackQuotation() {
                   Paid
                 </Typography>
               ) : (
-                <button
-                  onClick={handlePayNow}
-                  className="submit-btn"
-                  disabled={payLoading}
-                  style={{ marginRight: 8 }}
-                >
-                  {payLoading ? "Processing..." : "Pay Now"}
-                </button>
+                <></>
+                // <button
+                //   onClick={handlePayNow}
+                //   className="submit-btn"
+                //   disabled={payLoading}
+                //   style={{ marginRight: 8 }}
+                // >
+                //   {payLoading ? "Processing..." : "Pay Now"}
+                // </button>
               ))}
             {selectedQuotation?.status === "approved" ? (
               <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
