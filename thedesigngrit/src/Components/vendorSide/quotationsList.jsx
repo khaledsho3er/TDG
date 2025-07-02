@@ -281,7 +281,7 @@ const QuotationsPage = () => {
                   alignItems: "baseline",
                 }}
               >
-                {selectedQuotation?.paymentDetails.paid && (
+                {/* {selectedQuotation?.paymentDetails.paid === true && (
                   <label
                     style={{
                       backgroundColor: "#d4edda",
@@ -292,6 +292,40 @@ const QuotationsPage = () => {
                     }}
                   >
                     Paid
+                  </label>
+                )}
+                {selectedQuotation?.paymentDetails.paid === false && (
+                  <label
+                    style={{
+                      backgroundColor: "#f8d7da",
+                      border: "1px solid #f5c6cb",
+                      color: "#721c24",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Not Paid Yet
+                  </label>
+                )} */}
+                {selectedQuotation?.paymentDetails.paid !== undefined && (
+                  <label
+                    style={{
+                      backgroundColor: selectedQuotation.paymentDetails.paid
+                        ? "#d4edda"
+                        : "#f8d7da",
+                      border: selectedQuotation.paymentDetails.paid
+                        ? "1px solid #d4edda"
+                        : "1px solid #f5c6cb",
+                      color: selectedQuotation.paymentDetails.paid
+                        ? "#155724"
+                        : "#721c24",
+                      padding: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {selectedQuotation.paymentDetails.paid
+                      ? "Paid"
+                      : "Not Paid Yet"}
                   </label>
                 )}
                 {selectedQuotation?.ClientApproval && (
