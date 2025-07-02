@@ -51,7 +51,7 @@ const useIsMobile = () => {
 
 function Home() {
   const fgVideoRef = useRef(null);
-  const heroSectionRef = useRef(null); // 👈 Add ref for hero section
+  const heroSectionRef = useRef(null);
   const isMobile = useIsMobile();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [progress, setProgress] = useState(0);
