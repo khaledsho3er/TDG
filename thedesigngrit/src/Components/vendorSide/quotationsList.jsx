@@ -259,6 +259,7 @@ const QuotationsPage = () => {
                 onChange={(e) => setNote(e.target.value)}
                 rows={3}
                 style={{ backgroundColor: "#fff" }}
+                readOnly={selectedQuotation?.ClientApproval === true}
               />
 
               <label>Quote Price:</label>
@@ -267,10 +268,15 @@ const QuotationsPage = () => {
                 value={quotePrice}
                 onChange={(e) => setQuotePrice(e.target.value)}
                 required
+                readOnly={selectedQuotation?.ClientApproval === true}
               />
 
               <label>Upload Quotation Invoice (optional):</label>
-              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+              <input
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+                disabled={selectedQuotation?.ClientApproval === true}
+              />
 
               <div
                 style={{
@@ -357,13 +363,19 @@ const QuotationsPage = () => {
 
                 <button
                   onClick={handleDelete}
+                  disabled={selectedQuotation?.paymentDetails.paid === true}
                   style={{
                     backgroundColor: "#fff",
                     color: "#2d2d2d",
                     border: "1px solid red",
                     padding: "10px 15px",
                     borderRadius: "4px",
-                    cursor: "pointer",
+                    cursor:
+                      selectedQuotation?.paymentDetails.paid === true
+                        ? "not-allowed"
+                        : "pointer",
+                    opacity:
+                      selectedQuotation?.paymentDetails.paid === true ? 0.6 : 1,
                     "&:hover": {
                       backgroundColor: "red",
                       color: "#fff",
