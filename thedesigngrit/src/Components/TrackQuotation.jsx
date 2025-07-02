@@ -216,6 +216,13 @@ function TrackQuotation() {
               style={{ width: "200px", borderRadius: "6px", marginTop: "10px" }}
             />
           )}
+          {/* Customization Lead Time */}
+          {selectedQuotation.productId.customizationLeadTime && (
+            <Typography sx={{ mt: 2 }}>
+              Customization Lead Time:{" "}
+              {selectedQuotation.productId.customizationLeadTime}
+            </Typography>
+          )}
 
           <Typography sx={{ mt: 2 }}>
             <strong>Color:</strong> {selectedQuotation.color || "N/A"}
