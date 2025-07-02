@@ -26,6 +26,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [selectedProduct, setSelectedProduct] = useState(null); // Selected product for update
   const [promotionModalOpen, setPromotionModalOpen] = useState(false); // Modal open state
   const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
   // State for toggling sections
   const [showFalseStatus, setShowFalseStatus] = useState(false);
   const [showTrueStatus, setShowTrueStatus] = useState(true);
