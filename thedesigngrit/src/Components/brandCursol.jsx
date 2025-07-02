@@ -110,40 +110,42 @@ export default function BrandCursol({
       {Array.isArray(products) && products.length > 0 ? (
         <div className="carousel-wrapper">
           <div className="carousel-3d">
-            {products.map((product, index) => {
-              const position =
-                (index - currentIndex + products.length) % products.length;
-              const rotation = position * 120; // 360 degrees / 3 items = 120 degrees per item
-              const isCenter = position === 0;
+            {products
+              .filter((product) => product && product.mainImage && product.name)
+              .map((product, index) => {
+                const position =
+                  (index - currentIndex + products.length) % products.length;
+                const rotation = position * 120; // 360 degrees / 3 items = 120 degrees per item
+                const isCenter = position === 0;
 
-              return (
-                <div
-                  key={product._id}
-                  className="carousel-item"
-                  style={{
-                    transform: `rotateY(${rotation}deg) translateZ(${
-                      window.innerWidth <= 767 ? 153 : 200
-                    }px)`,
-                    opacity: isCenter ? 1 : 0.3,
-                    filter: isCenter ? "blur(0)" : "blur(4px)",
-                    zIndex: isCenter ? 3 : 1,
-                    scale: isCenter ? "1" : "0.8",
-                  }}
-                >
-                  <img
-                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
-                    alt={product.name || "Product"}
-                    className="carousel-product-image"
-                  />
-                  <h3 className="carousel-product-name">{product.name}</h3>
-                  <p className="carousel-product-price">
-                    {product.price
-                      ? `${product.price.toLocaleString()} E£`
-                      : "Price Unavailable"}
-                  </p>
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={product._id}
+                    className="carousel-item"
+                    style={{
+                      transform: `rotateY(${rotation}deg) translateZ(${
+                        window.innerWidth <= 767 ? 153 : 200
+                      }px)`,
+                      opacity: isCenter ? 1 : 0.3,
+                      filter: isCenter ? "blur(0)" : "blur(4px)",
+                      zIndex: isCenter ? 3 : 1,
+                      scale: isCenter ? "1" : "0.8",
+                    }}
+                  >
+                    <img
+                      src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}`}
+                      alt={product.name || "Product"}
+                      className="carousel-product-image"
+                    />
+                    <h3 className="carousel-product-name">{product.name}</h3>
+                    <p className="carousel-product-price">
+                      {product.price
+                        ? `${product.price.toLocaleString()} E£`
+                        : "Price Unavailable"}
+                    </p>
+                  </div>
+                );
+              })}
           </div>
           {products.length > 1 && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
