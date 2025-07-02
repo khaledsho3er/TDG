@@ -316,7 +316,7 @@ function TrackQuotation() {
               <Typography sx={{ fontWeight: "bold" }}>Deal Sealed</Typography>
             ) : selectedQuotation?.status === "rejected" ? (
               <Typography sx={{ color: "#2d2d2d" }}>
-                No Deal. You can consider other{" "}
+                You have rejected the offer. Please make a new quotation.
                 <Link
                   to="/products/readytoship"
                   style={{ color: "#6b7b58", textDecoration: "none" }}
@@ -326,7 +326,10 @@ function TrackQuotation() {
                 .
               </Typography>
             ) : selectedQuotation?.quotePrice &&
-              selectedQuotation?.ClientApproval === true ? (
+              !(
+                selectedQuotation?.ClientApproval === true &&
+                selectedQuotation?.status === "pending"
+              ) ? (
               <>
                 <button
                   onClick={() => handleDealDecision(true)}
