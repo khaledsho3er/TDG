@@ -611,7 +611,6 @@ const AddProduct = () => {
     if (!formData.description.trim()) errors.push("Description");
     if (!formData.images || formData.images.length === 0)
       errors.push("At least one image");
-    if (!formData.mainImage) errors.push("Main Image");
     return errors;
   };
 
