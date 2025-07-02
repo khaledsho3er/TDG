@@ -220,96 +220,101 @@ const ProductSlider = () => {
         //   },
         // }}
       >
-        {products.map((product, index) => (
-          <SwiperSlide key={product._id || index}>
-            <div
-              className="product-card-bestseller"
-              style={{
-                cursor: "pointer",
-                position: "relative",
-              }}
-              onClick={() => navigate(`/product/${product._id}`)}
-            >
-              {/* Favorite Icon */}
+        {products
+          .filter(
+            (product) =>
+              product && product._id && product.mainImage && product.name
+          )
+          .map((product, index) => (
+            <SwiperSlide key={product._id || index}>
               <div
+                className="product-card-bestseller"
                 style={{
-                  position: "absolute",
-                  top: "8px",
-                  right: "8px",
-                  zIndex: 10,
-                  backgroundColor: "#fff",
-                  borderRadius: "50%",
-                  width: "32px",
-                  height: "32px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
                   cursor: "pointer",
+                  position: "relative",
                 }}
-                onClick={(event) => toggleFavorite(event, product._id)}
+                onClick={() => navigate(`/product/${product._id}`)}
               >
-                {favorites[product._id] ? (
-                  <FavoriteIcon style={{ color: "red", fontSize: "20px" }} />
-                ) : (
-                  <FavoriteBorderIcon
-                    style={{ color: "#000", fontSize: "20px" }}
+                {/* Favorite Icon */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    zIndex: 10,
+                    backgroundColor: "#fff",
+                    borderRadius: "50%",
+                    width: "32px",
+                    height: "32px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer",
+                  }}
+                  onClick={(event) => toggleFavorite(event, product._id)}
+                >
+                  {favorites[product._id] ? (
+                    <FavoriteIcon style={{ color: "red", fontSize: "20px" }} />
+                  ) : (
+                    <FavoriteBorderIcon
+                      style={{ color: "#000", fontSize: "20px" }}
+                    />
+                  )}
+                </div>
+
+                <div className="product-image-home">
+                  <img
+                    src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=250&height=200&format=webp`}
+                    alt={product.name}
+                    loading={index < visibleCount ? "eager" : "lazy"}
+                    width="300"
+                    height="200"
                   />
-                )}
-              </div>
+                </div>
 
-              <div className="product-image-home">
-                <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.mainImage}?width=250&height=200&format=webp`}
-                  alt={product.name}
-                  loading={index < visibleCount ? "eager" : "lazy"}
-                  width="300"
-                  height="200"
-                />
-              </div>
-
-              <div className="related-info">
-                <p className="related-category">{product?.brandName}</p>
-                <h3 className="related-name">{product.name}</h3>
-                {product.salePrice ? (
-                  <>
-                    <p
-                      className="related-price"
-                      style={{
-                        textDecoration: "line-through",
-                        color: "#999",
-                      }}
-                    >
+                <div className="related-info">
+                  <p className="related-category">{product?.brandName}</p>
+                  <h3 className="related-name">{product.name}</h3>
+                  {product.salePrice ? (
+                    <>
+                      <p
+                        className="related-price"
+                        style={{
+                          textDecoration: "line-through",
+                          color: "#999",
+                        }}
+                      >
+                        {product.price.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        E£
+                      </p>
+                      <p
+                        className="related-price"
+                        style={{ color: "#e74c3c", fontWeight: "bold" }}
+                      >
+                        {product.salePrice.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        E£
+                      </p>
+                    </>
+                  ) : (
+                    <p className="related-price">
                       {product.price.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}{" "}
                       E£
                     </p>
-                    <p
-                      className="related-price"
-                      style={{ color: "#e74c3c", fontWeight: "bold" }}
-                    >
-                      {product.salePrice.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      E£
-                    </p>
-                  </>
-                ) : (
-                  <p className="related-price">
-                    {product.price.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    E£
-                  </p>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          ))}
       </Swiper>
     </div>
   );
