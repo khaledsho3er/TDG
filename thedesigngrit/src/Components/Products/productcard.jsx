@@ -96,27 +96,93 @@ const ProductCard = ({ product }) => {
         onClick={handleCardClick}
       >
         {/* Discount Percentage Label - Top Left */}
-        {product.discountPercentage && product.discountPercentage > 0 && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: 8,
-              left: 8,
-              background: "#e74c3c",
-              color: "#fff",
-              borderRadius: "5px",
-              padding: "4px 10px",
-              fontSize: "13px",
-              fontWeight: 700,
-              letterSpacing: "1px",
-              zIndex: 2,
-              fontFamily: "Montserrat",
-              boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
-            }}
-          >
-            {product.discountPercentage}% OFF
-          </Box>
-        )}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+            zIndex: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: "4px",
+          }}
+        >
+          {product.stock === 0 && (
+            <Box
+              sx={{
+                backgroundColor: "#DD4A2A",
+                color: "#fff",
+                padding: "4px 10px",
+                borderRadius: "6px",
+                fontSize: "12px",
+                fontWeight: 600,
+                fontFamily: "Montserrat",
+                boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
+              }}
+            >
+              SOLD OUT
+            </Box>
+          )}
+          {product.stock > 0 && product.stock <= 5 && (
+            <Box
+              sx={{
+                backgroundColor: "#FFAC1C",
+                color: "#fff",
+                padding: "4px 10px",
+                borderRadius: "6px",
+                fontSize: "12px",
+                fontWeight: 600,
+                fontFamily: "Montserrat",
+                boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
+                animation: "pulse 1.5s infinite",
+                "@keyframes pulse": {
+                  "0%": { transform: "scale(1)", opacity: 1 },
+                  "50%": { transform: "scale(1.05)", opacity: 0.8 },
+                  "100%": { transform: "scale(1)", opacity: 1 },
+                },
+              }}
+            >
+              HURRY UP!
+            </Box>
+          )}
+          {product.stock === 0 || (product.stock > 0 && product.stock <= 5)
+            ? product.discountPercentage &&
+              product.discountPercentage > 0 && (
+                <Box
+                  sx={{
+                    background: "#e74c3c",
+                    color: "#fff",
+                    borderRadius: "5px",
+                    padding: "4px 10px",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    fontFamily: "Montserrat",
+                    boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+                  }}
+                >
+                  {product.discountPercentage}% OFF
+                </Box>
+              )
+            : product.discountPercentage &&
+              product.discountPercentage > 0 && (
+                <Box
+                  sx={{
+                    background: "#e74c3c",
+                    color: "#fff",
+                    borderRadius: "5px",
+                    padding: "4px 10px",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    letterSpacing: "1px",
+                    fontFamily: "Montserrat",
+                    boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+                  }}
+                >
+                  {product.discountPercentage}% OFF
+                </Box>
+              )}
+        </Box>
         {/* Product Image */}
         <Box
           sx={{
@@ -144,49 +210,6 @@ const ProductCard = ({ product }) => {
             alt={product.name}
           />
         </Box>
-        {product.stock === 0 ? (
-          <Box
-            sx={{
-              position: "absolute",
-              top: 12,
-              left: 12,
-              backgroundColor: "#DD4A2A",
-              color: "#fff",
-              padding: "4px 10px",
-              borderRadius: "6px",
-              fontSize: "12px",
-              fontWeight: 600,
-              fontFamily: "Montserrat",
-              boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
-            }}
-          >
-            SOLD OUT
-          </Box>
-        ) : product.stock <= 5 ? (
-          <Box
-            sx={{
-              position: "absolute",
-              top: 12,
-              left: 12,
-              backgroundColor: "#FFAC1C",
-              color: "#fff",
-              padding: "4px 10px",
-              borderRadius: "6px",
-              fontSize: "12px",
-              fontWeight: 600,
-              fontFamily: "Montserrat",
-              boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
-              animation: "pulse 1.5s infinite",
-              "@keyframes pulse": {
-                "0%": { transform: "scale(1)", opacity: 1 },
-                "50%": { transform: "scale(1.05)", opacity: 0.8 },
-                "100%": { transform: "scale(1)", opacity: 1 },
-              },
-            }}
-          >
-            HURRY UP!
-          </Box>
-        ) : null}
         {/* Favorite Icon */}
         <IconButton
           sx={{
