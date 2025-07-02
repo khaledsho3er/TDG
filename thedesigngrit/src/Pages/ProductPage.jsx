@@ -101,7 +101,6 @@ function ProductPage() {
         fetchReviews(data._id);
       } catch (error) {
         console.log(error);
-
         setError(error.message); // Set error if something goes wrong
       } finally {
         setTimeout(() => {
@@ -109,23 +108,25 @@ function ProductPage() {
         }, 5000);
       }
     };
-    const fetchReviews = async (productId) => {
-      try {
-        const response = await fetch(
-          `https://api.thedesigngrit.com/api/reviews/reviews/${productId}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
-        }
-        const data = await response.json();
-        setReviews(data); // Assuming the response is an array of reviews
-      } catch (error) {
-        setError(error.message);
-      }
-    };
 
     fetchProduct(); // Fetch product on component mount
   }, [id, error, loading, activeProduct]); // Refetch if the ID in the URL changes
+
+  // Move fetchReviews outside useEffect so it can be reused
+  const fetchReviews = async (productId) => {
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/reviews/reviews/${productId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+      const data = await response.json();
+      setReviews(data); // Assuming the response is an array of reviews
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   // Add this useEffect to fetch variants when the product loads
   useEffect(() => {
@@ -404,9 +405,16 @@ function ProductPage() {
         throw new Error("Failed to submit review");
       }
 
-      // Update reviews in state
-      const updatedProduct = await response.json();
-      setReviews(updatedProduct.reviews);
+      // Update reviews in state robustly
+      const result = await response.json();
+      if (Array.isArray(result.reviews)) {
+        setReviews(result.reviews);
+      } else if (result && result._id && result.comment) {
+        setReviews((prev) => [...prev, result]);
+      } else {
+        // Fallback: refetch reviews from the server
+        fetchReviews(product._id);
+      }
 
       // Reset form
       setShowReviewForm(false);
