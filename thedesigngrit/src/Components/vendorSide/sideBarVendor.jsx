@@ -225,7 +225,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           >
             <span style={{ display: "flex", alignItems: "center" }}>
               <FaMoneyBill className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Quotation List</span>
+              <span className="sidebar-item-text">Quotations</span>
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}

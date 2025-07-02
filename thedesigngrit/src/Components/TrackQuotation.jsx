@@ -172,13 +172,13 @@ function TrackQuotation() {
       {selectedQuotation && (
         <Box
           sx={{
-            border: "1px solid #ccc",
             borderRadius: "8px",
             padding: "16px",
-            backgroundColor: "#f9f9f9",
+            backgroundColor: "#fff",
             position: "relative",
             display: "flex",
             flexDirection: "column",
+            boxShadow: "0 4px 6px 6px rgba(0, 0, 0, 0.1)",
           }}
         >
           {/* Info Icon - top right, opposite to image */}
@@ -325,7 +325,7 @@ function TrackQuotation() {
                 </Link>
                 .
               </Typography>
-            ) : (
+            ) : selectedQuotation?.quotePrice ? (
               <>
                 <button
                   onClick={() => handleDealDecision(true)}
@@ -350,6 +350,17 @@ function TrackQuotation() {
                   Reject
                 </button>
               </>
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#2d2d2d",
+                  fontWeight: 500,
+                  marginTop: 16,
+                }}
+              >
+                Waiting for the brand Offer
+              </div>
             )}
           </Box>
           {payError && (
