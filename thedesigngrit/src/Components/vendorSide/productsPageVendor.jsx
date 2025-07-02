@@ -164,14 +164,11 @@ const ProductsPageVendor = ({ setActivePage }) => {
       success = true;
     } catch (error) {
       console.error("Error deleting product:", error);
+      setError("Failed to delete product. Please try again.");
+      alert("Failed to delete product. Please try again.");
     }
     setConfirmDialogOpen(false);
     setProductToDelete(null);
-    if (success) {
-      alert("Product deleted successfully!");
-    } else {
-      alert("Failed to delete product. Please try again.");
-    }
   };
 
   const handleInsights = (product) => {
