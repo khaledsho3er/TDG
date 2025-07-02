@@ -7,12 +7,16 @@ import { useVendor } from "../../utils/vendorContext";
 import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
+import ConfirmationDialog from "../confirmationMsg";
+
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
   const [vendors, setVendors] = useState([]);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
   const [currentVendor, setCurrentVendor] = useState(null);
   const [signupPopupVisible, setSignupPopupVisible] = useState(false);
+  const [confirmEditOpen, setConfirmEditOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const handleOpenSignup = () => {
     setSignupPopupVisible(true);
@@ -54,6 +58,10 @@ const EmployeePage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setConfirmEditOpen(true);
+  };
+
+  const handleEditConfirm = async () => {
     try {
       await axios.put(
         `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`,
@@ -63,10 +71,16 @@ const EmployeePage = () => {
       fetchVendors();
     } catch (error) {
       console.error("Error updating vendor", error);
+    } finally {
+      setConfirmEditOpen(false);
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
       await axios.delete(
         `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`
@@ -75,6 +89,8 @@ const EmployeePage = () => {
       fetchVendors();
     } catch (error) {
       console.error("Error deleting vendor", error);
+    } finally {
+      setConfirmDeleteOpen(false);
     }
   };
 
@@ -204,19 +220,13 @@ const EmployeePage = () => {
           </>
         )}
         {editPopupVisible && currentVendor && (
-          <div
-            className="requestInfo-popup-overlay"
-            style={{
-              backgroundColor: "white",
-              minHeight: "100vh",
-              minWidth: "100vw",
-              position: "fixed",
-              top: 0,
-              left: 0,
-              zIndex: 1000,
-            }}
-          >
-            <div className="requestInfo-popup">
+          <div className="requestInfo-popup-overlay">
+            <div
+              className="requestInfo-popup"
+              style={{
+                backgroundColor: "white",
+              }}
+            >
               <div className="requestInfo-popup-header">
                 <h2 style={{ color: "#2d2d2d" }}>Edit Vendor</h2>
                 <IconButton
@@ -352,6 +362,20 @@ const EmployeePage = () => {
           </div>
         )}
       </section>
+      <ConfirmationDialog
+        open={confirmEditOpen}
+        title="Confirm Edit"
+        content="Are you sure you want to submit these changes?"
+        onConfirm={handleEditConfirm}
+        onCancel={() => setConfirmEditOpen(false)}
+      />
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Confirm Delete"
+        content="Are you sure you want to delete this employee?"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setConfirmDeleteOpen(false)}
+      />
     </div>
   );
 };
