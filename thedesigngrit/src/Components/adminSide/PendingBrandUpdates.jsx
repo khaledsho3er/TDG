@@ -125,7 +125,51 @@ const PendingBrandUpdates = () => {
     return val;
   };
 
+  // Helper to check if a field is an image (by key or value)
+  const isImageField = (key, value) => {
+    const imageFields = ["brandlogo", "coverPhoto", "logo", "image", "photo"];
+    const imageExtensions = [".png", ".jpg", ".jpeg", ".webp", ".avif"];
+    if (imageFields.includes(key)) return true;
+    if (typeof value === "string") {
+      return imageExtensions.some((ext) => value.toLowerCase().endsWith(ext));
+    }
+    return false;
+  };
+
+  // Helper to render an image if value is a filename
+  const renderImage = (filename, alt) => {
+    if (!filename) return "N/A";
+    return (
+      <img
+        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${filename}`}
+        alt={alt}
+        style={{
+          maxWidth: 120,
+          maxHeight: 80,
+          display: "block",
+          margin: "8px 0",
+          borderRadius: 6,
+          border: "1px solid #eee",
+        }}
+      />
+    );
+  };
+
   const renderFieldDiff = (field, current, pending) => {
+    if (isImageField(field, current) || isImageField(field, pending)) {
+      return (
+        <Box>
+          <Typography variant="body2" color="text.secondary">
+            Current:
+          </Typography>
+          {renderImage(current, "Current")}
+          <Typography variant="body2" color="primary">
+            Pending:
+          </Typography>
+          {renderImage(pending, "Pending")}
+        </Box>
+      );
+    }
     if (JSON.stringify(current) === JSON.stringify(pending)) {
       return <Typography variant="body1">{renderValue(current)}</Typography>;
     }
