@@ -197,7 +197,7 @@ function TrackViewInStore() {
                     color: "#2d2d2d",
                     fontWeight: "bold",
                     mr: 2,
-                    marginBottom: "0px",
+                    mb: "0px",
                   }}
                 >
                   Waiting for your visit

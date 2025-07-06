@@ -3,6 +3,17 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { useVendor } from "../../utils/vendorContext";
 import { FaSearch } from "react-icons/fa";
+import ConfirmationDialog from "../confirmationMsg";
+import { LuInfo } from "react-icons/lu";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  IconButton,
+} from "@mui/material";
 
 const ViewInStoreVendor = () => {
   const { vendor } = useVendor(); // Access vendor data from context
@@ -12,6 +23,23 @@ const ViewInStoreVendor = () => {
   const [selectedViewInStore, setSelectedViewInStore] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState(null);
+  const [showProductInfo, setShowProductInfo] = useState(false);
+
+  // Helper: check if status is locked (approved/rejected for 5+ min)
+  const isStatusLocked = (entry) => {
+    if (!entry) return false;
+    const status = (entry.status || "").toLowerCase();
+    if (status !== "approved" && status !== "rejected") return false;
+    // Use statusUpdatedAt if available, else fallback to createdAt
+    const updatedAt =
+      entry.statusUpdatedAt || entry.updatedAt || entry.createdAt;
+    if (!updatedAt) return false;
+    const updatedTime = new Date(updatedAt).getTime();
+    const now = Date.now();
+    return now - updatedTime > 5 * 60 * 1000; // 5 minutes in ms
+  };
 
   useEffect(() => {
     const fetchViewInStores = async () => {
@@ -66,29 +94,47 @@ const ViewInStoreVendor = () => {
 
   const handleStatusChange = async (event) => {
     const newStatus = event.target.value;
-
     if (!selectedViewInStore) return;
+    setPendingStatus(newStatus);
+    setConfirmOpen(true);
+  };
 
+  const handleConfirmStatusChange = async () => {
+    if (!selectedViewInStore || !pendingStatus) return;
     try {
       await axios.put(
         `https://api.thedesigngrit.com/api/view-in-store/${selectedViewInStore._id}`,
-        { status: newStatus }
+        { status: pendingStatus }
       );
-
       // Update local state
       setViewInStores((prev) =>
         prev.map((item) =>
           item._id === selectedViewInStore._id
-            ? { ...item, status: newStatus }
+            ? {
+                ...item,
+                status: pendingStatus,
+                statusUpdatedAt: new Date().toISOString(),
+              }
             : item
         )
       );
-
       // Update selected entry state
-      setSelectedViewInStore((prev) => ({ ...prev, status: newStatus }));
+      setSelectedViewInStore((prev) => ({
+        ...prev,
+        status: pendingStatus,
+        statusUpdatedAt: new Date().toISOString(),
+      }));
     } catch (error) {
       console.error("Failed to update status", error);
+    } finally {
+      setConfirmOpen(false);
+      setPendingStatus(null);
     }
+  };
+
+  const handleCancelStatusChange = () => {
+    setConfirmOpen(false);
+    setPendingStatus(null);
   };
 
   if (loading) {
@@ -205,15 +251,29 @@ const ViewInStoreVendor = () => {
             <h2>
               Details for: {selectedViewInStore.productId?.name || "Product"}
             </h2>
-            <img
-              src={
-                selectedViewInStore.productId?.mainImage
-                  ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedViewInStore.productId.mainImage}`
-                  : "/default-product-image.jpg"
-              }
-              alt={selectedViewInStore.productId?.name || "Product"}
-              className="quotation-popup-img"
-            />
+            <div style={{ position: "relative" }}>
+              <img
+                src={
+                  selectedViewInStore.productId?.mainImage
+                    ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedViewInStore.productId.mainImage}`
+                    : "/default-product-image.jpg"
+                }
+                alt={selectedViewInStore.productId?.name || "Product"}
+                className="quotation-popup-img"
+              />
+              <IconButton
+                aria-label="Product Info"
+                onClick={() => setShowProductInfo(true)}
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  zIndex: 1,
+                }}
+              >
+                <LuInfo color="white" size={30} />
+              </IconButton>
+            </div>
             <p>
               <strong>Code:</strong> {selectedViewInStore.code}
             </p>
@@ -230,6 +290,7 @@ const ViewInStoreVendor = () => {
               <select
                 value={selectedViewInStore.status}
                 onChange={handleStatusChange}
+                disabled={isStatusLocked(selectedViewInStore)}
               >
                 <option value="pending">Pending</option>
                 <option value="approved">Approved</option>
@@ -243,6 +304,101 @@ const ViewInStoreVendor = () => {
           </div>
         </div>
       )}
+      {/* Confirmation Dialog for status change */}
+      <ConfirmationDialog
+        open={confirmOpen}
+        title="Confirm Status Change"
+        content={`Are you sure you want to change the status to '${pendingStatus}'?`}
+        onConfirm={handleConfirmStatusChange}
+        onCancel={handleCancelStatusChange}
+      />
+      {/* Product Info Dialog */}
+      <Dialog
+        open={showProductInfo}
+        onClose={() => setShowProductInfo(false)}
+        maxWidth="sm"
+        fullWidth
+        sx={{ borderRadius: "8px", height: "80vh" }}
+      >
+        <DialogTitle>Product Information</DialogTitle>
+        <DialogContent dividers>
+          {selectedViewInStore && (
+            <Box>
+              <img
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedViewInStore.productId.mainImage}`}
+                alt={selectedViewInStore.productId.name}
+                style={{
+                  width: "100%",
+                  height: 200,
+                  objectFit: "cover",
+                  borderRadius: 8,
+                }}
+              />
+              <Typography variant="h6" mt={2}>
+                {selectedViewInStore.productId.name}
+              </Typography>
+              <Typography>
+                <strong> Price: E£</strong>{" "}
+                {selectedViewInStore.productId.salePrice ? (
+                  <del style={{ color: "#a1a1a1" }}>
+                    {selectedViewInStore.productId.price.toLocaleString()}E£
+                  </del>
+                ) : (
+                  selectedViewInStore.productId.price.toLocaleString()
+                )}
+                {selectedViewInStore.productId.salePrice && (
+                  <span style={{ color: "red" }}>
+                    {" "}
+                    {selectedViewInStore.productId.salePrice.toLocaleString()}E£
+                  </span>
+                )}
+              </Typography>
+              <Typography>
+                <strong> SKU:</strong> {selectedViewInStore.productId.sku}
+              </Typography>
+              <Typography>
+                <strong> Collection:</strong>{" "}
+                {selectedViewInStore.productId.collection}
+              </Typography>
+              <Typography>
+                <strong> Year:</strong>{" "}
+                {selectedViewInStore.productId.manufactureYear}
+              </Typography>
+              <Typography>
+                <strong> Colors:</strong>{" "}
+                {selectedViewInStore.productId.colors?.join(", ")}
+              </Typography>
+              <Typography>
+                <strong> Sizes: </strong>{" "}
+                {selectedViewInStore.productId.sizes?.join(", ")}
+              </Typography>
+              <Typography>
+                <strong> Dimensions:</strong>
+                {
+                  selectedViewInStore.productId.technicalDimensions?.length
+                } x {selectedViewInStore.productId.technicalDimensions?.width} x{" "}
+                {selectedViewInStore.productId.technicalDimensions?.height} cm
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#6b7b58",
+                transform: "scale(1.1)",
+                boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+              },
+            }}
+            onClick={() => setShowProductInfo(false)}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

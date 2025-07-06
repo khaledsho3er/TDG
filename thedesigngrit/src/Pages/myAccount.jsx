@@ -138,7 +138,7 @@ const MyAccount = () => {
                     navigate(`/myaccount/${section.toLowerCase()}`);
                   }}
                 >
-                  {section}
+                  {section === "trackviewinstore" ? "View In Store" : section}
                 </button>
               ) : (
                 <div key={section} className="sidebar-item">
