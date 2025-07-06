@@ -135,13 +135,13 @@ function TrackViewInStore() {
             <strong>Product Description:</strong>{" "}
             {selectedRequest.productId?.description || "N/A"}
           </Typography>
-          <Typography sx={{ mt: 2 }}>
+          <Typography>
             <strong>Technical Dimensions:</strong>{" "}
             {selectedRequest.productId?.technicalDimensions
               ? `${selectedRequest.productId.technicalDimensions.length} x ${selectedRequest.productId.technicalDimensions.width} x ${selectedRequest.productId.technicalDimensions.height} cm, ${selectedRequest.productId.technicalDimensions.weight} kg`
               : "N/A"}
           </Typography>
-          <Typography sx={{ mt: 2 }}>
+          <Typography>
             <strong>Warranty:</strong>{" "}
             {selectedRequest.productId?.warrantyInfo
               ? `${

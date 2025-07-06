@@ -104,6 +104,7 @@
   font-size: 15px;
   font-family: Montserrat, sans-serif;
   display: flex;
+  margin-left: 5px;
   align-items: center;
 }
 
