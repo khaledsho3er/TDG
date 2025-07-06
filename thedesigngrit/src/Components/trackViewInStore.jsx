@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import LoadingScreen from "../Pages/loadingScreen";
 import { UserContext } from "../utils/userContext";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 function TrackViewInStore() {
   const { userSession } = useContext(UserContext);
@@ -77,11 +78,34 @@ function TrackViewInStore() {
             boxShadow: "0 4px 6px 6px rgba(0, 0, 0, 0.1)",
           }}
         >
+          {/* Info Icon - top right, links to product page */}
+          {selectedRequest.productId && (
+            <a
+              href={`https://thedesigngrit.com/product/${selectedRequest.productId._id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                position: "absolute",
+                top: 16,
+                right: 16,
+                color: "#2d2d2d",
+                textDecoration: "none",
+                zIndex: 2,
+              }}
+              title="View Product Page"
+            >
+              <InfoOutlinedIcon fontSize="large" />
+            </a>
+          )}
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Request Summary
           </Typography>
           <Typography>
             <strong>Product:</strong> {selectedRequest.productId?.name || "N/A"}
+          </Typography>
+          <Typography sx={{ mt: 2 }}>
+            <strong>Brand:</strong>{" "}
+            {selectedRequest.brandId?.brandName || "N/A"}
           </Typography>
           {selectedRequest.productId?.mainImage && (
             <img
@@ -90,9 +114,8 @@ function TrackViewInStore() {
               style={{ width: "200px", borderRadius: "6px", marginTop: "10px" }}
             />
           )}
-          <Typography sx={{ mt: 2 }}>
-            <strong>Brand:</strong>{" "}
-            {selectedRequest.brandId?.brandName || "N/A"}
+          <Typography>
+            <strong>Purchase Code:</strong> {selectedRequest.code}
           </Typography>
           <Typography>
             <strong>User:</strong> {selectedRequest.userName || "N/A"}
@@ -107,10 +130,7 @@ function TrackViewInStore() {
           <Typography>
             <strong>Status:</strong> {selectedRequest.status}
           </Typography>
-          <Typography sx={{ color: "gray", mt: 2 }}>
-            Requested On:{" "}
-            {new Date(selectedRequest.createdAt).toLocaleDateString()}
-          </Typography>
+
           <Typography sx={{ mt: 2 }}>
             <strong>Product Description:</strong>{" "}
             {selectedRequest.productId?.description || "N/A"}
@@ -130,6 +150,10 @@ function TrackViewInStore() {
                   ", "
                 )}`
               : "N/A"}
+          </Typography>
+          <Typography sx={{ color: "gray", mt: 2 }}>
+            Requested On:{" "}
+            {new Date(selectedRequest.createdAt).toLocaleDateString()}
           </Typography>
         </Box>
       )}
