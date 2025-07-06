@@ -4,11 +4,10 @@ import Header from "../Components/navBar";
 import axios from "axios";
 import Profile from "../Components/account/profile";
 import { UserContext } from "../utils/userContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import ResetPasswordForm from "../Components/profilePopup/resetPassowrd";
 import ShippingInfoPopup from "../Components/profilePopup/Shipping";
 import WishlistPage from "../Components/account/wishlist";
-import { useLocation } from "react-router-dom";
 import Footer from "../Components/Footer";
 import TrackOrder from "./TrackOrder";
 import LoadingScreen from "./loadingScreen";
@@ -18,7 +17,8 @@ import ConfirmationDialog from "../Components/confirmationMsg";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
-  const [selectedSection, setSelectedSection] = useState("profile");
+  const { section } = useParams();
+  const [selectedSection, setSelectedSection] = useState(section || "profile");
   const { userSession, logout } = useContext(UserContext); // Access user session and logout function from context
   const [userData, setUserData] = useState({
     firstName: "",
@@ -32,11 +32,18 @@ const MyAccount = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+
+  // When the URL param changes, update selectedSection
+  useEffect(() => {
+    setSelectedSection(section || "profile");
+  }, [section]);
+  // If location.state.section is set (e.g., from navigation), update the URL
   useEffect(() => {
     if (location.state?.section) {
-      setSelectedSection(location.state.section);
+      navigate(`/myaccount/${location.state.section}`);
     }
-  }, [location]);
+  }, [location, navigate]);
+
   useEffect(() => {
     // Redirect to login if user is not logged in
     if (!userSession) {
@@ -123,9 +130,11 @@ const MyAccount = () => {
                 <button
                   key={section}
                   className={`sidebar-item ${
-                    selectedSection === section ? "active" : ""
+                    selectedSection === section.toLowerCase() ? "active" : ""
                   }`}
-                  onClick={() => setSelectedSection(section)}
+                  onClick={() => {
+                    navigate(`/myaccount/${section.toLowerCase()}`);
+                  }}
                 >
                   {section}
                 </button>

@@ -1138,6 +1138,7 @@ function ProductPage() {
             width: "90%",
             textAlign: "center",
             margin: "auto",
+            marginTop: "30px",
             marginBottom: "20px",
           }}
         ></hr>

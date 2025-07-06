@@ -333,7 +333,7 @@ const AppRoutes = () => {
           element={<TransitionRoute element={<TrackOrder />} />}
         />
         <Route
-          path="/myaccount"
+          path="/myaccount/:section?"
           element={<TransitionRoute element={<MyAccount />} />}
         />
         <Route
