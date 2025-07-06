@@ -925,6 +925,9 @@ const AddProduct = () => {
               </div>
               <div className="form-group">
                 <label>Colors (comma separated):</label>
+                <span>
+                  Enter the colors of the product which be vaild for variants.
+                </span>
                 <input
                   type="text"
                   name="colors"
@@ -935,6 +938,10 @@ const AddProduct = () => {
               </div>
               <div className="form-group">
                 <label>Sizes (comma separated):</label>
+                <span>
+                  Enter the colors of the product which be vaild for variants.
+                </span>
+
                 <input
                   type="text"
                   name="sizes"
