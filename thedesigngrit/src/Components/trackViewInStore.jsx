@@ -100,10 +100,10 @@ function TrackViewInStore() {
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Request Summary
           </Typography>
-          <Typography>
+          <Typography sx={{ mt: 2 }}>
             <strong>Product:</strong> {selectedRequest.productId?.name || "N/A"}
           </Typography>
-          <Typography sx={{ mt: 2 }}>
+          <Typography>
             <strong>Brand:</strong>{" "}
             {selectedRequest.brandId?.brandName || "N/A"}
           </Typography>
@@ -114,7 +114,7 @@ function TrackViewInStore() {
               style={{ width: "200px", borderRadius: "6px", marginTop: "10px" }}
             />
           )}
-          <Typography>
+          <Typography sx={{ mt: 2 }}>
             <strong>Purchase Code:</strong> {selectedRequest.code}
           </Typography>
           <Typography>
@@ -155,6 +155,55 @@ function TrackViewInStore() {
             Requested On:{" "}
             {new Date(selectedRequest.createdAt).toLocaleDateString()}
           </Typography>
+          {/* Status-based actions/messages */}
+          <Box
+            sx={{
+              mt: 3,
+              display: "flex",
+              gap: 2,
+              justifyContent: "end",
+              flexDirection: "row-reverse",
+              alignItems: "baseline",
+            }}
+          >
+            {selectedRequest.status === "approved" && (
+              <button
+                className="submit-btn"
+                style={{ marginRight: 8 }}
+                onClick={() => {
+                  // TODO: Implement pay now logic or navigation
+                  alert("Pay Now clicked!");
+                }}
+              >
+                Pay Now
+              </button>
+            )}
+            {selectedRequest.status === "rejected" && (
+              <Typography sx={{ color: "#2d2d2d" }}>
+                Unfortunately, you have rejected the product.
+              </Typography>
+            )}
+            {selectedRequest.status === "pending" && (
+              <>
+                <Typography sx={{ color: "#2d2d2d", fontWeight: 500, mr: 2 }}>
+                  Waiting for your visit
+                </Typography>
+                {selectedRequest.brandId?.companyAddress && (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      selectedRequest.brandId.companyAddress
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button className="submit-btn" style={{ marginRight: 8 }}>
+                      Get Directions
+                    </button>
+                  </a>
+                )}
+              </>
+            )}
+          </Box>
         </Box>
       )}
     </Box>
