@@ -101,6 +101,11 @@ export const CartProvider = ({ children }) => {
             // Add variant information if present
             variantId: product.variantId || null,
             productId: product.productId || product._id, // Use productId from variant if available
+            // Ensure mainImage is always set
+            mainImage:
+              product.mainImage ||
+              (product.productId && product.productId.mainImage) ||
+              "",
           },
         ];
       }
