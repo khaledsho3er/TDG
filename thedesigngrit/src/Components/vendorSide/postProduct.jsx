@@ -925,7 +925,12 @@ const AddProduct = () => {
               </div>
               <div className="form-group">
                 <label>Colors (comma separated):</label>
-                <span>
+                <span
+                  style={{
+                    color: "grey",
+                    margin: "5px",
+                  }}
+                >
                   Enter the colors of the product which be vaild for variants.
                 </span>
                 <input
@@ -934,12 +939,18 @@ const AddProduct = () => {
                   value={formData.colors.join(",")}
                   onChange={(e) => handleArrayChange(e, "colors")}
                   placeholder="Ex: Red, Blue, Green"
+                  style={{ marginTop: "10px" }}
                 />
               </div>
               <div className="form-group">
                 <label>Sizes (comma separated):</label>
-                <span>
-                  Enter the colors of the product which be vaild for variants.
+                <span
+                  style={{
+                    color: "grey",
+                    margin: "5px",
+                  }}
+                >
+                  Enter the sizes of the product which be vaild for variants.
                 </span>
 
                 <input
@@ -948,6 +959,7 @@ const AddProduct = () => {
                   value={formData.sizes.join(",")}
                   onChange={(e) => handleArrayChange(e, "sizes")}
                   placeholder="Ex: Small, Medium, Large"
+                  style={{ marginTop: "10px" }}
                 />
               </div>
               {/* <div className="form-group">
