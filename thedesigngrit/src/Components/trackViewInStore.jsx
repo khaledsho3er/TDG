@@ -3,12 +3,18 @@ import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import LoadingScreen from "../Pages/loadingScreen";
 import { UserContext } from "../utils/userContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { useCart } from "../Context/cartcontext";
+import { useNavigate } from "react-router-dom";
 
 function TrackViewInStore() {
   const { userSession } = useContext(UserContext);
+  const { addToCart, cartItems } = useCart();
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [payError, setPayError] = useState("");
+  const [payLoading, setPayLoading] = useState(false);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -32,6 +38,56 @@ function TrackViewInStore() {
     };
     fetchRequests();
   }, [userSession]);
+
+  const handlePayNow = () => {
+    setPayError("");
+    setPayLoading(true);
+    try {
+      if (!selectedRequest) {
+        setPayError("No request selected.");
+        setPayLoading(false);
+        return;
+      }
+      // Prevent duplicate in cart
+      const alreadyInCart = cartItems.some(
+        (item) =>
+          item.fromViewInStore && item.viewInStoreId === selectedRequest._id
+      );
+      if (alreadyInCart) {
+        setPayError("This product is already in your cart.");
+        setPayLoading(false);
+        navigate("/checkout");
+        return;
+      }
+      // Generate a unique id for the cart item
+      let uniqueId;
+      try {
+        uniqueId = require("nanoid").nanoid();
+      } catch {
+        uniqueId = Date.now().toString();
+      }
+      const cartItem = {
+        id: uniqueId,
+        productId: selectedRequest.productId?._id,
+        name: selectedRequest.productId?.name || "View In Store Product",
+        unitPrice:
+          selectedRequest.productId?.salePrice ||
+          selectedRequest.productId?.price,
+        mainImage: selectedRequest.productId?.mainImage || "",
+        quantity: 1,
+        description: selectedRequest.productId?.description || "",
+        brandId: selectedRequest.productId?.brandId,
+        fromViewInStore: true,
+        viewInStoreId: selectedRequest._id,
+      };
+      addToCart(cartItem);
+      setPayLoading(false);
+      navigate("/checkout");
+    } catch (err) {
+      setPayError(err.message || "Failed to add product to cart.");
+      setPayLoading(false);
+    }
+  };
 
   if (loading) return <LoadingScreen />;
 
@@ -170,12 +226,10 @@ function TrackViewInStore() {
               <button
                 className="submit-btn"
                 style={{ marginRight: 8 }}
-                onClick={() => {
-                  // TODO: Implement pay now logic or navigation
-                  alert("Pay Now clicked!");
-                }}
+                onClick={handlePayNow}
+                disabled={payLoading}
               >
-                Pay Now
+                {payLoading ? "Processing..." : "Pay Now"}
               </button>
             )}
             {selectedRequest.status === "rejected" && (
@@ -218,6 +272,11 @@ function TrackViewInStore() {
               </div>
             )}
           </Box>
+          {payError && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {payError}
+            </Typography>
+          )}
         </Box>
       )}
     </Box>
