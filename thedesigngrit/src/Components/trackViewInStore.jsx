@@ -179,13 +179,27 @@ function TrackViewInStore() {
               </button>
             )}
             {selectedRequest.status === "rejected" && (
-              <Typography sx={{ color: "#2d2d2d" }}>
+              <Typography sx={{ color: "#2d2d2d", fontWeight: "bold" }}>
                 Unfortunately, you have rejected the product.
               </Typography>
             )}
             {selectedRequest.status === "pending" && (
-              <>
-                <Typography sx={{ color: "#2d2d2d", fontWeight: 500, mr: 2 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "end",
+                  gap: "0px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#2d2d2d",
+                    fontWeight: "bold",
+                    mr: 2,
+                    marginBottom: "0px",
+                  }}
+                >
                   Waiting for your visit
                 </Typography>
                 {selectedRequest.brandId?.companyAddress && (
@@ -201,7 +215,7 @@ function TrackViewInStore() {
                     </button>
                   </a>
                 )}
-              </>
+              </div>
             )}
           </Box>
         </Box>
