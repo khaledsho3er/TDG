@@ -14,6 +14,7 @@ import LoadingScreen from "./loadingScreen";
 import BillingInfo from "../Components/profilePopup/billingInfo";
 import TrackQuotation from "../Components/TrackQuotation";
 import ConfirmationDialog from "../Components/confirmationMsg";
+import TrackViewInStore from "../Components/trackViewInStore";
 
 // import BillingInfo from "../Components/profilePopup/billingInfo";
 const MyAccount = () => {
@@ -96,6 +97,7 @@ const MyAccount = () => {
     profile: <Profile userData={userData} />, // Pass userData as a prop
     orders: <TrackOrder />,
     quotation: <TrackQuotation />,
+    trackviewinstore: <TrackViewInStore />,
     Password: <ResetPasswordForm />,
     // Billing: <BillingInfo />,
     shipping: <ShippingInfoPopup />,
