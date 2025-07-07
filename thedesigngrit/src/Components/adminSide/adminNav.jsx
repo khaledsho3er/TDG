@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material"; // Import Button from Material-UI
 import { useAdmin } from "../../utils/adminContext";
 import { useNavigate } from "react-router-dom"; // Import useHistory for navigation
 
@@ -38,12 +39,22 @@ const NavbarAdmin = () => {
       {/* Actions */}
       <div className="navbar-actions-vendor">
         {/* Bell Icon */}
-        <select onChange={handleSelectChange}>
-          {" "}
-          {/* Added onChange handler */}
+        {/* <select onChange={handleSelectChange}>
           <option>Admin</option>
           <option>Logout</option>
-        </select>
+        </select> */}
+        <Button
+          variant="text"
+          onClick={handleLogout}
+          style={{
+            color: "#6B7755",
+            fontSize: "16px",
+            fontWeight: "bold",
+            fontFamily: "montserrat",
+          }}
+        >
+          Logout
+        </Button>
       </div>
 
       {/* Notification Overlay

@@ -406,14 +406,14 @@ const ProductPageAdmin = () => {
                                   <button onClick={() => handleEdit(product)}>
                                     Edit
                                   </button>
-                                  <button
+                                  {/* <button
                                     onClick={() => {
                                       setProductToDelete(product);
                                       setConfirmDialogOpen(true);
                                     }}
                                   >
                                     Delete
-                                  </button>
+                                  </button> */}
                                   <button
                                     onClick={() => handleInsights(product)}
                                   >
@@ -557,14 +557,14 @@ const ProductPageAdmin = () => {
                                   <button onClick={() => handleEdit(product)}>
                                     Edit
                                   </button>
-                                  <button
+                                  {/* <button
                                     onClick={() => {
                                       setProductToDelete(product);
                                       setConfirmDialogOpen(true);
                                     }}
                                   >
                                     Delete
-                                  </button>
+                                  </button> */}
                                   <button
                                     onClick={() => handleInsights(product)}
                                   >
