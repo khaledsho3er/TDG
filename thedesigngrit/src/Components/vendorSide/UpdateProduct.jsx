@@ -1612,13 +1612,57 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
         onConfirm={handleSubmit}
         onCancel={handleCloseDialog}
       />
-      <Dialog open={showSuccessDialog} onClose={handleCloseSuccessDialog}>
-        <DialogTitle>Success</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Product updated successfully!</DialogContentText>
+      <Dialog
+        open={showSuccessDialog}
+        onClose={handleCloseSuccessDialog}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#6b7b58",
+          },
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontWeight: "normal",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
+          }}
+        >
+          Success
+        </DialogTitle>
+        <DialogContent
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+          }}
+        >
+          Product updated successfully!
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseSuccessDialog} color="primary">
+        <DialogActions
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+          }}
+        >
+          <Button
+            onClick={handleCloseSuccessDialog}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
             Done
           </Button>
         </DialogActions>
