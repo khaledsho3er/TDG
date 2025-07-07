@@ -55,7 +55,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    salePrice: "",
+    salePrice: null,
     category: "",
     subcategory: "",
     collection: "",
@@ -63,9 +63,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     manufactureYear: "",
     tags: [], // Tags array in formData
     reviews: [], // Initialize reviews as an empty array
-    colors: [], // Initialize colors as an empty array
-    sizes: [], // Initialize sizes as an empty array
-    images: [], // Initialize images
+    colors: [],
+    sizes: [],
+    images: [],
     mainImage: "",
     description: "",
     technicalDimensions: {
@@ -79,20 +79,17 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     leadTime: "",
     stock: "",
     sku: "",
+    readyToShip: false, // Add readyToShip field with default value false
     warrantyInfo: {
       warrantyYears: "",
-      warrantyCoverage: [], // Initialize as an empty array
+      warrantyCoverage: [],
     },
     materialCareInstructions: "",
     productSpecificRecommendations: "",
     Estimatedtimeleadforcustomization: "",
+    cadFile: null, // Add CAD field
   });
 
-  // Add states for new features
-  const [readyToShip, setReadyToShip] = useState(
-    existingProduct.readyToShip || false
-  );
-  const [cadFile, setCadFile] = useState(null);
   const [showCropModal, setShowCropModal] = useState(false);
   const [selectedImageSrc, setSelectedImageSrc] = useState(null);
   const [pendingFile, setPendingFile] = useState(null);
@@ -105,6 +102,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [tagOptions, setTagOptions] = useState({});
+  const [validationErrors, setValidationErrors] = useState([]);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -163,6 +161,25 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       setImages(existingProduct.images || []); // Set existing images
       setMainImage(existingProduct.mainImage || ""); // Set existing main image
 
+      // Set up image previews for existing images
+      if (existingProduct.images && existingProduct.images.length > 0) {
+        const previews = existingProduct.images.map((image) =>
+          typeof image === "string"
+            ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
+            : URL.createObjectURL(image)
+        );
+        setImagePreviews(previews);
+
+        // Set main image preview
+        if (existingProduct.mainImage) {
+          const mainPreview =
+            typeof existingProduct.mainImage === "string"
+              ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${existingProduct.mainImage}`
+              : URL.createObjectURL(existingProduct.mainImage);
+          setMainImagePreview(mainPreview);
+        }
+      }
+
       // Fetch subcategories and types based on existing product data
       const fetchSubCategoriesAndTypes = async () => {
         try {
@@ -181,7 +198,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       };
       fetchSubCategoriesAndTypes();
     }
-  }, [existingProduct, selectedCategory, selectedSubCategory]);
+  }, [existingProduct]);
 
   // Fetch tag options for dropdowns
   useEffect(() => {
@@ -258,10 +275,55 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   // Handle input change for basic fields
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // Special handling for leadTime and Estimatedtimeleadforcustomization to ensure they're valid ranges
+    if (name === "leadTime" || name === "Estimatedtimeleadforcustomization") {
+      // Allow numbers and a single hyphen
+      const validValue = value.replace(/[^\d-]/g, "");
+      // Ensure only one hyphen
+      const parts = validValue.split("-");
+      if (parts.length > 2) {
+        // If more than one hyphen, keep only the first one
+        const firstPart = parts[0];
+        const secondPart = parts[1];
+        setFormData({
+          ...formData,
+          [name]: `${firstPart}-${secondPart}`,
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [name]: validValue,
+        });
+      }
+      return;
+    }
+
+    // Handle bullet points for specific fields
+    if (name === "materialCareInstructions") {
+      // For material care instructions, just allow normal line breaks
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else if (name === "productSpecificRecommendations") {
+      // For product recommendations, add bullet points
+      const formattedValue = value
+        .split("\n")
+        .map((line) => (line.startsWith("•") ? line : `• ${line.trim()}`))
+        .join("\n");
+
+      setFormData({
+        ...formData,
+        [name]: formattedValue,
+      });
+    } else {
+      // For all other fields, just update normally
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   // Handle nested input change
@@ -347,17 +409,21 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     const croppedFile = new File([blob], pendingFile.name, {
       type: "image/jpeg",
     });
+
     setImages((prev) => [...prev, croppedFile]);
     setImagePreviews((prev) => [...prev, url]);
+
     if (!mainImage) {
       setMainImage(croppedFile);
       setMainImagePreview(url);
     }
+
     setFormData((prevData) => ({
       ...prevData,
       images: [...prevData.images, croppedFile],
       mainImage: prevData.mainImage || croppedFile,
     }));
+
     setShowCropModal(false);
     setPendingFile(null);
     setSelectedImageSrc(null);
@@ -365,31 +431,38 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
   // Handle setting the main image
   const handleSetMainImage = (index) => {
-    setMainImage(images[index]);
+    setMainImage(images[index]); // Set main image file
+    setMainImagePreview(imagePreviews[index]); // Set preview
+
     setFormData((prevData) => ({
       ...prevData,
-      mainImage: images[index], // Update mainImage in formData
+      mainImage: images[index], // Update formData with the selected main image
     }));
   };
 
   // Handle removing an image
   const handleRemoveImage = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+
     setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
 
     // If the removed image was the main image, update the main image
     if (images[index] === mainImage) {
       setMainImage(updatedImages[0] || null);
+      setMainImagePreview(updatedPreviews[0] || null);
+
       setFormData((prevData) => ({
         ...prevData,
         mainImage: updatedImages[0] || "", // Update mainImage in formData
       }));
     }
 
-    // Remove the image path from formData
+    // Update formData images list
     setFormData((prevData) => ({
       ...prevData,
-      images: prevData.images.filter((_, i) => i !== index),
+      images: updatedImages,
     }));
   };
 
@@ -406,24 +479,26 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       [name]: checked,
     }));
   };
+  // Add CAD file handling functions
   const handleCADUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Check file type
       const allowedTypes = [".dwg", ".dxf", ".stp", ".step", ".igs", ".iges"];
       const fileExtension = "." + file.name.split(".").pop().toLowerCase();
+
       if (!allowedTypes.includes(fileExtension)) {
         alert(
           "Please upload a valid CAD file (DWG, DXF, STP, STEP, IGS, or IGES format)"
         );
         return;
       }
-      setCadFile(file);
-      setFormData((prevData) => ({ ...prevData, cadFile: file }));
+
+      setFormData((prevData) => ({
+        ...prevData,
+        cadFile: file, // Changed from 'cad' to 'cadFile' to match backend
+      }));
     }
-  };
-  const handleRemoveCAD = () => {
-    setCadFile(null);
-    setFormData((prevData) => ({ ...prevData, cadFile: null }));
   };
   const handleWarrantyCoverageChange = (coverage) => {
     setFormData((prevState) => {
@@ -480,6 +555,20 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     setShowSuccessDialog(false);
     onBack();
   };
+
+  const validateForm = () => {
+    const errors = [];
+    if (!formData.name.trim()) errors.push("Product Name");
+    if (!formData.price || isNaN(formData.price)) errors.push("Product Price");
+    if (!formData.sku.trim()) errors.push("SKU");
+    if (!formData.collection.trim()) errors.push("Collection");
+    if (!formData.stock || isNaN(formData.stock)) errors.push("Stock");
+    if (!formData.leadTime.trim()) errors.push("Lead Time");
+    if (!formData.description.trim()) errors.push("Description");
+    if (!formData.images || formData.images.length === 0)
+      errors.push("At least one image");
+    return errors;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
@@ -525,24 +614,32 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       JSON.stringify(formData.technicalDimensions)
     );
     data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
-    // Images
-    images.forEach((file) => {
-      if (file instanceof File) {
-        data.append("images", file);
-      }
+    // Append images
+    formData.images.forEach((file) => {
+      data.append("images", file);
     });
-    // CAD file
-    if (cadFile) {
-      data.append("cadFile", cadFile);
+
+    // Append CAD file if exists
+    if (formData.cadFile) {
+      // Changed from 'cad' to 'cadFile'
+      data.append("cadFile", formData.cadFile);
     }
+
+    // Log FormData for debugging
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value);
+    }
+
     try {
       const response = await axios.put(
         `https://api.thedesigngrit.com/api/products/${formData._id}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      console.log("Product updated successfully:", response.data);
       setShowSuccessDialog(true);
     } catch (error) {
+      console.error("Error updating product:", error.response?.data || error);
       alert("Failed to update product. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -585,6 +682,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
+                  placeholder="Ex: L-shaped Sofa "
                   required
                 />
               </div>
@@ -595,18 +693,20 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
+                  placeholder="Ex: 10,000.00"
                   required
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Sale Price:</label>
                 <input
                   type="number"
                   name="salePrice"
                   value={formData.salePrice}
                   onChange={handleChange}
+                  placeholder="Ex: 1000.00"
                 />
-              </div>
+              </div> */}
               {/* Category Dropdown */}
               <div className="form-group">
                 <label>Category:</label>
@@ -730,6 +830,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="collection"
                   value={formData.collection}
                   onChange={handleChange}
+                  placeholder="Ex: Living Room"
                 />
               </div>
               <div className="form-group">
@@ -739,24 +840,47 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="manufactureYear"
                   value={formData.manufactureYear}
                   onChange={handleChange}
+                  placeholder="Ex: 2023"
+                  required
                 />
               </div>
               <div className="form-group">
                 <label>Colors (comma separated):</label>
+                <span
+                  style={{
+                    color: "grey",
+                    margin: "5px",
+                  }}
+                >
+                  Enter the colors of the product which be vaild for variants.
+                </span>
                 <input
                   type="text"
                   name="colors"
                   value={formData.colors ? formData.colors.join(",") : ""} // Check if colors is defined
                   onChange={(e) => handleArrayChange(e, "colors")}
+                  placeholder="Ex: Red, Blue, Green"
+                  style={{ marginTop: "10px" }}
                 />
               </div>
               <div className="form-group">
                 <label>Sizes (comma separated):</label>
+                <span
+                  style={{
+                    color: "grey",
+                    margin: "5px",
+                  }}
+                >
+                  Enter the sizes of the product which be vaild for variants.
+                </span>
+
                 <input
                   type="text"
                   name="sizes"
                   value={formData.sizes.join(",")}
                   onChange={(e) => handleArrayChange(e, "sizes")}
+                  placeholder="Ex: Small, Medium, Large"
+                  style={{ marginTop: "10px" }}
                 />
               </div>
               {/* <div className="form-group">
@@ -773,9 +897,30 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 <textarea
                   name="description"
                   value={formData.description}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const words = e.target.value
+                      .trim()
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0);
+                    if (words.length <= 10) {
+                      handleChange(e);
+                    }
+                  }}
+                  placeholder="Provide a brief product description (max 10 words). Include key features and benefits."
                   maxLength="2000"
                 />
+                <div
+                  style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}
+                >
+                  Word count:{" "}
+                  {
+                    formData.description
+                      .trim()
+                      .split(/\s+/)
+                      .filter((word) => word.length > 0).length
+                  }
+                  /10 words
+                </div>
               </div>
             </Box>
 
@@ -805,6 +950,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     type="number"
                     name="length"
                     value={formData.technicalDimensions.length}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -816,6 +962,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     type="number"
                     name="width"
                     value={formData.technicalDimensions.width}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -827,6 +974,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     type="number"
                     name="height"
                     value={formData.technicalDimensions.height}
+                    placeholder="CM"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -838,6 +986,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     type="number"
                     name="weight"
                     value={formData.technicalDimensions.weight}
+                    placeholder="Kg"
                     onChange={(e) =>
                       handleNestedChange(e, "technicalDimensions")
                     }
@@ -887,16 +1036,18 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 </label>
               </div>
               <div className="form-group">
-                {/* Stock and SKU */}
                 <label>Lead Time:</label>
                 <input
                   type="text"
                   name="leadTime"
                   value={formData.leadTime}
                   onChange={handleChange}
+                  placeholder="Enter lead time range (e.g., 5-7 days)"
+                  required
+                  pattern="\d+-\d+"
+                  title="Please enter a valid range (e.g., 5-7)"
                 />
               </div>
-
               <div className="form-group">
                 <label>Stock:</label>
                 <input
@@ -904,6 +1055,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="stock"
                   value={formData.stock}
                   onChange={handleChange}
+                  placeholder="Enter the stock quantity  Ex:100"
                 />
               </div>
               <div className="form-group">
@@ -913,6 +1065,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="sku"
                   value={formData.sku}
                   onChange={handleChange}
+                  placeholder="Enter the Stock Keeping Unit"
                 />
               </div>
             </Box>
@@ -928,6 +1081,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="warrantyYears"
                   value={formData.warrantyInfo.warrantyYears}
                   onChange={(e) => handleNestedChange(e, "warrantyInfo")}
+                  placeholder="Enter the number of years of warranty"
                 />
               </div>
               <div className="form-group">
@@ -1003,6 +1157,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                   name="Estimatedtimeleadforcustomization"
                   value={formData.Estimatedtimeleadforcustomization}
                   onChange={handleChange}
+                  placeholder="Enter time range (e.g., 5-7 days)"
+                  pattern="\d+-\d+"
+                  title="Please enter a valid range (e.g., 5-7)"
                 />
               </div>
               {/* <div className="form-group">
@@ -1017,9 +1174,19 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
           </div>
           <div className="form-right">
             <div className="image-placeholder">
-              {mainImage ? (
+              {mainImagePreview ? (
                 <img
-                  src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`}
+                  src={mainImagePreview} // Use preview URL instead of file object
+                  alt="Main Preview"
+                  className="main-image"
+                />
+              ) : mainImage ? (
+                <img
+                  src={
+                    typeof mainImage === "string"
+                      ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${mainImage}`
+                      : URL.createObjectURL(mainImage)
+                  }
                   alt="Main Preview"
                   className="main-image"
                 />
@@ -1063,7 +1230,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 <input
                   type="file"
                   multiple
-                  accept="image/jpeg, image/png"
+                  accept="image/jpeg, image/png, image/webp"
                   onChange={handleImageUpload}
                   className="file-input"
                   style={{ display: "none" }} // Hide the input visually
@@ -1083,10 +1250,10 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                 </button>
               </div>
               <div className="thumbnail-list">
-                {images.map((image, index) => (
+                {imagePreviews.map((preview, index) => (
                   <div
                     className={`thumbnail ${
-                      image === mainImage ? "main-thumbnail" : ""
+                      preview === mainImagePreview ? "main-thumbnail" : ""
                     }`}
                     key={index}
                   >
@@ -1099,14 +1266,14 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                       }}
                     >
                       <img
-                        src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`} // Adjust the URL as needed
+                        src={preview}
                         alt={`Thumbnail ${index}`}
                         className="image-thumbnail"
                         onClick={() => handleSetMainImage(index)}
                       />
                       <span>Product thumbnail.png</span>
                       <span className="checkmark">
-                        {image === mainImage ? "✔ Main" : "✔"}
+                        {preview === mainImagePreview ? "✔ Main" : "✔"}
                       </span>
                     </div>
                     <div
@@ -1126,15 +1293,126 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
                     </div>
                   </div>
                 ))}
+                {/* Display existing images that don't have previews yet */}
+                {images
+                  .filter((_, index) => !imagePreviews[index])
+                  .map((image, index) => (
+                    <div
+                      className={`thumbnail ${
+                        image === mainImage ? "main-thumbnail" : ""
+                      }`}
+                      key={`existing-${index}`}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                        }}
+                      >
+                        <img
+                          src={
+                            typeof image === "string"
+                              ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
+                              : URL.createObjectURL(image)
+                          }
+                          alt={`Thumbnail ${index}`}
+                          className="image-thumbnail"
+                          onClick={() =>
+                            handleSetMainImage(imagePreviews.length + index)
+                          }
+                        />
+                        <span>Product thumbnail.png</span>
+                        <span className="checkmark">
+                          {image === mainImage ? "✔ Main" : "✔"}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                        }}
+                      >
+                        <span
+                          className="remove-thumbnail"
+                          onClick={() =>
+                            handleRemoveImage(imagePreviews.length + index)
+                          }
+                        >
+                          ✖
+                        </span>
+                      </div>
+                    </div>
+                  ))}
               </div>
+            </div>
+
+            {/* Update CAD Upload Section */}
+            <div className="cad-upload-section">
+              <label>CAD File Upload</label>
+              <div className="cad-drop-zone">
+                <input
+                  type="file"
+                  accept=".dwg,.dxf,.stp,.step,.igs,.iges"
+                  onChange={handleCADUpload}
+                  className="cad-file-input"
+                  style={{ display: "none" }}
+                  id="cadFileInput"
+                />
+                <label htmlFor="cadFileInput" className="cad-drop-zone-label">
+                  Drop your CAD file here, or browse
+                  <br />
+                  Supported formats: DWG, DXF, STP, STEP, IGS, IGES
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.getElementById("cadFileInput").click()
+                  }
+                  className="upload-btn"
+                >
+                  Upload CAD File
+                </button>
+              </div>
+              {formData.cadFile && ( // Changed from 'cad' to 'cadFile'
+                <div className="cad-file-info">
+                  <span>Selected file: {formData.cadFile.name}</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, cadFile: null }))
+                    }
+                    className="remove-cad-btn"
+                  >
+                    ✖
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="form-actions">
+          {validationErrors.length > 0 && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              Please fill the following required fields:{" "}
+              {validationErrors.join(", ")}
+            </div>
+          )}
           <button
             className="btn update"
             type="button"
-            onClick={handleOpenDialog}
+            onClick={() => {
+              const errors = validateForm();
+              if (errors.length > 0) {
+                setValidationErrors(errors);
+                return;
+              }
+              setValidationErrors([]);
+              handleOpenDialog();
+            }}
             disabled={isSubmitting}
           >
             {isSubmitting ? <CircularProgress size={24} /> : "UPDATE"}
