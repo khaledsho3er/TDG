@@ -44,7 +44,6 @@ const NavbarAdmin = () => {
           <option>Logout</option>
         </select> */}
         <Button
-          variant="text"
           onClick={handleLogout}
           style={{
             color: "#6B7755",
