@@ -402,9 +402,9 @@ const ProductPageAdmin = () => {
                               />
                               {menuOpen[product._id] && (
                                 <div className="menu-dropdown">
-                                  {/* <button onClick={() => handleEdit(product)}>
+                                  <button onClick={() => handleEdit(product)}>
                                     Edit
-                                  </button> */}
+                                  </button>
                                   <button
                                     onClick={() => {
                                       setProductToDelete(product);
@@ -553,9 +553,9 @@ const ProductPageAdmin = () => {
                               />
                               {menuOpen[product._id] && (
                                 <div className="menu-dropdown">
-                                  {/* <button onClick={() => handleEdit(product)}>
+                                  <button onClick={() => handleEdit(product)}>
                                     Edit
-                                  </button> */}
+                                  </button>
                                   <button
                                     onClick={() => {
                                       setProductToDelete(product);
