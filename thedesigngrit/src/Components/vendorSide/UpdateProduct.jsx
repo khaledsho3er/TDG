@@ -596,23 +596,70 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     });
   };
 
+  // Helper function to compare image arrays (considering both files and strings)
+  const imagesChanged = () => {
+    if (!initialFormData || !initialFormData.images) return true;
+
+    const currentImages = formData.images || [];
+    const initialImages = initialFormData.images || [];
+
+    // Check if lengths are different
+    if (currentImages.length !== initialImages.length) return true;
+
+    // Check if any image is new (File object) or if order changed
+    return currentImages.some((img, index) => {
+      if (img instanceof File) return true; // New image
+
+      const initialImg = initialImages[index];
+      // Compare string paths (remove URL prefix if present)
+      const currentPath =
+        typeof img === "string" ? img.replace(/^.*\//, "") : img;
+      const initialPath =
+        typeof initialImg === "string"
+          ? initialImg.replace(/^.*\//, "")
+          : initialImg;
+
+      return currentPath !== initialPath;
+    });
+  };
+
   // Function to get only changed fields
   const getChangedFields = () => {
     if (!initialFormData) return formData;
 
     const changes = {};
-    const hasNewImages = formData.images.some((img) => img instanceof File);
     const hasNewCADFile = formData.cadFile instanceof File;
+    const hasImageChanges = imagesChanged();
 
     // Check each field for changes
     Object.keys(formData).forEach((key) => {
       const currentValue = formData[key];
       const initialValue = initialFormData[key];
 
-      // Skip comparison for file objects and handle them separately
+      // Handle images with detailed change detection
       if (key === "images") {
-        if (hasNewImages) {
-          changes[key] = formData[key];
+        if (hasImageChanges) {
+          changes[key] = {
+            images: formData.images,
+            imageOperation: "update", // Indicates we need to update the entire image set
+          };
+        }
+        return;
+      }
+
+      // Handle mainImage changes
+      if (key === "mainImage") {
+        const currentMainImage =
+          typeof currentValue === "string"
+            ? currentValue.replace(/^.*\//, "")
+            : currentValue;
+        const initialMainImage =
+          typeof initialValue === "string"
+            ? initialValue.replace(/^.*\//, "")
+            : initialValue;
+
+        if (currentMainImage !== initialMainImage) {
+          changes[key] = currentValue;
         }
         return;
       }
@@ -685,10 +732,29 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       const value = changedFields[key];
 
       if (key === "images") {
-        // Append all images (existing + new)
-        formData.images.forEach((file) => {
-          data.append("images", file);
-        });
+        // Handle image changes - send all current images
+        if (value.imageOperation === "update") {
+          // Send all current images (mix of existing strings and new File objects)
+          value.images.forEach((image) => {
+            data.append("images", image);
+          });
+
+          // Also send information about which images to keep/remove
+          const existingImagePaths = initialFormData.images || [];
+          const currentImagePaths = value.images.map((img) =>
+            typeof img === "string" ? img.replace(/^.*\//, "") : "NEW_FILE"
+          );
+
+          // Send metadata about image operations
+          data.append(
+            "imageMetadata",
+            JSON.stringify({
+              existingImages: existingImagePaths,
+              currentImages: currentImagePaths,
+              operation: "update",
+            })
+          );
+        }
       } else if (key === "cadFile" && value) {
         data.append("cadFile", value);
       } else if (key === "tags" && Array.isArray(value)) {
