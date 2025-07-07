@@ -17,8 +17,9 @@ import {
   CircularProgress,
   Divider,
   IconButton,
+  Tooltip,
 } from "@mui/material";
-import { Close as CloseIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Info as InfoIcon } from "@mui/icons-material";
 
 const PendingProductUpdates = () => {
   const [pendingProducts, setPendingProducts] = useState([]);
@@ -116,6 +117,11 @@ const PendingProductUpdates = () => {
 
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleViewProduct = (productId) => {
+    const url = `https://thedesigngrit.com/product/${productId}`;
+    window.open(url, "_blank");
   };
 
   // Helper to safely render any value (stringify objects)
@@ -257,7 +263,18 @@ const PendingProductUpdates = () => {
             alignItems: "center",
           }}
         >
-          {selectedProduct?.name}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {selectedProduct?.name}
+            <Tooltip title="View product page">
+              <IconButton
+                size="small"
+                onClick={() => handleViewProduct(selectedProduct?._id)}
+                sx={{ color: "primary.main" }}
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
           <IconButton onClick={handleCloseDialog}>
             <CloseIcon />
           </IconButton>
