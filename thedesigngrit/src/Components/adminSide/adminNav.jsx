@@ -48,16 +48,16 @@ const NavbarAdmin = () => {
           onClick={handleLogout}
           style={{
             color: "#6B7755",
-            fontSize: "12px",
-            fontWeight: "normal",
+            fontSize: "14px",
+            fontWeight: "bold",
             fontFamily: "montserrat",
             backgroundColor: "transparent",
             border: "1px solid #6B7755",
             padding: "5px 10px",
             borderRadius: "5px",
             "&:hover": {
-              backgroundColor: "transparent",
-              color: "#6B7755",
+              backgroundColor: "#6B7755",
+              color: "#fff",
             },
           }}
         >
