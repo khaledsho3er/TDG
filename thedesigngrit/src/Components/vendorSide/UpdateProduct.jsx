@@ -39,7 +39,7 @@ const getCroppedImg = (imageSrc, croppedAreaPixels) => {
   });
 };
 
-const UpdateProduct = ({ existingProduct, onBack }) => {
+const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
   const { vendor } = useVendor(); // Access vendor data from context
 
   // State variables
@@ -813,11 +813,12 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
     }
 
     try {
-      const response = await axios.put(
-        `https://api.thedesigngrit.com/api/products/${formData._id}`,
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const apiUrl = isAdmin
+        ? `https://api.thedesigngrit.com/api/products/admin/products/update/${formData._id}`
+        : `https://api.thedesigngrit.com/api/products/${formData._id}`;
+      const response = await axios.put(apiUrl, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       console.log("Product updated successfully:", response.data);
       setShowSuccessDialog(true);
     } catch (error) {

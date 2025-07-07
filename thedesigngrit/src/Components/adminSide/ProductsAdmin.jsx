@@ -254,6 +254,7 @@ const ProductPageAdmin = () => {
       <UpdateProduct
         existingProduct={selectedProduct} // Pass the selected product data
         onBack={() => setShowUpdate(false)} // Function to go back to the product list
+        isAdmin={true}
       />
     );
   }
