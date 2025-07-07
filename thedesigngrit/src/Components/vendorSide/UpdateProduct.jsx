@@ -52,6 +52,9 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
   const [tags, setTags] = useState([]); // Tags array
 
+  // Store initial form data for comparison
+  const [initialFormData, setInitialFormData] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -155,6 +158,8 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
   useEffect(() => {
     if (existingProduct) {
       setFormData(existingProduct);
+      // Store initial form data for comparison (deep copy)
+      setInitialFormData(JSON.parse(JSON.stringify(existingProduct)));
       setTags(existingProduct.tags || []);
       setSelectedCategory(existingProduct.category);
       setSelectedSubCategory(existingProduct.subcategory);
@@ -569,63 +574,146 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       errors.push("At least one image");
     return errors;
   };
+
+  // Helper function to deep compare arrays
+  const arraysEqual = (arr1, arr2) => {
+    if (!Array.isArray(arr1) || !Array.isArray(arr2)) return false;
+    if (arr1.length !== arr2.length) return false;
+    return arr1.every((val, index) => val === arr2[index]);
+  };
+
+  // Helper function to deep compare objects
+  const objectsEqual = (obj1, obj2) => {
+    if (!obj1 || !obj2) return obj1 === obj2;
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) return false;
+    return keys1.every((key) => {
+      if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
+        return arraysEqual(obj1[key], obj2[key]);
+      }
+      return obj1[key] === obj2[key];
+    });
+  };
+
+  // Function to get only changed fields
+  const getChangedFields = () => {
+    if (!initialFormData) return formData;
+
+    const changes = {};
+    const hasNewImages = formData.images.some((img) => img instanceof File);
+    const hasNewCADFile = formData.cadFile instanceof File;
+
+    // Check each field for changes
+    Object.keys(formData).forEach((key) => {
+      const currentValue = formData[key];
+      const initialValue = initialFormData[key];
+
+      // Skip comparison for file objects and handle them separately
+      if (key === "images") {
+        if (hasNewImages) {
+          changes[key] = formData[key];
+        }
+        return;
+      }
+
+      if (key === "cadFile") {
+        if (hasNewCADFile) {
+          changes[key] = formData[key];
+        }
+        return;
+      }
+
+      // Handle arrays
+      if (Array.isArray(currentValue)) {
+        if (!arraysEqual(currentValue, initialValue)) {
+          changes[key] = currentValue;
+        }
+      }
+      // Handle objects (like technicalDimensions, warrantyInfo)
+      else if (typeof currentValue === "object" && currentValue !== null) {
+        if (!objectsEqual(currentValue, initialValue)) {
+          changes[key] = currentValue;
+        }
+      }
+      // Handle primitive values
+      else if (currentValue !== initialValue) {
+        // Skip empty/null values that haven't actually changed
+        if (
+          currentValue === "" &&
+          (initialValue === "" ||
+            initialValue === null ||
+            initialValue === undefined)
+        ) {
+          return;
+        }
+        if (
+          currentValue === null &&
+          (initialValue === null ||
+            initialValue === undefined ||
+            initialValue === "")
+        ) {
+          return;
+        }
+        changes[key] = currentValue;
+      }
+    });
+
+    return changes;
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDialogOpen(false);
     setIsSubmitting(true);
+
+    // Get only the changed fields
+    const changedFields = getChangedFields();
+
+    // If no changes detected, show message and return
+    if (Object.keys(changedFields).length === 0) {
+      alert("No changes detected to update.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    console.log("Changed fields:", changedFields);
+
     const data = new FormData();
-    // Append all fields as in AddProduct
-    data.append("name", formData.name);
-    data.append("price", formData.price);
-    data.append("salePrice", formData.salePrice || null || "");
-    data.append("category", formData.category);
-    data.append("subcategory", formData.subcategory);
-    data.append("collection", formData.collection || "");
-    data.append("type", formData.type || "");
-    data.append("manufactureYear", formData.manufactureYear || "");
-    data.append("description", formData.description || "");
-    data.append("brandId", formData.brandId || "");
-    data.append("brandName", formData.brandName || "");
-    data.append("leadTime", formData.leadTime || "");
-    data.append("stock", formData.stock || "");
-    data.append("sku", formData.sku || "");
-    data.append("readyToShip", formData.readyToShip);
-    data.append(
-      "materialCareInstructions",
-      formData.materialCareInstructions || ""
-    );
-    data.append(
-      "productSpecificRecommendations",
-      formData.productSpecificRecommendations || ""
-    );
-    data.append(
-      "Estimatedtimeleadforcustomization",
-      formData.Estimatedtimeleadforcustomization || ""
-    );
-    formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
-    formData.colors.forEach((color, index) =>
-      data.append(`colors[${index}]`, color)
-    );
-    formData.sizes.forEach((size, index) =>
-      data.append(`sizes[${index}]`, size)
-    );
-    data.append(
-      "technicalDimensions",
-      JSON.stringify(formData.technicalDimensions)
-    );
-    data.append("warrantyInfo", JSON.stringify(formData.warrantyInfo));
-    // Append images
-    formData.images.forEach((file) => {
-      data.append("images", file);
+
+    // Only append changed fields to FormData
+    Object.keys(changedFields).forEach((key) => {
+      const value = changedFields[key];
+
+      if (key === "images") {
+        // Append all images (existing + new)
+        formData.images.forEach((file) => {
+          data.append("images", file);
+        });
+      } else if (key === "cadFile" && value) {
+        data.append("cadFile", value);
+      } else if (key === "tags" && Array.isArray(value)) {
+        value.forEach((tag, index) => data.append(`tags[${index}]`, tag));
+      } else if (key === "colors" && Array.isArray(value)) {
+        value.forEach((color, index) => data.append(`colors[${index}]`, color));
+      } else if (key === "sizes" && Array.isArray(value)) {
+        value.forEach((size, index) => data.append(`sizes[${index}]`, size));
+      } else if (key === "technicalDimensions" && typeof value === "object") {
+        data.append("technicalDimensions", JSON.stringify(value));
+      } else if (key === "warrantyInfo" && typeof value === "object") {
+        data.append("warrantyInfo", JSON.stringify(value));
+      } else {
+        // Handle primitive values
+        data.append(key, value || "");
+      }
     });
 
-    // Append CAD file if exists
-    if (formData.cadFile) {
-      // Changed from 'cad' to 'cadFile'
-      data.append("cadFile", formData.cadFile);
+    // Always include mainImage if it exists (for backend processing)
+    if (formData.mainImage) {
+      data.append("mainImage", formData.mainImage);
     }
 
     // Log FormData for debugging
+    console.log("Sending only changed fields:");
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
     }
