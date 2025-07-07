@@ -142,7 +142,7 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
       };
       fetchBrandName();
     }
-  }, [vendor?.brandId, brandName]);
+  }, [vendor?.brandId]); // Removed brandName dependency to prevent infinite loop
 
   // Set brandId from vendor context
   useEffect(() => {
@@ -702,6 +702,27 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
         ) {
           return;
         }
+
+        // Additional check for string values that might be the same after trimming
+        if (
+          typeof currentValue === "string" &&
+          typeof initialValue === "string"
+        ) {
+          if (currentValue.trim() === initialValue.trim()) {
+            return;
+          }
+        }
+
+        // Additional check for number values that might be the same when converted
+        if (
+          typeof currentValue === "number" ||
+          typeof initialValue === "number"
+        ) {
+          if (Number(currentValue) === Number(initialValue)) {
+            return;
+          }
+        }
+
         changes[key] = currentValue;
       }
     });
@@ -715,6 +736,13 @@ const UpdateProduct = ({ existingProduct, onBack }) => {
 
     // Get only the changed fields
     const changedFields = getChangedFields();
+
+    // Debug logging to help identify false positives
+    console.log("=== CHANGE DETECTION DEBUG ===");
+    console.log("Initial form data:", initialFormData);
+    console.log("Current form data:", formData);
+    console.log("Detected changes:", changedFields);
+    console.log("===============================");
 
     // If no changes detected, show message and return
     if (Object.keys(changedFields).length === 0) {
