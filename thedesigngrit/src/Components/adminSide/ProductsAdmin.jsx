@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import PromotionModal from "../vendorSide/promotionProduct"; // Import the PromotionModal component
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow icons
@@ -18,7 +18,6 @@ import ProductReviewDialog from "./reviewPopup";
 import ConfirmationDialog from "../confirmationMsg";
 
 const ProductPageAdmin = () => {
-  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -165,7 +164,8 @@ const ProductPageAdmin = () => {
   };
 
   const handleEdit = (product) => {
-    navigate("/update-product", { state: { product } }); // Navigate with product data
+    setSelectedProduct(product);
+    setShowUpdate(true);
   };
 
   const handleDelete = async () => {
