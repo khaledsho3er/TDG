@@ -145,43 +145,44 @@ const ProductCard = ({ product }) => {
               HURRY UP!
             </Box>
           )}
-          {product.stock === 0 || (product.stock > 0 && product.stock <= 5)
-            ? product.discountPercentage &&
-              product.discountPercentage > 0 && (
-                <Box
-                  sx={{
-                    background: "#e74c3c",
-                    color: "#fff",
-                    borderRadius: "5px",
-                    padding: "4px 10px",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    letterSpacing: "1px",
-                    fontFamily: "Montserrat",
-                    boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
-                  }}
-                >
-                  {product.discountPercentage}% OFF
-                </Box>
-              )
-            : product.discountPercentage &&
-              product.discountPercentage > 0 && (
-                <Box
-                  sx={{
-                    background: "#e74c3c",
-                    color: "#fff",
-                    borderRadius: "5px",
-                    padding: "4px 10px",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    letterSpacing: "1px",
-                    fontFamily: "Montserrat",
-                    boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
-                  }}
-                >
-                  {product.discountPercentage}% OFF
-                </Box>
-              )}
+          {product.promotionApproval === true &&
+            (product.stock === 0 || (product.stock > 0 && product.stock <= 5)
+              ? product.discountPercentage &&
+                product.discountPercentage > 0 && (
+                  <Box
+                    sx={{
+                      background: "#e74c3c",
+                      color: "#fff",
+                      borderRadius: "5px",
+                      padding: "4px 10px",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      letterSpacing: "1px",
+                      fontFamily: "Montserrat",
+                      boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+                    }}
+                  >
+                    {product.discountPercentage}% OFF
+                  </Box>
+                )
+              : product.discountPercentage &&
+                product.discountPercentage > 0 && (
+                  <Box
+                    sx={{
+                      background: "#e74c3c",
+                      color: "#fff",
+                      borderRadius: "5px",
+                      padding: "4px 10px",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      letterSpacing: "1px",
+                      fontFamily: "Montserrat",
+                      boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+                    }}
+                  >
+                    {product.discountPercentage}% OFF
+                  </Box>
+                ))}
         </Box>
         {/* Product Image */}
         <Box
