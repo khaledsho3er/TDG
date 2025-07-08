@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  Modal,
+  Button,
+} from "@mui/material";
 import LoadingScreen from "../Pages/loadingScreen";
 import { UserContext } from "../utils/userContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -15,6 +23,29 @@ function TrackViewInStore() {
   const [loading, setLoading] = useState(true);
   const [payError, setPayError] = useState("");
   const [payLoading, setPayLoading] = useState(false);
+  const [showOptionPopup, setShowOptionPopup] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [validationErrors, setValidationErrors] = useState({
+    color: false,
+    size: false,
+  });
+
+  // Helper: get available sizes for selected color
+  const getAvailableSizes = () => {
+    const product = selectedRequest?.productId;
+    if (!product) return [];
+    if (!selectedColor || !product.sizes) return product.sizes || [];
+    // If variants logic is needed, add here
+    return product.sizes;
+  };
+
+  // Helper: get available colors
+  const getAvailableColors = () => {
+    const product = selectedRequest?.productId;
+    if (!product) return [];
+    return product.colors || [];
+  };
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -59,6 +90,18 @@ function TrackViewInStore() {
         navigate("/checkout");
         return;
       }
+      // Check if color/size selection is needed
+      const product = selectedRequest.productId;
+      const colors = product?.colors || [];
+      const sizes = product?.sizes || [];
+      if (
+        (colors.length > 1 && !selectedColor) ||
+        (sizes.length > 1 && !selectedSize)
+      ) {
+        setShowOptionPopup(true);
+        setPayLoading(false);
+        return;
+      }
       // Generate a unique id for the cart item
       let uniqueId;
       try {
@@ -66,17 +109,19 @@ function TrackViewInStore() {
       } catch {
         uniqueId = Date.now().toString();
       }
+      const brand = product?.brandId || selectedRequest.brandId || {};
       const cartItem = {
         id: uniqueId,
-        productId: selectedRequest.productId?._id,
-        name: selectedRequest.productId?.name || "View In Store Product",
-        unitPrice:
-          selectedRequest.productId?.salePrice ||
-          selectedRequest.productId?.price,
-        mainImage: selectedRequest.productId?.mainImage || "",
+        productId: product?._id,
+        name: product?.name || "View In Store Product",
+        unitPrice: product?.salePrice || product?.price || 0,
         quantity: 1,
-        description: selectedRequest.productId?.description || "",
-        brandId: selectedRequest.productId?.brandId,
+        mainImage: product?.mainImage || "",
+        brandId: brand,
+        color: selectedColor || "default",
+        size: selectedSize || "default",
+        code: product?.sku || selectedRequest.code || "N/A",
+        shippingFee: brand?.fees || 0,
         fromViewInStore: true,
         viewInStoreId: selectedRequest._id,
       };
@@ -87,6 +132,49 @@ function TrackViewInStore() {
       setPayError(err.message || "Failed to add product to cart.");
       setPayLoading(false);
     }
+  };
+
+  // Handler for confirming color/size selection
+  const handleOptionConfirm = () => {
+    const product = selectedRequest.productId;
+    const colors = product?.colors || [];
+    const sizes = product?.sizes || [];
+    const errors = {
+      color: colors.length > 1 && !selectedColor,
+      size: sizes.length > 1 && !selectedSize,
+    };
+    setValidationErrors(errors);
+    if (errors.color || errors.size) return;
+    setShowOptionPopup(false);
+    setPayLoading(true);
+    // Now call handlePayNow logic with selected options
+    // (simulate as if handlePayNow was called with these selections)
+    // Generate a unique id for the cart item
+    let uniqueId;
+    try {
+      uniqueId = require("nanoid").nanoid();
+    } catch {
+      uniqueId = Date.now().toString();
+    }
+    const brand = product?.brandId || selectedRequest.brandId || {};
+    const cartItem = {
+      id: uniqueId,
+      productId: product?._id,
+      name: product?.name || "View In Store Product",
+      unitPrice: product?.salePrice || product?.price || 0,
+      quantity: 1,
+      mainImage: product?.mainImage || "",
+      brandId: brand,
+      color: selectedColor || "default",
+      size: selectedSize || "default",
+      code: product?.sku || selectedRequest.code || "N/A",
+      shippingFee: brand?.fees || 0,
+      fromViewInStore: true,
+      viewInStoreId: selectedRequest._id,
+    };
+    addToCart(cartItem);
+    setPayLoading(false);
+    navigate("/checkout");
   };
 
   if (loading) return <LoadingScreen />;
@@ -279,6 +367,94 @@ function TrackViewInStore() {
           )}
         </Box>
       )}
+      {/* Color/Size Selection Popup */}
+      <Modal open={showOptionPopup} onClose={() => setShowOptionPopup(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 350,
+            bgcolor: "background.paper",
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 3,
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Select Color and Size
+          </Typography>
+          {/* Color selection */}
+          {getAvailableColors().length > 1 && (
+            <Box sx={{ mb: 2 }}>
+              <Typography>Color:</Typography>
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                {getAvailableColors().map((color, idx) => (
+                  <Button
+                    key={color}
+                    variant={selectedColor === color ? "contained" : "outlined"}
+                    onClick={() => setSelectedColor(color)}
+                    sx={{
+                      minWidth: 40,
+                      bgcolor: selectedColor === color ? "#6B7B58" : undefined,
+                      color: selectedColor === color ? "#fff" : undefined,
+                    }}
+                  >
+                    {color}
+                  </Button>
+                ))}
+              </Box>
+              {validationErrors.color && (
+                <Typography color="error">Please select a color</Typography>
+              )}
+            </Box>
+          )}
+          {/* Size selection */}
+          {getAvailableSizes().length > 1 && (
+            <Box sx={{ mb: 2 }}>
+              <Typography>Size:</Typography>
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                {getAvailableSizes().map((size, idx) => (
+                  <Button
+                    key={size}
+                    variant={selectedSize === size ? "contained" : "outlined"}
+                    onClick={() => setSelectedSize(size)}
+                    sx={{
+                      minWidth: 40,
+                      bgcolor: selectedSize === size ? "#6B7B58" : undefined,
+                      color: selectedSize === size ? "#fff" : undefined,
+                    }}
+                  >
+                    {size}
+                  </Button>
+                ))}
+              </Box>
+              {validationErrors.size && (
+                <Typography color="error">Please select a size</Typography>
+              )}
+            </Box>
+          )}
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
+          >
+            <Button
+              onClick={() => setShowOptionPopup(false)}
+              color="secondary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleOptionConfirm}
+              color="primary"
+              variant="contained"
+            >
+              Confirm
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }
