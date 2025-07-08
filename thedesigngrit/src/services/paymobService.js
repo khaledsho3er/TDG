@@ -78,6 +78,8 @@ const paymobService = {
           description: item.description || "",
           quantity: item.quantity,
           productId: item.productId || item.id,
+          selectedColor: item.color || "default",
+          selectedSize: item.size || "defaukt",
           brandId: item.brandId,
           variantId: item.variantId || null,
         };
