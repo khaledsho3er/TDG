@@ -113,13 +113,15 @@ function TrackViewInStore() {
         uniqueId = Date.now().toString();
       }
       const brand = product?.brandId || selectedRequest.brandId || {};
+      const mainImage = product?.mainImage || "";
       const cartItem = {
         id: uniqueId,
         productId: product?._id,
         name: product?.name || "View In Store Product",
         unitPrice: product?.salePrice || product?.price || 0,
         quantity: 1,
-        image: product?.mainImage || "",
+        mainImage,
+        image: mainImage, // ensure both fields are set
         brandId: brand,
         color: selectedColor || product.colors?.[0] || "default",
         size: selectedSize || product.sizes?.[0] || "default",
@@ -160,13 +162,15 @@ function TrackViewInStore() {
       uniqueId = Date.now().toString();
     }
     const brand = product?.brandId || selectedRequest.brandId || {};
+    const mainImage = product?.mainImage || "";
     const cartItem = {
       id: uniqueId,
       productId: product?._id,
       name: product?.name || "View In Store Product",
       unitPrice: product?.salePrice || product?.price || 0,
       quantity: 1,
-      mainImage: product?.mainImage || "",
+      mainImage,
+      image: mainImage, // ensure both fields are set
       brandId: brand,
       color: selectedColor || "default",
       size: selectedSize || "default",

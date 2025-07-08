@@ -118,12 +118,14 @@ function TrackQuotation() {
       } catch {
         uniqueId = Date.now().toString();
       }
+      const mainImage = selectedQuotation.productId?.mainImage || "";
       const cartItem = {
         id: uniqueId,
         productId: selectedQuotation.productId?._id,
         name: selectedQuotation.productId?.name || "Quoted Product",
         unitPrice: selectedQuotation.quotePrice,
-        mainImage: selectedQuotation.productId?.mainImage || "",
+        mainImage,
+        image: mainImage, // ensure both fields are set
         quantity: 1,
         description: selectedQuotation.note || "",
         brandId: selectedQuotation.productId?.brandId,
