@@ -876,6 +876,8 @@ const OrderDetails = ({ order, onBack }) => {
             <tr>
               <th>Product Name</th>
               <th>Order ID</th>
+              <th>Color</th>
+              <th>Size</th>
               <th>Quantity</th>
               <th>Status</th>
               <th>Total</th>
@@ -888,6 +890,8 @@ const OrderDetails = ({ order, onBack }) => {
                 <tr key={index}>
                   <td>{product.name}</td>
                   <td>{product._id}</td>
+                  <td>{product.selectedColor || "Default"}</td>
+                  <td>{product.selectedSize || "Default"}</td>
                   <td>{product.quantity} Item</td>
                   <td>
                     <span
