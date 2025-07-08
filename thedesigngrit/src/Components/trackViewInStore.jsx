@@ -7,6 +7,10 @@ import {
   FormControl,
   Modal,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import LoadingScreen from "../Pages/loadingScreen";
 import { UserContext } from "../utils/userContext";
@@ -118,8 +122,8 @@ function TrackViewInStore() {
         quantity: 1,
         mainImage: product?.mainImage || "",
         brandId: brand,
-        color: selectedColor || "default",
-        size: selectedSize || "default",
+        color: selectedColor || product.colors[0] || "default",
+        size: selectedSize || product.sizes[0] || "default",
         code: product?.sku || selectedRequest.code || "N/A",
         shippingFee: brand?.fees || 0,
         fromViewInStore: true,
@@ -368,27 +372,42 @@ function TrackViewInStore() {
         </Box>
       )}
       {/* Color/Size Selection Popup */}
-      <Modal open={showOptionPopup} onClose={() => setShowOptionPopup(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 350,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 3,
+      <Dialog
+        open={showOptionPopup}
+        onClose={() => setShowOptionPopup(false)}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#6b7b58",
+          },
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontWeight: "normal",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
           }}
         >
-          <Typography variant="h6" gutterBottom>
-            Select Color and Size
-          </Typography>
+          Select Color and Size
+        </DialogTitle>
+        <DialogContent
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+          }}
+        >
           {/* Color selection */}
           {getAvailableColors().length > 1 && (
             <Box sx={{ mb: 2 }}>
-              <Typography>Color:</Typography>
+              <Typography sx={{ color: "white" }}>Color:</Typography>
               <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
                 {getAvailableColors().map((color, idx) => (
                   <Button
@@ -397,8 +416,14 @@ function TrackViewInStore() {
                     onClick={() => setSelectedColor(color)}
                     sx={{
                       minWidth: 40,
-                      bgcolor: selectedColor === color ? "#6B7B58" : undefined,
-                      color: selectedColor === color ? "#fff" : undefined,
+                      bgcolor: selectedColor === color ? "#2d2d2d" : undefined,
+                      color: "#fff",
+                      border: selectedColor === color ? "none" : undefined,
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "#2d2d2d",
+                        border: "none",
+                      },
                     }}
                   >
                     {color}
@@ -413,7 +438,7 @@ function TrackViewInStore() {
           {/* Size selection */}
           {getAvailableSizes().length > 1 && (
             <Box sx={{ mb: 2 }}>
-              <Typography>Size:</Typography>
+              <Typography sx={{ color: "white" }}>Size:</Typography>
               <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
                 {getAvailableSizes().map((size, idx) => (
                   <Button
@@ -422,8 +447,14 @@ function TrackViewInStore() {
                     onClick={() => setSelectedSize(size)}
                     sx={{
                       minWidth: 40,
-                      bgcolor: selectedSize === size ? "#6B7B58" : undefined,
-                      color: selectedSize === size ? "#fff" : undefined,
+                      bgcolor: selectedSize === size ? "#2d2d2d" : undefined,
+                      color: "#fff",
+                      border: selectedSize === size ? "none" : undefined,
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "#2d2d2d",
+                        border: "none",
+                      },
                     }}
                   >
                     {size}
@@ -435,26 +466,41 @@ function TrackViewInStore() {
               )}
             </Box>
           )}
-          <Box
-            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
+        </DialogContent>
+        <DialogActions
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+          }}
+        >
+          <Button
+            onClick={() => setShowOptionPopup(false)}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
           >
-            <Button
-              onClick={() => setShowOptionPopup(false)}
-              color="secondary"
-              variant="outlined"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleOptionConfirm}
-              color="primary"
-              variant="contained"
-            >
-              Confirm
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleOptionConfirm}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

@@ -147,8 +147,7 @@ const ProductCard = ({ product }) => {
           )}
           {product.stock === 0 || (product.stock > 0 && product.stock <= 5)
             ? product.discountPercentage &&
-              product.discountPercentage > 0 &&
-              product.promotionApproved === true && (
+              product.discountPercentage > 0 && (
                 <Box
                   sx={{
                     background: "#e74c3c",
