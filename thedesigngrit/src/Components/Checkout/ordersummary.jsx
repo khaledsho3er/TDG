@@ -171,7 +171,11 @@ function SummaryForm({ billData, onValidate }) {
                               title="View product details"
                               onClick={() =>
                                 window.open(
-                                  `https://thedesigngrit.com/product/${product._id}`,
+                                  `https://thedesigngrit.com/product/${
+                                    product._id ||
+                                    product.productId ||
+                                    product.id
+                                  }`,
                                   "_blank"
                                 )
                               }
@@ -189,16 +193,6 @@ function SummaryForm({ billData, onValidate }) {
                             }}
                           >
                             Size: {product.size}
-                            <AiOutlineInfoCircle
-                              style={{ cursor: "pointer" }}
-                              title="View product details"
-                              onClick={() =>
-                                window.open(
-                                  `https://thedesigngrit.com/product/${product._id}`,
-                                  "_blank"
-                                )
-                              }
-                            />
                           </p>
                         </Box>
                       </Box>

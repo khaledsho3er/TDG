@@ -292,7 +292,7 @@ const SignUpForm = () => {
         }}
       >
         <div
-          className="signup-error-message"
+          className="login-error-message"
           style={{ minHeight: 48, marginBottom: 16 }}
         >
           {errors.email?.message && <div>{errors.email.message}</div>}
