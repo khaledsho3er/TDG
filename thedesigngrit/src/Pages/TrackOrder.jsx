@@ -19,6 +19,7 @@ function TrackOrder() {
   const { userSession } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [showInvoice, setShowInvoice] = useState(false);
+  const [returnReason, setReturnReason] = useState("");
 
   // Fetch orders based on userSession.id
   useEffect(() => {
@@ -48,6 +49,40 @@ function TrackOrder() {
 
     fetchOrders();
   }, [userSession]);
+  const handleReturnOrder = async () => {
+    if (!returnReason.trim()) {
+      return alert("Please enter a reason for return.");
+    }
+
+    try {
+      const res = await fetch(
+        `https://api.thedesigngrit.com/api/returns-order/returns`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: selectedOrder._id,
+            reason: returnReason,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Return request submitted successfully.");
+      } else {
+        alert(data?.error || "Failed to submit return request.");
+      }
+      await fetchOrders(); // inside `handleReturnOrder` after success
+    } catch (err) {
+      console.error("Return request failed:", err);
+      alert("Something went wrong.");
+    }
+  };
+
   const handleLazyInvoiceDownload = async () => {
     try {
       const [{ pdf }, { default: InvoicePDF }] = await Promise.all([
@@ -441,6 +476,7 @@ function TrackOrder() {
                         className="submit-btn return-btn"
                         aria-label="Return order"
                         title="Return order"
+                        onClick={handleReturnOrder}
                       >
                         <CiUndo />
                         Return Order
