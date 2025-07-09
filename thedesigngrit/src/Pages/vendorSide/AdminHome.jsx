@@ -20,6 +20,7 @@ import OurEmployees from "../../Components/adminSide/ourEmployees";
 import PendingBrandUpdates from "../../Components/adminSide/PendingBrandUpdates";
 import PendingProductUpdates from "../../Components/adminSide/PendingProductUpdates";
 import AccountingAdmin from "../../Components/adminSide/accountingAdmin";
+import ReturnRequestsAdminList from "../../Components/adminSide/ReturnRequestsAdminList";
 
 const AdminHome = () => {
   const navigate = useNavigate();
@@ -69,6 +70,8 @@ const AdminHome = () => {
         return <PendingProductUpdates />;
       case "AccountingAdmin":
         return <AccountingAdmin />;
+      case "ReturnOrdersAdmin":
+        return <ReturnRequestsAdminList />;
       default:
         return "DashboardVendor";
     }

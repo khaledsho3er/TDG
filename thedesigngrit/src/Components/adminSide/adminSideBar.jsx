@@ -34,12 +34,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Requests
         </li>
-        {/* <li
-          onClick={() => setActivePage("createCategory")}
+        <li
+          onClick={() => setActivePage("returnOrdersAdmin")}
           className="sidebar-item-vendor"
         >
-          Categories
-        </li> */}
+          Return Orders
+        </li>
         <li
           onClick={() => setActivePage("categoriesList")}
           className="sidebar-item-vendor"
