@@ -10,6 +10,7 @@ import { MdAccountBalance } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { FaWpforms, FaBell, FaUsers, FaLock } from "react-icons/fa";
 import LoadingScreen from "../../Pages/loadingScreen";
+import { CiUndo } from "react-icons/ci";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
@@ -297,6 +298,39 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{ width: 24, display: "flex", justifyContent: "center" }}
             >
               {isLocked("promotionsPage") && <FaLock />}
+            </span>
+          </span>
+        </li>
+        <li
+          onClick={() =>
+            !isLocked("returnsOrdersPage") && setActivePage("returnsOrdersPage")
+          }
+          className={getActiveClass(
+            "returnsOrdersPage",
+            isLocked("returnsOrdersPage")
+          )}
+          style={
+            isLocked("returnsOrdersPage")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
+        >
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <CiUndo className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Returns Orders</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("returnsOrdersPage") && <FaLock />}
             </span>
           </span>
         </li>

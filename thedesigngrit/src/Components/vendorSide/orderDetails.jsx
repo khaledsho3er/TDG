@@ -130,7 +130,6 @@ const OrderDetails = ({ order, onBack }) => {
 
   const handleSaveSubDeliveryDate = async () => {
     if (!selectedProduct || !subDeliveryDate) {
-      alert("Please select a product and a delivery date.");
       return;
     }
 
@@ -150,14 +149,11 @@ const OrderDetails = ({ order, onBack }) => {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Sub-delivery date updated successfully!");
         setOpen(false);
       } else {
-        alert(data.message || "Error updating sub-delivery date");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to update sub-delivery date.");
     }
   };
 
@@ -251,7 +247,6 @@ const OrderDetails = ({ order, onBack }) => {
       if (!response.ok) throw new Error("Failed to update payment status");
       setPaymentStatus(newStatus);
     } catch (err) {
-      alert("Failed to update payment status. Please try again.");
     } finally {
       setIsUpdatingStatus(false);
     }
