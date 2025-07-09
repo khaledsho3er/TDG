@@ -70,7 +70,7 @@ const AdminHome = () => {
         return <PendingProductUpdates />;
       case "AccountingAdmin":
         return <AccountingAdmin />;
-      case "ReturnOrdersAdmin":
+      case "returnOrdersAdmin":
         return <ReturnRequestsAdminList />;
       default:
         return "DashboardVendor";

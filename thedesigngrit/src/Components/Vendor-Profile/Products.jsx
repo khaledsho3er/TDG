@@ -22,7 +22,11 @@ function VendorsProductsGrid({ vendor }) {
       })
       .then((data) => {
         console.log("Fetched Products:", data);
-        setProducts(Array.isArray(data) ? data : []);
+        setProducts(
+          Array.isArray(data)
+            ? data.filter((product) => product.status === true)
+            : []
+        );
       })
       .catch((error) => {
         console.error("Error fetching products:", error);

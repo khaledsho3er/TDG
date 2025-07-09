@@ -208,8 +208,9 @@ const ReturnRequestAdminDetails = ({ request, onBack, refreshList }) => {
             disabled={updating}
           >
             <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Returned">Returned</MenuItem>
-            <MenuItem value="NotReturned">NotReturned</MenuItem>
+            <MenuItem value="Approved">Approved</MenuItem>
+            <MenuItem value="Rejected">Rejected</MenuItem>
+            <MenuItem value="Refunded">Refunded</MenuItem>
           </Select>
           <Button
             variant="contained"
