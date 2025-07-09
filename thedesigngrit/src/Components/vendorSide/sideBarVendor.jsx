@@ -177,6 +177,40 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           </span>
         </li>
         <li
+          onClick={() =>
+            !isLocked("allProductsVariant") &&
+            setActivePage("allProductsVariant")
+          }
+          className={getActiveClass(
+            "allProductsVariant",
+            isLocked("allProductsVariant")
+          )}
+          style={
+            isLocked("allProductsVariant")
+              ? { pointerEvents: "none", opacity: 0.5 }
+              : {}
+          }
+        >
+          <span
+            className="sidebar-item-content"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center" }}>
+              <LuPackageOpen className="sidebar-item-icon" />
+              <span className="sidebar-item-text">Variants Products</span>
+            </span>
+            <span
+              style={{ width: 24, display: "flex", justifyContent: "center" }}
+            >
+              {isLocked("allProductsVariant") && <FaLock />}
+            </span>
+          </span>
+        </li>
+        <li
           onClick={() => !isLocked("orderList") && setActivePage("orderList")}
           className={getActiveClass("orderList", isLocked("orderList"))}
           style={

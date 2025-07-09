@@ -26,6 +26,7 @@ import NotificationsPage from "../../Components/vendorSide/notificationPage";
 import ViewInStoreVendor from "../../Components/vendorSide/viewInStoreVendor";
 import PromotionsPage from "../../Components/vendorSide/PromotionPage";
 import ReturnRequestsList from "../../Components/vendorSide/ReturnRequestsList";
+import VariantsPageVendor from "../../Components/vendorSide/VariantsPageVendor";
 // import POSPage from "../../Components/vendorSide/PosPage";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
@@ -92,6 +93,7 @@ const VendorHome = () => {
     ViewInStoreVendor: <ViewInStoreVendor />,
     promotionsPage: <PromotionsPage />,
     returnsOrdersPage: <ReturnRequestsList />,
+    allProductsVariant: <VariantsPageVendor />,
     // posPage: <POSPage />,
   };
 
