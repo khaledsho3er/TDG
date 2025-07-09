@@ -873,6 +873,8 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
+                placeholder="EG123456789012345678901234567"
+                inputProps={{ maxLength: 27 }}
               />
 
               <TextField

@@ -224,9 +224,43 @@ const VariantsPageVendor = () => {
         ))}
       </div>
       {/* Edit Dialog */}
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
-        <DialogTitle>Edit Variant</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#fff",
+          },
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontWeight: "normal",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          }}
+        >
+          Edit Variant
+        </DialogTitle>
+        <DialogContent
+          style={{
+            backgroundColor: "#fff",
+            color: "#2d2d2d",
+            fontWeight: "bold",
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+            padding: 24,
+          }}
+        >
           <TextField
             margin="dense"
             label="Title"
@@ -234,6 +268,12 @@ const VariantsPageVendor = () => {
             value={editForm.title || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -242,6 +282,12 @@ const VariantsPageVendor = () => {
             value={editForm.size || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -250,6 +296,12 @@ const VariantsPageVendor = () => {
             value={editForm.color || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -259,6 +311,12 @@ const VariantsPageVendor = () => {
             value={editForm.price || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -268,6 +326,12 @@ const VariantsPageVendor = () => {
             value={editForm.stock || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
           <TextField
             margin="dense"
@@ -276,14 +340,31 @@ const VariantsPageVendor = () => {
             value={editForm.sku || ""}
             onChange={handleEditChange}
             fullWidth
+            InputProps={{
+              style: {
+                backgroundColor: "#fff",
+                borderRadius: 8,
+              },
+            }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+        <DialogActions
+          style={{
+            backgroundColor: "#6b7b58",
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+          }}
+        >
+          <Button
+            onClick={() => setEditDialogOpen(false)}
+            sx={{ color: "white" }}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={handleEditSubmit}
             variant="contained"
-            color="primary"
+            sx={{ backgroundColor: "#2d2d2d", color: "white" }}
           >
             Save
           </Button>
