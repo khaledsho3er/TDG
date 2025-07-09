@@ -11,6 +11,15 @@ import { pdf } from "@react-pdf/renderer";
 import { CiUndo } from "react-icons/ci";
 import InvoicePDF from "../Components/invoiceOrderCustomer";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ConfirmationDialog from "../Components/confirmationMsg";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+} from "@mui/material";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -20,6 +29,9 @@ function TrackOrder() {
   const [loading, setLoading] = useState(true);
   const [showInvoice, setShowInvoice] = useState(false);
   const [returnReason, setReturnReason] = useState("");
+  const [showReasonDialog, setShowReasonDialog] = useState(false);
+  const [showReturnConfirm, setShowReturnConfirm] = useState(false);
+  const [pendingReason, setPendingReason] = useState("");
 
   // Move fetchOrders here so it can be used in handleReturnOrder
   const fetchOrders = async () => {
@@ -50,11 +62,22 @@ function TrackOrder() {
   useEffect(() => {
     fetchOrders();
   }, [userSession]);
-  const handleReturnOrder = async () => {
-    if (!returnReason.trim()) {
-      return alert("Please enter a reason for return.");
-    }
+  const handleReturnOrder = () => {
+    setPendingReason("");
+    setShowReasonDialog(true);
+  };
 
+  const handleReasonSubmit = () => {
+    if (!pendingReason.trim()) {
+      alert("Please enter a reason for return.");
+      return;
+    }
+    setShowReasonDialog(false);
+    setShowReturnConfirm(true);
+  };
+
+  const handleConfirmReturn = async () => {
+    setShowReturnConfirm(false);
     try {
       const res = await fetch(
         `https://api.thedesigngrit.com/api/returns-order/returns`,
@@ -65,19 +88,17 @@ function TrackOrder() {
           },
           body: JSON.stringify({
             orderId: selectedOrder._id,
-            reason: returnReason,
+            reason: pendingReason,
           }),
         }
       );
-
       const data = await res.json();
-
       if (res.ok) {
         alert("Return request submitted successfully.");
       } else {
         alert(data?.error || "Failed to submit return request.");
       }
-      await fetchOrders(); // inside `handleReturnOrder` after success
+      await fetchOrders();
     } catch (err) {
       console.error("Return request failed:", err);
       alert("Something went wrong.");
@@ -498,6 +519,103 @@ function TrackOrder() {
           <button onClick={() => setShowInvoice(false)}>Close</button>
         </div>
       )}
+      {/* Reason Dialog */}
+      <Dialog
+        open={showReasonDialog}
+        onClose={() => setShowReasonDialog(false)}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#6b7b58",
+          },
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontWeight: "normal",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
+          }}
+        >
+          Return Order Reason
+        </DialogTitle>
+        <DialogContent
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+          }}
+        >
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Reason for return"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={pendingReason}
+            onChange={(e) => setPendingReason(e.target.value)}
+            sx={{
+              backgroundColor: "white",
+              borderRadius: 1,
+              input: { color: "#2d2d2d" },
+            }}
+          />
+        </DialogContent>
+        <DialogActions
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+          }}
+        >
+          <Button
+            onClick={() => setShowReasonDialog(false)}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleReasonSubmit}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
+            Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={showReturnConfirm}
+        title="Confirm Return Request"
+        content={
+          <>
+            Are you sure you want to return this order?
+            <br />
+            <strong>Reason:</strong> {pendingReason}
+          </>
+        }
+        onConfirm={handleConfirmReturn}
+        onCancel={() => setShowReturnConfirm(false)}
+      />
     </Box>
   );
 }
