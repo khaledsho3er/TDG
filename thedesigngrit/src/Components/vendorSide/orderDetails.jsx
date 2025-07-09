@@ -1087,17 +1087,44 @@ const OrderDetails = ({ order, onBack }) => {
       <Dialog
         open={openQuotationDialog}
         onClose={() => setOpenQuotationDialog(false)}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#6b7b58",
+          },
+        }}
       >
-        <DialogTitle>Quotation Details</DialogTitle>
-        <DialogContent>
+        <DialogTitle
+          style={{
+            fontWeight: "normal",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
+          }}
+        >
+          Quotation Details
+        </DialogTitle>
+        <DialogContent
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+          }}
+        >
           {selectedQuotationDetails ? (
             <Box sx={{ fontFamily: "Montserrat", minWidth: 300 }}>
               <p>
                 <strong>Color:</strong>{" "}
-                {selectedQuotationDetails?.color || "N/A"}
+                {selectedQuotationDetails?.selectedColor || "N/A"}
               </p>
               <p>
-                <strong>Size:</strong> {selectedQuotationDetails?.size || "N/A"}
+                <strong>Size:</strong>{" "}
+                {selectedQuotationDetails?.selectedSize || "N/A"}
               </p>
               <p>
                 <strong>Material:</strong>{" "}
@@ -1105,15 +1132,31 @@ const OrderDetails = ({ order, onBack }) => {
               </p>
               <p>
                 <strong>Customization:</strong>{" "}
-                {selectedQuotationDetails?.customization || "N/A"}
+                {selectedQuotationDetails?.customization ||
+                  "No specific customization"}
               </p>
             </Box>
           ) : (
             <p>No details available.</p>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenQuotationDialog(false)} color="primary">
+        <DialogActions
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+          }}
+        >
+          <Button
+            onClick={() => setOpenQuotationDialog(false)}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
             Close
           </Button>
         </DialogActions>
