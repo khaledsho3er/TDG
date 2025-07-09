@@ -21,32 +21,33 @@ function TrackOrder() {
   const [showInvoice, setShowInvoice] = useState(false);
   const [returnReason, setReturnReason] = useState("");
 
+  // Move fetchOrders here so it can be used in handleReturnOrder
+  const fetchOrders = async () => {
+    if (!userSession?.id) return; // Ensure userSession is available
+
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/orders/orders/customer/${userSession.id}`
+      ); // Adjust API endpoint as needed
+      const data = await response.json();
+
+      // Filter orders for the logged-in user
+      const userOrders = data.filter(
+        (order) => order.customerId._id === userSession.id
+      );
+
+      setOrdersData(userOrders);
+      setSelectedOrder(userOrders[0] || null); // Default to the first order if available
+      setSelectedSubOrder(userOrders[0]?.cartItems[0] || null); // Default to the first cart item
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch orders based on userSession.id
   useEffect(() => {
-    const fetchOrders = async () => {
-      if (!userSession?.id) return; // Ensure userSession is available
-
-      try {
-        const response = await fetch(
-          `https://api.thedesigngrit.com/api/orders/orders/customer/${userSession.id}`
-        ); // Adjust API endpoint as needed
-        const data = await response.json();
-
-        // Filter orders for the logged-in user
-        const userOrders = data.filter(
-          (order) => order.customerId._id === userSession.id
-        );
-
-        setOrdersData(userOrders);
-        setSelectedOrder(userOrders[0] || null); // Default to the first order if available
-        setSelectedSubOrder(userOrders[0]?.cartItems[0] || null); // Default to the first cart item
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, [userSession]);
   const handleReturnOrder = async () => {
