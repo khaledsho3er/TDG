@@ -151,16 +151,14 @@ const VariantsPageVendor = () => {
                   />
                   {menuOpen === variant._id && (
                     <div className="menu-dropdown">
-                      <button onClick={() => handleEdit(variant)}>
-                        <AiOutlineEdit /> Edit
-                      </button>
+                      <button onClick={() => handleEdit(variant)}>Edit</button>
                       <button
                         onClick={() => {
                           setVariantToDelete(variant);
                           setDeleteDialogOpen(true);
                         }}
                       >
-                        <AiOutlineDelete /> Delete
+                        Delete
                       </button>
                       <button
                         onClick={() =>
@@ -170,7 +168,7 @@ const VariantsPageVendor = () => {
                           )
                         }
                       >
-                        <AiOutlineEye /> View
+                        View
                       </button>
                     </div>
                   )}
@@ -178,8 +176,9 @@ const VariantsPageVendor = () => {
               </div>
               <div className="price-container">
                 <span className="original-price">
-                  E£{variant.price?.toLocaleString()}
+                  E£{variant.productId.price?.toLocaleString()}
                 </span>
+                E£{variant.price?.toLocaleString()}
               </div>
               <p className="product-summary">
                 SKU: {variant.sku} | Color: {variant.color} | Size:{" "}
