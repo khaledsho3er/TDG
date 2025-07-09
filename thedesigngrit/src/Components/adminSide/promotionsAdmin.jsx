@@ -233,23 +233,19 @@ const PromotionsPageAdmin = () => {
               </div>
             </div>
             <div>
-              {product.promotionApproved !== undefined && (
+              {product.promotionApproved === true && (
                 <div
                   className="approval-status"
                   style={{
-                    backgroundColor: product.promotionApproved
-                      ? "#d4edda"
-                      : "#f8d7da",
-                    color: product.promotionApproved ? "#155724" : "#721c24",
-                    border: product.promotionApproved
-                      ? "none"
-                      : "1px solid #721c24",
+                    backgroundColor: "#d4edda",
+                    color: "#155724",
+                    border: "none",
                     padding: "4px 8px",
                     borderRadius: "4px",
                     fontSize: "12px",
                   }}
                 >
-                  {product.promotionApproved ? "APPROVED" : "REJECTED"}
+                  APPROVED
                 </div>
               )}
             </div>
