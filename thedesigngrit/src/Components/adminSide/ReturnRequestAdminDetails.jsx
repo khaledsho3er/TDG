@@ -37,31 +37,28 @@ const ReturnRequestAdminDetails = ({ request, onBack, refreshList }) => {
   };
 
   return (
-    <Box
-      className="dashboard-vendor"
-      sx={{ background: "#f7f7f7", minHeight: "100vh" }}
-    >
-      <Paper
-        elevation={2}
-        sx={{ mb: 3, borderRadius: 3, p: 2, background: "#fff" }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Tooltip title="Back to Return Requests">
-            <IconButton onClick={onBack} sx={{ mr: 1 }}>
-              <IoIosArrowRoundBack size={32} />
-            </IconButton>
-          </Tooltip>
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: 700, fontFamily: "Montserrat" }}
+    <Box className="dashboard-vendor" sx={{ minHeight: "100vh" }}>
+      <header className="dashboard-header-vendor">
+        <div className="dashboard-header-title">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              gap: "10px",
+            }}
           >
-            Return Request Details (Admin)
-          </Typography>
-        </Box>
-        <Typography sx={{ fontSize: 13, color: "#888", mt: 0.5, ml: 6 }}>
-          Home &gt; Return Requests &gt; Details
-        </Typography>
-      </Paper>
+            <IconButton>
+              <IoIosArrowRoundBack size={"50px"} onClick={onBack} />
+            </IconButton>
+
+            <h2>Return Request</h2>
+          </div>
+          <p style={{ fontSize: "12px", fontFamily: "Montserrat" }}>
+            Home &gt; Return List &gt; Return Request
+          </p>
+        </div>
+      </header>
       <Paper
         elevation={1}
         sx={{ borderRadius: 3, p: 3, maxWidth: 900, mx: "auto" }}
