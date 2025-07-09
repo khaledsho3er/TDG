@@ -460,7 +460,7 @@ const DashboardVendor = () => {
                     type="monotone"
                     dataKey="sales"
                     stroke="#8884d8"
-                    style={{ marginTop: "20px" }}
+                    style={{ marginTop: "20px", display: "none" }}
                   />
                 </LineChart>
               </ResponsiveContainer>

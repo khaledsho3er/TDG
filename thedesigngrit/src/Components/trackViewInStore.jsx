@@ -332,40 +332,41 @@ function TrackViewInStore() {
                 Unfortunately, you have rejected the product.
               </Typography>
             )}
-            {selectedRequest.status === "pending" && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "end",
-                  gap: "0px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#2d2d2d",
-                    fontWeight: "bold",
-                    mr: 2,
-                    mb: "0px",
+            {selectedRequest.status !== "approved" &&
+              selectedRequest.status !== "rejected" && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "end",
+                    gap: "0px",
                   }}
                 >
-                  Waiting for your visit
-                </Typography>
-                {selectedRequest.brandId?.companyAddress && (
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      selectedRequest.brandId.companyAddress
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Typography
+                    sx={{
+                      color: "#2d2d2d",
+                      fontWeight: "bold",
+                      mr: 2,
+                      mb: "0px",
+                    }}
                   >
-                    <button className="submit-btn" style={{ marginRight: 8 }}>
-                      Get Directions
-                    </button>
-                  </a>
-                )}
-              </div>
-            )}
+                    Waiting for your visit
+                  </Typography>
+                  {selectedRequest.brandId?.companyAddress && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        selectedRequest.brandId.companyAddress
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button className="submit-btn" style={{ marginRight: 8 }}>
+                        Get Directions
+                      </button>
+                    </a>
+                  )}
+                </div>
+              )}
           </Box>
           {payError && (
             <Typography color="error" sx={{ mt: 2 }}>

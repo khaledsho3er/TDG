@@ -12,6 +12,7 @@ import BillSummary from "./billingSummary"; // Assuming you have a BillSummary c
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import DeleteIcon
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 function SummaryForm({ billData, onValidate }) {
@@ -159,9 +160,22 @@ function SummaryForm({ billData, onValidate }) {
                               color: "#777",
                               margin: "2px 0",
                               textAlign: "left",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "4px",
                             }}
                           >
                             Color: {product.color}
+                            <AiOutlineInfoCircle
+                              style={{ cursor: "pointer" }}
+                              title="View product details"
+                              onClick={() =>
+                                window.open(
+                                  `https://thedesigngrit.com/product/${product._id}`,
+                                  "_blank"
+                                )
+                              }
+                            />
                           </p>
                           <p
                             style={{
@@ -169,9 +183,22 @@ function SummaryForm({ billData, onValidate }) {
                               color: "#777",
                               margin: "2px 0",
                               textAlign: "left",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "4px",
                             }}
                           >
                             Size: {product.size}
+                            <AiOutlineInfoCircle
+                              style={{ cursor: "pointer" }}
+                              title="View product details"
+                              onClick={() =>
+                                window.open(
+                                  `https://thedesigngrit.com/product/${product._id}`,
+                                  "_blank"
+                                )
+                              }
+                            />
                           </p>
                         </Box>
                       </Box>

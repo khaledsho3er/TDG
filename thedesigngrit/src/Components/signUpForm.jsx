@@ -291,23 +291,19 @@ const SignUpForm = () => {
           margin: isMediumLaptop ? "0 auto" : "initial",
         }}
       >
-        {(errors.email ||
-          errors.password ||
-          errors.confirmPassword ||
-          errors.firstName ||
-          errors.lastName ||
-          errors.terms) && (
-          <div className="login-error-message">
-            {errors.email?.message && <div>{errors.email.message}</div>}
-            {errors.password?.message && <div>{errors.password.message}</div>}
-            {errors.confirmPassword?.message && (
-              <div>{errors.confirmPassword.message}</div>
-            )}
-            {errors.firstName?.message && <div>{errors.firstName.message}</div>}
-            {errors.lastName?.message && <div>{errors.lastName.message}</div>}
-            {errors.terms?.message && <div>{errors.terms.message}</div>}
-          </div>
-        )}
+        <div
+          className="signup-error-message"
+          style={{ minHeight: 48, marginBottom: 16 }}
+        >
+          {errors.email?.message && <div>{errors.email.message}</div>}
+          {errors.password?.message && <div>{errors.password.message}</div>}
+          {errors.confirmPassword?.message && (
+            <div>{errors.confirmPassword.message}</div>
+          )}
+          {errors.firstName?.message && <div>{errors.firstName.message}</div>}
+          {errors.lastName?.message && <div>{errors.lastName.message}</div>}
+          {errors.terms?.message && <div>{errors.terms.message}</div>}
+        </div>
         <input
           type="email"
           placeholder="E-mail"

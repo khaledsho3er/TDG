@@ -293,8 +293,8 @@ const ViewInStoreVendor = () => {
                 disabled={isStatusLocked(selectedViewInStore)}
               >
                 <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
+                <option value="approved">Paid Online</option>
+                <option value="rejected">Paid In Store</option>
               </select>
             </p>
             <p>

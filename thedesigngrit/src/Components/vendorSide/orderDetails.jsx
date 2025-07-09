@@ -537,9 +537,9 @@ const OrderDetails = ({ order, onBack }) => {
                       gap: "12px",
                     }}
                   >
-                    <span> {order.customerId.firstName || "N/A"}</span>
-                    <span> {order.customerId.email || "N/A"}</span>
-                    <span> {order.billingDetails.phoneNumber || "N/A"}</span>
+                    <span> {order?.customerId?.firstName || "N/A"}</span>
+                    <span> {order?.customerI?.email || "N/A"}</span>
+                    <span> {order?.billingDetails?.phoneNumber || "N/A"}</span>
                   </div>
                 </div>
               </div>
@@ -624,25 +624,25 @@ const OrderDetails = ({ order, onBack }) => {
                     {/* Row 1 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Address:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.address || "N/A"}
+                      {order?.shippingDetails?.address || "N/A"}
                     </span>
 
                     {/* Row 2 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Label:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.label || "N/A"}
+                      {order?.shippingDetails?.label || "N/A"}
                     </span>
 
                     {/* Row 3 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Apartment:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.apartment || "N/A"}
+                      {order?.shippingDetails?.apartment || "N/A"}
                     </span>
 
                     {/* Row 4 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Floor:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.floor || "N/A"}
+                      {order?.shippingDetails?.floor || "N/A"}
                     </span>
                   </div>
 
@@ -663,19 +663,19 @@ const OrderDetails = ({ order, onBack }) => {
                     {/* Row 1 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Country:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.country || "N/A"}
+                      {order?.shippingDetails?.country || "N/A"}
                     </span>
 
                     {/* Row 2 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>City:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.city || "N/A"}
+                      {order?.shippingDetails?.city || "N/A"}
                     </span>
 
                     {/* Row 3 */}
                     <p style={{ fontWeight: "bold", margin: 0 }}>Zip Code:</p>
                     <span style={{ margin: 0 }}>
-                      {order.shippingDetails.zipCode || "N/A"}
+                      {order?.shippingDetails?.zipCode || "N/A"}
                     </span>
                   </div>
                 </div>
@@ -888,11 +888,11 @@ const OrderDetails = ({ order, onBack }) => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product, index) => (
                 <tr key={index}>
-                  <td>{product.name}</td>
-                  <td>{product._id}</td>
-                  <td>{product.selectedColor || "Default"}</td>
-                  <td>{product.selectedSize || "Default"}</td>
-                  <td>{product.quantity} Item</td>
+                  <td>{product?.name}</td>
+                  <td>{product?._id}</td>
+                  <td>{product?.selectedColor || "Default"}</td>
+                  <td>{product?.selectedSize || "Default"}</td>
+                  <td>{product?.quantity} Item</td>
                   <td>
                     <span
                       style={{
@@ -916,12 +916,12 @@ const OrderDetails = ({ order, onBack }) => {
                         minWidth: "80px",
                       }}
                     >
-                      {product.subOrderStatus}
+                      {product?.subOrderStatus}
                     </span>
                   </td>
-                  <td>{product.totalPrice} E£</td>
+                  <td>{product?.totalPrice} E£</td>
                   <td style={{ textAlign: "center" }}>
-                    {product.fromQuotation && product.quotationId ? (
+                    {product?.fromQuotation && product?.quotationId ? (
                       <IconButton
                         onClick={() => {
                           setSelectedQuotationDetails({
@@ -1014,8 +1014,8 @@ const OrderDetails = ({ order, onBack }) => {
               }}
             >
               {filteredProducts.map((product) => (
-                <MenuItem key={product._id} value={product._id}>
-                  {product.name}
+                <MenuItem key={product?._id} value={product?._id}>
+                  {product?.name}
                 </MenuItem>
               ))}
             </Select>
@@ -1094,18 +1094,18 @@ const OrderDetails = ({ order, onBack }) => {
             <Box sx={{ fontFamily: "Montserrat", minWidth: 300 }}>
               <p>
                 <strong>Color:</strong>{" "}
-                {selectedQuotationDetails.color || "N/A"}
+                {selectedQuotationDetails?.color || "N/A"}
               </p>
               <p>
-                <strong>Size:</strong> {selectedQuotationDetails.size || "N/A"}
+                <strong>Size:</strong> {selectedQuotationDetails?.size || "N/A"}
               </p>
               <p>
                 <strong>Material:</strong>{" "}
-                {selectedQuotationDetails.material || "N/A"}
+                {selectedQuotationDetails?.material || "N/A"}
               </p>
               <p>
                 <strong>Customization:</strong>{" "}
-                {selectedQuotationDetails.customization || "N/A"}
+                {selectedQuotationDetails?.customization || "N/A"}
               </p>
             </Box>
           ) : (

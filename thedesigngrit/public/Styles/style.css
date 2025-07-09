@@ -80,7 +80,15 @@ body::-webkit-scrollbar:hover {
   animation: fadeIn 0.3s ease;
   text-align: left;
 }
-
+.signup-error-message {
+  min-height: 48px; /* Adjust as needed */
+  margin-bottom: 16px;
+  color: #d32f2f;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;

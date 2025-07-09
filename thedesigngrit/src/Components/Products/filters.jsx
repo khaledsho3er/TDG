@@ -43,7 +43,8 @@ const FilterSection = ({
           "https://api.thedesigngrit.com/api/brand/"
         );
         const data = await response.json();
-        setBrands(data);
+        const activeBrands = data.filter((brand) => brand.status === "active");
+        setBrands(activeBrands);
       } catch (err) {
         console.error("Error fetching brands:", err);
       }
