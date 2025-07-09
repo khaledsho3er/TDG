@@ -598,7 +598,7 @@ const DashboardVendor = () => {
                   >
                     <td>
                       {" "}
-                      {order.cartItems.find((item) => {
+                      {order?.cartItems?.find((item) => {
                         const itemBrandId =
                           item.brandId && typeof item.brandId === "object"
                             ? item.brandId._id
@@ -607,10 +607,10 @@ const DashboardVendor = () => {
                       })?.name || "N/A"}
                     </td>
                     <td>{order._id}</td>
-                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td>{new Date(order?.orderDate).toLocaleDateString()}</td>
                     <td>
-                      {order.customerId.firstName} {""}
-                      {order.customerId.lastName}
+                      {order?.customerId?.firstName} {""}
+                      {order?.customerId?.lastName}
                     </td>
                     <td>
                       <span
@@ -636,10 +636,10 @@ const DashboardVendor = () => {
                           minWidth: "80px",
                         }}
                       >
-                        {order.orderStatus}
+                        {order?.orderStatus}
                       </span>
                     </td>
-                    <td>E£ {order.total}</td>
+                    <td>E£ {order?.total}</td>
                   </tr>
                 ))}
               </tbody>
