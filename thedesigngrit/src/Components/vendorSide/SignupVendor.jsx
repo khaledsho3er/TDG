@@ -90,7 +90,7 @@ function Signupvendor() {
       .required("Email is required"),
     type: Yup.array()
       .min(1, "Select at least one type")
-      .max(3, "You can select up to 3 types only"),
+      .max(5, "You can select up to 5 types only"),
     brandDescription: Yup.string(),
   });
 
@@ -755,7 +755,7 @@ function Signupvendor() {
                   )}
                 />
                 <FormHelperText>
-                  {errorsPhase2.type?.message || "Select up to 3 types"}
+                  {errorsPhase2.type?.message || "Select up to 5 types"}
                 </FormHelperText>
               </FormControl>
 
