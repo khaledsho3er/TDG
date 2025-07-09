@@ -242,8 +242,21 @@ const SignUpForm = () => {
     });
   };
 
+  // Add state to track if there are errors
+  const hasErrors = !!(
+    errors.email ||
+    errors.password ||
+    errors.confirmPassword ||
+    errors.firstName ||
+    errors.lastName ||
+    errors.terms
+  );
+
   return (
-    <Box>
+    <Box
+      className="signup-form-container"
+      style={{ height: hasErrors ? "85%" : "80%" }}
+    >
       <h1
         className="form-title-signup"
         style={
@@ -291,19 +304,23 @@ const SignUpForm = () => {
           margin: isMediumLaptop ? "0 auto" : "initial",
         }}
       >
-        <div
-          className="login-error-message"
-          style={{ minHeight: 48, marginBottom: 16 }}
-        >
-          {errors.email?.message && <div>{errors.email.message}</div>}
-          {errors.password?.message && <div>{errors.password.message}</div>}
-          {errors.confirmPassword?.message && (
-            <div>{errors.confirmPassword.message}</div>
-          )}
-          {errors.firstName?.message && <div>{errors.firstName.message}</div>}
-          {errors.lastName?.message && <div>{errors.lastName.message}</div>}
-          {errors.terms?.message && <div>{errors.terms.message}</div>}
-        </div>
+        {(errors.email ||
+          errors.password ||
+          errors.confirmPassword ||
+          errors.firstName ||
+          errors.lastName ||
+          errors.terms) && (
+          <div className="login-error-message">
+            {errors.email?.message && <div>{errors.email.message}</div>}
+            {errors.password?.message && <div>{errors.password.message}</div>}
+            {errors.confirmPassword?.message && (
+              <div>{errors.confirmPassword.message}</div>
+            )}
+            {errors.firstName?.message && <div>{errors.firstName.message}</div>}
+            {errors.lastName?.message && <div>{errors.lastName.message}</div>}
+            {errors.terms?.message && <div>{errors.terms.message}</div>}
+          </div>
+        )}
         <input
           type="email"
           placeholder="E-mail"
