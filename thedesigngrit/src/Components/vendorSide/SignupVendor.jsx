@@ -75,12 +75,12 @@ function Signupvendor() {
 
   const phase2Schema = Yup.object().shape({
     brandName: Yup.string().required("Brand name is required"),
-    commercialRegisterNo: Yup.string().required(
-      "Commercial register number is required"
-    ),
+    commercialRegisterNo: Yup.string()
+      .required("Commercial register number is required")
+      .matches(/^\d{8,14}$/, "Commercial Register No. must be 8-14 digits"),
     taxNumber: Yup.string()
       .required("Tax number is required")
-      .matches(/^\d+$/, "Tax number should contain only digits"),
+      .matches(/^\d{9}$/, "Tax Number must be 9 digits"),
     companyAddress: Yup.string().required("Company address is required"),
     phoneNumber: Yup.string()
       .required("Phone number is required")
@@ -661,6 +661,7 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
+                placeholder="e.g. 12345678"
               />
 
               <TextField
@@ -671,6 +672,12 @@ function Signupvendor() {
                 fullWidth
                 margin="normal"
                 sx={whiteTextFieldStyles}
+                placeholder="e.g. 123456789"
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "[0-9]*",
+                  maxLength: 9,
+                }}
               />
 
               <TextField
