@@ -14,16 +14,39 @@ import { CiUndo } from "react-icons/ci";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
+// Badge component for circled numbers
+const Badge = ({ count }) =>
+  count > 0 ? (
+    <span
+      style={{
+        background: "red",
+        color: "white",
+        borderRadius: "50%",
+        padding: "0.2em 0.6em",
+        fontSize: "0.75em",
+        marginLeft: "8px",
+        display: "inline-block",
+        minWidth: "20px",
+        textAlign: "center",
+      }}
+    >
+      {count}
+    </span>
+  ) : null;
+
 const SidebarVendor = ({ setActivePage, activePage }) => {
   const { vendor } = useVendor();
   const [isVendorLoaded, setIsVendorLoaded] = useState(false);
   const [brandStatus, setBrandStatus] = useState(null);
+  // Add state for counts
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [quotationCount, setQuotationCount] = useState(0);
 
   useEffect(() => {
     const checkVendorAndBrand = async () => {
       if (vendor) {
         setIsVendorLoaded(true);
-
         // Check brand status if vendor has a brandId
         if (vendor.brandId) {
           try {
@@ -40,7 +63,6 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         const storedVendor = JSON.parse(localStorage.getItem("vendor"));
         if (storedVendor) {
           setIsVendorLoaded(true);
-
           // Check brand status if stored vendor has a brandId
           if (storedVendor.brandId) {
             try {
@@ -55,8 +77,55 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         }
       }
     };
-
     checkVendorAndBrand();
+  }, [vendor]);
+
+  // Fetch counts for notifications, orders, and quotations
+  useEffect(() => {
+    const fetchCounts = async () => {
+      if (!vendor?.brandId) return;
+      // Notifications: count unread
+      try {
+        const notifRes = await fetch(
+          `https://api.thedesigngrit.com/api/notifications/notifications?brandId=${vendor.brandId}`
+        );
+        const notifData = await notifRes.json();
+        setNotificationCount(
+          Array.isArray(notifData) ? notifData.filter((n) => !n.read).length : 0
+        );
+      } catch (e) {
+        setNotificationCount(0);
+      }
+      // Orders: count pending
+      try {
+        const orderRes = await fetch(
+          `https://api.thedesigngrit.com/api/orders/orders/brand/${vendor.brandId}`
+        );
+        const orderData = await orderRes.json();
+        setOrderCount(
+          Array.isArray(orderData)
+            ? orderData.filter((o) => o.orderStatus === "Pending").length
+            : 0
+        );
+      } catch (e) {
+        setOrderCount(0);
+      }
+      // Quotations: count those not yet quoted (or needing action)
+      try {
+        const quoteRes = await fetch(
+          `https://api.thedesigngrit.com/api/quotation/quotations/brand/${vendor.brandId}`
+        );
+        const quoteData = await quoteRes.json();
+        setQuotationCount(
+          Array.isArray(quoteData)
+            ? quoteData.filter((q) => !q.quotePrice).length
+            : 0
+        );
+      } catch (e) {
+        setQuotationCount(0);
+      }
+    };
+    fetchCounts();
   }, [vendor]);
 
   // Function to handle active page highlighting
@@ -138,6 +207,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <FaBell className="sidebar-item-icon" />
               <span className="sidebar-item-text">Notifications</span>
+              <Badge count={notificationCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -228,6 +298,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <TbTruckDelivery className="sidebar-item-icon" />
               <span className="sidebar-item-text">Order List</span>
+              <Badge count={orderCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -261,6 +332,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <FaMoneyBill className="sidebar-item-icon" />
               <span className="sidebar-item-text">Quotations</span>
+              <Badge count={quotationCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
