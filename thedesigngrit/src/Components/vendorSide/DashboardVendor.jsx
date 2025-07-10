@@ -270,29 +270,23 @@ const DashboardVendor = () => {
   const [chartDateTo, setChartDateTo] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
 
-  // Compute chart data based on period and filters
-  const getRawSales = () => {
-    if (chartPeriod === "week")
-      return weeklySales.map((s) => ({
-        ...s,
-        date: s.date || s._id || s.label,
-      }));
-    if (chartPeriod === "month")
-      return monthlySales.map((s) => ({
-        ...s,
-        date: s.date || s._id || s.label,
-      }));
-    if (chartPeriod === "year")
-      return yearlySales.map((s) => ({
-        ...s,
-        date: s.date || s._id || s.label,
-      }));
+  // Remove chartData, availableMonths, displayedChartData, groupLogsByPeriod, getRawSales for the chart
+  const getChartData = () => {
+    if (chartPeriod === "week") return weeklySales;
+    if (chartPeriod === "month") return monthlySales;
+    if (chartPeriod === "year") return yearlySales;
     return [];
   };
-  const rawSales = getRawSales();
+  const chartXAxisKey =
+    chartPeriod === "week"
+      ? "week"
+      : chartPeriod === "month"
+      ? "month"
+      : "year";
+  const chartData = getChartData();
 
   // Filter by date range
-  const filteredSales = rawSales.filter((s) => {
+  const filteredSales = chartData.filter((s) => {
     if (chartDateFrom && new Date(s.date) < new Date(chartDateFrom))
       return false;
     if (chartDateTo && new Date(s.date) > new Date(chartDateTo)) return false;
@@ -300,17 +294,17 @@ const DashboardVendor = () => {
   });
 
   // Group and format for chart
-  const chartData = groupLogsByPeriod(filteredSales, chartPeriod);
-  const availableMonths =
-    chartPeriod === "month"
-      ? getAvailableMonths(chartData).filter((m) =>
-          /^[0-9]{4}-[0-9]{2}$/.test(m.value)
-        )
-      : [];
-  const displayedChartData =
-    chartPeriod === "month" && selectedMonth
-      ? chartData.filter((d) => d.label === selectedMonth)
-      : chartData;
+  // const chartData = groupLogsByPeriod(filteredSales, chartPeriod); // This line is no longer needed
+  // const availableMonths = // This line is no longer needed
+  //   chartPeriod === "month"
+  //     ? getAvailableMonths(chartData).filter((m) =>
+  //         /^[0-9]{4}-[0-9]{2}$/.test(m.value)
+  //       )
+  //     : [];
+  // const displayedChartData = // This line is no longer needed
+  //   chartPeriod === "month" && selectedMonth
+  //     ? chartData.filter((d) => d.label === selectedMonth)
+  //     : chartData;
 
   if (selectedOrder) {
     return (
@@ -462,23 +456,28 @@ const DashboardVendor = () => {
                 {period.label}
               </Button>
             ))}
-            {chartPeriod === "month" && availableMonths.length > 0 && (
-              <FormControl size="small" sx={{ minWidth: 140 }}>
-                <InputLabel>Month</InputLabel>
-                <Select
-                  value={selectedMonth}
-                  label="Month"
-                  onChange={(e) => setSelectedMonth(e.target.value)}
-                >
-                  <MenuItem value="">All Months</MenuItem>
-                  {availableMonths.map((m) => (
-                    <MenuItem key={m.value} value={m.value}>
-                      {m.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+            {chartPeriod === "month" &&
+              getAvailableMonths(chartData).length > 0 && ( // Changed to getAvailableMonths(chartData)
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                  <InputLabel>Month</InputLabel>
+                  <Select
+                    value={selectedMonth}
+                    label="Month"
+                    onChange={(e) => setSelectedMonth(e.target.value)}
+                  >
+                    <MenuItem value="">All Months</MenuItem>
+                    {getAvailableMonths(chartData).map(
+                      (
+                        m // Changed to getAvailableMonths(chartData)
+                      ) => (
+                        <MenuItem key={m.value} value={m.value}>
+                          {m.label}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+              )}
             <TextField
               label="From"
               type="date"
@@ -500,11 +499,11 @@ const DashboardVendor = () => {
           </Box>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              data={displayedChartData}
+              data={filteredSales} // Use filteredSales here
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
               <XAxis
-                dataKey="label"
+                dataKey={chartXAxisKey} // Use chartXAxisKey here
                 style={{ fontFamily: "Montserrat" }}
                 tickFormatter={(label) => getXAxisLabel(label, chartPeriod)}
               />
@@ -519,7 +518,7 @@ const DashboardVendor = () => {
               <Legend />
               <Line
                 type="monotone"
-                dataKey="total"
+                dataKey="sales" // Changed from "total" to "sales"
                 name="Total Sales"
                 stroke="#2d2d2d"
                 strokeWidth={2}
