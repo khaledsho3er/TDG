@@ -138,7 +138,8 @@ const SignIn = () => {
                 color: "#e0e0e0",
                 cursor: "pointer",
                 fontFamily: "Montserrat",
-                top: "4rem",
+                top: "3.8rem",
+                padding: "0.5rem",
                 transform: "translateY(-50%)",
                 "@media (max-width: 768px)": {
                   right: "40px",
