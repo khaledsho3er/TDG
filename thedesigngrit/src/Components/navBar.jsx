@@ -766,7 +766,7 @@ function Header() {
                     marginTop: "0px",
                   }}
                 >
-                  {userData?.firstName?.charAt(0)?.toUpperCase() || "TDG"}
+                  {userData?.firstName?.charAt(0)?.toUpperCase() || " "}
                 </Avatar>
 
                 {/* Avatar Menu */}
