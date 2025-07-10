@@ -417,7 +417,7 @@ const DashboardVendor = () => {
       </section>
       {/* Sales Chart Section */}
       <section className="dashboard-chart-vendor">
-        <Box mb={4} p={2} sx={{ background: "#fff", borderRadius: 3 }}>
+        <div className="chart-header-vendor">
           <Box
             display="flex"
             alignItems="center"
@@ -527,8 +527,7 @@ const DashboardVendor = () => {
               />
             </LineChart>
           </ResponsiveContainer>
-        </Box>
-
+        </div>
         <div className="best-sellers-vendor">
           <h3>Best Sellers</h3>
           <hr />
