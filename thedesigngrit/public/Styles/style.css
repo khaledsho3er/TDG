@@ -1207,14 +1207,14 @@ html {
 }
 
 .hero-title {
-  font-size: 3.5rem; /* Adjust as needed */
+  font-size: 2.5rem; /* Adjust as needed */
   margin: 0;
   color: white;
   text-align: left;
 }
 
 .hero-subtitle {
-  font-size: 18px; /* Adjust as needed */
+  font-size: 0.875rem; /* Adjust as needed */
   margin: 10px 0 0;
   font-family: Montserrat;
 }
@@ -1236,7 +1236,7 @@ html {
 .Caption-AboutUs {
   text-align: justify;
   padding: 0px 140px 0px 140px;
-  font-size: 25px;
+  font-size: 1rem;
   line-height: 40px;
   font-family: "Montserrat";
 }
@@ -1258,7 +1258,7 @@ html {
 }
 
 .ourMission-Section-image img {
-  width: 100%; /* Make the image responsive */
+  width: 80%; /* Make the image responsive */
   height: auto; /* Maintain aspect ratio */
 }
 
@@ -1270,7 +1270,7 @@ html {
 }
 
 .ourMission-Section-typo h2 {
-  font-size: 2rem; /* Adjust title size */
+  font-size: 1.5rem; /* Adjust title size */
   margin-bottom: 30px; /* Space below the title */
   color: #6c7c59;
   font-family: Horizon;
@@ -1280,7 +1280,7 @@ html {
 }
 
 .ourMission-Section-typo p {
-  font-size: 20px; /* Adjust paragraph size */
+  font-size: 1rem; /* Adjust paragraph size */
   line-height: 1.5; /* Improve readability */
   font-family: montserrat;
 }

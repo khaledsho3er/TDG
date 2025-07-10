@@ -124,9 +124,9 @@ function AboutUsPage() {
           </p>
         </Box>
       </Box>
-      <Box className="ourStory-Section-typo">
+      {/* <Box className="ourStory-Section-typo">
         <hr className="line-between" />
-      </Box>
+      </Box> */}
       {/* <Box className="OurTeam-section">
         <Box className="OurTeam-section-typo">
           <h2>Meet Our Team</h2>
