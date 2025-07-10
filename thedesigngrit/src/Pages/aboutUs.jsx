@@ -127,14 +127,14 @@ function AboutUsPage() {
       <Box className="ourStory-Section-typo">
         <hr className="line-between" />
       </Box>
-      <Box className="OurTeam-section">
+      {/* <Box className="OurTeam-section">
         <Box className="OurTeam-section-typo">
           <h2>Meet Our Team</h2>
         </Box>
         <Box className="ourTeam-Section-image">
           <MeetOurTeam />
         </Box>
-      </Box>
+      </Box> */}
       <Footer />
     </Box>
   );
