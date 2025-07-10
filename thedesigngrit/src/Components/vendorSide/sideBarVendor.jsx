@@ -11,6 +11,7 @@ import { ImProfile } from "react-icons/im";
 import { FaWpforms, FaBell, FaUsers, FaLock } from "react-icons/fa";
 import LoadingScreen from "../../Pages/loadingScreen";
 import { CiUndo } from "react-icons/ci";
+import { useRef } from "react";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
@@ -34,6 +35,29 @@ const Badge = ({ count }) =>
     </span>
   ) : null;
 
+// Tooltip for locked sidebar items
+const LockedTooltip = ({ show, position }) =>
+  show ? (
+    <div
+      style={{
+        position: "fixed",
+        top: position.y + 12,
+        left: position.x + 16,
+        background: "#2d2d2d",
+        color: "#fff",
+        padding: "8px 14px",
+        borderRadius: 8,
+        fontSize: 13,
+        zIndex: 9999,
+        pointerEvents: "none",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      Your application must be approved before accessing this page
+    </div>
+  ) : null;
+
 const SidebarVendor = ({ setActivePage, activePage }) => {
   const { vendor } = useVendor();
   const [isVendorLoaded, setIsVendorLoaded] = useState(false);
@@ -47,6 +71,12 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
   const [viewInStoreCount, setViewInStoreCount] = useState(0);
   const [promotionsCount, setPromotionsCount] = useState(0);
   const [returnsCount, setReturnsCount] = useState(0);
+  // Tooltip state for locked items
+  const [lockedTooltip, setLockedTooltip] = useState({
+    show: false,
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
     const checkVendorAndBrand = async () => {
@@ -222,6 +252,17 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
     return false;
   };
 
+  // Mouse event handlers for locked items
+  const handleLockedMouseEnter = (e) => {
+    setLockedTooltip({ show: true, x: e.clientX, y: e.clientY });
+  };
+  const handleLockedMouseMove = (e) => {
+    setLockedTooltip((prev) => ({ ...prev, x: e.clientX, y: e.clientY }));
+  };
+  const handleLockedMouseLeave = () => {
+    setLockedTooltip({ show: false, x: 0, y: 0 });
+  };
+
   // Return a loading spinner or message until vendor data is loaded
   if (!isVendorLoaded) {
     return <LoadingScreen />;
@@ -233,350 +274,30 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
   }
 
   return (
-    <aside className="sidebar-vendor">
-      <ul className="sidebar-menu-vendor">
-        <li
-          onClick={() => !isLocked("dashboard") && setActivePage("dashboard")}
-          className={getActiveClass("dashboard", isLocked("dashboard"))}
-          style={
-            isLocked("dashboard") ? { pointerEvents: "none", opacity: 0.5 } : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <RiDashboard3Fill className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Dashboard</span>
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("dashboard") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("notifications") && setActivePage("notifications")
-          }
-          className={getActiveClass("notifications", isLocked("notifications"))}
-          style={
-            isLocked("notifications")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <FaBell className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Notifications</span>
-              <Badge count={notificationCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("notifications") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("allProducts") && setActivePage("allProducts")
-          }
-          className={getActiveClass("allProducts", isLocked("allProducts"))}
-          style={
-            isLocked("allProducts")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <LuPackageOpen className="sidebar-item-icon" />
-              <span className="sidebar-item-text">All Products</span>
-              <Badge count={productsCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("allProducts") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("allProductsVariant") &&
-            setActivePage("allProductsVariant")
-          }
-          className={getActiveClass(
-            "allProductsVariant",
-            isLocked("allProductsVariant")
-          )}
-          style={
-            isLocked("allProductsVariant")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <LuPackageOpen className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Variants Products</span>
-              <Badge count={variantsCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("allProductsVariant") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() => !isLocked("orderList") && setActivePage("orderList")}
-          className={getActiveClass("orderList", isLocked("orderList"))}
-          style={
-            isLocked("orderList") ? { pointerEvents: "none", opacity: 0.5 } : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <TbTruckDelivery className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Order List</span>
-              <Badge count={orderCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("orderList") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("quotationsList") && setActivePage("quotationsList")
-          }
-          className={getActiveClass(
-            "quotationsList",
-            isLocked("quotationsList")
-          )}
-          style={
-            isLocked("quotationsList")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <FaMoneyBill className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Quotations</span>
-              <Badge count={quotationCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("quotationsList") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("ViewInStoreVendor") && setActivePage("ViewInStoreVendor")
-          }
-          className={getActiveClass(
-            "ViewInStoreVendor",
-            isLocked("ViewInStoreVendor")
-          )}
-          style={
-            isLocked("ViewInStoreVendor")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <HiBuildingStorefront className="sidebar-item-icon" />
-              <span className="sidebar-item-text">View In Store</span>
-              <Badge count={viewInStoreCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("ViewInStoreVendor") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("promotionsPage") && setActivePage("promotionsPage")
-          }
-          className={getActiveClass(
-            "promotionsPage",
-            isLocked("promotionsPage")
-          )}
-          style={
-            isLocked("promotionsPage")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <FaMoneyBill className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Promotions</span>
-              <Badge count={promotionsCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("promotionsPage") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        <li
-          onClick={() =>
-            !isLocked("returnsOrdersPage") && setActivePage("returnsOrdersPage")
-          }
-          className={getActiveClass(
-            "returnsOrdersPage",
-            isLocked("returnsOrdersPage")
-          )}
-          style={
-            isLocked("returnsOrdersPage")
-              ? { pointerEvents: "none", opacity: 0.5 }
-              : {}
-          }
-        >
-          <span
-            className="sidebar-item-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center" }}>
-              <CiUndo className="sidebar-item-icon" />
-              <span className="sidebar-item-text">Returns Orders</span>
-              <Badge count={returnsCount} />
-            </span>
-            <span
-              style={{ width: 24, display: "flex", justifyContent: "center" }}
-            >
-              {isLocked("returnsOrdersPage") && <FaLock />}
-            </span>
-          </span>
-        </li>
-        {/* Render "Brand Form" only if vendor tier is 3 or higher */}
-        {vendor?.tier >= 3 && (
+    <>
+      <LockedTooltip
+        show={lockedTooltip.show}
+        position={{ x: lockedTooltip.x, y: lockedTooltip.y }}
+      />
+      <aside className="sidebar-vendor">
+        <ul className="sidebar-menu-vendor">
           <li
-            onClick={() => setActivePage("BrandForm")}
-            className={getActiveClass("BrandForm", false)}
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <FaWpforms className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Brand Form</span>
-              </span>
-              <span style={{ width: 24 }}></span>
-            </span>
-          </li>
-        )}
-        {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-        {vendor?.tier >= 3 && (
-          <li
-            onClick={() => setActivePage("BrandingPage")}
-            className={getActiveClass("BrandingPage", false)}
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <ImProfile className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Brand Profile</span>
-              </span>
-              <span style={{ width: 24 }}></span>
-            </span>
-          </li>
-        )}
-        {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-        {vendor?.tier >= 3 && (
-          <li
-            onClick={() =>
-              !isLocked("Accounting") && setActivePage("Accounting")
-            }
-            className={getActiveClass("Accounting", isLocked("Accounting"))}
+            onClick={() => !isLocked("dashboard") && setActivePage("dashboard")}
+            className={getActiveClass("dashboard", isLocked("dashboard"))}
             style={
-              isLocked("Accounting")
+              isLocked("dashboard")
                 ? { pointerEvents: "none", opacity: 0.5 }
                 : {}
             }
+            onMouseEnter={
+              isLocked("dashboard") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("dashboard") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("dashboard") ? handleLockedMouseLeave : undefined
+            }
           >
             <span
               className="sidebar-item-content"
@@ -587,28 +308,37 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               }}
             >
               <span style={{ display: "flex", alignItems: "center" }}>
-                <MdAccountBalance className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Accounting</span>
+                <RiDashboard3Fill className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Dashboard</span>
               </span>
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
-                {isLocked("Accounting") && <FaLock />}
+                {isLocked("dashboard") && <FaLock />}
               </span>
             </span>
           </li>
-        )}
-        {/* Render "Employee Page" only if vendor tier is 3 or higher */}
-        {vendor?.tier >= 3 && (
           <li
             onClick={() =>
-              !isLocked("EmployeePage") && setActivePage("EmployeePage")
+              !isLocked("notifications") && setActivePage("notifications")
             }
-            className={getActiveClass("EmployeePage", isLocked("EmployeePage"))}
+            className={getActiveClass(
+              "notifications",
+              isLocked("notifications")
+            )}
             style={
-              isLocked("EmployeePage")
+              isLocked("notifications")
                 ? { pointerEvents: "none", opacity: 0.5 }
                 : {}
+            }
+            onMouseEnter={
+              isLocked("notifications") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("notifications") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("notifications") ? handleLockedMouseLeave : undefined
             }
           >
             <span
@@ -620,19 +350,441 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               }}
             >
               <span style={{ display: "flex", alignItems: "center" }}>
-                <FaUsers className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Employees</span>
+                <FaBell className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Notifications</span>
+                <Badge count={notificationCount} />
               </span>
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
-                {isLocked("EmployeePage") && <FaLock />}
+                {isLocked("notifications") && <FaLock />}
               </span>
             </span>
           </li>
-        )}
-      </ul>
-    </aside>
+          <li
+            onClick={() =>
+              !isLocked("allProducts") && setActivePage("allProducts")
+            }
+            className={getActiveClass("allProducts", isLocked("allProducts"))}
+            style={
+              isLocked("allProducts")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("allProducts") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("allProducts") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("allProducts") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <LuPackageOpen className="sidebar-item-icon" />
+                <span className="sidebar-item-text">All Products</span>
+                <Badge count={productsCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("allProducts") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() =>
+              !isLocked("allProductsVariant") &&
+              setActivePage("allProductsVariant")
+            }
+            className={getActiveClass(
+              "allProductsVariant",
+              isLocked("allProductsVariant")
+            )}
+            style={
+              isLocked("allProductsVariant")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("allProductsVariant")
+                ? handleLockedMouseEnter
+                : undefined
+            }
+            onMouseMove={
+              isLocked("allProductsVariant") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("allProductsVariant")
+                ? handleLockedMouseLeave
+                : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <LuPackageOpen className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Variants Products</span>
+                <Badge count={variantsCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("allProductsVariant") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() => !isLocked("orderList") && setActivePage("orderList")}
+            className={getActiveClass("orderList", isLocked("orderList"))}
+            style={
+              isLocked("orderList")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("orderList") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("orderList") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("orderList") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <TbTruckDelivery className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Order List</span>
+                <Badge count={orderCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("orderList") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() =>
+              !isLocked("quotationsList") && setActivePage("quotationsList")
+            }
+            className={getActiveClass(
+              "quotationsList",
+              isLocked("quotationsList")
+            )}
+            style={
+              isLocked("quotationsList")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("quotationsList") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("quotationsList") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("quotationsList") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <FaMoneyBill className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Quotations</span>
+                <Badge count={quotationCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("quotationsList") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() =>
+              !isLocked("ViewInStoreVendor") &&
+              setActivePage("ViewInStoreVendor")
+            }
+            className={getActiveClass(
+              "ViewInStoreVendor",
+              isLocked("ViewInStoreVendor")
+            )}
+            style={
+              isLocked("ViewInStoreVendor")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("ViewInStoreVendor") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("ViewInStoreVendor") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("ViewInStoreVendor") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <HiBuildingStorefront className="sidebar-item-icon" />
+                <span className="sidebar-item-text">View In Store</span>
+                <Badge count={viewInStoreCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("ViewInStoreVendor") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() =>
+              !isLocked("promotionsPage") && setActivePage("promotionsPage")
+            }
+            className={getActiveClass(
+              "promotionsPage",
+              isLocked("promotionsPage")
+            )}
+            style={
+              isLocked("promotionsPage")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("promotionsPage") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("promotionsPage") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("promotionsPage") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <FaMoneyBill className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Promotions</span>
+                <Badge count={promotionsCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("promotionsPage") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={() =>
+              !isLocked("returnsOrdersPage") &&
+              setActivePage("returnsOrdersPage")
+            }
+            className={getActiveClass(
+              "returnsOrdersPage",
+              isLocked("returnsOrdersPage")
+            )}
+            style={
+              isLocked("returnsOrdersPage")
+                ? { pointerEvents: "none", opacity: 0.5 }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("returnsOrdersPage") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("returnsOrdersPage") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("returnsOrdersPage") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <CiUndo className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Returns Orders</span>
+                <Badge count={returnsCount} />
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("returnsOrdersPage") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          {/* Render "Brand Form" only if vendor tier is 3 or higher */}
+          {vendor?.tier >= 3 && (
+            <li
+              onClick={() => setActivePage("BrandForm")}
+              className={getActiveClass("BrandForm", false)}
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <FaWpforms className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Brand Form</span>
+                </span>
+                <span style={{ width: 24 }}></span>
+              </span>
+            </li>
+          )}
+          {/* Render "Add Employee" only if vendor tier is 3 or higher */}
+          {vendor?.tier >= 3 && (
+            <li
+              onClick={() => setActivePage("BrandingPage")}
+              className={getActiveClass("BrandingPage", false)}
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <ImProfile className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Brand Profile</span>
+                </span>
+                <span style={{ width: 24 }}></span>
+              </span>
+            </li>
+          )}
+          {/* Render "Add Employee" only if vendor tier is 3 or higher */}
+          {vendor?.tier >= 3 && (
+            <li
+              onClick={() =>
+                !isLocked("Accounting") && setActivePage("Accounting")
+              }
+              className={getActiveClass("Accounting", isLocked("Accounting"))}
+              style={
+                isLocked("Accounting")
+                  ? { pointerEvents: "none", opacity: 0.5 }
+                  : {}
+              }
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <MdAccountBalance className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Accounting</span>
+                </span>
+                <span
+                  style={{
+                    width: 24,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isLocked("Accounting") && <FaLock />}
+                </span>
+              </span>
+            </li>
+          )}
+          {/* Render "Employee Page" only if vendor tier is 3 or higher */}
+          {vendor?.tier >= 3 && (
+            <li
+              onClick={() =>
+                !isLocked("EmployeePage") && setActivePage("EmployeePage")
+              }
+              className={getActiveClass(
+                "EmployeePage",
+                isLocked("EmployeePage")
+              )}
+              style={
+                isLocked("EmployeePage")
+                  ? { pointerEvents: "none", opacity: 0.5 }
+                  : {}
+              }
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <FaUsers className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Employees</span>
+                </span>
+                <span
+                  style={{
+                    width: 24,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isLocked("EmployeePage") && <FaLock />}
+                </span>
+              </span>
+            </li>
+          )}
+        </ul>
+      </aside>
+    </>
   );
 };
 
