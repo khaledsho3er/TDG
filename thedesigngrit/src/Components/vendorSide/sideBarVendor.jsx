@@ -245,11 +245,11 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   // Helper to determine if an item should be locked
   const isLocked = (page) => {
-    if (brandStatus === "pending") {
-      // Only BrandForm and BrandingPage are open
-      return !(page === "BrandForm" || page === "BrandingPage");
-    }
-    return false;
+    const locked =
+      brandStatus === "pending" &&
+      !(page === "BrandForm" || page === "BrandingPage");
+    console.log(`isLocked('${page}')`, locked);
+    return locked;
   };
 
   // Mouse event handlers for locked items
@@ -258,9 +258,11 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
     setLockedTooltip({ show: true, x: e.clientX, y: e.clientY });
   };
   const handleLockedMouseMove = (e) => {
+    console.log("Moving on locked item", e.clientX, e.clientY);
     setLockedTooltip((prev) => ({ ...prev, x: e.clientX, y: e.clientY }));
   };
   const handleLockedMouseLeave = () => {
+    console.log("Left locked item");
     setLockedTooltip({ show: false, x: 0, y: 0 });
   };
 
