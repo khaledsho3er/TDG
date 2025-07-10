@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import ForgotPasswordDialog from "../forgetPassword";
+import ConfirmationDialog from "../confirmationMsg";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,6 +24,11 @@ const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { login } = useVendor();
   const navigate = useNavigate();
+  // Forgot password state
+  const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] =
+    useState(false);
+  const [forgotPasswordSuccessDialogOpen, setForgotPasswordSuccessDialogOpen] =
+    useState(false);
 
   const {
     register,
@@ -122,6 +129,24 @@ const SignIn = () => {
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
+            <span
+              onClick={() => setForgotPasswordDialogOpen(true)}
+              style={{
+                position: "absolute",
+                right: "59px",
+                fontSize: "12px",
+                color: "#e0e0e0",
+                cursor: "pointer",
+                fontFamily: "Montserrat",
+                top: "53%",
+                transform: "translateY(-50%)",
+                "@media (max-width: 768px)": {
+                  right: "40px",
+                },
+              }}
+            >
+              Forgot Password?
+            </span>
           </div>
           {errors.password && (
             <p className="error-message">{errors.password.message}</p>
@@ -139,6 +164,20 @@ const SignIn = () => {
           </p>
         </form>
       </Box>
+      {/* Forgot Password Dialogs */}
+      <ForgotPasswordDialog
+        open={forgotPasswordDialogOpen}
+        onClose={() => setForgotPasswordDialogOpen(false)}
+        onSend={() => setForgotPasswordSuccessDialogOpen(true)}
+        type="vendor"
+      />
+      <ConfirmationDialog
+        open={forgotPasswordSuccessDialogOpen}
+        title="Reset Link Sent"
+        content="A password reset link has been sent to your email."
+        onConfirm={() => setForgotPasswordSuccessDialogOpen(false)}
+        onCancel={() => setForgotPasswordSuccessDialogOpen(false)}
+      />
     </div>
   );
 };
