@@ -1869,7 +1869,7 @@ html {
 }
 
 .hero-title-faq {
-  font-size: 2.5rem; /* Adjust as needed */
+  font-size: 2rem; /* Adjust as needed */
   margin: 0;
   text-align: center;
   color: white;
@@ -2272,7 +2272,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px; /* Default padding for larger screens */
+  padding: 80px, 80px, 10px, 80px; /* Default padding for larger screens */
 }
 
 .partner-Caption p {
@@ -2293,7 +2293,7 @@ textarea {
 .partners-second-section h2 {
   text-align: center;
   padding: 20px;
-  font-size: 30px; /* Adjust font size for better scaling */
+  font-size: 1.5rem; /* Adjust font size for better scaling */
 }
 
 .partners-second-section ul {
@@ -2303,7 +2303,7 @@ textarea {
 
 .partners-second-section ul li {
   font-family: Montserrat;
-  font-size: 20px;
+  font-size: 1rem;
   line-height: 1.8;
   margin-bottom: 15px;
   padding-left: 30px;
