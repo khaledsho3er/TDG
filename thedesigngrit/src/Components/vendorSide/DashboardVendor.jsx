@@ -272,17 +272,43 @@ const DashboardVendor = () => {
 
   // Remove chartData, availableMonths, displayedChartData, groupLogsByPeriod, getRawSales for the chart
   const getChartData = () => {
-    if (chartPeriod === "week") return weeklySales;
-    if (chartPeriod === "month") return monthlySales;
-    if (chartPeriod === "year") return yearlySales;
+    if (chartPeriod === "week") {
+      return weeklySales.map((s) => ({
+        ...s,
+        xLabel: s.week && s.year ? `W${s.week} ${s.year}` : s.week || "",
+      }));
+    }
+    if (chartPeriod === "month") {
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return monthlySales.map((s) => ({
+        ...s,
+        xLabel:
+          s.month && s.year
+            ? `${monthNames[s.month - 1] || s.month} ${s.year}`
+            : s.month || "",
+      }));
+    }
+    if (chartPeriod === "year") {
+      return yearlySales.map((s) => ({
+        ...s,
+        xLabel: s.year ? String(s.year) : "",
+      }));
+    }
     return [];
   };
-  const chartXAxisKey =
-    chartPeriod === "week"
-      ? "week"
-      : chartPeriod === "month"
-      ? "month"
-      : "year";
   const chartData = getChartData();
 
   // Filter by date range
@@ -499,13 +525,13 @@ const DashboardVendor = () => {
           </Box>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              data={filteredSales} // Use filteredSales here
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              data={filteredSales.map((d) => ({ ...d, xLabel: d.xLabel }))}
+              margin={{ top: 30, right: 30, left: 50, bottom: 0 }}
             >
               <XAxis
-                dataKey={chartXAxisKey} // Use chartXAxisKey here
+                dataKey="xLabel"
                 style={{ fontFamily: "Montserrat" }}
-                tickFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+                tickFormatter={(label) => label}
               />
               <YAxis
                 style={{ fontFamily: "Montserrat" }}
@@ -513,7 +539,7 @@ const DashboardVendor = () => {
               />
               <Tooltip
                 formatter={(value) => formatMoney(value)}
-                labelFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+                labelFormatter={(label) => label}
               />
               <Legend />
               <Line
