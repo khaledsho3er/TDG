@@ -136,7 +136,6 @@ function Signupvendor() {
   });
 
   const phase3Schema = Yup.object().shape({
-    shippingPolicy: Yup.string().required("Shipping policy is required"),
     bankAccountNumber: Yup.string().required("Bank account number is required"),
     websiteURL: Yup.string().nullable(),
     instagramURL: Yup.string().nullable(),
@@ -179,7 +178,6 @@ function Signupvendor() {
     resolver: yupResolver(phase3Schema),
     mode: "onBlur",
     defaultValues: {
-      shippingPolicy: "",
       bankAccountNumber: "",
       websiteURL: "",
       instagramURL: "",
@@ -940,18 +938,6 @@ function Signupvendor() {
                 },
               }}
             >
-              <TextField
-                label="Shipping Policy"
-                {...registerPhase3("shippingPolicy")}
-                error={!!errorsPhase3.shippingPolicy}
-                helperText={errorsPhase3.shippingPolicy?.message}
-                fullWidth
-                margin="normal"
-                multiline
-                rows={1}
-                sx={whiteTextFieldStyles}
-              />
-
               <TextField
                 label="Bank Account Number"
                 {...registerPhase3("bankAccountNumber")}
