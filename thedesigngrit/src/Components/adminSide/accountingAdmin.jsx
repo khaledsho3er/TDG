@@ -53,6 +53,15 @@ import {
   getAvailableMonths,
 } from "../../utils/chartUtils";
 
+const MoneyCell = ({ value }) =>
+  value === "N/A" ? (
+    <span>N/A</span>
+  ) : (
+    <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
+      {formatMoney(value)}
+    </span>
+  );
+
 const columns = [
   { id: "orderId", label: "Order ID" },
   { id: "brand", label: "Brand" },
