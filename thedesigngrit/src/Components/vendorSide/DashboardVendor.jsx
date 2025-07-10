@@ -1,6 +1,15 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import { SlCalender } from "react-icons/sl";
-import { Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   FaBox,
   FaTruck,
@@ -62,7 +71,6 @@ const DashboardVendor = () => {
   const [weeklySales, setWeeklySales] = useState([]);
   const [monthlySales, setMonthlySales] = useState([]);
   const [yearlySales, setYearlySales] = useState([]);
-  const [chartData, setChartData] = useState([]);
 
   // Add date calculation
   const getCurrentDateRange = () => {
@@ -256,59 +264,53 @@ const DashboardVendor = () => {
     fetchSalesData();
   }, [vendor]);
 
-  useEffect(() => {
-    function aggregateAndSort(data, key) {
-      // Aggregate sales for duplicate keys
-      const map = {};
-      data.forEach((item) => {
-        if (!map[item[key]]) map[item[key]] = 0;
-        map[item[key]] += Number(item.sales) || 0;
-      });
-      // Convert to array and sort
-      return Object.entries(map)
-        .map(([k, v]) => ({ [key]: Number(k), sales: v }))
-        .sort((a, b) => a[key] - b[key]);
-    }
+  // Add chart filter states
+  const [chartPeriod, setChartPeriod] = useState("month");
+  const [chartDateFrom, setChartDateFrom] = useState("");
+  const [chartDateTo, setChartDateTo] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
-    let formattedData = [];
-    switch (activeTab) {
-      case "weekly":
-        formattedData = aggregateAndSort(weeklySales, "week").map((item) => ({
-          ...item,
-          week: `Week ${item.week}`,
-        }));
-        break;
-      case "monthly":
-        const monthNames = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ];
-        formattedData = aggregateAndSort(monthlySales, "month").map((item) => ({
-          ...item,
-          month: monthNames[item.month - 1] || `Month ${item.month}`,
-        }));
-        break;
-      case "yearly":
-        formattedData = aggregateAndSort(yearlySales, "year").map((item) => ({
-          ...item,
-          year: `${item.year}`,
-        }));
-        break;
-      default:
-        formattedData = [];
-    }
-    setChartData(formattedData);
-  }, [activeTab, weeklySales, monthlySales, yearlySales]);
+  // Compute chart data based on period and filters
+  const getRawSales = () => {
+    if (chartPeriod === "week")
+      return weeklySales.map((s) => ({
+        ...s,
+        date: s.date || s._id || s.label,
+      }));
+    if (chartPeriod === "month")
+      return monthlySales.map((s) => ({
+        ...s,
+        date: s.date || s._id || s.label,
+      }));
+    if (chartPeriod === "year")
+      return yearlySales.map((s) => ({
+        ...s,
+        date: s.date || s._id || s.label,
+      }));
+    return [];
+  };
+  const rawSales = getRawSales();
+
+  // Filter by date range
+  const filteredSales = rawSales.filter((s) => {
+    if (chartDateFrom && new Date(s.date) < new Date(chartDateFrom))
+      return false;
+    if (chartDateTo && new Date(s.date) > new Date(chartDateTo)) return false;
+    return true;
+  });
+
+  // Group and format for chart
+  const chartData = groupLogsByPeriod(filteredSales, chartPeriod);
+  const availableMonths =
+    chartPeriod === "month"
+      ? getAvailableMonths(chartData).filter((m) =>
+          /^[0-9]{4}-[0-9]{2}$/.test(m.value)
+        )
+      : [];
+  const displayedChartData =
+    chartPeriod === "month" && selectedMonth
+      ? chartData.filter((d) => d.label === selectedMonth)
+      : chartData;
 
   if (selectedOrder) {
     return (
@@ -415,102 +417,117 @@ const DashboardVendor = () => {
       </section>
       {/* Sales Chart Section */}
       <section className="dashboard-chart-vendor">
-        <div className="chart-header-vendor">
-          <h3 style={{ margin: "10px auto" }}>Sales Graph</h3>
-          <div className="chart-tabs-vendor">
-            <button
-              className={`chart-tab-vendor ${
-                activeTab === "weekly" ? "active" : ""
-              }`}
-              onClick={() => setActiveTab("weekly")}
+        <Box mb={4} p={2} sx={{ background: "#fff", borderRadius: 3 }}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={2}
+            mb={2}
+            flexWrap="wrap"
+          >
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              fontFamily="Montserrat"
+              sx={{ flex: 1 }}
             >
-              Weekly
-            </button>
-            <button
-              className={`chart-tab-vendor ${
-                activeTab === "monthly" ? "active" : ""
-              }`}
-              onClick={() => setActiveTab("monthly")}
-            >
-              Monthly
-            </button>
-            <button
-              className={`chart-tab-vendor ${
-                activeTab === "yearly" ? "active" : ""
-              }`}
-              onClick={() => setActiveTab("yearly")}
-            >
-              Yearly
-            </button>
-          </div>
-          <div className="chart-content-vendor">
-            {chartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                  data={chartData}
-                  margin={{ top: 20, right: 30, left: 40, bottom: 40 }} // Add this line
-                >
-                  <XAxis
-                    dataKey={
-                      activeTab === "weekly"
-                        ? "week"
-                        : activeTab === "monthly"
-                        ? "month"
-                        : "year"
-                    }
-                    angle={-30} // Optional: tilt labels for better fit
-                    textAnchor="end"
-                    interval={0} // Show all labels
-                  />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="sales"
-                    stroke="#8884d8"
-                    style={{ marginTop: "20px", display: "none" }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            ) : (
-              <div
-                style={{
-                  height: "17.75rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "transparent",
-                  borderRadius: "12px",
-                  border: "2px dashed #dee2e6",
-                  color: "#6c757d",
-                  padding: "2rem",
+              Sales Overview
+            </Typography>
+            {chartPeriods.map((period) => (
+              <Button
+                key={period.value}
+                variant={chartPeriod === period.value ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: chartPeriod === period.value ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background:
+                    chartPeriod === period.value ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: chartPeriod === period.value ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => {
+                  setChartPeriod(period.value);
+                  setSelectedMonth("");
                 }}
               >
-                <FaChartLine
-                  style={{
-                    fontSize: "3rem",
-                    marginBottom: "1rem",
-                    color: "#adb5bd",
-                  }}
-                />
-                <h4 style={{ margin: "0 0 0.5rem 0", color: "#495057" }}>
-                  No Sales Data Available
-                </h4>
-                <p
-                  style={{
-                    margin: "0",
-                    textAlign: "center",
-                    maxWidth: "300px",
-                  }}
+                {period.label}
+              </Button>
+            ))}
+            {chartPeriod === "month" && availableMonths.length > 0 && (
+              <FormControl size="small" sx={{ minWidth: 140 }}>
+                <InputLabel>Month</InputLabel>
+                <Select
+                  value={selectedMonth}
+                  label="Month"
+                  onChange={(e) => setSelectedMonth(e.target.value)}
                 >
-                  Sales data will appear here once you start receiving orders
-                </p>
-              </div>
+                  <MenuItem value="">All Months</MenuItem>
+                  {availableMonths.map((m) => (
+                    <MenuItem key={m.value} value={m.value}>
+                      {m.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
-          </div>
-        </div>
+            <TextField
+              label="From"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={chartDateFrom}
+              onChange={(e) => setChartDateFrom(e.target.value)}
+              sx={{ minWidth: 120 }}
+            />
+            <TextField
+              label="To"
+              type="date"
+              size="small"
+              InputLabelProps={{ shrink: true }}
+              value={chartDateTo}
+              onChange={(e) => setChartDateTo(e.target.value)}
+              sx={{ minWidth: 120 }}
+            />
+          </Box>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart
+              data={displayedChartData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
+              <XAxis
+                dataKey="label"
+                style={{ fontFamily: "Montserrat" }}
+                tickFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+              />
+              <YAxis
+                style={{ fontFamily: "Montserrat" }}
+                tickFormatter={(value) => value.toLocaleString("en-US")}
+              />
+              <Tooltip
+                formatter={(value) => formatMoney(value)}
+                labelFormatter={(label) => getXAxisLabel(label, chartPeriod)}
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="total"
+                name="Total Sales"
+                stroke="#2d2d2d"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
 
         <div className="best-sellers-vendor">
           <h3>Best Sellers</h3>
