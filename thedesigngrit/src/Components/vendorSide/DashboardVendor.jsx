@@ -273,12 +273,22 @@ const DashboardVendor = () => {
   // Remove chartData, availableMonths, displayedChartData, groupLogsByPeriod, getRawSales for the chart
   const getChartData = () => {
     if (chartPeriod === "week") {
-      return weeklySales.map((s) => ({
+      // Sort by year, then week
+      const sorted = [...weeklySales].sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.week - b.week;
+      });
+      return sorted.map((s) => ({
         ...s,
         xLabel: s.week && s.year ? `W${s.week} ${s.year}` : s.week || "",
       }));
     }
     if (chartPeriod === "month") {
+      // Sort by year, then month
+      const sorted = [...monthlySales].sort((a, b) => {
+        if (a.year !== b.year) return a.year - b.year;
+        return a.month - b.month;
+      });
       const monthNames = [
         "Jan",
         "Feb",
@@ -293,7 +303,7 @@ const DashboardVendor = () => {
         "Nov",
         "Dec",
       ];
-      return monthlySales.map((s) => ({
+      return sorted.map((s) => ({
         ...s,
         xLabel:
           s.month && s.year
@@ -302,7 +312,9 @@ const DashboardVendor = () => {
       }));
     }
     if (chartPeriod === "year") {
-      return yearlySales.map((s) => ({
+      // Sort numerically
+      const sorted = [...yearlySales].sort((a, b) => a.year - b.year);
+      return sorted.map((s) => ({
         ...s,
         xLabel: s.year ? String(s.year) : "",
       }));
@@ -526,7 +538,7 @@ const DashboardVendor = () => {
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               data={filteredSales.map((d) => ({ ...d, xLabel: d.xLabel }))}
-              margin={{ top: 30, right: 30, left: 50, bottom: 0 }}
+              margin={{ top: 50, right: 30, left: 50, bottom: 0 }}
             >
               <XAxis
                 dataKey="xLabel"
