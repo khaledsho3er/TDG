@@ -283,8 +283,6 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   return (
     <>
-      {/* Debug: Always-on tooltip to test rendering */}
-      <LockedTooltip show={true} position={{ x: 200, y: 200 }} />
       <LockedTooltip
         show={lockedTooltip.show}
         position={{ x: lockedTooltip.x, y: lockedTooltip.y }}
