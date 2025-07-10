@@ -133,12 +133,12 @@ const SignIn = () => {
               onClick={() => setForgotPasswordDialogOpen(true)}
               style={{
                 position: "absolute",
-                right: "59px",
+                right: "0.5rem",
                 fontSize: "12px",
                 color: "#e0e0e0",
                 cursor: "pointer",
                 fontFamily: "Montserrat",
-                top: "53%",
+                top: "4rem",
                 transform: "translateY(-50%)",
                 "@media (max-width: 768px)": {
                   right: "40px",
