@@ -272,59 +272,14 @@ const DashboardVendor = () => {
 
   // Remove chartData, availableMonths, displayedChartData, groupLogsByPeriod, getRawSales for the chart
   const getChartData = () => {
-    if (chartPeriod === "week") {
-      // Sort by year, then week
-      const sorted = [...weeklySales].sort((a, b) => {
-        if (a.year !== b.year) return a.year - b.year;
-        return a.week - b.week;
-      });
-      return sorted.map((s) => ({
-        ...s,
-        xLabel: s.week && s.year ? `W${s.week} ${s.year}` : s.week || "",
-      }));
-    }
-    if (chartPeriod === "month") {
-      // Sort by year, then month
-      const sorted = [...monthlySales].sort((a, b) => {
-        if (a.year !== b.year) return a.year - b.year;
-        return a.month - b.month;
-      });
-      const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      return sorted.map((s) => ({
-        ...s,
-        xLabel:
-          s.month && s.year
-            ? `${monthNames[s.month - 1] || s.month} ${s.year}`
-            : s.month || "",
-      }));
-    }
-    if (chartPeriod === "year") {
-      // Sort numerically
-      const sorted = [...yearlySales].sort((a, b) => a.year - b.year);
-      return sorted.map((s) => ({
-        ...s,
-        xLabel: s.year ? String(s.year) : "",
-      }));
-    }
+    if (chartPeriod === "week") return weeklySales;
+    if (chartPeriod === "month") return monthlySales;
+    if (chartPeriod === "year") return yearlySales;
     return [];
   };
   const chartData = getChartData();
-
-  // Filter by date range
-  const filteredSales = chartData.filter((s) => {
+  // Filter chartData by date range
+  const filteredChartData = chartData.filter((s) => {
     if (chartDateFrom && new Date(s.date) < new Date(chartDateFrom))
       return false;
     if (chartDateTo && new Date(s.date) > new Date(chartDateTo)) return false;
@@ -537,14 +492,10 @@ const DashboardVendor = () => {
           </Box>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
-              data={filteredSales.map((d) => ({ ...d, xLabel: d.xLabel }))}
-              margin={{ top: 50, right: 30, left: 50, bottom: 0 }}
+              data={filteredChartData}
+              margin={{ top: 80, right: 30, left: 70, bottom: 0 }}
             >
-              <XAxis
-                dataKey="xLabel"
-                style={{ fontFamily: "Montserrat" }}
-                tickFormatter={(label) => label}
-              />
+              <XAxis dataKey="xLabel" style={{ fontFamily: "Montserrat" }} />
               <YAxis
                 style={{ fontFamily: "Montserrat" }}
                 tickFormatter={(value) => value.toLocaleString("en-US")}
@@ -556,7 +507,7 @@ const DashboardVendor = () => {
               <Legend />
               <Line
                 type="monotone"
-                dataKey="sales" // Changed from "total" to "sales"
+                dataKey="sales"
                 name="Total Sales"
                 stroke="#2d2d2d"
                 strokeWidth={2}
