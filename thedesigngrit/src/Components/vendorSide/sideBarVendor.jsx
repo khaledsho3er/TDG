@@ -42,6 +42,11 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
   const [quotationCount, setQuotationCount] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+  const [variantsCount, setVariantsCount] = useState(0);
+  const [viewInStoreCount, setViewInStoreCount] = useState(0);
+  const [promotionsCount, setPromotionsCount] = useState(0);
+  const [returnsCount, setReturnsCount] = useState(0);
 
   useEffect(() => {
     const checkVendorAndBrand = async () => {
@@ -123,6 +128,77 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
         );
       } catch (e) {
         setQuotationCount(0);
+      }
+      // Products: not approved (status === false)
+      try {
+        const res = await fetch(
+          `https://api.thedesigngrit.com/api/products/getproducts/brand/${vendor.brandId}`
+        );
+        const data = await res.json();
+        setProductsCount(
+          Array.isArray(data)
+            ? data.filter((p) => p.status === false).length
+            : 0
+        );
+      } catch (e) {
+        setProductsCount(0);
+      }
+      // Variants: total count (or filter for pending if you have such a status)
+      try {
+        const res = await fetch(
+          `https://api.thedesigngrit.com/api/product-variants/brand/${vendor.brandId}`
+        );
+        const data = await res.json();
+        setVariantsCount(Array.isArray(data) ? data.length : 0);
+      } catch (e) {
+        setVariantsCount(0);
+      }
+      // View In Store: pending count
+      try {
+        const res = await fetch(
+          `https://api.thedesigngrit.com/api/view-in-store/brand/${vendor.brandId}`
+        );
+        const data = await res.json();
+        setViewInStoreCount(
+          Array.isArray(data)
+            ? data.filter((v) => v.status === "pending").length
+            : 0
+        );
+      } catch (e) {
+        setViewInStoreCount(0);
+      }
+      // Promotions: current or upcoming
+      try {
+        const res = await fetch(
+          `https://api.thedesigngrit.com/api/products/getproducts/brand/${vendor.brandId}`
+        );
+        const data = await res.json();
+        const now = new Date();
+        const count = Array.isArray(data)
+          ? data.filter(
+              (p) =>
+                p.promotionStartDate &&
+                p.promotionEndDate &&
+                new Date(p.promotionEndDate) >= now
+            ).length
+          : 0;
+        setPromotionsCount(count);
+      } catch (e) {
+        setPromotionsCount(0);
+      }
+      // Returned Orders: pending
+      try {
+        const res = await fetch(
+          `https://api.thedesigngrit.com/api/returns-order/returns/brand/${vendor.brandId}`
+        );
+        const data = await res.json();
+        setReturnsCount(
+          Array.isArray(data)
+            ? data.filter((r) => r.status === "Pending").length
+            : 0
+        );
+      } catch (e) {
+        setReturnsCount(0);
       }
     };
     fetchCounts();
@@ -238,6 +314,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <LuPackageOpen className="sidebar-item-icon" />
               <span className="sidebar-item-text">All Products</span>
+              <Badge count={productsCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -272,6 +349,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <LuPackageOpen className="sidebar-item-icon" />
               <span className="sidebar-item-text">Variants Products</span>
+              <Badge count={variantsCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -366,6 +444,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <HiBuildingStorefront className="sidebar-item-icon" />
               <span className="sidebar-item-text">View In Store</span>
+              <Badge count={viewInStoreCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -399,6 +478,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <FaMoneyBill className="sidebar-item-icon" />
               <span className="sidebar-item-text">Promotions</span>
+              <Badge count={promotionsCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
@@ -432,6 +512,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             <span style={{ display: "flex", alignItems: "center" }}>
               <CiUndo className="sidebar-item-icon" />
               <span className="sidebar-item-text">Returns Orders</span>
+              <Badge count={returnsCount} />
             </span>
             <span
               style={{ width: 24, display: "flex", justifyContent: "center" }}
