@@ -25,6 +25,47 @@ import Toast from "../toast";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import Cropper from "react-easy-crop";
+// Helper to get cropped image as blob
+function createImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new window.Image();
+    image.addEventListener("load", () => resolve(image));
+    image.addEventListener("error", (error) => reject(error));
+    image.setAttribute("crossOrigin", "anonymous");
+    image.src = url;
+  });
+}
+
+async function getCroppedImg(imageSrc, pixelCrop) {
+  const image = await createImage(imageSrc);
+  const canvas = document.createElement("canvas");
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
+  const ctx = canvas.getContext("2d");
+
+  ctx.drawImage(
+    image,
+    pixelCrop.x,
+    pixelCrop.y,
+    pixelCrop.width,
+    pixelCrop.height,
+    0,
+    0,
+    pixelCrop.width,
+    pixelCrop.height
+  );
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Canvas is empty"));
+      }
+    }, "image/jpeg");
+  });
+}
 
 function Signupvendor() {
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -225,17 +266,32 @@ function Signupvendor() {
     fetchTypes();
   }, []);
 
+  // Cropper state
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [pendingFile, setPendingFile] = useState(null);
+  const [selectedImageSrc, setSelectedImageSrc] = useState(null);
+  const [cropType, setCropType] = useState(null); // 'brandlogo' or 'coverPhoto'
+
   // Handle file changes
   const handleFileChange = (event, fileType) => {
     const { files } = event.target;
-
+    if (fileType === "brandlogo" || fileType === "coverPhoto") {
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setSelectedImageSrc(reader.result);
+          setPendingFile(files[0]);
+          setCropType(fileType);
+          setShowCropModal(true);
+        };
+        reader.readAsDataURL(files[0]);
+      }
+      return;
+    }
     switch (fileType) {
-      case "brandlogo":
-        setBrandLogo(files[0]);
-        break;
-      case "coverPhoto":
-        setCoverPhoto(files[0]);
-        break;
       case "catalogues":
         const pdfFiles = Array.from(files).filter(
           (file) => file.type === "application/pdf"
@@ -782,6 +838,18 @@ function Signupvendor() {
                     <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
                       Please upload in .png, .jpeg, or .svg format
                     </FormHelperText>
+                    {brandLogo && (
+                      <img
+                        src={URL.createObjectURL(brandLogo)}
+                        alt="Brand Logo Preview"
+                        style={{
+                          maxWidth: 100,
+                          maxHeight: 100,
+                          marginTop: 8,
+                          borderRadius: 8,
+                        }}
+                      />
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
@@ -799,6 +867,18 @@ function Signupvendor() {
                     <FormHelperText sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
                       Upload image with recommended dimensions of 1920x1080px
                     </FormHelperText>
+                    {coverPhoto && (
+                      <img
+                        src={URL.createObjectURL(coverPhoto)}
+                        alt="Cover Photo Preview"
+                        style={{
+                          maxWidth: 150,
+                          maxHeight: 80,
+                          marginTop: 8,
+                          borderRadius: 8,
+                        }}
+                      />
+                    )}
                   </FormControl>
                 </Grid>
               </Grid>
@@ -1012,6 +1092,102 @@ function Signupvendor() {
           onClose={() => setShowToast(false)}
           type={toastType}
         />
+      )}
+      {/* Cropper Modal for logo/cover photo */}
+      {showCropModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.7)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              padding: 24,
+              minWidth: 320,
+              minHeight: 320,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              boxShadow: "0 4px 32px rgba(0,0,0,0.2)",
+            }}
+          >
+            <div style={{ width: 300, height: 225, position: "relative" }}>
+              <Cropper
+                image={selectedImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={4 / 3}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, area) => setCroppedAreaPixels(area)}
+              />
+            </div>
+            <div style={{ marginTop: 16, display: "flex", gap: 16 }}>
+              <button
+                style={{
+                  background: "#2d2d2d",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "8px 18px",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+                onClick={async () => {
+                  const blob = await getCroppedImg(
+                    selectedImageSrc,
+                    croppedAreaPixels
+                  );
+                  const url = URL.createObjectURL(blob);
+                  const croppedFile = new File([blob], pendingFile.name, {
+                    type: "image/jpeg",
+                  });
+                  if (cropType === "brandlogo") {
+                    setBrandLogo(croppedFile);
+                  } else if (cropType === "coverPhoto") {
+                    setCoverPhoto(croppedFile);
+                  }
+                  setShowCropModal(false);
+                  setPendingFile(null);
+                  setSelectedImageSrc(null);
+                  setCropType(null);
+                }}
+              >
+                Crop Image
+              </button>
+              <button
+                style={{
+                  background: "#aaa",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "8px 18px",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+                onClick={() => {
+                  setShowCropModal(false);
+                  setPendingFile(null);
+                  setSelectedImageSrc(null);
+                  setCropType(null);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </Box>
   );
