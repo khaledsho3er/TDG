@@ -185,12 +185,30 @@ const BrandingPage = () => {
 
     try {
       setLoading(true);
-      const res = await axios.put(
+      await axios.put(
         `https://api.thedesigngrit.com/api/brand/brands/${brandId}/update-images`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      // Refetch brand data after upload
+      const res = await axios.get(
+        `https://api.thedesigngrit.com/api/brand/${brandId}`
+      );
       setBrandData(res.data);
+      if (res.data.brandlogo) {
+        setPreviewLogo(
+          `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            res.data.brandlogo
+          }?t=${Date.now()}`
+        );
+      }
+      if (res.data.coverPhoto) {
+        setPreviewCover(
+          `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${
+            res.data.coverPhoto
+          }?t=${Date.now()}`
+        );
+      }
       setLogoFile(null);
       setCoverFile(null);
       handleCloseLogoModal();
