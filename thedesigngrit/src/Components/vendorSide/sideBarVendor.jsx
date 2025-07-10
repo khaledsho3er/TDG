@@ -254,6 +254,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   // Mouse event handlers for locked items
   const handleLockedMouseEnter = (e) => {
+    console.log("Hovered locked item", e.clientX, e.clientY);
     setLockedTooltip({ show: true, x: e.clientX, y: e.clientY });
   };
   const handleLockedMouseMove = (e) => {
@@ -264,6 +265,13 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
   };
 
   // Return a loading spinner or message until vendor data is loaded
+  // Debugging logs
+  console.log("brandStatus", brandStatus);
+  console.log("isLocked('allProducts')", isLocked("allProducts"));
+  // Test always-on tooltip
+  // Remove this after debugging
+  // <LockedTooltip show={true} position={{ x: 200, y: 200 }} />
+
   if (!isVendorLoaded) {
     return <LoadingScreen />;
   }
@@ -275,6 +283,8 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
 
   return (
     <>
+      {/* Debug: Always-on tooltip to test rendering */}
+      <LockedTooltip show={true} position={{ x: 200, y: 200 }} />
       <LockedTooltip
         show={lockedTooltip.show}
         position={{ x: lockedTooltip.x, y: lockedTooltip.y }}
