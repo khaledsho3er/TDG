@@ -292,11 +292,18 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
       <aside className="sidebar-vendor">
         <ul className="sidebar-menu-vendor">
           <li
-            onClick={() => !isLocked("dashboard") && setActivePage("dashboard")}
+            onClick={(e) => {
+              if (isLocked("dashboard")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("dashboard");
+            }}
             className={getActiveClass("dashboard", isLocked("dashboard"))}
             style={
               isLocked("dashboard")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -329,16 +336,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("notifications") && setActivePage("notifications")
-            }
+            onClick={(e) => {
+              if (isLocked("notifications")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("notifications");
+            }}
             className={getActiveClass(
               "notifications",
               isLocked("notifications")
             )}
             style={
               isLocked("notifications")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -372,13 +384,18 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("allProducts") && setActivePage("allProducts")
-            }
+            onClick={(e) => {
+              if (isLocked("allProducts")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("allProducts");
+            }}
             className={getActiveClass("allProducts", isLocked("allProducts"))}
             style={
               isLocked("allProducts")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -412,17 +429,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("allProductsVariant") &&
-              setActivePage("allProductsVariant")
-            }
+            onClick={(e) => {
+              if (isLocked("allProductsVariant")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("allProductsVariant");
+            }}
             className={getActiveClass(
               "allProductsVariant",
               isLocked("allProductsVariant")
             )}
             style={
               isLocked("allProductsVariant")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -460,11 +481,18 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() => !isLocked("orderList") && setActivePage("orderList")}
+            onClick={(e) => {
+              if (isLocked("orderList")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("orderList");
+            }}
             className={getActiveClass("orderList", isLocked("orderList"))}
             style={
               isLocked("orderList")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -498,16 +526,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("quotationsList") && setActivePage("quotationsList")
-            }
+            onClick={(e) => {
+              if (isLocked("quotationsList")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("quotationsList");
+            }}
             className={getActiveClass(
               "quotationsList",
               isLocked("quotationsList")
             )}
             style={
               isLocked("quotationsList")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -541,17 +574,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("ViewInStoreVendor") &&
-              setActivePage("ViewInStoreVendor")
-            }
+            onClick={(e) => {
+              if (isLocked("ViewInStoreVendor")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("ViewInStoreVendor");
+            }}
             className={getActiveClass(
               "ViewInStoreVendor",
               isLocked("ViewInStoreVendor")
             )}
             style={
               isLocked("ViewInStoreVendor")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -585,16 +622,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("promotionsPage") && setActivePage("promotionsPage")
-            }
+            onClick={(e) => {
+              if (isLocked("promotionsPage")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("promotionsPage");
+            }}
             className={getActiveClass(
               "promotionsPage",
               isLocked("promotionsPage")
             )}
             style={
               isLocked("promotionsPage")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
@@ -628,17 +670,21 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
             </span>
           </li>
           <li
-            onClick={() =>
-              !isLocked("returnsOrdersPage") &&
-              setActivePage("returnsOrdersPage")
-            }
+            onClick={(e) => {
+              if (isLocked("returnsOrdersPage")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("returnsOrdersPage");
+            }}
             className={getActiveClass(
               "returnsOrdersPage",
               isLocked("returnsOrdersPage")
             )}
             style={
               isLocked("returnsOrdersPage")
-                ? { pointerEvents: "none", opacity: 0.5 }
+                ? { opacity: 0.5, cursor: "not-allowed" }
                 : {}
             }
             onMouseEnter={
