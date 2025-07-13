@@ -223,8 +223,7 @@ function TrackQuotation() {
           {/* Customization Lead Time */}
           <Typography sx={{ mt: 2 }}>
             Customization Lead Time:{" "}
-            {selectedQuotation.productId.Estimatedtimeleadforcustomization ||
-              "N/A"}
+            {selectedQuotation.customizationLeadTime || "N/A"}
             Business Days
           </Typography>
 
@@ -249,11 +248,12 @@ function TrackQuotation() {
               : "Not yet provided"}
           </Typography>
 
-          {selectedQuotation.note && (
+          {/* {selectedQuotation.note && (
             <Typography>
               <strong>Vendor Note:</strong> {selectedQuotation.note}
             </Typography>
-          )}
+          )} */}
+
           {selectedQuotation.quotationInvoice && (
             <Typography
               variant="body2"

@@ -18,7 +18,6 @@ const QuotationsPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedQuotation, setSelectedQuotation] = useState(null);
   const [showProductInfo, setShowProductInfo] = useState(false);
-  const [note, setNote] = useState("");
   const [quotePrice, setQuotePrice] = useState("");
   const [leadTime, setLeadTime] = useState("");
   const [file, setFile] = useState(null);
@@ -63,7 +62,6 @@ const QuotationsPage = () => {
 
   const handleCardClick = (quotation) => {
     setSelectedQuotation(quotation);
-    setNote(quotation.note || "");
     setQuotePrice(quotation.quotePrice || "");
     setLeadTime(quotation.customizationLeadTime || "");
     setFile(null);
@@ -71,7 +69,6 @@ const QuotationsPage = () => {
 
   const handleClosePopup = () => {
     setSelectedQuotation(null);
-    setNote("");
     setQuotePrice("");
     setFile(null);
   };
@@ -80,7 +77,6 @@ const QuotationsPage = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("note", note);
     formData.append("quotePrice", quotePrice);
     formData.append("customizationLeadTime", leadTime);
     formData.append("dateOfQuotePrice", new Date().toISOString());
@@ -256,14 +252,6 @@ const QuotationsPage = () => {
                 : "Client Not Approved"}
             </label> */}
             <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
-              <label>Note:</label>
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                rows={3}
-                style={{ backgroundColor: "#fff" }}
-                readOnly={selectedQuotation?.ClientApproval === true}
-              />
               <label>Estimated Lead Time:</label>
               <input
                 type="text"
