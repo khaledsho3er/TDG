@@ -527,6 +527,50 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
           </li>
           <li
             onClick={(e) => {
+              if (isLocked("ShippingFees")) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+              setActivePage("ShippingFees");
+            }}
+            className={getActiveClass("ShippingFees", isLocked("ShippingFees"))}
+            style={
+              isLocked("ShippingFees")
+                ? { opacity: 0.5, cursor: "not-allowed" }
+                : {}
+            }
+            onMouseEnter={
+              isLocked("ShippingFees") ? handleLockedMouseEnter : undefined
+            }
+            onMouseMove={
+              isLocked("ShippingFees") ? handleLockedMouseMove : undefined
+            }
+            onMouseLeave={
+              isLocked("ShippingFees") ? handleLockedMouseLeave : undefined
+            }
+          >
+            <span
+              className="sidebar-item-content"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <TbTruckDelivery className="sidebar-item-icon" />
+                <span className="sidebar-item-text">Shipping Fees</span>
+              </span>
+              <span
+                style={{ width: 24, display: "flex", justifyContent: "center" }}
+              >
+                {isLocked("ShippingFees") && <FaLock />}
+              </span>
+            </span>
+          </li>
+          <li
+            onClick={(e) => {
               if (isLocked("quotationsList")) {
                 e.preventDefault();
                 e.stopPropagation();
