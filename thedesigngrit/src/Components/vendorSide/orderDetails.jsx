@@ -763,14 +763,20 @@ const OrderDetails = ({ order, onBack }) => {
               >
                 <Box>
                   <p>Payment Method:</p>
-                  <p>Transaction ID:</p>
+                  {order.paymentDetails.paymentMethod !== "cod" && (
+                    <p>Transaction ID:</p>
+                  )}
                   <p>Payment Status:</p>
                 </Box>
                 <Box sx={{ textAlign: "right" }}>
                   <p>{order.paymentDetails.paymentMethod || "N/A"}</p>
-                  <p>
-                    {order.paymentDetails.transactionId || "Cash Dont Have ID"}
-                  </p>
+                  {order.paymentDetails.paymentMethod !== "cod" && (
+                    <p>
+                      {order.paymentDetails.transactionId ||
+                        "Cash Dont Have ID"}
+                    </p>
+                  )}
+
                   <p>
                     {order.paymentDetails.paymentMethod === "cod" &&
                     paymentStatus === "Pending" ? (
