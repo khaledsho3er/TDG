@@ -157,18 +157,49 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
   // Populate form with existing product data
   useEffect(() => {
     if (existingProduct) {
-      setFormData(existingProduct);
+      // Defensive: ensure array fields are always arrays, and convert string to array for colors/sizes
+      const safeProduct = {
+        ...existingProduct,
+        tags: Array.isArray(existingProduct.tags) ? existingProduct.tags : [],
+        colors: Array.isArray(existingProduct.colors)
+          ? existingProduct.colors
+          : typeof existingProduct.colors === "string" &&
+            existingProduct.colors.trim() !== ""
+          ? existingProduct.colors.split(",").map((c) => c.trim())
+          : [],
+        sizes: Array.isArray(existingProduct.sizes)
+          ? existingProduct.sizes
+          : typeof existingProduct.sizes === "string" &&
+            existingProduct.sizes.trim() !== ""
+          ? existingProduct.sizes.split(",").map((s) => s.trim())
+          : [],
+        images: Array.isArray(existingProduct.images)
+          ? existingProduct.images
+          : [],
+        reviews: Array.isArray(existingProduct.reviews)
+          ? existingProduct.reviews
+          : [],
+        warrantyInfo: {
+          ...(existingProduct.warrantyInfo || {}),
+          warrantyCoverage: Array.isArray(
+            existingProduct?.warrantyInfo?.warrantyCoverage
+          )
+            ? existingProduct.warrantyInfo.warrantyCoverage
+            : [],
+        },
+      };
+      setFormData(safeProduct);
       // Store initial form data for comparison (deep copy)
-      setInitialFormData(JSON.parse(JSON.stringify(existingProduct)));
-      setTags(existingProduct.tags || []);
-      setSelectedCategory(existingProduct.category);
-      setSelectedSubCategory(existingProduct.subcategory);
-      setImages(existingProduct.images || []); // Set existing images
-      setMainImage(existingProduct.mainImage || ""); // Set existing main image
+      setInitialFormData(JSON.parse(JSON.stringify(safeProduct)));
+      setTags(safeProduct.tags);
+      setSelectedCategory(safeProduct.category);
+      setSelectedSubCategory(safeProduct.subcategory);
+      setImages(safeProduct.images); // Set existing images
+      setMainImage(safeProduct.mainImage || ""); // Set existing main image
 
       // Set up image previews for existing images
-      if (existingProduct.images && existingProduct.images.length > 0) {
-        const previews = existingProduct.images.map((image) =>
+      if (safeProduct.images && safeProduct.images.length > 0) {
+        const previews = safeProduct.images.map((image) =>
           typeof image === "string"
             ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
             : URL.createObjectURL(image)
@@ -176,11 +207,11 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
         setImagePreviews(previews);
 
         // Set main image preview
-        if (existingProduct.mainImage) {
+        if (safeProduct.mainImage) {
           const mainPreview =
-            typeof existingProduct.mainImage === "string"
-              ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${existingProduct.mainImage}`
-              : URL.createObjectURL(existingProduct.mainImage);
+            typeof safeProduct.mainImage === "string"
+              ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${safeProduct.mainImage}`
+              : URL.createObjectURL(safeProduct.mainImage);
           setMainImagePreview(mainPreview);
         }
       }
@@ -189,12 +220,12 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
       const fetchSubCategoriesAndTypes = async () => {
         try {
           const subCategoryResponse = await axios.get(
-            `https://api.thedesigngrit.com/api/subcategories/byCategory/${existingProduct.category}`
+            `https://api.thedesigngrit.com/api/subcategories/byCategory/${safeProduct.category}`
           );
           setSubCategories(subCategoryResponse.data);
 
           const typeResponse = await axios.get(
-            `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${existingProduct.subcategory}`
+            `https://api.thedesigngrit.com/api/subcategories/bySubcategory/${safeProduct.subcategory}`
           );
           setTypes(typeResponse.data);
         } catch (error) {

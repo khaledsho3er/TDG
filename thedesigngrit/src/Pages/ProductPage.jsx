@@ -309,7 +309,7 @@ function ProductPage() {
 
   // Create a function to get available sizes for the selected color
   const getAvailableSizes = () => {
-    // If a color is selected, filter variants for that color and get their sizes
+    // If a color is selected, show only the sizes of variants with that color
     if (selectedColor && variants && variants.length > 0) {
       const colorVariants = variants.filter(
         (variant) =>
@@ -319,10 +319,7 @@ function ProductPage() {
       const uniqueSizes = [
         ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
       ];
-      // Also include product.sizes and product.variantSizes
-      const allSizes = new Set(uniqueSizes);
-      getAllAvailableSizes().forEach((s) => allSizes.add(s));
-      return Array.from(allSizes);
+      return uniqueSizes;
     }
     // If no color is selected, show all available sizes
     return getAllAvailableSizes();
