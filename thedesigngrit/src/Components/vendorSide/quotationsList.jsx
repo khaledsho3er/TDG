@@ -232,7 +232,7 @@ const QuotationsPage = () => {
               <strong>Requested customization:</strong>{" "}
               {selectedQuotation?.customization}
             </p>
-            <label
+            {/* <label
               style={{
                 color: selectedQuotation?.ClientApproval
                   ? "#155724"
@@ -251,7 +251,7 @@ const QuotationsPage = () => {
               {selectedQuotation?.ClientApproval
                 ? "Client Approved"
                 : "Client Not Approved"}
-            </label>
+            </label> */}
             <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
               <label>Note:</label>
               <textarea
