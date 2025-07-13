@@ -162,7 +162,14 @@ const MyAccount = () => {
                   onClick={() => {
                     navigate(`/myaccount/${section.toLowerCase()}`);
                   }}
-                  style={{ position: "relative" }}
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                  }}
                 >
                   {section === "trackviewinstore" ? (
                     "View In Store"
@@ -178,9 +185,7 @@ const MyAccount = () => {
                             padding: "2px 8px",
                             fontSize: "12px",
                             marginLeft: "8px",
-                            position: "absolute",
-                            top: "2px",
-                            right: "-10px",
+                            fontFamily: "Montserrat",
                             minWidth: "22px",
                             textAlign: "center",
                             fontWeight: "bold",
