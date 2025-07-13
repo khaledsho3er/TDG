@@ -134,7 +134,7 @@ const BrandingPage = () => {
       setPendingFile(file);
       setCurrentCropType("logo");
       setShowCropModal(true);
-      setOpenLogoModal(true);
+      // Don't open the logo modal here - let crop completion handle it
     };
     reader.readAsDataURL(file);
   };
@@ -149,7 +149,7 @@ const BrandingPage = () => {
       setPendingFile(file);
       setCurrentCropType("cover");
       setShowCropModal(true);
-      setOpenCoverModal(true);
+      // Don't open the cover modal here - let crop completion handle it
     };
     reader.readAsDataURL(file);
   };
@@ -167,9 +167,11 @@ const BrandingPage = () => {
       if (currentCropType === "logo") {
         setLogoFile(croppedFile);
         setPreviewLogo(croppedUrl);
+        setOpenLogoModal(true); // Open logo modal after cropping
       } else {
         setCoverFile(croppedFile);
         setPreviewCover(croppedUrl);
+        setOpenCoverModal(true); // Open cover modal after cropping
       }
 
       setShowCropModal(false);
