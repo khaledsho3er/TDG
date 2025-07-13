@@ -272,6 +272,14 @@ function ProductPage() {
   // Utility to get all available colors (union of product.colors and product.variantColors)
   const getAllAvailableColors = () => {
     const colorSet = new Set();
+    // Add product color (string or array)
+    if (
+      product.color &&
+      typeof product.color === "string" &&
+      product.color.trim() !== ""
+    ) {
+      colorSet.add(product.color);
+    }
     if (product.colors) {
       if (Array.isArray(product.colors)) {
         product.colors.forEach((c) => c && colorSet.add(c));
