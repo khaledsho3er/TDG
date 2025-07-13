@@ -266,7 +266,7 @@ const ProductPageAdmin = () => {
           <h2>All Products</h2>
           <p>Home &gt; All Products</p>
         </div>
-        <div className="dashboard-date-vendor">
+        {/* <div className="dashboard-date-vendor">
           <button
             style={{
               display: "flex",
@@ -283,7 +283,7 @@ const ProductPageAdmin = () => {
           >
             <CiCirclePlus /> Add Product
           </button>
-        </div>
+        </div> */}
       </header>
 
       {/* Filters */}
