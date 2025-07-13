@@ -65,6 +65,7 @@ const QuotationsPage = () => {
     setSelectedQuotation(quotation);
     setNote(quotation.note || "");
     setQuotePrice(quotation.quotePrice || "");
+    setLeadTime(quotation.customizationLeadTime || "");
     setFile(null);
   };
 
@@ -81,7 +82,7 @@ const QuotationsPage = () => {
     const formData = new FormData();
     formData.append("note", note);
     formData.append("quotePrice", quotePrice);
-    formData.append("leadTime", leadTime);
+    formData.append("customizationLeadTime", leadTime);
     formData.append("dateOfQuotePrice", new Date().toISOString());
     if (file) formData.append("file", file);
 
