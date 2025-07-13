@@ -1534,16 +1534,12 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                       >
                         <button
                           type="button"
-                          title={
-                            isLocal
-                              ? "Edit (Crop)"
-                              : "Cannot crop remote images"
-                          }
+                          title="Edit (Crop)"
                           style={{
                             background: "none",
                             border: "none",
-                            cursor: isLocal ? "pointer" : "not-allowed",
-                            color: isLocal ? "#8A9A5B" : "#ccc",
+                            cursor: "pointer",
+                            color: "#8A9A5B",
                           }}
                           onClick={async () => {
                             let fileToCrop = images[index];
@@ -1566,7 +1562,6 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             setPendingFile(fileToCrop);
                             setShowCropModal(true);
                           }}
-                          disabled={!isLocal}
                         >
                           Edit
                         </button>
@@ -1676,16 +1671,12 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                         >
                           <button
                             type="button"
-                            title={
-                              isLocal
-                                ? "Edit (Crop)"
-                                : "Cannot crop remote images"
-                            }
+                            title="Edit (Crop)"
                             style={{
                               background: "none",
                               border: "none",
-                              cursor: isLocal ? "pointer" : "not-allowed",
-                              color: isLocal ? "#8A9A5B" : "#ccc",
+                              cursor: "pointer",
+                              color: "#8A9A5B",
                             }}
                             onClick={async () => {
                               let fileToCrop = image;
@@ -1709,7 +1700,6 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                               setPendingFile(fileToCrop);
                               setShowCropModal(true);
                             }}
-                            disabled={!isLocal}
                           >
                             Edit
                           </button>
@@ -1790,7 +1780,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
               </div>
               {formData.cadFile && ( // Changed from 'cad' to 'cadFile'
                 <div className="cad-file-info">
-                  <span>Selected file: {formData.cadFile.name}</span>
+                  <span>Selected file: {formData.cadFile}</span>
                   <button
                     type="button"
                     onClick={() =>
