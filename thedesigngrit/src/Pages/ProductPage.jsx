@@ -634,18 +634,16 @@ function ProductPage() {
                   <span>No reviews yet</span>
                 )}
               </p>
-              <p
-                style={{
-                  display: product.discountPercentage ? "block" : "none",
-                  alignSelf: "end",
-                }}
-              >
-                {product.discountPercentage ? (
-                  `${product.discountPercentage}% off`
-                ) : (
-                  <span style={{ display: "none" }}></span>
+              {product.promotionApproved === true &&
+                product.discountPercentage && (
+                  <p
+                    style={{
+                      alignSelf: "end",
+                    }}
+                  >
+                    {`${product.discountPercentage}% off`}
+                  </p>
                 )}
-              </p>
             </div>
             {/* Price Display */}
             <p className="product-price">
