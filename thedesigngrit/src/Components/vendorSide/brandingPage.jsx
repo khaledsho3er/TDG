@@ -315,10 +315,11 @@ const BrandingPage = () => {
           Edit Brand Logo
         </Typography>
 
-        {previewLogo && (
+        {/* Show cropped preview if logoFile exists, else show current logo */}
+        {logoFile && previewLogo ? (
           <img
             src={previewLogo}
-            alt="Current Logo"
+            alt="New Logo Preview"
             style={{
               width: "100%",
               height: "auto",
@@ -327,6 +328,20 @@ const BrandingPage = () => {
               marginBottom: "16px",
             }}
           />
+        ) : (
+          previewLogo && (
+            <img
+              src={previewLogo}
+              alt="Current Logo"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "300px",
+                objectFit: "contain",
+                marginBottom: "16px",
+              }}
+            />
+          )
         )}
 
         <input
@@ -358,10 +373,11 @@ const BrandingPage = () => {
           Edit Cover Photo
         </Typography>
 
-        {previewCover && (
+        {/* Show cropped preview if coverFile exists, else show current cover */}
+        {coverFile && previewCover ? (
           <img
             src={previewCover}
-            alt="Current Cover"
+            alt="New Cover Preview"
             style={{
               width: "100%",
               height: "auto",
@@ -370,6 +386,20 @@ const BrandingPage = () => {
               marginBottom: "16px",
             }}
           />
+        ) : (
+          previewCover && (
+            <img
+              src={previewCover}
+              alt="Current Cover"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "300px",
+                objectFit: "contain",
+                marginBottom: "16px",
+              }}
+            />
+          )
         )}
 
         <input
