@@ -118,7 +118,12 @@ const AdminOrderDetails = ({ order, onBack }) => {
                 fontFamily: "Montserrat, sans-serif",
               }}
             >
-              <h4>Order ID: #{order._id}</h4>
+              <h4>
+                Order ID: #{order._id ? order._id.slice(-6) : ""}-
+                {order.customerId
+                  ? `${order.customerId?.firstName} ${order.customerId?.lastName}`
+                  : ""}
+              </h4>
               <span
                 style={{
                   display: "inline-block",

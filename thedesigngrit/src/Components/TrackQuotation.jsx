@@ -249,10 +249,11 @@ function TrackQuotation() {
               : "Not yet provided"}
           </Typography>
 
-          <Typography>
-            <strong>Vendor Note:</strong>{" "}
-            {selectedQuotation.note || "No note provided by vendor."}
-          </Typography>
+          {selectedQuotation.note && (
+            <Typography>
+              <strong>Vendor Note:</strong> {selectedQuotation.note}
+            </Typography>
+          )}
           {selectedQuotation.quotationInvoice && (
             <Typography
               variant="body2"
