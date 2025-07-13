@@ -107,6 +107,10 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
   const [tagOptions, setTagOptions] = useState({});
   const [validationErrors, setValidationErrors] = useState([]);
 
+  // Add state for image view modal
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewModalImage, setViewModalImage] = useState(null);
+
   // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
@@ -860,6 +864,13 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
     }
   };
 
+  // Helper to fetch remote image as File
+  const fetchImageAsFile = async (url, filename = "image.jpg") => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+  };
+
   return (
     <>
       <header className="dashboard-header-vendor">
@@ -1534,20 +1545,30 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             cursor: isLocal ? "pointer" : "not-allowed",
                             color: isLocal ? "#8A9A5B" : "#ccc",
                           }}
-                          onClick={() => {
-                            if (isLocal) {
-                              setSelectedImageSrc(preview);
-                              setPendingFile(images[index]);
-                              setShowCropModal(true);
-                            } else {
-                              alert(
-                                "Cannot crop images loaded from the server. Only newly uploaded images can be cropped."
+                          onClick={async () => {
+                            let fileToCrop = images[index];
+                            if (!(fileToCrop instanceof File)) {
+                              // Remote image: fetch as File
+                              fileToCrop = await fetchImageAsFile(
+                                preview,
+                                `image_${index}.jpg`
                               );
+                              // Replace the image in state with the File
+                              const updatedImages = [...images];
+                              updatedImages[index] = fileToCrop;
+                              setImages(updatedImages);
+                              setFormData((prevData) => ({
+                                ...prevData,
+                                images: updatedImages,
+                              }));
                             }
+                            setSelectedImageSrc(preview);
+                            setPendingFile(fileToCrop);
+                            setShowCropModal(true);
                           }}
                           disabled={!isLocal}
                         >
-                          ✂️ Edit
+                          Edit
                         </button>
                         <button
                           type="button"
@@ -1558,9 +1579,12 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             cursor: "pointer",
                             color: "#2d2d2d",
                           }}
-                          onClick={() => window.open(preview, "_blank")}
+                          onClick={() => {
+                            setViewModalImage(preview);
+                            setViewModalOpen(true);
+                          }}
                         >
-                          👁️ View
+                          View
                         </button>
                         <button
                           type="button"
@@ -1663,16 +1687,27 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                               cursor: isLocal ? "pointer" : "not-allowed",
                               color: isLocal ? "#8A9A5B" : "#ccc",
                             }}
-                            onClick={() => {
-                              if (isLocal) {
-                                setSelectedImageSrc(imgSrc);
-                                setPendingFile(image);
-                                setShowCropModal(true);
-                              } else {
-                                alert(
-                                  "Cannot crop images loaded from the server. Only newly uploaded images can be cropped."
+                            onClick={async () => {
+                              let fileToCrop = image;
+                              if (!(fileToCrop instanceof File)) {
+                                // Remote image: fetch as File
+                                fileToCrop = await fetchImageAsFile(
+                                  imgSrc,
+                                  `image_${imagePreviews.length + index}.jpg`
                                 );
+                                // Replace the image in state with the File
+                                const updatedImages = [...images];
+                                updatedImages[imagePreviews.length + index] =
+                                  fileToCrop;
+                                setImages(updatedImages);
+                                setFormData((prevData) => ({
+                                  ...prevData,
+                                  images: updatedImages,
+                                }));
                               }
+                              setSelectedImageSrc(imgSrc);
+                              setPendingFile(fileToCrop);
+                              setShowCropModal(true);
                             }}
                             disabled={!isLocal}
                           >
@@ -1881,6 +1916,56 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
           </div>
         </div>
       )}
+      <Dialog
+        open={viewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        maxWidth="md"
+        fullWidth
+        sx={{
+          backdropFilter: "blur(8px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backgroundColor: "rgba(255,255,255,0.95)",
+            position: "relative",
+          },
+        }}
+      >
+        <IconButton
+          aria-label="close"
+          onClick={() => setViewModalOpen(false)}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+            zIndex: 2,
+          }}
+        >
+          <span style={{ fontSize: 28, fontWeight: "bold" }}>&times;</span>
+        </IconButton>
+        <DialogContent
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: 400,
+            background: "rgba(255,255,255,0.7)",
+          }}
+        >
+          {viewModalImage && (
+            <img
+              src={viewModalImage}
+              alt="View"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "70vh",
+                borderRadius: 12,
+                boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
