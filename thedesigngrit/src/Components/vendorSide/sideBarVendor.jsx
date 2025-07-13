@@ -368,22 +368,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <FaBell className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Notifications</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Notifications
+                </span>
               </span>
-              <span
-                style={{
-                  minWidth: 32,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Badge count={notificationCount} />
-              </span>
+              {notificationCount > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Badge count={notificationCount} />
+                </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -421,22 +431,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <LuPackageOpen className="sidebar-item-icon" />
-                <span className="sidebar-item-text">All Products</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  All Products
+                </span>
+              </span>
+              {productsCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={productsCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -481,22 +501,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <LuPackageOpen className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Variants Products</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Variants Products
+                </span>
+              </span>
+              {variantsCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={variantsCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -534,22 +564,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <TbTruckDelivery className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Order List</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Order List
+                </span>
+              </span>
+              {orderCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={orderCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -634,22 +674,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <FaMoneyBill className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Quotations</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Quotations
+                </span>
+              </span>
+              {quotationCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={quotationCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -690,22 +740,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <HiBuildingStorefront className="sidebar-item-icon" />
-                <span className="sidebar-item-text">View In Store</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  View In Store
+                </span>
+              </span>
+              {viewInStoreCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={viewInStoreCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -746,22 +806,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <FaMoneyBill className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Promotions</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Promotions
+                </span>
+              </span>
+              {promotionsCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={promotionsCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
@@ -802,22 +872,32 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                position: "relative",
+                width: "100%",
+                paddingRight: "40px",
               }}
             >
-              <span style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <span style={{ display: "flex", alignItems: "center" }}>
                 <CiUndo className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Returns Orders</span>
+                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                  Returns Orders
+                </span>
+              </span>
+              {returnsCount > 0 && (
                 <span
                   style={{
-                    minWidth: 32,
+                    position: "absolute",
+                    right: "16px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    minWidth: "22px",
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "center",
                   }}
                 >
                   <Badge count={returnsCount} />
                 </span>
-              </span>
+              )}
               <span
                 style={{ width: 24, display: "flex", justifyContent: "center" }}
               >
