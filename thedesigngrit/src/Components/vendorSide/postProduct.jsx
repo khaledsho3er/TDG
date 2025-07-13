@@ -1187,6 +1187,8 @@ const AddProduct = () => {
                         gap: "8px",
                         cursor: "pointer",
                         fontSize: "14px",
+                        WebkitAlignItems: "center", // Safari specific
+                        WebkitBoxAlign: "center", // Safari specific
                       }}
                     >
                       <input
@@ -1195,7 +1197,13 @@ const AddProduct = () => {
                           coverage
                         )}
                         onChange={() => handleWarrantyCoverageChange(coverage)}
-                        style={{ cursor: "pointer" }}
+                        style={{
+                          cursor: "pointer",
+                          margin: "0", // Reset default margins
+                          verticalAlign: "middle", // Ensure vertical alignment
+                          WebkitAppearance: "auto", // Safari checkbox appearance
+                          appearance: "auto", // Standard checkbox appearance
+                        }}
                       />
                       {coverage}
                     </label>
