@@ -75,6 +75,9 @@ const BrandingPage = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [currentCropType, setCurrentCropType] = useState(null); // 'logo' or 'cover'
 
+  // Add state for pending approval notification
+  const [showPendingApproval, setShowPendingApproval] = useState(false);
+
   const { vendor } = useVendor();
   const brandId = vendor?.brandId;
 
@@ -213,6 +216,8 @@ const BrandingPage = () => {
       setCoverFile(null);
       handleCloseLogoModal();
       handleCloseCoverModal();
+      setShowPendingApproval(true); // Show notification
+      setTimeout(() => setShowPendingApproval(false), 5000); // Hide after 5 seconds
     } catch (error) {
       console.error("Failed to update brand images:", error);
     } finally {
@@ -402,6 +407,28 @@ const BrandingPage = () => {
           Home &gt; Branding
         </p>
       </div>
+
+      {/* Pending Approval Notification */}
+      {showPendingApproval && (
+        <Box
+          sx={{
+            backgroundColor: "#FFE4B5",
+            color: "#FF8C00",
+            padding: "12px 20px",
+            borderRadius: "8px",
+            marginBottom: "20px",
+            textAlign: "center",
+            fontFamily: "Montserrat",
+            fontWeight: "600",
+            fontSize: "14px",
+            border: "1px solid #FFB800",
+            boxShadow: "0 2px 8px rgba(255, 184, 0, 0.2)",
+          }}
+        >
+          ⚠️ Brand images have been updated. Please wait for admin approval.
+        </Box>
+      )}
+
       {/* Brand Logo and Cover */}
       <Box sx={{ backgroundColor: "#fff", p: 3, mb: 3, borderRadius: "10px" }}>
         <Typography variant="h5" sx={{ fontFamily: "Horizon", mb: 2 }}>
@@ -754,6 +781,28 @@ const BrandingPage = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Pending Approval Notification */}
+      {showPendingApproval && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            backgroundColor: "#FFB800",
+            color: "#2d2d2d",
+            padding: "10px 20px",
+            zIndex: 9998, // Below Dialog, above others
+            textAlign: "center",
+            fontFamily: "Montserrat",
+            fontWeight: "bold",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+          }}
+        >
+          Brand images have been updated. Please wait for approval.
+        </Box>
       )}
 
       <Menu
