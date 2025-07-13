@@ -586,14 +586,14 @@ const AdminOrderDetails = ({ order, onBack }) => {
         >
           <Box>
             <p>Subtotal:</p>
-            <p>Tax (20%):</p>
+            <p>Tax (14%):</p>
             <p>Discount:</p>
             <p>Shipping Rate:</p>
             <h4>Total:</h4>
           </Box>
           <Box>
             <p>E£ {order?.subtotal || "N/A"}</p>
-            <p> {order?.tax || 20}%</p>
+            <p> {order?.vat || "N/A"}</p>
             <p> E£ {order?.discount || 0}</p>
             <p> E£ {order?.shippingFee || "N/A"}</p>
             <h4> E£ {order?.total || "N/A"}</h4>

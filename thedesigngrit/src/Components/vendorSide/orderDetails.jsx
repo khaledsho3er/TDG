@@ -253,7 +253,7 @@ const OrderDetails = ({ order, onBack }) => {
   };
 
   const subtotal = order.subtotal ?? "N/A";
-  const tax = order.taxAmount ?? order.tax ?? "N/A"; // Use taxAmount if available, else tax, else N/A
+  const tax = order.vat ?? order.vat ?? "N/A"; // Use taxAmount if available, else tax, else N/A
   const shippingFee = order.shippingFee ?? "N/A";
   const discount = order.discount ?? 0;
   const total = order.total ?? "N/A";
@@ -1047,12 +1047,12 @@ const OrderDetails = ({ order, onBack }) => {
               gap: 2,
             }}
           >
-            <Button className="cancel-btn" onClick={handleClose}>
+            <button className="cancel-btn" onClick={handleClose}>
               Cancel
-            </Button>
-            <Button className="submit-btn" onClick={handleSaveSubDeliveryDate}>
+            </button>
+            <button className="submit-btn" onClick={handleSaveSubDeliveryDate}>
               Save
-            </Button>
+            </button>
           </DialogActions>
         </Dialog>
         <div
@@ -1079,6 +1079,8 @@ const OrderDetails = ({ order, onBack }) => {
             <p>{discount !== 0 ? `E£ ${discount}` : "E£ 0"}</p>
             <p>{shippingFee !== "N/A" ? `E£ ${shippingFee}` : "N/A"}</p>
             <h4>{total !== "N/A" ? `E£ ${total}` : "N/A"}</h4>
+            {/* Show total after 14% deduction */}
+            <h4>Total after 14% deduction: {totalAfter14Percent}</h4>
           </Box>
         </div>
       </div>
