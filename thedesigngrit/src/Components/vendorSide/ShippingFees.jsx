@@ -46,11 +46,8 @@ const ShippingFees = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          "https://api.thedesigngrit.com/api/brand/shipping-fee",
-          {
-            params: { brandId: vendor.brandId },
-            withCredentials: true,
-          }
+          `/api/brand/${vendor.brandId}/shipping-fee`,
+          { withCredentials: true }
         );
         setShippingFees(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
@@ -83,22 +80,17 @@ const ShippingFees = () => {
     setLoading(true);
     try {
       await axios.post(
-        "https://api.thedesigngrit.com/api/brand/shipping-fee",
+        `/api/brand/${vendor.brandId}/shipping-fee`,
         {
           city: selectedCity,
           fee: feeInput,
-          brandId: vendor.brandId,
         },
         { withCredentials: true }
       );
       // Refetch fees
-      const res = await axios.get(
-        "https://api.thedesigngrit.com/api/brand/shipping-fee",
-        {
-          params: { brandId: vendor.brandId },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`/api/brand/${vendor.brandId}/shipping-fee`, {
+        withCredentials: true,
+      });
       setShippingFees(Array.isArray(res.data) ? res.data : []);
       setModalOpen(false);
     } catch (err) {
