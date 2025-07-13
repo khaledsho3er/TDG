@@ -68,8 +68,8 @@ const AddProduct = () => {
     manufactureYear: "",
     tags: [], // Tags array in formData
     reviews: [], // Initialize reviews as an empty array
-    colors: [],
-    sizes: [],
+    color: "",
+    size: "",
     images: [],
     mainImage: "",
     description: "",
@@ -279,26 +279,22 @@ const AddProduct = () => {
   };
 
   // Handle array fields (tags, colors, sizes, warrantyCoverage)
+  // Only used for tags and warrantyCoverage now
   const handleArrayChange = (e, field, parentField = null) => {
     const { value } = e.target;
-
-    // Split the input value by commas and trim each item
-    const arrayValues = value.split(",").map((item) => item.trim());
-
     if (parentField) {
       // Handle nested fields (e.g., warrantyInfo.warrantyCoverage)
       setFormData({
         ...formData,
         [parentField]: {
           ...formData[parentField],
-          [field]: arrayValues, // Ensure this is an array
+          [field]: value.split(",").map((item) => item.trim()),
         },
       });
     } else {
-      // Handle top-level fields (e.g., tags, colors, sizes)
       setFormData({
         ...formData,
-        [field]: arrayValues, // Ensure this is an array
+        [field]: value.split(",").map((item) => item.trim()),
       });
     }
   };
@@ -525,12 +521,8 @@ const AddProduct = () => {
     );
     // Append array fields
     formData.tags.forEach((tag, index) => data.append(`tags[${index}]`, tag));
-    formData.colors.forEach((color, index) =>
-      data.append(`colors[${index}]`, color)
-    );
-    formData.sizes.forEach((size, index) =>
-      data.append(`sizes[${index}]`, size)
-    );
+    data.append("color", formData.color || "");
+    data.append("size", formData.size || "one size");
     // Append nested objects
     data.append(
       "technicalDimensions",
@@ -924,41 +916,30 @@ const AddProduct = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Colors (comma separated):</label>
-                <span
-                  style={{
-                    color: "grey",
-                    margin: "5px",
-                  }}
-                >
-                  Enter the colors of the product which be vaild for variants.
+                <label>Color:</label>
+                <span style={{ color: "grey", margin: "5px" }}>
+                  Enter a single color for this product (e.g., "Red").
                 </span>
                 <input
                   type="text"
-                  name="colors"
-                  value={formData.colors.join(",")}
-                  onChange={(e) => handleArrayChange(e, "colors")}
-                  placeholder="Ex: Red, Blue, Green"
+                  name="color"
+                  value={formData.color}
+                  onChange={handleChange}
+                  placeholder="Ex: Red"
                   style={{ marginTop: "10px" }}
                 />
               </div>
               <div className="form-group">
-                <label>Sizes (comma separated):</label>
-                <span
-                  style={{
-                    color: "grey",
-                    margin: "5px",
-                  }}
-                >
-                  Enter the sizes of the product which be vaild for variants.
+                <label>Size:</label>
+                <span style={{ color: "grey", margin: "5px" }}>
+                  Enter a single size for this product (e.g., "Medium").
                 </span>
-
                 <input
                   type="text"
-                  name="sizes"
-                  value={formData.sizes.join(",")}
-                  onChange={(e) => handleArrayChange(e, "sizes")}
-                  placeholder="Ex: Small, Medium, Large"
+                  name="size"
+                  value={formData.size}
+                  onChange={handleChange}
+                  placeholder="Ex: Medium"
                   style={{ marginTop: "10px" }}
                 />
               </div>

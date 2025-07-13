@@ -110,9 +110,24 @@ function ProductsPage() {
 
       // Color filter
       if (filters.colors.length > 0) {
-        filtered = filtered.filter((product) =>
-          product.colors?.some((color) => filters.colors.includes(color))
-        );
+        filtered = filtered.filter((product) => {
+          // Union of product.colors and product.variantColors
+          const colorSet = new Set();
+          if (product.colors) {
+            if (Array.isArray(product.colors)) {
+              product.colors.forEach((c) => c && colorSet.add(c));
+            } else if (
+              typeof product.colors === "string" &&
+              product.colors.trim() !== ""
+            ) {
+              colorSet.add(product.colors);
+            }
+          }
+          if (product.variantColors && Array.isArray(product.variantColors)) {
+            product.variantColors.forEach((c) => c && colorSet.add(c));
+          }
+          return filters.colors.some((color) => colorSet.has(color));
+        });
       }
 
       // Tags filter
@@ -127,6 +142,28 @@ function ProductsPage() {
         const price = product.salePrice || product.price;
         return price >= filters.priceRange[0] && price <= filters.priceRange[1];
       });
+
+      // Size filter (if implemented)
+      if (filters.sizes && filters.sizes.length > 0) {
+        filtered = filtered.filter((product) => {
+          // Union of product.sizes and product.variantSizes
+          const sizeSet = new Set();
+          if (product.sizes) {
+            if (Array.isArray(product.sizes)) {
+              product.sizes.forEach((s) => s && sizeSet.add(s));
+            } else if (
+              typeof product.sizes === "string" &&
+              product.sizes.trim() !== ""
+            ) {
+              sizeSet.add(product.sizes);
+            }
+          }
+          if (product.variantSizes && Array.isArray(product.variantSizes)) {
+            product.variantSizes.forEach((s) => s && sizeSet.add(s));
+          }
+          return filters.sizes.some((size) => sizeSet.has(size));
+        });
+      }
 
       // Sorting
       switch (sortOption) {

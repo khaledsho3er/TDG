@@ -269,21 +269,63 @@ function ProductPage() {
     setSelectedSize(size);
   };
 
+  // Utility to get all available colors (union of product.colors and product.variantColors)
+  const getAllAvailableColors = () => {
+    const colorSet = new Set();
+    if (product.colors) {
+      if (Array.isArray(product.colors)) {
+        product.colors.forEach((c) => c && colorSet.add(c));
+      } else if (
+        typeof product.colors === "string" &&
+        product.colors.trim() !== ""
+      ) {
+        colorSet.add(product.colors);
+      }
+    }
+    if (product.variantColors && Array.isArray(product.variantColors)) {
+      product.variantColors.forEach((c) => c && colorSet.add(c));
+    }
+    return Array.from(colorSet);
+  };
+
+  // Utility to get all available sizes (union of product.sizes and product.variantSizes)
+  const getAllAvailableSizes = () => {
+    const sizeSet = new Set();
+    if (product.sizes) {
+      if (Array.isArray(product.sizes)) {
+        product.sizes.forEach((s) => s && sizeSet.add(s));
+      } else if (
+        typeof product.sizes === "string" &&
+        product.sizes.trim() !== ""
+      ) {
+        sizeSet.add(product.sizes);
+      }
+    }
+    if (product.variantSizes && Array.isArray(product.variantSizes)) {
+      product.variantSizes.forEach((s) => s && sizeSet.add(s));
+    }
+    return Array.from(sizeSet);
+  };
+
   // Create a function to get available sizes for the selected color
   const getAvailableSizes = () => {
-    if (!selectedColor || !variants || variants.length === 0)
-      return product.sizes || [];
-
-    const colorVariants = variants.filter(
-      (variant) =>
-        variant.color &&
-        variant.color.toLowerCase() === selectedColor.toLowerCase()
-    );
-
-    const uniqueSizes = [
-      ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
-    ];
-    return uniqueSizes.length > 0 ? uniqueSizes : product.sizes || [];
+    // If a color is selected, filter variants for that color and get their sizes
+    if (selectedColor && variants && variants.length > 0) {
+      const colorVariants = variants.filter(
+        (variant) =>
+          variant.color &&
+          variant.color.toLowerCase() === selectedColor.toLowerCase()
+      );
+      const uniqueSizes = [
+        ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
+      ];
+      // Also include product.sizes and product.variantSizes
+      const allSizes = new Set(uniqueSizes);
+      getAllAvailableSizes().forEach((s) => allSizes.add(s));
+      return Array.from(allSizes);
+    }
+    // If no color is selected, show all available sizes
+    return getAllAvailableSizes();
   };
 
   // Update your product display to use variant data when available
@@ -678,8 +720,8 @@ function ProductPage() {
             <div className="color-selector">
               <span className="color-selector-label">Color:</span>
               <div className="color-options">
-                {product.colors && product.colors.length > 0 ? (
-                  product.colors.map((color, index) => {
+                {getAllAvailableColors().length > 0 ? (
+                  getAllAvailableColors().map((color, index) => {
                     // Basic color extraction function
                     const extractColorValue = (colorName) => {
                       // Convert to lowercase for comparison

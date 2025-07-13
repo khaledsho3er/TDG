@@ -451,8 +451,11 @@ export default function VariantDialog({
           variantsData.push({
             sku: variant.sku,
             title: variant.title || "",
-            color: variant.color || "", // Now a single color from dropdown
-            size: variant.size || "", // Now a single size from dropdown
+            color: variant.color || "", // Now a single color from text field
+            size:
+              variant.size && variant.size.trim() !== ""
+                ? variant.size
+                : "one size", // Always a string, default to 'one size'
             price: variant.price || "",
             stock: variant.stock || 0, // Add stock to the API submission
             dimensions: JSON.stringify({
@@ -577,50 +580,24 @@ export default function VariantDialog({
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <InputLabel>Color</InputLabel>
-                    <Select
-                      value={variants[currentVariant].color}
-                      onChange={handleChange}
-                      label="Color"
-                      name="color"
-                    >
-                      {productColors && productColors.length > 0 ? (
-                        productColors.map((color) => (
-                          <MenuItem key={color} value={color}>
-                            {color}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem value="" disabled>
-                          No colors available
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
+                  <TextField
+                    label="Color"
+                    name="color"
+                    fullWidth
+                    value={variants[currentVariant].color}
+                    onChange={handleChange}
+                    helperText="Enter a single color for this variant (e.g., 'Red')."
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <InputLabel>Size</InputLabel>
-                    <Select
-                      value={variants[currentVariant].size}
-                      onChange={handleChange}
-                      label="Size"
-                      name="size"
-                    >
-                      {productSizes && productSizes.length > 0 ? (
-                        productSizes.map((size) => (
-                          <MenuItem key={size} value={size}>
-                            {size}
-                          </MenuItem>
-                        ))
-                      ) : (
-                        <MenuItem value="" disabled>
-                          No sizes available
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
+                  <TextField
+                    label="Size"
+                    name="size"
+                    fullWidth
+                    value={variants[currentVariant].size}
+                    onChange={handleChange}
+                    helperText="Enter a single size for this variant (e.g., 'Medium')."
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
