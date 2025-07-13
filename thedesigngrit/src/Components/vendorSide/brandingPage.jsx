@@ -57,6 +57,9 @@ const BrandingPage = () => {
   const [openCoverModal, setOpenCoverModal] = useState(false);
   const [previewLogo, setPreviewLogo] = useState(null);
   const [previewCover, setPreviewCover] = useState(null);
+  // Pending images for admin approval
+  const [pendingLogo, setPendingLogo] = useState(null);
+  const [pendingCover, setPendingCover] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     year: "",
@@ -92,16 +95,22 @@ const BrandingPage = () => {
       .then((res) => {
         setBrandData(res.data);
         if (res.data.brandlogo) {
-          setPreviewLogo(
-            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.brandlogo}`
-          );
+          // Only update previewLogo if approved or no pendingLogo
+          if (res.data.updateStatus === "approved" || !pendingLogo) {
+            setPreviewLogo(
+              `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.brandlogo}`
+            );
+            setPendingLogo(null);
+          }
         }
         if (res.data.coverPhoto) {
-          setPreviewCover(
-            `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.coverPhoto}`
-          );
+          if (res.data.updateStatus === "approved" || !pendingCover) {
+            setPreviewCover(
+              `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${res.data.coverPhoto}`
+            );
+            setPendingCover(null);
+          }
         }
-        // Show notification if brand update status is not approved
         setShowPendingApproval(res.data.updateStatus !== "approved");
       })
       .catch((err) => console.error("Error fetching brand data:", err));
@@ -166,11 +175,11 @@ const BrandingPage = () => {
 
       if (currentCropType === "logo") {
         setLogoFile(croppedFile);
-        setPreviewLogo(croppedUrl);
+        setPendingLogo(croppedUrl); // Store pending logo preview
         setOpenLogoModal(true); // Open logo modal after cropping
       } else {
         setCoverFile(croppedFile);
-        setPreviewCover(croppedUrl);
+        setPendingCover(croppedUrl); // Store pending cover preview
         setOpenCoverModal(true); // Open cover modal after cropping
       }
 
@@ -208,6 +217,7 @@ const BrandingPage = () => {
             res.data.brandlogo
           }?t=${Date.now()}`
         );
+        setPendingLogo(null); // Clear pending logo
       }
       if (res.data.coverPhoto) {
         setPreviewCover(
@@ -215,6 +225,7 @@ const BrandingPage = () => {
             res.data.coverPhoto
           }?t=${Date.now()}`
         );
+        setPendingCover(null); // Clear pending cover
       }
       setLogoFile(null);
       setCoverFile(null);
@@ -314,18 +325,17 @@ const BrandingPage = () => {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Edit Brand Logo
         </Typography>
-
-        {/* Show cropped preview if logoFile exists, else show current logo */}
-        {logoFile && previewLogo ? (
+        {pendingLogo && brandData && brandData.updateStatus !== "approved" ? (
           <img
-            src={previewLogo}
-            alt="New Logo Preview"
+            src={pendingLogo}
+            alt="Pending Logo Preview"
             style={{
               width: "100%",
               height: "auto",
               maxHeight: "300px",
               objectFit: "contain",
               marginBottom: "16px",
+              border: "2px dashed orange",
             }}
           />
         ) : (
@@ -343,14 +353,12 @@ const BrandingPage = () => {
             />
           )
         )}
-
         <input
           type="file"
           accept="image/*"
           onChange={handleLogoChange}
           style={{ marginBottom: "16px" }}
         />
-
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
           <Button onClick={handleCloseLogoModal}>Cancel</Button>
           <Button
@@ -372,18 +380,17 @@ const BrandingPage = () => {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Edit Cover Photo
         </Typography>
-
-        {/* Show cropped preview if coverFile exists, else show current cover */}
-        {coverFile && previewCover ? (
+        {pendingCover && brandData && brandData.updateStatus !== "approved" ? (
           <img
-            src={previewCover}
-            alt="New Cover Preview"
+            src={pendingCover}
+            alt="Pending Cover Preview"
             style={{
               width: "100%",
               height: "auto",
               maxHeight: "300px",
               objectFit: "contain",
               marginBottom: "16px",
+              border: "2px dashed orange",
             }}
           />
         ) : (
@@ -401,14 +408,12 @@ const BrandingPage = () => {
             />
           )
         )}
-
         <input
           type="file"
           accept="image/*"
           onChange={handleCoverChange}
           style={{ marginBottom: "16px" }}
         />
-
         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
           <Button onClick={handleCloseCoverModal}>Cancel</Button>
           <Button
@@ -480,7 +485,20 @@ const BrandingPage = () => {
           }}
         >
           {/* Cover Photo */}
-          {previewCover ? (
+          {brandData &&
+          brandData.updateStatus !== "approved" &&
+          pendingCover ? (
+            <img
+              src={previewCover}
+              alt="Cover"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                opacity: 0.5,
+              }}
+            />
+          ) : previewCover ? (
             <img
               src={previewCover}
               alt="Cover"
@@ -534,7 +552,21 @@ const BrandingPage = () => {
               backgroundColor: "white",
             }}
           >
-            {previewLogo ? (
+            {brandData &&
+            brandData.updateStatus !== "approved" &&
+            pendingLogo ? (
+              <img
+                src={previewLogo}
+                alt="Logo"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  opacity: 0.5,
+                }}
+              />
+            ) : previewLogo ? (
               <img
                 src={previewLogo}
                 alt="Logo"
