@@ -1432,104 +1432,240 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                   Upload Images
                 </button>
               </div>
-              <div className="thumbnail-list">
+              <div
+                className="thumbnail-list"
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "24px",
+                  marginTop: "16px",
+                }}
+              >
                 {imagePreviews.map((preview, index) => (
                   <div
                     className={`thumbnail ${
                       preview === mainImagePreview ? "main-thumbnail" : ""
                     }`}
                     key={index}
+                    style={{
+                      border:
+                        preview === mainImagePreview
+                          ? "2px solid #8A9A5B"
+                          : "1px solid #ccc",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      width: "220px",
+                      background: "#fafbfa",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      position: "relative",
+                    }}
                   >
+                    <img
+                      src={preview}
+                      alt={`Thumbnail ${index}`}
+                      style={{
+                        width: "180px",
+                        height: "180px",
+                        objectFit: "contain",
+                        borderRadius: "8px",
+                        background: "#fff",
+                        marginBottom: "8px",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                        cursor: "pointer",
+                        border:
+                          preview === mainImagePreview
+                            ? "2px solid #8A9A5B"
+                            : "1px solid #eee",
+                      }}
+                      onClick={() => handleSetMainImage(index)}
+                    />
                     <div
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
+                        gap: "8px",
+                        marginBottom: "8px",
                       }}
                     >
-                      <img
-                        src={preview}
-                        alt={`Thumbnail ${index}`}
-                        className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index)}
-                      />
-                      <span>Product thumbnail.png</span>
-                      <span className="checkmark">
-                        {preview === mainImagePreview ? "✔ Main" : "✔"}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
-                    >
-                      <span
-                        className="remove-thumbnail"
+                      <button
+                        type="button"
+                        title="Edit (Crop)"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#8A9A5B",
+                        }}
+                        onClick={() => {
+                          setSelectedImageSrc(preview);
+                          setPendingFile(images[index]);
+                          setShowCropModal(true);
+                        }}
+                      >
+                        ✂️ Edit
+                      </button>
+                      <button
+                        type="button"
+                        title="View"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#2d2d2d",
+                        }}
+                        onClick={() => window.open(preview, "_blank")}
+                      >
+                        👁️ View
+                      </button>
+                      <button
+                        type="button"
+                        title="Delete"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#d32f2f",
+                        }}
                         onClick={() => handleRemoveImage(index)}
                       >
-                        ✖
-                      </span>
+                        <TiDeleteOutline size={18} />
+                      </button>
                     </div>
+                    <span style={{ fontSize: "12px", color: "#888" }}>
+                      Product thumbnail.png
+                    </span>
+                    <span
+                      className="checkmark"
+                      style={{
+                        fontSize: "13px",
+                        color: "#8A9A5B",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {preview === mainImagePreview ? "✔ Main" : ""}
+                    </span>
                   </div>
                 ))}
                 {/* Display existing images that don't have previews yet */}
                 {images
                   .filter((_, index) => !imagePreviews[index])
-                  .map((image, index) => (
-                    <div
-                      className={`thumbnail ${
-                        image === mainImage ? "main-thumbnail" : ""
-                      }`}
-                      key={`existing-${index}`}
-                    >
+                  .map((image, index) => {
+                    const imgSrc =
+                      typeof image === "string"
+                        ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
+                        : URL.createObjectURL(image);
+                    return (
                       <div
+                        className={`thumbnail ${
+                          image === mainImage ? "main-thumbnail" : ""
+                        }`}
+                        key={`existing-${index}`}
                         style={{
+                          border:
+                            image === mainImage
+                              ? "2px solid #8A9A5B"
+                              : "1px solid #ccc",
+                          borderRadius: "12px",
+                          padding: "12px",
+                          width: "220px",
+                          background: "#fafbfa",
                           display: "flex",
+                          flexDirection: "column",
                           alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "10px",
+                          position: "relative",
                         }}
                       >
                         <img
-                          src={
-                            typeof image === "string"
-                              ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
-                              : URL.createObjectURL(image)
-                          }
+                          src={imgSrc}
                           alt={`Thumbnail ${index}`}
-                          className="image-thumbnail"
+                          style={{
+                            width: "180px",
+                            height: "180px",
+                            objectFit: "contain",
+                            borderRadius: "8px",
+                            background: "#fff",
+                            marginBottom: "8px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                            cursor: "pointer",
+                            border:
+                              image === mainImage
+                                ? "2px solid #8A9A5B"
+                                : "1px solid #eee",
+                          }}
                           onClick={() =>
                             handleSetMainImage(imagePreviews.length + index)
                           }
                         />
-                        <span>Product thumbnail.png</span>
-                        <span className="checkmark">
-                          {image === mainImage ? "✔ Main" : "✔"}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "10px",
-                        }}
-                      >
-                        <span
-                          className="remove-thumbnail"
-                          onClick={() =>
-                            handleRemoveImage(imagePreviews.length + index)
-                          }
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "8px",
+                            marginBottom: "8px",
+                          }}
                         >
-                          ✖
+                          <button
+                            type="button"
+                            title="Edit (Crop)"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              color: "#8A9A5B",
+                            }}
+                            onClick={() => {
+                              setSelectedImageSrc(imgSrc);
+                              setPendingFile(image);
+                              setShowCropModal(true);
+                            }}
+                          >
+                            ✂️ Edit
+                          </button>
+                          <button
+                            type="button"
+                            title="View"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              color: "#2d2d2d",
+                            }}
+                            onClick={() => window.open(imgSrc, "_blank")}
+                          >
+                            👁️ View
+                          </button>
+                          <button
+                            type="button"
+                            title="Delete"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              color: "#d32f2f",
+                            }}
+                            onClick={() =>
+                              handleRemoveImage(imagePreviews.length + index)
+                            }
+                          >
+                            <TiDeleteOutline size={18} />
+                          </button>
+                        </div>
+                        <span style={{ fontSize: "12px", color: "#888" }}>
+                          Product thumbnail.png
+                        </span>
+                        <span
+                          className="checkmark"
+                          style={{
+                            fontSize: "13px",
+                            color: "#8A9A5B",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {image === mainImage ? "✔ Main" : ""}
                         </span>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
             </div>
 

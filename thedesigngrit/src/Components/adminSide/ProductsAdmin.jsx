@@ -403,17 +403,22 @@ const ProductPageAdmin = () => {
                               />
                               {menuOpen[product._id] && (
                                 <div className="menu-dropdown">
-                                  <button onClick={() => handleEdit(product)}>
+                                  <button
+                                    onClick={() => handleEdit(product)}
+                                    style={{
+                                      margin: "3px 0px 0px 0px",
+                                    }}
+                                  >
                                     Edit
                                   </button>
-                                  {/* <button
+                                  <button
                                     onClick={() => {
                                       setProductToDelete(product);
                                       setConfirmDialogOpen(true);
                                     }}
                                   >
                                     Delete
-                                  </button> */}
+                                  </button>
                                   <button
                                     onClick={() => handleInsights(product)}
                                   >
@@ -554,17 +559,22 @@ const ProductPageAdmin = () => {
                               />
                               {menuOpen[product._id] && (
                                 <div className="menu-dropdown">
-                                  <button onClick={() => handleEdit(product)}>
+                                  <button
+                                    onClick={() => handleEdit(product)}
+                                    style={{
+                                      margin: "3px 0px 0px 0px",
+                                    }}
+                                  >
                                     Edit
                                   </button>
-                                  {/* <button
+                                  <button
                                     onClick={() => {
                                       setProductToDelete(product);
                                       setConfirmDialogOpen(true);
                                     }}
                                   >
                                     Delete
-                                  </button> */}
+                                  </button>
                                   <button
                                     onClick={() => handleInsights(product)}
                                   >
