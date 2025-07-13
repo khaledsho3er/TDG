@@ -1435,118 +1435,132 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
               <div
                 className="thumbnail-list"
                 style={{
-                  display: "flex",
-                  flexWrap: "wrap",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
                   gap: "24px",
                   marginTop: "16px",
                 }}
               >
-                {imagePreviews.map((preview, index) => (
-                  <div
-                    className={`thumbnail ${
-                      preview === mainImagePreview ? "main-thumbnail" : ""
-                    }`}
-                    key={index}
-                    style={{
-                      border:
-                        preview === mainImagePreview
-                          ? "2px solid #8A9A5B"
-                          : "1px solid #ccc",
-                      borderRadius: "12px",
-                      padding: "12px",
-                      width: "220px",
-                      background: "#fafbfa",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      position: "relative",
-                    }}
-                  >
-                    <img
-                      src={preview}
-                      alt={`Thumbnail ${index}`}
+                {imagePreviews.map((preview, index) => {
+                  const isLocal = images[index] instanceof File;
+                  return (
+                    <div
+                      className={`thumbnail ${
+                        preview === mainImagePreview ? "main-thumbnail" : ""
+                      }`}
+                      key={index}
                       style={{
-                        width: "180px",
-                        height: "180px",
-                        objectFit: "contain",
-                        borderRadius: "8px",
-                        background: "#fff",
-                        marginBottom: "8px",
-                        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
-                        cursor: "pointer",
                         border:
                           preview === mainImagePreview
                             ? "2px solid #8A9A5B"
-                            : "1px solid #eee",
-                      }}
-                      onClick={() => handleSetMainImage(index)}
-                    />
-                    <div
-                      style={{
+                            : "1px solid #ccc",
+                        borderRadius: "12px",
+                        padding: "12px",
+                        width: "220px",
+                        background: "#fafbfa",
                         display: "flex",
-                        gap: "8px",
-                        marginBottom: "8px",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        position: "relative",
                       }}
                     >
-                      <button
-                        type="button"
-                        title="Edit (Crop)"
+                      <img
+                        src={preview}
+                        alt={`Thumbnail ${index}`}
                         style={{
-                          background: "none",
-                          border: "none",
+                          width: "180px",
+                          height: "180px",
+                          objectFit: "contain",
+                          borderRadius: "8px",
+                          background: "#fff",
+                          marginBottom: "8px",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                           cursor: "pointer",
+                          border:
+                            preview === mainImagePreview
+                              ? "2px solid #8A9A5B"
+                              : "1px solid #eee",
+                        }}
+                        onClick={() => handleSetMainImage(index)}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          title={
+                            isLocal
+                              ? "Edit (Crop)"
+                              : "Cannot crop remote images"
+                          }
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: isLocal ? "pointer" : "not-allowed",
+                            color: isLocal ? "#8A9A5B" : "#ccc",
+                          }}
+                          onClick={() => {
+                            if (isLocal) {
+                              setSelectedImageSrc(preview);
+                              setPendingFile(images[index]);
+                              setShowCropModal(true);
+                            } else {
+                              alert(
+                                "Cannot crop images loaded from the server. Only newly uploaded images can be cropped."
+                              );
+                            }
+                          }}
+                          disabled={!isLocal}
+                        >
+                          ✂️ Edit
+                        </button>
+                        <button
+                          type="button"
+                          title="View"
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "#2d2d2d",
+                          }}
+                          onClick={() => window.open(preview, "_blank")}
+                        >
+                          👁️ View
+                        </button>
+                        <button
+                          type="button"
+                          title="Delete"
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "#d32f2f",
+                          }}
+                          onClick={() => handleRemoveImage(index)}
+                        >
+                          <TiDeleteOutline size={18} />
+                        </button>
+                      </div>
+                      <span style={{ fontSize: "12px", color: "#888" }}>
+                        Product thumbnail.png
+                      </span>
+                      <span
+                        className="checkmark"
+                        style={{
+                          fontSize: "13px",
                           color: "#8A9A5B",
-                        }}
-                        onClick={() => {
-                          setSelectedImageSrc(preview);
-                          setPendingFile(images[index]);
-                          setShowCropModal(true);
+                          fontWeight: 600,
                         }}
                       >
-                        ✂️ Edit
-                      </button>
-                      <button
-                        type="button"
-                        title="View"
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          color: "#2d2d2d",
-                        }}
-                        onClick={() => window.open(preview, "_blank")}
-                      >
-                        👁️ View
-                      </button>
-                      <button
-                        type="button"
-                        title="Delete"
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          color: "#d32f2f",
-                        }}
-                        onClick={() => handleRemoveImage(index)}
-                      >
-                        <TiDeleteOutline size={18} />
-                      </button>
+                        {preview === mainImagePreview ? "✔ Main" : ""}
+                      </span>
                     </div>
-                    <span style={{ fontSize: "12px", color: "#888" }}>
-                      Product thumbnail.png
-                    </span>
-                    <span
-                      className="checkmark"
-                      style={{
-                        fontSize: "13px",
-                        color: "#8A9A5B",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {preview === mainImagePreview ? "✔ Main" : ""}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
                 {/* Display existing images that don't have previews yet */}
                 {images
                   .filter((_, index) => !imagePreviews[index])
@@ -1555,6 +1569,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                       typeof image === "string"
                         ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${image}`
                         : URL.createObjectURL(image);
+                    const isLocal = image instanceof File;
                     return (
                       <div
                         className={`thumbnail ${
@@ -1606,20 +1621,31 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                         >
                           <button
                             type="button"
-                            title="Edit (Crop)"
+                            title={
+                              isLocal
+                                ? "Edit (Crop)"
+                                : "Cannot crop remote images"
+                            }
                             style={{
                               background: "none",
                               border: "none",
-                              cursor: "pointer",
-                              color: "#8A9A5B",
+                              cursor: isLocal ? "pointer" : "not-allowed",
+                              color: isLocal ? "#8A9A5B" : "#ccc",
                             }}
                             onClick={() => {
-                              setSelectedImageSrc(imgSrc);
-                              setPendingFile(image);
-                              setShowCropModal(true);
+                              if (isLocal) {
+                                setSelectedImageSrc(imgSrc);
+                                setPendingFile(image);
+                                setShowCropModal(true);
+                              } else {
+                                alert(
+                                  "Cannot crop images loaded from the server. Only newly uploaded images can be cropped."
+                                );
+                              }
                             }}
+                            disabled={!isLocal}
                           >
-                            ✂️ Edit
+                            Edit
                           </button>
                           <button
                             type="button"
@@ -1632,7 +1658,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             }}
                             onClick={() => window.open(imgSrc, "_blank")}
                           >
-                            👁️ View
+                            View
                           </button>
                           <button
                             type="button"
@@ -1647,7 +1673,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                               handleRemoveImage(imagePreviews.length + index)
                             }
                           >
-                            <TiDeleteOutline size={18} />
+                            <TiDeleteOutline size={19} />
                           </button>
                         </div>
                         <span style={{ fontSize: "12px", color: "#888" }}>

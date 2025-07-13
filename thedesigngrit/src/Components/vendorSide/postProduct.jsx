@@ -597,7 +597,6 @@ const AddProduct = () => {
     if (!formData.name.trim()) errors.push("Product Name");
     if (!formData.price || isNaN(formData.price)) errors.push("Product Price");
     if (!formData.sku.trim()) errors.push("SKU");
-    if (!formData.collection.trim()) errors.push("Collection");
     if (!formData.stock || isNaN(formData.stock)) errors.push("Stock");
     if (!formData.leadTime.trim()) errors.push("Lead Time");
     if (!formData.description.trim()) errors.push("Description");
