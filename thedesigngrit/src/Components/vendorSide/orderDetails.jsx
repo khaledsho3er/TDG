@@ -1080,7 +1080,6 @@ const OrderDetails = ({ order, onBack }) => {
             <p>{shippingFee !== "N/A" ? `E£ ${shippingFee}` : "N/A"}</p>
             <h4>{total !== "N/A" ? `E£ ${total}` : "N/A"}</h4>
             {/* Show total after 14% deduction */}
-            <h4>Total after 14% deduction: {totalAfter14Percent}</h4>
           </Box>
         </div>
       </div>
