@@ -959,31 +959,58 @@ function ProductPage() {
                         <p>Width X Length X Height</p>
                         <p>
                           <strong>
-                            {selectedVariant
+                            {selectedVariant &&
+                            selectedVariant.dimensions &&
+                            typeof selectedVariant.dimensions.width !==
+                              "undefined"
                               ? selectedVariant.dimensions.width
-                              : product.technicalDimensions.width}
+                              : product.technicalDimensions &&
+                                typeof product.technicalDimensions.width !==
+                                  "undefined"
+                              ? product.technicalDimensions.width
+                              : "N/A"}
                           </strong>{" "}
                           cm x{"  "}
                           <strong>
-                            {" "}
-                            {selectedVariant
+                            {selectedVariant &&
+                            selectedVariant.dimensions &&
+                            typeof selectedVariant.dimensions.length !==
+                              "undefined"
                               ? selectedVariant.dimensions.length
-                              : product.technicalDimensions.length}
+                              : product.technicalDimensions &&
+                                typeof product.technicalDimensions.length !==
+                                  "undefined"
+                              ? product.technicalDimensions.length
+                              : "N/A"}
                           </strong>{" "}
                           cm X{"  "}
                           <strong>
-                            {selectedVariant
+                            {selectedVariant &&
+                            selectedVariant.dimensions &&
+                            typeof selectedVariant.dimensions.height !==
+                              "undefined"
                               ? selectedVariant.dimensions.height
-                              : product.technicalDimensions.height}
+                              : product.technicalDimensions &&
+                                typeof product.technicalDimensions.height !==
+                                  "undefined"
+                              ? product.technicalDimensions.height
+                              : "N/A"}
                           </strong>{" "}
                           cm
                         </p>
                         <p>
                           Weight :{" "}
                           <strong>
-                            {selectedVariant
+                            {selectedVariant &&
+                            selectedVariant.dimensions &&
+                            typeof selectedVariant.dimensions.weight !==
+                              "undefined"
                               ? selectedVariant.dimensions.weight
-                              : product.technicalDimensions.weight}
+                              : product.technicalDimensions &&
+                                typeof product.technicalDimensions.weight !==
+                                  "undefined"
+                              ? product.technicalDimensions.weight
+                              : "N/A"}
                           </strong>{" "}
                           Kgs
                         </p>
