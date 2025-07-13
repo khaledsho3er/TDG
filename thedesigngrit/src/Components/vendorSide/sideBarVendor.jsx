@@ -383,7 +383,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -446,7 +446,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -516,7 +516,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -579,7 +579,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -689,7 +689,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -755,7 +755,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -821,7 +821,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
@@ -887,7 +887,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
                 <span
                   style={{
                     position: "absolute",
-                    right: "16px",
+                    right: "0px",
                     top: "50%",
                     transform: "translateY(-50%)",
                     minWidth: "22px",
