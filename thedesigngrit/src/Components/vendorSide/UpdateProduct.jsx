@@ -1532,7 +1532,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                           marginBottom: "8px",
                         }}
                       >
-                        <button
+                        {/* <button
                           type="button"
                           title="Edit (Crop)"
                           style={{
@@ -1564,7 +1564,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                           }}
                         >
                           Edit
-                        </button>
+                        </button> */}
                         <button
                           type="button"
                           title="View"
@@ -1669,7 +1669,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             marginBottom: "8px",
                           }}
                         >
-                          <button
+                          {/* <button
                             type="button"
                             title="Edit (Crop)"
                             style={{
@@ -1702,7 +1702,7 @@ const UpdateProduct = ({ existingProduct, onBack, isAdmin = false }) => {
                             }}
                           >
                             Edit
-                          </button>
+                          </button> */}
                           <button
                             type="button"
                             title="View"
