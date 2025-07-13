@@ -1172,6 +1172,7 @@ const AddProduct = () => {
                     flexDirection: "row",
                     gap: "10px",
                     marginTop: "10px",
+                    flexWrap: "wrap",
                   }}
                 >
                   {[
@@ -1182,13 +1183,13 @@ const AddProduct = () => {
                     <label
                       key={coverage}
                       style={{
-                        display: "flex",
+                        display: "inline-flex",
                         alignItems: "center",
-                        gap: "8px",
+                        gap: "6px",
                         cursor: "pointer",
                         fontSize: "14px",
-                        WebkitAlignItems: "center", // Safari specific
-                        WebkitBoxAlign: "center", // Safari specific
+                        lineHeight: "1",
+                        userSelect: "none",
                       }}
                     >
                       <input
@@ -1199,13 +1200,14 @@ const AddProduct = () => {
                         onChange={() => handleWarrantyCoverageChange(coverage)}
                         style={{
                           cursor: "pointer",
-                          margin: "0", // Reset default margins
-                          verticalAlign: "middle", // Ensure vertical alignment
-                          WebkitAppearance: "auto", // Safari checkbox appearance
-                          appearance: "auto", // Standard checkbox appearance
+                          margin: "0",
+                          padding: "0",
+                          width: "16px",
+                          height: "16px",
+                          flexShrink: "0",
                         }}
                       />
-                      {coverage}
+                      <span>{coverage}</span>
                     </label>
                   ))}
                 </div>
