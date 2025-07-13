@@ -13,6 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 const getCroppedImg = (imageSrc, croppedAreaPixels) => {
   return new Promise((resolve) => {
     const image = new Image();
@@ -364,6 +365,9 @@ const AddProduct = () => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  // Add state for image view modal
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewModalImage, setViewModalImage] = useState(null);
 
   // Handle image upload
   const handleImageUpload = (e) => {
@@ -1312,48 +1316,105 @@ const AddProduct = () => {
                 </button>
               </div>
 
-              <div className="thumbnail-list">
+              <div
+                className="thumbnail-list"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "24px",
+                  marginTop: "16px",
+                }}
+              >
                 {imagePreviews.map((preview, index) => (
                   <div
                     className={`thumbnail ${
                       preview === mainImagePreview ? "main-thumbnail" : ""
                     }`}
                     key={index}
+                    style={{
+                      border:
+                        preview === mainImagePreview
+                          ? "2px solid #8A9A5B"
+                          : "1px solid #ccc",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      width: "220px",
+                      background: "#fafbfa",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      position: "relative",
+                    }}
                   >
+                    <img
+                      src={preview}
+                      alt={`Thumbnail ${index}`}
+                      style={{
+                        width: "180px",
+                        height: "180px",
+                        objectFit: "contain",
+                        borderRadius: "8px",
+                        background: "#fff",
+                        marginBottom: "8px",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                        cursor: "pointer",
+                        border:
+                          preview === mainImagePreview
+                            ? "2px solid #8A9A5B"
+                            : "1px solid #eee",
+                      }}
+                      onClick={() => handleSetMainImage(index)}
+                    />
                     <div
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
+                        gap: "8px",
+                        marginBottom: "8px",
                       }}
                     >
-                      <img
-                        src={preview}
-                        alt={`Thumbnail ${index}`}
-                        className="image-thumbnail"
-                        onClick={() => handleSetMainImage(index)}
-                      />
-                      <span>Product thumbnail.png</span>
-                      <span className="checkmark">
-                        {preview === mainImagePreview ? "✔ Main" : "✔"}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: "10px",
-                      }}
-                    >
-                      <span
-                        className="remove-thumbnail"
+                      <button
+                        type="button"
+                        title="View"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#2d2d2d",
+                        }}
+                        onClick={() => {
+                          setViewModalImage(preview);
+                          setViewModalOpen(true);
+                        }}
+                      >
+                        View
+                      </button>
+                      <button
+                        type="button"
+                        title="Delete"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#d32f2f",
+                        }}
                         onClick={() => handleRemoveImage(index)}
                       >
-                        ✖
-                      </span>
+                        <TiDeleteOutline size={18} />
+                      </button>
                     </div>
+                    <span style={{ fontSize: "12px", color: "#888" }}>
+                      Product thumbnail.png
+                    </span>
+                    <span
+                      className="checkmark"
+                      style={{
+                        fontSize: "13px",
+                        color: "#8A9A5B",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {preview === mainImagePreview ? "✔ Main" : ""}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -1446,6 +1507,56 @@ const AddProduct = () => {
               Done
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog
+          open={viewModalOpen}
+          onClose={() => setViewModalOpen(false)}
+          maxWidth="md"
+          fullWidth
+          sx={{
+            backdropFilter: "blur(8px)",
+            "& .MuiPaper-root": {
+              borderRadius: "16px",
+              backgroundColor: "rgba(255,255,255,0.95)",
+              position: "relative",
+            },
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={() => setViewModalOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+              zIndex: 2,
+            }}
+          >
+            <span style={{ fontSize: 28, fontWeight: "bold" }}>&times;</span>
+          </IconButton>
+          <DialogContent
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: 400,
+              background: "rgba(255,255,255,0.7)",
+            }}
+          >
+            {viewModalImage && (
+              <img
+                src={viewModalImage}
+                alt="View"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "70vh",
+                  borderRadius: 12,
+                  boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
+                }}
+              />
+            )}
+          </DialogContent>
         </Dialog>
       </form>
       {showCropModal && (
