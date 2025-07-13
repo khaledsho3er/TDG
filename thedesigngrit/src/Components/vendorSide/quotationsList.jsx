@@ -480,11 +480,11 @@ const QuotationsPage = () => {
               </Typography>
               <Typography>
                 <strong> Colors:</strong>{" "}
-                {selectedQuotation.productId.colors?.join(", ")}
+                {selectedQuotation.productId.colors || "N/A"}
               </Typography>
               <Typography>
                 <strong> Sizes: </strong>{" "}
-                {selectedQuotation.productId.sizes?.join(", ")}
+                {selectedQuotation.productId.sizes || "N/A"}
               </Typography>
               <Typography>
                 <strong> Dimensions:</strong>
