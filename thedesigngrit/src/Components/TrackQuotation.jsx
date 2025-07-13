@@ -221,11 +221,6 @@ function TrackQuotation() {
             />
           )}
           {/* Customization Lead Time */}
-          <Typography sx={{ mt: 2 }}>
-            Customization Lead Time:{" "}
-            {selectedQuotation.customizationLeadTime || "N/A"}
-            Business Days
-          </Typography>
 
           <Typography sx={{ mt: 2 }}>
             <strong>Color:</strong> {selectedQuotation.color || "N/A"}
@@ -247,7 +242,10 @@ function TrackQuotation() {
               ? `${selectedQuotation.quotePrice.toLocaleString()} E£`
               : "Not yet provided"}
           </Typography>
-
+          <Typography sx={{ mt: 2 }}>
+            <strong>Customization Lead Time:</strong>
+            {selectedQuotation.customizationLeadTime || "N/A"} Business Days
+          </Typography>
           {/* {selectedQuotation.note && (
             <Typography>
               <strong>Vendor Note:</strong> {selectedQuotation.note}
