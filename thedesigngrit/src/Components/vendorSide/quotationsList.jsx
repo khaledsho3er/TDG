@@ -20,6 +20,7 @@ const QuotationsPage = () => {
   const [showProductInfo, setShowProductInfo] = useState(false);
   const [note, setNote] = useState("");
   const [quotePrice, setQuotePrice] = useState("");
+  const [leadTime, setLeadTime] = useState("");
   const [file, setFile] = useState(null);
 
   useEffect(() => {
@@ -80,6 +81,7 @@ const QuotationsPage = () => {
     const formData = new FormData();
     formData.append("note", note);
     formData.append("quotePrice", quotePrice);
+    formData.append("leadTime", leadTime);
     formData.append("dateOfQuotePrice", new Date().toISOString());
     if (file) formData.append("file", file);
 
@@ -261,7 +263,16 @@ const QuotationsPage = () => {
                 style={{ backgroundColor: "#fff" }}
                 readOnly={selectedQuotation?.ClientApproval === true}
               />
-
+              <label>Estimated Lead Time:</label>
+              <input
+                type="text"
+                value={leadTime}
+                onChange={(e) => setLeadTime(e.target.value)}
+                placeholder="Enter lead time range (e.g., 5-7 days)"
+                required
+                pattern="\d+-\d+"
+                title="Please enter a valid range (e.g., 5-7)"
+              />
               <label>Quote Price:</label>
               <input
                 type="number"
