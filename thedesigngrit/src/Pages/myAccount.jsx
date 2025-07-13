@@ -33,6 +33,8 @@ const MyAccount = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  // Add badge state for quotations
+  const [quotationBadgeCount, setQuotationBadgeCount] = useState(0);
 
   // When the URL param changes, update selectedSection
   useEffect(() => {
@@ -75,6 +77,29 @@ const MyAccount = () => {
 
     fetchData();
   }, [userSession, navigate]); // Add `navigate` to the dependencies
+
+  // Fetch badge count for quotations
+  useEffect(() => {
+    if (!userSession) return;
+    const fetchQuotations = async () => {
+      try {
+        const res = await axios.get(
+          `https://api.thedesigngrit.com/api/quotation/customer/${userSession.id}`
+        );
+        const count = (res.data || []).filter(
+          (q) =>
+            q.quotePrice &&
+            q.seen === true &&
+            q.paymentDetails &&
+            q.paymentDetails.paid === false
+        ).length;
+        setQuotationBadgeCount(count);
+      } catch (err) {
+        setQuotationBadgeCount(0);
+      }
+    };
+    fetchQuotations();
+  }, [userSession]);
 
   const handleLogoutClick = () => {
     setLogoutConfirmOpen(true);
@@ -137,8 +162,37 @@ const MyAccount = () => {
                   onClick={() => {
                     navigate(`/myaccount/${section.toLowerCase()}`);
                   }}
+                  style={{ position: "relative" }}
                 >
-                  {section === "trackviewinstore" ? "View In Store" : section}
+                  {section === "trackviewinstore" ? (
+                    "View In Store"
+                  ) : section === "quotation" ? (
+                    <>
+                      Quotations
+                      {quotationBadgeCount > 0 && (
+                        <span
+                          style={{
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            padding: "2px 8px",
+                            fontSize: "12px",
+                            marginLeft: "8px",
+                            position: "absolute",
+                            top: "2px",
+                            right: "-10px",
+                            minWidth: "22px",
+                            textAlign: "center",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {quotationBadgeCount}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    section
+                  )}
                 </button>
               ) : (
                 <div key={section} className="sidebar-item">
