@@ -32,6 +32,14 @@ function TrackOrder() {
   const [showReasonDialog, setShowReasonDialog] = useState(false);
   const [showReturnConfirm, setShowReturnConfirm] = useState(false);
   const [pendingReason, setPendingReason] = useState("");
+  // Add review form state
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewHover, setReviewHover] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [reviewError, setReviewError] = useState("");
+  // Add state for review popup
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 
   // Move fetchOrders here so it can be used in handleReturnOrder
   const fetchOrders = async () => {
@@ -131,6 +139,55 @@ function TrackOrder() {
     selectedOrder &&
     new Date(selectedOrder.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000 >
       new Date().getTime();
+
+  // Review submit handler
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    setReviewError("");
+    setReviewSubmitted(false);
+    if (!reviewRating || !reviewComment.trim()) {
+      setReviewError("Please provide a rating and a review comment.");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://api.thedesigngrit.com/api/reviews/createreviews/${selectedSubOrder.productId._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reviewerName: `${userSession.firstName} ${userSession.lastName}`,
+            userId: userSession.id,
+            rating: reviewRating,
+            comment: reviewComment,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+      setReviewSubmitted(true);
+      setReviewRating(0);
+      setReviewComment("");
+    } catch (error) {
+      setReviewError("Failed to submit review. Please try again later.");
+    }
+  };
+
+  // When a star is clicked, open the dialog and set the rating
+  const handleStarClick = (star) => {
+    setReviewRating(star);
+    setReviewHover(star);
+    setReviewDialogOpen(true);
+  };
+
+  // On dialog close, reset hover
+  const handleReviewDialogClose = () => {
+    setReviewDialogOpen(false);
+    setReviewHover(0);
+    setReviewError("");
+    setReviewSubmitted(false);
+  };
   return (
     <Box sx={{ fontFamily: "Montserrat" }}>
       <Box sx={{ paddingBottom: "25rem" }}>
@@ -487,6 +544,120 @@ function TrackOrder() {
                       </Box>
                     </div>
                   </div>
+                  {/* Review Trigger (stars) */}
+                  <div
+                    style={{
+                      marginTop: 32,
+                      padding: 16,
+                      background: "#f9f9f9",
+                      borderRadius: 8,
+                    }}
+                  >
+                    <h4 style={{ marginBottom: 8 }}>
+                      Write a Review for this Product
+                    </h4>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          style={{
+                            cursor: "pointer",
+                            color:
+                              star <= (reviewHover || reviewRating)
+                                ? "#ffc107"
+                                : "#e4e5e9",
+                            fontSize: 28,
+                          }}
+                          onClick={() => handleStarClick(star)}
+                          onMouseEnter={() => setReviewHover(star)}
+                          onMouseLeave={() => setReviewHover(reviewRating)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Review Popup Dialog */}
+                  <Dialog
+                    open={reviewDialogOpen}
+                    onClose={handleReviewDialogClose}
+                  >
+                    <DialogTitle>Write a Review</DialogTitle>
+                    <DialogContent>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            style={{
+                              cursor: "pointer",
+                              color:
+                                star <= (reviewHover || reviewRating)
+                                  ? "#ffc107"
+                                  : "#e4e5e9",
+                              fontSize: 28,
+                            }}
+                            onClick={() => setReviewRating(star)}
+                            onMouseEnter={() => setReviewHover(star)}
+                            onMouseLeave={() => setReviewHover(reviewRating)}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      <form onSubmit={handleSubmitReview}>
+                        <textarea
+                          value={reviewComment}
+                          onChange={(e) => setReviewComment(e.target.value)}
+                          placeholder="Write your review here..."
+                          rows={4}
+                          style={{
+                            width: "100%",
+                            padding: 8,
+                            fontSize: 16,
+                            borderRadius: 4,
+                            border: "1px solid #ccc",
+                            marginBottom: 8,
+                          }}
+                          required
+                        />
+                        <div style={{ marginBottom: 8, color: "red" }}>
+                          {reviewError}
+                        </div>
+                        {reviewSubmitted && (
+                          <div style={{ color: "green", marginBottom: 8 }}>
+                            Review submitted successfully!
+                          </div>
+                        )}
+                        <DialogActions>
+                          <Button
+                            onClick={handleReviewDialogClose}
+                            color="secondary"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            style={{ background: "#6b7b58", color: "white" }}
+                          >
+                            Submit Review
+                          </Button>
+                        </DialogActions>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                   <div
                     style={{
                       display: "flex",
@@ -565,8 +736,11 @@ function TrackOrder() {
             sx={{
               backgroundColor: "white",
               borderRadius: 1,
-              input: { color: "#2d2d2d" },
+              input: { color: "#2d2d2d", fontSize: 18, minHeight: 60 },
+              label: { fontSize: 18 },
             }}
+            InputLabelProps={{ style: { fontSize: 18 } }}
+            InputProps={{ style: { fontSize: 18, minHeight: 60 } }}
           />
         </DialogContent>
         <DialogActions
