@@ -142,8 +142,12 @@ const ExploreConcepts = () => {
                           }}
                         >
                           <img
-                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`}
-                            alt={node.productId.name}
+                            src={
+                              node.productId && node.productId.mainImage
+                                ? `https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${node.productId.mainImage}`
+                                : "/default-image.jpg"
+                            }
+                            alt={node.productId?.name || "Product image"}
                             width="80"
                             height="80"
                             style={{ objectFit: "cover" }}
