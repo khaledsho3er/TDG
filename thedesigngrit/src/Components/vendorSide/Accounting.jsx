@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { BarChart, Bar } from "recharts";
+import { Box, Typography, Button } from "@mui/material";
 
 const AccountingPage = () => {
   const { vendor } = useVendor();
@@ -263,199 +264,218 @@ const AccountingPage = () => {
 
       <div className="accounting-content">
         <section className="graphs">
-          <h3>{getGraphTitle()}</h3>
-          <div className="graph-container">
-            <div
-              className="graph"
-              style={{
-                height: "400px",
-                border: "1px solid #dee2e6",
-                borderRadius: "4px",
-                padding: "20px",
-                backgroundColor: "#fff",
-                display: "flex",
-                flexDirection: "column",
-              }}
+          {/* Redesigned Chart Section */}
+          <Box mb={4} p={2} sx={{ background: "#fff", borderRadius: 3 }}>
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={2}
+              mb={2}
+              flexWrap="wrap"
             >
-              <div
-                className="graph-buttons"
-                style={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
+              <Typography
+                variant="h6"
+                fontWeight={700}
+                fontFamily="Montserrat"
+                sx={{ flex: 1 }}
               >
-                <button
-                  onClick={() => setActiveGraph("sales")}
-                  style={{
-                    backgroundColor:
-                      activeGraph === "sales" ? "#6a8452" : "#f8f9fa",
-                    color: activeGraph === "sales" ? "white" : "black",
-                    border: "1px solid #dee2e6",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  Sales
-                </button>
-                <button
-                  onClick={() => setActiveGraph("commissions")}
-                  style={{
-                    backgroundColor:
-                      activeGraph === "commissions" ? "#6a8452" : "#f8f9fa",
-                    color: activeGraph === "commissions" ? "white" : "black",
-                    border: "1px solid #dee2e6",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  Commissions
-                </button>
-                <button
-                  onClick={() => setActiveGraph("taxRate")}
-                  style={{
-                    backgroundColor:
-                      activeGraph === "taxRate" ? "#6a8452" : "#f8f9fa",
-                    color: activeGraph === "taxRate" ? "white" : "black",
-                    border: "1px solid #dee2e6",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  Tax Rate
-                </button>
-                <button
-                  onClick={() => setActiveGraph("netEarnings")}
-                  style={{
-                    backgroundColor:
-                      activeGraph === "netEarnings" ? "#6a8452" : "#f8f9fa",
-                    color: activeGraph === "netEarnings" ? "white" : "black",
-                    border: "1px solid #dee2e6",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  Net Earnings
-                </button>
-                <div className="flex justify-end gap-6 mb-4">
-                  <button
-                    className={`px-2 py-1 rounded ${
-                      chartType === "line"
-                        ? "bg-[#6a8452] text-white"
-                        : "bg-gray-200"
-                    }`}
-                    onClick={() => setChartType("line")}
-                  >
-                    Line Chart
-                  </button>
-                  <button
-                    className={`px-2 py-1 rounded ${
-                      chartType === "bar"
-                        ? "bg-[#6a8452] text-white"
-                        : "bg-gray-200"
-                    }`}
-                    onClick={() => setChartType("bar")}
-                  >
-                    Bar Chart
-                  </button>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                {getGraphTitle()}
+              </Typography>
+              <Button
+                variant={activeGraph === "sales" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: activeGraph === "sales" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background:
+                    activeGraph === "sales" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: activeGraph === "sales" ? "#2d2d2d" : "#888",
+                  },
                 }}
+                onClick={() => setActiveGraph("sales")}
               >
-                {loading ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                    }}
-                  >
-                    Loading...
-                  </div>
-                ) : error ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                      color: "red",
-                    }}
-                  >
-                    {error}
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                      width: "100%",
-                      overflowY: "auto",
-                    }}
-                  >
-                    <ResponsiveContainer width="100%" height={300}>
-                      {chartType === "line" ? (
-                        <LineChart data={getCurrentData()}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis
-                            dataKey="date"
-                            tickFormatter={(tick) =>
-                              new Date(tick).toLocaleDateString()
-                            }
-                          />
-                          <YAxis />
-                          <Tooltip
-                            formatter={(value) => `${value.toFixed(2)} E£`}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="amount"
-                            stroke="#6a8452"
-                            strokeWidth={2}
-                          />
-                        </LineChart>
-                      ) : (
-                        <BarChart data={getCurrentData()}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis
-                            dataKey="date"
-                            tickFormatter={(tick) =>
-                              new Date(tick).toLocaleDateString()
-                            }
-                          />
-                          <YAxis />
-                          <Tooltip
-                            formatter={(value) => `${value.toFixed(2)} E£`}
-                          />
-                          <Bar dataKey="amount" fill="#6a8452" />
-                        </BarChart>
-                      )}
-                    </ResponsiveContainer>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+                Sales
+              </Button>
+              <Button
+                variant={activeGraph === "commissions" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: activeGraph === "commissions" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background:
+                    activeGraph === "commissions" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: activeGraph === "commissions" ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => setActiveGraph("commissions")}
+              >
+                Commissions
+              </Button>
+              <Button
+                variant={activeGraph === "taxRate" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: activeGraph === "taxRate" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background:
+                    activeGraph === "taxRate" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: activeGraph === "taxRate" ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => setActiveGraph("taxRate")}
+              >
+                Tax Rate
+              </Button>
+              <Button
+                variant={activeGraph === "netEarnings" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: activeGraph === "netEarnings" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background:
+                    activeGraph === "netEarnings" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: activeGraph === "netEarnings" ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => setActiveGraph("netEarnings")}
+              >
+                Net Earnings
+              </Button>
+              <Button
+                variant={chartType === "line" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: chartType === "line" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background: chartType === "line" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: chartType === "line" ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => setChartType("line")}
+              >
+                Line Chart
+              </Button>
+              <Button
+                variant={chartType === "bar" ? "outlined" : "text"}
+                size="small"
+                sx={{
+                  borderColor: "#2d2d2d",
+                  color: chartType === "bar" ? "#2d2d2d" : "#888",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  minWidth: 70,
+                  px: 1.5,
+                  background: chartType === "bar" ? "#f5f5f5" : "transparent",
+                  boxShadow: "none",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "none",
+                    color: chartType === "bar" ? "#2d2d2d" : "#888",
+                  },
+                }}
+                onClick={() => setChartType("bar")}
+              >
+                Bar Chart
+              </Button>
+            </Box>
+            <ResponsiveContainer width="100%" height={300}>
+              {chartType === "line" ? (
+                <LineChart
+                  data={getCurrentData()}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    style={{ fontFamily: "Montserrat" }}
+                    tickFormatter={(tick) =>
+                      new Date(tick).toLocaleDateString()
+                    }
+                  />
+                  <YAxis
+                    style={{ fontFamily: "Montserrat" }}
+                    tickFormatter={(value) => value.toLocaleString("en-US")}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${Number(value).toFixed(2)} E£`}
+                  />
+                  {/* Optionally add <Legend /> if you want a legend */}
+                  <Line
+                    type="monotone"
+                    dataKey="amount"
+                    name={getGraphTitle()}
+                    stroke="#2d2d2d"
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                  />
+                </LineChart>
+              ) : (
+                <BarChart
+                  data={getCurrentData()}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    style={{ fontFamily: "Montserrat" }}
+                    tickFormatter={(tick) =>
+                      new Date(tick).toLocaleDateString()
+                    }
+                  />
+                  <YAxis
+                    style={{ fontFamily: "Montserrat" }}
+                    tickFormatter={(value) => value.toLocaleString("en-US")}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${Number(value).toFixed(2)} E£`}
+                  />
+                  {/* Optionally add <Legend /> if you want a legend */}
+                  <Bar dataKey="amount" fill="#2d2d2d" />
+                </BarChart>
+              )}
+            </ResponsiveContainer>
+          </Box>
+          {/* End Redesigned Chart Section */}
         </section>
 
         <section className="downloadable-reports">
