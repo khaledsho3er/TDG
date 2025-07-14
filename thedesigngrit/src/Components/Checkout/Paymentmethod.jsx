@@ -192,7 +192,7 @@ function PaymentForm({
           // Set the iframe URL
           setIframeUrl(result.iframeUrl);
           setIframeModalOpen(true);
-          onSuccess(); // ✅ Trigger success popup in parent
+          // onSuccess(); // ✅ Trigger success popup in parent
           resetCart();
           console.log("Setting iframe URL to:", result.iframeUrl);
         } catch (paymentError) {
