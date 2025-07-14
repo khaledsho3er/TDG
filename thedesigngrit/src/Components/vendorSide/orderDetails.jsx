@@ -538,7 +538,7 @@ const OrderDetails = ({ order, onBack }) => {
                     }}
                   >
                     <span> {order?.customerId?.firstName || "N/A"}</span>
-                    <span> {order?.customerI?.email || "N/A"}</span>
+                    <span> {order?.customerId?.email || "N/A"}</span>
                     <span> {order?.billingDetails?.phoneNumber || "N/A"}</span>
                   </div>
                 </div>
