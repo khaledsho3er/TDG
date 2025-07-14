@@ -472,7 +472,9 @@ function TrackOrder() {
                       }}
                     >
                       <a
-                        href="mailto:getsupport@thedesigngrit.com?subject=Support Request for Order {selectedOrder._id}"
+                        href={`mailto:getsupport@thedesigngrit.com?subject=Support Request for Order ${
+                          selectedOrder?._id || ""
+                        }`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
