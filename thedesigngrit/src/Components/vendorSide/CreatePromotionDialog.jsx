@@ -107,6 +107,8 @@ const CreatePromotionDialog = ({
           position: "absolute",
           top: "50%",
           left: "50%",
+          height: step === 1 ? 700 : 400,
+          overflow: "auto",
           transform: "translate(-50%, -50%)",
           width: step === 1 ? 700 : 400,
           bgcolor: "background.paper",

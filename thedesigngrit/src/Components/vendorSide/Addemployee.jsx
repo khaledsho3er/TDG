@@ -1,290 +1,314 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  TextField,
-  Button,
-  Grid,
-  Typography,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  Select,
+  Box,
+  MenuItem,
+  InputLabel,
+  FormControl,
   InputAdornment,
   IconButton,
+  ClickAwayListener,
+  Popper,
+  Paper,
 } from "@mui/material";
-import { useVendor } from "../../utils/vendorContext"; // Import the vendor context
-import * as Yup from "yup"; // Import Yup
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { useVendor } from "../../utils/vendorContext";
+
+// Yup schema with strong password rules
+const schema = yup.object().shape({
+  firstname: yup.string().required("First name is required"),
+  lastname: yup.string().required("Last name is required"),
+  employeeNumber: yup.string().required("Employee number is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  phoneNumber: yup.string().required("Phone number is required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+    .matches(/\d/, "Must contain at least one number")
+    .matches(/[\W_]/, "Must contain at least one special character")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+  tier: yup.string().required("Authority level is required"),
+});
 
 const VendorSignup = ({ open, onClose, refreshList }) => {
-  const { vendor } = useVendor(); // Get vendor data (including brandId)
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    employeeNumber: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    confirmPassword: "",
-    tier: "", // new field for authority level (tier)
-  });
-  const [errors, setErrors] = useState({}); // State to hold error messages
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [brandName, setBrandName] = useState(""); // State to store the brand name
+  const { vendor } = useVendor();
+  const [brandName, setBrandName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPopper, setShowPopper] = useState(false);
+  const passwordRef = useRef(null);
 
-  // Define the validation schema
-  const validationSchema = Yup.object().shape({
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
-    employeeNumber: Yup.string().required("Employee number is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phoneNumber: Yup.string().required("Phone number is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
-    tier: Yup.string().required("Authority level is required"),
+  const [passwordChecks, setPasswordChecks] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    special: false,
   });
 
-  // Fetch brand details using brandId from the vendor session
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      firstname: "",
+      lastname: "",
+      employeeNumber: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      confirmPassword: "",
+      tier: "",
+    },
+  });
+
+  const passwordValue = watch("password");
+
+  useEffect(() => {
+    if (passwordValue) {
+      setPasswordChecks({
+        length: passwordValue.length >= 8,
+        uppercase: /[A-Z]/.test(passwordValue),
+        number: /\d/.test(passwordValue),
+        special: /[\W_]/.test(passwordValue),
+      });
+    }
+  }, [passwordValue]);
+
   useEffect(() => {
     if (vendor?.brandId) {
-      const fetchBrandName = async () => {
-        try {
-          const response = await axios.get(
-            `https://api.thedesigngrit.com/api/brand/${vendor.brandId}`
-          );
-          setBrandName(response.data.brandName); // Set the brand name in the state
-        } catch (error) {
-          console.error("Error fetching brand name:", error);
-          setErrors((prev) => ({
-            ...prev,
-            brand: "Failed to fetch brand details.",
-          }));
-        }
-      };
-      fetchBrandName();
+      axios
+        .get(`https://api.thedesigngrit.com/api/brand/${vendor.brandId}`)
+        .then((res) => setBrandName(res.data.brandName))
+        .catch(() => setBrandName("Error fetching brand"));
     }
-  }, [vendor?.brandId]); // Only run this effect when vendor.brandId changes
+  }, [vendor?.brandId]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({}); // Clear previous errors
-
-    // Validate the form data
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-    } catch (err) {
-      // If validation fails, set the error messages
-      const newErrors = {};
-      err.inner.forEach((error) => {
-        newErrors[error.path] = error.message;
-      });
-      setErrors(newErrors);
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    const dataToSend = {
-      firstName: formData.firstname,
-      lastName: formData.lastname,
-      email: formData.email,
-      password: formData.password,
-      employeeNumber: formData.employeeNumber,
-      phoneNumber: formData.phoneNumber,
+  const onSubmit = async (data) => {
+    const payload = {
+      firstName: data.firstname,
+      lastName: data.lastname,
+      email: data.email,
+      password: data.password,
+      employeeNumber: data.employeeNumber,
+      phoneNumber: data.phoneNumber,
       brandId: vendor.brandId,
-      tier: formData.tier,
+      tier: data.tier,
     };
 
-    console.log("Sending data to API:", dataToSend); // Log the data to be sent
-
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://api.thedesigngrit.com/api/vendors/signup",
-        dataToSend
+        payload
       );
-
-      // Log the API response for debugging
-      console.log("API Response:", response);
-
-      console.log("Employee added successfully.");
-      onClose(); // Close modal after successful submission
-      refreshList(); // Refresh the employee list
-    } catch (err) {
-      console.error("Error:", err);
-      setErrors((prev) => ({
-        ...prev,
-        api: "Failed to add employee. Please try again.",
-      }));
-    } finally {
-      setIsSubmitting(false);
+      refreshList();
+      onClose();
+    } catch (error) {
+      setError("email", {
+        type: "manual",
+        message: "Failed to sign up. Try again.",
+      });
     }
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="md"
-      sx={{ borderRadius: "15px" }}
-    >
-      <DialogTitle style={{ fontWeight: "Bold", fontFamily: "Horizon" }}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle sx={{ fontWeight: "bold", fontFamily: "Horizon" }}>
         Add New Employee
       </DialogTitle>
       <DialogContent>
-        <Typography fontFamily={"Montserrat"}>
+        <Typography fontFamily="Montserrat" mb={2}>
           Brand: {brandName || "Loading..."}
         </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3} sx={{ mt: 2 }}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={2}>
+            {[
+              "firstname",
+              "lastname",
+              "employeeNumber",
+              "email",
+              "phoneNumber",
+            ].map((field) => (
+              <Grid item xs={12} sm={6} key={field}>
+                <Controller
+                  name={field}
+                  control={control}
+                  render={({ field: controllerField }) => (
+                    <TextField
+                      {...controllerField}
+                      label={field
+                        .replace(/([A-Z])/g, " $1")
+                        .replace(/^./, (str) => str.toUpperCase())}
+                      fullWidth
+                      error={!!errors[field]}
+                      helperText={errors[field]?.message}
+                    />
+                  )}
+                />
+              </Grid>
+            ))}
+
+            {/* Password Field with Popper */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="First Name"
-                fullWidth
-                name="firstname"
-                value={formData.firstname}
-                onChange={handleChange}
-                error={!!errors.firstname}
-                helperText={errors.firstname}
-              />
+              <ClickAwayListener onClickAway={() => setShowPopper(false)}>
+                <Box sx={{ position: "relative" }}>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Password"
+                        fullWidth
+                        type={showPassword ? "text" : "password"}
+                        inputRef={passwordRef}
+                        onFocus={() => setShowPopper(true)}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        error={!!errors.password}
+                        helperText={errors.password?.message}
+                      />
+                    )}
+                  />
+                  <Popper
+                    open={showPopper}
+                    anchorEl={passwordRef.current}
+                    placement="right-start"
+                    style={{ zIndex: 1500 }}
+                  >
+                    <Paper sx={{ p: 2 }}>
+                      <Typography fontWeight="bold" mb={1}>
+                        Password Requirements
+                      </Typography>
+                      <ul style={{ margin: 0, paddingLeft: 20 }}>
+                        <li
+                          style={{
+                            color: passwordChecks.length ? "green" : "red",
+                          }}
+                        >
+                          At least 8 characters
+                        </li>
+                        <li
+                          style={{
+                            color: passwordChecks.uppercase ? "green" : "red",
+                          }}
+                        >
+                          One uppercase letter
+                        </li>
+                        <li
+                          style={{
+                            color: passwordChecks.number ? "green" : "red",
+                          }}
+                        >
+                          One number
+                        </li>
+                        <li
+                          style={{
+                            color: passwordChecks.special ? "green" : "red",
+                          }}
+                        >
+                          One special character
+                        </li>
+                      </ul>
+                    </Paper>
+                  </Popper>
+                </Box>
+              </ClickAwayListener>
             </Grid>
+
+            {/* Confirm Password */}
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Last Name"
-                fullWidth
-                name="lastname"
-                value={formData.lastname}
-                onChange={handleChange}
-                error={!!errors.lastname}
-                helperText={errors.lastname}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Employee Number"
-                fullWidth
-                name="employeeNumber"
-                value={formData.employeeNumber}
-                onChange={handleChange}
-                error={!!errors.employeeNumber}
-                helperText={errors.employeeNumber}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Email"
-                fullWidth
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                error={!!errors.email}
-                helperText={errors.email}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Phone Number"
-                fullWidth
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                error={!!errors.phoneNumber}
-                helperText={errors.phoneNumber}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Set Password"
-                fullWidth
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                error={!!errors.password}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword((show) => !show)}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                sx={{ mt: 0.5 }}
-              >
-                Password must be at least 6 characters.
-              </Typography>
-              {errors.password && (
-                <Typography variant="caption" color="error">
-                  {errors.password}
-                </Typography>
-              )}
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Confirm Password"
-                fullWidth
-                type="password"
+              <Controller
                 name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Confirm Password"
+                    fullWidth
+                    type={showConfirmPassword ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() =>
+                              setShowConfirmPassword((prev) => !prev)
+                            }
+                            edge="end"
+                          >
+                            {showConfirmPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    error={!!errors.confirmPassword}
+                    helperText={errors.confirmPassword?.message}
+                  />
+                )}
               />
             </Grid>
+
+            {/* Tier Select */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth error={!!errors.tier} variant="outlined">
-                <InputLabel id="tier-label">Authority Level (Tier)</InputLabel>
-                <Select
-                  id="tier-label"
+              <FormControl fullWidth error={!!errors.tier}>
+                <InputLabel>Authority Level (Tier)</InputLabel>
+                <Controller
                   name="tier"
-                  value={formData.tier}
-                  onChange={handleChange}
-                  label="Authority Level (Tier)"
-                >
-                  <MenuItem value="1">
-                    Tier 1 - Notification Page, Orders List
-                  </MenuItem>
-                  <MenuItem value="2">
-                    Tier 2 - Notifications Page, Orders List, all Products,
-                    Promotion, brand profile
-                  </MenuItem>
-                  <MenuItem value="3">
-                    Tier 3 - Full Access + Financials
-                  </MenuItem>
-                </Select>
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} label="Authority Level (Tier)">
+                      <MenuItem value="1">Tier 1 - Basic Access</MenuItem>
+                      <MenuItem value="2">Tier 2 - Advanced Access</MenuItem>
+                      <MenuItem value="3">Tier 3 - Full Admin</MenuItem>
+                    </Select>
+                  )}
+                />
                 {errors.tier && (
-                  <Typography color="error">{errors.tier}</Typography>
+                  <Typography color="error">{errors.tier.message}</Typography>
                 )}
               </FormControl>
             </Grid>
           </Grid>
-          {errors.api && <Typography color="error">{errors.api}</Typography>}
         </form>
       </DialogContent>
       <DialogActions>
@@ -292,9 +316,9 @@ const VendorSignup = ({ open, onClose, refreshList }) => {
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit}
-          className="btn-save"
+          onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
+          className="btn-save"
         >
           {isSubmitting ? "Adding..." : "Add"}
         </Button>
