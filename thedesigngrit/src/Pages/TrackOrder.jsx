@@ -482,7 +482,6 @@ function TrackOrder() {
                       >
                         Get Support?
                       </a>
-                      <InteractiveStarRating />
                     </Box>
                   </Box>
                   <div className="item">
@@ -705,12 +704,12 @@ function TrackOrder() {
             type="text"
             fullWidth
             variant="outlined"
+            className="review-textarea"
             value={pendingReason}
             onChange={(e) => setPendingReason(e.target.value)}
             sx={{
-              backgroundColor: "white",
               borderRadius: 1,
-              input: { color: "#2d2d2d", fontSize: 18, minHeight: 60 },
+              input: { color: "#2d2d2d" },
               label: { fontSize: 18 },
             }}
             InputLabelProps={{ style: { fontSize: 18 } }}
