@@ -359,12 +359,27 @@ const EmployeePage = () => {
                   >
                     Edit Employee
                   </button>
-                  {currentVendor._id !== vendor._id && (
+                  {currentVendor._id !== vendor._id ? (
                     <button
                       type="button"
                       onClick={handleDelete}
                       className="requestInfo-submit-button"
                       style={{ backgroundColor: "#DC143C", width: "15%" }}
+                    >
+                      Delete Employee
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="requestInfo-submit-button"
+                      style={{
+                        backgroundColor: "#DC143C",
+                        width: "15%",
+                        opacity: 0.5,
+                        cursor: "not-allowed",
+                      }}
+                      disabled
+                      title="You cannot delete your own account while signed in."
                     >
                       Delete Employee
                     </button>
