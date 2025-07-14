@@ -77,10 +77,21 @@ const EmployeePage = () => {
   };
 
   const handleDelete = () => {
+    // Prevent self-delete
+    if (currentVendor._id === vendor._id) {
+      alert("You cannot delete your own account while signed in.");
+      return;
+    }
     setConfirmDeleteOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
+    // Prevent self-delete
+    if (currentVendor._id === vendor._id) {
+      alert("You cannot delete your own account while signed in.");
+      setConfirmDeleteOpen(false);
+      return;
+    }
     try {
       await axios.delete(
         `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`
