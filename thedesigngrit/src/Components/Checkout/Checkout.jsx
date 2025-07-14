@@ -148,7 +148,8 @@ function Checkout() {
     return Object.keys(errors).length === 0;
   };
 
-  const shippingFee = 100;
+  // Replace static shippingFee with state
+  const [shippingFee, setShippingFee] = useState(0);
 
   const handleBillingChange = (data) => {
     setBillingData(data);
@@ -269,6 +270,48 @@ function Checkout() {
       // setTotal(newTotal);
     }
   }, [cartItems, subtotal]);
+
+  // Add useEffect to fetch shipping fee(s) when city or cartItems change
+  useEffect(() => {
+    const fetchShippingFees = async () => {
+      if (!shippingData.city || !cartItems.length) {
+        setShippingFee(0);
+        return;
+      }
+
+      // Get unique brandIds from cart
+      const brandIds = [
+        ...new Set(
+          cartItems.map((item) =>
+            typeof item.brandId === "object" && item.brandId !== null
+              ? item.brandId._id || item.brandId.id
+              : item.brandId
+          )
+        ),
+      ];
+
+      try {
+        // Fetch all shipping fees in parallel
+        const feePromises = brandIds.map((brandId) =>
+          axios.get(
+            `https://api.thedesigngrit.com/api/${brandId}/shipping-fee/${shippingData.city}`
+          )
+        );
+        const responses = await Promise.all(feePromises);
+        // Sum all fees (or handle as needed)
+        const totalFee = responses.reduce(
+          (sum, res) => sum + (res.data.fee || 0),
+          0
+        );
+        setShippingFee(totalFee);
+      } catch (error) {
+        console.error("Failed to fetch shipping fees:", error);
+        setShippingFee(0); // fallback
+      }
+    };
+
+    fetchShippingFees();
+  }, [shippingData.city, cartItems]);
 
   useEffect(() => {
     console.log("showPopup changed:", showPopup);
