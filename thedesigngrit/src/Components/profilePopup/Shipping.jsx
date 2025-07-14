@@ -537,10 +537,12 @@ const ShippingInfoPopup = ({ onAddressAdded }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Select
-                options={cities.map((city) => ({
-                  label: city.name,
-                  value: city.name,
-                }))}
+                options={cities
+                  .filter((city) => city.name !== "New Cairo")
+                  .map((city) => ({
+                    label: city.name,
+                    value: city.name,
+                  }))}
                 onChange={(selectedOption) =>
                   setNewAddress((prev) => ({
                     ...prev,

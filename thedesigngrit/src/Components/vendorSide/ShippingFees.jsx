@@ -36,7 +36,10 @@ const ShippingFees = () => {
 
   // Fetch all Egyptian cities
   useEffect(() => {
-    setCities(City.getCitiesOfCountry("EG"));
+    // Exclude 'New Cairo' from the list
+    setCities(
+      City.getCitiesOfCountry("EG").filter((city) => city.name !== "New Cairo")
+    );
   }, []);
 
   // Fetch existing shipping fees for the brand
