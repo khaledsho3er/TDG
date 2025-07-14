@@ -43,6 +43,10 @@ const WishlistPage = () => {
   const handleUnfavorite = (productId) => {
     setFavoriteProducts((prev) => prev.filter((p) => p._id !== productId));
   };
+  // Handler to restore a product if unfavorite fails
+  const handleUnfavoriteFailed = (product) => {
+    setFavoriteProducts((prev) => [product, ...prev]);
+  };
   return (
     <Box sx={{ maxWidth: "1200px", margin: "0 auto" }}>
       <Typography
@@ -71,6 +75,7 @@ const WishlistPage = () => {
               <ProductCard
                 product={product}
                 onUnfavorite={() => handleUnfavorite(product._id)}
+                onUnfavoriteFailed={handleUnfavoriteFailed}
               />
             </Grid>
           ))}

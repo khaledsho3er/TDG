@@ -12,7 +12,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../utils/userContext";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onUnfavorite, onUnfavoriteFailed }) => {
   const navigate = useNavigate();
   const { userSession } = useContext(UserContext); // Access user session and logout function from context
   const [isFavorite, setIsFavorite] = useState(false);
@@ -46,6 +46,11 @@ const ProductCard = ({ product }) => {
       productId: product._id,
     };
 
+    if (isFavorite && onUnfavorite) {
+      // Optimistically remove from UI
+      onUnfavorite();
+    }
+
     try {
       const response = await fetch(
         `https://api.thedesigngrit.com/api/favorites${endpoint}`,
@@ -61,9 +66,16 @@ const ProductCard = ({ product }) => {
       if (response.ok) {
         setIsFavorite(!isFavorite); // Toggle the favorite status if successful
       } else {
+        if (isFavorite && onUnfavoriteFailed) {
+          // Rollback: re-add to UI
+          onUnfavoriteFailed(product);
+        }
         console.error("Error: Unable to update favorite status.");
       }
     } catch (error) {
+      if (isFavorite && onUnfavoriteFailed) {
+        onUnfavoriteFailed(product);
+      }
       console.error("Error:", error);
     }
   };
