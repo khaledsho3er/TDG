@@ -348,14 +348,16 @@ const EmployeePage = () => {
                   >
                     Edit Employee
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="requestInfo-submit-button"
-                    style={{ backgroundColor: "#DC143C", width: "15%" }}
-                  >
-                    Delete Employee
-                  </button>
+                  {currentVendor._id !== vendor._id && (
+                    <button
+                      type="button"
+                      onClick={handleDelete}
+                      className="requestInfo-submit-button"
+                      style={{ backgroundColor: "#DC143C", width: "15%" }}
+                    >
+                      Delete Employee
+                    </button>
+                  )}
                 </div>
               </form>
             </div>

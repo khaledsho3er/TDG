@@ -333,7 +333,10 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             />
                             {menuOpen === product._id && (
                               <div className="menu-dropdown">
-                                <button onClick={() => handleEdit(product)}>
+                                <button
+                                  onClick={() => handleEdit(product)}
+                                  style={{ marginTop: "14px" }}
+                                >
                                   Edit
                                 </button>
                                 <button
@@ -341,10 +344,14 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                     setProductToDelete(product);
                                     setConfirmDialogOpen(true);
                                   }}
+                                  style={{ marginTop: "14px" }}
                                 >
                                   Delete
                                 </button>
-                                <button onClick={() => handleInsights(product)}>
+                                <button
+                                  onClick={() => handleInsights(product)}
+                                  style={{ marginTop: "14px" }}
+                                >
                                   Promotion
                                 </button>
                               </div>
@@ -467,7 +474,10 @@ const ProductsPageVendor = ({ setActivePage }) => {
                             />
                             {menuOpen === product._id && (
                               <div className="menu-dropdown">
-                                <button onClick={() => handleEdit(product)}>
+                                <button
+                                  onClick={() => handleEdit(product)}
+                                  style={{ marginTop: "14px" }}
+                                >
                                   Edit
                                 </button>
                                 <button
@@ -475,10 +485,14 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                     setProductToDelete(product);
                                     setConfirmDialogOpen(true);
                                   }}
+                                  style={{ marginTop: "14px" }}
                                 >
                                   Delete
                                 </button>
-                                <button onClick={() => handleInsights(product)}>
+                                <button
+                                  onClick={() => handleInsights(product)}
+                                  style={{ marginTop: "14px" }}
+                                >
                                   Promotion
                                 </button>
                               </div>
