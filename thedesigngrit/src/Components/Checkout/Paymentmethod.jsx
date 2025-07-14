@@ -44,7 +44,7 @@ function PaymentForm({
     const status = searchParams.get("status");
 
     if (orderId && status === "success") {
-      onSuccess(); // ✅ Trigger success popup in parent
+      // onSuccess(); // ✅ Trigger success popup in parent
       // Clear the URL parameters without refreshing the page
       window.history.replaceState({}, document.title, window.location.pathname);
     }
@@ -67,7 +67,7 @@ function PaymentForm({
       const { success, error_occured } = event.data;
       if (success) {
         onSubmit();
-        onSuccess(); // ✅ Trigger success popup in parent
+        // onSuccess(); // ✅ Trigger success popup in parent
         resetCart(); // Reset cart after successful payment
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
