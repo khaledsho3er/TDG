@@ -94,9 +94,6 @@ const EmployeePage = () => {
     }
   };
 
-  // Add a variable to check if the current vendor being edited is the signed-in vendor
-  const isSelf = currentVendor?._id === vendor?._id;
-
   return (
     <div style={{ padding: "70px" }}>
       <div className="dashboard-header-title">
@@ -351,25 +348,17 @@ const EmployeePage = () => {
                   >
                     Edit Employee
                   </button>
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="requestInfo-submit-button"
-                    style={{
-                      backgroundColor: "#DC143C",
-                      width: "15%",
-                      opacity: isSelf ? 0.5 : 1,
-                      cursor: isSelf ? "not-allowed" : "pointer",
-                    }}
-                    disabled={isSelf}
-                    title={
-                      isSelf
-                        ? "You cannot delete your own account while signed in."
-                        : undefined
-                    }
-                  >
-                    Delete Employee
-                  </button>
+                  {currentVendor?._id !== vendor?._id && (
+                    <button
+                      type="button"
+                      onClick={handleDelete}
+                      disabled={currentVendor?._id === vendor?._id}
+                      className="requestInfo-submit-button"
+                      style={{ backgroundColor: "#DC143C", width: "15%" }}
+                    >
+                      Delete Employee
+                    </button>
+                  )}
                 </div>
               </form>
             </div>
