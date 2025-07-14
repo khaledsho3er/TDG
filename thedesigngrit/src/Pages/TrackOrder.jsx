@@ -563,101 +563,75 @@ function TrackOrder() {
                         marginBottom: 8,
                       }}
                     >
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                          key={star}
-                          style={{
-                            cursor: "pointer",
-                            color:
-                              star <= (reviewHover || reviewRating)
-                                ? "#ffc107"
-                                : "#e4e5e9",
-                            fontSize: 28,
-                          }}
-                          onClick={() => handleStarClick(star)}
-                          onMouseEnter={() => setReviewHover(star)}
-                          onMouseLeave={() => setReviewHover(reviewRating)}
-                        >
-                          ★
-                        </span>
-                      ))}
+                      <InteractiveStarRating
+                        value={reviewRating}
+                        onChange={(star) => {
+                          setReviewRating(star);
+                          setReviewHover(star);
+                          setReviewDialogOpen(true);
+                        }}
+                        size={28}
+                      />
                     </div>
                   </div>
                   {/* Review Popup Dialog */}
-                  <Dialog
-                    open={reviewDialogOpen}
-                    onClose={handleReviewDialogClose}
-                  >
-                    <DialogTitle>Write a Review</DialogTitle>
-                    <DialogContent>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginBottom: 8,
-                        }}
-                      >
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <span
-                            key={star}
-                            style={{
-                              cursor: "pointer",
-                              color:
-                                star <= (reviewHover || reviewRating)
-                                  ? "#ffc107"
-                                  : "#e4e5e9",
-                              fontSize: 28,
-                            }}
-                            onClick={() => setReviewRating(star)}
-                            onMouseEnter={() => setReviewHover(star)}
-                            onMouseLeave={() => setReviewHover(reviewRating)}
-                          >
-                            ★
-                          </span>
-                        ))}
-                      </div>
-                      <form onSubmit={handleSubmitReview}>
-                        <textarea
-                          value={reviewComment}
-                          onChange={(e) => setReviewComment(e.target.value)}
-                          placeholder="Write your review here..."
-                          rows={4}
+                  {reviewDialogOpen && (
+                    <div className="review-form-overlay">
+                      <div className="review-form-container">
+                        <button
+                          className="close-form-btn"
+                          onClick={handleReviewDialogClose}
                           style={{
-                            width: "100%",
-                            padding: 8,
-                            fontSize: 16,
-                            borderRadius: 4,
-                            border: "1px solid #ccc",
-                            marginBottom: 8,
+                            position: "absolute",
+                            top: 16,
+                            right: 16,
+                            background: "transparent",
+                            border: "none",
+                            cursor: "pointer",
                           }}
-                          required
-                        />
-                        <div style={{ marginBottom: 8, color: "red" }}>
-                          {reviewError}
-                        </div>
-                        {reviewSubmitted && (
-                          <div style={{ color: "green", marginBottom: 8 }}>
-                            Review submitted successfully!
+                        >
+                          ×
+                        </button>
+                        <h3>Write a Review</h3>
+                        <form
+                          onSubmit={handleSubmitReview}
+                          className="review-form"
+                        >
+                          <div className="form-group">
+                            <label>Rating</label>
+                            <div className="star-rating">
+                              <InteractiveStarRating
+                                value={reviewRating}
+                                onChange={setReviewRating}
+                                size={28}
+                              />
+                            </div>
                           </div>
-                        )}
-                        <DialogActions>
-                          <Button
-                            onClick={handleReviewDialogClose}
-                            color="secondary"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            style={{ background: "#6b7b58", color: "white" }}
-                          >
+                          <div className="form-group">
+                            <label>Your Review</label>
+                            <textarea
+                              value={reviewComment}
+                              onChange={(e) => setReviewComment(e.target.value)}
+                              required
+                              className="review-textarea"
+                              rows={4}
+                            />
+                          </div>
+                          <div style={{ marginBottom: 8, color: "red" }}>
+                            {reviewError}
+                          </div>
+                          {reviewSubmitted && (
+                            <div style={{ color: "green", marginBottom: 8 }}>
+                              Review submitted successfully!
+                            </div>
+                          )}
+                          <button type="submit" className="submit-review-btn">
                             Submit Review
-                          </Button>
-                        </DialogActions>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  )}
                   <div
                     style={{
                       display: "flex",
