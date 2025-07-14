@@ -77,21 +77,10 @@ const EmployeePage = () => {
   };
 
   const handleDelete = () => {
-    // Prevent self-delete
-    if (currentVendor._id === vendor._id) {
-      alert("You cannot delete your own account while signed in.");
-      return;
-    }
     setConfirmDeleteOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
-    // Prevent self-delete
-    if (currentVendor._id === vendor._id) {
-      alert("You cannot delete your own account while signed in.");
-      setConfirmDeleteOpen(false);
-      return;
-    }
     try {
       await axios.delete(
         `https://api.thedesigngrit.com/api/vendors/${currentVendor._id}`
@@ -104,6 +93,9 @@ const EmployeePage = () => {
       setConfirmDeleteOpen(false);
     }
   };
+
+  // Add a variable to check if the current vendor being edited is the signed-in vendor
+  const isSelf = currentVendor?._id === vendor?._id;
 
   return (
     <div style={{ padding: "70px" }}>
@@ -359,31 +351,25 @@ const EmployeePage = () => {
                   >
                     Edit Employee
                   </button>
-                  {currentVendor._id !== vendor._id ? (
-                    <button
-                      type="button"
-                      onClick={handleDelete}
-                      className="requestInfo-submit-button"
-                      style={{ backgroundColor: "#DC143C", width: "15%" }}
-                    >
-                      Delete Employee
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="requestInfo-submit-button"
-                      style={{
-                        backgroundColor: "#DC143C",
-                        width: "15%",
-                        opacity: 0.5,
-                        cursor: "not-allowed",
-                      }}
-                      disabled
-                      title="You cannot delete your own account while signed in."
-                    >
-                      Delete Employee
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="requestInfo-submit-button"
+                    style={{
+                      backgroundColor: "#DC143C",
+                      width: "15%",
+                      opacity: isSelf ? 0.5 : 1,
+                      cursor: isSelf ? "not-allowed" : "pointer",
+                    }}
+                    disabled={isSelf}
+                    title={
+                      isSelf
+                        ? "You cannot delete your own account while signed in."
+                        : undefined
+                    }
+                  >
+                    Delete Employee
+                  </button>
                 </div>
               </form>
             </div>
