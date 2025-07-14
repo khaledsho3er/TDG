@@ -12,6 +12,7 @@ import { FaWpforms, FaBell, FaUsers, FaLock } from "react-icons/fa";
 import LoadingScreen from "../../Pages/loadingScreen";
 import { CiUndo } from "react-icons/ci";
 import { useRef } from "react";
+import { PiMoneyFill } from "react-icons/pi";
 
 // import { RiFileExcel2Fill } from "react-icons/ri";
 
@@ -631,7 +632,7 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               }}
             >
               <span style={{ display: "flex", alignItems: "center" }}>
-                <TbTruckDelivery className="sidebar-item-icon" />
+                <PiMoneyFill className="sidebar-item-icon" />
                 <span className="sidebar-item-text">Shipping Fees</span>
               </span>
               <span
