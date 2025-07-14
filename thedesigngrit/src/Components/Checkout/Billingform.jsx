@@ -314,7 +314,7 @@ function BillingForm({
             <button type="submit" style={{ display: "none" }}></button>
           </form>
         </Box>
-        <BillSummary cartItems={cartItems} />
+        <BillSummary cartItems={cartItems} shippingFee={billData.shippingFee} />
       </Box>
     </Box>
   );

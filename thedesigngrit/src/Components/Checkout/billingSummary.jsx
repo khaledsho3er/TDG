@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import PaymentIcons from "../paymentsIcons";
 
-function BillSummary({ cartItems }) {
+function BillSummary({ cartItems, shippingFee }) {
   // Calculate subtotal, VAT, shipping, and total
   const subtotal = cartItems.reduce(
     (total, item) =>
@@ -12,8 +12,7 @@ function BillSummary({ cartItems }) {
 
   const vatRate = 0.14;
   const vatAmount = Math.round(subtotal * vatRate);
-  const shipping = 100;
-  const total = subtotal + vatAmount + shipping;
+  const total = subtotal + vatAmount + shippingFee;
 
   return (
     <Box className="Ordersummary-firstrow-secondcolumn">
@@ -113,7 +112,7 @@ function BillSummary({ cartItems }) {
         </div>
         <div className="ordersummary-cart-summary-row">
           <span>Shipping:</span>
-          <span>{shipping.toLocaleString()} E£</span>
+          <span>{shippingFee.toLocaleString()} E£</span>
         </div>
         <div className="ordersummary-cart-summary-total">
           <span>Total:</span>
