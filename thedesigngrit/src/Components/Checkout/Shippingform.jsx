@@ -134,7 +134,12 @@ function ShippingForm({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedData = { ...shippingData, [name]: value };
+    let newValue = value;
+    // Capitalize first letter for country and city
+    if (name === "country" || name === "city") {
+      newValue = value.charAt(0).toUpperCase() + value.slice(1);
+    }
+    const updatedData = { ...shippingData, [name]: newValue };
     onChange(updatedData);
   };
 

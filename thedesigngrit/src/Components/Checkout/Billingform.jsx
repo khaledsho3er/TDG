@@ -52,7 +52,12 @@ function BillingForm({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedData = { ...billingData, [name]: value };
+    let newValue = value;
+    // Capitalize first letter for country and city
+    if (name === "country" || name === "city") {
+      newValue = value.charAt(0).toUpperCase() + value.slice(1);
+    }
+    const updatedData = { ...billingData, [name]: newValue };
     onChange(updatedData);
   };
 
