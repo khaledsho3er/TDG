@@ -39,6 +39,10 @@ const WishlistPage = () => {
   if (loading) {
     return <LoadingScreen />;
   }
+  // Handler to remove a product from the wishlist immediately
+  const handleUnfavorite = (productId) => {
+    setFavoriteProducts((prev) => prev.filter((p) => p._id !== productId));
+  };
   return (
     <Box sx={{ maxWidth: "1200px", margin: "0 auto" }}>
       <Typography
@@ -64,7 +68,10 @@ const WishlistPage = () => {
           {/* Render the favorite products as ProductCard */}
           {favoriteProducts.map((product) => (
             <Grid item xs={12} sm={6} md={4} key={product._id}>
-              <ProductCard product={product} />
+              <ProductCard
+                product={product}
+                onUnfavorite={() => handleUnfavorite(product._id)}
+              />
             </Grid>
           ))}
         </Grid>
