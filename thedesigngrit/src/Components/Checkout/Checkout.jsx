@@ -232,9 +232,8 @@ function Checkout() {
         "Orders created successfully:",
         responses.map((res) => res.data)
       );
-      // Show the order submit popup
-      setShowPopup(true);
-      // Reset the cart after successful order placement
+      // Do NOT show the order submit popup here
+      // setShowPopup(true); // <-- REMOVE THIS
       resetCart();
     } catch (error) {
       console.log("Error creating orders:", error);

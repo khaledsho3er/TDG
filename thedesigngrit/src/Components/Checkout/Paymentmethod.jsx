@@ -67,7 +67,7 @@ function PaymentForm({
       const { success, error_occured } = event.data;
       if (success) {
         onSubmit();
-        // onSuccess(); // ✅ Trigger success popup in parent
+        onSuccess(); // ✅ Trigger success popup in parent ONLY after Paymob confirms
         resetCart(); // Reset cart after successful payment
       } else if (error_occured) {
         setPaymentError("Payment failed. Please try again.");
@@ -192,7 +192,7 @@ function PaymentForm({
           // Set the iframe URL
           setIframeUrl(result.iframeUrl);
           setIframeModalOpen(true);
-          // onSuccess(); // ✅ Trigger success popup in parent
+          // Do NOT call onSuccess here for card payments
           resetCart();
           console.log("Setting iframe URL to:", result.iframeUrl);
         } catch (paymentError) {
@@ -207,7 +207,7 @@ function PaymentForm({
         console.log("COD selected, calling onSubmit()");
         await onSubmit();
         console.log("onSubmit finished, setting showSuccessPopup");
-        onSuccess(); // ✅ Trigger success popup in parent
+        onSuccess(); // ✅ Trigger success popup in parent for COD
       }
     } catch (error) {
       setPaymentError(
