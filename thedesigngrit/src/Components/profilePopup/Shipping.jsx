@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { MdLocationOn } from "react-icons/md";
+import { City } from "country-state-city";
 
 // Styled components
 const AddressCard = styled(Card)(({ theme, isDefault }) => ({
@@ -92,6 +93,8 @@ const ShippingInfoPopup = ({ onAddressAdded }) => {
   const { userSession } = useContext(UserContext);
   const [countries] = useState(countryList().getData());
   const [loading, setLoading] = useState(true);
+  // Add state for cities
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -110,6 +113,25 @@ const ShippingInfoPopup = ({ onAddressAdded }) => {
     };
     fetchUserData();
   }, [userSession.id]);
+
+  // Update cities when country changes
+  useEffect(() => {
+    if (newAddress.country) {
+      // Find country code from countryList
+      const countryObj = countries.find((c) => c.label === newAddress.country);
+      if (countryObj && countryObj.value) {
+        setCities(City.getCitiesOfCountry(countryObj.value));
+      } else {
+        setCities([]);
+      }
+      // Reset city if country changes
+      setNewAddress((prev) => ({ ...prev, city: "" }));
+    } else {
+      setCities([]);
+      setNewAddress((prev) => ({ ...prev, city: "" }));
+    }
+    // eslint-disable-next-line
+  }, [newAddress.country]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -492,16 +514,6 @@ const ShippingInfoPopup = ({ onAddressAdded }) => {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="City"
-                name="city"
-                value={newAddress.city}
-                onChange={handleInputChange}
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <Select
                 options={countries}
                 onChange={handleCountryChange}
@@ -510,6 +522,43 @@ const ShippingInfoPopup = ({ onAddressAdded }) => {
                 value={
                   countries.find((c) => c.label === newAddress.country) || null
                 }
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    height: "56px",
+                    minHeight: "56px",
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    zIndex: 1000,
+                  }),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Select
+                options={cities.map((city) => ({
+                  label: city.name,
+                  value: city.name,
+                }))}
+                onChange={(selectedOption) =>
+                  setNewAddress((prev) => ({
+                    ...prev,
+                    city: selectedOption ? selectedOption.value : "",
+                  }))
+                }
+                placeholder={
+                  newAddress.country
+                    ? "Select your city"
+                    : "Select country first"
+                }
+                isSearchable
+                value={
+                  newAddress.city
+                    ? { label: newAddress.city, value: newAddress.city }
+                    : null
+                }
+                isDisabled={!newAddress.country}
                 styles={{
                   control: (base) => ({
                     ...base,

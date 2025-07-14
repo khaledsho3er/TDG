@@ -294,7 +294,7 @@ function Checkout() {
         // Fetch all shipping fees in parallel
         const feePromises = brandIds.map((brandId) =>
           axios.get(
-            `https://api.thedesigngrit.com/api/${brandId}/shipping-fee/${shippingData.city}`
+            `https://api.thedesigngrit.com/api/brand/${brandId}/shipping-fee/${shippingData.city}`
           )
         );
         const responses = await Promise.all(feePromises);
