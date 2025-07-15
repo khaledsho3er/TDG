@@ -401,9 +401,39 @@ const EmployeePage = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setConfirmDeleteOpen(false)}
       />
-      <Dialog open={tierInfoOpen} onClose={() => setTierInfoOpen(false)}>
-        <DialogTitle>Tier Access Information</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={tierInfoOpen}
+        onClose={() => setTierInfoOpen(false)}
+        sx={{
+          zIndex: 9999,
+          position: "fixed",
+          backdropFilter: "blur(4px)",
+          "& .MuiPaper-root": {
+            borderRadius: "16px",
+            backdropFilter: "blur(5px)",
+            backgroundColor: "#6b7b58",
+          },
+        }}
+      >
+        <DialogTitle
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+            paddingLeft: "16px",
+            border: "none",
+            fontFamily: "Horizon",
+          }}
+        >
+          Tier Access Information
+        </DialogTitle>
+        <DialogContent
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+            color: "white",
+          }}
+        >
           <table style={{ borderCollapse: "collapse", minWidth: 350 }}>
             <thead>
               <tr>
@@ -443,8 +473,23 @@ const EmployeePage = () => {
             </tbody>
           </table>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setTierInfoOpen(false)} color="primary">
+        <DialogActions
+          style={{
+            fontWeight: "bold",
+            backgroundColor: "#6b7b58",
+          }}
+        >
+          <Button
+            onClick={() => setTierInfoOpen(false)}
+            sx={{
+              color: "white",
+              border: "none",
+              "&:hover": {
+                backgroundColor: "#2d2d2d",
+                border: "none",
+              },
+            }}
+          >
             Close
           </Button>
         </DialogActions>
