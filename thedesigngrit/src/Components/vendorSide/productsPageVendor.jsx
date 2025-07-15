@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
-import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { MenuItem, Select, FormControl, InputLabel, Chip } from "@mui/material";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai"; // Import arrow icons
 import axios from "axios";
@@ -34,6 +34,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const [variants, setVariants] = useState([]);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+  const [pendingUpdatesMap, setPendingUpdatesMap] = useState({});
 
   const handleVariantSubmit = async (variantData) => {
     try {
@@ -105,6 +106,26 @@ const ProductsPageVendor = ({ setActivePage }) => {
     }
   }, [vendor, selectedCategory, subCategories]); // Fetch when vendor context changes
 
+  // Fetch pending updates
+  useEffect(() => {
+    const fetchPendingUpdates = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.thedesigngrit.com/api/products/admin/products/pending"
+        );
+        // Create a map for quick lookup by _id
+        const map = {};
+        response.data.forEach((product) => {
+          map[product._id] = product.pendingUpdates;
+        });
+        setPendingUpdatesMap(map);
+      } catch (error) {
+        console.error("Error fetching pending updates:", error);
+      }
+    };
+    fetchPendingUpdates();
+  }, []);
+
   const handleCategoryChange = async (e) => {
     const selectedCategoryId = e.target.value;
     setSelectedCategory(selectedCategoryId); // Save the selected category ID
@@ -140,6 +161,15 @@ const ProductsPageVendor = ({ setActivePage }) => {
   const trueStatusProducts = filteredProducts.filter(
     (product) => product.status === true
   );
+
+  // Helper to merge pending updates for display
+  const getDisplayProduct = (product) => {
+    const pending = pendingUpdatesMap[product._id];
+    if (pending) {
+      return { ...product, ...pending, isPendingUpdate: true };
+    }
+    return product;
+  };
 
   const toggleMenu = (productId) => {
     setMenuOpen((prevId) => (prevId === productId ? null : productId));
@@ -298,123 +328,144 @@ const ProductsPageVendor = ({ setActivePage }) => {
                 <p>No products Not approval.</p>
               ) : (
                 <div className="product-grid">
-                  {falseStatusProducts.map((product) => (
-                    <div className="promotion-card" key={product.id}>
-                      <div className="promotion-image-container">
-                        {product && product.mainImage && (
-                          <img
-                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product?.mainImage}`}
-                            alt={product?.name || "Product"}
-                            className="promotion-image"
-                          />
-                        )}
-                        {product.discountPercentage && (
-                          <div className="discount-badge">
-                            {product.discountPercentage}% OFF
-                          </div>
-                        )}
-                      </div>
-                      <div className="promotion-details">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            flexDirection: "row",
-                          }}
-                        >
-                          <h3 className="promotion-details">{product.name}</h3>
-                          <div className="menu-container">
-                            <BsThreeDotsVertical
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent the click from triggering the document listener
-                                toggleMenu(product._id);
-                              }}
-                              className="three-dots-icon"
+                  {falseStatusProducts.map((product) => {
+                    const displayProduct = getDisplayProduct(product);
+                    return (
+                      <div className="promotion-card" key={displayProduct._id}>
+                        <div className="promotion-image-container">
+                          {displayProduct && displayProduct.mainImage && (
+                            <img
+                              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${displayProduct?.mainImage}`}
+                              alt={displayProduct?.name || "Product"}
+                              className="promotion-image"
                             />
-                            {menuOpen === product._id && (
-                              <div className="menu-dropdown">
-                                <button
-                                  onClick={() => handleEdit(product)}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setProductToDelete(product);
-                                    setConfirmDialogOpen(true);
-                                  }}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Delete
-                                </button>
-                                <button
-                                  onClick={() => handleInsights(product)}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Promotion
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                          )}
+                          {displayProduct.discountPercentage && (
+                            <div className="discount-badge">
+                              {displayProduct.discountPercentage}% OFF
+                            </div>
+                          )}
+                          {displayProduct.isPendingUpdate && (
+                            <Chip
+                              label="Pending Update"
+                              color="warning"
+                              size="small"
+                              style={{
+                                position: "absolute",
+                                top: 8,
+                                left: 8,
+                                zIndex: 2,
+                              }}
+                            />
+                          )}
                         </div>
-
-                        <div className="price-container">
-                          <span
-                            className="original-price"
+                        <div className="promotion-details">
+                          <div
                             style={{
-                              textDecoration:
-                                product.salePrice !== null
-                                  ? "line-through"
-                                  : "none",
-                              color:
-                                product.salePrice !== null ? "#999" : "#2d2d2d",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
                             }}
                           >
-                            E£{product.price}
-                          </span>
-                          {product.salePrice !== null && (
-                            <span className="sale-price">
-                              E£{product.salePrice}
-                            </span>
-                          )}{" "}
-                        </div>
-                        <p className="product-summary">
-                          {product.description.substring(0, 100)}...
-                        </p>
-                      </div>
-
-                      <div className="product-card-body">
-                        <h5>Summary</h5>
-
-                        <div className="metrics-container">
-                          <div className="metric">
-                            <span className="metric-label">Sales</span>
-                            <div
+                            <h3 className="promotion-details">
+                              {displayProduct.name}
+                            </h3>
+                            <div className="menu-container">
+                              <BsThreeDotsVertical
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleMenu(displayProduct._id);
+                                }}
+                                className="three-dots-icon"
+                              />
+                              {menuOpen === displayProduct._id && (
+                                <div className="menu-dropdown">
+                                  <button
+                                    onClick={() => handleEdit(displayProduct)}
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setProductToDelete(displayProduct);
+                                      setConfirmDialogOpen(true);
+                                    }}
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Delete
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleInsights(displayProduct)
+                                    }
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Promotion
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="price-container">
+                            <span
+                              className="original-price"
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "5px",
+                                textDecoration:
+                                  displayProduct.salePrice !== null
+                                    ? "line-through"
+                                    : "none",
+                                color:
+                                  displayProduct.salePrice !== null
+                                    ? "#999"
+                                    : "#2d2d2d",
                               }}
                             >
+                              E£{displayProduct.price}
+                            </span>
+                            {displayProduct.salePrice !== null && (
+                              <span className="sale-price">
+                                E£{displayProduct.salePrice}
+                              </span>
+                            )}{" "}
+                          </div>
+                          <p className="product-summary">
+                            {displayProduct.description?.substring(0, 100)}...
+                          </p>
+                        </div>
+                        <div className="product-card-body">
+                          <h5>Summary</h5>
+                          <div className="metrics-container">
+                            <div className="metric">
+                              <span className="metric-label">Sales</span>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                <span className="metric-value">
+                                  {displayProduct.sales
+                                    ? displayProduct.sales
+                                    : "No yet sales"}
+                                </span>
+                              </div>
+                            </div>
+                            <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                            <div className="metric">
+                              <span className="metric-label">
+                                Semaining Products
+                              </span>
                               <span className="metric-value">
-                                {product.sales ? product.sales : "No yet sales"}
+                                {displayProduct.stock}
                               </span>
                             </div>
                           </div>
-                          <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                          <div className="metric">
-                            <span className="metric-label">
-                              Semaining Products
-                            </span>
-                            <span className="metric-value">
-                              {product.stock}
-                            </span>
-                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -439,123 +490,144 @@ const ProductsPageVendor = ({ setActivePage }) => {
                 <p>No products with approval.</p>
               ) : (
                 <div className="product-grid">
-                  {trueStatusProducts.map((product) => (
-                    <div className="promotion-card" key={product.id}>
-                      <div className="promotion-image-container">
-                        {product && product.mainImage && (
-                          <img
-                            src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product?.mainImage}`}
-                            alt={product?.name || "Product"}
-                            className="promotion-image"
-                          />
-                        )}
-                        {product.discountPercentage && (
-                          <div className="discount-badge">
-                            {product.discountPercentage}% OFF
-                          </div>
-                        )}
-                      </div>
-                      <div className="promotion-details">
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            flexDirection: "row",
-                          }}
-                        >
-                          <h3 className="promotion-details">{product.name}</h3>
-                          <div className="menu-container">
-                            <BsThreeDotsVertical
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent the click from triggering the document listener
-                                toggleMenu(product._id);
-                              }}
-                              className="three-dots-icon"
+                  {trueStatusProducts.map((product) => {
+                    const displayProduct = getDisplayProduct(product);
+                    return (
+                      <div className="promotion-card" key={displayProduct._id}>
+                        <div className="promotion-image-container">
+                          {displayProduct && displayProduct.mainImage && (
+                            <img
+                              src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${displayProduct?.mainImage}`}
+                              alt={displayProduct?.name || "Product"}
+                              className="promotion-image"
                             />
-                            {menuOpen === product._id && (
-                              <div className="menu-dropdown">
-                                <button
-                                  onClick={() => handleEdit(product)}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setProductToDelete(product);
-                                    setConfirmDialogOpen(true);
-                                  }}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Delete
-                                </button>
-                                <button
-                                  onClick={() => handleInsights(product)}
-                                  style={{ marginTop: "14px" }}
-                                >
-                                  Promotion
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                          )}
+                          {displayProduct.discountPercentage && (
+                            <div className="discount-badge">
+                              {displayProduct.discountPercentage}% OFF
+                            </div>
+                          )}
+                          {displayProduct.isPendingUpdate && (
+                            <Chip
+                              label="Pending Update"
+                              color="warning"
+                              size="small"
+                              style={{
+                                position: "absolute",
+                                top: 8,
+                                left: 8,
+                                zIndex: 2,
+                              }}
+                            />
+                          )}
                         </div>
-
-                        <div className="price-container">
-                          <span
-                            className="original-price"
+                        <div className="promotion-details">
+                          <div
                             style={{
-                              textDecoration:
-                                product.salePrice !== null
-                                  ? "line-through"
-                                  : "none",
-                              color:
-                                product.salePrice !== null ? "#999" : "#2d2d2d",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              flexDirection: "row",
                             }}
                           >
-                            E£{product.price}
-                          </span>
-                          {product.salePrice !== null && (
-                            <span className="sale-price">
-                              E£{product.salePrice}
-                            </span>
-                          )}{" "}
-                        </div>
-                        <p className="product-summary">
-                          {product.description.substring(0, 100)}...
-                        </p>
-                      </div>
-
-                      <div className="product-card-body">
-                        <h5>Summary</h5>
-
-                        <div className="metrics-container">
-                          <div className="metric">
-                            <span className="metric-label">Sales</span>
-                            <div
+                            <h3 className="promotion-details">
+                              {displayProduct.name}
+                            </h3>
+                            <div className="menu-container">
+                              <BsThreeDotsVertical
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleMenu(displayProduct._id);
+                                }}
+                                className="three-dots-icon"
+                              />
+                              {menuOpen === displayProduct._id && (
+                                <div className="menu-dropdown">
+                                  <button
+                                    onClick={() => handleEdit(displayProduct)}
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setProductToDelete(displayProduct);
+                                      setConfirmDialogOpen(true);
+                                    }}
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Delete
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleInsights(displayProduct)
+                                    }
+                                    style={{ marginTop: "14px" }}
+                                  >
+                                    Promotion
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="price-container">
+                            <span
+                              className="original-price"
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "5px",
+                                textDecoration:
+                                  displayProduct.salePrice !== null
+                                    ? "line-through"
+                                    : "none",
+                                color:
+                                  displayProduct.salePrice !== null
+                                    ? "#999"
+                                    : "#2d2d2d",
                               }}
                             >
+                              E£{displayProduct.price}
+                            </span>
+                            {displayProduct.salePrice !== null && (
+                              <span className="sale-price">
+                                E£{displayProduct.salePrice}
+                              </span>
+                            )}{" "}
+                          </div>
+                          <p className="product-summary">
+                            {displayProduct.description?.substring(0, 100)}...
+                          </p>
+                        </div>
+                        <div className="product-card-body">
+                          <h5>Summary</h5>
+                          <div className="metrics-container">
+                            <div className="metric">
+                              <span className="metric-label">Sales</span>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                <span className="metric-value">
+                                  {displayProduct.sales
+                                    ? displayProduct.sales
+                                    : "No yet sales"}
+                                </span>
+                              </div>
+                            </div>
+                            <hr style={{ margin: "10px 0", color: "#ddd" }} />
+                            <div className="metric">
+                              <span className="metric-label">
+                                Semaining Products
+                              </span>
                               <span className="metric-value">
-                                {product.sales ? product.sales : "No yet sales"}
+                                {displayProduct.stock}
                               </span>
                             </div>
                           </div>
-                          <hr style={{ margin: "10px 0", color: "#ddd" }} />
-                          <div className="metric">
-                            <span className="metric-label">
-                              Semaining Products
-                            </span>
-                            <span className="metric-value">
-                              {product.stock}
-                            </span>
-                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
