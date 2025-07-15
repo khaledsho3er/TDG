@@ -207,7 +207,7 @@ function TrackOrder() {
             value={selectedOrder?._id || ""}
             onChange={(e) => {
               const order = ordersData.find(
-                (order) => order._id === e.target.value
+                (order) => order?._id === e.target.value
               );
               setSelectedOrder(order);
               setSelectedSubOrder(order?.cartItems[0] || null);
@@ -217,8 +217,8 @@ function TrackOrder() {
               .slice()
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((order) => (
-                <MenuItem key={order._id} value={order._id}>
-                  Order No. : {order._id}
+                <MenuItem key={order?._id} value={order?._id}>
+                  Order No. : {order?._id}
                 </MenuItem>
               ))}
           </Select>
@@ -271,7 +271,7 @@ function TrackOrder() {
                         </span>{" "}
                         <p style={{ fontWeight: "bold" }}>
                           {new Date(
-                            selectedOrder.createdAt
+                            selectedOrder?.createdAt
                           ).toLocaleDateString()}
                         </p>
                       </Box>
@@ -293,12 +293,12 @@ function TrackOrder() {
                           Delivery Date:{" "}
                         </span>
                         <p style={{ fontWeight: "bold" }}>
-                          {selectedOrder.orderStatus === "Pending"
+                          {selectedOrder?.orderStatus === "Pending"
                             ? "Not specified yet"
-                            : selectedOrder.orderStatus === "Delivered"
+                            : selectedOrder?.orderStatus === "Delivered"
                             ? "Already Delivered"
                             : new Date(
-                                selectedOrder.deliveryDate
+                                selectedOrder?.deliveryDate
                               ).toLocaleDateString()}
                         </p>
                       </Box>
@@ -319,14 +319,14 @@ function TrackOrder() {
                       onChange={(e) =>
                         setSelectedSubOrder(
                           selectedOrder.cartItems.find(
-                            (item) => item.productId.name === e.target.value
+                            (item) => item?.productId.name === e.target.value
                           )
                         )
                       }
                     >
-                      {selectedOrder.cartItems.map((item) => (
+                      {selectedOrder?.cartItems.map((item) => (
                         <option
-                          key={item._id}
+                          key={item?._id}
                           value={item?.productId?.name || "Unknown"}
                         >
                           {item?.productId?.name || "Unknown"}
@@ -356,32 +356,32 @@ function TrackOrder() {
                         className="status paid"
                         style={{
                           backgroundColor:
-                            selectedOrder.orderStatus === "Pending"
+                            selectedOrder?.orderStatus === "Pending"
                               ? "#f8d7da"
-                              : selectedOrder.orderStatus === "Delivered"
+                              : selectedOrder?.orderStatus === "Delivered"
                               ? "#d4edda"
                               : "#FFE5B4",
                           color:
-                            selectedOrder.orderStatus === "Pending"
+                            selectedOrder?.orderStatus === "Pending"
                               ? "#721c24"
-                              : selectedOrder.orderStatus === "Delivered"
+                              : selectedOrder?.orderStatus === "Delivered"
                               ? "#155724"
                               : "#FF7518",
                         }}
                       >
-                        {selectedOrder.orderStatus}
+                        {selectedOrder?.orderStatus}
                       </span>
                     </Box>
                     <div className="progress-container-track">
                       {["Pending", "Confirmed", "Shipping", "Delivered"].map(
                         (step, i) => {
                           const isCompleted =
-                            (selectedOrder.orderStatus === "Pending" &&
+                            (selectedOrder?.orderStatus === "Pending" &&
                               i === 0) ||
-                            selectedOrder.orderStatus === "Shipped" ||
-                            (selectedOrder.orderStatus === "Confirmed" &&
+                            selectedOrder?.orderStatus === "Shipped" ||
+                            (selectedOrder?.orderStatus === "Confirmed" &&
                               i <= 1) ||
-                            selectedOrder.orderStatus === "Delivered";
+                            selectedOrder?.orderStatus === "Delivered";
 
                           return (
                             <div
@@ -414,18 +414,18 @@ function TrackOrder() {
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p>Subtotal:</p>
-                    <p>{selectedOrder.subtotal.toLocaleString("en-us")} E£</p>
+                    <p>{selectedOrder?.subtotal?.toLocaleString("en-us")} E£</p>
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p>Shipping:</p>
                     <p>
-                      {selectedOrder.shippingFee.toLocaleString("en-us")} E£
+                      {selectedOrder?.shippingFee?.toLocaleString("en-us")} E£
                     </p>
                   </Box>
                   <Box className="order-pays-subtotal">
                     <p className="total">Total:</p>
                     <p className="total">
-                      {selectedOrder.total.toLocaleString("en-us")} E£
+                      {selectedOrder?.total?.toLocaleString("en-us")} E£
                     </p>
                   </Box>
                 </div>
@@ -459,7 +459,7 @@ function TrackOrder() {
                               : "#FF7518",
                         }}
                       >
-                        {selectedOrder.orderStatus}
+                        {selectedOrder?.orderStatus}
                       </span>
                     </Box>
                     <Box
@@ -504,7 +504,7 @@ function TrackOrder() {
                         {/* Info Icon - right side, opposite to image */}
                         {selectedSubOrder.productId && (
                           <a
-                            href={`https://thedesigngrit.com/product/${selectedSubOrder.productId._id}`}
+                            href={`https://thedesigngrit.com/product/${selectedSubOrder?.productId?._id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -521,8 +521,8 @@ function TrackOrder() {
                           </a>
                         )}
                         <img
-                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder.productId.mainImage}`}
-                          alt={selectedSubOrder.productId.name}
+                          src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${selectedSubOrder?.productId?.mainImage}`}
+                          alt={selectedSubOrder?.productId?.name}
                           style={{
                             width: " 96px",
                             height: "93px",
@@ -530,16 +530,16 @@ function TrackOrder() {
                           }}
                         />
                         <div className="trackorder-suborder-item-details">
-                          <h5>{selectedSubOrder.productId.name}</h5>
+                          <h5>{selectedSubOrder?.productId?.name}</h5>
                           <p>
-                            {selectedSubOrder.totalPrice.toLocaleString(
+                            {selectedSubOrder?.totalPrice?.toLocaleString(
                               "en-US"
                             )}{" "}
                             E£
                           </p>
                           <p>
                             <strong>Quantity: </strong>
-                            {selectedSubOrder.quantity}
+                            {selectedSubOrder?.quantity}
                           </p>
                         </div>
                       </Box>
