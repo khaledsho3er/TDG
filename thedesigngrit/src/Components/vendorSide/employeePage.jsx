@@ -434,7 +434,18 @@ const EmployeePage = () => {
             color: "white",
           }}
         >
-          <table style={{ borderCollapse: "collapse", minWidth: 350 }}>
+          {/* Disable hover effect for rows in the tier info table */}
+          <style>{`
+            .tier-info-table tr:hover {
+              background: none !important;
+              color: inherit !important;
+              cursor: default !important;
+            }
+          `}</style>
+          <table
+            className="tier-info-table"
+            style={{ borderCollapse: "collapse", minWidth: 350 }}
+          >
             <thead>
               <tr>
                 <th style={{ border: "1px solid #ccc", padding: 6 }}>Tier</th>
