@@ -364,17 +364,23 @@ const EmployeePage = () => {
                   >
                     Edit Employee
                   </button>
-                  {currentVendor?.employeeNumber !== vendor?.employeeNumber && (
-                    <button
-                      type="button"
-                      onClick={handleDelete}
-                      // disabled={currentVendor?.employeeNumber === vendor?.employeeNumber}
-                      className="requestInfo-submit-button"
-                      style={{ backgroundColor: "#DC143C", width: "15%" }}
-                    >
-                      Delete Employee
-                    </button>
-                  )}
+                  {currentVendor?.employeeNumber !== vendor?.employeeNumber &&
+                    !(
+                      // Prevent Tier 1 or 2 from deleting Tier 3
+                      (
+                        Number(vendor?.tier) < 3 &&
+                        Number(currentVendor?.tier) === 3
+                      )
+                    ) && (
+                      <button
+                        type="button"
+                        onClick={handleDelete}
+                        className="requestInfo-submit-button"
+                        style={{ backgroundColor: "#DC143C", width: "15%" }}
+                      >
+                        Delete Employee
+                      </button>
+                    )}
                 </div>
               </form>
             </div>
