@@ -253,6 +253,12 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
     return locked;
   };
 
+  // Helper to check if vendor has access to a page by tier
+  const hasTierAccess = (page) => {
+    if (!vendor?.tier) return false;
+    return vendor.tier >= (sidebarAccess[page] || 99);
+  };
+
   // Mouse event handlers for locked items
   const handleLockedMouseEnter = (e) => {
     console.log("Hovered locked item", e.clientX, e.clientY);
@@ -284,6 +290,24 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
     return null;
   }
 
+  // Access control: minimum tier required for each sidebar item
+  const sidebarAccess = {
+    dashboard: 2, // Manager+
+    notifications: 1, // All
+    allProducts: 2, // Manager+
+    allProductsVariant: 2, // Manager+
+    orderList: 1, // All
+    ShippingFees: 2, // Manager+
+    quotationsList: 1, // All
+    ViewInStoreVendor: 1, // All
+    promotionsPage: 2, // Manager+
+    returnsOrdersPage: 1, // All
+    BrandForm: 2, // Manager+
+    BrandingPage: 2, // Manager+
+    Accounting: 3, // Executive only
+    EmployeePage: 2, // Manager+
+  };
+
   return (
     <>
       <LockedTooltip
@@ -292,622 +316,709 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
       />
       <aside className="sidebar-vendor">
         <ul className="sidebar-menu-vendor">
-          <li
-            onClick={(e) => {
-              if (isLocked("dashboard")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("dashboard");
-            }}
-            className={getActiveClass("dashboard", isLocked("dashboard"))}
-            style={
-              isLocked("dashboard")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("dashboard") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("dashboard") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("dashboard") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+          {/* Dashboard */}
+          {hasTierAccess("dashboard") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("dashboard")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("dashboard");
               }}
+              className={getActiveClass("dashboard", isLocked("dashboard"))}
+              style={
+                isLocked("dashboard")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("dashboard") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("dashboard") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("dashboard") ? handleLockedMouseLeave : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <RiDashboard3Fill className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Dashboard</span>
-              </span>
               <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
               >
-                {isLocked("dashboard") && <FaLock />}
-              </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("notifications")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("notifications");
-            }}
-            className={getActiveClass(
-              "notifications",
-              isLocked("notifications")
-            )}
-            style={
-              isLocked("notifications")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("notifications") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("notifications") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("notifications") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <FaBell className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Notifications
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <RiDashboard3Fill className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Dashboard</span>
                 </span>
-              </span>
-              {notificationCount > 0 && (
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={notificationCount} />
+                  {isLocked("dashboard") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("notifications") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("allProducts")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("allProducts");
-            }}
-            className={getActiveClass("allProducts", isLocked("allProducts"))}
-            style={
-              isLocked("allProducts")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("allProducts") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("allProducts") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("allProducts") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* Notifications */}
+          {hasTierAccess("notifications") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("notifications")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("notifications");
               }}
+              className={getActiveClass(
+                "notifications",
+                isLocked("notifications")
+              )}
+              style={
+                isLocked("notifications")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("notifications") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("notifications") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("notifications") ? handleLockedMouseLeave : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <LuPackageOpen className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  All Products
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <FaBell className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Notifications
+                  </span>
                 </span>
-              </span>
-              {productsCount > 0 && (
+                {notificationCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={notificationCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={productsCount} />
+                  {isLocked("notifications") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("allProducts") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("allProductsVariant")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("allProductsVariant");
-            }}
-            className={getActiveClass(
-              "allProductsVariant",
-              isLocked("allProductsVariant")
-            )}
-            style={
-              isLocked("allProductsVariant")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("allProductsVariant")
-                ? handleLockedMouseEnter
-                : undefined
-            }
-            onMouseMove={
-              isLocked("allProductsVariant") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("allProductsVariant")
-                ? handleLockedMouseLeave
-                : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* All Products */}
+          {hasTierAccess("allProducts") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("allProducts")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("allProducts");
               }}
+              className={getActiveClass("allProducts", isLocked("allProducts"))}
+              style={
+                isLocked("allProducts")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("allProducts") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("allProducts") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("allProducts") ? handleLockedMouseLeave : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <LuPackageOpen className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Variants Products
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <LuPackageOpen className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    All Products
+                  </span>
                 </span>
-              </span>
-              {variantsCount > 0 && (
+                {productsCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={productsCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={variantsCount} />
+                  {isLocked("allProducts") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("allProductsVariant") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("orderList")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("orderList");
-            }}
-            className={getActiveClass("orderList", isLocked("orderList"))}
-            style={
-              isLocked("orderList")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("orderList") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("orderList") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("orderList") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* Variants Products */}
+          {hasTierAccess("allProductsVariant") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("allProductsVariant")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("allProductsVariant");
               }}
+              className={getActiveClass(
+                "allProductsVariant",
+                isLocked("allProductsVariant")
+              )}
+              style={
+                isLocked("allProductsVariant")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("allProductsVariant")
+                  ? handleLockedMouseEnter
+                  : undefined
+              }
+              onMouseMove={
+                isLocked("allProductsVariant")
+                  ? handleLockedMouseMove
+                  : undefined
+              }
+              onMouseLeave={
+                isLocked("allProductsVariant")
+                  ? handleLockedMouseLeave
+                  : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <TbTruckDelivery className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Order List
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <LuPackageOpen className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Variants Products
+                  </span>
                 </span>
-              </span>
-              {orderCount > 0 && (
+                {variantsCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={variantsCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={orderCount} />
-                </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("orderList") && <FaLock />}
-              </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("ShippingFees")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("ShippingFees");
-            }}
-            className={getActiveClass("ShippingFees", isLocked("ShippingFees"))}
-            style={
-              isLocked("ShippingFees")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("ShippingFees") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("ShippingFees") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("ShippingFees") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <PiMoneyFill className="sidebar-item-icon" />
-                <span className="sidebar-item-text">Shipping Fees</span>
-              </span>
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("ShippingFees") && <FaLock />}
-              </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("quotationsList")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("quotationsList");
-            }}
-            className={getActiveClass(
-              "quotationsList",
-              isLocked("quotationsList")
-            )}
-            style={
-              isLocked("quotationsList")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("quotationsList") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("quotationsList") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("quotationsList") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <FaMoneyBill className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Quotations
+                  {isLocked("allProductsVariant") && <FaLock />}
                 </span>
               </span>
-              {quotationCount > 0 && (
+            </li>
+          )}
+          {/* Order List */}
+          {hasTierAccess("orderList") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("orderList")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("orderList");
+              }}
+              className={getActiveClass("orderList", isLocked("orderList"))}
+              style={
+                isLocked("orderList")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("orderList") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("orderList") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("orderList") ? handleLockedMouseLeave : undefined
+              }
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <TbTruckDelivery className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Order List
+                  </span>
+                </span>
+                {orderCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={orderCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={quotationCount} />
+                  {isLocked("orderList") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("quotationsList") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("ViewInStoreVendor")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("ViewInStoreVendor");
-            }}
-            className={getActiveClass(
-              "ViewInStoreVendor",
-              isLocked("ViewInStoreVendor")
-            )}
-            style={
-              isLocked("ViewInStoreVendor")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("ViewInStoreVendor") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("ViewInStoreVendor") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("ViewInStoreVendor") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* Shipping Fees */}
+          {hasTierAccess("ShippingFees") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("ShippingFees")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("ShippingFees");
               }}
+              className={getActiveClass(
+                "ShippingFees",
+                isLocked("ShippingFees")
+              )}
+              style={
+                isLocked("ShippingFees")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("ShippingFees") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("ShippingFees") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("ShippingFees") ? handleLockedMouseLeave : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <HiBuildingStorefront className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  View In Store
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <PiMoneyFill className="sidebar-item-icon" />
+                  <span className="sidebar-item-text">Shipping Fees</span>
                 </span>
-              </span>
-              {viewInStoreCount > 0 && (
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={viewInStoreCount} />
+                  {isLocked("ShippingFees") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("ViewInStoreVendor") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("promotionsPage")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("promotionsPage");
-            }}
-            className={getActiveClass(
-              "promotionsPage",
-              isLocked("promotionsPage")
-            )}
-            style={
-              isLocked("promotionsPage")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("promotionsPage") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("promotionsPage") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("promotionsPage") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* Quotations */}
+          {hasTierAccess("quotationsList") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("quotationsList")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("quotationsList");
               }}
+              className={getActiveClass(
+                "quotationsList",
+                isLocked("quotationsList")
+              )}
+              style={
+                isLocked("quotationsList")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("quotationsList") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("quotationsList") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("quotationsList") ? handleLockedMouseLeave : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <FaMoneyBill className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Promotions
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <FaMoneyBill className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Quotations
+                  </span>
                 </span>
-              </span>
-              {promotionsCount > 0 && (
+                {quotationCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={quotationCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={promotionsCount} />
+                  {isLocked("quotationsList") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("promotionsPage") && <FaLock />}
               </span>
-            </span>
-          </li>
-          <li
-            onClick={(e) => {
-              if (isLocked("returnsOrdersPage")) {
-                e.preventDefault();
-                e.stopPropagation();
-                return;
-              }
-              setActivePage("returnsOrdersPage");
-            }}
-            className={getActiveClass(
-              "returnsOrdersPage",
-              isLocked("returnsOrdersPage")
-            )}
-            style={
-              isLocked("returnsOrdersPage")
-                ? { opacity: 0.5, cursor: "not-allowed" }
-                : {}
-            }
-            onMouseEnter={
-              isLocked("returnsOrdersPage") ? handleLockedMouseEnter : undefined
-            }
-            onMouseMove={
-              isLocked("returnsOrdersPage") ? handleLockedMouseMove : undefined
-            }
-            onMouseLeave={
-              isLocked("returnsOrdersPage") ? handleLockedMouseLeave : undefined
-            }
-          >
-            <span
-              className="sidebar-item-content"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                width: "100%",
-                paddingRight: "40px",
+            </li>
+          )}
+          {/* View In Store */}
+          {hasTierAccess("ViewInStoreVendor") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("ViewInStoreVendor")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("ViewInStoreVendor");
               }}
+              className={getActiveClass(
+                "ViewInStoreVendor",
+                isLocked("ViewInStoreVendor")
+              )}
+              style={
+                isLocked("ViewInStoreVendor")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("ViewInStoreVendor")
+                  ? handleLockedMouseEnter
+                  : undefined
+              }
+              onMouseMove={
+                isLocked("ViewInStoreVendor")
+                  ? handleLockedMouseMove
+                  : undefined
+              }
+              onMouseLeave={
+                isLocked("ViewInStoreVendor")
+                  ? handleLockedMouseLeave
+                  : undefined
+              }
             >
-              <span style={{ display: "flex", alignItems: "center" }}>
-                <CiUndo className="sidebar-item-icon" />
-                <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
-                  Returns Orders
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <HiBuildingStorefront className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    View In Store
+                  </span>
                 </span>
-              </span>
-              {returnsCount > 0 && (
+                {viewInStoreCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={viewInStoreCount} />
+                  </span>
+                )}
                 <span
                   style={{
-                    position: "absolute",
-                    right: "0px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    minWidth: "22px",
+                    width: 24,
                     display: "flex",
                     justifyContent: "center",
                   }}
                 >
-                  <Badge count={returnsCount} />
+                  {isLocked("ViewInStoreVendor") && <FaLock />}
                 </span>
-              )}
-              <span
-                style={{ width: 24, display: "flex", justifyContent: "center" }}
-              >
-                {isLocked("returnsOrdersPage") && <FaLock />}
               </span>
-            </span>
-          </li>
-          {/* Render "Brand Form" only if vendor tier is 3 or higher */}
-          {vendor?.tier >= 3 && (
+            </li>
+          )}
+          {/* Promotions */}
+          {hasTierAccess("promotionsPage") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("promotionsPage")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("promotionsPage");
+              }}
+              className={getActiveClass(
+                "promotionsPage",
+                isLocked("promotionsPage")
+              )}
+              style={
+                isLocked("promotionsPage")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("promotionsPage") ? handleLockedMouseEnter : undefined
+              }
+              onMouseMove={
+                isLocked("promotionsPage") ? handleLockedMouseMove : undefined
+              }
+              onMouseLeave={
+                isLocked("promotionsPage") ? handleLockedMouseLeave : undefined
+              }
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <FaMoneyBill className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Promotions
+                  </span>
+                </span>
+                {promotionsCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={promotionsCount} />
+                  </span>
+                )}
+                <span
+                  style={{
+                    width: 24,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isLocked("promotionsPage") && <FaLock />}
+                </span>
+              </span>
+            </li>
+          )}
+          {/* Returns Orders */}
+          {hasTierAccess("returnsOrdersPage") && (
+            <li
+              onClick={(e) => {
+                if (isLocked("returnsOrdersPage")) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActivePage("returnsOrdersPage");
+              }}
+              className={getActiveClass(
+                "returnsOrdersPage",
+                isLocked("returnsOrdersPage")
+              )}
+              style={
+                isLocked("returnsOrdersPage")
+                  ? { opacity: 0.5, cursor: "not-allowed" }
+                  : {}
+              }
+              onMouseEnter={
+                isLocked("returnsOrdersPage")
+                  ? handleLockedMouseEnter
+                  : undefined
+              }
+              onMouseMove={
+                isLocked("returnsOrdersPage")
+                  ? handleLockedMouseMove
+                  : undefined
+              }
+              onMouseLeave={
+                isLocked("returnsOrdersPage")
+                  ? handleLockedMouseLeave
+                  : undefined
+              }
+            >
+              <span
+                className="sidebar-item-content"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  width: "100%",
+                  paddingRight: "40px",
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center" }}>
+                  <CiUndo className="sidebar-item-icon" />
+                  <span className="sidebar-item-text" style={{ marginLeft: 8 }}>
+                    Returns Orders
+                  </span>
+                </span>
+                {returnsCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      minWidth: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Badge count={returnsCount} />
+                  </span>
+                )}
+                <span
+                  style={{
+                    width: 24,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isLocked("returnsOrdersPage") && <FaLock />}
+                </span>
+              </span>
+            </li>
+          )}
+          {/* Brand Form */}
+          {hasTierAccess("BrandForm") && (
             <li
               onClick={() => setActivePage("BrandForm")}
               className={getActiveClass("BrandForm", false)}
@@ -928,8 +1039,8 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               </span>
             </li>
           )}
-          {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-          {vendor?.tier >= 3 && (
+          {/* Brand Profile */}
+          {hasTierAccess("BrandingPage") && (
             <li
               onClick={() => setActivePage("BrandingPage")}
               className={getActiveClass("BrandingPage", false)}
@@ -950,8 +1061,8 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               </span>
             </li>
           )}
-          {/* Render "Add Employee" only if vendor tier is 3 or higher */}
-          {vendor?.tier >= 3 && (
+          {/* Accounting (Tier 3 only) */}
+          {hasTierAccess("Accounting") && (
             <li
               onClick={() =>
                 !isLocked("Accounting") && setActivePage("Accounting")
@@ -987,8 +1098,8 @@ const SidebarVendor = ({ setActivePage, activePage }) => {
               </span>
             </li>
           )}
-          {/* Render "Employee Page" only if vendor tier is 3 or higher */}
-          {vendor?.tier >= 3 && (
+          {/* Employees (Tier 2 and 3) */}
+          {hasTierAccess("EmployeePage") && (
             <li
               onClick={() =>
                 !isLocked("EmployeePage") && setActivePage("EmployeePage")
