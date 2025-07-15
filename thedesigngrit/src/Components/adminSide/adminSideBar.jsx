@@ -106,6 +106,12 @@ const SidebarAdmin = ({ setActivePage }) => {
         >
           Accounting
         </li>
+        <li
+          onClick={() => setActivePage("NewsletterSubscribers")}
+          className="sidebar-item-vendor"
+        >
+          Subscribers
+        </li>
       </ul>
     </aside>
   );
