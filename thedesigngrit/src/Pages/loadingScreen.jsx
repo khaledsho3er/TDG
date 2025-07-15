@@ -144,12 +144,21 @@ const LoadingScreen = ({ onComplete }) => {
             muted
             playsInline
             preload="auto"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            loop
+            controls={false}
+            controlsList="nodownload nofullscreen noremoteplayback"
+            disablePictureInPicture
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              pointerEvents: "none", // Prevent interaction
+              display: "block", // Avoid inline media player styling
+            }}
           >
             <source src="/Assets/TDGLoadingScreen.mp4" type="video/mp4" />
             <source src="/Assets/TDGLoadingScreen.webm" type="video/webm" />
-            <img src="/Assets/loading-static.jpg" alt="Loading" />{" "}
-            {/* Fallback */}
+            <img src="/Assets/loading-static.jpg" alt="Loading" />
           </video>
         )}
       </div>

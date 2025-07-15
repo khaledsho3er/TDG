@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, CircularProgress, IconButton } from "@mui/material";
+import { Box, CircularProgress, IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
 import axios from "axios";
@@ -26,7 +26,6 @@ const NewsletterSubscribers = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchSubscribers();
   }, []);
@@ -74,6 +73,19 @@ const NewsletterSubscribers = () => {
           <h2>Newsletter Subscribers</h2>
           <p>Home &gt; Newsletter Subscribers</p>
         </div>
+        <div className="dashboard-date-vendor">
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#2d2d2d",
+              color: "white",
+              marginLeft: "10px",
+              marginTop: "20px",
+            }}
+          >
+            Send All
+          </Button>
+        </div>
       </header>
       <Box
         sx={{
@@ -119,7 +131,6 @@ const NewsletterSubscribers = () => {
                 <th>Email</th>
                 <th>Subscribed</th>
                 <th>Subscribed At</th>
-                <th>Created At</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -150,11 +161,7 @@ const NewsletterSubscribers = () => {
                       ? new Date(subscriber.subscribedAt).toLocaleDateString()
                       : "-"}
                   </td>
-                  <td>
-                    {subscriber.createdAt
-                      ? new Date(subscriber.createdAt).toLocaleDateString()
-                      : "-"}
-                  </td>
+
                   <td>
                     <IconButton
                       aria-label="unsubscribe"
