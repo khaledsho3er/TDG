@@ -517,6 +517,7 @@ const ProductsPageVendor = ({ setActivePage }) => {
                                 top: 8,
                                 left: 8,
                                 zIndex: 2,
+                                borderRadius: "3px",
                               }}
                             />
                           )}
