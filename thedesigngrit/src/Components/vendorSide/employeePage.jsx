@@ -8,6 +8,12 @@ import { CiCirclePlus } from "react-icons/ci";
 import VendorSignup from "./Addemployee";
 import CircularProgress from "@mui/material/CircularProgress";
 import ConfirmationDialog from "../confirmationMsg";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 
 const EmployeePage = () => {
   const { vendor } = useVendor(); // Get vendor data, including brandId
@@ -17,6 +23,7 @@ const EmployeePage = () => {
   const [signupPopupVisible, setSignupPopupVisible] = useState(false);
   const [confirmEditOpen, setConfirmEditOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [tierInfoOpen, setTierInfoOpen] = useState(false);
 
   const handleOpenSignup = () => {
     setSignupPopupVisible(true);
@@ -157,7 +164,16 @@ const EmployeePage = () => {
                   <th>Email</th>
                   <th>Employee Number</th>
                   <th>Phone Number</th>
-                  <th>Tier</th>
+                  <th style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                    Tier
+                    <IconButton
+                      size="small"
+                      onClick={() => setTierInfoOpen(true)}
+                      style={{ padding: 2 }}
+                    >
+                      <InfoOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -379,6 +395,54 @@ const EmployeePage = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setConfirmDeleteOpen(false)}
       />
+      <Dialog open={tierInfoOpen} onClose={() => setTierInfoOpen(false)}>
+        <DialogTitle>Tier Access Information</DialogTitle>
+        <DialogContent>
+          <table style={{ borderCollapse: "collapse", minWidth: 350 }}>
+            <thead>
+              <tr>
+                <th style={{ border: "1px solid #ccc", padding: 6 }}>Tier</th>
+                <th style={{ border: "1px solid #ccc", padding: 6 }}>Access</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  1 (Employee)
+                </td>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  Notifications, Order List, Quotations, View In Store, Returns
+                  Orders
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  2 (Manager)
+                </td>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  Dashboard, Notifications, All Products, Variants Products,
+                  Order List, Shipping Fees, Quotations, View In Store,
+                  Promotions, Returns Orders, Brand Form, Brand Profile,
+                  Employees (cannot set/remove tier 3)
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  3 (Executive)
+                </td>
+                <td style={{ border: "1px solid #ccc", padding: 6 }}>
+                  All Tier 2 access + Accounting, Employees (full access)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setTierInfoOpen(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
