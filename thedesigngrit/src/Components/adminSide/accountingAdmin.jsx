@@ -53,6 +53,7 @@ import {
   getXAxisLabel,
   getAvailableMonths,
 } from "../../utils/chartUtils";
+import { IoMdSync } from "react-icons/io";
 
 const MoneyCell = ({ value }) =>
   value === "N/A" ? (
@@ -416,20 +417,37 @@ const AccountingAdmin = () => {
   return (
     <Box p={3}>
       {/* Sync Button Section */}
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
         <Button
           variant="contained"
-          color="primary"
           startIcon={<FaRedo />}
           onClick={handleSync}
           disabled={syncLoading}
-          sx={{ background: "#2d2d2d", color: "white", borderRadius: 2 }}
+          style={{
+            backgroundColor: "#2d2d2d",
+            color: "white",
+            marginLeft: "10px",
+            borderRadius: 4,
+            fontWeight: 600,
+            textTransform: "none",
+            boxShadow: "none",
+          }}
+          sx={{
+            "&:hover": {
+              background: "#2d2d2d",
+              color: "white",
+              boxShadow: "none",
+            },
+          }}
         >
-          {syncLoading ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : (
-            "Sync"
-          )}
+          {syncLoading ? <IoMdSync size={20} color="inherit" /> : "Sync"}
         </Button>
         {syncMessage && (
           <Typography
@@ -1031,7 +1049,14 @@ const AccountingAdmin = () => {
             onClick={() => setSelectedLog(null)}
             color="primary"
             variant="contained"
-            sx={{ background: "#2d2d2d" }}
+            sx={{
+              background: "#2d2d2d",
+              "&:hover": {
+                background: "#2d2d2d",
+                color: "white",
+                boxShadow: "none",
+              },
+            }}
           >
             Close
           </Button>
