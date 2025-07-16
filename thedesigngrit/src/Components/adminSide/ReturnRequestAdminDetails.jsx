@@ -131,6 +131,16 @@ const ReturnRequestAdminDetails = ({ request, onBack, refreshList }) => {
           <Typography variant="body1" fontWeight={500}>
             {request.reason}
           </Typography>
+          {request.brandReason && (
+            <>
+              <Typography variant="subtitle2" color="text.secondary">
+                Brand Reason
+              </Typography>
+              <Typography variant="body1" fontWeight={500}>
+                {request.brandReason}
+              </Typography>
+            </>
+          )}
         </Box>
         <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>
           Items
@@ -205,9 +215,8 @@ const ReturnRequestAdminDetails = ({ request, onBack, refreshList }) => {
             disabled={updating}
           >
             <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Approved">Approved</MenuItem>
-            <MenuItem value="Rejected">Rejected</MenuItem>
             <MenuItem value="Refunded">Refunded</MenuItem>
+            <MenuItem value="Not Refunded">Not Refunded</MenuItem>
           </Select>
           <Button
             variant="contained"

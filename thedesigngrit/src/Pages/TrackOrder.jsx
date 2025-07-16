@@ -667,7 +667,31 @@ function TrackOrder() {
                         <CiUndo />
                         Return Order
                       </button>
-                    )}{" "}
+                    )}
+                    {selectedOrder?.orderStatus === "returning" && (
+                      <div
+                        style={{
+                          color: "#bfa100",
+                          marginTop: 8,
+                          fontWeight: 500,
+                        }}
+                      >
+                        The brand is waiting to receive the order back. Once
+                        received, the refund process will start.
+                      </div>
+                    )}
+                    {selectedOrder?.orderStatus === "returned" && (
+                      <div
+                        style={{
+                          color: "#6b7b58",
+                          marginTop: 8,
+                          fontWeight: 500,
+                        }}
+                      >
+                        The brand has received the item back successfully. The
+                        platform will return the money within 10 business days.
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
@@ -716,24 +740,33 @@ function TrackOrder() {
             color: "white",
           }}
         >
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Reason for return"
-            type="text"
-            fullWidth
-            variant="outlined"
-            className="review-textarea"
-            value={pendingReason}
-            onChange={(e) => setPendingReason(e.target.value)}
-            sx={{
-              borderRadius: 1,
-              input: { color: "#2d2d2d" },
-              label: { fontSize: 18 },
-            }}
-            InputLabelProps={{ style: { fontSize: 18 } }}
-            InputProps={{ style: { fontSize: 18, minHeight: 60 } }}
-          />
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <Select
+              autoFocus
+              value={pendingReason}
+              onChange={(e) => setPendingReason(e.target.value)}
+              displayEmpty
+              sx={{
+                background: "#fff",
+                borderRadius: 1,
+                fontSize: 18,
+                minHeight: 60,
+                color: "#2d2d2d",
+              }}
+              inputProps={{ "aria-label": "Reason for return" }}
+            >
+              <MenuItem value="" disabled>
+                <em>Select a reason for return</em>
+              </MenuItem>
+              <MenuItem value="Wrong item received">
+                Wrong item received
+              </MenuItem>
+              <MenuItem value="Item damaged">Item damaged</MenuItem>
+              <MenuItem value="Not as described">Not as described</MenuItem>
+              <MenuItem value="Changed my mind">Changed my mind</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions
           style={{

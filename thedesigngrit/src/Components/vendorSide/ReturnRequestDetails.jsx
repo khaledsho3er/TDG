@@ -8,6 +8,7 @@ import {
   Tooltip,
   Typography,
   Paper,
+  FormControl,
 } from "@mui/material";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -15,6 +16,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 const ReturnRequestDetails = ({ request, onBack, refreshList }) => {
   const [brandStatus, setBrandStatus] = useState(request.brandStatus);
   const [updating, setUpdating] = useState(false);
+  const [notReceivedReason, setNotReceivedReason] = useState("");
 
   const handleStatusUpdate = async () => {
     setUpdating(true);
@@ -24,7 +26,11 @@ const ReturnRequestDetails = ({ request, onBack, refreshList }) => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ brandStatus }),
+          body: JSON.stringify(
+            brandStatus === "Not Received"
+              ? { brandStatus, notReceivedReason }
+              : { brandStatus }
+          ),
         }
       );
       if (!res.ok) throw new Error("Failed to update status");
@@ -193,18 +199,46 @@ const ReturnRequestDetails = ({ request, onBack, refreshList }) => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 3 }}>
           <Select
             value={brandStatus}
-            onChange={(e) => setBrandStatus(e.target.value)}
+            onChange={(e) => {
+              setBrandStatus(e.target.value);
+              if (e.target.value !== "Not Received") setNotReceivedReason("");
+            }}
             sx={{ minWidth: 180 }}
             disabled={updating}
           >
             <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Returned">Returned</MenuItem>
-            <MenuItem value="NotReturned">NotReturned</MenuItem>
+            <MenuItem value="Received">Received</MenuItem>
+            <MenuItem value="Not Received">Not Received</MenuItem>
           </Select>
+          {brandStatus === "Not Received" && (
+            <FormControl sx={{ minWidth: 200 }}>
+              <Select
+                value={notReceivedReason}
+                onChange={(e) => setNotReceivedReason(e.target.value)}
+                displayEmpty
+                disabled={updating}
+              >
+                <MenuItem value="" disabled>
+                  <em>Select a reason</em>
+                </MenuItem>
+                <MenuItem value="Customer did not ship">
+                  Customer did not ship
+                </MenuItem>
+                <MenuItem value="Wrong item returned">
+                  Wrong item returned
+                </MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
+          )}
           <Button
             variant="contained"
             onClick={handleStatusUpdate}
-            disabled={updating || brandStatus === request.brandStatus}
+            disabled={
+              updating ||
+              brandStatus === request.brandStatus ||
+              (brandStatus === "Not Received" && !notReceivedReason)
+            }
             sx={{ backgroundColor: "#6b7b58", color: "white" }}
           >
             {updating ? "Updating..." : "Update Status"}
