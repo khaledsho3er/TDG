@@ -209,6 +209,8 @@ const AccountingAdmin = () => {
   const [selectedLog, setSelectedLog] = useState(null);
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncMessage, setSyncMessage] = useState("");
+  const [lastSynced, setLastSynced] = useState(null);
+  const [syncSuccessTimeout, setSyncSuccessTimeout] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -379,6 +381,12 @@ const AccountingAdmin = () => {
         "https://api.thedesigngrit.com/api/admin-financials/recalculate"
       );
       setSyncMessage("Sync successful! Data recalculated.");
+      setLastSynced(new Date());
+      if (syncSuccessTimeout) clearTimeout(syncSuccessTimeout);
+      const timeout = setTimeout(() => {
+        setSyncMessage("");
+      }, 3000);
+      setSyncSuccessTimeout(timeout);
       // Optionally, refresh logs
       const res = await axios.get(
         "https://api.thedesigngrit.com/api/admin-financials/getall-logs"
@@ -390,6 +398,22 @@ const AccountingAdmin = () => {
       setSyncLoading(false);
     }
   };
+
+  // Helper to format time since last sync
+  function timeSince(date) {
+    if (!date) return "Never";
+    const seconds = Math.floor((new Date() - date) / 1000);
+    if (seconds < 60) return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} day${days !== 1 ? "s" : ""} ago`;
+  }
+
+  // Show last synced message if not showing success or error
+  const showLastSynced = !syncMessage && lastSynced;
 
   if (loading)
     return (
@@ -420,23 +444,26 @@ const AccountingAdmin = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           justifyContent: "space-between",
           alignItems: "end",
           gap: "19px",
           mb: 2,
         }}
       >
-        {syncMessage && (
+        {(syncMessage || showLastSynced) && (
           <Typography
             sx={{
               fontFamily: "Horizon",
               ml: 2,
-              color: syncMessage.includes("failed") ? "#b62020" : "#6b7b58",
+              color:
+                syncMessage && syncMessage.includes("failed")
+                  ? "#b62020"
+                  : "#6b7b58",
               fontWeight: "Bold",
             }}
           >
-            {syncMessage}
+            {syncMessage || `Last synced: ${timeSince(lastSynced)}`}
           </Typography>
         )}
         <Button
