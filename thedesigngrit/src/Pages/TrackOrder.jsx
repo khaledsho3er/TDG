@@ -646,6 +646,23 @@ function TrackOrder() {
                         aria-label="Return order"
                         title="Return order"
                         onClick={handleReturnOrder}
+                        disabled={[
+                          "returning",
+                          "returned",
+                          "refunded",
+                        ].includes(selectedOrder?.orderStatus)}
+                        style={
+                          ["returning", "returned", "refunded"].includes(
+                            selectedOrder?.orderStatus
+                          )
+                            ? {
+                                backgroundColor: "#eee",
+                                color: "#aaa",
+                                cursor: "not-allowed",
+                                border: "1px solid #ccc",
+                              }
+                            : {}
+                        }
                       >
                         <CiUndo />
                         Return Order
