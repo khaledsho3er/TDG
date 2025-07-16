@@ -444,7 +444,7 @@ const AccountingAdmin = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "end",
           gap: "19px",
@@ -454,13 +454,14 @@ const AccountingAdmin = () => {
         {(syncMessage || showLastSynced) && (
           <Typography
             sx={{
-              fontFamily: "Horizon",
+              fontFamily: "Montserrat",
               ml: 2,
-              color:
-                syncMessage && syncMessage.includes("failed")
-                  ? "#b62020"
-                  : "#6b7b58",
-              fontWeight: "Bold",
+              color: syncMessage
+                ? syncMessage.includes("failed")
+                  ? "#b62020" // error
+                  : "#6b7b58" // success
+                : "#ccc", // last sync
+              fontWeight: "500",
             }}
           >
             {syncMessage || `Last synced: ${timeSince(lastSynced)}`}
