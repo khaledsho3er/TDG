@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import axios from "axios";
 
 const ReturnRequestDetails = ({ request, onBack, refreshList }) => {
   const [brandStatus, setBrandStatus] = useState(request.brandStatus);
@@ -21,19 +22,14 @@ const ReturnRequestDetails = ({ request, onBack, refreshList }) => {
   const handleStatusUpdate = async () => {
     setUpdating(true);
     try {
-      const res = await fetch(
-        `https://api.thedesigngrit.com/api/returns-order/returns/${request._id}/brand`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(
-            brandStatus === "Not Received"
-              ? { brandStatus, notReceivedReason }
-              : { brandStatus }
-          ),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to update status");
+      const url = `https://api.thedesigngrit.com/api/returns-order/returns/${request._id}/brand`;
+      const data =
+        brandStatus === "Not Received"
+          ? { brandStatus, notReceivedReason }
+          : { brandStatus };
+      await axios.put(url, data, {
+        headers: { "Content-Type": "application/json" },
+      });
       if (refreshList) refreshList();
     } catch (err) {
       alert("Failed to update status");
