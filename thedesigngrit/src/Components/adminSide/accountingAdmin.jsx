@@ -420,7 +420,7 @@ const AccountingAdmin = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row-reverse",
+          flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "end",
           gap: "19px",
@@ -431,7 +431,6 @@ const AccountingAdmin = () => {
           <Typography
             sx={{
               fontFamily: "Horizon",
-
               ml: 2,
               color: syncMessage.includes("failed") ? "#b62020" : "#6b7b58",
               fontWeight: "Bold",
