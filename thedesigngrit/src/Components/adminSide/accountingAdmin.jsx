@@ -41,6 +41,7 @@ import {
   FaCreditCard,
   FaHandHoldingUsd,
   FaChartBar,
+  FaRedo,
 } from "react-icons/fa";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -205,6 +206,8 @@ const AccountingAdmin = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLog, setSelectedLog] = useState(null);
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncMessage, setSyncMessage] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -367,6 +370,26 @@ const AccountingAdmin = () => {
     [sortedLogs]
   );
 
+  const handleSync = async () => {
+    setSyncLoading(true);
+    setSyncMessage("");
+    try {
+      await axios.post(
+        "https://api.thedesigngrit.com/api/admin-financials/recalculate"
+      );
+      setSyncMessage("Sync successful! Data recalculated.");
+      // Optionally, refresh logs
+      const res = await axios.get(
+        "https://api.thedesigngrit.com/api/admin-financials/getall-logs"
+      );
+      setLogs(res.data || []);
+    } catch (err) {
+      setSyncMessage("Sync failed. Please try again.");
+    } finally {
+      setSyncLoading(false);
+    }
+  };
+
   if (loading)
     return (
       <Box
@@ -392,6 +415,36 @@ const AccountingAdmin = () => {
 
   return (
     <Box p={3}>
+      {/* Sync Button Section */}
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<FaRedo />}
+          onClick={handleSync}
+          disabled={syncLoading}
+          sx={{ background: "#2d2d2d", color: "white", borderRadius: 2 }}
+        >
+          {syncLoading ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            "Sync"
+          )}
+        </Button>
+        {syncMessage && (
+          <Typography
+            sx={{
+              ml: 2,
+              color: syncMessage.includes("failed")
+                ? "error.main"
+                : "success.main",
+              fontWeight: 600,
+            }}
+          >
+            {syncMessage}
+          </Typography>
+        )}
+      </Box>
       {/* Summary Cards Section */}
       <Box
         sx={{
