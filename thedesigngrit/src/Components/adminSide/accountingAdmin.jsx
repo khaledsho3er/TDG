@@ -420,24 +420,35 @@ const AccountingAdmin = () => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
+          flexDirection: "row-reverse",
+          justifyContent: "space-between",
+          alignItems: "end",
+          gap: "19px",
           mb: 2,
         }}
       >
+        {syncMessage && (
+          <Typography
+            sx={{
+              fontFamily: "Horizon",
+
+              ml: 2,
+              color: syncMessage.includes("failed") ? "#b62020" : "#6b7b58",
+              fontWeight: "Bold",
+            }}
+          >
+            {syncMessage}
+          </Typography>
+        )}
         <Button
           variant="contained"
-          startIcon={<FaRedo />}
+          startIcon={<IoMdSync />}
           onClick={handleSync}
           disabled={syncLoading}
           style={{
             backgroundColor: "#2d2d2d",
             color: "white",
             marginLeft: "10px",
-            borderRadius: 4,
-            fontWeight: 600,
-            textTransform: "none",
-            boxShadow: "none",
           }}
           sx={{
             "&:hover": {
@@ -447,21 +458,8 @@ const AccountingAdmin = () => {
             },
           }}
         >
-          {syncLoading ? <IoMdSync size={20} color="inherit" /> : "Sync"}
+          {syncLoading ? "Sync" : "Sync"}
         </Button>
-        {syncMessage && (
-          <Typography
-            sx={{
-              ml: 2,
-              color: syncMessage.includes("failed")
-                ? "error.main"
-                : "success.main",
-              fontWeight: 600,
-            }}
-          >
-            {syncMessage}
-          </Typography>
-        )}
       </Box>
       {/* Summary Cards Section */}
       <Box
