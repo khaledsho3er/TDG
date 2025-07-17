@@ -297,7 +297,7 @@ function ProductPage() {
   };
 
   // Utility to get all available sizes (union of product.sizes and product.variantSizes)
-  const getAllAvailableSizes = () => {
+  const getDefaultProductSizes = () => {
     const sizeSet = new Set();
     if (product.sizes) {
       if (Array.isArray(product.sizes)) {
@@ -309,17 +309,14 @@ function ProductPage() {
         sizeSet.add(product.sizes);
       }
     }
-    if (product.variantSizes && Array.isArray(product.variantSizes)) {
-      product.variantSizes.forEach((s) => s && sizeSet.add(s));
-    }
     return Array.from(sizeSet);
   };
 
   // Create a function to get available sizes for the selected color
   const getAvailableSizes = () => {
-    // If no color is selected, show only the default product sizes
+    // If no color is selected, show only the default product sizes (not variant sizes)
     if (!selectedColor) {
-      return getAllAvailableSizes();
+      return getDefaultProductSizes();
     }
 
     // Find variants with the selected color
@@ -338,7 +335,7 @@ function ProductPage() {
     }
 
     // If the selected color is not a variant color, show only the default product sizes
-    return getAllAvailableSizes();
+    return getDefaultProductSizes();
   };
 
   // Update your product display to use variant data when available

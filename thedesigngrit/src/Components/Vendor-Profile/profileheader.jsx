@@ -108,22 +108,24 @@ function VendorProfileHeader({ vendor }) {
             >
               Contact
             </Button>
-            <Button
-              variant="contained"
-              sx={{
-                width: "8rem",
-                height: "40px",
-                borderRadius: "6px",
-                color: "Black",
-                backgroundColor: "#E5E5E5",
-                fontSize: "0.6rem",
-                fontFamily: "montserrat, san-serif",
-              }}
-              className="Vendorprofile-website-button"
-              onClick={() => (window.location.href = vendor.websiteURL)}
-            >
-              Vendor Website
-            </Button>
+            {vendor.websiteURL && (
+              <Button
+                variant="contained"
+                sx={{
+                  width: "8rem",
+                  height: "40px",
+                  borderRadius: "6px",
+                  color: "Black",
+                  backgroundColor: "#E5E5E5",
+                  fontSize: "0.6rem",
+                  fontFamily: "montserrat, san-serif",
+                }}
+                className="Vendorprofile-website-button"
+                onClick={() => (window.location.href = vendor.websiteURL)}
+              >
+                Vendor Website
+              </Button>
+            )}
           </Box>
         </Box>
         {/* Description Text */}
