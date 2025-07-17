@@ -180,7 +180,6 @@ function PartnersApplication() {
             width: "100%",
             maxWidth: 900,
             margin: "0 auto",
-            border: "1px solid #E0E0E0",
             borderRadius: "16px",
             overflow: "hidden",
           }}
@@ -203,8 +202,8 @@ function PartnersApplication() {
                   margin: 0,
                   width: "100%",
                   height: "100%",
-                  borderRight: isLastCol ? "none" : "1px solid #E0E0E0",
-                  borderBottom: idx < 3 ? "1px solid #E0E0E0" : "none",
+                  borderRight: isLastCol ? "none" : "1px solid #2d2d2d",
+                  borderBottom: idx < 3 ? "1px solid #2d2d2d" : "none",
                   transition: "transform 0.18s cubic-bezier(.4,2,.6,1)",
                 }}
                 className="partner-logo-link"
@@ -216,12 +215,6 @@ function PartnersApplication() {
                   alt={`${partner.name} logo`}
                   loading="lazy"
                   width="150"
-                  style={{
-                    borderRadius: 12,
-                    background: "#F8F7F3",
-                    boxShadow: "none",
-                    transition: "transform 0.18s cubic-bezier(.4,2,.6,1)",
-                  }}
                   className="partner-logo-img"
                 />
                 <style>{`
