@@ -52,12 +52,13 @@ function AboutUsPage() {
           title="Our Story"
           subtitle="Your vision, our canvas. Join us in celebrating our heritage, innovation and mastery."
           image={"Assets/AboutUs.webp"}
+          variant="about"
         />
       </Box>
       {/* Story Section */}
       <Box
         sx={{
-          maxWidth: "900px",
+          maxWidth: "1100px",
           margin: "40px auto 0",
           background: "#fff",
           borderRadius: "24px",
@@ -79,9 +80,9 @@ function AboutUsPage() {
         <Box
           sx={{
             color: "#444",
-            fontFamily: "Montserrat, sans-serif",
+            fontFamily: "Montserrat",
             fontSize: 16,
-            lineHeight: 1.7,
+            lineHeight: 2.5,
           }}
         >
           <p>
@@ -193,7 +194,7 @@ function AboutUsPage() {
           </h2>
           <p
             style={{
-              fontFamily: "Montserrat, sans-serif",
+              fontFamily: "Montserrat",
               fontSize: 16,
               color: "#444",
             }}
@@ -204,7 +205,7 @@ function AboutUsPage() {
         </Box>
       </Box>
       {/* Team Section */}
-      <Box
+      {/* <Box
         sx={{
           maxWidth: "900px",
           margin: "60px auto",
@@ -227,7 +228,7 @@ function AboutUsPage() {
           Meet Our Team
         </h2>
         <MeetOurTeam />
-      </Box>
+      </Box> */}
       <Footer />
     </Box>
   );

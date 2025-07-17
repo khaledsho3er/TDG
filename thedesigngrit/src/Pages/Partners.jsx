@@ -50,6 +50,7 @@ function PartnersApplication() {
           title="Our Partners"
           subtitle="Join our network of trusted vendors and partners driving innovation and excellence in the world of furniture"
           image={"Assets/partners.webp"}
+          variant="partners"
         />
       </Box>
       {/* Intro Section */}
