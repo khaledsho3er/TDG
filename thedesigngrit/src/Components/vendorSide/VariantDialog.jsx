@@ -15,6 +15,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import axios from "axios";
 import Cropper from "react-easy-crop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -415,6 +416,18 @@ export default function VariantDialog({
     setCurrentVariant(variants.length);
   };
 
+  const goToPreviousVariant = () => {
+    if (currentVariant > 0) {
+      setCurrentVariant(currentVariant - 1);
+    }
+  };
+
+  const goToNextVariant = () => {
+    if (currentVariant < variants.length - 1) {
+      setCurrentVariant(currentVariant + 1);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!variants[currentVariant].sku) {
       alert("Missing SKU");
@@ -534,19 +547,37 @@ export default function VariantDialog({
             <span>
               Add Product Variant {currentVariant + 1}/{variants.length}
             </span>
-            <IconButton
-              color="primary"
-              onClick={addVariant}
-              sx={{
-                backgroundColor: sageGreen,
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#5a7342",
-                },
-              }}
-            >
-              <AddIcon />
-            </IconButton>
+            <Box display="flex" gap={1} alignItems="center">
+              <IconButton
+                onClick={goToPreviousVariant}
+                disabled={currentVariant === 0}
+                sx={{
+                  backgroundColor: sageGreen,
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#5a7342",
+                  },
+                  "&:disabled": {
+                    backgroundColor: "#d0d0d0",
+                    color: "#888",
+                  },
+                }}
+              >
+                <RemoveIcon />
+              </IconButton>
+              <IconButton
+                onClick={currentVariant === variants.length - 1 ? addVariant : goToNextVariant}
+                sx={{
+                  backgroundColor: sageGreen,
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#5a7342",
+                  },
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
           </Box>
         </DialogTitle>
         <DialogContent dividers>
@@ -795,14 +826,34 @@ export default function VariantDialog({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="primary">
+          <Button 
+            onClick={onClose} 
+            sx={{
+              color: sageGreen,
+              borderColor: sageGreen,
+              "&:hover": {
+                backgroundColor: "rgba(106, 132, 82, 0.04)",
+                borderColor: "#5a7342",
+              },
+            }}
+          >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
-            color="primary"
             variant="contained"
             disabled={isSubmitting}
+            sx={{
+              backgroundColor: sageGreen,
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#5a7342",
+              },
+              "&:disabled": {
+                backgroundColor: "#d0d0d0",
+                color: "#888",
+              },
+            }}
           >
             {isSubmitting ? "Saving..." : "Save Variants"}
           </Button>
@@ -851,15 +902,28 @@ export default function VariantDialog({
             <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleCropComplete}
+                sx={{
+                  backgroundColor: sageGreen,
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#5a7342",
+                  },
+                }}
               >
                 Crop Image
               </Button>
               <Button
                 variant="outlined"
-                color="secondary"
                 onClick={() => setShowCropModal(false)}
+                sx={{
+                  color: sageGreen,
+                  borderColor: sageGreen,
+                  "&:hover": {
+                    backgroundColor: "rgba(106, 132, 82, 0.04)",
+                    borderColor: "#5a7342",
+                  },
+                }}
               >
                 Cancel
               </Button>
