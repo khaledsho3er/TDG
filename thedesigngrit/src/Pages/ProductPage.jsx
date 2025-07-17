@@ -345,8 +345,7 @@ function ProductPage() {
   };
 
   const handleAddToCart = () => {
-    if (product.stock <= 0) return;
-    // Validate color and size selection
+    if ((selectedVariant ? selectedVariant.stock : product.stock) <= 0) return; // Validate color and size selection
     const errors = {
       color: product.colors?.length > 0 && !selectedColor,
       size: getAvailableSizes().length > 0 && !selectedSize,
@@ -567,7 +566,7 @@ function ProductPage() {
                 Ready to Ship
               </div>
             )}
-            {product.stock === 0 ? (
+            {(selectedVariant ? selectedVariant.stock : product.stock) === 0 ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -585,7 +584,8 @@ function ProductPage() {
               >
                 SOLD OUT
               </Box>
-            ) : product.stock <= 5 ? (
+            ) : (selectedVariant ? selectedVariant.stock : product.stock) <=
+              5 ? (
               <Box
                 sx={{
                   display: "inline-block",
@@ -857,7 +857,8 @@ function ProductPage() {
               <p style={{ color: "red" }}>Please select a size</p>
             ) : null}{" "}
             <div className="action-buttons">
-              {product.stock <= 0 ? (
+              {(selectedVariant ? selectedVariant.stock : product.stock) <=
+              0 ? (
                 <div
                   className="action-button disabled-text"
                   style={{
