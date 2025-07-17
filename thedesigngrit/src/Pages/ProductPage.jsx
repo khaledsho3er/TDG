@@ -550,66 +550,75 @@ function ProductPage() {
             </div>
             <p className="product-brand">{product.brandId.brandName}</p>
             <br />
-            {product.readyToShip === true && (
-              <div
-                style={{
-                  display: "inline-block",
-                  padding: "4px 12px",
-                  border: "1px solid #2d2d2d",
-                  borderRadius: "4px",
-                  marginTop: "8px",
-                  marginBottom: "8px",
-                  fontSize: "14px",
-                  fontFamily: "Montserrat",
-                }}
-              >
-                Ready to Ship
-              </div>
-            )}
-            {(selectedVariant ? selectedVariant.stock : product.stock) === 0 ? (
-              <Box
-                sx={{
-                  display: "inline-block",
-                  padding: "4px 12px",
-                  border: "1px solid #2d2d2d",
-                  borderRadius: "4px",
-                  marginTop: "8px",
-                  marginBottom: "8px",
-                  fontSize: "14px",
-                  fontFamily: "Montserrat",
-                  backgroundColor: "#DD4A2A",
-                  color: "#fff",
-                  boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
-                }}
-              >
-                SOLD OUT
-              </Box>
-            ) : (selectedVariant ? selectedVariant.stock : product.stock) <=
-              5 ? (
-              <Box
-                sx={{
-                  display: "inline-block",
-                  padding: "4px 12px",
-                  border: "1px solid #2d2d2d",
-                  borderRadius: "4px",
-                  marginTop: "8px",
-                  marginBottom: "8px",
-                  fontSize: "14px",
-                  fontFamily: "Montserrat",
-                  backgroundColor: "#FFAC1C",
-                  color: "#fff",
-                  boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
-                  animation: "pulse 1.5s infinite",
-                  "@keyframes pulse": {
-                    "0%": { transform: "scale(1)", opacity: 1 },
-                    "50%": { transform: "scale(1.05)", opacity: 0.8 },
-                    "100%": { transform: "scale(1)", opacity: 1 },
-                  },
-                }}
-              >
-                HURRY UP!
-              </Box>
-            ) : null}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              {product.readyToShip === true && (
+                <div
+                  style={{
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    border: "1px solid #2d2d2d",
+                    borderRadius: "4px",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontFamily: "Montserrat",
+                  }}
+                >
+                  Ready to Ship
+                </div>
+              )}
+              {(selectedVariant ? selectedVariant.stock : product.stock) ===
+              0 ? (
+                <Box
+                  sx={{
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    border: "1px solid #2d2d2d",
+                    borderRadius: "4px",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontFamily: "Montserrat",
+                    backgroundColor: "#DD4A2A",
+                    color: "#fff",
+                    boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  SOLD OUT
+                </Box>
+              ) : (selectedVariant ? selectedVariant.stock : product.stock) <=
+                5 ? (
+                <Box
+                  sx={{
+                    display: "inline-block",
+                    padding: "4px 12px",
+                    border: "1px solid #2d2d2d",
+                    borderRadius: "4px",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontFamily: "Montserrat",
+                    backgroundColor: "#FFAC1C",
+                    color: "#fff",
+                    boxShadow: "0px 2px 6px rgba(0,0,0,0.2)",
+                    animation: "pulse 1.5s infinite",
+                    "@keyframes pulse": {
+                      "0%": { transform: "scale(1)", opacity: 1 },
+                      "50%": { transform: "scale(1.05)", opacity: 0.8 },
+                      "100%": { transform: "scale(1)", opacity: 1 },
+                    },
+                  }}
+                >
+                  HURRY UP!
+                </Box>
+              ) : null}
+            </div>
             <div
               style={{
                 display: "flex",
