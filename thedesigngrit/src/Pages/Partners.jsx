@@ -202,8 +202,8 @@ function PartnersApplication() {
                   margin: 0,
                   width: "100%",
                   height: "100%",
-                  borderRight: isLastCol ? "none" : "1px solid #2d2d2d",
-                  borderBottom: idx < 3 ? "1px solid #2d2d2d" : "none",
+                  // borderRight: isLastCol ? "none" : "1px solid #2d2d2d",
+                  // borderBottom: idx < 3 ? "1px solid #2d2d2d" : "none",
                   transition: "transform 0.18s cubic-bezier(.4,2,.6,1)",
                 }}
                 className="partner-logo-link"
