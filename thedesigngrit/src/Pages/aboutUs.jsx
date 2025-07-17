@@ -47,22 +47,13 @@ function AboutUsPage() {
       </Helmet>
       <NavBar />
       {/* Hero Section */}
-      <Box>
-        <HeroAbout
-          title="Our Story"
-          subtitle="Your vision, our canvas. Join us in celebrating our heritage, innovation and mastery."
-          image={"Assets/AboutUs.webp"}
-          variant="about"
-        />
-      </Box>
+
       {/* Story Section */}
       <Box
         sx={{
           maxWidth: "1100px",
           margin: "40px auto 0",
-          background: "#fff",
           borderRadius: "24px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
           px: { xs: 2, md: 6 },
           py: { xs: 3, md: 5 },
         }}
@@ -130,7 +121,7 @@ function AboutUsPage() {
           justifyContent: "center",
           gap: 4,
           maxWidth: "1100px",
-          margin: "60px auto 0",
+          margin: "60px auto 60px",
           background: "#F3F1EA",
           borderRadius: "24px",
           boxShadow: "0 2px 12px rgba(0,0,0,0.06)",

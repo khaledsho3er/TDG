@@ -17,6 +17,11 @@ const HeroAbout = ({ title, subtitle, image, variant }) => {
           padding: "48px 0",
           gap: 0,
           minHeight: 320,
+          maxWidth: "1100px",
+          margin: "auto",
+          padding: "77px",
+          borderRadius: "15px",
+          marginTop: "25px",
         }}
         className="hero-container hero-about-variant"
       >

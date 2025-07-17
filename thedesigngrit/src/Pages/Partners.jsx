@@ -58,9 +58,7 @@ function PartnersApplication() {
         sx={{
           maxWidth: "900px",
           margin: "40px auto 0",
-          background: "#fff",
           borderRadius: "24px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
           px: { xs: 2, md: 6 },
           py: { xs: 3, md: 5 },
         }}
@@ -175,20 +173,29 @@ function PartnersApplication() {
         </h2>
         <Box
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr 1fr", sm: "1fr 1fr 1fr" },
+            gridTemplateRows: "auto auto",
             gap: 4,
-            justifyContent: "center",
+            justifyItems: "center",
             alignItems: "center",
+            width: "100%",
+            maxWidth: 900,
+            margin: "0 auto",
           }}
         >
-          {partners.map((partner) => (
+          {partners.map((partner, idx) => (
             <a
               key={partner.name}
               href={partner.link}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "block", margin: 12 }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                margin: 12,
+              }}
             >
               <img
                 src={`Assets/PartnersLogos/${partner.logo}-300.webp`}
