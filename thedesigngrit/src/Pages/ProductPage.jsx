@@ -317,24 +317,27 @@ function ProductPage() {
 
   // Create a function to get available sizes for the selected color
   const getAvailableSizes = () => {
-    if (selectedColor && variants && variants.length > 0) {
-      // Find variants with the selected color
-      const colorVariants = variants.filter(
-        (variant) =>
-          variant.color &&
-          variant.color.toLowerCase() === selectedColor.toLowerCase()
-      );
-      if (colorVariants.length > 0) {
-        // If there are variants for this color, return their unique sizes
-        const uniqueSizes = [
-          ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
-        ];
-        return uniqueSizes;
-      }
-      // If no variant matches the color, fall back to default product sizes
+    // If no color is selected, show only the default product sizes
+    if (!selectedColor) {
       return getAllAvailableSizes();
     }
-    // If no color is selected, show all available sizes
+
+    // Find variants with the selected color
+    const colorVariants = variants.filter(
+      (variant) =>
+        variant.color &&
+        variant.color.toLowerCase() === selectedColor.toLowerCase()
+    );
+
+    if (colorVariants.length > 0) {
+      // If there are variants for this color, return their unique sizes
+      const uniqueSizes = [
+        ...new Set(colorVariants.map((v) => v.size).filter(Boolean)),
+      ];
+      return uniqueSizes;
+    }
+
+    // If the selected color is not a variant color, show only the default product sizes
     return getAllAvailableSizes();
   };
 
