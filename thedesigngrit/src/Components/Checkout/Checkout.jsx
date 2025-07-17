@@ -28,6 +28,9 @@ function Checkout() {
       setShowPopup(true);
       // Clean up the URL so the popup doesn't keep appearing
       window.history.replaceState({}, document.title, "/checkout");
+    } else {
+      setShowFailedPopup(true);
+      window.history.replaceState({}, document.title, "/checkout");
     }
   }, [location.search]);
   const navigate = useNavigate();

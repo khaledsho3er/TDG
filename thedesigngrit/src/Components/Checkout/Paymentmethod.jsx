@@ -70,12 +70,13 @@ function PaymentForm({
         onSuccess(); // ✅ Trigger success popup in parent ONLY after Paymob confirms
         resetCart(); // Reset cart after successful payment
       } else if (error_occured) {
+        onFailed();
         setPaymentError("Payment failed. Please try again.");
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [onSubmit, onSuccess, resetCart]);
+  }, [onSubmit, onSuccess, resetCart, onFailed]);
 
   const handlePaymentMethodChange = (e) => {
     const method = e.target.value;
@@ -210,6 +211,7 @@ function PaymentForm({
         onSuccess(); // ✅ Trigger success popup in parent for COD
       }
     } catch (error) {
+      onFailed();
       setPaymentError(
         error.message || "Payment initialization failed. Please try again."
       );
