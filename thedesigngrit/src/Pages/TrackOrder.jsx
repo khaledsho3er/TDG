@@ -20,6 +20,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import zIndex from "@mui/material/styles/zIndex";
 
 function TrackOrder() {
   const [ordersData, setOrdersData] = useState([]);
@@ -752,6 +753,7 @@ function TrackOrder() {
                 fontSize: 18,
                 minHeight: 60,
                 color: "#2d2d2d",
+                zIndex: "999999",
               }}
               inputProps={{ "aria-label": "Reason for return" }}
             >
