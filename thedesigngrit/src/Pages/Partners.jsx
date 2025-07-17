@@ -154,9 +154,7 @@ function PartnersApplication() {
         sx={{
           maxWidth: "1100px",
           margin: "40px auto 0",
-          background: "#fff",
           borderRadius: "24px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
           px: { xs: 2, md: 6 },
           py: { xs: 3, md: 5 },
         }}
@@ -176,42 +174,70 @@ function PartnersApplication() {
             display: "grid",
             gridTemplateColumns: { xs: "1fr 1fr", sm: "1fr 1fr 1fr" },
             gridTemplateRows: "auto auto",
-            gap: 4,
+            gap: 0,
             justifyItems: "center",
             alignItems: "center",
             width: "100%",
             maxWidth: 900,
             margin: "0 auto",
+            border: "1px solid #E0E0E0",
+            borderRadius: "16px",
+            overflow: "hidden",
           }}
         >
-          {partners.map((partner, idx) => (
-            <a
-              key={partner.name}
-              href={partner.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 12,
-              }}
-            >
-              <img
-                src={`Assets/PartnersLogos/${partner.logo}-300.webp`}
-                srcSet={`Assets/PartnersLogos/${partner.logo}-150.webp 150w, Assets/PartnersLogos/${partner.logo}-300.webp 300w, Assets/PartnersLogos/${partner.logo}-500.webp 500w`}
-                sizes="(max-width: 768px) 50vw, 150px"
-                alt={`${partner.name} logo`}
-                loading="lazy"
-                width="150"
+          {partners.map((partner, idx) => {
+            // Calculate if not last column for vertical border
+            const isLastCol = (idx + 1) % 3 === 0;
+            // Calculate if not last row for horizontal border
+            const isLastRow = idx >= 3;
+            return (
+              <a
+                key={partner.name}
+                href={partner.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
-                  borderRadius: 12,
-                  background: "#F8F7F3",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  margin: 0,
+                  width: "100%",
+                  height: "100%",
+                  borderRight: isLastCol ? "none" : "1px solid #E0E0E0",
+                  borderBottom: idx < 3 ? "1px solid #E0E0E0" : "none",
+                  transition: "transform 0.18s cubic-bezier(.4,2,.6,1)",
                 }}
-              />
-            </a>
-          ))}
+                className="partner-logo-link"
+              >
+                <img
+                  src={`Assets/PartnersLogos/${partner.logo}-300.webp`}
+                  srcSet={`Assets/PartnersLogos/${partner.logo}-150.webp 150w, Assets/PartnersLogos/${partner.logo}-300.webp 300w, Assets/PartnersLogos/${partner.logo}-500.webp 500w`}
+                  sizes="(max-width: 768px) 50vw, 150px"
+                  alt={`${partner.name} logo`}
+                  loading="lazy"
+                  width="150"
+                  style={{
+                    borderRadius: 12,
+                    background: "#F8F7F3",
+                    boxShadow: "none",
+                    transition: "transform 0.18s cubic-bezier(.4,2,.6,1)",
+                  }}
+                  className="partner-logo-img"
+                />
+                <style>{`
+                  .partner-logo-link:hover .partner-logo-img {
+                    transform: scale(1.08);
+                  }
+                  .partner-logo-link .partner-logo-img {
+                    transition: transform 0.18s cubic-bezier(.4,2,.6,1);
+                  }
+                  .partner-logo-link:hover {
+                    background: none !important;
+                  }
+                `}</style>
+              </a>
+            );
+          })}
         </Box>
       </Box>
       {/* Application Form Section */}
