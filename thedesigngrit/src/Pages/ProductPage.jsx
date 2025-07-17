@@ -1195,7 +1195,7 @@ function ProductPage() {
                 <IoIosArrowBack size={30} color="#fff" />
               </button>
               <img
-                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${product.images[selectedImageIndex]}`}
+                src={`https://pub-03f15f93661b46629dc2abcc2c668d72.r2.dev/${displayImages[selectedImageIndex]}`}
                 alt={`${selectedImageIndex + 1}`}
                 className="modal-image"
               />
